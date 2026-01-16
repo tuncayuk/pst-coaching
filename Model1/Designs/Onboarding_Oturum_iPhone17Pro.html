@@ -3,36 +3,49 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>PST Mobile — 3.1 Onboarding & Oturum (iPhone 17 Pro)</title>
+    <title>PST Mobile — 3.1 Onboarding & Oturum (Light Mode, iPhone 17 Pro)</title>
     <style>
       :root {
-        color-scheme: dark;
-        --bg0: #070a12;
-        --bg1: #0b1230;
-        --panel: rgba(255, 255, 255, 0.08);
-        --panel2: rgba(255, 255, 255, 0.12);
-        --stroke: rgba(255, 255, 255, 0.14);
-        --stroke2: rgba(255, 255, 255, 0.24);
-        --text: rgba(255, 255, 255, 0.92);
-        --muted: rgba(255, 255, 255, 0.62);
-        --muted2: rgba(255, 255, 255, 0.46);
-        --danger: #ff5a6b;
-        --ok: #36d399;
-        --brandA: #7c3aed;
-        --brandB: #22d3ee;
-        --brandC: #fbbf24;
-        --shadow: 0 24px 80px rgba(0, 0, 0, 0.55);
+        color-scheme: light;
+
+        /* Palette — derived from the provided logo (approx by visual sampling). */
+        --primary: #1e2a78; /* PST navy */
+        --accent: #0fa3b1; /* PST teal */
+        --gold: #f2c14e; /* warm highlight */
+        --danger: #d92d20;
+        --success: #039855;
+
+        /* Neutrals */
+        --bg: #f7f8fb;
+        --surface: #ffffff;
+        --surface2: #f2f4fb;
+        --stroke: #e6e8f0;
+        --stroke2: #d7dbeb;
+        --text: #0d1226;
+        --muted: #5b647a;
+        --muted2: #7a849c;
+
+        /* Effects */
+        --shadow-sm: 0 6px 18px rgba(13, 18, 38, 0.08);
+        --shadow-md: 0 18px 50px rgba(13, 18, 38, 0.12);
+        --shadow-lg: 0 36px 120px rgba(13, 18, 38, 0.18);
+
+        /* Radii */
         --r12: 12px;
         --r16: 16px;
         --r20: 20px;
         --r24: 24px;
-        --safeTop: 56px;
-        --safeBot: 34px;
+        --r32: 32px;
+
+        /* iPhone 17 Pro ref (approx) */
         --w: 393px;
         --h: 852px;
+        --safeTop: 56px;
+        --safeBot: 34px;
+
         --font:
           ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display",
-          "Segoe UI", Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+          "Segoe UI", Roboto, Helvetica, Arial;
       }
 
       * {
@@ -45,16 +58,23 @@
       body {
         margin: 0;
         font-family: var(--font);
-        background: radial-gradient(1200px 600px at 20% -10%, rgba(124, 58, 237, 0.35), transparent 55%),
-          radial-gradient(900px 600px at 110% 0%, rgba(34, 211, 238, 0.22), transparent 55%),
-          radial-gradient(1200px 800px at 60% 120%, rgba(251, 191, 36, 0.12), transparent 55%),
-          linear-gradient(180deg, var(--bg0), var(--bg1));
+        background:
+          radial-gradient(900px 520px at 0% 0%, rgba(15, 163, 177, 0.12), transparent 55%),
+          radial-gradient(900px 520px at 100% 10%, rgba(30, 42, 120, 0.10), transparent 55%),
+          radial-gradient(900px 520px at 40% 115%, rgba(242, 193, 78, 0.12), transparent 55%),
+          linear-gradient(180deg, #ffffff, var(--bg));
         color: var(--text);
+      }
+
+      code {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        font-size: 0.95em;
+        color: rgba(13, 18, 38, 0.85);
       }
 
       .wrap {
         display: grid;
-        grid-template-columns: 320px 1fr;
+        grid-template-columns: 340px 1fr;
         gap: 24px;
         padding: 28px;
         min-height: 100%;
@@ -64,58 +84,107 @@
         position: sticky;
         top: 28px;
         height: calc(100vh - 56px);
+        border-radius: 22px;
+        background: rgba(255, 255, 255, 0.82);
+        border: 1px solid rgba(230, 232, 240, 0.9);
+        box-shadow: var(--shadow-md);
+        backdrop-filter: blur(12px);
         padding: 18px;
-        border-radius: 18px;
-        background: rgba(255, 255, 255, 0.06);
-        border: 1px solid rgba(255, 255, 255, 0.12);
-        backdrop-filter: blur(14px);
-        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.38);
+        overflow: auto;
+      }
+      .side .titleRow {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 10px;
+      }
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 10px;
+        border-radius: 999px;
+        background: rgba(15, 163, 177, 0.10);
+        border: 1px solid rgba(15, 163, 177, 0.22);
+        color: rgba(13, 18, 38, 0.86);
+        font-size: 12px;
+        white-space: nowrap;
       }
       .side h1 {
-        font-size: 16px;
         margin: 0 0 6px;
+        font-size: 16px;
         letter-spacing: 0.2px;
       }
       .side p {
         margin: 0 0 14px;
         color: var(--muted);
         font-size: 12px;
-        line-height: 1.5;
+        line-height: 1.55;
       }
-      .side .pill {
-        display: inline-flex;
-        gap: 8px;
-        align-items: center;
-        padding: 8px 10px;
-        border-radius: 999px;
-        background: rgba(124, 58, 237, 0.16);
-        border: 1px solid rgba(124, 58, 237, 0.32);
-        color: rgba(255, 255, 255, 0.9);
+
+      .palette {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin: 10px 0 14px;
+      }
+      .swatch {
+        border-radius: 16px;
+        background: var(--surface);
+        border: 1px solid var(--stroke);
+        padding: 10px;
+        box-shadow: var(--shadow-sm);
+      }
+      .chip {
+        width: 100%;
+        height: 34px;
+        border-radius: 12px;
+        border: 1px solid rgba(13, 18, 38, 0.06);
+      }
+      .swatch .k {
+        margin-top: 8px;
         font-size: 12px;
-        margin-bottom: 12px;
+        color: rgba(13, 18, 38, 0.82);
+        font-weight: 700;
       }
+      .swatch .v {
+        font-size: 12px;
+        color: var(--muted);
+      }
+
+      .note {
+        padding: 12px;
+        border-radius: 16px;
+        background: rgba(242, 193, 78, 0.14);
+        border: 1px solid rgba(242, 193, 78, 0.28);
+        color: rgba(13, 18, 38, 0.86);
+        font-size: 12px;
+        line-height: 1.5;
+        margin-bottom: 14px;
+      }
+
       .nav {
         display: grid;
         gap: 8px;
-        margin-top: 10px;
       }
       .nav a {
         text-decoration: none;
-        color: var(--text);
+        color: rgba(13, 18, 38, 0.92);
         font-size: 13px;
         padding: 10px 12px;
-        border-radius: 12px;
-        border: 1px solid rgba(255, 255, 255, 0.10);
-        background: rgba(255, 255, 255, 0.04);
+        border-radius: 14px;
+        border: 1px solid var(--stroke);
+        background: rgba(255, 255, 255, 0.7);
       }
       .nav a:hover {
-        background: rgba(255, 255, 255, 0.07);
-        border-color: rgba(255, 255, 255, 0.16);
+        border-color: var(--stroke2);
+        box-shadow: var(--shadow-sm);
       }
       .nav a .k {
         display: inline-block;
-        min-width: 26px;
-        color: var(--muted);
+        min-width: 28px;
+        color: var(--muted2);
       }
 
       .main {
@@ -127,25 +196,24 @@
       .section {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 18px 18px;
+        gap: 18px;
         align-items: start;
       }
 
       .card {
         padding: 16px;
-        border-radius: 18px;
-        background: rgba(255, 255, 255, 0.06);
-        border: 1px solid rgba(255, 255, 255, 0.10);
-        backdrop-filter: blur(14px);
-        box-shadow: 0 18px 55px rgba(0, 0, 0, 0.34);
+        border-radius: 22px;
+        background: rgba(255, 255, 255, 0.82);
+        border: 1px solid rgba(230, 232, 240, 0.95);
+        box-shadow: var(--shadow-md);
+        backdrop-filter: blur(12px);
       }
-
       .card h2 {
         font-size: 15px;
         margin: 0 0 6px;
         letter-spacing: 0.2px;
       }
-      .card .meta {
+      .meta {
         display: flex;
         gap: 8px;
         flex-wrap: wrap;
@@ -153,31 +221,31 @@
       }
       .tag {
         display: inline-flex;
-        gap: 8px;
         align-items: center;
+        gap: 8px;
         padding: 6px 10px;
         border-radius: 999px;
         font-size: 12px;
-        border: 1px solid rgba(255, 255, 255, 0.14);
-        background: rgba(255, 255, 255, 0.06);
-        color: rgba(255, 255, 255, 0.86);
+        border: 1px solid var(--stroke);
+        background: rgba(255, 255, 255, 0.8);
+        color: rgba(13, 18, 38, 0.84);
       }
       .tag.brand {
-        border-color: rgba(34, 211, 238, 0.28);
-        background: rgba(34, 211, 238, 0.10);
+        border-color: rgba(15, 163, 177, 0.28);
+        background: rgba(15, 163, 177, 0.10);
       }
       .tag.warn {
-        border-color: rgba(251, 191, 36, 0.26);
-        background: rgba(251, 191, 36, 0.10);
+        border-color: rgba(242, 193, 78, 0.30);
+        background: rgba(242, 193, 78, 0.14);
       }
       .tag.danger {
-        border-color: rgba(255, 90, 107, 0.26);
-        background: rgba(255, 90, 107, 0.10);
+        border-color: rgba(217, 45, 32, 0.22);
+        background: rgba(217, 45, 32, 0.10);
       }
 
       .card ul {
         margin: 0;
-        padding-left: 16px;
+        padding-left: 18px;
         color: var(--muted);
         font-size: 12px;
         line-height: 1.55;
@@ -186,21 +254,61 @@
         margin-top: 6px;
       }
 
-      /* Device */
+      details {
+        margin-top: 12px;
+        border-radius: 16px;
+        border: 1px solid var(--stroke);
+        background: rgba(255, 255, 255, 0.82);
+        overflow: hidden;
+      }
+      details summary {
+        cursor: pointer;
+        list-style: none;
+        padding: 12px;
+        font-weight: 800;
+        color: rgba(13, 18, 38, 0.9);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+      }
+      details summary::-webkit-details-marker {
+        display: none;
+      }
+      details summary .hint {
+        color: var(--muted2);
+        font-weight: 700;
+        font-size: 12px;
+      }
+      details .body {
+        padding: 0 12px 12px 12px;
+      }
+      .ac {
+        margin: 0;
+        padding-left: 18px;
+        color: rgba(13, 18, 38, 0.82);
+        font-size: 12px;
+        line-height: 1.55;
+      }
+      .ac li + li {
+        margin-top: 6px;
+      }
+
+      /* Device frame */
       .device {
         width: var(--w);
         height: var(--h);
-        border-radius: 44px;
-        background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
-        border: 1px solid rgba(255, 255, 255, 0.18);
-        box-shadow: var(--shadow);
+        border-radius: 46px;
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.75));
+        border: 1px solid rgba(215, 219, 235, 0.95);
+        box-shadow: var(--shadow-lg);
         padding: 12px;
       }
       .bezel {
         width: 100%;
         height: 100%;
-        border-radius: 36px;
-        background: #000;
+        border-radius: 38px;
+        background: #0a0c12;
         position: relative;
         overflow: hidden;
       }
@@ -209,21 +317,22 @@
         left: 50%;
         top: 14px;
         transform: translateX(-50%);
-        width: 140px;
+        width: 146px;
         height: 36px;
         border-radius: 999px;
-        background: rgba(0, 0, 0, 0.88);
+        background: rgba(0, 0, 0, 0.86);
         border: 1px solid rgba(255, 255, 255, 0.08);
-        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.55);
+        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.38);
       }
       .screen {
         position: absolute;
         inset: 0;
         padding-top: var(--safeTop);
         padding-bottom: var(--safeBot);
-        background: radial-gradient(900px 600px at 20% 0%, rgba(124, 58, 237, 0.26), transparent 52%),
-          radial-gradient(900px 700px at 110% 20%, rgba(34, 211, 238, 0.18), transparent 55%),
-          linear-gradient(180deg, #050611, #0a1634);
+        background:
+          radial-gradient(820px 520px at 0% 0%, rgba(15, 163, 177, 0.14), transparent 54%),
+          radial-gradient(820px 520px at 100% 18%, rgba(30, 42, 120, 0.10), transparent 54%),
+          linear-gradient(180deg, #ffffff, #f3f5fb);
       }
       .status {
         position: absolute;
@@ -234,20 +343,20 @@
         justify-content: space-between;
         align-items: center;
         font-size: 12px;
-        color: rgba(255, 255, 255, 0.88);
+        color: rgba(13, 18, 38, 0.78);
         pointer-events: none;
       }
       .status .right {
         display: flex;
         gap: 8px;
         align-items: center;
-        color: rgba(255, 255, 255, 0.78);
+        color: rgba(13, 18, 38, 0.62);
       }
       .dot {
         width: 6px;
         height: 6px;
         border-radius: 999px;
-        background: rgba(255, 255, 255, 0.65);
+        background: rgba(13, 18, 38, 0.35);
       }
 
       .content {
@@ -255,64 +364,80 @@
         padding: 18px 18px 0 18px;
         display: flex;
         flex-direction: column;
-        gap: 14px;
+        gap: 12px;
       }
-
       .topbar {
         display: flex;
         align-items: center;
         justify-content: space-between;
         gap: 10px;
       }
-      .topbar .back {
-        width: 36px;
-        height: 36px;
-        border-radius: 12px;
+      .back {
+        width: 38px;
+        height: 38px;
+        border-radius: 14px;
         display: grid;
         place-items: center;
-        background: rgba(255, 255, 255, 0.06);
-        border: 1px solid rgba(255, 255, 255, 0.12);
-        color: rgba(255, 255, 255, 0.9);
-        font-weight: 700;
+        background: rgba(255, 255, 255, 0.9);
+        border: 1px solid rgba(230, 232, 240, 0.95);
+        box-shadow: var(--shadow-sm);
+        color: rgba(13, 18, 38, 0.92);
+        font-weight: 900;
       }
-      .topbar .ghost {
-        height: 36px;
+      .ghost {
+        height: 38px;
         padding: 0 12px;
-        border-radius: 12px;
+        border-radius: 14px;
         display: inline-flex;
         align-items: center;
         gap: 8px;
-        background: rgba(255, 255, 255, 0.06);
-        border: 1px solid rgba(255, 255, 255, 0.12);
-        color: rgba(255, 255, 255, 0.85);
+        background: rgba(255, 255, 255, 0.9);
+        border: 1px solid rgba(230, 232, 240, 0.95);
+        box-shadow: var(--shadow-sm);
+        color: rgba(13, 18, 38, 0.82);
         font-size: 12px;
+        font-weight: 700;
       }
 
       .hero {
         padding: 18px;
-        border-radius: 22px;
-        background: linear-gradient(180deg, rgba(255, 255, 255, 0.10), rgba(255, 255, 255, 0.06));
-        border: 1px solid rgba(255, 255, 255, 0.12);
-        backdrop-filter: blur(14px);
+        border-radius: 24px;
+        background: rgba(255, 255, 255, 0.9);
+        border: 1px solid rgba(230, 232, 240, 0.95);
+        box-shadow: var(--shadow-sm);
       }
-      .brand {
+      .brandRow {
         display: flex;
         align-items: center;
         justify-content: space-between;
         gap: 12px;
+        margin-bottom: 8px;
       }
-      .logo {
-        width: 48px;
-        height: 48px;
-        border-radius: 16px;
-        background: radial-gradient(circle at 30% 30%, rgba(34, 211, 238, 0.9), rgba(124, 58, 237, 0.86));
-        box-shadow: 0 14px 30px rgba(0, 0, 0, 0.48);
-        border: 1px solid rgba(255, 255, 255, 0.18);
+      .logoWrap {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        min-width: 0;
+      }
+      .logoImg {
+        height: 30px;
+        width: auto;
+        object-fit: contain;
+        display: block;
+      }
+      .logoFallback {
+        display: none;
+        width: 36px;
+        height: 36px;
+        border-radius: 14px;
+        background: radial-gradient(circle at 30% 30%, rgba(15, 163, 177, 1), rgba(30, 42, 120, 1));
+        border: 1px solid rgba(13, 18, 38, 0.08);
+        box-shadow: var(--shadow-sm);
       }
       .h1 {
         font-size: 22px;
-        margin: 12px 0 6px;
-        letter-spacing: 0.2px;
+        margin: 8px 0 6px;
+        letter-spacing: -0.2px;
       }
       .p {
         margin: 0;
@@ -329,14 +454,16 @@
 
       .field {
         padding: 12px 12px;
-        border-radius: 16px;
-        background: rgba(255, 255, 255, 0.06);
-        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.92);
+        border: 1px solid rgba(230, 232, 240, 0.95);
+        box-shadow: 0 8px 20px rgba(13, 18, 38, 0.06);
       }
       .label {
         font-size: 12px;
-        color: rgba(255, 255, 255, 0.70);
+        color: var(--muted2);
         margin-bottom: 6px;
+        font-weight: 700;
       }
       .input {
         display: flex;
@@ -344,43 +471,48 @@
         justify-content: space-between;
         gap: 10px;
         font-size: 15px;
-        color: rgba(255, 255, 255, 0.92);
+        color: rgba(13, 18, 38, 0.92);
+        font-weight: 700;
       }
-      .input .hint {
-        color: rgba(255, 255, 255, 0.44);
+      .hint {
+        color: rgba(13, 18, 38, 0.42);
         font-size: 13px;
+        font-weight: 700;
       }
       .help {
         margin-top: 8px;
         font-size: 12px;
-        color: rgba(255, 255, 255, 0.58);
+        color: var(--muted);
         line-height: 1.45;
       }
       .help.err {
-        color: rgba(255, 90, 107, 0.92);
+        color: var(--danger);
+        font-weight: 700;
       }
 
       .seg {
         display: flex;
         gap: 6px;
         padding: 6px;
-        border-radius: 16px;
-        background: rgba(0, 0, 0, 0.28);
-        border: 1px solid rgba(255, 255, 255, 0.10);
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.88);
+        border: 1px solid rgba(230, 232, 240, 0.95);
+        box-shadow: var(--shadow-sm);
       }
       .seg .opt {
         flex: 1;
         text-align: center;
         padding: 10px 8px;
-        border-radius: 12px;
+        border-radius: 14px;
         font-size: 13px;
-        color: rgba(255, 255, 255, 0.72);
+        color: rgba(13, 18, 38, 0.70);
         border: 1px solid transparent;
+        font-weight: 800;
       }
       .seg .opt.on {
-        background: rgba(255, 255, 255, 0.10);
-        border-color: rgba(255, 255, 255, 0.14);
-        color: rgba(255, 255, 255, 0.92);
+        background: rgba(15, 163, 177, 0.10);
+        border-color: rgba(15, 163, 177, 0.22);
+        color: rgba(13, 18, 38, 0.92);
       }
 
       .btnRow {
@@ -391,53 +523,66 @@
         padding-bottom: 10px;
       }
       .btn {
-        height: 52px;
+        height: 54px;
         border-radius: 18px;
         display: flex;
         align-items: center;
         justify-content: center;
         gap: 10px;
-        font-weight: 700;
-        letter-spacing: 0.2px;
-        border: 1px solid rgba(255, 255, 255, 0.14);
-        background: rgba(255, 255, 255, 0.10);
-        color: rgba(255, 255, 255, 0.94);
+        font-weight: 900;
+        letter-spacing: 0.15px;
+        border: 1px solid rgba(230, 232, 240, 0.95);
+        background: rgba(255, 255, 255, 0.92);
+        color: rgba(13, 18, 38, 0.92);
+        box-shadow: var(--shadow-sm);
       }
       .btn.primary {
-        background: linear-gradient(135deg, rgba(124, 58, 237, 0.95), rgba(34, 211, 238, 0.88));
-        border-color: rgba(255, 255, 255, 0.14);
-        box-shadow: 0 12px 28px rgba(124, 58, 237, 0.25);
+        background: linear-gradient(135deg, rgba(30, 42, 120, 0.96), rgba(15, 163, 177, 0.92));
+        border-color: rgba(30, 42, 120, 0.18);
+        color: #ffffff;
+        box-shadow: 0 18px 40px rgba(30, 42, 120, 0.18);
+      }
+      .btn.secondary {
+        border-color: rgba(30, 42, 120, 0.14);
+      }
+      .btn.ghostBtn {
+        background: rgba(255, 255, 255, 0.78);
       }
       .btn.disabled {
-        opacity: 0.55;
-      }
-      .btn.ghost {
-        background: rgba(255, 255, 255, 0.06);
+        opacity: 0.45;
+        box-shadow: none;
       }
       .sub {
         text-align: center;
-        color: rgba(255, 255, 255, 0.62);
+        color: var(--muted);
         font-size: 12px;
+        line-height: 1.45;
+      }
+      .link {
+        color: rgba(15, 163, 177, 0.98);
+        font-weight: 900;
       }
 
       .toast {
         display: inline-flex;
         gap: 10px;
-        align-items: center;
+        align-items: flex-start;
         padding: 10px 12px;
-        border-radius: 14px;
-        background: rgba(54, 211, 153, 0.12);
-        border: 1px solid rgba(54, 211, 153, 0.24);
-        color: rgba(255, 255, 255, 0.9);
+        border-radius: 16px;
+        background: rgba(15, 163, 177, 0.10);
+        border: 1px solid rgba(15, 163, 177, 0.22);
+        color: rgba(13, 18, 38, 0.86);
         font-size: 12px;
+        line-height: 1.45;
+        box-shadow: var(--shadow-sm);
       }
       .toast.warn {
-        background: rgba(251, 191, 36, 0.12);
-        border-color: rgba(251, 191, 36, 0.22);
+        background: rgba(242, 193, 78, 0.14);
+        border-color: rgba(242, 193, 78, 0.30);
       }
       .toast.err {
-        background: rgba(255, 90, 107, 0.12);
-        border-color: rgba(255, 90, 107, 0.22);
+        background: rgba(217, 45, 32, 0.10);
+        border-color: rgba(217, 45, 32, 0.22);
       }
 
       .otp {
@@ -449,13 +594,15 @@
       .otp .box {
         width: 48px;
         height: 56px;
-        border-radius: 16px;
-        background: rgba(255, 255, 255, 0.06);
-        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.92);
+        border: 1px solid rgba(230, 232, 240, 0.95);
+        box-shadow: var(--shadow-sm);
         display: grid;
         place-items: center;
         font-size: 18px;
-        color: rgba(255, 255, 255, 0.86);
+        color: rgba(13, 18, 38, 0.86);
+        font-weight: 900;
       }
 
       .sheet {
@@ -464,19 +611,20 @@
         right: 14px;
         bottom: 14px;
         padding: 14px;
-        border-radius: 22px;
-        background: rgba(0, 0, 0, 0.55);
-        border: 1px solid rgba(255, 255, 255, 0.14);
-        backdrop-filter: blur(16px);
-        box-shadow: 0 22px 60px rgba(0, 0, 0, 0.55);
+        border-radius: 24px;
+        background: rgba(255, 255, 255, 0.92);
+        border: 1px solid rgba(230, 232, 240, 0.95);
+        box-shadow: var(--shadow-lg);
+        backdrop-filter: blur(10px);
       }
       .sheet h3 {
         margin: 0 0 6px;
         font-size: 14px;
+        letter-spacing: 0.1px;
       }
       .sheet p {
         margin: 0 0 12px;
-        color: rgba(255, 255, 255, 0.65);
+        color: var(--muted);
         font-size: 12px;
         line-height: 1.45;
       }
@@ -503,19 +651,52 @@
   <body>
     <div class="wrap">
       <aside class="side">
-        <div class="pill">3.1 • Onboarding & Oturum • iPhone 17 Pro</div>
-        <h1>Premium ekran tasarımları</h1>
+        <div class="titleRow">
+          <div class="pill">3.1 • Onboarding & Oturum • Light Mode</div>
+          <span class="tag brand">iPhone 17 Pro</span>
+        </div>
+        <h1>Premium UI (dürüst not)</h1>
         <p>
-          Bu çıktı, yalnızca <code>Model1/UserStoriesRev3.md</code> içindeki EPIC 1 (US-1.1–US-1.7) acceptance criteria’larına
-          göre hazırlanmıştır.
+          Logo görselini bu projede “gerçek dosya” olarak kullanabilmem için, lütfen paylaştığınız logoyu
+          <code>Model1/Designs/assets/pst-coaching-logo.png</code> yoluna ekleyin. Aşağıdaki tasarım logoyu bu yoldan yükler;
+          dosya yoksa otomatik “fallback” gösterir.
         </p>
+
+        <div class="palette">
+          <div class="swatch">
+            <div class="chip" style="background: var(--primary)"></div>
+            <div class="k">Primary</div>
+            <div class="v">#1E2A78</div>
+          </div>
+          <div class="swatch">
+            <div class="chip" style="background: var(--accent)"></div>
+            <div class="k">Accent</div>
+            <div class="v">#0FA3B1</div>
+          </div>
+          <div class="swatch">
+            <div class="chip" style="background: var(--gold)"></div>
+            <div class="k">Gold</div>
+            <div class="v">#F2C14E</div>
+          </div>
+          <div class="swatch">
+            <div class="chip" style="background: var(--bg)"></div>
+            <div class="k">Background</div>
+            <div class="v">#F7F8FB</div>
+          </div>
+        </div>
+
+        <div class="note">
+          Palet, logo renklerinden görsel olarak çıkarılmış <strong>yaklaşık</strong> değerlerdir. Logoyu dosya olarak ekleyince
+          pipetle netleştirebilirim.
+        </div>
+
         <div class="nav">
           <a href="#splash"><span class="k">01</span> Splash / Oturum kontrolü</a>
           <a href="#lang"><span class="k">02</span> Dil seçimi</a>
           <a href="#welcome"><span class="k">03</span> Karşılama (Giriş / Kayıt)</a>
           <a href="#signup"><span class="k">04</span> Kayıt (E‑posta / Telefon)</a>
-          <a href="#otp"><span class="k">05</span> OTP doğrulama (hata/expiry/cooldown)</a>
-          <a href="#login"><span class="k">06</span> Giriş (offline + kilit)</a>
+          <a href="#otp"><span class="k">05</span> OTP doğrulama</a>
+          <a href="#login"><span class="k">06</span> Giriş</a>
           <a href="#forgot"><span class="k">07</span> Şifre sıfırlama (başlat)</a>
           <a href="#reset"><span class="k">08</span> Yeni şifre belirle</a>
           <a href="#expired"><span class="k">09</span> Oturum süresi doldu</a>
@@ -529,16 +710,27 @@
           <div class="card">
             <h2>01 — Splash / Oturum kontrolü</h2>
             <div class="meta">
-              <span class="tag brand">US-1.6 • Session expiry</span>
-              <span class="tag brand">US-1.7 • Plan/Rol senkron</span>
-              <span class="tag warn">Durum: loading + offline</span>
+              <span class="tag brand">US-1.6</span>
+              <span class="tag brand">US-1.7</span>
+              <span class="tag warn">Loading + offline</span>
             </div>
             <ul>
-              <li>Uygulama açılışında “sessiz” güvenlik kontrolü; token geçersizse girişe yönlendirme.</li>
-              <li>Plan/rol/seat senkronu arka planda; UI “bekliyormuş” gibi ağırlaşmaz.</li>
-              <li>Offline olduğunda, kullanıcıya net bilgilendirme + tekrar dene.</li>
+              <li>Hızlı açılış: kullanıcı beklerken “ne oluyor”u tek cümlede anlatır.</li>
+              <li>Oturum geçersizse güvenli yönlendirme (US-1.6).</li>
+              <li>Plan/rol/seat senkronu arka planda (US-1.7).</li>
             </ul>
+            <details open>
+              <summary>Acceptance Criteria <span class="hint">US-1.6 + US-1.7</span></summary>
+              <div class="body">
+                <ul class="ac">
+                  <li>Oturum sunucu tarafından geçersiz kılınırsa “Oturum süreniz doldu” gösterilir ve tekrar giriş istenir.</li>
+                  <li>Oturum geçersizleştiğinde korumalı ekrana gidilmek istenirse otomatik giriş ekranına yönlendirilir.</li>
+                  <li>Giriş sonrası ana sayfa yüklenirken abonelik durumu + rol (Plan Sahibi/Üye) güncellenir.</li>
+                </ul>
+              </div>
+            </details>
           </div>
+
           <div class="device">
             <div class="bezel">
               <div class="status"><span>09:41</span><span class="right"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span></div>
@@ -546,22 +738,40 @@
               <div class="screen">
                 <div class="content">
                   <div class="hero">
-                    <div class="brand">
-                      <div class="logo"></div>
+                    <div class="brandRow">
+                      <div class="logoWrap">
+                        <img
+                          class="logoImg"
+                          src="assets/pst-coaching-logo.png"
+                          alt="PST Coaching"
+                          onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+                        />
+                        <div class="logoFallback" aria-hidden="true"></div>
+                      </div>
                       <span class="tag">Güvenli oturum</span>
                     </div>
-                    <div class="h1">PST Coaching</div>
-                    <p class="p">Oturum doğrulanıyor, erişimler hazırlanıyor…</p>
-                    <div style="margin-top: 14px; display: flex; gap: 10px; align-items: center">
-                      <div style="width: 14px; height: 14px; border-radius: 999px; border: 2px solid rgba(255,255,255,0.28); border-top-color: rgba(34,211,238,0.95)"></div>
-                      <span style="font-size: 12px; color: rgba(255,255,255,0.66)">Plan & rol senkronu</span>
+                    <div class="h1">Oturum doğrulanıyor</div>
+                    <p class="p">Erişimler hazırlanıyor. Bu işlem genelde birkaç saniye sürer.</p>
+                    <div style="margin-top: 12px; display: flex; gap: 10px; align-items: center">
+                      <div
+                        style="
+                          width: 14px;
+                          height: 14px;
+                          border-radius: 999px;
+                          border: 2px solid rgba(13, 18, 38, 0.14);
+                          border-top-color: rgba(15, 163, 177, 1);
+                        "
+                      ></div>
+                      <span style="font-size: 12px; color: rgba(13, 18, 38, 0.62); font-weight: 800"
+                        >Plan & rol senkronu</span
+                      >
                     </div>
                   </div>
 
-                  <div class="toast warn">Bağlantı yok. Dil tercihiniz cihazda korunur; bağlantı gelince senkronlanır.</div>
+                  <div class="toast warn">Bağlantı yok. Seçimler cihazda korunur; bağlantı gelince senkronlanır.</div>
 
                   <div class="btnRow">
-                    <div class="btn ghost">Tekrar Dene</div>
+                    <div class="btn ghostBtn">Tekrar Dene</div>
                     <div class="sub">Güvenli giriş için ağ bağlantısı önerilir.</div>
                   </div>
                 </div>
@@ -575,15 +785,28 @@
           <div class="card">
             <h2>02 — Dil seçimi</h2>
             <div class="meta">
-              <span class="tag brand">US-1.1 • TR/EN/ES</span>
+              <span class="tag brand">US-1.1</span>
               <span class="tag warn">Offline destekli</span>
             </div>
             <ul>
-              <li>TR/EN/ES listesi; seçim profile yazılır, offline ise yerelde saklanır.</li>
-              <li>CTA yalnızca seçim yapılınca aktif (hata yok, sürtünme yok).</li>
-              <li>“Sonradan değiştir” bilgisi net.</li>
+              <li>TR/EN/ES listesi; seçim profile kaydedilir, offline ise yerelde saklanır.</li>
+              <li>CTA yalnızca seçim yapılınca aktif.</li>
+              <li>“Sonradan değiştir” yolu net: Profil → Ayarlar → Dil.</li>
             </ul>
+            <details>
+              <summary>Acceptance Criteria <span class="hint">US-1.1</span></summary>
+              <div class="body">
+                <ul class="ac">
+                  <li>İlk açılışta dil seçilince seçim profile kaydedilir.</li>
+                  <li>Ana ekrana geçince tüm statik metinler seçilen dilde görünür.</li>
+                  <li>Dil değişimi Ayarlar’dan yapılır ve anında uygulanır.</li>
+                  <li>Offline durumda seçim cihazda saklanır; bağlantı gelince profile senkronlanır.</li>
+                  <li>Uygulama yeniden açıldığında seçilen dil otomatik uygulanır.</li>
+                </ul>
+              </div>
+            </details>
           </div>
+
           <div class="device">
             <div class="bezel">
               <div class="status"><span>09:41</span><span class="right"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span></div>
@@ -592,10 +815,23 @@
                 <div class="content">
                   <div class="topbar">
                     <div class="back">‹</div>
-                    <div class="ghost">Ayarlar’dan değiştir</div>
+                    <div class="ghost">Sonradan değiştir</div>
                   </div>
+
                   <div class="hero">
-                    <div class="h1" style="margin-top: 0">Dilinizi seçin</div>
+                    <div class="brandRow">
+                      <div class="logoWrap">
+                        <img
+                          class="logoImg"
+                          src="assets/pst-coaching-logo.png"
+                          alt="PST Coaching"
+                          onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+                        />
+                        <div class="logoFallback" aria-hidden="true"></div>
+                      </div>
+                      <span class="tag brand">TR</span>
+                    </div>
+                    <div class="h1">Dilinizi seçin</div>
                     <p class="p">İçerikleri tercih ettiğiniz dilde göstereceğiz. Seçiminiz hesabınıza kaydedilir.</p>
                   </div>
 
@@ -604,15 +840,11 @@
                       <div class="input"><span>Türkçe</span><span class="tag brand">Seçili</span></div>
                       <div class="help">Önerilen • Cihaz diliyle uyumlu</div>
                     </div>
-                    <div class="field">
-                      <div class="input"><span>English</span><span class="hint">Tap to select</span></div>
-                    </div>
-                    <div class="field">
-                      <div class="input"><span>Español</span><span class="hint">Toca para elegir</span></div>
-                    </div>
+                    <div class="field"><div class="input"><span>English</span><span class="hint">Select</span></div></div>
+                    <div class="field"><div class="input"><span>Español</span><span class="hint">Elegir</span></div></div>
                   </div>
 
-                  <div class="toast">Çevrimdışı seçebilirsiniz. Bağlantı gelince otomatik senkronlanır.</div>
+                  <div class="toast">Çevrimdışı da seçebilirsiniz. Bağlantı gelince otomatik senkronlanır.</div>
 
                   <div class="btnRow">
                     <div class="btn primary">Devam</div>
@@ -629,14 +861,24 @@
           <div class="card">
             <h2>03 — Karşılama (Giriş / Kayıt)</h2>
             <div class="meta">
-              <span class="tag">US-1.2 / US-1.3</span>
-              <span class="tag warn">Net yönlendirme</span>
+              <span class="tag brand">US-1.2</span>
+              <span class="tag brand">US-1.3</span>
             </div>
             <ul>
-              <li>Giriş ve kayıt CTA’ları eşit ağırlıkta; kullanıcı kararsız kalmaz.</li>
-              <li>Alt metin: güvenlik ve gizlilik beklentisini ayarlar.</li>
+              <li>Giriş ve kayıt CTA’ları net ve simetrik.</li>
+              <li>Güvenlik ve gizlilik beklentisi en başta belirtilir.</li>
             </ul>
+            <details>
+              <summary>Acceptance Criteria <span class="hint">US-1.2 + US-1.3</span></summary>
+              <div class="body">
+                <ul class="ac">
+                  <li>Kayıt: geçerli e‑posta/telefon formatında devam aktif olur; geçersizde hata ve pasif.</li>
+                  <li>Giriş: doğru bilgilerle ana sayfaya yönlendirilir; hatalı bilgilerde genel hata gösterilir.</li>
+                </ul>
+              </div>
+            </details>
           </div>
+
           <div class="device">
             <div class="bezel">
               <div class="status"><span>09:41</span><span class="right"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span></div>
@@ -644,18 +886,26 @@
               <div class="screen">
                 <div class="content">
                   <div class="hero">
-                    <div class="brand">
-                      <div class="logo"></div>
+                    <div class="brandRow">
+                      <div class="logoWrap">
+                        <img
+                          class="logoImg"
+                          src="assets/pst-coaching-logo.png"
+                          alt="PST Coaching"
+                          onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+                        />
+                        <div class="logoFallback" aria-hidden="true"></div>
+                      </div>
                       <span class="tag">TR</span>
                     </div>
                     <div class="h1">Hoş geldiniz</div>
-                    <p class="p">Güvenli oturum açın; plan ve rol bilgileriniz otomatik senkronlanır.</p>
+                    <p class="p">Güvenli oturum açın. Plan ve rol bilgileriniz giriş sonrası otomatik senkronlanır.</p>
                   </div>
 
                   <div class="stack">
                     <div class="btn primary">Giriş Yap</div>
-                    <div class="btn">Kayıt Ol</div>
-                    <div class="btn ghost">Gizlilik &amp; Kullanım</div>
+                    <div class="btn secondary">Kayıt Ol</div>
+                    <div class="btn ghostBtn">Gizlilik &amp; Kullanım</div>
                   </div>
 
                   <div class="btnRow">
@@ -680,7 +930,18 @@
               <li>Geçerli formatta “Devam” aktif; geçersizde alan altı hata.</li>
               <li>Mevcut hesap yakalanınca “Bu hesap zaten var → Giriş yap”.</li>
             </ul>
+            <details>
+              <summary>Acceptance Criteria <span class="hint">US-1.2</span></summary>
+              <div class="body">
+                <ul class="ac">
+                  <li>Geçerli format: “Devam” aktif olur.</li>
+                  <li>Geçersiz format: anlaşılır hata + “Devam” pasif kalır.</li>
+                  <li>Daha önce kayıtlı: “Bu hesap zaten var” + “Giriş yap” yönlendirmesi.</li>
+                </ul>
+              </div>
+            </details>
           </div>
+
           <div class="device">
             <div class="bezel">
               <div class="status"><span>09:41</span><span class="right"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span></div>
@@ -691,9 +952,10 @@
                     <div class="back">‹</div>
                     <div class="ghost">Yardım</div>
                   </div>
+
                   <div class="hero">
                     <div class="h1" style="margin-top: 0">Hesap oluştur</div>
-                    <p class="p">E‑posta veya telefon numaranızla başlayın. Sonraki adımda doğrulama kodu isteyeceğiz.</p>
+                    <p class="p">E‑posta veya telefon ile başlayın. Doğrulama kodu isteyeceğiz.</p>
                   </div>
 
                   <div class="seg">
@@ -707,11 +969,11 @@
                     <div class="help err">Geçersiz format. Lütfen telefon numaranızı kontrol edin.</div>
                   </div>
 
-                  <div class="toast err">Bu hesap zaten var. <strong>Giriş yap</strong> ile devam edin.</div>
+                  <div class="toast err"><strong>Bu hesap zaten var.</strong> <span class="link">Giriş yap</span> ile devam edin.</div>
 
                   <div class="btnRow">
                     <div class="btn primary disabled">Devam</div>
-                    <div class="sub">Zaten hesabınız var mı? <strong>Giriş Yap</strong></div>
+                    <div class="sub">Zaten hesabınız var mı? <span class="link">Giriş Yap</span></div>
                   </div>
                 </div>
               </div>
@@ -722,7 +984,7 @@
         <!-- 05 -->
         <section id="otp" class="section">
           <div class="card">
-            <h2>05 — OTP doğrulama (hata/expiry/cooldown)</h2>
+            <h2>05 — OTP doğrulama</h2>
             <div class="meta">
               <span class="tag brand">US-1.2</span>
               <span class="tag warn">Kalan deneme</span>
@@ -730,10 +992,22 @@
             </div>
             <ul>
               <li>Yanlış kod: “Kod hatalı” + kalan deneme sayısı.</li>
-              <li>Expired: “Kodun süresi doldu” + yeniden gönder.</li>
-              <li>Rate limit: cooldown sayacı; süre dolana kadar engel.</li>
+              <li>Süresi doldu: “Kodun süresi doldu” + yeniden gönder.</li>
+              <li>Rate-limit: resend butonu süre dolana kadar kilitli.</li>
             </ul>
+            <details open>
+              <summary>Acceptance Criteria <span class="hint">US-1.2</span></summary>
+              <div class="body">
+                <ul class="ac">
+                  <li>Doğru kod: hesap oluşturulur ve uygulamaya giriş yapılır.</li>
+                  <li>Yanlış kod: “Kod hatalı” + kalan deneme sayısı gösterilir.</li>
+                  <li>Süre doldu: mesaj + “Kodu yeniden gönder”.</li>
+                  <li>Çok sık istek: cooldown gösterilir ve süre dolana kadar yeniden gönder engellenir.</li>
+                </ul>
+              </div>
+            </details>
           </div>
+
           <div class="device">
             <div class="bezel">
               <div class="status"><span>09:41</span><span class="right"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span></div>
@@ -744,6 +1018,7 @@
                     <div class="back">‹</div>
                     <div class="ghost">Numarayı değiştir</div>
                   </div>
+
                   <div class="hero">
                     <div class="h1" style="margin-top: 0">Doğrulama kodu</div>
                     <p class="p">+90 5•• ••• •• 12 numarasına gönderildi</p>
@@ -758,17 +1033,13 @@
                     <div class="box">•</div>
                   </div>
 
-                  <div class="toast err">Kod hatalı. <strong>2 deneme</strong> kaldı.</div>
-                  <div class="toast warn">Kodun süresi doldu. Yeni bir kod isteyin.</div>
+                  <div class="toast err"><strong>Kod hatalı.</strong> 2 deneme kaldı.</div>
+                  <div class="toast warn"><strong>Kodun süresi doldu.</strong> Yeni bir kod isteyin.</div>
 
                   <div class="stack">
                     <div class="btn primary">Kodu Doğrula</div>
-                    <div class="btn disabled">Kodu yeniden gönder <span style="opacity:0.8">(00:42)</span></div>
-                    <div class="btn ghost">Destek</div>
-                  </div>
-
-                  <div class="btnRow">
-                    <div class="sub">Çok sık istek gönderdiyseniz kısa süre beklemeniz istenebilir.</div>
+                    <div class="btn disabled">Kodu yeniden gönder <span style="opacity: 0.7">(00:42)</span></div>
+                    <div class="btn ghostBtn">Destek</div>
                   </div>
                 </div>
               </div>
@@ -779,18 +1050,32 @@
         <!-- 06 -->
         <section id="login" class="section">
           <div class="card">
-            <h2>06 — Giriş (offline + kilit)</h2>
+            <h2>06 — Giriş Yap</h2>
             <div class="meta">
               <span class="tag brand">US-1.3</span>
+              <span class="tag brand">US-1.7</span>
               <span class="tag warn">Offline</span>
               <span class="tag danger">Geçici kilit</span>
             </div>
             <ul>
-              <li>Hatalı bilgilerde güvenli genel hata mesajı (detay sızdırmaz).</li>
-              <li>Üst üste denemede geçici kilit + “şifre sıfırla” önerisi.</li>
-              <li>Offline durumda net mesaj + tekrar dene.</li>
+              <li>Hatalı girişte genel hata (hesap var/yok sızdırmaz).</li>
+              <li>Offline: net mesaj + tekrar dene.</li>
+              <li>Giriş sonrası: profil/abonelik/seat/rol senkronu.</li>
             </ul>
+            <details>
+              <summary>Acceptance Criteria <span class="hint">US-1.3 + US-1.7</span></summary>
+              <div class="body">
+                <ul class="ac">
+                  <li>Doğru bilgiler: Ana Sayfa.</li>
+                  <li>Hatalı bilgiler: güvenli genel hata mesajı.</li>
+                  <li>Başarısız deneme limiti aşılırsa geçici kilit + yönlendirme.</li>
+                  <li>Offline: “Bağlantı yok” + tekrar dene.</li>
+                  <li>Giriş sonrası: profil + abonelik + seat/rol senkronu.</li>
+                </ul>
+              </div>
+            </details>
           </div>
+
           <div class="device">
             <div class="bezel">
               <div class="status"><span>09:41</span><span class="right"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span></div>
@@ -801,9 +1086,10 @@
                     <div class="back">‹</div>
                     <div class="ghost">TR</div>
                   </div>
+
                   <div class="hero">
                     <div class="h1" style="margin-top: 0">Giriş yap</div>
-                    <p class="p">Hesabınıza erişin. Plan ve rol bilgileriniz giriş sonrası senkronlanır.</p>
+                    <p class="p">Hesabınıza erişin. Giriş sonrası plan/rol bilgileriniz güncellenir.</p>
                   </div>
 
                   <div class="field">
@@ -816,16 +1102,14 @@
                     <div class="help err">Giriş bilgileri doğrulanamadı. Lütfen tekrar deneyin.</div>
                   </div>
 
-                  <div class="toast warn">Bağlantı yok. İnternet olmadan giriş yapılamaz.</div>
-                  <div class="toast err">Güvenlik: 5 hatalı deneme. <strong>03:00</strong> sonra tekrar deneyin veya şifre sıfırlayın.</div>
-
-                  <div class="stack">
-                    <div class="btn primary">Giriş Yap</div>
-                    <div class="btn ghost">Şifremi Unuttum</div>
+                  <div class="toast warn"><strong>Bağlantı yok.</strong> İnternet olmadan giriş yapılamaz.</div>
+                  <div class="toast err">
+                    <strong>Güvenlik kilidi.</strong> 5 hatalı deneme. 03:00 sonra tekrar deneyin veya <span class="link">şifre sıfırlayın</span>.
                   </div>
 
                   <div class="btnRow">
-                    <div class="sub">Devam etmeden önce hesabınızı doğruluyoruz.</div>
+                    <div class="btn primary">Giriş Yap</div>
+                    <div class="btn ghostBtn">Şifremi Unuttum</div>
                   </div>
                 </div>
               </div>
@@ -845,7 +1129,17 @@
               <li>Giriş ekranından ulaşılır; e‑posta/telefon doğrulama akışını başlatır.</li>
               <li>Rate-limit olduğunda bekleme süresi net gösterilir.</li>
             </ul>
+            <details>
+              <summary>Acceptance Criteria <span class="hint">US-1.4</span></summary>
+              <div class="body">
+                <ul class="ac">
+                  <li>“Şifremi Unuttum” seçilince doğrulama akışı başlar.</li>
+                  <li>Rate-limit olursa bekleme süresi mesajı gösterilir.</li>
+                </ul>
+              </div>
+            </details>
           </div>
+
           <div class="device">
             <div class="bezel">
               <div class="status"><span>09:41</span><span class="right"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span></div>
@@ -856,6 +1150,7 @@
                     <div class="back">‹</div>
                     <div class="ghost">Güvenlik</div>
                   </div>
+
                   <div class="hero">
                     <div class="h1" style="margin-top: 0">Şifremi unuttum</div>
                     <p class="p">E‑posta veya telefonunuzu girin. Doğrulama kodu göndereceğiz.</p>
@@ -867,7 +1162,7 @@
                     <div class="help">Kod SMS/e‑posta ile gelir. Gereksiz denemeler engellenebilir.</div>
                   </div>
 
-                  <div class="toast warn">Çok sık istek: 01:20 sonra tekrar deneyin.</div>
+                  <div class="toast warn"><strong>Çok sık istek.</strong> 01:20 sonra tekrar deneyin.</div>
 
                   <div class="btnRow">
                     <div class="btn primary">Kodu Gönder</div>
@@ -886,13 +1181,23 @@
             <div class="meta">
               <span class="tag brand">US-1.4</span>
               <span class="tag warn">Şifre politikası</span>
-              <span class="tag brand">Başarı mesajı</span>
             </div>
             <ul>
               <li>Politikaya uygun şifre girilince “Kaydet” aktif olur.</li>
               <li>Başarı mesajı sonrası giriş ekranına dönüş.</li>
             </ul>
+            <details>
+              <summary>Acceptance Criteria <span class="hint">US-1.4</span></summary>
+              <div class="body">
+                <ul class="ac">
+                  <li>Doğru doğrulama kodu ile yeni şifre ekranına geçilir.</li>
+                  <li>Şifre politikası uygun olunca “Kaydet” aktif olur.</li>
+                  <li>İşlem tamamlanınca başarı mesajı ve giriş ekranına yönlendirme olur.</li>
+                </ul>
+              </div>
+            </details>
           </div>
+
           <div class="device">
             <div class="bezel">
               <div class="status"><span>09:41</span><span class="right"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span></div>
@@ -903,6 +1208,7 @@
                     <div class="back">‹</div>
                     <div class="ghost">Güvenli şifre</div>
                   </div>
+
                   <div class="hero">
                     <div class="h1" style="margin-top: 0">Yeni şifre oluştur</div>
                     <p class="p">En az 8 karakter, 1 büyük harf ve 1 sayı önerilir.</p>
@@ -918,7 +1224,7 @@
                     <div class="input"><span>••••••••</span><span class="hint">Göster</span></div>
                   </div>
 
-                  <div class="toast">Şifre güncellendi. Giriş ekranına yönlendiriliyorsunuz.</div>
+                  <div class="toast"><strong>Şifre güncellendi.</strong> Giriş ekranına yönlendiriliyorsunuz.</div>
 
                   <div class="btnRow">
                     <div class="btn primary">Kaydet</div>
@@ -939,10 +1245,21 @@
               <span class="tag warn">Korumalı ekran geçidi</span>
             </div>
             <ul>
-              <li>Sunucu oturumu geçersiz kıldıysa net mesaj + tek CTA.</li>
-              <li>Korumalı alana gitmek istenirse otomatik girişe redirect.</li>
+              <li>Net mesaj + tek güçlü CTA.</li>
+              <li>Güvenlik dili suçlayıcı değil; açıklayıcı.</li>
             </ul>
+            <details>
+              <summary>Acceptance Criteria <span class="hint">US-1.6</span></summary>
+              <div class="body">
+                <ul class="ac">
+                  <li>Oturum geçersiz kılınırsa “Oturum süreniz doldu” gösterilir ve tekrar giriş istenir.</li>
+                  <li>Korumalı ekrana gitmek istenirse otomatik giriş ekranına yönlendirilir.</li>
+                  <li>Uygulama uzun süre arka planda kaldıysa gerekirse hızlı yeniden doğrulama istenir.</li>
+                </ul>
+              </div>
+            </details>
           </div>
+
           <div class="device">
             <div class="bezel">
               <div class="status"><span>09:41</span><span class="right"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span></div>
@@ -950,8 +1267,16 @@
               <div class="screen">
                 <div class="content">
                   <div class="hero">
-                    <div class="brand">
-                      <div class="logo"></div>
+                    <div class="brandRow">
+                      <div class="logoWrap">
+                        <img
+                          class="logoImg"
+                          src="assets/pst-coaching-logo.png"
+                          alt="PST Coaching"
+                          onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+                        />
+                        <div class="logoFallback" aria-hidden="true"></div>
+                      </div>
                       <span class="tag danger">Güvenlik</span>
                     </div>
                     <div class="h1">Oturum süreniz doldu</div>
@@ -960,11 +1285,11 @@
 
                   <div class="stack">
                     <div class="btn primary">Tekrar Giriş Yap</div>
-                    <div class="btn ghost">Daha Sonra</div>
+                    <div class="btn ghostBtn">Daha Sonra</div>
                   </div>
 
                   <div class="btnRow">
-                    <div class="sub">Devam etmek istediğinizde otomatik olarak giriş ekranına yönlendirilirsiniz.</div>
+                    <div class="sub">Devam etmek istediğinizde giriş ekranına yönlendirilirsiniz.</div>
                   </div>
                 </div>
               </div>
@@ -978,13 +1303,24 @@
             <h2>10 — Çıkış onayı (bottom sheet)</h2>
             <div class="meta">
               <span class="tag brand">US-1.5</span>
-              <span class="tag warn">Hassas veri temizliği</span>
+              <span class="tag warn">Token temizliği</span>
             </div>
             <ul>
-              <li>Çıkış, “geri alınamaz” vurgusu ve cihaz güvenliği mesajı içerir.</li>
-              <li>Onay sonrası token temizliği + giriş ekranına yönlendirme.</li>
+              <li>Çıkış eylemi bilinçli onay ister; hassas veri temizliği açıkça yazılır.</li>
+              <li>Onay sonrası giriş ekranına dönüş (korumalı alanlara erişim yok).</li>
             </ul>
+            <details>
+              <summary>Acceptance Criteria <span class="hint">US-1.5</span></summary>
+              <div class="body">
+                <ul class="ac">
+                  <li>Ayarlar → “Çıkış Yap” ile oturum sonlandırılır ve giriş ekranına yönlendirilir.</li>
+                  <li>Uygulama tekrar açıldığında korumalı alanlar için tekrar giriş istenir.</li>
+                  <li>Hassas veriler (oturum token’ları) cihazdan temizlenir.</li>
+                </ul>
+              </div>
+            </details>
           </div>
+
           <div class="device">
             <div class="bezel">
               <div class="status"><span>09:41</span><span class="right"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span></div>
@@ -992,17 +1328,29 @@
               <div class="screen">
                 <div class="content">
                   <div class="hero">
-                    <div class="h1" style="margin-top: 0">Hesap</div>
-                    <p class="p">Oturum ve güvenlik ayarları</p>
+                    <div class="brandRow">
+                      <div class="logoWrap">
+                        <img
+                          class="logoImg"
+                          src="assets/pst-coaching-logo.png"
+                          alt="PST Coaching"
+                          onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+                        />
+                        <div class="logoFallback" aria-hidden="true"></div>
+                      </div>
+                      <span class="tag">Hesap</span>
+                    </div>
+                    <div class="h1">Oturum & güvenlik</div>
+                    <p class="p">Bu cihazdaki oturumu yönet.</p>
                   </div>
 
                   <div class="field">
-                    <div class="input"><span>Oturumlar</span><span class="tag">Aktif</span></div>
-                    <div class="help">Bu cihaz: iPhone 17 Pro</div>
+                    <div class="input"><span>Bu cihaz</span><span class="tag brand">iPhone 17 Pro</span></div>
+                    <div class="help">Korumalı alanlar için tekrar giriş gerekir.</div>
                   </div>
                   <div class="field">
                     <div class="input"><span>Çıkış Yap</span><span class="hint">›</span></div>
-                    <div class="help">Korumalı alanlar için tekrar giriş gerekir.</div>
+                    <div class="help">Oturum sonlandırılır ve token’lar temizlenir.</div>
                   </div>
 
                   <div class="sheet">
@@ -1010,7 +1358,7 @@
                     <p>Bu cihazda oturum sonlandırılır ve oturum token’ları temizlenir.</p>
                     <div class="row">
                       <div class="btn primary">Çıkış Yap</div>
-                      <div class="btn ghost">Vazgeç</div>
+                      <div class="btn ghostBtn">Vazgeç</div>
                     </div>
                   </div>
                 </div>
