@@ -341,6 +341,9 @@ def render_app_ui_from_stories(
         icons: dict[str, str] = {
             "chevron": '<path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>',
             "search": '<circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2" fill="none"/><path d="M20 20l-3.2-3.2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>',
+            "home": '<path d="M3 11.5L12 4l9 7.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M6.5 10.8V20a2 2 0 002 2h7a2 2 0 002-2v-9.2" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>',
+            "grid": '<path d="M4 4h7v7H4V4zM13 4h7v7h-7V4zM4 13h7v7H4v-7zM13 13h7v7h-7v-7z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>',
+            "list": '<path d="M8 6h13M8 12h13M8 18h13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M4 6h.01M4 12h.01M4 18h.01" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>',
             "shield": '<path d="M12 2l8 4v6c0 5-3.4 9.2-8 10-4.6-.8-8-5-8-10V6l8-4z" fill="none" stroke="currentColor" stroke-width="2"/>',
             "bell": '<path d="M18 8a6 6 0 10-12 0c0 7-3 7-3 7h18s-3 0-3-7z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M13.7 21a2 2 0 01-3.4 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>',
             "lock": '<path d="M7 11V8a5 5 0 0110 0v3" fill="none" stroke="currentColor" stroke-width="2"/><rect x="5" y="11" width="14" height="11" rx="2.4" fill="none" stroke="currentColor" stroke-width="2"/>',
@@ -908,26 +911,37 @@ def render_category_html(category: str, flows: list[Flow], story_by_code: dict[s
             <div class="deviceWrap">
               <div class="device">
                 <div class="deviceBezel">
-                  <div class="deviceTop">
-                    <div class="left">
-                      <img class="logo" src="{LOGO_SRC}" alt="PST Coaching" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
-                      <div class="logoFallback" aria-hidden="true"></div>
-                      <div class="topText">
-                        <div class="screenTitle">{html_escape(s.title)}</div>
-                        <div class="crumb">{html_escape(s.breadcrumb or s.flow_title)}</div>
+                  <div class="deviceScreen">
+                    <div class="deviceTop">
+                      <div class="left">
+                        <img class="logo" src="{LOGO_SRC}" alt="PST Coaching" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                        <div class="logoFallback" aria-hidden="true"></div>
+                        <div class="topText">
+                          <div class="screenTitle">{html_escape(s.title)}</div>
+                          <div class="crumb">{html_escape(s.breadcrumb or s.flow_title)}</div>
+                        </div>
                       </div>
+                      <div class="right"><div class="badge">Flow {html_escape(s.flow_number)}</div></div>
                     </div>
-                    <div class="right"><div class="badge">Flow {html_escape(s.flow_number)}</div></div>
-                  </div>
 
-                  <div class="deviceBody">
-                    {in_device_ui}
-                  </div>
+                    <div class="deviceBody">
+                      {in_device_ui}
+                    </div>
 
-                  <div class="deviceBottom">
-                    <a class="tab" href="index.html">Home</a>
-                    <a class="tab" href="../DesignsByInventory/index.html">Inventory</a>
-                    <a class="tab" href="#" data-go="{all_screens[0].screen_id}">Kategori Başı</a>
+                    <nav class="tabbar" aria-label="Tab Bar">
+                      <a class="tabItem" href="index.html">
+                        <span class="tabIcon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11.5L12 4l9 7.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M6.5 10.8V20a2 2 0 002 2h7a2 2 0 002-2v-9.2" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></span>
+                        <span class="tabLabel">Home</span>
+                      </a>
+                      <a class="tabItem active" href="#" data-go="{all_screens[0].screen_id}">
+                        <span class="tabIcon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M4 6h.01M4 12h.01M4 18h.01" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg></span>
+                        <span class="tabLabel">Akış</span>
+                      </a>
+                      <a class="tabItem" href="../DesignsByInventory/index.html">
+                        <span class="tabIcon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h7v7H4V4zM13 4h7v7h-7V4zM4 13h7v7H4v-7zM13 13h7v7h-7v-7z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></span>
+                        <span class="tabLabel">Ekranlar</span>
+                      </a>
+                    </nav>
                   </div>
                 </div>
               </div>
@@ -1156,6 +1170,11 @@ def render_category_html(category: str, flows: list[Flow], story_by_code: dict[s
         padding: 12px;
         box-shadow: var(--shadow-lg);
       }}
+      .deviceScreen {{
+        border-radius: 40px;
+        overflow: hidden;
+        background: rgba(255, 255, 255, 0.08);
+      }}
       .deviceTop {{
         height: var(--safeTop);
         border-radius: 38px 38px 18px 18px;
@@ -1220,7 +1239,7 @@ def render_category_html(category: str, flows: list[Flow], story_by_code: dict[s
           linear-gradient(180deg, #ffffff, var(--bg));
         border: 1px solid rgba(255, 255, 255, 0.14);
         overflow: auto;
-        padding: 16px 14px;
+        padding: 16px 14px 96px;
         display: flex;
         flex-direction: column;
         gap: 12px;
@@ -1228,29 +1247,46 @@ def render_category_html(category: str, flows: list[Flow], story_by_code: dict[s
       }}
       .deviceBody::-webkit-scrollbar {{ width: 0; height: 0; }}
 
-      .deviceBottom {{
-        height: var(--safeBot);
-        margin-top: 10px;
-        border-radius: 18px 18px 38px 38px;
-        background: rgba(255, 255, 255, 0.94);
-        border: 1px solid rgba(230, 232, 240, 0.95);
+      .tabbar {{
+        position: sticky;
+        bottom: 0;
+        height: 84px;
+        padding: 10px 12px calc(10px + var(--safeBot));
+        background: rgba(255, 255, 255, 0.72);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+        border-top: 1px solid rgba(230, 232, 240, 0.85);
         display: grid;
         grid-template-columns: 1fr 1fr 1fr;
-        gap: 8px;
-        align-items: center;
-        justify-items: center;
-        padding: 6px 10px;
-        box-shadow: var(--shadow-sm);
+        gap: 10px;
+        align-items: end;
       }}
-      .tab {{
-        font-weight: 950;
-        font-size: 11px;
-        color: rgba(13, 18, 38, 0.86);
-        padding: 6px 10px;
-        border-radius: 12px;
-        border: 1px solid rgba(230, 232, 240, 0.95);
-        background: rgba(255, 255, 255, 0.92);
+      .tabItem {{
+        height: 52px;
+        border-radius: 16px;
+        display: grid;
+        place-items: center;
+        gap: 2px;
         text-decoration: none;
+        color: rgba(13, 18, 38, 0.62);
+        border: 1px solid transparent;
+      }}
+      .tabItem:active {{ transform: translateY(1px); }}
+      .tabItem .tabIcon {{
+        width: 22px;
+        height: 22px;
+        display: grid;
+        place-items: center;
+      }}
+      .tabItem .tabLabel {{
+        font-size: 10px;
+        font-weight: 900;
+        letter-spacing: 0.06em;
+      }}
+      .tabItem.active {{
+        color: rgba(30, 42, 120, 0.98);
+        background: linear-gradient(180deg, rgba(30, 42, 120, 0.08), rgba(15, 163, 177, 0.06));
+        border-color: rgba(30, 42, 120, 0.16);
       }}
 
       /* In-device UI */

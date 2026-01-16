@@ -192,6 +192,11 @@
         padding: 12px;
         box-shadow: var(--shadow-lg);
       }
+      .deviceScreen {
+        border-radius: 40px;
+        overflow: hidden;
+        background: rgba(255, 255, 255, 0.08);
+      }
       .deviceTop {
         height: var(--safeTop);
         border-radius: 38px 38px 18px 18px;
@@ -256,7 +261,7 @@
           linear-gradient(180deg, #ffffff, var(--bg));
         border: 1px solid rgba(255, 255, 255, 0.14);
         overflow: auto;
-        padding: 16px 14px;
+        padding: 16px 14px 96px;
         display: flex;
         flex-direction: column;
         gap: 12px;
@@ -264,29 +269,46 @@
       }
       .deviceBody::-webkit-scrollbar { width: 0; height: 0; }
 
-      .deviceBottom {
-        height: var(--safeBot);
-        margin-top: 10px;
-        border-radius: 18px 18px 38px 38px;
-        background: rgba(255, 255, 255, 0.94);
-        border: 1px solid rgba(230, 232, 240, 0.95);
+      .tabbar {
+        position: sticky;
+        bottom: 0;
+        height: 84px;
+        padding: 10px 12px calc(10px + var(--safeBot));
+        background: rgba(255, 255, 255, 0.72);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+        border-top: 1px solid rgba(230, 232, 240, 0.85);
         display: grid;
         grid-template-columns: 1fr 1fr 1fr;
-        gap: 8px;
-        align-items: center;
-        justify-items: center;
-        padding: 6px 10px;
-        box-shadow: var(--shadow-sm);
+        gap: 10px;
+        align-items: end;
       }
-      .tab {
-        font-weight: 950;
-        font-size: 11px;
-        color: rgba(13, 18, 38, 0.86);
-        padding: 6px 10px;
-        border-radius: 12px;
-        border: 1px solid rgba(230, 232, 240, 0.95);
-        background: rgba(255, 255, 255, 0.92);
+      .tabItem {
+        height: 52px;
+        border-radius: 16px;
+        display: grid;
+        place-items: center;
+        gap: 2px;
         text-decoration: none;
+        color: rgba(13, 18, 38, 0.62);
+        border: 1px solid transparent;
+      }
+      .tabItem:active { transform: translateY(1px); }
+      .tabItem .tabIcon {
+        width: 22px;
+        height: 22px;
+        display: grid;
+        place-items: center;
+      }
+      .tabItem .tabLabel {
+        font-size: 10px;
+        font-weight: 900;
+        letter-spacing: 0.06em;
+      }
+      .tabItem.active {
+        color: rgba(30, 42, 120, 0.98);
+        background: linear-gradient(180deg, rgba(30, 42, 120, 0.08), rgba(15, 163, 177, 0.06));
+        border-color: rgba(30, 42, 120, 0.16);
       }
 
       /* In-device UI */
@@ -587,20 +609,21 @@
             <div class="deviceWrap">
               <div class="device">
                 <div class="deviceBezel">
-                  <div class="deviceTop">
-                    <div class="left">
-                      <img class="logo" src="../Designs/assets/pst-coaching-logo.png" alt="PST Coaching" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
-                      <div class="logoFallback" aria-hidden="true"></div>
-                      <div class="topText">
-                        <div class="screenTitle">Yolculuklar</div>
-                        <div class="crumb">Keşfet</div>
+                  <div class="deviceScreen">
+                    <div class="deviceTop">
+                      <div class="left">
+                        <img class="logo" src="../Designs/assets/pst-coaching-logo.png" alt="PST Coaching" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                        <div class="logoFallback" aria-hidden="true"></div>
+                        <div class="topText">
+                          <div class="screenTitle">Yolculuklar</div>
+                          <div class="crumb">Keşfet</div>
+                        </div>
                       </div>
+                      <div class="right"><div class="badge">Flow 15</div></div>
                     </div>
-                    <div class="right"><div class="badge">Flow 15</div></div>
-                  </div>
 
-                  <div class="deviceBody">
-                    
+                    <div class="deviceBody">
+                      
         <div class="card">
           <div class="h2">Yolculuklar</div>
           <div class="muted">Keşfet</div>
@@ -639,12 +662,22 @@
 <div class='card'><div class='field'><label>Yanıt</label><div class='input' style='height:90px; align-items:flex-start; padding-top:10px;'>Metin taslağı…</div></div></div>
 <div class='card'><div class='h2' style='font-size:12px;'>Önkoşullar</div><div class="checklist"><div class="check"><div class="checkL"><span class="b ok">✓</span></div><div class="checkT">Önceki görev tamamlandı</div></div><div class="check"><div class="checkL"><span class="b">•</span></div><div class="checkT">Yorum teslim edildi</div></div><div class="check"><div class="checkL"><span class="b ok">✓</span></div><div class="checkT">08:00 kapısı bekleniyor</div></div></div></div>
 <div class='row'><button class="btn primary" data-go="UF15-S2-katalog">Devam</button></div>
-                  </div>
+                    </div>
 
-                  <div class="deviceBottom">
-                    <a class="tab" href="index.html">Home</a>
-                    <a class="tab" href="../DesignsByInventory/index.html">Inventory</a>
-                    <a class="tab" href="#" data-go="UF15-S1-yolculuklar">Kategori Başı</a>
+                    <nav class="tabbar" aria-label="Tab Bar">
+                      <a class="tabItem" href="index.html">
+                        <span class="tabIcon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11.5L12 4l9 7.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M6.5 10.8V20a2 2 0 002 2h7a2 2 0 002-2v-9.2" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></span>
+                        <span class="tabLabel">Home</span>
+                      </a>
+                      <a class="tabItem active" href="#" data-go="UF15-S1-yolculuklar">
+                        <span class="tabIcon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M4 6h.01M4 12h.01M4 18h.01" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg></span>
+                        <span class="tabLabel">Akış</span>
+                      </a>
+                      <a class="tabItem" href="../DesignsByInventory/index.html">
+                        <span class="tabIcon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h7v7H4V4zM13 4h7v7h-7V4zM4 13h7v7H4v-7zM13 13h7v7h-7v-7z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></span>
+                        <span class="tabLabel">Ekranlar</span>
+                      </a>
+                    </nav>
                   </div>
                 </div>
               </div>
@@ -779,20 +812,21 @@
             <div class="deviceWrap">
               <div class="device">
                 <div class="deviceBezel">
-                  <div class="deviceTop">
-                    <div class="left">
-                      <img class="logo" src="../Designs/assets/pst-coaching-logo.png" alt="PST Coaching" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
-                      <div class="logoFallback" aria-hidden="true"></div>
-                      <div class="topText">
-                        <div class="screenTitle">Katalog</div>
-                        <div class="crumb">Yolculuk keşfi → detay → başlat (hedef + zaman kuralları)</div>
+                  <div class="deviceScreen">
+                    <div class="deviceTop">
+                      <div class="left">
+                        <img class="logo" src="../Designs/assets/pst-coaching-logo.png" alt="PST Coaching" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                        <div class="logoFallback" aria-hidden="true"></div>
+                        <div class="topText">
+                          <div class="screenTitle">Katalog</div>
+                          <div class="crumb">Yolculuk keşfi → detay → başlat (hedef + zaman kuralları)</div>
+                        </div>
                       </div>
+                      <div class="right"><div class="badge">Flow 15</div></div>
                     </div>
-                    <div class="right"><div class="badge">Flow 15</div></div>
-                  </div>
 
-                  <div class="deviceBody">
-                    
+                    <div class="deviceBody">
+                      
         <div class="card">
           <div class="h2">Katalog</div>
           <div class="muted">Yolculuk keşfi → detay → başlat (hedef + zaman kuralları)</div>
@@ -831,12 +865,22 @@
 <div class='card'><div class='field'><label>Yanıt</label><div class='input' style='height:90px; align-items:flex-start; padding-top:10px;'>Metin taslağı…</div></div></div>
 <div class='card'><div class='h2' style='font-size:12px;'>Önkoşullar</div><div class="checklist"><div class="check"><div class="checkL"><span class="b ok">✓</span></div><div class="checkT">Önceki görev tamamlandı</div></div><div class="check"><div class="checkL"><span class="b">•</span></div><div class="checkT">Yorum teslim edildi</div></div><div class="check"><div class="checkL"><span class="b ok">✓</span></div><div class="checkT">08:00 kapısı bekleniyor</div></div></div></div>
 <div class='row'><button class="btn" data-go="UF15-S1-yolculuklar">Geri</button><button class="btn primary" data-go="UF15-S3-yolculuk-detayi">Devam</button></div>
-                  </div>
+                    </div>
 
-                  <div class="deviceBottom">
-                    <a class="tab" href="index.html">Home</a>
-                    <a class="tab" href="../DesignsByInventory/index.html">Inventory</a>
-                    <a class="tab" href="#" data-go="UF15-S1-yolculuklar">Kategori Başı</a>
+                    <nav class="tabbar" aria-label="Tab Bar">
+                      <a class="tabItem" href="index.html">
+                        <span class="tabIcon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11.5L12 4l9 7.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M6.5 10.8V20a2 2 0 002 2h7a2 2 0 002-2v-9.2" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></span>
+                        <span class="tabLabel">Home</span>
+                      </a>
+                      <a class="tabItem active" href="#" data-go="UF15-S1-yolculuklar">
+                        <span class="tabIcon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M4 6h.01M4 12h.01M4 18h.01" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg></span>
+                        <span class="tabLabel">Akış</span>
+                      </a>
+                      <a class="tabItem" href="../DesignsByInventory/index.html">
+                        <span class="tabIcon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h7v7H4V4zM13 4h7v7h-7V4zM4 13h7v7H4v-7zM13 13h7v7h-7v-7z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></span>
+                        <span class="tabLabel">Ekranlar</span>
+                      </a>
+                    </nav>
                   </div>
                 </div>
               </div>
@@ -987,20 +1031,21 @@
             <div class="deviceWrap">
               <div class="device">
                 <div class="deviceBezel">
-                  <div class="deviceTop">
-                    <div class="left">
-                      <img class="logo" src="../Designs/assets/pst-coaching-logo.png" alt="PST Coaching" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
-                      <div class="logoFallback" aria-hidden="true"></div>
-                      <div class="topText">
-                        <div class="screenTitle">Yolculuk Detayı</div>
-                        <div class="crumb">Yolculuk keşfi → detay → başlat (hedef + zaman kuralları)</div>
+                  <div class="deviceScreen">
+                    <div class="deviceTop">
+                      <div class="left">
+                        <img class="logo" src="../Designs/assets/pst-coaching-logo.png" alt="PST Coaching" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                        <div class="logoFallback" aria-hidden="true"></div>
+                        <div class="topText">
+                          <div class="screenTitle">Yolculuk Detayı</div>
+                          <div class="crumb">Yolculuk keşfi → detay → başlat (hedef + zaman kuralları)</div>
+                        </div>
                       </div>
+                      <div class="right"><div class="badge">Flow 15</div></div>
                     </div>
-                    <div class="right"><div class="badge">Flow 15</div></div>
-                  </div>
 
-                  <div class="deviceBody">
-                    
+                    <div class="deviceBody">
+                      
         <div class="card">
           <div class="h2">Yolculuk Detayı</div>
           <div class="muted">Yolculuk keşfi → detay → başlat (hedef + zaman kuralları)</div>
@@ -1039,12 +1084,22 @@
 <div class='card'><div class='field'><label>Yanıt</label><div class='input' style='height:90px; align-items:flex-start; padding-top:10px;'>Metin taslağı…</div></div></div>
 <div class='card'><div class='h2' style='font-size:12px;'>Önkoşullar</div><div class="checklist"><div class="check"><div class="checkL"><span class="b ok">✓</span></div><div class="checkT">Önceki görev tamamlandı</div></div><div class="check"><div class="checkL"><span class="b">•</span></div><div class="checkT">Yorum teslim edildi</div></div><div class="check"><div class="checkL"><span class="b ok">✓</span></div><div class="checkT">08:00 kapısı bekleniyor</div></div></div></div>
 <div class='row'><button class="btn" data-go="UF15-S2-katalog">Geri</button><button class="btn primary" data-go="UF15-S4-yolculugu-baslat">Devam</button></div>
-                  </div>
+                    </div>
 
-                  <div class="deviceBottom">
-                    <a class="tab" href="index.html">Home</a>
-                    <a class="tab" href="../DesignsByInventory/index.html">Inventory</a>
-                    <a class="tab" href="#" data-go="UF15-S1-yolculuklar">Kategori Başı</a>
+                    <nav class="tabbar" aria-label="Tab Bar">
+                      <a class="tabItem" href="index.html">
+                        <span class="tabIcon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11.5L12 4l9 7.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M6.5 10.8V20a2 2 0 002 2h7a2 2 0 002-2v-9.2" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></span>
+                        <span class="tabLabel">Home</span>
+                      </a>
+                      <a class="tabItem active" href="#" data-go="UF15-S1-yolculuklar">
+                        <span class="tabIcon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M4 6h.01M4 12h.01M4 18h.01" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg></span>
+                        <span class="tabLabel">Akış</span>
+                      </a>
+                      <a class="tabItem" href="../DesignsByInventory/index.html">
+                        <span class="tabIcon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h7v7H4V4zM13 4h7v7h-7V4zM4 13h7v7H4v-7zM13 13h7v7h-7v-7z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></span>
+                        <span class="tabLabel">Ekranlar</span>
+                      </a>
+                    </nav>
                   </div>
                 </div>
               </div>
@@ -1195,20 +1250,21 @@
             <div class="deviceWrap">
               <div class="device">
                 <div class="deviceBezel">
-                  <div class="deviceTop">
-                    <div class="left">
-                      <img class="logo" src="../Designs/assets/pst-coaching-logo.png" alt="PST Coaching" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
-                      <div class="logoFallback" aria-hidden="true"></div>
-                      <div class="topText">
-                        <div class="screenTitle">Yolculuğu Başlat</div>
-                        <div class="crumb">Yolculuk keşfi → detay → başlat (hedef + zaman kuralları)</div>
+                  <div class="deviceScreen">
+                    <div class="deviceTop">
+                      <div class="left">
+                        <img class="logo" src="../Designs/assets/pst-coaching-logo.png" alt="PST Coaching" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                        <div class="logoFallback" aria-hidden="true"></div>
+                        <div class="topText">
+                          <div class="screenTitle">Yolculuğu Başlat</div>
+                          <div class="crumb">Yolculuk keşfi → detay → başlat (hedef + zaman kuralları)</div>
+                        </div>
                       </div>
+                      <div class="right"><div class="badge">Flow 15</div></div>
                     </div>
-                    <div class="right"><div class="badge">Flow 15</div></div>
-                  </div>
 
-                  <div class="deviceBody">
-                    
+                    <div class="deviceBody">
+                      
         <div class="card">
           <div class="h2">Yolculuğu Başlat</div>
           <div class="muted">Yolculuk keşfi → detay → başlat (hedef + zaman kuralları)</div>
@@ -1247,12 +1303,22 @@
 <div class='card'><div class='field'><label>Yanıt</label><div class='input' style='height:90px; align-items:flex-start; padding-top:10px;'>Metin taslağı…</div></div></div>
 <div class='card'><div class='h2' style='font-size:12px;'>Önkoşullar</div><div class="checklist"><div class="check"><div class="checkL"><span class="b ok">✓</span></div><div class="checkT">Önceki görev tamamlandı</div></div><div class="check"><div class="checkL"><span class="b">•</span></div><div class="checkT">Yorum teslim edildi</div></div><div class="check"><div class="checkL"><span class="b ok">✓</span></div><div class="checkT">08:00 kapısı bekleniyor</div></div></div></div>
 <div class='row'><button class="btn" data-go="UF15-S3-yolculuk-detayi">Geri</button><button class="btn primary" data-go="UF15-S5-hedef-secimi">Devam</button></div>
-                  </div>
+                    </div>
 
-                  <div class="deviceBottom">
-                    <a class="tab" href="index.html">Home</a>
-                    <a class="tab" href="../DesignsByInventory/index.html">Inventory</a>
-                    <a class="tab" href="#" data-go="UF15-S1-yolculuklar">Kategori Başı</a>
+                    <nav class="tabbar" aria-label="Tab Bar">
+                      <a class="tabItem" href="index.html">
+                        <span class="tabIcon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11.5L12 4l9 7.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M6.5 10.8V20a2 2 0 002 2h7a2 2 0 002-2v-9.2" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></span>
+                        <span class="tabLabel">Home</span>
+                      </a>
+                      <a class="tabItem active" href="#" data-go="UF15-S1-yolculuklar">
+                        <span class="tabIcon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M4 6h.01M4 12h.01M4 18h.01" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg></span>
+                        <span class="tabLabel">Akış</span>
+                      </a>
+                      <a class="tabItem" href="../DesignsByInventory/index.html">
+                        <span class="tabIcon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h7v7H4V4zM13 4h7v7h-7V4zM4 13h7v7H4v-7zM13 13h7v7h-7v-7z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></span>
+                        <span class="tabLabel">Ekranlar</span>
+                      </a>
+                    </nav>
                   </div>
                 </div>
               </div>
@@ -1403,20 +1469,21 @@
             <div class="deviceWrap">
               <div class="device">
                 <div class="deviceBezel">
-                  <div class="deviceTop">
-                    <div class="left">
-                      <img class="logo" src="../Designs/assets/pst-coaching-logo.png" alt="PST Coaching" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
-                      <div class="logoFallback" aria-hidden="true"></div>
-                      <div class="topText">
-                        <div class="screenTitle">hedef seçimi</div>
-                        <div class="crumb">Yolculuk keşfi → detay → başlat (hedef + zaman kuralları)</div>
+                  <div class="deviceScreen">
+                    <div class="deviceTop">
+                      <div class="left">
+                        <img class="logo" src="../Designs/assets/pst-coaching-logo.png" alt="PST Coaching" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                        <div class="logoFallback" aria-hidden="true"></div>
+                        <div class="topText">
+                          <div class="screenTitle">hedef seçimi</div>
+                          <div class="crumb">Yolculuk keşfi → detay → başlat (hedef + zaman kuralları)</div>
+                        </div>
                       </div>
+                      <div class="right"><div class="badge">Flow 15</div></div>
                     </div>
-                    <div class="right"><div class="badge">Flow 15</div></div>
-                  </div>
 
-                  <div class="deviceBody">
-                    
+                    <div class="deviceBody">
+                      
         <div class="card">
           <div class="h2">hedef seçimi</div>
           <div class="muted">Yolculuk keşfi → detay → başlat (hedef + zaman kuralları)</div>
@@ -1455,12 +1522,22 @@
 <div class='card'><div class='field'><label>Yanıt</label><div class='input' style='height:90px; align-items:flex-start; padding-top:10px;'>Metin taslağı…</div></div></div>
 <div class='card'><div class='h2' style='font-size:12px;'>Önkoşullar</div><div class="checklist"><div class="check"><div class="checkL"><span class="b ok">✓</span></div><div class="checkT">Önceki görev tamamlandı</div></div><div class="check"><div class="checkL"><span class="b">•</span></div><div class="checkT">Yorum teslim edildi</div></div><div class="check"><div class="checkL"><span class="b ok">✓</span></div><div class="checkT">08:00 kapısı bekleniyor</div></div></div></div>
 <div class='row'><button class="btn" data-go="UF15-S4-yolculugu-baslat">Geri</button><button class="btn primary" data-go="UF15-S6-yolculuklarim">Devam</button></div>
-                  </div>
+                    </div>
 
-                  <div class="deviceBottom">
-                    <a class="tab" href="index.html">Home</a>
-                    <a class="tab" href="../DesignsByInventory/index.html">Inventory</a>
-                    <a class="tab" href="#" data-go="UF15-S1-yolculuklar">Kategori Başı</a>
+                    <nav class="tabbar" aria-label="Tab Bar">
+                      <a class="tabItem" href="index.html">
+                        <span class="tabIcon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11.5L12 4l9 7.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M6.5 10.8V20a2 2 0 002 2h7a2 2 0 002-2v-9.2" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></span>
+                        <span class="tabLabel">Home</span>
+                      </a>
+                      <a class="tabItem active" href="#" data-go="UF15-S1-yolculuklar">
+                        <span class="tabIcon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M4 6h.01M4 12h.01M4 18h.01" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg></span>
+                        <span class="tabLabel">Akış</span>
+                      </a>
+                      <a class="tabItem" href="../DesignsByInventory/index.html">
+                        <span class="tabIcon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h7v7H4V4zM13 4h7v7h-7V4zM4 13h7v7H4v-7zM13 13h7v7h-7v-7z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></span>
+                        <span class="tabLabel">Ekranlar</span>
+                      </a>
+                    </nav>
                   </div>
                 </div>
               </div>
@@ -1611,20 +1688,21 @@
             <div class="deviceWrap">
               <div class="device">
                 <div class="deviceBezel">
-                  <div class="deviceTop">
-                    <div class="left">
-                      <img class="logo" src="../Designs/assets/pst-coaching-logo.png" alt="PST Coaching" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
-                      <div class="logoFallback" aria-hidden="true"></div>
-                      <div class="topText">
-                        <div class="screenTitle">Yolculuklarım</div>
-                        <div class="crumb">Yolculuk keşfi → detay → başlat (hedef + zaman kuralları)</div>
+                  <div class="deviceScreen">
+                    <div class="deviceTop">
+                      <div class="left">
+                        <img class="logo" src="../Designs/assets/pst-coaching-logo.png" alt="PST Coaching" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                        <div class="logoFallback" aria-hidden="true"></div>
+                        <div class="topText">
+                          <div class="screenTitle">Yolculuklarım</div>
+                          <div class="crumb">Yolculuk keşfi → detay → başlat (hedef + zaman kuralları)</div>
+                        </div>
                       </div>
+                      <div class="right"><div class="badge">Flow 15</div></div>
                     </div>
-                    <div class="right"><div class="badge">Flow 15</div></div>
-                  </div>
 
-                  <div class="deviceBody">
-                    
+                    <div class="deviceBody">
+                      
         <div class="card">
           <div class="h2">Yolculuklarım</div>
           <div class="muted">Yolculuk keşfi → detay → başlat (hedef + zaman kuralları)</div>
@@ -1663,12 +1741,22 @@
 <div class='card'><div class='field'><label>Yanıt</label><div class='input' style='height:90px; align-items:flex-start; padding-top:10px;'>Metin taslağı…</div></div></div>
 <div class='card'><div class='h2' style='font-size:12px;'>Önkoşullar</div><div class="checklist"><div class="check"><div class="checkL"><span class="b ok">✓</span></div><div class="checkT">Önceki görev tamamlandı</div></div><div class="check"><div class="checkL"><span class="b">•</span></div><div class="checkT">Yorum teslim edildi</div></div><div class="check"><div class="checkL"><span class="b ok">✓</span></div><div class="checkT">08:00 kapısı bekleniyor</div></div></div></div>
 <div class='row'><button class="btn" data-go="UF15-S5-hedef-secimi">Geri</button><button class="btn primary" data-go="UF16-S1-atolyeler">Devam</button></div>
-                  </div>
+                    </div>
 
-                  <div class="deviceBottom">
-                    <a class="tab" href="index.html">Home</a>
-                    <a class="tab" href="../DesignsByInventory/index.html">Inventory</a>
-                    <a class="tab" href="#" data-go="UF15-S1-yolculuklar">Kategori Başı</a>
+                    <nav class="tabbar" aria-label="Tab Bar">
+                      <a class="tabItem" href="index.html">
+                        <span class="tabIcon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11.5L12 4l9 7.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M6.5 10.8V20a2 2 0 002 2h7a2 2 0 002-2v-9.2" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></span>
+                        <span class="tabLabel">Home</span>
+                      </a>
+                      <a class="tabItem active" href="#" data-go="UF15-S1-yolculuklar">
+                        <span class="tabIcon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M4 6h.01M4 12h.01M4 18h.01" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg></span>
+                        <span class="tabLabel">Akış</span>
+                      </a>
+                      <a class="tabItem" href="../DesignsByInventory/index.html">
+                        <span class="tabIcon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h7v7H4V4zM13 4h7v7h-7V4zM4 13h7v7H4v-7zM13 13h7v7h-7v-7z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></span>
+                        <span class="tabLabel">Ekranlar</span>
+                      </a>
+                    </nav>
                   </div>
                 </div>
               </div>
@@ -1819,20 +1907,21 @@
             <div class="deviceWrap">
               <div class="device">
                 <div class="deviceBezel">
-                  <div class="deviceTop">
-                    <div class="left">
-                      <img class="logo" src="../Designs/assets/pst-coaching-logo.png" alt="PST Coaching" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
-                      <div class="logoFallback" aria-hidden="true"></div>
-                      <div class="topText">
-                        <div class="screenTitle">Atölyeler</div>
-                        <div class="crumb">Keşfet</div>
+                  <div class="deviceScreen">
+                    <div class="deviceTop">
+                      <div class="left">
+                        <img class="logo" src="../Designs/assets/pst-coaching-logo.png" alt="PST Coaching" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                        <div class="logoFallback" aria-hidden="true"></div>
+                        <div class="topText">
+                          <div class="screenTitle">Atölyeler</div>
+                          <div class="crumb">Keşfet</div>
+                        </div>
                       </div>
+                      <div class="right"><div class="badge">Flow 16</div></div>
                     </div>
-                    <div class="right"><div class="badge">Flow 16</div></div>
-                  </div>
 
-                  <div class="deviceBody">
-                    
+                    <div class="deviceBody">
+                      
         <div class="card">
           <div class="h2">Atölyeler</div>
           <div class="muted">Keşfet</div>
@@ -1904,12 +1993,22 @@
           <div class="tileRight"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div>
         </div></div>
 <div class='row'><button class="btn" data-go="UF15-S6-yolculuklarim">Geri</button><button class="btn primary" data-go="UF16-S2-atolye-katalogu">Devam</button></div>
-                  </div>
+                    </div>
 
-                  <div class="deviceBottom">
-                    <a class="tab" href="index.html">Home</a>
-                    <a class="tab" href="../DesignsByInventory/index.html">Inventory</a>
-                    <a class="tab" href="#" data-go="UF15-S1-yolculuklar">Kategori Başı</a>
+                    <nav class="tabbar" aria-label="Tab Bar">
+                      <a class="tabItem" href="index.html">
+                        <span class="tabIcon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11.5L12 4l9 7.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M6.5 10.8V20a2 2 0 002 2h7a2 2 0 002-2v-9.2" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></span>
+                        <span class="tabLabel">Home</span>
+                      </a>
+                      <a class="tabItem active" href="#" data-go="UF15-S1-yolculuklar">
+                        <span class="tabIcon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M4 6h.01M4 12h.01M4 18h.01" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg></span>
+                        <span class="tabLabel">Akış</span>
+                      </a>
+                      <a class="tabItem" href="../DesignsByInventory/index.html">
+                        <span class="tabIcon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h7v7H4V4zM13 4h7v7h-7V4zM4 13h7v7H4v-7zM13 13h7v7h-7v-7z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></span>
+                        <span class="tabLabel">Ekranlar</span>
+                      </a>
+                    </nav>
                   </div>
                 </div>
               </div>
@@ -1994,20 +2093,21 @@
             <div class="deviceWrap">
               <div class="device">
                 <div class="deviceBezel">
-                  <div class="deviceTop">
-                    <div class="left">
-                      <img class="logo" src="../Designs/assets/pst-coaching-logo.png" alt="PST Coaching" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
-                      <div class="logoFallback" aria-hidden="true"></div>
-                      <div class="topText">
-                        <div class="screenTitle">Atölye Kataloğu</div>
-                        <div class="crumb">Atölye keşfi → detay → oturum (app içi okuma + uygulama)</div>
+                  <div class="deviceScreen">
+                    <div class="deviceTop">
+                      <div class="left">
+                        <img class="logo" src="../Designs/assets/pst-coaching-logo.png" alt="PST Coaching" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                        <div class="logoFallback" aria-hidden="true"></div>
+                        <div class="topText">
+                          <div class="screenTitle">Atölye Kataloğu</div>
+                          <div class="crumb">Atölye keşfi → detay → oturum (app içi okuma + uygulama)</div>
+                        </div>
                       </div>
+                      <div class="right"><div class="badge">Flow 16</div></div>
                     </div>
-                    <div class="right"><div class="badge">Flow 16</div></div>
-                  </div>
 
-                  <div class="deviceBody">
-                    
+                    <div class="deviceBody">
+                      
         <div class="card">
           <div class="h2">Atölye Kataloğu</div>
           <div class="muted">Atölye keşfi → detay → oturum (app içi okuma + uygulama)</div>
@@ -2079,12 +2179,22 @@
           <div class="tileRight"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div>
         </div></div>
 <div class='row'><button class="btn" data-go="UF16-S1-atolyeler">Geri</button><button class="btn primary" data-go="UF16-S3-atolye-detayi">Devam</button></div>
-                  </div>
+                    </div>
 
-                  <div class="deviceBottom">
-                    <a class="tab" href="index.html">Home</a>
-                    <a class="tab" href="../DesignsByInventory/index.html">Inventory</a>
-                    <a class="tab" href="#" data-go="UF15-S1-yolculuklar">Kategori Başı</a>
+                    <nav class="tabbar" aria-label="Tab Bar">
+                      <a class="tabItem" href="index.html">
+                        <span class="tabIcon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11.5L12 4l9 7.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M6.5 10.8V20a2 2 0 002 2h7a2 2 0 002-2v-9.2" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></span>
+                        <span class="tabLabel">Home</span>
+                      </a>
+                      <a class="tabItem active" href="#" data-go="UF15-S1-yolculuklar">
+                        <span class="tabIcon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M4 6h.01M4 12h.01M4 18h.01" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg></span>
+                        <span class="tabLabel">Akış</span>
+                      </a>
+                      <a class="tabItem" href="../DesignsByInventory/index.html">
+                        <span class="tabIcon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h7v7H4V4zM13 4h7v7h-7V4zM4 13h7v7H4v-7zM13 13h7v7h-7v-7z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></span>
+                        <span class="tabLabel">Ekranlar</span>
+                      </a>
+                    </nav>
                   </div>
                 </div>
               </div>
@@ -2203,20 +2313,21 @@
             <div class="deviceWrap">
               <div class="device">
                 <div class="deviceBezel">
-                  <div class="deviceTop">
-                    <div class="left">
-                      <img class="logo" src="../Designs/assets/pst-coaching-logo.png" alt="PST Coaching" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
-                      <div class="logoFallback" aria-hidden="true"></div>
-                      <div class="topText">
-                        <div class="screenTitle">Atölye Detayı</div>
-                        <div class="crumb">Atölye keşfi → detay → oturum (app içi okuma + uygulama)</div>
+                  <div class="deviceScreen">
+                    <div class="deviceTop">
+                      <div class="left">
+                        <img class="logo" src="../Designs/assets/pst-coaching-logo.png" alt="PST Coaching" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                        <div class="logoFallback" aria-hidden="true"></div>
+                        <div class="topText">
+                          <div class="screenTitle">Atölye Detayı</div>
+                          <div class="crumb">Atölye keşfi → detay → oturum (app içi okuma + uygulama)</div>
+                        </div>
                       </div>
+                      <div class="right"><div class="badge">Flow 16</div></div>
                     </div>
-                    <div class="right"><div class="badge">Flow 16</div></div>
-                  </div>
 
-                  <div class="deviceBody">
-                    
+                    <div class="deviceBody">
+                      
         <div class="card">
           <div class="h2">Atölye Detayı</div>
           <div class="muted">Atölye keşfi → detay → oturum (app içi okuma + uygulama)</div>
@@ -2288,12 +2399,22 @@
           <div class="tileRight"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div>
         </div></div>
 <div class='row'><button class="btn" data-go="UF16-S2-atolye-katalogu">Geri</button><button class="btn primary" data-go="UF16-S4-atolye-oturumu">Devam</button></div>
-                  </div>
+                    </div>
 
-                  <div class="deviceBottom">
-                    <a class="tab" href="index.html">Home</a>
-                    <a class="tab" href="../DesignsByInventory/index.html">Inventory</a>
-                    <a class="tab" href="#" data-go="UF15-S1-yolculuklar">Kategori Başı</a>
+                    <nav class="tabbar" aria-label="Tab Bar">
+                      <a class="tabItem" href="index.html">
+                        <span class="tabIcon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11.5L12 4l9 7.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M6.5 10.8V20a2 2 0 002 2h7a2 2 0 002-2v-9.2" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></span>
+                        <span class="tabLabel">Home</span>
+                      </a>
+                      <a class="tabItem active" href="#" data-go="UF15-S1-yolculuklar">
+                        <span class="tabIcon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M4 6h.01M4 12h.01M4 18h.01" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg></span>
+                        <span class="tabLabel">Akış</span>
+                      </a>
+                      <a class="tabItem" href="../DesignsByInventory/index.html">
+                        <span class="tabIcon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h7v7H4V4zM13 4h7v7h-7V4zM4 13h7v7H4v-7zM13 13h7v7h-7v-7z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></span>
+                        <span class="tabLabel">Ekranlar</span>
+                      </a>
+                    </nav>
                   </div>
                 </div>
               </div>
@@ -2412,20 +2533,21 @@
             <div class="deviceWrap">
               <div class="device">
                 <div class="deviceBezel">
-                  <div class="deviceTop">
-                    <div class="left">
-                      <img class="logo" src="../Designs/assets/pst-coaching-logo.png" alt="PST Coaching" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
-                      <div class="logoFallback" aria-hidden="true"></div>
-                      <div class="topText">
-                        <div class="screenTitle">Atölye Oturumu</div>
-                        <div class="crumb">Atölye keşfi → detay → oturum (app içi okuma + uygulama)</div>
+                  <div class="deviceScreen">
+                    <div class="deviceTop">
+                      <div class="left">
+                        <img class="logo" src="../Designs/assets/pst-coaching-logo.png" alt="PST Coaching" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                        <div class="logoFallback" aria-hidden="true"></div>
+                        <div class="topText">
+                          <div class="screenTitle">Atölye Oturumu</div>
+                          <div class="crumb">Atölye keşfi → detay → oturum (app içi okuma + uygulama)</div>
+                        </div>
                       </div>
+                      <div class="right"><div class="badge">Flow 16</div></div>
                     </div>
-                    <div class="right"><div class="badge">Flow 16</div></div>
-                  </div>
 
-                  <div class="deviceBody">
-                    
+                    <div class="deviceBody">
+                      
         <div class="card">
           <div class="h2">Atölye Oturumu</div>
           <div class="muted">Atölye keşfi → detay → oturum (app içi okuma + uygulama)</div>
@@ -2497,12 +2619,22 @@
           <div class="tileRight"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div>
         </div></div>
 <div class='row'><button class="btn" data-go="UF16-S3-atolye-detayi">Geri</button><button class="btn primary" data-go="UF16-S5-tamamla">Devam</button></div>
-                  </div>
+                    </div>
 
-                  <div class="deviceBottom">
-                    <a class="tab" href="index.html">Home</a>
-                    <a class="tab" href="../DesignsByInventory/index.html">Inventory</a>
-                    <a class="tab" href="#" data-go="UF15-S1-yolculuklar">Kategori Başı</a>
+                    <nav class="tabbar" aria-label="Tab Bar">
+                      <a class="tabItem" href="index.html">
+                        <span class="tabIcon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11.5L12 4l9 7.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M6.5 10.8V20a2 2 0 002 2h7a2 2 0 002-2v-9.2" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></span>
+                        <span class="tabLabel">Home</span>
+                      </a>
+                      <a class="tabItem active" href="#" data-go="UF15-S1-yolculuklar">
+                        <span class="tabIcon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M4 6h.01M4 12h.01M4 18h.01" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg></span>
+                        <span class="tabLabel">Akış</span>
+                      </a>
+                      <a class="tabItem" href="../DesignsByInventory/index.html">
+                        <span class="tabIcon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h7v7H4V4zM13 4h7v7h-7V4zM4 13h7v7H4v-7zM13 13h7v7h-7v-7z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></span>
+                        <span class="tabLabel">Ekranlar</span>
+                      </a>
+                    </nav>
                   </div>
                 </div>
               </div>
@@ -2621,20 +2753,21 @@
             <div class="deviceWrap">
               <div class="device">
                 <div class="deviceBezel">
-                  <div class="deviceTop">
-                    <div class="left">
-                      <img class="logo" src="../Designs/assets/pst-coaching-logo.png" alt="PST Coaching" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
-                      <div class="logoFallback" aria-hidden="true"></div>
-                      <div class="topText">
-                        <div class="screenTitle">Tamamla</div>
-                        <div class="crumb">Atölye keşfi → detay → oturum (app içi okuma + uygulama)</div>
+                  <div class="deviceScreen">
+                    <div class="deviceTop">
+                      <div class="left">
+                        <img class="logo" src="../Designs/assets/pst-coaching-logo.png" alt="PST Coaching" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                        <div class="logoFallback" aria-hidden="true"></div>
+                        <div class="topText">
+                          <div class="screenTitle">Tamamla</div>
+                          <div class="crumb">Atölye keşfi → detay → oturum (app içi okuma + uygulama)</div>
+                        </div>
                       </div>
+                      <div class="right"><div class="badge">Flow 16</div></div>
                     </div>
-                    <div class="right"><div class="badge">Flow 16</div></div>
-                  </div>
 
-                  <div class="deviceBody">
-                    
+                    <div class="deviceBody">
+                      
         <div class="card">
           <div class="h2">Tamamla</div>
           <div class="muted">Atölye keşfi → detay → oturum (app içi okuma + uygulama)</div>
@@ -2706,12 +2839,22 @@
           <div class="tileRight"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div>
         </div></div>
 <div class='row'><button class="btn" data-go="UF16-S4-atolye-oturumu">Geri</button><button class="btn primary" data-go="UF17-S1-e-kitaplar">Devam</button></div>
-                  </div>
+                    </div>
 
-                  <div class="deviceBottom">
-                    <a class="tab" href="index.html">Home</a>
-                    <a class="tab" href="../DesignsByInventory/index.html">Inventory</a>
-                    <a class="tab" href="#" data-go="UF15-S1-yolculuklar">Kategori Başı</a>
+                    <nav class="tabbar" aria-label="Tab Bar">
+                      <a class="tabItem" href="index.html">
+                        <span class="tabIcon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11.5L12 4l9 7.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M6.5 10.8V20a2 2 0 002 2h7a2 2 0 002-2v-9.2" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></span>
+                        <span class="tabLabel">Home</span>
+                      </a>
+                      <a class="tabItem active" href="#" data-go="UF15-S1-yolculuklar">
+                        <span class="tabIcon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M4 6h.01M4 12h.01M4 18h.01" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg></span>
+                        <span class="tabLabel">Akış</span>
+                      </a>
+                      <a class="tabItem" href="../DesignsByInventory/index.html">
+                        <span class="tabIcon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h7v7H4V4zM13 4h7v7h-7V4zM4 13h7v7H4v-7zM13 13h7v7h-7v-7z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></span>
+                        <span class="tabLabel">Ekranlar</span>
+                      </a>
+                    </nav>
                   </div>
                 </div>
               </div>
@@ -2830,20 +2973,21 @@
             <div class="deviceWrap">
               <div class="device">
                 <div class="deviceBezel">
-                  <div class="deviceTop">
-                    <div class="left">
-                      <img class="logo" src="../Designs/assets/pst-coaching-logo.png" alt="PST Coaching" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
-                      <div class="logoFallback" aria-hidden="true"></div>
-                      <div class="topText">
-                        <div class="screenTitle">e‑Kitaplar</div>
-                        <div class="crumb">Keşfet</div>
+                  <div class="deviceScreen">
+                    <div class="deviceTop">
+                      <div class="left">
+                        <img class="logo" src="../Designs/assets/pst-coaching-logo.png" alt="PST Coaching" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                        <div class="logoFallback" aria-hidden="true"></div>
+                        <div class="topText">
+                          <div class="screenTitle">e‑Kitaplar</div>
+                          <div class="crumb">Keşfet</div>
+                        </div>
                       </div>
+                      <div class="right"><div class="badge">Flow 17</div></div>
                     </div>
-                    <div class="right"><div class="badge">Flow 17</div></div>
-                  </div>
 
-                  <div class="deviceBody">
-                    
+                    <div class="deviceBody">
+                      
         <div class="card">
           <div class="h2">e‑Kitaplar</div>
           <div class="muted">Keşfet</div>
@@ -2916,12 +3060,22 @@
           <div class="tileRight"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div>
         </div></div>
 <div class='row'><button class="btn" data-go="UF16-S5-tamamla">Geri</button><button class="btn primary" data-go="UF17-S2-kitap-kutuphanesi">Devam</button></div>
-                  </div>
+                    </div>
 
-                  <div class="deviceBottom">
-                    <a class="tab" href="index.html">Home</a>
-                    <a class="tab" href="../DesignsByInventory/index.html">Inventory</a>
-                    <a class="tab" href="#" data-go="UF15-S1-yolculuklar">Kategori Başı</a>
+                    <nav class="tabbar" aria-label="Tab Bar">
+                      <a class="tabItem" href="index.html">
+                        <span class="tabIcon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11.5L12 4l9 7.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M6.5 10.8V20a2 2 0 002 2h7a2 2 0 002-2v-9.2" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></span>
+                        <span class="tabLabel">Home</span>
+                      </a>
+                      <a class="tabItem active" href="#" data-go="UF15-S1-yolculuklar">
+                        <span class="tabIcon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M4 6h.01M4 12h.01M4 18h.01" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg></span>
+                        <span class="tabLabel">Akış</span>
+                      </a>
+                      <a class="tabItem" href="../DesignsByInventory/index.html">
+                        <span class="tabIcon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h7v7H4V4zM13 4h7v7h-7V4zM4 13h7v7H4v-7zM13 13h7v7h-7v-7z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></span>
+                        <span class="tabLabel">Ekranlar</span>
+                      </a>
+                    </nav>
                   </div>
                 </div>
               </div>
@@ -3039,20 +3193,21 @@
             <div class="deviceWrap">
               <div class="device">
                 <div class="deviceBezel">
-                  <div class="deviceTop">
-                    <div class="left">
-                      <img class="logo" src="../Designs/assets/pst-coaching-logo.png" alt="PST Coaching" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
-                      <div class="logoFallback" aria-hidden="true"></div>
-                      <div class="topText">
-                        <div class="screenTitle">Kitap Kütüphanesi</div>
-                        <div class="crumb">e‑Kitap keşfi → kitap detayı → okuyucu (kaldığın yer + not/vurgu + offline)</div>
+                  <div class="deviceScreen">
+                    <div class="deviceTop">
+                      <div class="left">
+                        <img class="logo" src="../Designs/assets/pst-coaching-logo.png" alt="PST Coaching" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                        <div class="logoFallback" aria-hidden="true"></div>
+                        <div class="topText">
+                          <div class="screenTitle">Kitap Kütüphanesi</div>
+                          <div class="crumb">e‑Kitap keşfi → kitap detayı → okuyucu (kaldığın yer + not/vurgu + offline)</div>
+                        </div>
                       </div>
+                      <div class="right"><div class="badge">Flow 17</div></div>
                     </div>
-                    <div class="right"><div class="badge">Flow 17</div></div>
-                  </div>
 
-                  <div class="deviceBody">
-                    
+                    <div class="deviceBody">
+                      
         <div class="card">
           <div class="h2">Kitap Kütüphanesi</div>
           <div class="muted">e‑Kitap keşfi → kitap detayı → okuyucu (kaldığın yer + not/vurgu + offline)</div>
@@ -3125,12 +3280,22 @@
           <div class="tileRight"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div>
         </div></div>
 <div class='row'><button class="btn" data-go="UF17-S1-e-kitaplar">Geri</button><button class="btn primary" data-go="UF17-S3-kitap-detayi">Devam</button></div>
-                  </div>
+                    </div>
 
-                  <div class="deviceBottom">
-                    <a class="tab" href="index.html">Home</a>
-                    <a class="tab" href="../DesignsByInventory/index.html">Inventory</a>
-                    <a class="tab" href="#" data-go="UF15-S1-yolculuklar">Kategori Başı</a>
+                    <nav class="tabbar" aria-label="Tab Bar">
+                      <a class="tabItem" href="index.html">
+                        <span class="tabIcon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11.5L12 4l9 7.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M6.5 10.8V20a2 2 0 002 2h7a2 2 0 002-2v-9.2" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></span>
+                        <span class="tabLabel">Home</span>
+                      </a>
+                      <a class="tabItem active" href="#" data-go="UF15-S1-yolculuklar">
+                        <span class="tabIcon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M4 6h.01M4 12h.01M4 18h.01" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg></span>
+                        <span class="tabLabel">Akış</span>
+                      </a>
+                      <a class="tabItem" href="../DesignsByInventory/index.html">
+                        <span class="tabIcon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h7v7H4V4zM13 4h7v7h-7V4zM4 13h7v7H4v-7zM13 13h7v7h-7v-7z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></span>
+                        <span class="tabLabel">Ekranlar</span>
+                      </a>
+                    </nav>
                   </div>
                 </div>
               </div>
@@ -3248,20 +3413,21 @@
             <div class="deviceWrap">
               <div class="device">
                 <div class="deviceBezel">
-                  <div class="deviceTop">
-                    <div class="left">
-                      <img class="logo" src="../Designs/assets/pst-coaching-logo.png" alt="PST Coaching" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
-                      <div class="logoFallback" aria-hidden="true"></div>
-                      <div class="topText">
-                        <div class="screenTitle">Kitap Detayı</div>
-                        <div class="crumb">e‑Kitap keşfi → kitap detayı → okuyucu (kaldığın yer + not/vurgu + offline)</div>
+                  <div class="deviceScreen">
+                    <div class="deviceTop">
+                      <div class="left">
+                        <img class="logo" src="../Designs/assets/pst-coaching-logo.png" alt="PST Coaching" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                        <div class="logoFallback" aria-hidden="true"></div>
+                        <div class="topText">
+                          <div class="screenTitle">Kitap Detayı</div>
+                          <div class="crumb">e‑Kitap keşfi → kitap detayı → okuyucu (kaldığın yer + not/vurgu + offline)</div>
+                        </div>
                       </div>
+                      <div class="right"><div class="badge">Flow 17</div></div>
                     </div>
-                    <div class="right"><div class="badge">Flow 17</div></div>
-                  </div>
 
-                  <div class="deviceBody">
-                    
+                    <div class="deviceBody">
+                      
         <div class="card">
           <div class="h2">Kitap Detayı</div>
           <div class="muted">e‑Kitap keşfi → kitap detayı → okuyucu (kaldığın yer + not/vurgu + offline)</div>
@@ -3334,12 +3500,22 @@
           <div class="tileRight"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div>
         </div></div>
 <div class='row'><button class="btn" data-go="UF17-S2-kitap-kutuphanesi">Geri</button><button class="btn primary" data-go="UF17-S4-okuyucu">Devam</button></div>
-                  </div>
+                    </div>
 
-                  <div class="deviceBottom">
-                    <a class="tab" href="index.html">Home</a>
-                    <a class="tab" href="../DesignsByInventory/index.html">Inventory</a>
-                    <a class="tab" href="#" data-go="UF15-S1-yolculuklar">Kategori Başı</a>
+                    <nav class="tabbar" aria-label="Tab Bar">
+                      <a class="tabItem" href="index.html">
+                        <span class="tabIcon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11.5L12 4l9 7.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M6.5 10.8V20a2 2 0 002 2h7a2 2 0 002-2v-9.2" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></span>
+                        <span class="tabLabel">Home</span>
+                      </a>
+                      <a class="tabItem active" href="#" data-go="UF15-S1-yolculuklar">
+                        <span class="tabIcon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M4 6h.01M4 12h.01M4 18h.01" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg></span>
+                        <span class="tabLabel">Akış</span>
+                      </a>
+                      <a class="tabItem" href="../DesignsByInventory/index.html">
+                        <span class="tabIcon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h7v7H4V4zM13 4h7v7h-7V4zM4 13h7v7H4v-7zM13 13h7v7h-7v-7z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></span>
+                        <span class="tabLabel">Ekranlar</span>
+                      </a>
+                    </nav>
                   </div>
                 </div>
               </div>
@@ -3457,20 +3633,21 @@
             <div class="deviceWrap">
               <div class="device">
                 <div class="deviceBezel">
-                  <div class="deviceTop">
-                    <div class="left">
-                      <img class="logo" src="../Designs/assets/pst-coaching-logo.png" alt="PST Coaching" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
-                      <div class="logoFallback" aria-hidden="true"></div>
-                      <div class="topText">
-                        <div class="screenTitle">Okuyucu</div>
-                        <div class="crumb">e‑Kitap keşfi → kitap detayı → okuyucu (kaldığın yer + not/vurgu + offline)</div>
+                  <div class="deviceScreen">
+                    <div class="deviceTop">
+                      <div class="left">
+                        <img class="logo" src="../Designs/assets/pst-coaching-logo.png" alt="PST Coaching" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                        <div class="logoFallback" aria-hidden="true"></div>
+                        <div class="topText">
+                          <div class="screenTitle">Okuyucu</div>
+                          <div class="crumb">e‑Kitap keşfi → kitap detayı → okuyucu (kaldığın yer + not/vurgu + offline)</div>
+                        </div>
                       </div>
+                      <div class="right"><div class="badge">Flow 17</div></div>
                     </div>
-                    <div class="right"><div class="badge">Flow 17</div></div>
-                  </div>
 
-                  <div class="deviceBody">
-                    
+                    <div class="deviceBody">
+                      
         <div class="card">
           <div class="h2">Okuyucu</div>
           <div class="muted">e‑Kitap keşfi → kitap detayı → okuyucu (kaldığın yer + not/vurgu + offline)</div>
@@ -3543,12 +3720,22 @@
           <div class="tileRight"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div>
         </div></div>
 <div class='row'><button class="btn" data-go="UF17-S3-kitap-detayi">Geri</button><button class="btn primary" data-go="UF17-S5-not-vurgu">Devam</button></div>
-                  </div>
+                    </div>
 
-                  <div class="deviceBottom">
-                    <a class="tab" href="index.html">Home</a>
-                    <a class="tab" href="../DesignsByInventory/index.html">Inventory</a>
-                    <a class="tab" href="#" data-go="UF15-S1-yolculuklar">Kategori Başı</a>
+                    <nav class="tabbar" aria-label="Tab Bar">
+                      <a class="tabItem" href="index.html">
+                        <span class="tabIcon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11.5L12 4l9 7.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M6.5 10.8V20a2 2 0 002 2h7a2 2 0 002-2v-9.2" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></span>
+                        <span class="tabLabel">Home</span>
+                      </a>
+                      <a class="tabItem active" href="#" data-go="UF15-S1-yolculuklar">
+                        <span class="tabIcon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M4 6h.01M4 12h.01M4 18h.01" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg></span>
+                        <span class="tabLabel">Akış</span>
+                      </a>
+                      <a class="tabItem" href="../DesignsByInventory/index.html">
+                        <span class="tabIcon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h7v7H4V4zM13 4h7v7h-7V4zM4 13h7v7H4v-7zM13 13h7v7h-7v-7z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></span>
+                        <span class="tabLabel">Ekranlar</span>
+                      </a>
+                    </nav>
                   </div>
                 </div>
               </div>
@@ -3666,20 +3853,21 @@
             <div class="deviceWrap">
               <div class="device">
                 <div class="deviceBezel">
-                  <div class="deviceTop">
-                    <div class="left">
-                      <img class="logo" src="../Designs/assets/pst-coaching-logo.png" alt="PST Coaching" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
-                      <div class="logoFallback" aria-hidden="true"></div>
-                      <div class="topText">
-                        <div class="screenTitle">(Not/Vurgu</div>
-                        <div class="crumb">e‑Kitap keşfi → kitap detayı → okuyucu (kaldığın yer + not/vurgu + offline)</div>
+                  <div class="deviceScreen">
+                    <div class="deviceTop">
+                      <div class="left">
+                        <img class="logo" src="../Designs/assets/pst-coaching-logo.png" alt="PST Coaching" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                        <div class="logoFallback" aria-hidden="true"></div>
+                        <div class="topText">
+                          <div class="screenTitle">(Not/Vurgu</div>
+                          <div class="crumb">e‑Kitap keşfi → kitap detayı → okuyucu (kaldığın yer + not/vurgu + offline)</div>
+                        </div>
                       </div>
+                      <div class="right"><div class="badge">Flow 17</div></div>
                     </div>
-                    <div class="right"><div class="badge">Flow 17</div></div>
-                  </div>
 
-                  <div class="deviceBody">
-                    
+                    <div class="deviceBody">
+                      
         <div class="card">
           <div class="h2">(Not/Vurgu</div>
           <div class="muted">e‑Kitap keşfi → kitap detayı → okuyucu (kaldığın yer + not/vurgu + offline)</div>
@@ -3752,12 +3940,22 @@
           <div class="tileRight"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div>
         </div></div>
 <div class='row'><button class="btn" data-go="UF17-S4-okuyucu">Geri</button><button class="btn primary" data-go="UF17-S6-favoriler">Devam</button></div>
-                  </div>
+                    </div>
 
-                  <div class="deviceBottom">
-                    <a class="tab" href="index.html">Home</a>
-                    <a class="tab" href="../DesignsByInventory/index.html">Inventory</a>
-                    <a class="tab" href="#" data-go="UF15-S1-yolculuklar">Kategori Başı</a>
+                    <nav class="tabbar" aria-label="Tab Bar">
+                      <a class="tabItem" href="index.html">
+                        <span class="tabIcon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11.5L12 4l9 7.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M6.5 10.8V20a2 2 0 002 2h7a2 2 0 002-2v-9.2" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></span>
+                        <span class="tabLabel">Home</span>
+                      </a>
+                      <a class="tabItem active" href="#" data-go="UF15-S1-yolculuklar">
+                        <span class="tabIcon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M4 6h.01M4 12h.01M4 18h.01" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg></span>
+                        <span class="tabLabel">Akış</span>
+                      </a>
+                      <a class="tabItem" href="../DesignsByInventory/index.html">
+                        <span class="tabIcon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h7v7H4V4zM13 4h7v7h-7V4zM4 13h7v7H4v-7zM13 13h7v7h-7v-7z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></span>
+                        <span class="tabLabel">Ekranlar</span>
+                      </a>
+                    </nav>
                   </div>
                 </div>
               </div>
@@ -3875,20 +4073,21 @@
             <div class="deviceWrap">
               <div class="device">
                 <div class="deviceBezel">
-                  <div class="deviceTop">
-                    <div class="left">
-                      <img class="logo" src="../Designs/assets/pst-coaching-logo.png" alt="PST Coaching" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
-                      <div class="logoFallback" aria-hidden="true"></div>
-                      <div class="topText">
-                        <div class="screenTitle">Favoriler)</div>
-                        <div class="crumb">e‑Kitap keşfi → kitap detayı → okuyucu (kaldığın yer + not/vurgu + offline)</div>
+                  <div class="deviceScreen">
+                    <div class="deviceTop">
+                      <div class="left">
+                        <img class="logo" src="../Designs/assets/pst-coaching-logo.png" alt="PST Coaching" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                        <div class="logoFallback" aria-hidden="true"></div>
+                        <div class="topText">
+                          <div class="screenTitle">Favoriler)</div>
+                          <div class="crumb">e‑Kitap keşfi → kitap detayı → okuyucu (kaldığın yer + not/vurgu + offline)</div>
+                        </div>
                       </div>
+                      <div class="right"><div class="badge">Flow 17</div></div>
                     </div>
-                    <div class="right"><div class="badge">Flow 17</div></div>
-                  </div>
 
-                  <div class="deviceBody">
-                    
+                    <div class="deviceBody">
+                      
         <div class="card">
           <div class="h2">Favoriler)</div>
           <div class="muted">e‑Kitap keşfi → kitap detayı → okuyucu (kaldığın yer + not/vurgu + offline)</div>
@@ -3961,12 +4160,22 @@
           <div class="tileRight"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div>
         </div></div>
 <div class='row'><button class="btn" data-go="UF17-S5-not-vurgu">Geri</button></div>
-                  </div>
+                    </div>
 
-                  <div class="deviceBottom">
-                    <a class="tab" href="index.html">Home</a>
-                    <a class="tab" href="../DesignsByInventory/index.html">Inventory</a>
-                    <a class="tab" href="#" data-go="UF15-S1-yolculuklar">Kategori Başı</a>
+                    <nav class="tabbar" aria-label="Tab Bar">
+                      <a class="tabItem" href="index.html">
+                        <span class="tabIcon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11.5L12 4l9 7.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M6.5 10.8V20a2 2 0 002 2h7a2 2 0 002-2v-9.2" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></span>
+                        <span class="tabLabel">Home</span>
+                      </a>
+                      <a class="tabItem active" href="#" data-go="UF15-S1-yolculuklar">
+                        <span class="tabIcon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M4 6h.01M4 12h.01M4 18h.01" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg></span>
+                        <span class="tabLabel">Akış</span>
+                      </a>
+                      <a class="tabItem" href="../DesignsByInventory/index.html">
+                        <span class="tabIcon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h7v7H4V4zM13 4h7v7h-7V4zM4 13h7v7H4v-7zM13 13h7v7h-7v-7z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></span>
+                        <span class="tabLabel">Ekranlar</span>
+                      </a>
+                    </nav>
                   </div>
                 </div>
               </div>
