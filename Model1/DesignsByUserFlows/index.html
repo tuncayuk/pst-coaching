@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>PST Mobile — Designs By User Flows (Index)</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --primary: #1e2a78;
+        --accent: #0fa3b1;
+        --gold: #f2c14e;
+        --bg: #f7f8fb;
+        --text: #0d1226;
+        --muted: #5b647a;
+        --stroke: #e6e8f0;
+        --shadow-sm: 0 6px 18px rgba(13, 18, 38, 0.08);
+        --shadow-md: 0 18px 50px rgba(13, 18, 38, 0.12);
+        --r20: 20px;
+        --r24: 24px;
+        --font:
+          ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display",
+          "Segoe UI", Roboto, Helvetica, Arial;
+      }
+      * { box-sizing: border-box; }
+      html, body { height: 100%; }
+      body {
+        margin: 0;
+        font-family: var(--font);
+        background:
+          radial-gradient(900px 520px at 0% 0%, rgba(15, 163, 177, 0.12), transparent 55%),
+          radial-gradient(900px 520px at 100% 10%, rgba(30, 42, 120, 0.10), transparent 55%),
+          radial-gradient(900px 520px at 40% 115%, rgba(242, 193, 78, 0.12), transparent 55%),
+          linear-gradient(180deg, #ffffff, var(--bg));
+        color: var(--text);
+      }
+      a { color: inherit; text-decoration: none; }
+
+      .wrap { max-width: 1120px; margin: 0 auto; padding: 28px; }
+
+      .header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 18px;
+        border-radius: var(--r24);
+        background: rgba(255, 255, 255, 0.86);
+        border: 1px solid rgba(230, 232, 240, 0.95);
+        box-shadow: var(--shadow-md);
+        backdrop-filter: blur(12px);
+      }
+      .brand { display: flex; align-items: center; gap: 12px; min-width: 0; }
+      .logoImg { height: 34px; width: auto; object-fit: contain; display: block; }
+      .logoFallback {
+        display: none;
+        width: 40px;
+        height: 40px;
+        border-radius: 14px;
+        background: radial-gradient(circle at 30% 30%, rgba(15, 163, 177, 1), rgba(30, 42, 120, 1));
+        border: 1px solid rgba(13, 18, 38, 0.08);
+        box-shadow: var(--shadow-sm);
+      }
+      h1 { margin: 0; font-size: 18px; letter-spacing: 0.1px; }
+      .sub { margin: 4px 0 0; color: var(--muted); font-size: 12px; line-height: 1.5; }
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 10px;
+        border-radius: 999px;
+        background: rgba(15, 163, 177, 0.10);
+        border: 1px solid rgba(15, 163, 177, 0.22);
+        color: rgba(13, 18, 38, 0.86);
+        font-size: 12px;
+        white-space: nowrap;
+        font-weight: 900;
+      }
+      .grid { margin-top: 18px; display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+      .card {
+        padding: 16px;
+        border-radius: var(--r24);
+        background: rgba(255, 255, 255, 0.86);
+        border: 1px solid rgba(230, 232, 240, 0.95);
+        box-shadow: var(--shadow-md);
+      }
+      .card h2 { margin: 0 0 6px; font-size: 15px; }
+      .card p { margin: 0 0 12px; color: var(--muted); font-size: 12px; line-height: 1.55; }
+      .row { display: flex; gap: 10px; flex-wrap: wrap; }
+      .btn {
+        height: 40px;
+        padding: 0 12px;
+        border-radius: 14px;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 900;
+        border: 1px solid rgba(230, 232, 240, 0.95);
+        background: rgba(255, 255, 255, 0.92);
+        color: rgba(13, 18, 38, 0.92);
+        box-shadow: var(--shadow-sm);
+      }
+      .btn.primary {
+        background: linear-gradient(135deg, rgba(30, 42, 120, 0.96), rgba(15, 163, 177, 0.92));
+        border-color: rgba(30, 42, 120, 0.18);
+        color: #ffffff;
+      }
+      .note {
+        margin-top: 14px;
+        padding: 12px;
+        border-radius: var(--r20);
+        background: rgba(242, 193, 78, 0.14);
+        border: 1px solid rgba(242, 193, 78, 0.28);
+        color: rgba(13, 18, 38, 0.86);
+        font-size: 12px;
+        line-height: 1.5;
+      }
+      @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="header">
+        <div class="brand">
+          <img class="logoImg" src="../Designs/assets/pst-coaching-logo.png" alt="PST Coaching" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" />
+          <div class="logoFallback" aria-hidden="true"></div>
+          <div>
+            <h1>PST Mobile — Designs By User Flows</h1>
+            <p class="sub">Home → kategori → flow içi lineer navigasyon • US/AC mobil ekran dışında</p>
+          </div>
+        </div>
+        <div class="pill">7 kategori</div>
+      </div>
+
+      <div class="grid">
+        
+        <div class="card">
+          <h2>Abonelik &amp; Erişim (Faz-1)</h2>
+          <p>7 flow • İlk: <strong>#8</strong> Paywall → plan seçimi → satın alma → erişim aktivasyonu</p>
+          <div class="row">
+            <a class="btn primary" href="CAT_abonelik-erisim-faz-1.html">Başla</a>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>Asistan, AI ve Faz-2 Alanları (Faz-2)</h2>
+          <p>9 flow • İlk: <strong>#28</strong> Asistan: hedef belirleme → duygu check-in → öneri/karşılaştırma → plan oluştur/güncelle</p>
+          <div class="row">
+            <a class="btn primary" href="CAT_asistan-ai-ve-faz-2-alanlari-faz-2.html">Başla</a>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>Günlük İlerleme &amp; Teslim (Faz-1)</h2>
+          <p>4 flow • İlk: <strong>#18</strong> Günlük döngü: Home “Devam Et” → okuma → not/vurgu → yorum taslağı</p>
+          <div class="row">
+            <a class="btn primary" href="CAT_gunluk-ilerleme-teslim-faz-1.html">Başla</a>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>Kişiselleştirme &amp; Alışkanlık (Faz-1)</h2>
+          <p>4 flow • İlk: <strong>#24</strong> Favoriler &amp; arşiv: kaydet → koleksiyon → sil/geri al → kaynağa dön → paylaş/export</p>
+          <div class="row">
+            <a class="btn primary" href="CAT_kisisellestirme-aliskanlik-faz-1.html">Başla</a>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>Modül Sistemi (Faz-1)</h2>
+          <p>3 flow • İlk: <strong>#22</strong> Modüller: liste → önkoşul → görev → gönder → kilit açıldı</p>
+          <div class="row">
+            <a class="btn primary" href="CAT_modul-sistemi-faz-1.html">Başla</a>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>Onboarding &amp; Hesap (Faz-1)</h2>
+          <p>7 flow • İlk: <strong>#1</strong> İlk açılış: oturum kontrolü + dil seçimi</p>
+          <div class="row">
+            <a class="btn primary" href="CAT_onboarding-hesap-faz-1.html">Başla</a>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>İçerik Keşfi &amp; Başlatma (Faz-1)</h2>
+          <p>3 flow • İlk: <strong>#15</strong> Yolculuk keşfi → detay → başlat (hedef + zaman kuralları)</p>
+          <div class="row">
+            <a class="btn primary" href="CAT_icerik-kesfi-baslatma-faz-1.html">Başla</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="note">
+        Logo dosyası: <code>Model1/Designs/assets/pst-coaching-logo.png</code> (bu klasörden göreli yol: <code>../Designs/assets/pst-coaching-logo.png</code>).
+      </div>
+    </div>
+  </body>
+</html>

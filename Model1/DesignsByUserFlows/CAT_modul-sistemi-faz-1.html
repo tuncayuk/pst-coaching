@@ -1,0 +1,2155 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Modül Sistemi (Faz-1) — PST Mobile (User Flow Prototype)</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --primary: #1e2a78;
+        --accent: #0fa3b1;
+        --gold: #f2c14e;
+        --danger: #d92d20;
+        --success: #039855;
+
+        --bg: #f7f8fb;
+        --surface: #ffffff;
+        --stroke: #e6e8f0;
+        --stroke2: #d7dbeb;
+        --text: #0d1226;
+        --muted: #5b647a;
+
+        --shadow-sm: 0 6px 18px rgba(13, 18, 38, 0.08);
+        --shadow-md: 0 18px 50px rgba(13, 18, 38, 0.12);
+        --shadow-lg: 0 36px 120px rgba(13, 18, 38, 0.18);
+
+        --r12: 12px;
+        --r16: 16px;
+        --r20: 20px;
+        --r24: 24px;
+        --r32: 32px;
+
+        --w: 393px;
+        --h: 852px;
+        --safeTop: 56px;
+        --safeBot: 34px;
+
+        --font:
+          ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display",
+          "Segoe UI", Roboto, Helvetica, Arial;
+      }
+
+      * { box-sizing: border-box; }
+      html, body { height: 100%; }
+      body {
+        margin: 0;
+        font-family: var(--font);
+        background:
+          radial-gradient(900px 520px at 0% 0%, rgba(15, 163, 177, 0.12), transparent 55%),
+          radial-gradient(900px 520px at 100% 10%, rgba(30, 42, 120, 0.10), transparent 55%),
+          radial-gradient(900px 520px at 40% 115%, rgba(242, 193, 78, 0.12), transparent 55%),
+          linear-gradient(180deg, #ffffff, var(--bg));
+        color: var(--text);
+      }
+      a { color: inherit; }
+
+      .wrap {
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 18px;
+        display: grid;
+        grid-template-columns: 360px 1fr;
+        gap: 14px;
+      }
+
+      .panel {
+        border-radius: var(--r24);
+        background: rgba(255, 255, 255, 0.86);
+        border: 1px solid rgba(230, 232, 240, 0.95);
+        box-shadow: var(--shadow-md);
+        padding: 16px;
+        overflow: hidden;
+      }
+
+      .h1 {
+        margin: 0;
+        font-size: 16px;
+        letter-spacing: 0.2px;
+      }
+      .sub {
+        margin-top: 6px;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.55;
+      }
+
+      .pillRow {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 10px;
+        border-radius: 999px;
+        background: rgba(15, 163, 177, 0.10);
+        border: 1px solid rgba(15, 163, 177, 0.22);
+        color: rgba(13, 18, 38, 0.88);
+        font-size: 12px;
+        white-space: nowrap;
+        font-weight: 900;
+        text-decoration: none;
+      }
+
+      .secTitle {
+        margin: 14px 0 8px;
+        font-size: 12px;
+        font-weight: 950;
+        color: rgba(13, 18, 38, 0.86);
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+      }
+
+      .flowList {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        max-height: calc(100vh - 190px);
+        overflow: auto;
+        padding-right: 6px;
+      }
+      .flowItem {
+        display: grid;
+        grid-template-columns: 52px 1fr;
+        gap: 10px;
+        padding: 10px;
+        border-radius: 16px;
+        border: 1px solid rgba(230, 232, 240, 0.95);
+        background: rgba(255, 255, 255, 0.92);
+        box-shadow: var(--shadow-sm);
+        text-decoration: none;
+      }
+      .flowItem:hover { border-color: rgba(15, 163, 177, 0.35); }
+      .flowItem.active {
+        border-color: rgba(30, 42, 120, 0.40);
+        background: linear-gradient(180deg, rgba(15, 163, 177, 0.10), rgba(255,255,255,0.96));
+      }
+      .flowNo {
+        height: 28px;
+        border-radius: 999px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 950;
+        font-size: 12px;
+        background: rgba(30, 42, 120, 0.10);
+        border: 1px solid rgba(30, 42, 120, 0.16);
+        color: rgba(13, 18, 38, 0.92);
+      }
+      .flowTitle { font-weight: 950; font-size: 13px; line-height: 1.25; }
+      .flowMeta { margin-top: 2px; color: var(--muted); font-size: 11px; line-height: 1.35; }
+
+      .stage {
+        border-radius: var(--r24);
+        border: 1px solid rgba(230, 232, 240, 0.95);
+        background: rgba(255, 255, 255, 0.60);
+        box-shadow: var(--shadow-md);
+        min-height: calc(100vh - 36px);
+        padding: 12px;
+        overflow: hidden;
+      }
+
+      .page { display: none; }
+      .page.active { display: block; }
+
+      .layout {
+        display: grid;
+        grid-template-columns: 430px 1fr;
+        gap: 14px;
+        align-items: start;
+      }
+
+      /* Device */
+      .deviceWrap { display: grid; place-items: center; }
+      .device { width: var(--w); }
+      .deviceBezel {
+        border-radius: 52px;
+        background: rgba(13, 18, 38, 0.92);
+        padding: 12px;
+        box-shadow: var(--shadow-lg);
+      }
+      .deviceTop {
+        height: var(--safeTop);
+        border-radius: 38px 38px 18px 18px;
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.10), rgba(255, 255, 255, 0.03));
+        border: 1px solid rgba(255, 255, 255, 0.10);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 12px;
+        color: rgba(255, 255, 255, 0.92);
+        gap: 10px;
+      }
+      .left { display: flex; gap: 10px; align-items: center; min-width: 0; }
+      .logo { height: 18px; width: auto; object-fit: contain; display: block; }
+      .logoFallback {
+        display: none;
+        width: 22px;
+        height: 22px;
+        border-radius: 10px;
+        background: radial-gradient(circle at 30% 30%, rgba(15, 163, 177, 1), rgba(30, 42, 120, 1));
+        border: 1px solid rgba(255, 255, 255, 0.18);
+      }
+      .screenTitle {
+        font-size: 12px;
+        font-weight: 950;
+        letter-spacing: 0.2px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 240px;
+      }
+      .crumb {
+        margin-top: 2px;
+        font-size: 10px;
+        color: rgba(255, 255, 255, 0.72);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 240px;
+      }
+      .badge {
+        height: 22px;
+        padding: 0 10px;
+        border-radius: 999px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 950;
+        font-size: 11px;
+        background: rgba(242, 193, 78, 0.18);
+        border: 1px solid rgba(242, 193, 78, 0.26);
+        color: rgba(255, 255, 255, 0.92);
+        white-space: nowrap;
+      }
+
+      .deviceBody {
+        height: var(--h);
+        border-radius: 18px;
+        background:
+          radial-gradient(700px 420px at 20% 0%, rgba(15, 163, 177, 0.20), transparent 55%),
+          radial-gradient(700px 420px at 80% 5%, rgba(30, 42, 120, 0.16), transparent 55%),
+          linear-gradient(180deg, #ffffff, var(--bg));
+        border: 1px solid rgba(255, 255, 255, 0.10);
+        overflow: hidden;
+        padding: 14px 12px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .deviceBottom {
+        height: var(--safeBot);
+        margin-top: 10px;
+        border-radius: 18px 18px 38px 38px;
+        background: rgba(255, 255, 255, 0.94);
+        border: 1px solid rgba(230, 232, 240, 0.95);
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 8px;
+        align-items: center;
+        justify-items: center;
+        padding: 6px 10px;
+        box-shadow: var(--shadow-sm);
+      }
+      .tab {
+        font-weight: 950;
+        font-size: 11px;
+        color: rgba(13, 18, 38, 0.86);
+        padding: 6px 10px;
+        border-radius: 12px;
+        border: 1px solid rgba(230, 232, 240, 0.95);
+        background: rgba(255, 255, 255, 0.92);
+        text-decoration: none;
+      }
+
+      /* In-device UI */
+      .card {
+        background: rgba(255, 255, 255, 0.92);
+        border: 1px solid rgba(230, 232, 240, 0.95);
+        border-radius: 18px;
+        box-shadow: var(--shadow-sm);
+        padding: 12px;
+      }
+      .card.warn { background: rgba(242, 193, 78, 0.14); border-color: rgba(242, 193, 78, 0.28); }
+      .card.ok { background: rgba(3, 152, 85, 0.10); border-color: rgba(3, 152, 85, 0.22); }
+      .h2 { font-weight: 950; font-size: 14px; }
+      .muted { color: var(--muted); font-size: 12px; line-height: 1.45; margin-top: 6px; }
+      .row { margin-top: 10px; display: flex; gap: 8px; flex-wrap: wrap; }
+      .btn {
+        height: 38px;
+        padding: 0 12px;
+        border-radius: 14px;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 950;
+        border: 1px solid rgba(230, 232, 240, 0.95);
+        background: rgba(255, 255, 255, 0.92);
+        color: rgba(13, 18, 38, 0.92);
+        box-shadow: var(--shadow-sm);
+        cursor: pointer;
+      }
+      .btn.primary {
+        background: linear-gradient(135deg, rgba(30, 42, 120, 0.96), rgba(15, 163, 177, 0.92));
+        border-color: rgba(30, 42, 120, 0.18);
+        color: #ffffff;
+      }
+      .tile {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        padding: 10px 10px;
+        border-radius: 16px;
+        border: 1px solid rgba(230, 232, 240, 0.95);
+        background: rgba(255, 255, 255, 0.92);
+      }
+      .tile + .tile { margin-top: 8px; }
+      .tileTitle { font-weight: 950; font-size: 12px; }
+      .tileMeta { margin-top: 3px; font-size: 11px; color: var(--muted); }
+      .tileRight { color: rgba(13, 18, 38, 0.45); font-weight: 950; }
+      .field { margin-top: 10px; }
+      .field label { display: block; font-size: 11px; font-weight: 900; color: rgba(13, 18, 38, 0.78); margin-bottom: 6px; }
+      .input {
+        height: 40px;
+        border-radius: 14px;
+        border: 1px solid rgba(230, 232, 240, 0.95);
+        background: rgba(255, 255, 255, 0.92);
+        display: flex;
+        align-items: center;
+        padding: 0 12px;
+        color: rgba(13, 18, 38, 0.78);
+        font-weight: 800;
+      }
+      .linkRow { margin-top: 10px; font-size: 12px; }
+      .linkRow a { color: rgba(30, 42, 120, 0.92); font-weight: 900; text-decoration: none; }
+      .otpRow { display: flex; gap: 8px; justify-content: center; margin: 12px 0; }
+      .otp {
+        width: 38px;
+        height: 44px;
+        border-radius: 14px;
+        border: 1px solid rgba(230, 232, 240, 0.95);
+        background: rgba(255, 255, 255, 0.92);
+        display: grid;
+        place-items: center;
+        font-weight: 950;
+      }
+      .hero { flex: 1; display: grid; place-items: center; text-align: center; padding: 20px 10px; }
+      .heroLogo { height: 34px; width: auto; object-fit: contain; display: block; margin-bottom: 10px; }
+      .heroLogoFallback {
+        display: none;
+        width: 56px;
+        height: 56px;
+        border-radius: 18px;
+        background: radial-gradient(circle at 30% 30%, rgba(15, 163, 177, 1), rgba(30, 42, 120, 1));
+        border: 1px solid rgba(13, 18, 38, 0.08);
+        box-shadow: var(--shadow-sm);
+        margin-bottom: 10px;
+      }
+      .heroTitle { font-weight: 950; font-size: 18px; }
+      .heroSub { margin-top: 6px; color: var(--muted); font-size: 12px; }
+
+      /* Info panel */
+      .info {
+        border-radius: var(--r24);
+        background: rgba(255, 255, 255, 0.86);
+        border: 1px solid rgba(230, 232, 240, 0.95);
+        box-shadow: var(--shadow-md);
+        padding: 14px;
+        overflow: auto;
+        max-height: calc(100vh - 72px);
+      }
+      .infoHead { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+      .infoTitle { font-weight: 950; font-size: 14px; }
+      .infoSub { margin-top: 4px; color: var(--muted); font-size: 12px; line-height: 1.35; }
+      .infoBlock { margin-top: 12px; }
+      .ruleList { margin: 8px 0 0 18px; padding: 0; color: rgba(13, 18, 38, 0.86); font-size: 12px; line-height: 1.5; }
+
+      .usCard {
+        margin-top: 10px;
+        border-radius: 16px;
+        border: 1px solid rgba(230, 232, 240, 0.95);
+        background: rgba(255, 255, 255, 0.94);
+        padding: 10px;
+      }
+      .usHead { display: flex; justify-content: space-between; gap: 8px; align-items: baseline; }
+      .usCode { font-weight: 950; font-size: 12px; color: rgba(13, 18, 38, 0.92); }
+      .usMeta { font-size: 10px; color: var(--muted); text-align: right; }
+      .usTitle { margin-top: 6px; font-weight: 950; font-size: 12px; }
+      .usDesc { margin-top: 6px; color: rgba(13, 18, 38, 0.76); font-size: 11px; line-height: 1.5; }
+      details.usAC {
+        margin-top: 8px;
+        padding: 8px;
+        border-radius: 12px;
+        background: rgba(15, 163, 177, 0.08);
+        border: 1px solid rgba(15, 163, 177, 0.14);
+      }
+      details.usAC summary { cursor: pointer; font-weight: 950; font-size: 11px; }
+      details.usAC ul { margin: 8px 0 0 18px; padding: 0; font-size: 11px; line-height: 1.5; color: rgba(13, 18, 38, 0.86); }
+
+      @media (max-width: 1080px) {
+        .wrap { grid-template-columns: 1fr; }
+        .layout { grid-template-columns: 1fr; }
+        .info { max-height: none; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <aside class="panel">
+        <h1 class="h1">Modül Sistemi (Faz-1)</h1>
+        <div class="sub">Kategori bazında lineer prototype • İçerik sadece mobil ekran içinde</div>
+        <div class="pillRow" style="margin-top:10px;">
+          <a class="pill" href="index.html">Home</a>
+          <a class="pill" href="../DesignsByInventory/index.html">Inventory</a>
+        </div>
+
+        <div class="secTitle">Flow Listesi</div>
+        <div class="flowList" id="flowList">
+          <a class="flowItem" href="#UF22-S1-moduller" data-jump="UF22-S1-moduller"><div class="flowNo">#22</div><div class="flowText"><div class="flowTitle">Modüller: liste → önkoşul → görev → gönder → kilit açıldı</div><div class="flowMeta">Yolculuklarım -&gt; Modüller → (Devam/Kilitli) → Modül detayı (önkoşullar) → Görev ekranı → Gönder ve Tamamla → “Kilit açıldı”</div></div></a>
+<a class="flowItem" href="#UF22A-S1-gecit" data-jump="UF22A-S1-gecit"><div class="flowNo">#22A</div><div class="flowText"><div class="flowTitle">Koç değerlendirmesi ile kilit (Koçluk add-on)</div><div class="flowMeta">(Modül tamamlandı) → “Koç yorumu bekleniyor” → (koç onayı gelince) kilit açılır / (opsiyonel) koçsuz devam seçeneği</div></div></a>
+<a class="flowItem" href="#UF23-S1-moduller" data-jump="UF23-S1-moduller"><div class="flowNo">#23</div><div class="flowText"><div class="flowTitle">İlerleme özeti + kilit geçmişi + sertifika → paylaşım</div><div class="flowMeta">Yolculuklarım -&gt; Modüller → İlerleme Özeti → Kilit Geçmişi → Sertifikayı Gör → Paylaş (önizleme ile)</div></div></a>
+        </div>
+      </aside>
+
+      <main class="stage" id="stage">
+        
+        <section class="page" id="UF22-S1-moduller" data-flow="22">
+          <div class="layout">
+            <div class="deviceWrap">
+              <div class="device">
+                <div class="deviceBezel">
+                  <div class="deviceTop">
+                    <div class="left">
+                      <img class="logo" src="../Designs/assets/pst-coaching-logo.png" alt="PST Coaching" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                      <div class="logoFallback" aria-hidden="true"></div>
+                      <div class="topText">
+                        <div class="screenTitle">Modüller</div>
+                        <div class="crumb">Yolculuklarım</div>
+                      </div>
+                    </div>
+                    <div class="right"><div class="badge">Flow 22</div></div>
+                  </div>
+
+                  <div class="deviceBody">
+                    
+        <div class="card">
+          <div class="h2">Modüller</div>
+          <div class="muted">Yolculuklarım</div>
+        </div>
+        <div class="card">
+          
+        <div class="tile">
+          <div class="tileText">
+            <div class="tileTitle">Örnek öğe</div>
+            <div class="tileMeta">Liste / Detay / Aksiyon</div>
+          </div>
+          <div class="tileRight">›</div>
+        </div>
+          
+        <div class="tile">
+          <div class="tileText">
+            <div class="tileTitle">Örnek öğe</div>
+            <div class="tileMeta">Loading/Empty/Error/Offline durumları prod-ready düşünülür</div>
+          </div>
+          <div class="tileRight">›</div>
+        </div>
+        </div>
+        <div class="row"><button class="btn primary" data-go="UF22-S2-kilitli-erisim">Devam</button></div>
+                  </div>
+
+                  <div class="deviceBottom">
+                    <a class="tab" href="index.html">Home</a>
+                    <a class="tab" href="../DesignsByInventory/index.html">Inventory</a>
+                    <a class="tab" href="#" data-go="UF22-S1-moduller">Kategori Başı</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <aside class="info">
+              <div class="infoHead">
+                <div>
+                  <div class="infoTitle">Modül Sistemi (Faz-1)</div>
+                  <div class="infoSub">Flow 22 — Modüller: liste → önkoşul → görev → gönder → kilit açıldı</div>
+                </div>
+                <div class="pillRow">
+                  <a class="pill" href="index.html">Home</a>
+                  <a class="pill" href="../DesignsByInventory/index.html">Inventory</a>
+                </div>
+              </div>
+
+              <div class="infoBlock">
+                <div class="secTitle">Kurallar</div>
+                <ul class="ruleList"><li>taslak autosave.</li>
+<li>deadline varsa şeffaf.</li>
+<li>eksik önkoşulda hızlı yönlendirme + hatırlatıcıya gidiş.</li></ul>
+              </div>
+
+              <div class="infoBlock">
+                <div class="secTitle">US & Acceptance Criteria</div>
+                
+                <div class="usCard">
+                  <div class="usHead">
+                    <div class="usCode">US-15.1</div>
+                    <div class="usMeta">EPIC 15 — Modül Sistemi ve Kilitli İlerleme • Faz-1 • Danışan</div>
+                  </div>
+                  <div class="usTitle">Yolculuk modül listesi (kilitli ilerleme)</div>
+                  <div class="usDesc">Danışan olarak, bir yolculuğun modül listesini ve hangi modüllerin kilitli olduğunu görmek istiyorum; böylece sıradaki adımı net anlayabileyim.</div>
+                  <details class="usAC" open>
+                    <summary>Acceptance Criteria</summary>
+                    <ul><li>Önkoşul: Yolculuğa kayıtlıyım. Ne zaman yolculuk ekranını açarsam, o zaman modül listesi durumlarıyla (Tamamlandı/Devam/Kilitli) görünür.</li>
+<li>Önkoşul: Kilitli modül var. Ne zaman kilitli bir modüle dokunursam, o zaman kilit sebebi ve önkoşullar gösterilir.</li>
+<li>Önkoşul: Devam ettiğim modül var. Ne zaman “Devam” durumundaki modüle dokunursam, o zaman modül detayına geçerim.</li></ul>
+                  </details>
+                </div>
+
+                <div class="usCard">
+                  <div class="usHead">
+                    <div class="usCode">US-15.2</div>
+                    <div class="usMeta">EPIC 15 — Modül Sistemi ve Kilitli İlerleme • Faz-1 • Danışan</div>
+                  </div>
+                  <div class="usTitle">Modül önkoşulları ve kilit kuralları (şeffaf açıklama)</div>
+                  <div class="usDesc">Danışan olarak, bir modülün açılma şartlarını (önkoşullarını) açıkça görmek istiyorum; böylece neyi tamamlamam gerektiğini bilebileyim.</div>
+                  <details class="usAC" open>
+                    <summary>Acceptance Criteria</summary>
+                    <ul><li>Önkoşul: Modül detayındayım. Ne zaman ekran açılırsa, o zaman önkoşullar checklist olarak görünür.</li>
+<li>Önkoşul: Kural var. Ne zaman “Açılma kuralı” alanına bakarsam, o zaman (örn. “Yorum teslim edilmeden sonraki gün/modül açılmaz”) net biçimde yazılır.</li>
+<li>Önkoşul: Eksik önkoşul var. Ne zaman eksik madde varsa, o zaman kullanıcı ilgili göreve hızlı aksiyonla yönlendirilir (örn. “Yorumu Tamamla”).</li></ul>
+                  </details>
+                </div>
+
+                <div class="usCard">
+                  <div class="usHead">
+                    <div class="usCode">US-15.3</div>
+                    <div class="usMeta">EPIC 15 — Modül Sistemi ve Kilitli İlerleme • Faz-1 • Danışan</div>
+                  </div>
+                  <div class="usTitle">Görev tamamlama ve gönderim (taslak + zaman kuralı)</div>
+                  <div class="usDesc">Danışan olarak, modül görevlerini tamamlayıp göndermek istiyorum; böylece kilit açılıp bir sonraki aşamaya geçebileyim.</div>
+                  <details class="usAC" open>
+                    <summary>Acceptance Criteria</summary>
+                    <ul><li>Önkoşul: Görev ekranındayım. Ne zaman sorular görüntülenirse, o zaman kullanıcı yanıt alanlarını doldurabilir.</li>
+<li>Önkoşul: Yazmaya başladım. Ne zaman uygulamadan çıkarsam veya bağlantı kesilirse, o zaman yanıtım otomatik taslak olarak kaydedilir.</li>
+<li>Önkoşul: Göndermek istiyorum. Ne zaman “Gönder ve Tamamla” dersem, o zaman gönderim doğrulanır ve görev “tamamlandı” durumuna geçer.</li>
+<li>Önkoşul: Deadline var. Ne zaman 23:59 sonrası gönderim denenirse, o zaman kural davranışı (gecikme/ertesi gün açılmama vb.) kullanıcıya net açıklama ile gösterilir (ürün kararına göre).</li></ul>
+                  </details>
+                </div>
+
+                <div class="usCard">
+                  <div class="usHead">
+                    <div class="usCode">US-15.4</div>
+                    <div class="usMeta">EPIC 15 — Modül Sistemi ve Kilitli İlerleme • Faz-1 • Danışan</div>
+                  </div>
+                  <div class="usTitle">Kilit açıldı ve sonraki adım (08:00 kuralı dahil)</div>
+                  <div class="usDesc">Danışan olarak, görevleri bitirdiğimde yeni aşamanın açıldığını görmek ve devam etmek istiyorum.</div>
+                  <details class="usAC" open>
+                    <summary>Acceptance Criteria</summary>
+                    <ul><li>Önkoşul: Tüm önkoşullar tamam. Ne zaman son gerekli görevi tamamlayıp gönderirsem, o zaman “Kilit açıldı” geri bildirimi gösterilir.</li>
+<li>Önkoşul: Yeni gün kuralı var. Ne zaman yeni içerik 08:00’de aktive oluyorsa, o zaman kullanıcıya “Yeni not 08:00’de aktif” bilgisi gösterilir.</li>
+<li>Önkoşul: Devam edeceğim. Ne zaman “Devam Et” dersem, o zaman sıradaki açık içeriğe yönlendirilirim.</li></ul>
+                  </details>
+                </div>
+
+                <div class="usCard">
+                  <div class="usHead">
+                    <div class="usCode">US-15.5</div>
+                    <div class="usMeta">EPIC 15 — Modül Sistemi ve Kilitli İlerleme • Faz-1 • Danışan</div>
+                  </div>
+                  <div class="usTitle">Kilitli aşama (eksik görev) ve nazik yönlendirme</div>
+                  <div class="usDesc">Danışan olarak, bir aşama kilitliyse nedenini ve ne yapmam gerektiğini görmek istiyorum; böylece takılmadan ilerleyebileyim.</div>
+                  <details class="usAC" open>
+                    <summary>Acceptance Criteria</summary>
+                    <ul><li>Önkoşul: Kilitli içerik açmaya çalıştım. Ne zaman kilitli aşamaya girersem, o zaman kilit nedeni “tek cümle” + detay (kural) ile gösterilir.</li>
+<li>Önkoşul: Eksik görev var. Ne zaman “Yoruma Git” dersem, o zaman eksik görevin ekranı açılır.</li>
+<li>Önkoşul: Yardım istiyorum. Ne zaman “Hatırlatıcı ayarla” dersem, o zaman ilgili görev için bildirim ayarı açılır.</li></ul>
+                  </details>
+                </div>
+              </div>
+            </aside>
+          </div>
+        </section>
+
+        <section class="page" id="UF22-S2-kilitli-erisim" data-flow="22">
+          <div class="layout">
+            <div class="deviceWrap">
+              <div class="device">
+                <div class="deviceBezel">
+                  <div class="deviceTop">
+                    <div class="left">
+                      <img class="logo" src="../Designs/assets/pst-coaching-logo.png" alt="PST Coaching" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                      <div class="logoFallback" aria-hidden="true"></div>
+                      <div class="topText">
+                        <div class="screenTitle">Kilitli Erişim</div>
+                        <div class="crumb">Modüller: liste → önkoşul → görev → gönder → kilit açıldı</div>
+                      </div>
+                    </div>
+                    <div class="right"><div class="badge">Flow 22</div></div>
+                  </div>
+
+                  <div class="deviceBody">
+                    
+        <div class="card">
+          <div class="h2">Kilitli Erişim</div>
+          <div class="muted">Modüller: liste → önkoşul → görev → gönder → kilit açıldı</div>
+        </div>
+        <div class="card">
+          
+        <div class="tile">
+          <div class="tileText">
+            <div class="tileTitle">Örnek öğe</div>
+            <div class="tileMeta">Liste / Detay / Aksiyon</div>
+          </div>
+          <div class="tileRight">›</div>
+        </div>
+          
+        <div class="tile">
+          <div class="tileText">
+            <div class="tileTitle">Örnek öğe</div>
+            <div class="tileMeta">Loading/Empty/Error/Offline durumları prod-ready düşünülür</div>
+          </div>
+          <div class="tileRight">›</div>
+        </div>
+        </div>
+        <div class="row"><button class="btn" data-go="UF22-S1-moduller">Geri</button><button class="btn primary" data-go="UF22-S3-modul-detayi-onkosullar">Devam</button></div>
+                  </div>
+
+                  <div class="deviceBottom">
+                    <a class="tab" href="index.html">Home</a>
+                    <a class="tab" href="../DesignsByInventory/index.html">Inventory</a>
+                    <a class="tab" href="#" data-go="UF22-S1-moduller">Kategori Başı</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <aside class="info">
+              <div class="infoHead">
+                <div>
+                  <div class="infoTitle">Modül Sistemi (Faz-1)</div>
+                  <div class="infoSub">Flow 22 — Modüller: liste → önkoşul → görev → gönder → kilit açıldı</div>
+                </div>
+                <div class="pillRow">
+                  <a class="pill" href="index.html">Home</a>
+                  <a class="pill" href="../DesignsByInventory/index.html">Inventory</a>
+                </div>
+              </div>
+
+              <div class="infoBlock">
+                <div class="secTitle">Kurallar</div>
+                <ul class="ruleList"><li>taslak autosave.</li>
+<li>deadline varsa şeffaf.</li>
+<li>eksik önkoşulda hızlı yönlendirme + hatırlatıcıya gidiş.</li></ul>
+              </div>
+
+              <div class="infoBlock">
+                <div class="secTitle">US & Acceptance Criteria</div>
+                
+                <div class="usCard">
+                  <div class="usHead">
+                    <div class="usCode">US-15.1</div>
+                    <div class="usMeta">EPIC 15 — Modül Sistemi ve Kilitli İlerleme • Faz-1 • Danışan</div>
+                  </div>
+                  <div class="usTitle">Yolculuk modül listesi (kilitli ilerleme)</div>
+                  <div class="usDesc">Danışan olarak, bir yolculuğun modül listesini ve hangi modüllerin kilitli olduğunu görmek istiyorum; böylece sıradaki adımı net anlayabileyim.</div>
+                  <details class="usAC" open>
+                    <summary>Acceptance Criteria</summary>
+                    <ul><li>Önkoşul: Yolculuğa kayıtlıyım. Ne zaman yolculuk ekranını açarsam, o zaman modül listesi durumlarıyla (Tamamlandı/Devam/Kilitli) görünür.</li>
+<li>Önkoşul: Kilitli modül var. Ne zaman kilitli bir modüle dokunursam, o zaman kilit sebebi ve önkoşullar gösterilir.</li>
+<li>Önkoşul: Devam ettiğim modül var. Ne zaman “Devam” durumundaki modüle dokunursam, o zaman modül detayına geçerim.</li></ul>
+                  </details>
+                </div>
+
+                <div class="usCard">
+                  <div class="usHead">
+                    <div class="usCode">US-15.2</div>
+                    <div class="usMeta">EPIC 15 — Modül Sistemi ve Kilitli İlerleme • Faz-1 • Danışan</div>
+                  </div>
+                  <div class="usTitle">Modül önkoşulları ve kilit kuralları (şeffaf açıklama)</div>
+                  <div class="usDesc">Danışan olarak, bir modülün açılma şartlarını (önkoşullarını) açıkça görmek istiyorum; böylece neyi tamamlamam gerektiğini bilebileyim.</div>
+                  <details class="usAC" open>
+                    <summary>Acceptance Criteria</summary>
+                    <ul><li>Önkoşul: Modül detayındayım. Ne zaman ekran açılırsa, o zaman önkoşullar checklist olarak görünür.</li>
+<li>Önkoşul: Kural var. Ne zaman “Açılma kuralı” alanına bakarsam, o zaman (örn. “Yorum teslim edilmeden sonraki gün/modül açılmaz”) net biçimde yazılır.</li>
+<li>Önkoşul: Eksik önkoşul var. Ne zaman eksik madde varsa, o zaman kullanıcı ilgili göreve hızlı aksiyonla yönlendirilir (örn. “Yorumu Tamamla”).</li></ul>
+                  </details>
+                </div>
+
+                <div class="usCard">
+                  <div class="usHead">
+                    <div class="usCode">US-15.3</div>
+                    <div class="usMeta">EPIC 15 — Modül Sistemi ve Kilitli İlerleme • Faz-1 • Danışan</div>
+                  </div>
+                  <div class="usTitle">Görev tamamlama ve gönderim (taslak + zaman kuralı)</div>
+                  <div class="usDesc">Danışan olarak, modül görevlerini tamamlayıp göndermek istiyorum; böylece kilit açılıp bir sonraki aşamaya geçebileyim.</div>
+                  <details class="usAC" open>
+                    <summary>Acceptance Criteria</summary>
+                    <ul><li>Önkoşul: Görev ekranındayım. Ne zaman sorular görüntülenirse, o zaman kullanıcı yanıt alanlarını doldurabilir.</li>
+<li>Önkoşul: Yazmaya başladım. Ne zaman uygulamadan çıkarsam veya bağlantı kesilirse, o zaman yanıtım otomatik taslak olarak kaydedilir.</li>
+<li>Önkoşul: Göndermek istiyorum. Ne zaman “Gönder ve Tamamla” dersem, o zaman gönderim doğrulanır ve görev “tamamlandı” durumuna geçer.</li>
+<li>Önkoşul: Deadline var. Ne zaman 23:59 sonrası gönderim denenirse, o zaman kural davranışı (gecikme/ertesi gün açılmama vb.) kullanıcıya net açıklama ile gösterilir (ürün kararına göre).</li></ul>
+                  </details>
+                </div>
+
+                <div class="usCard">
+                  <div class="usHead">
+                    <div class="usCode">US-15.4</div>
+                    <div class="usMeta">EPIC 15 — Modül Sistemi ve Kilitli İlerleme • Faz-1 • Danışan</div>
+                  </div>
+                  <div class="usTitle">Kilit açıldı ve sonraki adım (08:00 kuralı dahil)</div>
+                  <div class="usDesc">Danışan olarak, görevleri bitirdiğimde yeni aşamanın açıldığını görmek ve devam etmek istiyorum.</div>
+                  <details class="usAC" open>
+                    <summary>Acceptance Criteria</summary>
+                    <ul><li>Önkoşul: Tüm önkoşullar tamam. Ne zaman son gerekli görevi tamamlayıp gönderirsem, o zaman “Kilit açıldı” geri bildirimi gösterilir.</li>
+<li>Önkoşul: Yeni gün kuralı var. Ne zaman yeni içerik 08:00’de aktive oluyorsa, o zaman kullanıcıya “Yeni not 08:00’de aktif” bilgisi gösterilir.</li>
+<li>Önkoşul: Devam edeceğim. Ne zaman “Devam Et” dersem, o zaman sıradaki açık içeriğe yönlendirilirim.</li></ul>
+                  </details>
+                </div>
+
+                <div class="usCard">
+                  <div class="usHead">
+                    <div class="usCode">US-15.5</div>
+                    <div class="usMeta">EPIC 15 — Modül Sistemi ve Kilitli İlerleme • Faz-1 • Danışan</div>
+                  </div>
+                  <div class="usTitle">Kilitli aşama (eksik görev) ve nazik yönlendirme</div>
+                  <div class="usDesc">Danışan olarak, bir aşama kilitliyse nedenini ve ne yapmam gerektiğini görmek istiyorum; böylece takılmadan ilerleyebileyim.</div>
+                  <details class="usAC" open>
+                    <summary>Acceptance Criteria</summary>
+                    <ul><li>Önkoşul: Kilitli içerik açmaya çalıştım. Ne zaman kilitli aşamaya girersem, o zaman kilit nedeni “tek cümle” + detay (kural) ile gösterilir.</li>
+<li>Önkoşul: Eksik görev var. Ne zaman “Yoruma Git” dersem, o zaman eksik görevin ekranı açılır.</li>
+<li>Önkoşul: Yardım istiyorum. Ne zaman “Hatırlatıcı ayarla” dersem, o zaman ilgili görev için bildirim ayarı açılır.</li></ul>
+                  </details>
+                </div>
+              </div>
+            </aside>
+          </div>
+        </section>
+
+        <section class="page" id="UF22-S3-modul-detayi-onkosullar" data-flow="22">
+          <div class="layout">
+            <div class="deviceWrap">
+              <div class="device">
+                <div class="deviceBezel">
+                  <div class="deviceTop">
+                    <div class="left">
+                      <img class="logo" src="../Designs/assets/pst-coaching-logo.png" alt="PST Coaching" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                      <div class="logoFallback" aria-hidden="true"></div>
+                      <div class="topText">
+                        <div class="screenTitle">Modül detayı (önkoşullar)</div>
+                        <div class="crumb">Modüller: liste → önkoşul → görev → gönder → kilit açıldı</div>
+                      </div>
+                    </div>
+                    <div class="right"><div class="badge">Flow 22</div></div>
+                  </div>
+
+                  <div class="deviceBody">
+                    
+        <div class="card">
+          <div class="h2">Modül detayı (önkoşullar)</div>
+          <div class="muted">Modüller: liste → önkoşul → görev → gönder → kilit açıldı</div>
+        </div>
+        <div class="card">
+          
+        <div class="tile">
+          <div class="tileText">
+            <div class="tileTitle">Örnek öğe</div>
+            <div class="tileMeta">Liste / Detay / Aksiyon</div>
+          </div>
+          <div class="tileRight">›</div>
+        </div>
+          
+        <div class="tile">
+          <div class="tileText">
+            <div class="tileTitle">Örnek öğe</div>
+            <div class="tileMeta">Loading/Empty/Error/Offline durumları prod-ready düşünülür</div>
+          </div>
+          <div class="tileRight">›</div>
+        </div>
+        </div>
+        <div class="row"><button class="btn" data-go="UF22-S2-kilitli-erisim">Geri</button><button class="btn primary" data-go="UF22-S4-gorev-ekrani">Devam</button></div>
+                  </div>
+
+                  <div class="deviceBottom">
+                    <a class="tab" href="index.html">Home</a>
+                    <a class="tab" href="../DesignsByInventory/index.html">Inventory</a>
+                    <a class="tab" href="#" data-go="UF22-S1-moduller">Kategori Başı</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <aside class="info">
+              <div class="infoHead">
+                <div>
+                  <div class="infoTitle">Modül Sistemi (Faz-1)</div>
+                  <div class="infoSub">Flow 22 — Modüller: liste → önkoşul → görev → gönder → kilit açıldı</div>
+                </div>
+                <div class="pillRow">
+                  <a class="pill" href="index.html">Home</a>
+                  <a class="pill" href="../DesignsByInventory/index.html">Inventory</a>
+                </div>
+              </div>
+
+              <div class="infoBlock">
+                <div class="secTitle">Kurallar</div>
+                <ul class="ruleList"><li>taslak autosave.</li>
+<li>deadline varsa şeffaf.</li>
+<li>eksik önkoşulda hızlı yönlendirme + hatırlatıcıya gidiş.</li></ul>
+              </div>
+
+              <div class="infoBlock">
+                <div class="secTitle">US & Acceptance Criteria</div>
+                
+                <div class="usCard">
+                  <div class="usHead">
+                    <div class="usCode">US-15.1</div>
+                    <div class="usMeta">EPIC 15 — Modül Sistemi ve Kilitli İlerleme • Faz-1 • Danışan</div>
+                  </div>
+                  <div class="usTitle">Yolculuk modül listesi (kilitli ilerleme)</div>
+                  <div class="usDesc">Danışan olarak, bir yolculuğun modül listesini ve hangi modüllerin kilitli olduğunu görmek istiyorum; böylece sıradaki adımı net anlayabileyim.</div>
+                  <details class="usAC" open>
+                    <summary>Acceptance Criteria</summary>
+                    <ul><li>Önkoşul: Yolculuğa kayıtlıyım. Ne zaman yolculuk ekranını açarsam, o zaman modül listesi durumlarıyla (Tamamlandı/Devam/Kilitli) görünür.</li>
+<li>Önkoşul: Kilitli modül var. Ne zaman kilitli bir modüle dokunursam, o zaman kilit sebebi ve önkoşullar gösterilir.</li>
+<li>Önkoşul: Devam ettiğim modül var. Ne zaman “Devam” durumundaki modüle dokunursam, o zaman modül detayına geçerim.</li></ul>
+                  </details>
+                </div>
+
+                <div class="usCard">
+                  <div class="usHead">
+                    <div class="usCode">US-15.2</div>
+                    <div class="usMeta">EPIC 15 — Modül Sistemi ve Kilitli İlerleme • Faz-1 • Danışan</div>
+                  </div>
+                  <div class="usTitle">Modül önkoşulları ve kilit kuralları (şeffaf açıklama)</div>
+                  <div class="usDesc">Danışan olarak, bir modülün açılma şartlarını (önkoşullarını) açıkça görmek istiyorum; böylece neyi tamamlamam gerektiğini bilebileyim.</div>
+                  <details class="usAC" open>
+                    <summary>Acceptance Criteria</summary>
+                    <ul><li>Önkoşul: Modül detayındayım. Ne zaman ekran açılırsa, o zaman önkoşullar checklist olarak görünür.</li>
+<li>Önkoşul: Kural var. Ne zaman “Açılma kuralı” alanına bakarsam, o zaman (örn. “Yorum teslim edilmeden sonraki gün/modül açılmaz”) net biçimde yazılır.</li>
+<li>Önkoşul: Eksik önkoşul var. Ne zaman eksik madde varsa, o zaman kullanıcı ilgili göreve hızlı aksiyonla yönlendirilir (örn. “Yorumu Tamamla”).</li></ul>
+                  </details>
+                </div>
+
+                <div class="usCard">
+                  <div class="usHead">
+                    <div class="usCode">US-15.3</div>
+                    <div class="usMeta">EPIC 15 — Modül Sistemi ve Kilitli İlerleme • Faz-1 • Danışan</div>
+                  </div>
+                  <div class="usTitle">Görev tamamlama ve gönderim (taslak + zaman kuralı)</div>
+                  <div class="usDesc">Danışan olarak, modül görevlerini tamamlayıp göndermek istiyorum; böylece kilit açılıp bir sonraki aşamaya geçebileyim.</div>
+                  <details class="usAC" open>
+                    <summary>Acceptance Criteria</summary>
+                    <ul><li>Önkoşul: Görev ekranındayım. Ne zaman sorular görüntülenirse, o zaman kullanıcı yanıt alanlarını doldurabilir.</li>
+<li>Önkoşul: Yazmaya başladım. Ne zaman uygulamadan çıkarsam veya bağlantı kesilirse, o zaman yanıtım otomatik taslak olarak kaydedilir.</li>
+<li>Önkoşul: Göndermek istiyorum. Ne zaman “Gönder ve Tamamla” dersem, o zaman gönderim doğrulanır ve görev “tamamlandı” durumuna geçer.</li>
+<li>Önkoşul: Deadline var. Ne zaman 23:59 sonrası gönderim denenirse, o zaman kural davranışı (gecikme/ertesi gün açılmama vb.) kullanıcıya net açıklama ile gösterilir (ürün kararına göre).</li></ul>
+                  </details>
+                </div>
+
+                <div class="usCard">
+                  <div class="usHead">
+                    <div class="usCode">US-15.4</div>
+                    <div class="usMeta">EPIC 15 — Modül Sistemi ve Kilitli İlerleme • Faz-1 • Danışan</div>
+                  </div>
+                  <div class="usTitle">Kilit açıldı ve sonraki adım (08:00 kuralı dahil)</div>
+                  <div class="usDesc">Danışan olarak, görevleri bitirdiğimde yeni aşamanın açıldığını görmek ve devam etmek istiyorum.</div>
+                  <details class="usAC" open>
+                    <summary>Acceptance Criteria</summary>
+                    <ul><li>Önkoşul: Tüm önkoşullar tamam. Ne zaman son gerekli görevi tamamlayıp gönderirsem, o zaman “Kilit açıldı” geri bildirimi gösterilir.</li>
+<li>Önkoşul: Yeni gün kuralı var. Ne zaman yeni içerik 08:00’de aktive oluyorsa, o zaman kullanıcıya “Yeni not 08:00’de aktif” bilgisi gösterilir.</li>
+<li>Önkoşul: Devam edeceğim. Ne zaman “Devam Et” dersem, o zaman sıradaki açık içeriğe yönlendirilirim.</li></ul>
+                  </details>
+                </div>
+
+                <div class="usCard">
+                  <div class="usHead">
+                    <div class="usCode">US-15.5</div>
+                    <div class="usMeta">EPIC 15 — Modül Sistemi ve Kilitli İlerleme • Faz-1 • Danışan</div>
+                  </div>
+                  <div class="usTitle">Kilitli aşama (eksik görev) ve nazik yönlendirme</div>
+                  <div class="usDesc">Danışan olarak, bir aşama kilitliyse nedenini ve ne yapmam gerektiğini görmek istiyorum; böylece takılmadan ilerleyebileyim.</div>
+                  <details class="usAC" open>
+                    <summary>Acceptance Criteria</summary>
+                    <ul><li>Önkoşul: Kilitli içerik açmaya çalıştım. Ne zaman kilitli aşamaya girersem, o zaman kilit nedeni “tek cümle” + detay (kural) ile gösterilir.</li>
+<li>Önkoşul: Eksik görev var. Ne zaman “Yoruma Git” dersem, o zaman eksik görevin ekranı açılır.</li>
+<li>Önkoşul: Yardım istiyorum. Ne zaman “Hatırlatıcı ayarla” dersem, o zaman ilgili görev için bildirim ayarı açılır.</li></ul>
+                  </details>
+                </div>
+              </div>
+            </aside>
+          </div>
+        </section>
+
+        <section class="page" id="UF22-S4-gorev-ekrani" data-flow="22">
+          <div class="layout">
+            <div class="deviceWrap">
+              <div class="device">
+                <div class="deviceBezel">
+                  <div class="deviceTop">
+                    <div class="left">
+                      <img class="logo" src="../Designs/assets/pst-coaching-logo.png" alt="PST Coaching" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                      <div class="logoFallback" aria-hidden="true"></div>
+                      <div class="topText">
+                        <div class="screenTitle">Görev ekranı</div>
+                        <div class="crumb">Modüller: liste → önkoşul → görev → gönder → kilit açıldı</div>
+                      </div>
+                    </div>
+                    <div class="right"><div class="badge">Flow 22</div></div>
+                  </div>
+
+                  <div class="deviceBody">
+                    
+        <div class="card">
+          <div class="h2">Görev ekranı</div>
+          <div class="muted">Modüller: liste → önkoşul → görev → gönder → kilit açıldı</div>
+        </div>
+        <div class="card">
+          
+        <div class="tile">
+          <div class="tileText">
+            <div class="tileTitle">Örnek öğe</div>
+            <div class="tileMeta">Liste / Detay / Aksiyon</div>
+          </div>
+          <div class="tileRight">›</div>
+        </div>
+          
+        <div class="tile">
+          <div class="tileText">
+            <div class="tileTitle">Örnek öğe</div>
+            <div class="tileMeta">Loading/Empty/Error/Offline durumları prod-ready düşünülür</div>
+          </div>
+          <div class="tileRight">›</div>
+        </div>
+        </div>
+        <div class="row"><button class="btn" data-go="UF22-S3-modul-detayi-onkosullar">Geri</button><button class="btn primary" data-go="UF22-S5-gonder-ve-tamamla">Devam</button></div>
+                  </div>
+
+                  <div class="deviceBottom">
+                    <a class="tab" href="index.html">Home</a>
+                    <a class="tab" href="../DesignsByInventory/index.html">Inventory</a>
+                    <a class="tab" href="#" data-go="UF22-S1-moduller">Kategori Başı</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <aside class="info">
+              <div class="infoHead">
+                <div>
+                  <div class="infoTitle">Modül Sistemi (Faz-1)</div>
+                  <div class="infoSub">Flow 22 — Modüller: liste → önkoşul → görev → gönder → kilit açıldı</div>
+                </div>
+                <div class="pillRow">
+                  <a class="pill" href="index.html">Home</a>
+                  <a class="pill" href="../DesignsByInventory/index.html">Inventory</a>
+                </div>
+              </div>
+
+              <div class="infoBlock">
+                <div class="secTitle">Kurallar</div>
+                <ul class="ruleList"><li>taslak autosave.</li>
+<li>deadline varsa şeffaf.</li>
+<li>eksik önkoşulda hızlı yönlendirme + hatırlatıcıya gidiş.</li></ul>
+              </div>
+
+              <div class="infoBlock">
+                <div class="secTitle">US & Acceptance Criteria</div>
+                
+                <div class="usCard">
+                  <div class="usHead">
+                    <div class="usCode">US-15.1</div>
+                    <div class="usMeta">EPIC 15 — Modül Sistemi ve Kilitli İlerleme • Faz-1 • Danışan</div>
+                  </div>
+                  <div class="usTitle">Yolculuk modül listesi (kilitli ilerleme)</div>
+                  <div class="usDesc">Danışan olarak, bir yolculuğun modül listesini ve hangi modüllerin kilitli olduğunu görmek istiyorum; böylece sıradaki adımı net anlayabileyim.</div>
+                  <details class="usAC" open>
+                    <summary>Acceptance Criteria</summary>
+                    <ul><li>Önkoşul: Yolculuğa kayıtlıyım. Ne zaman yolculuk ekranını açarsam, o zaman modül listesi durumlarıyla (Tamamlandı/Devam/Kilitli) görünür.</li>
+<li>Önkoşul: Kilitli modül var. Ne zaman kilitli bir modüle dokunursam, o zaman kilit sebebi ve önkoşullar gösterilir.</li>
+<li>Önkoşul: Devam ettiğim modül var. Ne zaman “Devam” durumundaki modüle dokunursam, o zaman modül detayına geçerim.</li></ul>
+                  </details>
+                </div>
+
+                <div class="usCard">
+                  <div class="usHead">
+                    <div class="usCode">US-15.2</div>
+                    <div class="usMeta">EPIC 15 — Modül Sistemi ve Kilitli İlerleme • Faz-1 • Danışan</div>
+                  </div>
+                  <div class="usTitle">Modül önkoşulları ve kilit kuralları (şeffaf açıklama)</div>
+                  <div class="usDesc">Danışan olarak, bir modülün açılma şartlarını (önkoşullarını) açıkça görmek istiyorum; böylece neyi tamamlamam gerektiğini bilebileyim.</div>
+                  <details class="usAC" open>
+                    <summary>Acceptance Criteria</summary>
+                    <ul><li>Önkoşul: Modül detayındayım. Ne zaman ekran açılırsa, o zaman önkoşullar checklist olarak görünür.</li>
+<li>Önkoşul: Kural var. Ne zaman “Açılma kuralı” alanına bakarsam, o zaman (örn. “Yorum teslim edilmeden sonraki gün/modül açılmaz”) net biçimde yazılır.</li>
+<li>Önkoşul: Eksik önkoşul var. Ne zaman eksik madde varsa, o zaman kullanıcı ilgili göreve hızlı aksiyonla yönlendirilir (örn. “Yorumu Tamamla”).</li></ul>
+                  </details>
+                </div>
+
+                <div class="usCard">
+                  <div class="usHead">
+                    <div class="usCode">US-15.3</div>
+                    <div class="usMeta">EPIC 15 — Modül Sistemi ve Kilitli İlerleme • Faz-1 • Danışan</div>
+                  </div>
+                  <div class="usTitle">Görev tamamlama ve gönderim (taslak + zaman kuralı)</div>
+                  <div class="usDesc">Danışan olarak, modül görevlerini tamamlayıp göndermek istiyorum; böylece kilit açılıp bir sonraki aşamaya geçebileyim.</div>
+                  <details class="usAC" open>
+                    <summary>Acceptance Criteria</summary>
+                    <ul><li>Önkoşul: Görev ekranındayım. Ne zaman sorular görüntülenirse, o zaman kullanıcı yanıt alanlarını doldurabilir.</li>
+<li>Önkoşul: Yazmaya başladım. Ne zaman uygulamadan çıkarsam veya bağlantı kesilirse, o zaman yanıtım otomatik taslak olarak kaydedilir.</li>
+<li>Önkoşul: Göndermek istiyorum. Ne zaman “Gönder ve Tamamla” dersem, o zaman gönderim doğrulanır ve görev “tamamlandı” durumuna geçer.</li>
+<li>Önkoşul: Deadline var. Ne zaman 23:59 sonrası gönderim denenirse, o zaman kural davranışı (gecikme/ertesi gün açılmama vb.) kullanıcıya net açıklama ile gösterilir (ürün kararına göre).</li></ul>
+                  </details>
+                </div>
+
+                <div class="usCard">
+                  <div class="usHead">
+                    <div class="usCode">US-15.4</div>
+                    <div class="usMeta">EPIC 15 — Modül Sistemi ve Kilitli İlerleme • Faz-1 • Danışan</div>
+                  </div>
+                  <div class="usTitle">Kilit açıldı ve sonraki adım (08:00 kuralı dahil)</div>
+                  <div class="usDesc">Danışan olarak, görevleri bitirdiğimde yeni aşamanın açıldığını görmek ve devam etmek istiyorum.</div>
+                  <details class="usAC" open>
+                    <summary>Acceptance Criteria</summary>
+                    <ul><li>Önkoşul: Tüm önkoşullar tamam. Ne zaman son gerekli görevi tamamlayıp gönderirsem, o zaman “Kilit açıldı” geri bildirimi gösterilir.</li>
+<li>Önkoşul: Yeni gün kuralı var. Ne zaman yeni içerik 08:00’de aktive oluyorsa, o zaman kullanıcıya “Yeni not 08:00’de aktif” bilgisi gösterilir.</li>
+<li>Önkoşul: Devam edeceğim. Ne zaman “Devam Et” dersem, o zaman sıradaki açık içeriğe yönlendirilirim.</li></ul>
+                  </details>
+                </div>
+
+                <div class="usCard">
+                  <div class="usHead">
+                    <div class="usCode">US-15.5</div>
+                    <div class="usMeta">EPIC 15 — Modül Sistemi ve Kilitli İlerleme • Faz-1 • Danışan</div>
+                  </div>
+                  <div class="usTitle">Kilitli aşama (eksik görev) ve nazik yönlendirme</div>
+                  <div class="usDesc">Danışan olarak, bir aşama kilitliyse nedenini ve ne yapmam gerektiğini görmek istiyorum; böylece takılmadan ilerleyebileyim.</div>
+                  <details class="usAC" open>
+                    <summary>Acceptance Criteria</summary>
+                    <ul><li>Önkoşul: Kilitli içerik açmaya çalıştım. Ne zaman kilitli aşamaya girersem, o zaman kilit nedeni “tek cümle” + detay (kural) ile gösterilir.</li>
+<li>Önkoşul: Eksik görev var. Ne zaman “Yoruma Git” dersem, o zaman eksik görevin ekranı açılır.</li>
+<li>Önkoşul: Yardım istiyorum. Ne zaman “Hatırlatıcı ayarla” dersem, o zaman ilgili görev için bildirim ayarı açılır.</li></ul>
+                  </details>
+                </div>
+              </div>
+            </aside>
+          </div>
+        </section>
+
+        <section class="page" id="UF22-S5-gonder-ve-tamamla" data-flow="22">
+          <div class="layout">
+            <div class="deviceWrap">
+              <div class="device">
+                <div class="deviceBezel">
+                  <div class="deviceTop">
+                    <div class="left">
+                      <img class="logo" src="../Designs/assets/pst-coaching-logo.png" alt="PST Coaching" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                      <div class="logoFallback" aria-hidden="true"></div>
+                      <div class="topText">
+                        <div class="screenTitle">Gönder ve Tamamla</div>
+                        <div class="crumb">Modüller: liste → önkoşul → görev → gönder → kilit açıldı</div>
+                      </div>
+                    </div>
+                    <div class="right"><div class="badge">Flow 22</div></div>
+                  </div>
+
+                  <div class="deviceBody">
+                    
+        <div class="card">
+          <div class="h2">Gönder ve Tamamla</div>
+          <div class="muted">Modüller: liste → önkoşul → görev → gönder → kilit açıldı</div>
+        </div>
+        <div class="card">
+          
+        <div class="tile">
+          <div class="tileText">
+            <div class="tileTitle">Örnek öğe</div>
+            <div class="tileMeta">Liste / Detay / Aksiyon</div>
+          </div>
+          <div class="tileRight">›</div>
+        </div>
+          
+        <div class="tile">
+          <div class="tileText">
+            <div class="tileTitle">Örnek öğe</div>
+            <div class="tileMeta">Loading/Empty/Error/Offline durumları prod-ready düşünülür</div>
+          </div>
+          <div class="tileRight">›</div>
+        </div>
+        </div>
+        <div class="row"><button class="btn" data-go="UF22-S4-gorev-ekrani">Geri</button><button class="btn primary" data-go="UF22-S6-kilit-acildi">Devam</button></div>
+                  </div>
+
+                  <div class="deviceBottom">
+                    <a class="tab" href="index.html">Home</a>
+                    <a class="tab" href="../DesignsByInventory/index.html">Inventory</a>
+                    <a class="tab" href="#" data-go="UF22-S1-moduller">Kategori Başı</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <aside class="info">
+              <div class="infoHead">
+                <div>
+                  <div class="infoTitle">Modül Sistemi (Faz-1)</div>
+                  <div class="infoSub">Flow 22 — Modüller: liste → önkoşul → görev → gönder → kilit açıldı</div>
+                </div>
+                <div class="pillRow">
+                  <a class="pill" href="index.html">Home</a>
+                  <a class="pill" href="../DesignsByInventory/index.html">Inventory</a>
+                </div>
+              </div>
+
+              <div class="infoBlock">
+                <div class="secTitle">Kurallar</div>
+                <ul class="ruleList"><li>taslak autosave.</li>
+<li>deadline varsa şeffaf.</li>
+<li>eksik önkoşulda hızlı yönlendirme + hatırlatıcıya gidiş.</li></ul>
+              </div>
+
+              <div class="infoBlock">
+                <div class="secTitle">US & Acceptance Criteria</div>
+                
+                <div class="usCard">
+                  <div class="usHead">
+                    <div class="usCode">US-15.1</div>
+                    <div class="usMeta">EPIC 15 — Modül Sistemi ve Kilitli İlerleme • Faz-1 • Danışan</div>
+                  </div>
+                  <div class="usTitle">Yolculuk modül listesi (kilitli ilerleme)</div>
+                  <div class="usDesc">Danışan olarak, bir yolculuğun modül listesini ve hangi modüllerin kilitli olduğunu görmek istiyorum; böylece sıradaki adımı net anlayabileyim.</div>
+                  <details class="usAC" open>
+                    <summary>Acceptance Criteria</summary>
+                    <ul><li>Önkoşul: Yolculuğa kayıtlıyım. Ne zaman yolculuk ekranını açarsam, o zaman modül listesi durumlarıyla (Tamamlandı/Devam/Kilitli) görünür.</li>
+<li>Önkoşul: Kilitli modül var. Ne zaman kilitli bir modüle dokunursam, o zaman kilit sebebi ve önkoşullar gösterilir.</li>
+<li>Önkoşul: Devam ettiğim modül var. Ne zaman “Devam” durumundaki modüle dokunursam, o zaman modül detayına geçerim.</li></ul>
+                  </details>
+                </div>
+
+                <div class="usCard">
+                  <div class="usHead">
+                    <div class="usCode">US-15.2</div>
+                    <div class="usMeta">EPIC 15 — Modül Sistemi ve Kilitli İlerleme • Faz-1 • Danışan</div>
+                  </div>
+                  <div class="usTitle">Modül önkoşulları ve kilit kuralları (şeffaf açıklama)</div>
+                  <div class="usDesc">Danışan olarak, bir modülün açılma şartlarını (önkoşullarını) açıkça görmek istiyorum; böylece neyi tamamlamam gerektiğini bilebileyim.</div>
+                  <details class="usAC" open>
+                    <summary>Acceptance Criteria</summary>
+                    <ul><li>Önkoşul: Modül detayındayım. Ne zaman ekran açılırsa, o zaman önkoşullar checklist olarak görünür.</li>
+<li>Önkoşul: Kural var. Ne zaman “Açılma kuralı” alanına bakarsam, o zaman (örn. “Yorum teslim edilmeden sonraki gün/modül açılmaz”) net biçimde yazılır.</li>
+<li>Önkoşul: Eksik önkoşul var. Ne zaman eksik madde varsa, o zaman kullanıcı ilgili göreve hızlı aksiyonla yönlendirilir (örn. “Yorumu Tamamla”).</li></ul>
+                  </details>
+                </div>
+
+                <div class="usCard">
+                  <div class="usHead">
+                    <div class="usCode">US-15.3</div>
+                    <div class="usMeta">EPIC 15 — Modül Sistemi ve Kilitli İlerleme • Faz-1 • Danışan</div>
+                  </div>
+                  <div class="usTitle">Görev tamamlama ve gönderim (taslak + zaman kuralı)</div>
+                  <div class="usDesc">Danışan olarak, modül görevlerini tamamlayıp göndermek istiyorum; böylece kilit açılıp bir sonraki aşamaya geçebileyim.</div>
+                  <details class="usAC" open>
+                    <summary>Acceptance Criteria</summary>
+                    <ul><li>Önkoşul: Görev ekranındayım. Ne zaman sorular görüntülenirse, o zaman kullanıcı yanıt alanlarını doldurabilir.</li>
+<li>Önkoşul: Yazmaya başladım. Ne zaman uygulamadan çıkarsam veya bağlantı kesilirse, o zaman yanıtım otomatik taslak olarak kaydedilir.</li>
+<li>Önkoşul: Göndermek istiyorum. Ne zaman “Gönder ve Tamamla” dersem, o zaman gönderim doğrulanır ve görev “tamamlandı” durumuna geçer.</li>
+<li>Önkoşul: Deadline var. Ne zaman 23:59 sonrası gönderim denenirse, o zaman kural davranışı (gecikme/ertesi gün açılmama vb.) kullanıcıya net açıklama ile gösterilir (ürün kararına göre).</li></ul>
+                  </details>
+                </div>
+
+                <div class="usCard">
+                  <div class="usHead">
+                    <div class="usCode">US-15.4</div>
+                    <div class="usMeta">EPIC 15 — Modül Sistemi ve Kilitli İlerleme • Faz-1 • Danışan</div>
+                  </div>
+                  <div class="usTitle">Kilit açıldı ve sonraki adım (08:00 kuralı dahil)</div>
+                  <div class="usDesc">Danışan olarak, görevleri bitirdiğimde yeni aşamanın açıldığını görmek ve devam etmek istiyorum.</div>
+                  <details class="usAC" open>
+                    <summary>Acceptance Criteria</summary>
+                    <ul><li>Önkoşul: Tüm önkoşullar tamam. Ne zaman son gerekli görevi tamamlayıp gönderirsem, o zaman “Kilit açıldı” geri bildirimi gösterilir.</li>
+<li>Önkoşul: Yeni gün kuralı var. Ne zaman yeni içerik 08:00’de aktive oluyorsa, o zaman kullanıcıya “Yeni not 08:00’de aktif” bilgisi gösterilir.</li>
+<li>Önkoşul: Devam edeceğim. Ne zaman “Devam Et” dersem, o zaman sıradaki açık içeriğe yönlendirilirim.</li></ul>
+                  </details>
+                </div>
+
+                <div class="usCard">
+                  <div class="usHead">
+                    <div class="usCode">US-15.5</div>
+                    <div class="usMeta">EPIC 15 — Modül Sistemi ve Kilitli İlerleme • Faz-1 • Danışan</div>
+                  </div>
+                  <div class="usTitle">Kilitli aşama (eksik görev) ve nazik yönlendirme</div>
+                  <div class="usDesc">Danışan olarak, bir aşama kilitliyse nedenini ve ne yapmam gerektiğini görmek istiyorum; böylece takılmadan ilerleyebileyim.</div>
+                  <details class="usAC" open>
+                    <summary>Acceptance Criteria</summary>
+                    <ul><li>Önkoşul: Kilitli içerik açmaya çalıştım. Ne zaman kilitli aşamaya girersem, o zaman kilit nedeni “tek cümle” + detay (kural) ile gösterilir.</li>
+<li>Önkoşul: Eksik görev var. Ne zaman “Yoruma Git” dersem, o zaman eksik görevin ekranı açılır.</li>
+<li>Önkoşul: Yardım istiyorum. Ne zaman “Hatırlatıcı ayarla” dersem, o zaman ilgili görev için bildirim ayarı açılır.</li></ul>
+                  </details>
+                </div>
+              </div>
+            </aside>
+          </div>
+        </section>
+
+        <section class="page" id="UF22-S6-kilit-acildi" data-flow="22">
+          <div class="layout">
+            <div class="deviceWrap">
+              <div class="device">
+                <div class="deviceBezel">
+                  <div class="deviceTop">
+                    <div class="left">
+                      <img class="logo" src="../Designs/assets/pst-coaching-logo.png" alt="PST Coaching" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                      <div class="logoFallback" aria-hidden="true"></div>
+                      <div class="topText">
+                        <div class="screenTitle">“Kilit açıldı”</div>
+                        <div class="crumb">Modüller: liste → önkoşul → görev → gönder → kilit açıldı</div>
+                      </div>
+                    </div>
+                    <div class="right"><div class="badge">Flow 22</div></div>
+                  </div>
+
+                  <div class="deviceBody">
+                    
+        <div class="card">
+          <div class="h2">“Kilit açıldı”</div>
+          <div class="muted">Modüller: liste → önkoşul → görev → gönder → kilit açıldı</div>
+        </div>
+        <div class="card">
+          
+        <div class="tile">
+          <div class="tileText">
+            <div class="tileTitle">Örnek öğe</div>
+            <div class="tileMeta">Liste / Detay / Aksiyon</div>
+          </div>
+          <div class="tileRight">›</div>
+        </div>
+          
+        <div class="tile">
+          <div class="tileText">
+            <div class="tileTitle">Örnek öğe</div>
+            <div class="tileMeta">Loading/Empty/Error/Offline durumları prod-ready düşünülür</div>
+          </div>
+          <div class="tileRight">›</div>
+        </div>
+        </div>
+        <div class="row"><button class="btn" data-go="UF22-S5-gonder-ve-tamamla">Geri</button><button class="btn primary" data-go="UF22A-S1-gecit">Devam</button></div>
+                  </div>
+
+                  <div class="deviceBottom">
+                    <a class="tab" href="index.html">Home</a>
+                    <a class="tab" href="../DesignsByInventory/index.html">Inventory</a>
+                    <a class="tab" href="#" data-go="UF22-S1-moduller">Kategori Başı</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <aside class="info">
+              <div class="infoHead">
+                <div>
+                  <div class="infoTitle">Modül Sistemi (Faz-1)</div>
+                  <div class="infoSub">Flow 22 — Modüller: liste → önkoşul → görev → gönder → kilit açıldı</div>
+                </div>
+                <div class="pillRow">
+                  <a class="pill" href="index.html">Home</a>
+                  <a class="pill" href="../DesignsByInventory/index.html">Inventory</a>
+                </div>
+              </div>
+
+              <div class="infoBlock">
+                <div class="secTitle">Kurallar</div>
+                <ul class="ruleList"><li>taslak autosave.</li>
+<li>deadline varsa şeffaf.</li>
+<li>eksik önkoşulda hızlı yönlendirme + hatırlatıcıya gidiş.</li></ul>
+              </div>
+
+              <div class="infoBlock">
+                <div class="secTitle">US & Acceptance Criteria</div>
+                
+                <div class="usCard">
+                  <div class="usHead">
+                    <div class="usCode">US-15.1</div>
+                    <div class="usMeta">EPIC 15 — Modül Sistemi ve Kilitli İlerleme • Faz-1 • Danışan</div>
+                  </div>
+                  <div class="usTitle">Yolculuk modül listesi (kilitli ilerleme)</div>
+                  <div class="usDesc">Danışan olarak, bir yolculuğun modül listesini ve hangi modüllerin kilitli olduğunu görmek istiyorum; böylece sıradaki adımı net anlayabileyim.</div>
+                  <details class="usAC" open>
+                    <summary>Acceptance Criteria</summary>
+                    <ul><li>Önkoşul: Yolculuğa kayıtlıyım. Ne zaman yolculuk ekranını açarsam, o zaman modül listesi durumlarıyla (Tamamlandı/Devam/Kilitli) görünür.</li>
+<li>Önkoşul: Kilitli modül var. Ne zaman kilitli bir modüle dokunursam, o zaman kilit sebebi ve önkoşullar gösterilir.</li>
+<li>Önkoşul: Devam ettiğim modül var. Ne zaman “Devam” durumundaki modüle dokunursam, o zaman modül detayına geçerim.</li></ul>
+                  </details>
+                </div>
+
+                <div class="usCard">
+                  <div class="usHead">
+                    <div class="usCode">US-15.2</div>
+                    <div class="usMeta">EPIC 15 — Modül Sistemi ve Kilitli İlerleme • Faz-1 • Danışan</div>
+                  </div>
+                  <div class="usTitle">Modül önkoşulları ve kilit kuralları (şeffaf açıklama)</div>
+                  <div class="usDesc">Danışan olarak, bir modülün açılma şartlarını (önkoşullarını) açıkça görmek istiyorum; böylece neyi tamamlamam gerektiğini bilebileyim.</div>
+                  <details class="usAC" open>
+                    <summary>Acceptance Criteria</summary>
+                    <ul><li>Önkoşul: Modül detayındayım. Ne zaman ekran açılırsa, o zaman önkoşullar checklist olarak görünür.</li>
+<li>Önkoşul: Kural var. Ne zaman “Açılma kuralı” alanına bakarsam, o zaman (örn. “Yorum teslim edilmeden sonraki gün/modül açılmaz”) net biçimde yazılır.</li>
+<li>Önkoşul: Eksik önkoşul var. Ne zaman eksik madde varsa, o zaman kullanıcı ilgili göreve hızlı aksiyonla yönlendirilir (örn. “Yorumu Tamamla”).</li></ul>
+                  </details>
+                </div>
+
+                <div class="usCard">
+                  <div class="usHead">
+                    <div class="usCode">US-15.3</div>
+                    <div class="usMeta">EPIC 15 — Modül Sistemi ve Kilitli İlerleme • Faz-1 • Danışan</div>
+                  </div>
+                  <div class="usTitle">Görev tamamlama ve gönderim (taslak + zaman kuralı)</div>
+                  <div class="usDesc">Danışan olarak, modül görevlerini tamamlayıp göndermek istiyorum; böylece kilit açılıp bir sonraki aşamaya geçebileyim.</div>
+                  <details class="usAC" open>
+                    <summary>Acceptance Criteria</summary>
+                    <ul><li>Önkoşul: Görev ekranındayım. Ne zaman sorular görüntülenirse, o zaman kullanıcı yanıt alanlarını doldurabilir.</li>
+<li>Önkoşul: Yazmaya başladım. Ne zaman uygulamadan çıkarsam veya bağlantı kesilirse, o zaman yanıtım otomatik taslak olarak kaydedilir.</li>
+<li>Önkoşul: Göndermek istiyorum. Ne zaman “Gönder ve Tamamla” dersem, o zaman gönderim doğrulanır ve görev “tamamlandı” durumuna geçer.</li>
+<li>Önkoşul: Deadline var. Ne zaman 23:59 sonrası gönderim denenirse, o zaman kural davranışı (gecikme/ertesi gün açılmama vb.) kullanıcıya net açıklama ile gösterilir (ürün kararına göre).</li></ul>
+                  </details>
+                </div>
+
+                <div class="usCard">
+                  <div class="usHead">
+                    <div class="usCode">US-15.4</div>
+                    <div class="usMeta">EPIC 15 — Modül Sistemi ve Kilitli İlerleme • Faz-1 • Danışan</div>
+                  </div>
+                  <div class="usTitle">Kilit açıldı ve sonraki adım (08:00 kuralı dahil)</div>
+                  <div class="usDesc">Danışan olarak, görevleri bitirdiğimde yeni aşamanın açıldığını görmek ve devam etmek istiyorum.</div>
+                  <details class="usAC" open>
+                    <summary>Acceptance Criteria</summary>
+                    <ul><li>Önkoşul: Tüm önkoşullar tamam. Ne zaman son gerekli görevi tamamlayıp gönderirsem, o zaman “Kilit açıldı” geri bildirimi gösterilir.</li>
+<li>Önkoşul: Yeni gün kuralı var. Ne zaman yeni içerik 08:00’de aktive oluyorsa, o zaman kullanıcıya “Yeni not 08:00’de aktif” bilgisi gösterilir.</li>
+<li>Önkoşul: Devam edeceğim. Ne zaman “Devam Et” dersem, o zaman sıradaki açık içeriğe yönlendirilirim.</li></ul>
+                  </details>
+                </div>
+
+                <div class="usCard">
+                  <div class="usHead">
+                    <div class="usCode">US-15.5</div>
+                    <div class="usMeta">EPIC 15 — Modül Sistemi ve Kilitli İlerleme • Faz-1 • Danışan</div>
+                  </div>
+                  <div class="usTitle">Kilitli aşama (eksik görev) ve nazik yönlendirme</div>
+                  <div class="usDesc">Danışan olarak, bir aşama kilitliyse nedenini ve ne yapmam gerektiğini görmek istiyorum; böylece takılmadan ilerleyebileyim.</div>
+                  <details class="usAC" open>
+                    <summary>Acceptance Criteria</summary>
+                    <ul><li>Önkoşul: Kilitli içerik açmaya çalıştım. Ne zaman kilitli aşamaya girersem, o zaman kilit nedeni “tek cümle” + detay (kural) ile gösterilir.</li>
+<li>Önkoşul: Eksik görev var. Ne zaman “Yoruma Git” dersem, o zaman eksik görevin ekranı açılır.</li>
+<li>Önkoşul: Yardım istiyorum. Ne zaman “Hatırlatıcı ayarla” dersem, o zaman ilgili görev için bildirim ayarı açılır.</li></ul>
+                  </details>
+                </div>
+              </div>
+            </aside>
+          </div>
+        </section>
+
+        <section class="page" id="UF22A-S1-gecit" data-flow="22A">
+          <div class="layout">
+            <div class="deviceWrap">
+              <div class="device">
+                <div class="deviceBezel">
+                  <div class="deviceTop">
+                    <div class="left">
+                      <img class="logo" src="../Designs/assets/pst-coaching-logo.png" alt="PST Coaching" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                      <div class="logoFallback" aria-hidden="true"></div>
+                      <div class="topText">
+                        <div class="screenTitle">Geçit</div>
+                        <div class="crumb">Koç değerlendirmesi ile kilit (Koçluk add-on)</div>
+                      </div>
+                    </div>
+                    <div class="right"><div class="badge">Flow 22A</div></div>
+                  </div>
+
+                  <div class="deviceBody">
+                    
+        <div class="card">
+          <div class="h2">Geçit</div>
+          <div class="muted">Koç değerlendirmesi ile kilit (Koçluk add-on)</div>
+        </div>
+        <div class="card">
+          
+        <div class="tile">
+          <div class="tileText">
+            <div class="tileTitle">Örnek öğe</div>
+            <div class="tileMeta">Liste / Detay / Aksiyon</div>
+          </div>
+          <div class="tileRight">›</div>
+        </div>
+          
+        <div class="tile">
+          <div class="tileText">
+            <div class="tileTitle">Örnek öğe</div>
+            <div class="tileMeta">Loading/Empty/Error/Offline durumları prod-ready düşünülür</div>
+          </div>
+          <div class="tileRight">›</div>
+        </div>
+        </div>
+        <div class="row"><button class="btn" data-go="UF22-S6-kilit-acildi">Geri</button><button class="btn primary" data-go="UF22A-S2-koc-yorumu-bekleniyor">Devam</button></div>
+                  </div>
+
+                  <div class="deviceBottom">
+                    <a class="tab" href="index.html">Home</a>
+                    <a class="tab" href="../DesignsByInventory/index.html">Inventory</a>
+                    <a class="tab" href="#" data-go="UF22-S1-moduller">Kategori Başı</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <aside class="info">
+              <div class="infoHead">
+                <div>
+                  <div class="infoTitle">Modül Sistemi (Faz-1)</div>
+                  <div class="infoSub">Flow 22A — Koç değerlendirmesi ile kilit (Koçluk add-on)</div>
+                </div>
+                <div class="pillRow">
+                  <a class="pill" href="index.html">Home</a>
+                  <a class="pill" href="../DesignsByInventory/index.html">Inventory</a>
+                </div>
+              </div>
+
+              <div class="infoBlock">
+                <div class="secTitle">Kurallar</div>
+                <ul class="ruleList"><li>add-on kapısı.</li>
+<li>kilit nedeni net.</li>
+<li>“Add-on’ı Yönet” ile ilgili ekrana yönlendirme.</li></ul>
+              </div>
+
+              <div class="infoBlock">
+                <div class="secTitle">US & Acceptance Criteria</div>
+                
+                <div class="usCard">
+                  <div class="usHead">
+                    <div class="usCode">US-15.6</div>
+                    <div class="usMeta">EPIC 15 — Modül Sistemi ve Kilitli İlerleme • Faz-1 • Danışan</div>
+                  </div>
+                  <div class="usTitle">Koç değerlendirmesi ile kilit (Koçluk add-on)</div>
+                  <div class="usDesc">Danışan olarak, “Koçluk Eğitimi” add-on’ım varsa modül sonrası koç değerlendirme sürecini görmek ve kilidin buna göre yönetilmesini istiyorum.</div>
+                  <details class="usAC" open>
+                    <summary>Acceptance Criteria</summary>
+                    <ul><li>Önkoşul: Koçluk add-on aktif. Ne zaman modül tamamlanırsa, o zaman “koç yorumu bekleniyor” durumu gösterilebilir (kural seçimine göre).</li>
+<li>Önkoşul: Koç onayı gerekiyorsa. Ne zaman onay gelmediyse, o zaman sonraki modül kilitli kalır ve kullanıcıya sebep açıkça gösterilir.</li>
+<li>Önkoşul: Alternatif akış var. Ne zaman ürün kuralı “koçsuz devam” izin veriyorsa, o zaman kullanıcıya bu seçenek sunulur ve seçince kilit kaldırılır.</li>
+<li>Önkoşul: Yönetmek istiyorum. Ne zaman “Add-on’ı Yönet” dersem, o zaman ilgili plan/add-on yönetim ekranına yönlenirim.</li></ul>
+                  </details>
+                </div>
+              </div>
+            </aside>
+          </div>
+        </section>
+
+        <section class="page" id="UF22A-S2-koc-yorumu-bekleniyor" data-flow="22A">
+          <div class="layout">
+            <div class="deviceWrap">
+              <div class="device">
+                <div class="deviceBezel">
+                  <div class="deviceTop">
+                    <div class="left">
+                      <img class="logo" src="../Designs/assets/pst-coaching-logo.png" alt="PST Coaching" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                      <div class="logoFallback" aria-hidden="true"></div>
+                      <div class="topText">
+                        <div class="screenTitle">“Koç yorumu bekleniyor”</div>
+                        <div class="crumb">Koç değerlendirmesi ile kilit (Koçluk add-on)</div>
+                      </div>
+                    </div>
+                    <div class="right"><div class="badge">Flow 22A</div></div>
+                  </div>
+
+                  <div class="deviceBody">
+                    
+        <div class="card">
+          <div class="h2">“Koç yorumu bekleniyor”</div>
+          <div class="muted">Koç değerlendirmesi ile kilit (Koçluk add-on)</div>
+        </div>
+        <div class="card">
+          
+        <div class="tile">
+          <div class="tileText">
+            <div class="tileTitle">Örnek öğe</div>
+            <div class="tileMeta">Liste / Detay / Aksiyon</div>
+          </div>
+          <div class="tileRight">›</div>
+        </div>
+          
+        <div class="tile">
+          <div class="tileText">
+            <div class="tileTitle">Örnek öğe</div>
+            <div class="tileMeta">Loading/Empty/Error/Offline durumları prod-ready düşünülür</div>
+          </div>
+          <div class="tileRight">›</div>
+        </div>
+        </div>
+        <div class="row"><button class="btn" data-go="UF22A-S1-gecit">Geri</button><button class="btn primary" data-go="UF22A-S3-koc-onayi-gelince-kilit-acil">Devam</button></div>
+                  </div>
+
+                  <div class="deviceBottom">
+                    <a class="tab" href="index.html">Home</a>
+                    <a class="tab" href="../DesignsByInventory/index.html">Inventory</a>
+                    <a class="tab" href="#" data-go="UF22-S1-moduller">Kategori Başı</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <aside class="info">
+              <div class="infoHead">
+                <div>
+                  <div class="infoTitle">Modül Sistemi (Faz-1)</div>
+                  <div class="infoSub">Flow 22A — Koç değerlendirmesi ile kilit (Koçluk add-on)</div>
+                </div>
+                <div class="pillRow">
+                  <a class="pill" href="index.html">Home</a>
+                  <a class="pill" href="../DesignsByInventory/index.html">Inventory</a>
+                </div>
+              </div>
+
+              <div class="infoBlock">
+                <div class="secTitle">Kurallar</div>
+                <ul class="ruleList"><li>add-on kapısı.</li>
+<li>kilit nedeni net.</li>
+<li>“Add-on’ı Yönet” ile ilgili ekrana yönlendirme.</li></ul>
+              </div>
+
+              <div class="infoBlock">
+                <div class="secTitle">US & Acceptance Criteria</div>
+                
+                <div class="usCard">
+                  <div class="usHead">
+                    <div class="usCode">US-15.6</div>
+                    <div class="usMeta">EPIC 15 — Modül Sistemi ve Kilitli İlerleme • Faz-1 • Danışan</div>
+                  </div>
+                  <div class="usTitle">Koç değerlendirmesi ile kilit (Koçluk add-on)</div>
+                  <div class="usDesc">Danışan olarak, “Koçluk Eğitimi” add-on’ım varsa modül sonrası koç değerlendirme sürecini görmek ve kilidin buna göre yönetilmesini istiyorum.</div>
+                  <details class="usAC" open>
+                    <summary>Acceptance Criteria</summary>
+                    <ul><li>Önkoşul: Koçluk add-on aktif. Ne zaman modül tamamlanırsa, o zaman “koç yorumu bekleniyor” durumu gösterilebilir (kural seçimine göre).</li>
+<li>Önkoşul: Koç onayı gerekiyorsa. Ne zaman onay gelmediyse, o zaman sonraki modül kilitli kalır ve kullanıcıya sebep açıkça gösterilir.</li>
+<li>Önkoşul: Alternatif akış var. Ne zaman ürün kuralı “koçsuz devam” izin veriyorsa, o zaman kullanıcıya bu seçenek sunulur ve seçince kilit kaldırılır.</li>
+<li>Önkoşul: Yönetmek istiyorum. Ne zaman “Add-on’ı Yönet” dersem, o zaman ilgili plan/add-on yönetim ekranına yönlenirim.</li></ul>
+                  </details>
+                </div>
+              </div>
+            </aside>
+          </div>
+        </section>
+
+        <section class="page" id="UF22A-S3-koc-onayi-gelince-kilit-acil" data-flow="22A">
+          <div class="layout">
+            <div class="deviceWrap">
+              <div class="device">
+                <div class="deviceBezel">
+                  <div class="deviceTop">
+                    <div class="left">
+                      <img class="logo" src="../Designs/assets/pst-coaching-logo.png" alt="PST Coaching" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                      <div class="logoFallback" aria-hidden="true"></div>
+                      <div class="topText">
+                        <div class="screenTitle">(koç onayı gelince) kilit açılır / (opsiyonel) koçsuz devam seçeneği</div>
+                        <div class="crumb">Koç değerlendirmesi ile kilit (Koçluk add-on)</div>
+                      </div>
+                    </div>
+                    <div class="right"><div class="badge">Flow 22A</div></div>
+                  </div>
+
+                  <div class="deviceBody">
+                    
+        <div class="card">
+          <div class="h2">(koç onayı gelince) kilit açılır / (opsiyonel) koçsuz devam seçeneği</div>
+          <div class="muted">Koç değerlendirmesi ile kilit (Koçluk add-on)</div>
+        </div>
+        <div class="card">
+          
+        <div class="tile">
+          <div class="tileText">
+            <div class="tileTitle">Örnek öğe</div>
+            <div class="tileMeta">Liste / Detay / Aksiyon</div>
+          </div>
+          <div class="tileRight">›</div>
+        </div>
+          
+        <div class="tile">
+          <div class="tileText">
+            <div class="tileTitle">Örnek öğe</div>
+            <div class="tileMeta">Loading/Empty/Error/Offline durumları prod-ready düşünülür</div>
+          </div>
+          <div class="tileRight">›</div>
+        </div>
+        </div>
+        <div class="row"><button class="btn" data-go="UF22A-S2-koc-yorumu-bekleniyor">Geri</button><button class="btn primary" data-go="UF23-S1-moduller">Devam</button></div>
+                  </div>
+
+                  <div class="deviceBottom">
+                    <a class="tab" href="index.html">Home</a>
+                    <a class="tab" href="../DesignsByInventory/index.html">Inventory</a>
+                    <a class="tab" href="#" data-go="UF22-S1-moduller">Kategori Başı</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <aside class="info">
+              <div class="infoHead">
+                <div>
+                  <div class="infoTitle">Modül Sistemi (Faz-1)</div>
+                  <div class="infoSub">Flow 22A — Koç değerlendirmesi ile kilit (Koçluk add-on)</div>
+                </div>
+                <div class="pillRow">
+                  <a class="pill" href="index.html">Home</a>
+                  <a class="pill" href="../DesignsByInventory/index.html">Inventory</a>
+                </div>
+              </div>
+
+              <div class="infoBlock">
+                <div class="secTitle">Kurallar</div>
+                <ul class="ruleList"><li>add-on kapısı.</li>
+<li>kilit nedeni net.</li>
+<li>“Add-on’ı Yönet” ile ilgili ekrana yönlendirme.</li></ul>
+              </div>
+
+              <div class="infoBlock">
+                <div class="secTitle">US & Acceptance Criteria</div>
+                
+                <div class="usCard">
+                  <div class="usHead">
+                    <div class="usCode">US-15.6</div>
+                    <div class="usMeta">EPIC 15 — Modül Sistemi ve Kilitli İlerleme • Faz-1 • Danışan</div>
+                  </div>
+                  <div class="usTitle">Koç değerlendirmesi ile kilit (Koçluk add-on)</div>
+                  <div class="usDesc">Danışan olarak, “Koçluk Eğitimi” add-on’ım varsa modül sonrası koç değerlendirme sürecini görmek ve kilidin buna göre yönetilmesini istiyorum.</div>
+                  <details class="usAC" open>
+                    <summary>Acceptance Criteria</summary>
+                    <ul><li>Önkoşul: Koçluk add-on aktif. Ne zaman modül tamamlanırsa, o zaman “koç yorumu bekleniyor” durumu gösterilebilir (kural seçimine göre).</li>
+<li>Önkoşul: Koç onayı gerekiyorsa. Ne zaman onay gelmediyse, o zaman sonraki modül kilitli kalır ve kullanıcıya sebep açıkça gösterilir.</li>
+<li>Önkoşul: Alternatif akış var. Ne zaman ürün kuralı “koçsuz devam” izin veriyorsa, o zaman kullanıcıya bu seçenek sunulur ve seçince kilit kaldırılır.</li>
+<li>Önkoşul: Yönetmek istiyorum. Ne zaman “Add-on’ı Yönet” dersem, o zaman ilgili plan/add-on yönetim ekranına yönlenirim.</li></ul>
+                  </details>
+                </div>
+              </div>
+            </aside>
+          </div>
+        </section>
+
+        <section class="page" id="UF23-S1-moduller" data-flow="23">
+          <div class="layout">
+            <div class="deviceWrap">
+              <div class="device">
+                <div class="deviceBezel">
+                  <div class="deviceTop">
+                    <div class="left">
+                      <img class="logo" src="../Designs/assets/pst-coaching-logo.png" alt="PST Coaching" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                      <div class="logoFallback" aria-hidden="true"></div>
+                      <div class="topText">
+                        <div class="screenTitle">Modüller</div>
+                        <div class="crumb">Yolculuklarım</div>
+                      </div>
+                    </div>
+                    <div class="right"><div class="badge">Flow 23</div></div>
+                  </div>
+
+                  <div class="deviceBody">
+                    
+        <div class="card">
+          <div class="h2">Modüller</div>
+          <div class="muted">Yolculuklarım</div>
+        </div>
+        <div class="card">
+          
+        <div class="tile">
+          <div class="tileText">
+            <div class="tileTitle">Örnek öğe</div>
+            <div class="tileMeta">Liste / Detay / Aksiyon</div>
+          </div>
+          <div class="tileRight">›</div>
+        </div>
+          
+        <div class="tile">
+          <div class="tileText">
+            <div class="tileTitle">Örnek öğe</div>
+            <div class="tileMeta">Loading/Empty/Error/Offline durumları prod-ready düşünülür</div>
+          </div>
+          <div class="tileRight">›</div>
+        </div>
+        </div>
+        <div class="row"><button class="btn" data-go="UF22A-S3-koc-onayi-gelince-kilit-acil">Geri</button><button class="btn primary" data-go="UF23-S2-ilerleme-ozeti">Devam</button></div>
+                  </div>
+
+                  <div class="deviceBottom">
+                    <a class="tab" href="index.html">Home</a>
+                    <a class="tab" href="../DesignsByInventory/index.html">Inventory</a>
+                    <a class="tab" href="#" data-go="UF22-S1-moduller">Kategori Başı</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <aside class="info">
+              <div class="infoHead">
+                <div>
+                  <div class="infoTitle">Modül Sistemi (Faz-1)</div>
+                  <div class="infoSub">Flow 23 — İlerleme özeti + kilit geçmişi + sertifika → paylaşım</div>
+                </div>
+                <div class="pillRow">
+                  <a class="pill" href="index.html">Home</a>
+                  <a class="pill" href="../DesignsByInventory/index.html">Inventory</a>
+                </div>
+              </div>
+
+              <div class="infoBlock">
+                <div class="secTitle">Kurallar</div>
+                <ul class="ruleList"><li>paylaşımda gizlilik onayı.</li>
+<li>sertifika yalnızca koşul sağlanınca aktif.</li></ul>
+              </div>
+
+              <div class="infoBlock">
+                <div class="secTitle">US & Acceptance Criteria</div>
+                
+                <div class="usCard">
+                  <div class="usHead">
+                    <div class="usCode">US-15.7</div>
+                    <div class="usMeta">EPIC 15 — Modül Sistemi ve Kilitli İlerleme • Faz-1 • Danışan</div>
+                  </div>
+                  <div class="usTitle">İlerleme özeti, kilit geçmişi ve sertifika</div>
+                  <div class="usDesc">Danışan olarak, ilerlememi ve kilit açılma geçmişimi görmek ve yolculuk sonunda sertifikaya erişmek istiyorum.</div>
+                  <details class="usAC" open>
+                    <summary>Acceptance Criteria</summary>
+                    <ul><li>Önkoşul: Özet ekranındayım. Ne zaman ekran açılırsa, o zaman modül tamamlama oranı + seri gün bilgisi görünür.</li>
+<li>Önkoşul: Şeffaflık önemli. Ne zaman “Kilit geçmişi” bölümüne bakarsam, o zaman önemli zaman damgaları (örn. yorum teslim / 08:00 açılma) listelenir.</li>
+<li>Önkoşul: Sertifika koşulu sağlandı. Ne zaman yolculuk tamamlanırsa, o zaman “Sertifikayı Gör” aktif olur.</li>
+<li>Önkoşul: Paylaşmak istiyorum. Ne zaman “Özeti Paylaş” dersem, o zaman paylaşım önizlemesi açılır ve kullanıcı kontrolü ile paylaşılır.</li></ul>
+                  </details>
+                </div>
+              </div>
+            </aside>
+          </div>
+        </section>
+
+        <section class="page" id="UF23-S2-ilerleme-ozeti" data-flow="23">
+          <div class="layout">
+            <div class="deviceWrap">
+              <div class="device">
+                <div class="deviceBezel">
+                  <div class="deviceTop">
+                    <div class="left">
+                      <img class="logo" src="../Designs/assets/pst-coaching-logo.png" alt="PST Coaching" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                      <div class="logoFallback" aria-hidden="true"></div>
+                      <div class="topText">
+                        <div class="screenTitle">İlerleme Özeti</div>
+                        <div class="crumb">İlerleme özeti + kilit geçmişi + sertifika → paylaşım</div>
+                      </div>
+                    </div>
+                    <div class="right"><div class="badge">Flow 23</div></div>
+                  </div>
+
+                  <div class="deviceBody">
+                    
+        <div class="card">
+          <div class="h2">İlerleme Özeti</div>
+          <div class="muted">İlerleme özeti + kilit geçmişi + sertifika → paylaşım</div>
+        </div>
+        <div class="card">
+          
+        <div class="tile">
+          <div class="tileText">
+            <div class="tileTitle">Örnek öğe</div>
+            <div class="tileMeta">Liste / Detay / Aksiyon</div>
+          </div>
+          <div class="tileRight">›</div>
+        </div>
+          
+        <div class="tile">
+          <div class="tileText">
+            <div class="tileTitle">Örnek öğe</div>
+            <div class="tileMeta">Loading/Empty/Error/Offline durumları prod-ready düşünülür</div>
+          </div>
+          <div class="tileRight">›</div>
+        </div>
+        </div>
+        <div class="row"><button class="btn" data-go="UF23-S1-moduller">Geri</button><button class="btn primary" data-go="UF23-S3-kilit-gecmisi">Devam</button></div>
+                  </div>
+
+                  <div class="deviceBottom">
+                    <a class="tab" href="index.html">Home</a>
+                    <a class="tab" href="../DesignsByInventory/index.html">Inventory</a>
+                    <a class="tab" href="#" data-go="UF22-S1-moduller">Kategori Başı</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <aside class="info">
+              <div class="infoHead">
+                <div>
+                  <div class="infoTitle">Modül Sistemi (Faz-1)</div>
+                  <div class="infoSub">Flow 23 — İlerleme özeti + kilit geçmişi + sertifika → paylaşım</div>
+                </div>
+                <div class="pillRow">
+                  <a class="pill" href="index.html">Home</a>
+                  <a class="pill" href="../DesignsByInventory/index.html">Inventory</a>
+                </div>
+              </div>
+
+              <div class="infoBlock">
+                <div class="secTitle">Kurallar</div>
+                <ul class="ruleList"><li>paylaşımda gizlilik onayı.</li>
+<li>sertifika yalnızca koşul sağlanınca aktif.</li></ul>
+              </div>
+
+              <div class="infoBlock">
+                <div class="secTitle">US & Acceptance Criteria</div>
+                
+                <div class="usCard">
+                  <div class="usHead">
+                    <div class="usCode">US-15.7</div>
+                    <div class="usMeta">EPIC 15 — Modül Sistemi ve Kilitli İlerleme • Faz-1 • Danışan</div>
+                  </div>
+                  <div class="usTitle">İlerleme özeti, kilit geçmişi ve sertifika</div>
+                  <div class="usDesc">Danışan olarak, ilerlememi ve kilit açılma geçmişimi görmek ve yolculuk sonunda sertifikaya erişmek istiyorum.</div>
+                  <details class="usAC" open>
+                    <summary>Acceptance Criteria</summary>
+                    <ul><li>Önkoşul: Özet ekranındayım. Ne zaman ekran açılırsa, o zaman modül tamamlama oranı + seri gün bilgisi görünür.</li>
+<li>Önkoşul: Şeffaflık önemli. Ne zaman “Kilit geçmişi” bölümüne bakarsam, o zaman önemli zaman damgaları (örn. yorum teslim / 08:00 açılma) listelenir.</li>
+<li>Önkoşul: Sertifika koşulu sağlandı. Ne zaman yolculuk tamamlanırsa, o zaman “Sertifikayı Gör” aktif olur.</li>
+<li>Önkoşul: Paylaşmak istiyorum. Ne zaman “Özeti Paylaş” dersem, o zaman paylaşım önizlemesi açılır ve kullanıcı kontrolü ile paylaşılır.</li></ul>
+                  </details>
+                </div>
+              </div>
+            </aside>
+          </div>
+        </section>
+
+        <section class="page" id="UF23-S3-kilit-gecmisi" data-flow="23">
+          <div class="layout">
+            <div class="deviceWrap">
+              <div class="device">
+                <div class="deviceBezel">
+                  <div class="deviceTop">
+                    <div class="left">
+                      <img class="logo" src="../Designs/assets/pst-coaching-logo.png" alt="PST Coaching" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                      <div class="logoFallback" aria-hidden="true"></div>
+                      <div class="topText">
+                        <div class="screenTitle">Kilit Geçmişi</div>
+                        <div class="crumb">İlerleme özeti + kilit geçmişi + sertifika → paylaşım</div>
+                      </div>
+                    </div>
+                    <div class="right"><div class="badge">Flow 23</div></div>
+                  </div>
+
+                  <div class="deviceBody">
+                    
+        <div class="card">
+          <div class="h2">Kilit Geçmişi</div>
+          <div class="muted">İlerleme özeti + kilit geçmişi + sertifika → paylaşım</div>
+        </div>
+        <div class="card">
+          
+        <div class="tile">
+          <div class="tileText">
+            <div class="tileTitle">Örnek öğe</div>
+            <div class="tileMeta">Liste / Detay / Aksiyon</div>
+          </div>
+          <div class="tileRight">›</div>
+        </div>
+          
+        <div class="tile">
+          <div class="tileText">
+            <div class="tileTitle">Örnek öğe</div>
+            <div class="tileMeta">Loading/Empty/Error/Offline durumları prod-ready düşünülür</div>
+          </div>
+          <div class="tileRight">›</div>
+        </div>
+        </div>
+        <div class="row"><button class="btn" data-go="UF23-S2-ilerleme-ozeti">Geri</button><button class="btn primary" data-go="UF23-S4-sertifikayi-gor">Devam</button></div>
+                  </div>
+
+                  <div class="deviceBottom">
+                    <a class="tab" href="index.html">Home</a>
+                    <a class="tab" href="../DesignsByInventory/index.html">Inventory</a>
+                    <a class="tab" href="#" data-go="UF22-S1-moduller">Kategori Başı</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <aside class="info">
+              <div class="infoHead">
+                <div>
+                  <div class="infoTitle">Modül Sistemi (Faz-1)</div>
+                  <div class="infoSub">Flow 23 — İlerleme özeti + kilit geçmişi + sertifika → paylaşım</div>
+                </div>
+                <div class="pillRow">
+                  <a class="pill" href="index.html">Home</a>
+                  <a class="pill" href="../DesignsByInventory/index.html">Inventory</a>
+                </div>
+              </div>
+
+              <div class="infoBlock">
+                <div class="secTitle">Kurallar</div>
+                <ul class="ruleList"><li>paylaşımda gizlilik onayı.</li>
+<li>sertifika yalnızca koşul sağlanınca aktif.</li></ul>
+              </div>
+
+              <div class="infoBlock">
+                <div class="secTitle">US & Acceptance Criteria</div>
+                
+                <div class="usCard">
+                  <div class="usHead">
+                    <div class="usCode">US-15.7</div>
+                    <div class="usMeta">EPIC 15 — Modül Sistemi ve Kilitli İlerleme • Faz-1 • Danışan</div>
+                  </div>
+                  <div class="usTitle">İlerleme özeti, kilit geçmişi ve sertifika</div>
+                  <div class="usDesc">Danışan olarak, ilerlememi ve kilit açılma geçmişimi görmek ve yolculuk sonunda sertifikaya erişmek istiyorum.</div>
+                  <details class="usAC" open>
+                    <summary>Acceptance Criteria</summary>
+                    <ul><li>Önkoşul: Özet ekranındayım. Ne zaman ekran açılırsa, o zaman modül tamamlama oranı + seri gün bilgisi görünür.</li>
+<li>Önkoşul: Şeffaflık önemli. Ne zaman “Kilit geçmişi” bölümüne bakarsam, o zaman önemli zaman damgaları (örn. yorum teslim / 08:00 açılma) listelenir.</li>
+<li>Önkoşul: Sertifika koşulu sağlandı. Ne zaman yolculuk tamamlanırsa, o zaman “Sertifikayı Gör” aktif olur.</li>
+<li>Önkoşul: Paylaşmak istiyorum. Ne zaman “Özeti Paylaş” dersem, o zaman paylaşım önizlemesi açılır ve kullanıcı kontrolü ile paylaşılır.</li></ul>
+                  </details>
+                </div>
+              </div>
+            </aside>
+          </div>
+        </section>
+
+        <section class="page" id="UF23-S4-sertifikayi-gor" data-flow="23">
+          <div class="layout">
+            <div class="deviceWrap">
+              <div class="device">
+                <div class="deviceBezel">
+                  <div class="deviceTop">
+                    <div class="left">
+                      <img class="logo" src="../Designs/assets/pst-coaching-logo.png" alt="PST Coaching" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                      <div class="logoFallback" aria-hidden="true"></div>
+                      <div class="topText">
+                        <div class="screenTitle">Sertifikayı Gör</div>
+                        <div class="crumb">İlerleme özeti + kilit geçmişi + sertifika → paylaşım</div>
+                      </div>
+                    </div>
+                    <div class="right"><div class="badge">Flow 23</div></div>
+                  </div>
+
+                  <div class="deviceBody">
+                    
+        <div class="card">
+          <div class="h2">Sertifikayı Gör</div>
+          <div class="muted">İlerleme özeti + kilit geçmişi + sertifika → paylaşım</div>
+        </div>
+        <div class="card">
+          
+        <div class="tile">
+          <div class="tileText">
+            <div class="tileTitle">Örnek öğe</div>
+            <div class="tileMeta">Liste / Detay / Aksiyon</div>
+          </div>
+          <div class="tileRight">›</div>
+        </div>
+          
+        <div class="tile">
+          <div class="tileText">
+            <div class="tileTitle">Örnek öğe</div>
+            <div class="tileMeta">Loading/Empty/Error/Offline durumları prod-ready düşünülür</div>
+          </div>
+          <div class="tileRight">›</div>
+        </div>
+        </div>
+        <div class="row"><button class="btn" data-go="UF23-S3-kilit-gecmisi">Geri</button><button class="btn primary" data-go="UF23-S5-paylas-onizleme-ile">Devam</button></div>
+                  </div>
+
+                  <div class="deviceBottom">
+                    <a class="tab" href="index.html">Home</a>
+                    <a class="tab" href="../DesignsByInventory/index.html">Inventory</a>
+                    <a class="tab" href="#" data-go="UF22-S1-moduller">Kategori Başı</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <aside class="info">
+              <div class="infoHead">
+                <div>
+                  <div class="infoTitle">Modül Sistemi (Faz-1)</div>
+                  <div class="infoSub">Flow 23 — İlerleme özeti + kilit geçmişi + sertifika → paylaşım</div>
+                </div>
+                <div class="pillRow">
+                  <a class="pill" href="index.html">Home</a>
+                  <a class="pill" href="../DesignsByInventory/index.html">Inventory</a>
+                </div>
+              </div>
+
+              <div class="infoBlock">
+                <div class="secTitle">Kurallar</div>
+                <ul class="ruleList"><li>paylaşımda gizlilik onayı.</li>
+<li>sertifika yalnızca koşul sağlanınca aktif.</li></ul>
+              </div>
+
+              <div class="infoBlock">
+                <div class="secTitle">US & Acceptance Criteria</div>
+                
+                <div class="usCard">
+                  <div class="usHead">
+                    <div class="usCode">US-15.7</div>
+                    <div class="usMeta">EPIC 15 — Modül Sistemi ve Kilitli İlerleme • Faz-1 • Danışan</div>
+                  </div>
+                  <div class="usTitle">İlerleme özeti, kilit geçmişi ve sertifika</div>
+                  <div class="usDesc">Danışan olarak, ilerlememi ve kilit açılma geçmişimi görmek ve yolculuk sonunda sertifikaya erişmek istiyorum.</div>
+                  <details class="usAC" open>
+                    <summary>Acceptance Criteria</summary>
+                    <ul><li>Önkoşul: Özet ekranındayım. Ne zaman ekran açılırsa, o zaman modül tamamlama oranı + seri gün bilgisi görünür.</li>
+<li>Önkoşul: Şeffaflık önemli. Ne zaman “Kilit geçmişi” bölümüne bakarsam, o zaman önemli zaman damgaları (örn. yorum teslim / 08:00 açılma) listelenir.</li>
+<li>Önkoşul: Sertifika koşulu sağlandı. Ne zaman yolculuk tamamlanırsa, o zaman “Sertifikayı Gör” aktif olur.</li>
+<li>Önkoşul: Paylaşmak istiyorum. Ne zaman “Özeti Paylaş” dersem, o zaman paylaşım önizlemesi açılır ve kullanıcı kontrolü ile paylaşılır.</li></ul>
+                  </details>
+                </div>
+              </div>
+            </aside>
+          </div>
+        </section>
+
+        <section class="page" id="UF23-S5-paylas-onizleme-ile" data-flow="23">
+          <div class="layout">
+            <div class="deviceWrap">
+              <div class="device">
+                <div class="deviceBezel">
+                  <div class="deviceTop">
+                    <div class="left">
+                      <img class="logo" src="../Designs/assets/pst-coaching-logo.png" alt="PST Coaching" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                      <div class="logoFallback" aria-hidden="true"></div>
+                      <div class="topText">
+                        <div class="screenTitle">Paylaş (önizleme ile)</div>
+                        <div class="crumb">İlerleme özeti + kilit geçmişi + sertifika → paylaşım</div>
+                      </div>
+                    </div>
+                    <div class="right"><div class="badge">Flow 23</div></div>
+                  </div>
+
+                  <div class="deviceBody">
+                    
+        <div class="card">
+          <div class="h2">Paylaş (önizleme ile)</div>
+          <div class="muted">İlerleme özeti + kilit geçmişi + sertifika → paylaşım</div>
+        </div>
+        <div class="card">
+          
+        <div class="tile">
+          <div class="tileText">
+            <div class="tileTitle">Örnek öğe</div>
+            <div class="tileMeta">Liste / Detay / Aksiyon</div>
+          </div>
+          <div class="tileRight">›</div>
+        </div>
+          
+        <div class="tile">
+          <div class="tileText">
+            <div class="tileTitle">Örnek öğe</div>
+            <div class="tileMeta">Loading/Empty/Error/Offline durumları prod-ready düşünülür</div>
+          </div>
+          <div class="tileRight">›</div>
+        </div>
+        </div>
+        <div class="row"><button class="btn" data-go="UF23-S4-sertifikayi-gor">Geri</button></div>
+                  </div>
+
+                  <div class="deviceBottom">
+                    <a class="tab" href="index.html">Home</a>
+                    <a class="tab" href="../DesignsByInventory/index.html">Inventory</a>
+                    <a class="tab" href="#" data-go="UF22-S1-moduller">Kategori Başı</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <aside class="info">
+              <div class="infoHead">
+                <div>
+                  <div class="infoTitle">Modül Sistemi (Faz-1)</div>
+                  <div class="infoSub">Flow 23 — İlerleme özeti + kilit geçmişi + sertifika → paylaşım</div>
+                </div>
+                <div class="pillRow">
+                  <a class="pill" href="index.html">Home</a>
+                  <a class="pill" href="../DesignsByInventory/index.html">Inventory</a>
+                </div>
+              </div>
+
+              <div class="infoBlock">
+                <div class="secTitle">Kurallar</div>
+                <ul class="ruleList"><li>paylaşımda gizlilik onayı.</li>
+<li>sertifika yalnızca koşul sağlanınca aktif.</li></ul>
+              </div>
+
+              <div class="infoBlock">
+                <div class="secTitle">US & Acceptance Criteria</div>
+                
+                <div class="usCard">
+                  <div class="usHead">
+                    <div class="usCode">US-15.7</div>
+                    <div class="usMeta">EPIC 15 — Modül Sistemi ve Kilitli İlerleme • Faz-1 • Danışan</div>
+                  </div>
+                  <div class="usTitle">İlerleme özeti, kilit geçmişi ve sertifika</div>
+                  <div class="usDesc">Danışan olarak, ilerlememi ve kilit açılma geçmişimi görmek ve yolculuk sonunda sertifikaya erişmek istiyorum.</div>
+                  <details class="usAC" open>
+                    <summary>Acceptance Criteria</summary>
+                    <ul><li>Önkoşul: Özet ekranındayım. Ne zaman ekran açılırsa, o zaman modül tamamlama oranı + seri gün bilgisi görünür.</li>
+<li>Önkoşul: Şeffaflık önemli. Ne zaman “Kilit geçmişi” bölümüne bakarsam, o zaman önemli zaman damgaları (örn. yorum teslim / 08:00 açılma) listelenir.</li>
+<li>Önkoşul: Sertifika koşulu sağlandı. Ne zaman yolculuk tamamlanırsa, o zaman “Sertifikayı Gör” aktif olur.</li>
+<li>Önkoşul: Paylaşmak istiyorum. Ne zaman “Özeti Paylaş” dersem, o zaman paylaşım önizlemesi açılır ve kullanıcı kontrolü ile paylaşılır.</li></ul>
+                  </details>
+                </div>
+              </div>
+            </aside>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script>
+      (function () {
+        const pages = Array.from(document.querySelectorAll('.page'));
+        const flowItems = Array.from(document.querySelectorAll('.flowItem'));
+
+        function setActive(id) {
+          const target = id || pages[0]?.id;
+          if (!target) return;
+          pages.forEach((p) => p.classList.toggle('active', p.id === target));
+
+          const active = pages.find((p) => p.id === target);
+          const flowNo = active ? active.getAttribute('data-flow') : null;
+          flowItems.forEach((a) => {
+            const no = a.querySelector('.flowNo')?.textContent?.trim()?.replace('#', '');
+            a.classList.toggle('active', !!flowNo && no === flowNo);
+          });
+        }
+
+        function normalizeHash() {
+          return (location.hash || '').replace('#', '').trim();
+        }
+
+        window.addEventListener('hashchange', () => setActive(normalizeHash()));
+
+        document.addEventListener('click', (e) => {
+          const btn = e.target.closest('[data-go]');
+          if (!btn) return;
+          const go = btn.getAttribute('data-go');
+          if (!go) return;
+          e.preventDefault();
+          location.hash = '#' + go.replace('#', '');
+        });
+
+        setActive(normalizeHash());
+      })();
+    </script>
+  </body>
+</html>
