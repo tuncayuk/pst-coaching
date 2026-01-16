@@ -79,144 +79,203 @@ Bu doküman yalnızca `Model1/UserStoriesRev3.md` ve `Model1/UserStoriesRev3_Sum
 
 ## 2.1) Tüm User Flow’lar (Faz-1 + Faz-2)
 
-### 1) İlk açılış: oturum kontrolü + dil
+### Onboarding & Hesap (Faz-1)
+
+#### 1) İlk açılış: oturum kontrolü + dil seçimi
 - Adımlar: Splash/Oturum kontrolü → Onboarding -> Dil Seçimi → (gerekirse) Onboarding -> Giriş/Kayıt → Ana Sayfa
 - Kurallar: dil tercihi kalıcı; offline durumda da korunur; ilk açılışta rol/plan senkronu çalışır.
 - US: EPIC 1 (US-1.1, US-1.6, US-1.7)
 
-### 2) Kayıt olma (OTP doğrulama)
+#### 2) Kayıt olma (OTP doğrulama)
 - Adımlar: Onboarding -> Kayıt Ol → OTP Doğrulama → Ana Sayfa
 - Kurallar: format doğrulama, retry/cooldown, mevcut hesap yönlendirmesi.
 - US: EPIC 1 (US-1.2)
 
-### 3) Giriş yapma + erişim/rol senkronu
+#### 3) Giriş yapma + erişim/rol senkronu
 - Adımlar: Onboarding -> Giriş Yap → Ana Sayfa → (arka planda) plan/rol/seat senkronu
 - Kurallar: başarısız deneme limiti; abonelik/rol bilgisi yüklenmeden korumalı alanlara geçiş yok.
 - US: EPIC 1 (US-1.3, US-1.7)
 
-### 4) Şifre sıfırlama
+#### 4) Şifre sıfırlama
 - Adımlar: Onboarding -> Şifremi Unuttum → doğrulama → Yeni Şifre → Onboarding -> Giriş Yap
 - Kurallar: rate-limit, şifre politikası, güvenli hata mesajları.
 - US: EPIC 1 (US-1.4)
 
-### 5) Oturum süresi doldu (session expiry)
+#### 5) Oturum süresi doldu (session expiry) → yeniden giriş → geri dönüş
 - Adımlar: (Korumalı ekrana giriş) → “Oturum doldu” → Onboarding -> Giriş Yap → geri dönüş
 - Kurallar: token temizliği; kullanıcı bağlamı kaybolmadan geri dönüş.
 - US: EPIC 1 (US-1.6)
 
-### 6) Paywall → plan seçimi → satın alma → erişim aktivasyonu
+#### 6) Dil değiştirme (ayarlar) → uygulama genelinde anında uygula
+- Adımlar: Profil -> Ayarlar -> Dil → dil seç → uygulama metinleri güncellenir
+- Kurallar: offline’da da seçim saklanır; çevrimiçi olunca profil ile senkronlanır.
+- US: EPIC 1 (US-1.1)
+
+#### 7) Çıkış yapma (onay + token temizliği)
+- Adımlar: Profil -> Hesap -> Çıkış Yap → (onay) → Onboarding -> Giriş Yap
+- Kurallar: cihazda token/oturum temizliği; sonraki açılışta yeniden giriş gerekir.
+- US: EPIC 1 (US-1.5)
+
+### Abonelik & Erişim (Faz-1)
+
+#### 8) Paywall → plan seçimi → satın alma → erişim aktivasyonu
 - Adımlar: (Gated CTA) → Profil -> Abonelik -> Plan Seçimi → Satın Alma → Erişim açıldı → geri dönüş (Ana Sayfa/Keşfet)
-- Kurallar: “neden kilitli” açıklaması; entitlement cache + server doğrulama; restore akışı.
-- US: EPIC 3 (US-3.1–US-3.2, US-3.7–US-3.8) + EPIC 1 (US-1.7)
+- Kurallar: “neden kilitli” açıklaması; entitlement cache + server doğrulama; gecikmede “doğrulanıyor” durumu.
+- US: EPIC 3 (US-3.1–US-3.2) + EPIC 1 (US-1.7)
 
-### 7) Add-on satın alma / yönetim
-- Adımlar: Profil -> Abonelik → Add-on’lar → (satın al/iptal et) → Ana Sayfa rozetleri güncellenir
-- Kurallar: add-on gerektiren ekranda kilit açıklaması + tek CTA.
-- US: EPIC 3 (US-3.3)
+#### 9) Planı yönetme (değiştir/yükselt/düşür) + kişi limiti etkileri
+- Adımlar: Profil -> Abonelik -> Planı Yönet → plan değiştir → (limit uygunsa) onayla → erişimler güncellenir
+- Kurallar: yeni limit mevcut kişi sayısından küçükse önce kişi azaltma zorunlu; değişikliklerin etkisi (hemen/dönem sonu) net.
+- US: EPIC 3 (US-3.5)
 
-### 8) Aile/Grup kişi (seat) yönetimi: davet / kaldır / bekleyenler
+#### 10) Abonelik iptali → iptal etkileri → geri dönüş
+- Adımlar: Profil -> Abonelik -> İptal → etkileri gör → (onayla / vazgeç) → plan durumu güncellenir
+- Kurallar: “erişim dönem sonuna kadar” ve kişi/add-on etkileri şeffaf listelenir.
+- US: EPIC 3 (US-3.8)
+
+#### 11) Ödeme geçmişi / makbuzlar + “Satın alımları geri yükle”
+- Adımlar: Profil -> Abonelik -> Ödemeler → geçmişi gör → Satın Alımları Geri Yükle → erişimler güncellenir
+- Kurallar: “ödedim ama açılmadı” senaryosu için tek aksiyon; hata durumunda tekrar dene.
+- US: EPIC 3 (US-3.7)
+
+#### 12) Add-on satın alma / yönetim (AI, Koçluk vb.)
+- Adımlar: Profil -> Abonelik → Add-on’lar → (satın al/pasife al) → Ana Sayfa rozetleri ve kilitler güncellenir
+- Kurallar: Plan Sahibi vs Üye yetki ayrımı; add-on gerektiren ekranda kilit açıklaması + tek CTA.
+- US: EPIC 3 (US-3.3) + EPIC 2 (US-2.2)
+
+#### 13) Aile/Grup kişi (seat) yönetimi: davet / kaldır / bekleyenler
 - Adımlar: Profil -> Abonelik → Kişi Yönetimi → Davet Et / Kaldır / Bekleyen Davetler
-- Kurallar: Plan Sahibi vs Üye yetki ayrımı; limit aşımında add-on önerisi.
+- Kurallar: Plan Sahibi vs Üye yetki ayrımı; limit aşımında (uygunsa) “Ek kişi” add-on önerisi.
 - US: EPIC 3 (US-3.6) + EPIC 1 (US-1.7)
 
-### 9) Öğrenci indirimi: doğrulama → indirimli checkout
-- Adımlar: Profil -> Abonelik -> Öğrenci İndirimi → Uygunluk → Doğrulama → Durum → İndirimli ödeme özeti → Satın Alma
-- Kurallar: yalnızca Bireysel; yeniden doğrulama hatırlatmaları; gizlilik/veri yönetimi.
+#### 14) Öğrenci indirimi: uygunluk → doğrulama → durum/itiraz → indirimli checkout → yenileme
+- Adımlar: Profil -> Abonelik -> Öğrenci İndirimi → Uygunluk → Doğrulama → Durum (Onay/Red/Beklemede) → İndirimli ödeme özeti → Satın Alma → (yenileme hatırlatmaları)
+- Kurallar: yalnızca Bireysel; yeniden doğrulama hatırlatmaları; gizlilik/veri yönetimi (geçmişi gör/sil).
 - US: EPIC 21 (US-21.1–US-21.7) + EPIC 3 (US-3.4)
 
-### 10) Yolculuk keşfi → detay → başlat
+### İçerik Keşfi & Başlatma (Faz-1)
+
+#### 15) Yolculuk keşfi → detay → başlat (hedef + zaman kuralları)
 - Adımlar: Keşfet -> Yolculuklar → Katalog → Yolculuk Detayı → Yolculuğu Başlat → hedef seçimi → Yolculuklarım
-- Kurallar: plan erişimi yoksa paywall; “08:00 yeni gün / 23:59 teslim” kuralı başlatmada net görünür.
+- Kurallar: plan erişimi yoksa paywall; “08:00 yeni gün / 23:59 teslim” kuralı başlatmada net görünür; hatırlatıcı kurulumuna gidiş-dönüş bağlamı korunur.
 - US: EPIC 4 (US-4.1–US-4.6) + EPIC 2 (US-2.6)
 
-### 10A) Atölye keşfi → detay → oturum (app içi okuma + uygulama)
+#### 16) Atölye keşfi → detay → oturum (app içi okuma + uygulama)
 - Adımlar: Keşfet -> Atölyeler → Atölye Kataloğu → Atölye Detayı → Atölye Oturumu → Tamamla
-- Kurallar: harici doküman yok; uygulama adımlarında taslak autosave; erişim yoksa paywall ve geri dönüşte bağlam korunur.
+- Kurallar: harici doküman yok; uygulama adımlarında taslak autosave (offline dahil); erişim yoksa paywall ve geri dönüşte bağlam korunur.
 - US: EPIC 4 (US-4.7–US-4.8) + EPIC 5 (US-5.9) + EPIC 3 (US-3.1–US-3.2)
 
-### 10B) e‑Kitap keşfi → kitap detayı → okuyucu (kaldığın yer + not/vurgu)
+#### 17) e‑Kitap keşfi → kitap detayı → okuyucu (kaldığın yer + not/vurgu + offline)
 - Adımlar: Keşfet -> e‑Kitaplar → Kitap Kütüphanesi → Kitap Detayı → Okuyucu → (Not/Vurgu → Favoriler)
 - Kurallar: okuma tamamen app içinde; TOC/arama/kaldığın yer; offline için indir/önbellek; not/vurgu Favoriler’de bulunur.
 - US: EPIC 4 (US-4.9–US-4.10) + EPIC 5 (US-5.8) + EPIC 8 (US-8.1–US-8.2)
 
-### 10C) AI cevapları: yalnızca sistem içeriği + kaynak gösterimi
-- Adımlar: (Bağlamlı içerik veya genel) → Keşfet -> AI → Soru sor → Kaynaklar (Kaynağa Git)
-- Kurallar: AI sadece sistem içeriğine dayanır; kaynak gösterir; içerik yoksa “bulunamadı” diyerek ilgili kütüphaneye yönlendirir.
-- US: EPIC 10 (US-10.1–US-10.4)
+### Günlük İlerleme & Teslim (Faz-1)
 
-### 11) Günlük döngü: okuma → not/vurgu → yorum taslağı
+#### 18) Günlük döngü: Home “Devam Et” → okuma → not/vurgu → yorum taslağı
 - Adımlar: Ana Sayfa (“Devam Et”) → Yolculuklarım -> Gün/Modül → okuma/sesli okuma → vurgu/not → yorum yazma (taslak)
-- Kurallar: offline cache; erişilebilir okuma; taslak kaydı.
-- US: EPIC 2 (US-2.1) + EPIC 5 (US-5.1–US-5.4)
+- Kurallar: offline cache; erişilebilir okuma; taslak kaydı; kelime sayacı + deadline görünürlüğü.
+- US: EPIC 2 (US-2.1–US-2.4) + EPIC 5 (US-5.1–US-5.4)
 
-### 12) Teslim: önizleme → gönderim (23:59) → sonuç
+#### 19) Teslim: önizleme → gönderim (23:59) → sonuç
 - Adımlar: Yolculuklarım -> Gün/Modül → Önizleme → Teslim Et → (başarılı/başarısız) geri bildirim
-- Kurallar: 23:59 kuralı; gecikme davranışı şeffaf; tekrar dene/hata yönetimi.
+- Kurallar: 23:59 kuralı; gecikme davranışı şeffaf; tekrar dene/hata yönetimi; teslim sonrası “tamamlandı” durumu.
 - US: EPIC 5 (US-5.5)
 
-### 13) Kilitli ilerleme: kilit nedeni → önkoşulu tamamla → 08:00 kapısı
-- Adımlar: Yolculuklarım -> Modüller → Kilitli adım → Kilit nedeni → Göreve git → Tamamla/Gönder → (gerekirse) 08:00’de açılma
-- Kurallar: kilit geçmişi, nazik dil, “neden kilitli” tek cümle + detay.
-- US: EPIC 5 (US-5.6) + EPIC 15 (US-15.1–US-15.5, US-15.7) + EPIC 2 (US-2.6)
+#### 20) Yeni gün kapısı: 08:00 kuralı + kilitli içerik mesajı
+- Adımlar: (Bugün teslim edildi) → (yarın içeriğine giriş) → “08:00’de açılacak” → 08:00 sonrası otomatik yenile/yenile CTA
+- Kurallar: saat dilimi uyumu; cihaz-sunucu saati çakışmasında sunucu saati baz.
+- US: EPIC 2 (US-2.6) + EPIC 5 (US-5.6)
 
-### 14) Favoriler: kaydet → yönet → kaynağa dön → paylaş/export
-- Adımlar: (Okuyucuda) Vurgu/Not → Keşfet -> Favoriler → Favori Detayı → Kaynağa Git → Paylaş/PDF
-- Kurallar: gizlilik önizlemesi; undo; offline senkron.
-- US: EPIC 8 (US-8.1–US-8.7) + EPIC 5 (US-5.3)
+#### 21) Teslim sonrası AI geri bildirim (Add-on kapısı)
+- Adımlar: (Teslim sonrası) → “AI Geri Bildirim” kartı → (özet) → Detaylı analiz → (gerekirse) Add-on satın almaya yönlen
+- Kurallar: AI Pack yoksa net paywall; uyarı metni (teşhis değildir); içerik yalnızca sistem verilerine dayanır.
+- US: EPIC 5 (US-5.7) + EPIC 3 (US-3.3)
 
-### 15) Bildirimler & hatırlatıcılar: izin → merkez → hatırlatıcılar → DND
-- Adımlar: Profil -> Ayarlar -> Hatırlatıcılar → (izin akışı) → hatırlatıcı saatleri → bildirim merkezi → sessiz saatler/kanallar
-- Kurallar: izin reddinde alternatif; bildirimden ilgili ekrana deep-link; teslim 23:59 kuralı hatırlatıcıda net.
-- US: EPIC 11 (US-11.1–US-11.7) + EPIC 2 (US-2.3)
+### Modül Sistemi (Faz-1)
 
-### 16) Gelişim: panel → haftalık özet → rapor indir/paylaş
-- Adımlar: Ana Sayfa -> Gelişim → metrikler/harita → Haftalık Özet → Rapor (PDF) indir/paylaş
-- Kurallar: “teşhis değildir” uyarıları; paylaşımda gizlilik onayı.
+#### 22) Modüller: liste → önkoşul → görev → gönder → kilit açıldı
+- Adımlar: Yolculuklarım -> Modüller → (Devam/Kilitli) → Modül detayı (önkoşullar) → Görev ekranı → Gönder ve Tamamla → “Kilit açıldı”
+- Kurallar: taslak autosave; deadline varsa şeffaf; eksik önkoşulda hızlı yönlendirme + hatırlatıcıya gidiş.
+- US: EPIC 15 (US-15.1–US-15.5)
+
+#### 22A) Koç değerlendirmesi ile kilit (Koçluk add-on)
+- Adımlar: (Modül tamamlandı) → “Koç yorumu bekleniyor” → (koç onayı gelince) kilit açılır / (opsiyonel) koçsuz devam seçeneği
+- Kurallar: add-on kapısı; kilit nedeni net; “Add-on’ı Yönet” ile ilgili ekrana yönlendirme.
+- US: EPIC 15 (US-15.6)
+
+#### 23) İlerleme özeti + kilit geçmişi + sertifika → paylaşım
+- Adımlar: Yolculuklarım -> Modüller → İlerleme Özeti → Kilit Geçmişi → Sertifikayı Gör → Paylaş (önizleme ile)
+- Kurallar: paylaşımda gizlilik onayı; sertifika yalnızca koşul sağlanınca aktif.
+- US: EPIC 15 (US-15.7)
+
+### Kişiselleştirme & Alışkanlık (Faz-1)
+
+#### 24) Favoriler & arşiv: kaydet → koleksiyon → sil/geri al → kaynağa dön → paylaş/export
+- Adımlar: (Okuyucu/Video vb.) Kaydet/Vurgu/Not → Keşfet -> Favoriler → Koleksiyonlar/Favori Detayı → Sil (Undo) → Kaynağa Git → Paylaş/PDF
+- Kurallar: gizlilik önizlemesi; undo süresi; offline senkron.
+- US: EPIC 8 (US-8.1–US-8.7) + EPIC 5 (US-5.3) + EPIC 18 (US-18.2)
+
+#### 25) Bildirimler & hatırlatıcılar: izin → merkez → hatırlatıcılar → DND → seri takibi
+- Adımlar: Profil -> Ayarlar -> Hatırlatıcılar → (izin akışı) → hatırlatıcı saatleri → bildirim merkezi (deep-link) → sessiz saatler/kanallar → zincir ekranı
+- Kurallar: izin reddinde alternatif; bildirimden ilgili ekrana deep-link; 23:59 ve 08:00 kuralları hatırlatıcılarda net.
+- US: EPIC 11 (US-11.1–US-11.7) + EPIC 2 (US-2.3–US-2.4)
+
+#### 26) Gelişim & kapanış: panel → haftalık özet → rapor (PDF) → program bitiş değerlendirmesi/test
+- Adımlar: Ana Sayfa -> Gelişim → panel/harita → Haftalık Özet → Rapor indir/paylaş → (program sonunda) değerlendirme/test → kapanış
+- Kurallar: “teşhis değildir” uyarıları; paylaşımda gizlilik onayı; veri yetersizliğinde açıklayıcı empty-state.
 - US: EPIC 6 (US-6.1–US-6.7)
 
-### 17) Erişilebilirlik: ayar değiştir → uygulama genelinde uygula
+#### 27) Erişilebilirlik: ayar değiştir → okuyucu/video/oyun genelinde uygula
 - Adımlar: Profil -> Ayarlar -> Erişilebilirlik → metin/kontrast/altyazı/transkript → (Okuyucu/Video/Oyun) ekranlarında etkisini gör
-- Kurallar: ayarlar anında uygulanır; offline saklama; screen reader etiket standardı.
+- Kurallar: ayarlar anında uygulanır; offline saklama; screen reader etiket standardı + braille uyumu.
 - US: EPIC 9 (US-9.1–US-9.7) + EPIC 16 (US-16.1–US-16.7)
 
-### 18) (Faz-2) AI: sohbet → derleme (katalogdan) → planla (otomatik seçim) → analiz → gizlilik
+### Asistan, AI ve Faz-2 Alanları (Faz-2)
+
+#### 28) Asistan: hedef belirleme → duygu check-in → öneri/karşılaştırma → plan oluştur/güncelle
+- Adımlar: Keşfet -> Asistan → Başlat → Anket → Duygu Kontrolü → Öneriler → Plan Oluştur → (gerektikçe) Plan Güncelle
+- Kurallar: plan/hatırlatıcı ile entegre; AI gerekçesi varsa şeffaf; öneriler sistem içeriğine dayanır.
+- US: EPIC 20 (US-20.1–US-20.7) + EPIC 2 (US-2.1)
+
+#### 29) AI (Add-on): sohbet → günlük derleme (katalogdan) → planlama → analiz → gizlilik & kontrol
 - Adımlar: Keşfet -> AI → AI Sohbet / Günlük Derleme / Planlama / AI Analiz / Gizlilik
-- Kurallar: add-on kapısı; AI yalnızca sistem içeriğine dayanır ve kaynak gösterir; veri yetersizliği mesajı; “indir/sil/devre dışı” kontrolleri.
+- Kurallar: add-on kapısı; AI yalnızca sistem içeriğine dayanır ve kaynak gösterir; içerik yetersizliğinde “bulunamadı” + alternatif; “indir/sil/devre dışı” kontrolleri.
 - US: EPIC 10 (US-10.1–US-10.5)
 
-### 19) (Faz-2) Videolar: keşfet → izle → altyazı/transkript → indir
-- Adımlar: Keşfet -> Videolar → Video Detayı → Oynatıcı → (Altyazı/Transkript) → Çevrimdışı indir
-- Kurallar: erişim kilidi; indirme kuralı; geri bildirim/hata bildir.
+#### 30) Videolar: keşfet → izle (altyazı/transkript/bölüm/hız) → indir/indirilenler → koleksiyonlar → geri bildirim
+- Adımlar: Keşfet -> Videolar → Video Detayı → Oynatıcı → (Altyazı/Transkript) → Çevrimdışı indir → İndirmeler → Koleksiyonlar → Geri Bildirim
+- Kurallar: erişim kilidi; Wi‑Fi indirme kuralı; depolama uyarıları; hata/geri bildirim hızlı.
 - US: EPIC 18 (US-18.1–US-18.7) + EPIC 9 (US-9.4–US-9.5)
 
-### 20) (Faz-2) Oyunlar: oyna → anlık geri bildirim → seri/veli modu
-- Adımlar: Keşfet -> Oyunlar → Oyun Detayı → Oyun Oturumu → Sonuç/Ödül → Seri/Rozet → (çocuk modu) Veli Paneli
-- Kurallar: veli onayı/PIN; süre sınırı; güvenli mod.
+#### 31) Oyunlar: çocuk profili (veli onayı) → oyun oturumu → sonuç/ödül → seri → veli paneli (limit)
+- Adımlar: Keşfet -> Oyunlar → Çocuk Profili → Oyun Detayı → Oyun Oturumu → Sonuç/Ödül → Seri/Rozet → Veli Paneli
+- Kurallar: veli onayı/PIN; süre sınırı; gece modu.
 - US: EPIC 17 (US-17.1–US-17.7)
 
-### 21) (Faz-2) Topluluk: birlikte okuma grubu
-- Adımlar: Topluluk -> Birlikte Okuma → Grup Oluştur/Katıl → Davet → Okuma Planı → İlerleme → Sohbet → Üyeler & Kurallar
-- Kurallar: seat limiti; moderasyon/şikayet; gizlilik sınırı.
+#### 32) Topluluk: birlikte okuma grubu (oluştur/katıl/davet) → plan → ilerleme → sohbet → üye/kurallar → sonlandır
+- Adımlar: Topluluk -> Birlikte Okuma → Grup Oluştur/Katıl → Davet → Okuma Planı → İlerleme → Sohbet → Üyeler & Kurallar → Grubu Sonlandır
+- Kurallar: seat limiti + rol yönetimi; moderasyon/şikayet; gizlilik sınırı.
 - US: EPIC 12 (US-12.1–US-12.7)
 
-### 22) (Faz-2) Kitap Kulübü: okuma + alıntı + tartışma + moderasyon
-- Adımlar: Topluluk -> Kitap Kulübü → Kulüp Detayı → Okumaya Devam → Alıntı/Not → Tartışma → Kurallar & Moderasyon
-- Kurallar: güvenli sosyal alan; paylaşım gizliliği; erişilebilir okuyucu.
+#### 33) Kitap Kulübü: kulüp keşfet/katıl → okuyucu → not/alinti → tartışma → kurallar & moderasyon → sonlandır
+- Adımlar: Topluluk -> Kitap Kulübü → Kulüp Detayı → Okumaya Devam → Notlar/Alıntılar → Tartışma → Kurallar & Moderasyon → Kulübü Sonlandır
+- Kurallar: güvenli sosyal alan; paylaşım gizliliği; moderasyon yetkileri şeffaf.
 - US: EPIC 13 (US-13.1–US-13.7)
 
-### 23) (Faz-2) Dünyam: görev → ödül → inşa/tema → kurallar
+#### 34) Dünyam: görev → ödül → inşa/tema → envanter → kurallar
 - Adımlar: Ana Sayfa -> Dünyam → Görev/Hedef → Ödül → İnşa Modu → Envanter → Tema → Kurallar
 - Kurallar: adil ödül; anti-hile; add-on kapılı AI hedef önerisi.
 - US: EPIC 14 (US-14.1–US-14.7)
 
-### 24) (Faz-2) Koç Paneli: danışan takibi + geri bildirim + denetim
-- Adımlar: Profil -> Koç Paneli → Danışan Listesi → Danışan Profili → Teslim Geçmişi → Koç Yorumu → Uyarılar → Erişim/Onay
-- Kurallar: danışan onayı + audit log + veri minimizasyonu.
+#### 35) Koç Paneli (PST Koçu): danışan takibi → plan/teslim geçmişi → koç yorumu → uyarılar → erişim/onay
+- Adımlar: Profil -> Koç Paneli → Danışan Listesi → Danışan Profili → Plan & İçerik → Teslim Geçmişi → Koç Yorumu → Uyarılar → Erişim/Onay
+- Kurallar: danışan onayı + audit log + veri minimizasyonu; koç yorumlarında yargılayıcı olmayan dil standardı.
 - US: EPIC 7 (US-7.1–US-7.7)
 
-### 25) (Faz-2) Mentor/Koçluk: danışan detayı + mesaj + rapor
-- Adımlar: Profil -> Koçluk → Danışan Detayı → Mesajlaşma/Görev → Rapor Dışa Aktar
-- Kurallar: koçluk add-on erişimi; gizlilik izinleri; şeffaf AI uyarıları.
+#### 36) Mentor/Koçluk (Add-on): danışan listesi → danışan detayı → mesaj/görev → rapor dışa aktar
+- Adımlar: Profil -> Koçluk → Danışan Listesi → Danışan Detayı → Mesajlaşma/Görev → Rapor Dışa Aktar
+- Kurallar: koçluk add-on erişimi; gizlilik izinleri; şeffaf AI uyarıları (varsa).
 - US: EPIC 19 (US-19.1–US-19.7)
 
 ---
