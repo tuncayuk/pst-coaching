@@ -7,22 +7,28 @@
     <style>
       :root {
         color-scheme: light;
+
+        /* Brand (approx from provided logo) */
         --primary: #1e2a78;
         --accent: #0fa3b1;
         --gold: #f2c14e;
         --danger: #d92d20;
         --success: #039855;
 
-        --bg: #f7f8fb;
+        /* Neutrals */
+        --bg: #f6f7fb;
         --surface: #ffffff;
-        --stroke: #e6e8f0;
-        --stroke2: #d7dbeb;
-        --text: #0d1226;
-        --muted: #5b647a;
+        --surface2: rgba(255, 255, 255, 0.72);
+        --stroke: rgba(230, 232, 240, 0.95);
+        --stroke2: rgba(215, 219, 235, 0.95);
+        --text: #0b1020;
+        --muted: rgba(13, 18, 38, 0.62);
 
-        --shadow-sm: 0 6px 18px rgba(13, 18, 38, 0.08);
-        --shadow-md: 0 18px 50px rgba(13, 18, 38, 0.12);
-        --shadow-lg: 0 36px 120px rgba(13, 18, 38, 0.18);
+        /* Shadows (more premium / iOS-like) */
+        --shadow-xs: 0 2px 10px rgba(13, 18, 38, 0.06);
+        --shadow-sm: 0 8px 24px rgba(13, 18, 38, 0.10);
+        --shadow-md: 0 18px 56px rgba(13, 18, 38, 0.14);
+        --shadow-lg: 0 44px 140px rgba(13, 18, 38, 0.22);
 
         --r12: 12px;
         --r16: 16px;
@@ -45,10 +51,12 @@
       body {
         margin: 0;
         font-family: var(--font);
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
         background:
-          radial-gradient(900px 520px at 0% 0%, rgba(15, 163, 177, 0.12), transparent 55%),
-          radial-gradient(900px 520px at 100% 10%, rgba(30, 42, 120, 0.10), transparent 55%),
-          radial-gradient(900px 520px at 40% 115%, rgba(242, 193, 78, 0.12), transparent 55%),
+          radial-gradient(980px 540px at 0% 0%, rgba(15, 163, 177, 0.12), transparent 55%),
+          radial-gradient(980px 540px at 100% 10%, rgba(30, 42, 120, 0.10), transparent 55%),
+          radial-gradient(980px 540px at 40% 115%, rgba(242, 193, 78, 0.10), transparent 55%),
           linear-gradient(180deg, #ffffff, var(--bg));
         color: var(--text);
       }
@@ -177,7 +185,10 @@
       .device { width: var(--w); }
       .deviceBezel {
         border-radius: 52px;
-        background: rgba(13, 18, 38, 0.92);
+        background:
+          radial-gradient(120px 120px at 20% 10%, rgba(255, 255, 255, 0.16), transparent 60%),
+          radial-gradient(160px 140px at 80% 0%, rgba(255, 255, 255, 0.10), transparent 65%),
+          linear-gradient(180deg, rgba(13, 18, 38, 0.96), rgba(13, 18, 38, 0.86));
         padding: 12px;
         box-shadow: var(--shadow-lg);
       }
@@ -243,13 +254,15 @@
           radial-gradient(700px 420px at 20% 0%, rgba(15, 163, 177, 0.20), transparent 55%),
           radial-gradient(700px 420px at 80% 5%, rgba(30, 42, 120, 0.16), transparent 55%),
           linear-gradient(180deg, #ffffff, var(--bg));
-        border: 1px solid rgba(255, 255, 255, 0.10);
-        overflow: hidden;
-        padding: 14px 12px;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        overflow: auto;
+        padding: 16px 14px;
         display: flex;
         flex-direction: column;
-        gap: 10px;
+        gap: 12px;
+        scrollbar-width: none;
       }
+      .deviceBody::-webkit-scrollbar { width: 0; height: 0; }
 
       .deviceBottom {
         height: var(--safeBot);
@@ -279,10 +292,10 @@
       /* In-device UI */
       .card {
         background: rgba(255, 255, 255, 0.92);
-        border: 1px solid rgba(230, 232, 240, 0.95);
-        border-radius: 18px;
-        box-shadow: var(--shadow-sm);
-        padding: 12px;
+        border: 1px solid var(--stroke);
+        border-radius: 20px;
+        box-shadow: var(--shadow-xs);
+        padding: 12px 12px;
       }
       .card.warn { background: rgba(242, 193, 78, 0.14); border-color: rgba(242, 193, 78, 0.28); }
       .card.ok { background: rgba(3, 152, 85, 0.10); border-color: rgba(3, 152, 85, 0.22); }
@@ -296,32 +309,51 @@
         display: inline-flex;
         align-items: center;
         gap: 10px;
-        font-weight: 950;
-        border: 1px solid rgba(230, 232, 240, 0.95);
+        font-weight: 900;
+        letter-spacing: 0.1px;
+        border: 1px solid var(--stroke);
         background: rgba(255, 255, 255, 0.92);
         color: rgba(13, 18, 38, 0.92);
-        box-shadow: var(--shadow-sm);
+        box-shadow: var(--shadow-xs);
         cursor: pointer;
+        transition: transform 120ms ease, box-shadow 120ms ease, background 120ms ease;
       }
+      .btn:active { transform: translateY(1px) scale(0.99); }
       .btn.primary {
         background: linear-gradient(135deg, rgba(30, 42, 120, 0.96), rgba(15, 163, 177, 0.92));
         border-color: rgba(30, 42, 120, 0.18);
         color: #ffffff;
+        box-shadow: 0 14px 30px rgba(30, 42, 120, 0.22);
       }
       .tile {
         display: flex;
         align-items: center;
         justify-content: space-between;
         gap: 10px;
-        padding: 10px 10px;
-        border-radius: 16px;
-        border: 1px solid rgba(230, 232, 240, 0.95);
-        background: rgba(255, 255, 255, 0.92);
+        padding: 12px 12px;
+        border-radius: 18px;
+        border: 1px solid var(--stroke);
+        background: rgba(255, 255, 255, 0.94);
+        box-shadow: var(--shadow-xs);
+        transition: transform 120ms ease, border-color 120ms ease;
       }
+      .tile:active { transform: translateY(1px) scale(0.995); }
+      .tileLeading {
+        width: 34px;
+        height: 34px;
+        border-radius: 14px;
+        display: grid;
+        place-items: center;
+        background: linear-gradient(180deg, rgba(15, 163, 177, 0.10), rgba(30, 42, 120, 0.08));
+        border: 1px solid rgba(15, 163, 177, 0.18);
+        color: rgba(30, 42, 120, 0.92);
+        flex: 0 0 auto;
+      }
+      .ic { width: 18px; height: 18px; display: block; }
       .tile + .tile { margin-top: 8px; }
       .tileTitle { font-weight: 950; font-size: 12px; }
       .tileMeta { margin-top: 3px; font-size: 11px; color: var(--muted); }
-      .tileRight { color: rgba(13, 18, 38, 0.45); font-weight: 950; }
+      .tileRight { color: rgba(13, 18, 38, 0.40); font-weight: 950; display: grid; place-items: center; }
       .tileBadge { margin-left: auto; }
       .b {
         display: inline-flex;
@@ -388,14 +420,15 @@
       .search {
         height: 40px;
         border-radius: 16px;
-        border: 1px solid rgba(230, 232, 240, 0.95);
-        background: rgba(255, 255, 255, 0.92);
+        border: 1px solid var(--stroke);
+        background: rgba(255, 255, 255, 0.96);
         display: flex;
         align-items: center;
         gap: 10px;
         padding: 0 12px;
+        box-shadow: var(--shadow-xs);
       }
-      .searchIcon { color: rgba(13, 18, 38, 0.45); font-weight: 950; }
+      .searchIcon { color: rgba(13, 18, 38, 0.42); display: grid; place-items: center; }
       .searchText { color: rgba(13, 18, 38, 0.62); font-weight: 900; }
       .chips {
         margin-top: 10px;
@@ -571,60 +604,66 @@
         <div class="card">
           <div class="h2">Modüller</div>
           <div class="muted">Yolculuklarım</div>
-          <div class="stateRow"><span class="b">Prod-ready states</span></div>
+          
         </div>
 <div class='card'>
-        <div class="tile">
+        <div class="tile" role="button" tabindex="0" aria-label="Modül 1">
+          <div class="tileLeading"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l8 4v6c0 5-3.4 9.2-8 10-4.6-.8-8-5-8-10V6l8-4z" fill="none" stroke="currentColor" stroke-width="2"/></svg></div>
           <div class="tileText">
             <div class="tileTitle">Modül 1</div>
             <div class="tileMeta">Tamamlandı • 3/3 görev</div>
           </div>
           <div class="tileBadge"><span class="b info">Tamamlandı</span></div>
-          <div class="tileRight">›</div>
+          <div class="tileRight"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div>
         </div>
-        <div class="tile">
+        <div class="tile" role="button" tabindex="0" aria-label="Modül 2">
+          <div class="tileLeading"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l8 4v6c0 5-3.4 9.2-8 10-4.6-.8-8-5-8-10V6l8-4z" fill="none" stroke="currentColor" stroke-width="2"/></svg></div>
           <div class="tileText">
             <div class="tileTitle">Modül 2</div>
             <div class="tileMeta">Devam • 1/3 görev</div>
           </div>
           <div class="tileBadge"><span class="b info">Devam</span></div>
-          <div class="tileRight">›</div>
+          <div class="tileRight"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div>
         </div>
-        <div class="tile">
+        <div class="tile" role="button" tabindex="0" aria-label="Modül 3">
+          <div class="tileLeading"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l8 4v6c0 5-3.4 9.2-8 10-4.6-.8-8-5-8-10V6l8-4z" fill="none" stroke="currentColor" stroke-width="2"/></svg></div>
           <div class="tileText">
             <div class="tileTitle">Modül 3</div>
             <div class="tileMeta">Kilitli • Önkoşul eksik</div>
           </div>
           <div class="tileBadge"><span class="b info">Kilitli</span></div>
-          <div class="tileRight">›</div>
+          <div class="tileRight"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div>
         </div></div>
 <div class='card'><div class="kpis"><div class="kpi"><div class="kpiV">23:59</div><div class="kpiK">Deadline</div></div><div class="kpi"><div class="kpiV">08:00</div><div class="kpiK">Yeni Gün</div></div><div class="kpi"><div class="kpiV">120/300</div><div class="kpiK">Kelime</div></div></div></div>
 <div class='card'><div class='field'><label>Yanıt</label><div class='input' style='height:90px; align-items:flex-start; padding-top:10px;'>Metin taslağı…</div></div></div>
 <div class='card'><div class='h2' style='font-size:12px;'>Önkoşullar</div><div class="checklist"><div class="check"><div class="checkL"><span class="b ok">✓</span></div><div class="checkT">Önceki görev tamamlandı</div></div><div class="check"><div class="checkL"><span class="b ok">✓</span></div><div class="checkT">Yorum teslim edildi</div></div><div class="check"><div class="checkL"><span class="b ok">✓</span></div><div class="checkT">08:00 kapısı bekleniyor</div></div></div></div>
 <div class='card'>
-        <div class="tile">
+        <div class="tile" role="button" tabindex="0" aria-label="Verimi indir">
+          <div class="tileLeading"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l8 4v6c0 5-3.4 9.2-8 10-4.6-.8-8-5-8-10V6l8-4z" fill="none" stroke="currentColor" stroke-width="2"/></svg></div>
           <div class="tileText">
             <div class="tileTitle">Verimi indir</div>
             <div class="tileMeta">Kapsamı göster</div>
           </div>
           
-          <div class="tileRight">›</div>
+          <div class="tileRight"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div>
         </div>
-        <div class="tile">
+        <div class="tile" role="button" tabindex="0" aria-label="Geçmişi sil">
+          <div class="tileLeading"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l8 4v6c0 5-3.4 9.2-8 10-4.6-.8-8-5-8-10V6l8-4z" fill="none" stroke="currentColor" stroke-width="2"/></svg></div>
           <div class="tileText">
             <div class="tileTitle">Geçmişi sil</div>
             <div class="tileMeta">Onay adımı</div>
           </div>
           
-          <div class="tileRight">›</div>
+          <div class="tileRight"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div>
         </div>
-        <div class="tile">
+        <div class="tile" role="button" tabindex="0" aria-label="AI’ı devre dışı bırak">
+          <div class="tileLeading"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l1.5 5L19 9l-5.5 2L12 16l-1.5-5L5 9l5.5-2L12 2z" fill="currentColor"/></svg></div>
           <div class="tileText">
             <div class="tileTitle">AI’ı devre dışı bırak</div>
             <div class="tileMeta">Geri açılabilir</div>
           </div>
           
-          <div class="tileRight">›</div>
+          <div class="tileRight"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div>
         </div></div>
 <div class='row'><button class="btn primary" data-go="UF22-S2-kilitli-erisim">Devam</button></div>
                   </div>
@@ -762,60 +801,66 @@
         <div class="card">
           <div class="h2">Kilitli Erişim</div>
           <div class="muted">Modüller: liste → önkoşul → görev → gönder → kilit açıldı</div>
-          <div class="stateRow"><span class="b">Prod-ready states</span></div>
+          
         </div>
 <div class='card'>
-        <div class="tile">
+        <div class="tile" role="button" tabindex="0" aria-label="Modül 1">
+          <div class="tileLeading"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l8 4v6c0 5-3.4 9.2-8 10-4.6-.8-8-5-8-10V6l8-4z" fill="none" stroke="currentColor" stroke-width="2"/></svg></div>
           <div class="tileText">
             <div class="tileTitle">Modül 1</div>
             <div class="tileMeta">Tamamlandı • 3/3 görev</div>
           </div>
           <div class="tileBadge"><span class="b info">Tamamlandı</span></div>
-          <div class="tileRight">›</div>
+          <div class="tileRight"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div>
         </div>
-        <div class="tile">
+        <div class="tile" role="button" tabindex="0" aria-label="Modül 2">
+          <div class="tileLeading"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l8 4v6c0 5-3.4 9.2-8 10-4.6-.8-8-5-8-10V6l8-4z" fill="none" stroke="currentColor" stroke-width="2"/></svg></div>
           <div class="tileText">
             <div class="tileTitle">Modül 2</div>
             <div class="tileMeta">Devam • 1/3 görev</div>
           </div>
           <div class="tileBadge"><span class="b info">Devam</span></div>
-          <div class="tileRight">›</div>
+          <div class="tileRight"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div>
         </div>
-        <div class="tile">
+        <div class="tile" role="button" tabindex="0" aria-label="Modül 3">
+          <div class="tileLeading"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l8 4v6c0 5-3.4 9.2-8 10-4.6-.8-8-5-8-10V6l8-4z" fill="none" stroke="currentColor" stroke-width="2"/></svg></div>
           <div class="tileText">
             <div class="tileTitle">Modül 3</div>
             <div class="tileMeta">Kilitli • Önkoşul eksik</div>
           </div>
           <div class="tileBadge"><span class="b info">Kilitli</span></div>
-          <div class="tileRight">›</div>
+          <div class="tileRight"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div>
         </div></div>
 <div class='card'><div class="kpis"><div class="kpi"><div class="kpiV">23:59</div><div class="kpiK">Deadline</div></div><div class="kpi"><div class="kpiV">08:00</div><div class="kpiK">Yeni Gün</div></div><div class="kpi"><div class="kpiV">120/300</div><div class="kpiK">Kelime</div></div></div></div>
 <div class='card'><div class='field'><label>Yanıt</label><div class='input' style='height:90px; align-items:flex-start; padding-top:10px;'>Metin taslağı…</div></div></div>
 <div class='card'><div class='h2' style='font-size:12px;'>Önkoşullar</div><div class="checklist"><div class="check"><div class="checkL"><span class="b ok">✓</span></div><div class="checkT">Önceki görev tamamlandı</div></div><div class="check"><div class="checkL"><span class="b ok">✓</span></div><div class="checkT">Yorum teslim edildi</div></div><div class="check"><div class="checkL"><span class="b ok">✓</span></div><div class="checkT">08:00 kapısı bekleniyor</div></div></div></div>
 <div class='card'>
-        <div class="tile">
+        <div class="tile" role="button" tabindex="0" aria-label="Verimi indir">
+          <div class="tileLeading"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l8 4v6c0 5-3.4 9.2-8 10-4.6-.8-8-5-8-10V6l8-4z" fill="none" stroke="currentColor" stroke-width="2"/></svg></div>
           <div class="tileText">
             <div class="tileTitle">Verimi indir</div>
             <div class="tileMeta">Kapsamı göster</div>
           </div>
           
-          <div class="tileRight">›</div>
+          <div class="tileRight"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div>
         </div>
-        <div class="tile">
+        <div class="tile" role="button" tabindex="0" aria-label="Geçmişi sil">
+          <div class="tileLeading"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l8 4v6c0 5-3.4 9.2-8 10-4.6-.8-8-5-8-10V6l8-4z" fill="none" stroke="currentColor" stroke-width="2"/></svg></div>
           <div class="tileText">
             <div class="tileTitle">Geçmişi sil</div>
             <div class="tileMeta">Onay adımı</div>
           </div>
           
-          <div class="tileRight">›</div>
+          <div class="tileRight"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div>
         </div>
-        <div class="tile">
+        <div class="tile" role="button" tabindex="0" aria-label="AI’ı devre dışı bırak">
+          <div class="tileLeading"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l1.5 5L19 9l-5.5 2L12 16l-1.5-5L5 9l5.5-2L12 2z" fill="currentColor"/></svg></div>
           <div class="tileText">
             <div class="tileTitle">AI’ı devre dışı bırak</div>
             <div class="tileMeta">Geri açılabilir</div>
           </div>
           
-          <div class="tileRight">›</div>
+          <div class="tileRight"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div>
         </div></div>
 <div class='row'><button class="btn" data-go="UF22-S1-moduller">Geri</button><button class="btn primary" data-go="UF22-S3-modul-detayi-onkosullar">Devam</button></div>
                   </div>
@@ -953,60 +998,66 @@
         <div class="card">
           <div class="h2">Modül detayı (önkoşullar)</div>
           <div class="muted">Modüller: liste → önkoşul → görev → gönder → kilit açıldı</div>
-          <div class="stateRow"><span class="b">Prod-ready states</span></div>
+          
         </div>
 <div class='card'>
-        <div class="tile">
+        <div class="tile" role="button" tabindex="0" aria-label="Modül 1">
+          <div class="tileLeading"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l8 4v6c0 5-3.4 9.2-8 10-4.6-.8-8-5-8-10V6l8-4z" fill="none" stroke="currentColor" stroke-width="2"/></svg></div>
           <div class="tileText">
             <div class="tileTitle">Modül 1</div>
             <div class="tileMeta">Tamamlandı • 3/3 görev</div>
           </div>
           <div class="tileBadge"><span class="b info">Tamamlandı</span></div>
-          <div class="tileRight">›</div>
+          <div class="tileRight"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div>
         </div>
-        <div class="tile">
+        <div class="tile" role="button" tabindex="0" aria-label="Modül 2">
+          <div class="tileLeading"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l8 4v6c0 5-3.4 9.2-8 10-4.6-.8-8-5-8-10V6l8-4z" fill="none" stroke="currentColor" stroke-width="2"/></svg></div>
           <div class="tileText">
             <div class="tileTitle">Modül 2</div>
             <div class="tileMeta">Devam • 1/3 görev</div>
           </div>
           <div class="tileBadge"><span class="b info">Devam</span></div>
-          <div class="tileRight">›</div>
+          <div class="tileRight"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div>
         </div>
-        <div class="tile">
+        <div class="tile" role="button" tabindex="0" aria-label="Modül 3">
+          <div class="tileLeading"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l8 4v6c0 5-3.4 9.2-8 10-4.6-.8-8-5-8-10V6l8-4z" fill="none" stroke="currentColor" stroke-width="2"/></svg></div>
           <div class="tileText">
             <div class="tileTitle">Modül 3</div>
             <div class="tileMeta">Kilitli • Önkoşul eksik</div>
           </div>
           <div class="tileBadge"><span class="b info">Kilitli</span></div>
-          <div class="tileRight">›</div>
+          <div class="tileRight"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div>
         </div></div>
 <div class='card'><div class="kpis"><div class="kpi"><div class="kpiV">23:59</div><div class="kpiK">Deadline</div></div><div class="kpi"><div class="kpiV">08:00</div><div class="kpiK">Yeni Gün</div></div><div class="kpi"><div class="kpiV">120/300</div><div class="kpiK">Kelime</div></div></div></div>
 <div class='card'><div class='field'><label>Yanıt</label><div class='input' style='height:90px; align-items:flex-start; padding-top:10px;'>Metin taslağı…</div></div></div>
 <div class='card'><div class='h2' style='font-size:12px;'>Önkoşullar</div><div class="checklist"><div class="check"><div class="checkL"><span class="b ok">✓</span></div><div class="checkT">Önceki görev tamamlandı</div></div><div class="check"><div class="checkL"><span class="b ok">✓</span></div><div class="checkT">Yorum teslim edildi</div></div><div class="check"><div class="checkL"><span class="b ok">✓</span></div><div class="checkT">08:00 kapısı bekleniyor</div></div></div></div>
 <div class='card'>
-        <div class="tile">
+        <div class="tile" role="button" tabindex="0" aria-label="Verimi indir">
+          <div class="tileLeading"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l8 4v6c0 5-3.4 9.2-8 10-4.6-.8-8-5-8-10V6l8-4z" fill="none" stroke="currentColor" stroke-width="2"/></svg></div>
           <div class="tileText">
             <div class="tileTitle">Verimi indir</div>
             <div class="tileMeta">Kapsamı göster</div>
           </div>
           
-          <div class="tileRight">›</div>
+          <div class="tileRight"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div>
         </div>
-        <div class="tile">
+        <div class="tile" role="button" tabindex="0" aria-label="Geçmişi sil">
+          <div class="tileLeading"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l8 4v6c0 5-3.4 9.2-8 10-4.6-.8-8-5-8-10V6l8-4z" fill="none" stroke="currentColor" stroke-width="2"/></svg></div>
           <div class="tileText">
             <div class="tileTitle">Geçmişi sil</div>
             <div class="tileMeta">Onay adımı</div>
           </div>
           
-          <div class="tileRight">›</div>
+          <div class="tileRight"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div>
         </div>
-        <div class="tile">
+        <div class="tile" role="button" tabindex="0" aria-label="AI’ı devre dışı bırak">
+          <div class="tileLeading"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l1.5 5L19 9l-5.5 2L12 16l-1.5-5L5 9l5.5-2L12 2z" fill="currentColor"/></svg></div>
           <div class="tileText">
             <div class="tileTitle">AI’ı devre dışı bırak</div>
             <div class="tileMeta">Geri açılabilir</div>
           </div>
           
-          <div class="tileRight">›</div>
+          <div class="tileRight"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div>
         </div></div>
 <div class='row'><button class="btn" data-go="UF22-S2-kilitli-erisim">Geri</button><button class="btn primary" data-go="UF22-S4-gorev-ekrani">Devam</button></div>
                   </div>
@@ -1144,60 +1195,66 @@
         <div class="card">
           <div class="h2">Görev ekranı</div>
           <div class="muted">Modüller: liste → önkoşul → görev → gönder → kilit açıldı</div>
-          <div class="stateRow"><span class="b">Prod-ready states</span></div>
+          
         </div>
 <div class='card'>
-        <div class="tile">
+        <div class="tile" role="button" tabindex="0" aria-label="Modül 1">
+          <div class="tileLeading"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l8 4v6c0 5-3.4 9.2-8 10-4.6-.8-8-5-8-10V6l8-4z" fill="none" stroke="currentColor" stroke-width="2"/></svg></div>
           <div class="tileText">
             <div class="tileTitle">Modül 1</div>
             <div class="tileMeta">Tamamlandı • 3/3 görev</div>
           </div>
           <div class="tileBadge"><span class="b info">Tamamlandı</span></div>
-          <div class="tileRight">›</div>
+          <div class="tileRight"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div>
         </div>
-        <div class="tile">
+        <div class="tile" role="button" tabindex="0" aria-label="Modül 2">
+          <div class="tileLeading"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l8 4v6c0 5-3.4 9.2-8 10-4.6-.8-8-5-8-10V6l8-4z" fill="none" stroke="currentColor" stroke-width="2"/></svg></div>
           <div class="tileText">
             <div class="tileTitle">Modül 2</div>
             <div class="tileMeta">Devam • 1/3 görev</div>
           </div>
           <div class="tileBadge"><span class="b info">Devam</span></div>
-          <div class="tileRight">›</div>
+          <div class="tileRight"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div>
         </div>
-        <div class="tile">
+        <div class="tile" role="button" tabindex="0" aria-label="Modül 3">
+          <div class="tileLeading"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l8 4v6c0 5-3.4 9.2-8 10-4.6-.8-8-5-8-10V6l8-4z" fill="none" stroke="currentColor" stroke-width="2"/></svg></div>
           <div class="tileText">
             <div class="tileTitle">Modül 3</div>
             <div class="tileMeta">Kilitli • Önkoşul eksik</div>
           </div>
           <div class="tileBadge"><span class="b info">Kilitli</span></div>
-          <div class="tileRight">›</div>
+          <div class="tileRight"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div>
         </div></div>
 <div class='card'><div class="kpis"><div class="kpi"><div class="kpiV">23:59</div><div class="kpiK">Deadline</div></div><div class="kpi"><div class="kpiV">08:00</div><div class="kpiK">Yeni Gün</div></div><div class="kpi"><div class="kpiV">120/300</div><div class="kpiK">Kelime</div></div></div></div>
 <div class='card'><div class='field'><label>Yanıt</label><div class='input' style='height:90px; align-items:flex-start; padding-top:10px;'>Metin taslağı…</div></div></div>
 <div class='card'><div class='h2' style='font-size:12px;'>Önkoşullar</div><div class="checklist"><div class="check"><div class="checkL"><span class="b ok">✓</span></div><div class="checkT">Önceki görev tamamlandı</div></div><div class="check"><div class="checkL"><span class="b ok">✓</span></div><div class="checkT">Yorum teslim edildi</div></div><div class="check"><div class="checkL"><span class="b ok">✓</span></div><div class="checkT">08:00 kapısı bekleniyor</div></div></div></div>
 <div class='card'>
-        <div class="tile">
+        <div class="tile" role="button" tabindex="0" aria-label="Verimi indir">
+          <div class="tileLeading"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l8 4v6c0 5-3.4 9.2-8 10-4.6-.8-8-5-8-10V6l8-4z" fill="none" stroke="currentColor" stroke-width="2"/></svg></div>
           <div class="tileText">
             <div class="tileTitle">Verimi indir</div>
             <div class="tileMeta">Kapsamı göster</div>
           </div>
           
-          <div class="tileRight">›</div>
+          <div class="tileRight"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div>
         </div>
-        <div class="tile">
+        <div class="tile" role="button" tabindex="0" aria-label="Geçmişi sil">
+          <div class="tileLeading"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l8 4v6c0 5-3.4 9.2-8 10-4.6-.8-8-5-8-10V6l8-4z" fill="none" stroke="currentColor" stroke-width="2"/></svg></div>
           <div class="tileText">
             <div class="tileTitle">Geçmişi sil</div>
             <div class="tileMeta">Onay adımı</div>
           </div>
           
-          <div class="tileRight">›</div>
+          <div class="tileRight"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div>
         </div>
-        <div class="tile">
+        <div class="tile" role="button" tabindex="0" aria-label="AI’ı devre dışı bırak">
+          <div class="tileLeading"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l1.5 5L19 9l-5.5 2L12 16l-1.5-5L5 9l5.5-2L12 2z" fill="currentColor"/></svg></div>
           <div class="tileText">
             <div class="tileTitle">AI’ı devre dışı bırak</div>
             <div class="tileMeta">Geri açılabilir</div>
           </div>
           
-          <div class="tileRight">›</div>
+          <div class="tileRight"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div>
         </div></div>
 <div class='row'><button class="btn" data-go="UF22-S3-modul-detayi-onkosullar">Geri</button><button class="btn primary" data-go="UF22-S5-gonder-ve-tamamla">Devam</button></div>
                   </div>
@@ -1335,60 +1392,66 @@
         <div class="card">
           <div class="h2">Gönder ve Tamamla</div>
           <div class="muted">Modüller: liste → önkoşul → görev → gönder → kilit açıldı</div>
-          <div class="stateRow"><span class="b">Prod-ready states</span></div>
+          
         </div>
 <div class='card'>
-        <div class="tile">
+        <div class="tile" role="button" tabindex="0" aria-label="Modül 1">
+          <div class="tileLeading"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l8 4v6c0 5-3.4 9.2-8 10-4.6-.8-8-5-8-10V6l8-4z" fill="none" stroke="currentColor" stroke-width="2"/></svg></div>
           <div class="tileText">
             <div class="tileTitle">Modül 1</div>
             <div class="tileMeta">Tamamlandı • 3/3 görev</div>
           </div>
           <div class="tileBadge"><span class="b info">Tamamlandı</span></div>
-          <div class="tileRight">›</div>
+          <div class="tileRight"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div>
         </div>
-        <div class="tile">
+        <div class="tile" role="button" tabindex="0" aria-label="Modül 2">
+          <div class="tileLeading"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l8 4v6c0 5-3.4 9.2-8 10-4.6-.8-8-5-8-10V6l8-4z" fill="none" stroke="currentColor" stroke-width="2"/></svg></div>
           <div class="tileText">
             <div class="tileTitle">Modül 2</div>
             <div class="tileMeta">Devam • 1/3 görev</div>
           </div>
           <div class="tileBadge"><span class="b info">Devam</span></div>
-          <div class="tileRight">›</div>
+          <div class="tileRight"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div>
         </div>
-        <div class="tile">
+        <div class="tile" role="button" tabindex="0" aria-label="Modül 3">
+          <div class="tileLeading"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l8 4v6c0 5-3.4 9.2-8 10-4.6-.8-8-5-8-10V6l8-4z" fill="none" stroke="currentColor" stroke-width="2"/></svg></div>
           <div class="tileText">
             <div class="tileTitle">Modül 3</div>
             <div class="tileMeta">Kilitli • Önkoşul eksik</div>
           </div>
           <div class="tileBadge"><span class="b info">Kilitli</span></div>
-          <div class="tileRight">›</div>
+          <div class="tileRight"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div>
         </div></div>
 <div class='card'><div class="kpis"><div class="kpi"><div class="kpiV">23:59</div><div class="kpiK">Deadline</div></div><div class="kpi"><div class="kpiV">08:00</div><div class="kpiK">Yeni Gün</div></div><div class="kpi"><div class="kpiV">120/300</div><div class="kpiK">Kelime</div></div></div></div>
 <div class='card'><div class='field'><label>Yanıt</label><div class='input' style='height:90px; align-items:flex-start; padding-top:10px;'>Metin taslağı…</div></div></div>
 <div class='card'><div class='h2' style='font-size:12px;'>Önkoşullar</div><div class="checklist"><div class="check"><div class="checkL"><span class="b ok">✓</span></div><div class="checkT">Önceki görev tamamlandı</div></div><div class="check"><div class="checkL"><span class="b ok">✓</span></div><div class="checkT">Yorum teslim edildi</div></div><div class="check"><div class="checkL"><span class="b ok">✓</span></div><div class="checkT">08:00 kapısı bekleniyor</div></div></div></div>
 <div class='card'>
-        <div class="tile">
+        <div class="tile" role="button" tabindex="0" aria-label="Verimi indir">
+          <div class="tileLeading"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l8 4v6c0 5-3.4 9.2-8 10-4.6-.8-8-5-8-10V6l8-4z" fill="none" stroke="currentColor" stroke-width="2"/></svg></div>
           <div class="tileText">
             <div class="tileTitle">Verimi indir</div>
             <div class="tileMeta">Kapsamı göster</div>
           </div>
           
-          <div class="tileRight">›</div>
+          <div class="tileRight"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div>
         </div>
-        <div class="tile">
+        <div class="tile" role="button" tabindex="0" aria-label="Geçmişi sil">
+          <div class="tileLeading"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l8 4v6c0 5-3.4 9.2-8 10-4.6-.8-8-5-8-10V6l8-4z" fill="none" stroke="currentColor" stroke-width="2"/></svg></div>
           <div class="tileText">
             <div class="tileTitle">Geçmişi sil</div>
             <div class="tileMeta">Onay adımı</div>
           </div>
           
-          <div class="tileRight">›</div>
+          <div class="tileRight"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div>
         </div>
-        <div class="tile">
+        <div class="tile" role="button" tabindex="0" aria-label="AI’ı devre dışı bırak">
+          <div class="tileLeading"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l1.5 5L19 9l-5.5 2L12 16l-1.5-5L5 9l5.5-2L12 2z" fill="currentColor"/></svg></div>
           <div class="tileText">
             <div class="tileTitle">AI’ı devre dışı bırak</div>
             <div class="tileMeta">Geri açılabilir</div>
           </div>
           
-          <div class="tileRight">›</div>
+          <div class="tileRight"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div>
         </div></div>
 <div class='row'><button class="btn" data-go="UF22-S4-gorev-ekrani">Geri</button><button class="btn primary" data-go="UF22-S6-kilit-acildi">Devam</button></div>
                   </div>
@@ -1526,60 +1589,66 @@
         <div class="card">
           <div class="h2">“Kilit açıldı”</div>
           <div class="muted">Modüller: liste → önkoşul → görev → gönder → kilit açıldı</div>
-          <div class="stateRow"><span class="b">Prod-ready states</span></div>
+          
         </div>
 <div class='card'>
-        <div class="tile">
+        <div class="tile" role="button" tabindex="0" aria-label="Modül 1">
+          <div class="tileLeading"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l8 4v6c0 5-3.4 9.2-8 10-4.6-.8-8-5-8-10V6l8-4z" fill="none" stroke="currentColor" stroke-width="2"/></svg></div>
           <div class="tileText">
             <div class="tileTitle">Modül 1</div>
             <div class="tileMeta">Tamamlandı • 3/3 görev</div>
           </div>
           <div class="tileBadge"><span class="b info">Tamamlandı</span></div>
-          <div class="tileRight">›</div>
+          <div class="tileRight"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div>
         </div>
-        <div class="tile">
+        <div class="tile" role="button" tabindex="0" aria-label="Modül 2">
+          <div class="tileLeading"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l8 4v6c0 5-3.4 9.2-8 10-4.6-.8-8-5-8-10V6l8-4z" fill="none" stroke="currentColor" stroke-width="2"/></svg></div>
           <div class="tileText">
             <div class="tileTitle">Modül 2</div>
             <div class="tileMeta">Devam • 1/3 görev</div>
           </div>
           <div class="tileBadge"><span class="b info">Devam</span></div>
-          <div class="tileRight">›</div>
+          <div class="tileRight"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div>
         </div>
-        <div class="tile">
+        <div class="tile" role="button" tabindex="0" aria-label="Modül 3">
+          <div class="tileLeading"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l8 4v6c0 5-3.4 9.2-8 10-4.6-.8-8-5-8-10V6l8-4z" fill="none" stroke="currentColor" stroke-width="2"/></svg></div>
           <div class="tileText">
             <div class="tileTitle">Modül 3</div>
             <div class="tileMeta">Kilitli • Önkoşul eksik</div>
           </div>
           <div class="tileBadge"><span class="b info">Kilitli</span></div>
-          <div class="tileRight">›</div>
+          <div class="tileRight"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div>
         </div></div>
 <div class='card'><div class="kpis"><div class="kpi"><div class="kpiV">23:59</div><div class="kpiK">Deadline</div></div><div class="kpi"><div class="kpiV">08:00</div><div class="kpiK">Yeni Gün</div></div><div class="kpi"><div class="kpiV">120/300</div><div class="kpiK">Kelime</div></div></div></div>
 <div class='card'><div class='field'><label>Yanıt</label><div class='input' style='height:90px; align-items:flex-start; padding-top:10px;'>Metin taslağı…</div></div></div>
 <div class='card'><div class='h2' style='font-size:12px;'>Önkoşullar</div><div class="checklist"><div class="check"><div class="checkL"><span class="b ok">✓</span></div><div class="checkT">Önceki görev tamamlandı</div></div><div class="check"><div class="checkL"><span class="b ok">✓</span></div><div class="checkT">Yorum teslim edildi</div></div><div class="check"><div class="checkL"><span class="b ok">✓</span></div><div class="checkT">08:00 kapısı bekleniyor</div></div></div></div>
 <div class='card'>
-        <div class="tile">
+        <div class="tile" role="button" tabindex="0" aria-label="Verimi indir">
+          <div class="tileLeading"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l8 4v6c0 5-3.4 9.2-8 10-4.6-.8-8-5-8-10V6l8-4z" fill="none" stroke="currentColor" stroke-width="2"/></svg></div>
           <div class="tileText">
             <div class="tileTitle">Verimi indir</div>
             <div class="tileMeta">Kapsamı göster</div>
           </div>
           
-          <div class="tileRight">›</div>
+          <div class="tileRight"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div>
         </div>
-        <div class="tile">
+        <div class="tile" role="button" tabindex="0" aria-label="Geçmişi sil">
+          <div class="tileLeading"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l8 4v6c0 5-3.4 9.2-8 10-4.6-.8-8-5-8-10V6l8-4z" fill="none" stroke="currentColor" stroke-width="2"/></svg></div>
           <div class="tileText">
             <div class="tileTitle">Geçmişi sil</div>
             <div class="tileMeta">Onay adımı</div>
           </div>
           
-          <div class="tileRight">›</div>
+          <div class="tileRight"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div>
         </div>
-        <div class="tile">
+        <div class="tile" role="button" tabindex="0" aria-label="AI’ı devre dışı bırak">
+          <div class="tileLeading"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l1.5 5L19 9l-5.5 2L12 16l-1.5-5L5 9l5.5-2L12 2z" fill="currentColor"/></svg></div>
           <div class="tileText">
             <div class="tileTitle">AI’ı devre dışı bırak</div>
             <div class="tileMeta">Geri açılabilir</div>
           </div>
           
-          <div class="tileRight">›</div>
+          <div class="tileRight"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div>
         </div></div>
 <div class='row'><button class="btn" data-go="UF22-S5-gonder-ve-tamamla">Geri</button><button class="btn primary" data-go="UF22A-S1-gecit">Devam</button></div>
                   </div>
@@ -1717,7 +1786,7 @@
         <div class="card">
           <div class="h2">Geçit</div>
           <div class="muted">Koç değerlendirmesi ile kilit (Koçluk add-on)</div>
-          <div class="stateRow"><span class="b">Prod-ready states</span></div>
+          
         </div>
 <div class='card'><div class="kpis"><div class="kpi"><div class="kpiV">23:59</div><div class="kpiK">Deadline</div></div><div class="kpi"><div class="kpiV">08:00</div><div class="kpiK">Yeni Gün</div></div><div class="kpi"><div class="kpiV">120/300</div><div class="kpiK">Kelime</div></div></div></div>
 <div class='card'><div class='field'><label>Yanıt</label><div class='input' style='height:90px; align-items:flex-start; padding-top:10px;'>Metin taslağı…</div></div></div>
@@ -1798,7 +1867,7 @@
         <div class="card">
           <div class="h2">“Koç yorumu bekleniyor”</div>
           <div class="muted">Koç değerlendirmesi ile kilit (Koçluk add-on)</div>
-          <div class="stateRow"><span class="b">Prod-ready states</span></div>
+          
         </div>
 <div class='card'><div class="kpis"><div class="kpi"><div class="kpiV">23:59</div><div class="kpiK">Deadline</div></div><div class="kpi"><div class="kpiV">08:00</div><div class="kpiK">Yeni Gün</div></div><div class="kpi"><div class="kpiV">120/300</div><div class="kpiK">Kelime</div></div></div></div>
 <div class='card'><div class='field'><label>Yanıt</label><div class='input' style='height:90px; align-items:flex-start; padding-top:10px;'>Metin taslağı…</div></div></div>
@@ -1879,7 +1948,7 @@
         <div class="card">
           <div class="h2">(koç onayı gelince) kilit açılır / (opsiyonel) koçsuz devam seçeneği</div>
           <div class="muted">Koç değerlendirmesi ile kilit (Koçluk add-on)</div>
-          <div class="stateRow"><span class="b">Prod-ready states</span></div>
+          
         </div>
 <div class='card'><div class="kpis"><div class="kpi"><div class="kpiV">23:59</div><div class="kpiK">Deadline</div></div><div class="kpi"><div class="kpiV">08:00</div><div class="kpiK">Yeni Gün</div></div><div class="kpi"><div class="kpiV">120/300</div><div class="kpiK">Kelime</div></div></div></div>
 <div class='card'><div class='field'><label>Yanıt</label><div class='input' style='height:90px; align-items:flex-start; padding-top:10px;'>Metin taslağı…</div></div></div>
@@ -1960,32 +2029,35 @@
         <div class="card">
           <div class="h2">Modüller</div>
           <div class="muted">Yolculuklarım</div>
-          <div class="stateRow"><span class="b">Prod-ready states</span></div>
+          
         </div>
 <div class='card'>
-        <div class="tile">
+        <div class="tile" role="button" tabindex="0" aria-label="Modül 1">
+          <div class="tileLeading"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l8 4v6c0 5-3.4 9.2-8 10-4.6-.8-8-5-8-10V6l8-4z" fill="none" stroke="currentColor" stroke-width="2"/></svg></div>
           <div class="tileText">
             <div class="tileTitle">Modül 1</div>
             <div class="tileMeta">Tamamlandı • 3/3 görev</div>
           </div>
           <div class="tileBadge"><span class="b info">Tamamlandı</span></div>
-          <div class="tileRight">›</div>
+          <div class="tileRight"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div>
         </div>
-        <div class="tile">
+        <div class="tile" role="button" tabindex="0" aria-label="Modül 2">
+          <div class="tileLeading"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l8 4v6c0 5-3.4 9.2-8 10-4.6-.8-8-5-8-10V6l8-4z" fill="none" stroke="currentColor" stroke-width="2"/></svg></div>
           <div class="tileText">
             <div class="tileTitle">Modül 2</div>
             <div class="tileMeta">Devam • 1/3 görev</div>
           </div>
           <div class="tileBadge"><span class="b info">Devam</span></div>
-          <div class="tileRight">›</div>
+          <div class="tileRight"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div>
         </div>
-        <div class="tile">
+        <div class="tile" role="button" tabindex="0" aria-label="Modül 3">
+          <div class="tileLeading"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l8 4v6c0 5-3.4 9.2-8 10-4.6-.8-8-5-8-10V6l8-4z" fill="none" stroke="currentColor" stroke-width="2"/></svg></div>
           <div class="tileText">
             <div class="tileTitle">Modül 3</div>
             <div class="tileMeta">Kilitli • Önkoşul eksik</div>
           </div>
           <div class="tileBadge"><span class="b info">Kilitli</span></div>
-          <div class="tileRight">›</div>
+          <div class="tileRight"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div>
         </div></div>
 <div class='card'><div class="kpis"><div class="kpi"><div class="kpiV">23:59</div><div class="kpiK">Deadline</div></div><div class="kpi"><div class="kpiV">08:00</div><div class="kpiK">Yeni Gün</div></div><div class="kpi"><div class="kpiV">120/300</div><div class="kpiK">Kelime</div></div></div></div>
 <div class='card'><div class='field'><label>Yanıt</label><div class='input' style='height:90px; align-items:flex-start; padding-top:10px;'>Metin taslağı…</div></div></div>
@@ -2066,32 +2138,35 @@
         <div class="card">
           <div class="h2">İlerleme Özeti</div>
           <div class="muted">İlerleme özeti + kilit geçmişi + sertifika → paylaşım</div>
-          <div class="stateRow"><span class="b">Prod-ready states</span></div>
+          
         </div>
 <div class='card'>
-        <div class="tile">
+        <div class="tile" role="button" tabindex="0" aria-label="İlerleme Özeti">
+          <div class="tileLeading"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l8 4v6c0 5-3.4 9.2-8 10-4.6-.8-8-5-8-10V6l8-4z" fill="none" stroke="currentColor" stroke-width="2"/></svg></div>
           <div class="tileText">
             <div class="tileTitle">İlerleme Özeti</div>
             <div class="tileMeta">19/21 gün • zincir 7</div>
           </div>
           
-          <div class="tileRight">›</div>
+          <div class="tileRight"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div>
         </div>
-        <div class="tile">
+        <div class="tile" role="button" tabindex="0" aria-label="Kilit Geçmişi">
+          <div class="tileLeading"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 11V8a5 5 0 0110 0v3" fill="none" stroke="currentColor" stroke-width="2"/><rect x="5" y="11" width="14" height="11" rx="2.4" fill="none" stroke="currentColor" stroke-width="2"/></svg></div>
           <div class="tileText">
             <div class="tileTitle">Kilit Geçmişi</div>
             <div class="tileMeta">08:00 açılma • teslim</div>
           </div>
           <div class="tileBadge"><span class="b info">Şeffaf</span></div>
-          <div class="tileRight">›</div>
+          <div class="tileRight"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div>
         </div>
-        <div class="tile">
+        <div class="tile" role="button" tabindex="0" aria-label="Sertifikayı Gör">
+          <div class="tileLeading"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l8 4v6c0 5-3.4 9.2-8 10-4.6-.8-8-5-8-10V6l8-4z" fill="none" stroke="currentColor" stroke-width="2"/></svg></div>
           <div class="tileText">
             <div class="tileTitle">Sertifikayı Gör</div>
             <div class="tileMeta">Koşul sağlanınca aktif</div>
           </div>
           <div class="tileBadge"><span class="b info">PDF</span></div>
-          <div class="tileRight">›</div>
+          <div class="tileRight"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div>
         </div></div>
 <div class='card'><div class="kpis"><div class="kpi"><div class="kpiV">23:59</div><div class="kpiK">Deadline</div></div><div class="kpi"><div class="kpiV">08:00</div><div class="kpiK">Yeni Gün</div></div><div class="kpi"><div class="kpiV">120/300</div><div class="kpiK">Kelime</div></div></div></div>
 <div class='card'><div class='field'><label>Yanıt</label><div class='input' style='height:90px; align-items:flex-start; padding-top:10px;'>Metin taslağı…</div></div></div>
@@ -2172,32 +2247,35 @@
         <div class="card">
           <div class="h2">Kilit Geçmişi</div>
           <div class="muted">İlerleme özeti + kilit geçmişi + sertifika → paylaşım</div>
-          <div class="stateRow"><span class="b">Prod-ready states</span></div>
+          
         </div>
 <div class='card'>
-        <div class="tile">
+        <div class="tile" role="button" tabindex="0" aria-label="İlerleme Özeti">
+          <div class="tileLeading"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l8 4v6c0 5-3.4 9.2-8 10-4.6-.8-8-5-8-10V6l8-4z" fill="none" stroke="currentColor" stroke-width="2"/></svg></div>
           <div class="tileText">
             <div class="tileTitle">İlerleme Özeti</div>
             <div class="tileMeta">19/21 gün • zincir 7</div>
           </div>
           
-          <div class="tileRight">›</div>
+          <div class="tileRight"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div>
         </div>
-        <div class="tile">
+        <div class="tile" role="button" tabindex="0" aria-label="Kilit Geçmişi">
+          <div class="tileLeading"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 11V8a5 5 0 0110 0v3" fill="none" stroke="currentColor" stroke-width="2"/><rect x="5" y="11" width="14" height="11" rx="2.4" fill="none" stroke="currentColor" stroke-width="2"/></svg></div>
           <div class="tileText">
             <div class="tileTitle">Kilit Geçmişi</div>
             <div class="tileMeta">08:00 açılma • teslim</div>
           </div>
           <div class="tileBadge"><span class="b info">Şeffaf</span></div>
-          <div class="tileRight">›</div>
+          <div class="tileRight"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div>
         </div>
-        <div class="tile">
+        <div class="tile" role="button" tabindex="0" aria-label="Sertifikayı Gör">
+          <div class="tileLeading"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l8 4v6c0 5-3.4 9.2-8 10-4.6-.8-8-5-8-10V6l8-4z" fill="none" stroke="currentColor" stroke-width="2"/></svg></div>
           <div class="tileText">
             <div class="tileTitle">Sertifikayı Gör</div>
             <div class="tileMeta">Koşul sağlanınca aktif</div>
           </div>
           <div class="tileBadge"><span class="b info">PDF</span></div>
-          <div class="tileRight">›</div>
+          <div class="tileRight"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div>
         </div></div>
 <div class='card'><div class="kpis"><div class="kpi"><div class="kpiV">23:59</div><div class="kpiK">Deadline</div></div><div class="kpi"><div class="kpiV">08:00</div><div class="kpiK">Yeni Gün</div></div><div class="kpi"><div class="kpiV">120/300</div><div class="kpiK">Kelime</div></div></div></div>
 <div class='card'><div class='field'><label>Yanıt</label><div class='input' style='height:90px; align-items:flex-start; padding-top:10px;'>Metin taslağı…</div></div></div>
@@ -2278,32 +2356,35 @@
         <div class="card">
           <div class="h2">Sertifikayı Gör</div>
           <div class="muted">İlerleme özeti + kilit geçmişi + sertifika → paylaşım</div>
-          <div class="stateRow"><span class="b">Prod-ready states</span></div>
+          
         </div>
 <div class='card'>
-        <div class="tile">
+        <div class="tile" role="button" tabindex="0" aria-label="İlerleme Özeti">
+          <div class="tileLeading"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l8 4v6c0 5-3.4 9.2-8 10-4.6-.8-8-5-8-10V6l8-4z" fill="none" stroke="currentColor" stroke-width="2"/></svg></div>
           <div class="tileText">
             <div class="tileTitle">İlerleme Özeti</div>
             <div class="tileMeta">19/21 gün • zincir 7</div>
           </div>
           
-          <div class="tileRight">›</div>
+          <div class="tileRight"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div>
         </div>
-        <div class="tile">
+        <div class="tile" role="button" tabindex="0" aria-label="Kilit Geçmişi">
+          <div class="tileLeading"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 11V8a5 5 0 0110 0v3" fill="none" stroke="currentColor" stroke-width="2"/><rect x="5" y="11" width="14" height="11" rx="2.4" fill="none" stroke="currentColor" stroke-width="2"/></svg></div>
           <div class="tileText">
             <div class="tileTitle">Kilit Geçmişi</div>
             <div class="tileMeta">08:00 açılma • teslim</div>
           </div>
           <div class="tileBadge"><span class="b info">Şeffaf</span></div>
-          <div class="tileRight">›</div>
+          <div class="tileRight"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div>
         </div>
-        <div class="tile">
+        <div class="tile" role="button" tabindex="0" aria-label="Sertifikayı Gör">
+          <div class="tileLeading"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l8 4v6c0 5-3.4 9.2-8 10-4.6-.8-8-5-8-10V6l8-4z" fill="none" stroke="currentColor" stroke-width="2"/></svg></div>
           <div class="tileText">
             <div class="tileTitle">Sertifikayı Gör</div>
             <div class="tileMeta">Koşul sağlanınca aktif</div>
           </div>
           <div class="tileBadge"><span class="b info">PDF</span></div>
-          <div class="tileRight">›</div>
+          <div class="tileRight"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div>
         </div></div>
 <div class='card'><div class="kpis"><div class="kpi"><div class="kpiV">23:59</div><div class="kpiK">Deadline</div></div><div class="kpi"><div class="kpiV">08:00</div><div class="kpiK">Yeni Gün</div></div><div class="kpi"><div class="kpiV">120/300</div><div class="kpiK">Kelime</div></div></div></div>
 <div class='card'><div class='field'><label>Yanıt</label><div class='input' style='height:90px; align-items:flex-start; padding-top:10px;'>Metin taslağı…</div></div></div>
@@ -2384,32 +2465,35 @@
         <div class="card">
           <div class="h2">Paylaş (önizleme ile)</div>
           <div class="muted">İlerleme özeti + kilit geçmişi + sertifika → paylaşım</div>
-          <div class="stateRow"><span class="b">Prod-ready states</span></div>
+          
         </div>
 <div class='card'>
-        <div class="tile">
+        <div class="tile" role="button" tabindex="0" aria-label="İlerleme Özeti">
+          <div class="tileLeading"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l8 4v6c0 5-3.4 9.2-8 10-4.6-.8-8-5-8-10V6l8-4z" fill="none" stroke="currentColor" stroke-width="2"/></svg></div>
           <div class="tileText">
             <div class="tileTitle">İlerleme Özeti</div>
             <div class="tileMeta">19/21 gün • zincir 7</div>
           </div>
           
-          <div class="tileRight">›</div>
+          <div class="tileRight"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div>
         </div>
-        <div class="tile">
+        <div class="tile" role="button" tabindex="0" aria-label="Kilit Geçmişi">
+          <div class="tileLeading"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 11V8a5 5 0 0110 0v3" fill="none" stroke="currentColor" stroke-width="2"/><rect x="5" y="11" width="14" height="11" rx="2.4" fill="none" stroke="currentColor" stroke-width="2"/></svg></div>
           <div class="tileText">
             <div class="tileTitle">Kilit Geçmişi</div>
             <div class="tileMeta">08:00 açılma • teslim</div>
           </div>
           <div class="tileBadge"><span class="b info">Şeffaf</span></div>
-          <div class="tileRight">›</div>
+          <div class="tileRight"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div>
         </div>
-        <div class="tile">
+        <div class="tile" role="button" tabindex="0" aria-label="Sertifikayı Gör">
+          <div class="tileLeading"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l8 4v6c0 5-3.4 9.2-8 10-4.6-.8-8-5-8-10V6l8-4z" fill="none" stroke="currentColor" stroke-width="2"/></svg></div>
           <div class="tileText">
             <div class="tileTitle">Sertifikayı Gör</div>
             <div class="tileMeta">Koşul sağlanınca aktif</div>
           </div>
           <div class="tileBadge"><span class="b info">PDF</span></div>
-          <div class="tileRight">›</div>
+          <div class="tileRight"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div>
         </div></div>
 <div class='card'><div class="kpis"><div class="kpi"><div class="kpiV">23:59</div><div class="kpiK">Deadline</div></div><div class="kpi"><div class="kpiV">08:00</div><div class="kpiK">Yeni Gün</div></div><div class="kpi"><div class="kpiV">120/300</div><div class="kpiK">Kelime</div></div></div></div>
 <div class='card'><div class='field'><label>Yanıt</label><div class='input' style='height:90px; align-items:flex-start; padding-top:10px;'>Metin taslağı…</div></div></div>

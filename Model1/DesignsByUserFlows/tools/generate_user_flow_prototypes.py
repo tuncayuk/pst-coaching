@@ -337,17 +337,53 @@ def render_app_ui_from_stories(
             cls = "b info"
         return f'<span class="{cls}">{html_escape(text)}</span>'
 
+    def icon_svg(name: str) -> str:
+        icons: dict[str, str] = {
+            "chevron": '<path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>',
+            "search": '<circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2" fill="none"/><path d="M20 20l-3.2-3.2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>',
+            "shield": '<path d="M12 2l8 4v6c0 5-3.4 9.2-8 10-4.6-.8-8-5-8-10V6l8-4z" fill="none" stroke="currentColor" stroke-width="2"/>',
+            "bell": '<path d="M18 8a6 6 0 10-12 0c0 7-3 7-3 7h18s-3 0-3-7z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M13.7 21a2 2 0 01-3.4 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>',
+            "lock": '<path d="M7 11V8a5 5 0 0110 0v3" fill="none" stroke="currentColor" stroke-width="2"/><rect x="5" y="11" width="14" height="11" rx="2.4" fill="none" stroke="currentColor" stroke-width="2"/>',
+            "card": '<rect x="3" y="5" width="18" height="14" rx="2.4" fill="none" stroke="currentColor" stroke-width="2"/><path d="M3 10h18" stroke="currentColor" stroke-width="2"/>',
+            "users": '<path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="9" cy="7" r="4" fill="none" stroke="currentColor" stroke-width="2"/><path d="M22 21v-2a4 4 0 00-3-3.87" fill="none" stroke="currentColor" stroke-width="2"/><path d="M16 3.13a4 4 0 010 7.75" fill="none" stroke="currentColor" stroke-width="2"/>',
+            "book": '<path d="M4 19a2 2 0 012-2h14" fill="none" stroke="currentColor" stroke-width="2"/><path d="M6 17V5a2 2 0 012-2h12v16" fill="none" stroke="currentColor" stroke-width="2"/>',
+            "play": '<polygon points="10,8 18,12 10,16" fill="currentColor"/>',
+            "spark": '<path d="M12 2l1.5 5L19 9l-5.5 2L12 16l-1.5-5L5 9l5.5-2L12 2z" fill="currentColor"/>',
+        }
+        body = icons.get(name, icons["chevron"])
+        return f'<svg class="ic" viewBox="0 0 24 24" aria-hidden="true">{body}</svg>'
+
+    def pick_icon(title: str) -> str:
+        s = title.lower()
+        if any(k in s for k in ["paywall", "kilit", "lock"]):
+            return "lock"
+        if any(k in s for k in ["bildirim", "hatırlat"]):
+            return "bell"
+        if any(k in s for k in ["ödem", "satın", "plan"]):
+            return "card"
+        if any(k in s for k in ["üye", "kişi", "seat", "aile", "grup"]):
+            return "users"
+        if any(k in s for k in ["kitap", "okuyucu", "e‑kitap", "e-kitap"]):
+            return "book"
+        if any(k in s for k in ["video", "oynat"]):
+            return "play"
+        if any(k in s for k in ["ai", "asistan"]):
+            return "spark"
+        return "shield"
+
     def tile(title: str, meta: str = "", right: str = "›", badge_text: str = "") -> str:
         m = f'<div class="tileMeta">{html_escape(meta)}</div>' if meta else ""
         b = f'<div class="tileBadge">{badge(badge_text, "info")}</div>' if badge_text else ""
+        leading = icon_svg(pick_icon(title))
         return f"""
-        <div class="tile">
+        <div class="tile" role="button" tabindex="0" aria-label="{html_escape(title)}">
+          <div class="tileLeading">{leading}</div>
           <div class="tileText">
             <div class="tileTitle">{html_escape(title)}</div>
             {m}
           </div>
           {b}
-          <div class="tileRight">{html_escape(right)}</div>
+          <div class="tileRight">{icon_svg("chevron") if right == "›" else html_escape(right)}</div>
         </div>
         """.rstrip()
 
@@ -364,7 +400,7 @@ def render_app_ui_from_stories(
     def search_bar(placeholder: str = "Ara") -> str:
         return f"""
         <div class="search">
-          <div class="searchIcon">⌕</div>
+          <div class="searchIcon">{icon_svg("search")}</div>
           <div class="searchText">{html_escape(placeholder)}</div>
         </div>
         """.rstrip()
@@ -389,7 +425,7 @@ def render_app_ui_from_stories(
         )
 
     def status_strip() -> str:
-        # Always show a subtle prod-ready state row (non-interactive).
+        # Show states only when explicitly implied by US/AC. Avoid UI noise.
         parts: list[str] = []
         if "skeleton" in corpus or "yüklen" in corpus:
             parts.append(badge("Loading", "info"))
@@ -400,7 +436,7 @@ def render_app_ui_from_stories(
         if "boş" in corpus or "veri yok" in corpus or "empty" in corpus:
             parts.append(badge("Empty", "neutral"))
         if not parts:
-            parts = [badge("Prod-ready states", "neutral")]
+            return ""
         return '<div class="stateRow">' + "".join(parts) + "</div>"
 
     def is_settings_screen() -> bool:
@@ -935,22 +971,28 @@ def render_category_html(category: str, flows: list[Flow], story_by_code: dict[s
     <style>
       :root {{
         color-scheme: light;
+
+        /* Brand (approx from provided logo) */
         --primary: #1e2a78;
         --accent: #0fa3b1;
         --gold: #f2c14e;
         --danger: #d92d20;
         --success: #039855;
 
-        --bg: #f7f8fb;
+        /* Neutrals */
+        --bg: #f6f7fb;
         --surface: #ffffff;
-        --stroke: #e6e8f0;
-        --stroke2: #d7dbeb;
-        --text: #0d1226;
-        --muted: #5b647a;
+        --surface2: rgba(255, 255, 255, 0.72);
+        --stroke: rgba(230, 232, 240, 0.95);
+        --stroke2: rgba(215, 219, 235, 0.95);
+        --text: #0b1020;
+        --muted: rgba(13, 18, 38, 0.62);
 
-        --shadow-sm: 0 6px 18px rgba(13, 18, 38, 0.08);
-        --shadow-md: 0 18px 50px rgba(13, 18, 38, 0.12);
-        --shadow-lg: 0 36px 120px rgba(13, 18, 38, 0.18);
+        /* Shadows (more premium / iOS-like) */
+        --shadow-xs: 0 2px 10px rgba(13, 18, 38, 0.06);
+        --shadow-sm: 0 8px 24px rgba(13, 18, 38, 0.10);
+        --shadow-md: 0 18px 56px rgba(13, 18, 38, 0.14);
+        --shadow-lg: 0 44px 140px rgba(13, 18, 38, 0.22);
 
         --r12: 12px;
         --r16: 16px;
@@ -973,10 +1015,12 @@ def render_category_html(category: str, flows: list[Flow], story_by_code: dict[s
       body {{
         margin: 0;
         font-family: var(--font);
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
         background:
-          radial-gradient(900px 520px at 0% 0%, rgba(15, 163, 177, 0.12), transparent 55%),
-          radial-gradient(900px 520px at 100% 10%, rgba(30, 42, 120, 0.10), transparent 55%),
-          radial-gradient(900px 520px at 40% 115%, rgba(242, 193, 78, 0.12), transparent 55%),
+          radial-gradient(980px 540px at 0% 0%, rgba(15, 163, 177, 0.12), transparent 55%),
+          radial-gradient(980px 540px at 100% 10%, rgba(30, 42, 120, 0.10), transparent 55%),
+          radial-gradient(980px 540px at 40% 115%, rgba(242, 193, 78, 0.10), transparent 55%),
           linear-gradient(180deg, #ffffff, var(--bg));
         color: var(--text);
       }}
@@ -1105,7 +1149,10 @@ def render_category_html(category: str, flows: list[Flow], story_by_code: dict[s
       .device {{ width: var(--w); }}
       .deviceBezel {{
         border-radius: 52px;
-        background: rgba(13, 18, 38, 0.92);
+        background:
+          radial-gradient(120px 120px at 20% 10%, rgba(255, 255, 255, 0.16), transparent 60%),
+          radial-gradient(160px 140px at 80% 0%, rgba(255, 255, 255, 0.10), transparent 65%),
+          linear-gradient(180deg, rgba(13, 18, 38, 0.96), rgba(13, 18, 38, 0.86));
         padding: 12px;
         box-shadow: var(--shadow-lg);
       }}
@@ -1171,13 +1218,15 @@ def render_category_html(category: str, flows: list[Flow], story_by_code: dict[s
           radial-gradient(700px 420px at 20% 0%, rgba(15, 163, 177, 0.20), transparent 55%),
           radial-gradient(700px 420px at 80% 5%, rgba(30, 42, 120, 0.16), transparent 55%),
           linear-gradient(180deg, #ffffff, var(--bg));
-        border: 1px solid rgba(255, 255, 255, 0.10);
-        overflow: hidden;
-        padding: 14px 12px;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        overflow: auto;
+        padding: 16px 14px;
         display: flex;
         flex-direction: column;
-        gap: 10px;
+        gap: 12px;
+        scrollbar-width: none;
       }}
+      .deviceBody::-webkit-scrollbar {{ width: 0; height: 0; }}
 
       .deviceBottom {{
         height: var(--safeBot);
@@ -1207,10 +1256,10 @@ def render_category_html(category: str, flows: list[Flow], story_by_code: dict[s
       /* In-device UI */
       .card {{
         background: rgba(255, 255, 255, 0.92);
-        border: 1px solid rgba(230, 232, 240, 0.95);
-        border-radius: 18px;
-        box-shadow: var(--shadow-sm);
-        padding: 12px;
+        border: 1px solid var(--stroke);
+        border-radius: 20px;
+        box-shadow: var(--shadow-xs);
+        padding: 12px 12px;
       }}
       .card.warn {{ background: rgba(242, 193, 78, 0.14); border-color: rgba(242, 193, 78, 0.28); }}
       .card.ok {{ background: rgba(3, 152, 85, 0.10); border-color: rgba(3, 152, 85, 0.22); }}
@@ -1224,32 +1273,51 @@ def render_category_html(category: str, flows: list[Flow], story_by_code: dict[s
         display: inline-flex;
         align-items: center;
         gap: 10px;
-        font-weight: 950;
-        border: 1px solid rgba(230, 232, 240, 0.95);
+        font-weight: 900;
+        letter-spacing: 0.1px;
+        border: 1px solid var(--stroke);
         background: rgba(255, 255, 255, 0.92);
         color: rgba(13, 18, 38, 0.92);
-        box-shadow: var(--shadow-sm);
+        box-shadow: var(--shadow-xs);
         cursor: pointer;
+        transition: transform 120ms ease, box-shadow 120ms ease, background 120ms ease;
       }}
+      .btn:active {{ transform: translateY(1px) scale(0.99); }}
       .btn.primary {{
         background: linear-gradient(135deg, rgba(30, 42, 120, 0.96), rgba(15, 163, 177, 0.92));
         border-color: rgba(30, 42, 120, 0.18);
         color: #ffffff;
+        box-shadow: 0 14px 30px rgba(30, 42, 120, 0.22);
       }}
       .tile {{
         display: flex;
         align-items: center;
         justify-content: space-between;
         gap: 10px;
-        padding: 10px 10px;
-        border-radius: 16px;
-        border: 1px solid rgba(230, 232, 240, 0.95);
-        background: rgba(255, 255, 255, 0.92);
+        padding: 12px 12px;
+        border-radius: 18px;
+        border: 1px solid var(--stroke);
+        background: rgba(255, 255, 255, 0.94);
+        box-shadow: var(--shadow-xs);
+        transition: transform 120ms ease, border-color 120ms ease;
       }}
+      .tile:active {{ transform: translateY(1px) scale(0.995); }}
+      .tileLeading {{
+        width: 34px;
+        height: 34px;
+        border-radius: 14px;
+        display: grid;
+        place-items: center;
+        background: linear-gradient(180deg, rgba(15, 163, 177, 0.10), rgba(30, 42, 120, 0.08));
+        border: 1px solid rgba(15, 163, 177, 0.18);
+        color: rgba(30, 42, 120, 0.92);
+        flex: 0 0 auto;
+      }}
+      .ic {{ width: 18px; height: 18px; display: block; }}
       .tile + .tile {{ margin-top: 8px; }}
       .tileTitle {{ font-weight: 950; font-size: 12px; }}
       .tileMeta {{ margin-top: 3px; font-size: 11px; color: var(--muted); }}
-      .tileRight {{ color: rgba(13, 18, 38, 0.45); font-weight: 950; }}
+      .tileRight {{ color: rgba(13, 18, 38, 0.40); font-weight: 950; display: grid; place-items: center; }}
       .tileBadge {{ margin-left: auto; }}
       .b {{
         display: inline-flex;
@@ -1316,14 +1384,15 @@ def render_category_html(category: str, flows: list[Flow], story_by_code: dict[s
       .search {{
         height: 40px;
         border-radius: 16px;
-        border: 1px solid rgba(230, 232, 240, 0.95);
-        background: rgba(255, 255, 255, 0.92);
+        border: 1px solid var(--stroke);
+        background: rgba(255, 255, 255, 0.96);
         display: flex;
         align-items: center;
         gap: 10px;
         padding: 0 12px;
+        box-shadow: var(--shadow-xs);
       }}
-      .searchIcon {{ color: rgba(13, 18, 38, 0.45); font-weight: 950; }}
+      .searchIcon {{ color: rgba(13, 18, 38, 0.42); display: grid; place-items: center; }}
       .searchText {{ color: rgba(13, 18, 38, 0.62); font-weight: 900; }}
       .chips {{
         margin-top: 10px;
