@@ -1,0 +1,1901 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>3.12 — Topluluk: Birlikte Okuma + Kitap Kulübü (Light Mode, iPhone 17 Pro)</title>
+    <style>
+
+      :root {
+        color-scheme: light;
+
+        /* Palette — derived from the provided logo (approx by visual sampling). */
+        --primary: #1e2a78; /* PST navy */
+        --accent: #0fa3b1; /* PST teal */
+        --gold: #f2c14e; /* warm highlight */
+        --danger: #d92d20;
+        --success: #039855;
+
+        /* Neutrals */
+        --bg: #f7f8fb;
+        --surface: #ffffff;
+        --surface2: #f2f4fb;
+        --stroke: #e6e8f0;
+        --stroke2: #d7dbeb;
+        --text: #0d1226;
+        --muted: #5b647a;
+        --muted2: #7a849c;
+
+        /* Effects */
+        --shadow-sm: 0 6px 18px rgba(13, 18, 38, 0.08);
+        --shadow-md: 0 18px 50px rgba(13, 18, 38, 0.12);
+        --shadow-lg: 0 36px 120px rgba(13, 18, 38, 0.18);
+
+        /* Radii */
+        --r12: 12px;
+        --r16: 16px;
+        --r20: 20px;
+        --r24: 24px;
+        --r32: 32px;
+
+        /* iPhone 17 Pro ref (approx) */
+        --w: 393px;
+        --h: 852px;
+        --safeTop: 56px;
+        --safeBot: 34px;
+
+        --font:
+          ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display",
+          "Segoe UI", Roboto, Helvetica, Arial;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        height: 100%;
+      }
+      body {
+        margin: 0;
+        font-family: var(--font);
+        background:
+          radial-gradient(900px 520px at 0% 0%, rgba(15, 163, 177, 0.12), transparent 55%),
+          radial-gradient(900px 520px at 100% 10%, rgba(30, 42, 120, 0.1), transparent 55%),
+          radial-gradient(900px 520px at 40% 115%, rgba(242, 193, 78, 0.12), transparent 55%),
+          linear-gradient(180deg, #ffffff, var(--bg));
+        color: var(--text);
+      }
+
+      code {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        font-size: 0.95em;
+        color: rgba(13, 18, 38, 0.85);
+      }
+      a {
+        color: inherit;
+      }
+
+      .wrap {
+        display: grid;
+        grid-template-columns: 360px 1fr;
+        gap: 24px;
+        padding: 28px;
+        min-height: 100%;
+      }
+
+      .side {
+        position: sticky;
+        top: 28px;
+        height: calc(100vh - 56px);
+        border-radius: 22px;
+        background: rgba(255, 255, 255, 0.82);
+        border: 1px solid rgba(230, 232, 240, 0.9);
+        box-shadow: var(--shadow-md);
+        backdrop-filter: blur(12px);
+        padding: 18px;
+        overflow: auto;
+      }
+
+      .titleRow {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 10px;
+      }
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 10px;
+        border-radius: 999px;
+        background: rgba(15, 163, 177, 0.1);
+        border: 1px solid rgba(15, 163, 177, 0.22);
+        color: rgba(13, 18, 38, 0.86);
+        font-size: 12px;
+        white-space: nowrap;
+        font-weight: 900;
+      }
+      h1 {
+        font-size: 16px;
+        margin: 0;
+        letter-spacing: 0.1px;
+        line-height: 1.25;
+      }
+      .sub {
+        margin: 4px 0 0;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.45;
+      }
+
+      .swatches {
+        margin-top: 14px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+      .swatch {
+        padding: 10px;
+        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.72);
+        border: 1px solid rgba(230, 232, 240, 0.92);
+        box-shadow: var(--shadow-sm);
+      }
+      .chip {
+        height: 18px;
+        border-radius: 999px;
+        border: 1px solid rgba(13, 18, 38, 0.08);
+      }
+      .k {
+        margin-top: 8px;
+        font-size: 11px;
+        color: rgba(13, 18, 38, 0.72);
+        font-weight: 900;
+      }
+      .v {
+        font-size: 12px;
+        color: rgba(13, 18, 38, 0.86);
+        font-weight: 900;
+      }
+
+      .note {
+        margin-top: 12px;
+        padding: 12px;
+        border-radius: var(--r20);
+        background: rgba(242, 193, 78, 0.14);
+        border: 1px solid rgba(242, 193, 78, 0.28);
+        color: rgba(13, 18, 38, 0.86);
+        font-size: 12px;
+        line-height: 1.5;
+      }
+      .nav {
+        margin-top: 14px;
+        display: grid;
+        gap: 6px;
+      }
+      .nav a {
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 10px 12px;
+        border-radius: 14px;
+        border: 1px solid rgba(230, 232, 240, 0.92);
+        background: rgba(255, 255, 255, 0.72);
+        box-shadow: var(--shadow-sm);
+        font-weight: 900;
+        font-size: 12px;
+      }
+      .nav a:hover {
+        border-color: rgba(15, 163, 177, 0.35);
+        box-shadow: 0 10px 26px rgba(13, 18, 38, 0.11);
+      }
+      .homeLink {
+        background: rgba(15, 163, 177, 0.08);
+        border-color: rgba(15, 163, 177, 0.22);
+      }
+
+      .main {
+        display: grid;
+        gap: 18px;
+        align-content: start;
+      }
+      .section {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+        align-items: start;
+      }
+      .card {
+        border-radius: var(--r24);
+        background: rgba(255, 255, 255, 0.86);
+        border: 1px solid rgba(230, 232, 240, 0.95);
+        box-shadow: var(--shadow-md);
+        padding: 16px;
+      }
+      .card h2 {
+        margin: 0;
+        font-size: 16px;
+        letter-spacing: 0.1px;
+      }
+      .meta {
+        margin-top: 10px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 10px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 900;
+        border: 1px solid rgba(230, 232, 240, 0.92);
+        background: rgba(255, 255, 255, 0.72);
+        color: rgba(13, 18, 38, 0.88);
+      }
+      .tag.brand {
+        border-color: rgba(30, 42, 120, 0.18);
+        background: rgba(30, 42, 120, 0.08);
+      }
+      .tag.warn {
+        border-color: rgba(242, 193, 78, 0.35);
+        background: rgba(242, 193, 78, 0.18);
+      }
+      .tag.ok {
+        border-color: rgba(3, 152, 85, 0.26);
+        background: rgba(3, 152, 85, 0.12);
+      }
+      .tag.danger {
+        border-color: rgba(217, 45, 32, 0.25);
+        background: rgba(217, 45, 32, 0.1);
+      }
+
+      .infoTable {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 12px;
+        overflow: hidden;
+        border-radius: 18px;
+        border: 1px solid rgba(230, 232, 240, 0.95);
+        background: rgba(255, 255, 255, 0.72);
+      }
+      .infoTable th,
+      .infoTable td {
+        padding: 10px 12px;
+        text-align: left;
+        font-size: 12px;
+        border-bottom: 1px solid rgba(230, 232, 240, 0.95);
+        vertical-align: top;
+      }
+      .infoTable th {
+        width: 128px;
+        color: rgba(13, 18, 38, 0.7);
+        font-weight: 900;
+      }
+      .infoTable tr:last-child th,
+      .infoTable tr:last-child td {
+        border-bottom: none;
+      }
+
+      .card ul {
+        margin: 10px 0 0;
+        padding-left: 18px;
+        color: rgba(13, 18, 38, 0.9);
+        font-size: 12px;
+        line-height: 1.6;
+      }
+
+      details {
+        margin-top: 12px;
+        border-radius: 18px;
+        border: 1px solid rgba(230, 232, 240, 0.95);
+        background: rgba(255, 255, 255, 0.72);
+        overflow: hidden;
+      }
+      summary {
+        cursor: pointer;
+        list-style: none;
+        padding: 12px;
+        font-size: 12px;
+        font-weight: 950;
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 8px;
+      }
+      summary::-webkit-details-marker {
+        display: none;
+      }
+      .hint {
+        color: rgba(13, 18, 38, 0.68);
+        font-weight: 900;
+      }
+      .body {
+        padding: 0 12px 12px;
+        border-top: 1px solid rgba(230, 232, 240, 0.95);
+      }
+      .ac {
+        margin: 10px 0 0;
+        padding-left: 18px;
+        color: rgba(13, 18, 38, 0.92);
+        font-size: 12px;
+        line-height: 1.6;
+      }
+
+      /* Device frame */
+      .device {
+        display: grid;
+        place-items: center;
+      }
+      .bezel {
+        width: calc(var(--w) + 18px);
+        height: calc(var(--h) + 18px);
+        padding: 9px;
+        border-radius: 54px;
+        background: linear-gradient(180deg, #0b0e16, #141a2a);
+        box-shadow: var(--shadow-lg);
+        position: relative;
+      }
+      .status {
+        position: absolute;
+        top: 16px;
+        left: 22px;
+        right: 22px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        color: rgba(255, 255, 255, 0.86);
+        font-size: 12px;
+        font-weight: 900;
+        pointer-events: none;
+      }
+      .right {
+        display: inline-flex;
+        gap: 6px;
+        align-items: center;
+      }
+      .dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.8);
+      }
+      .island {
+        position: absolute;
+        top: 14px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 140px;
+        height: 36px;
+        border-radius: 999px;
+        background: rgba(0, 0, 0, 0.9);
+        box-shadow: 0 12px 22px rgba(0, 0, 0, 0.55);
+        pointer-events: none;
+      }
+      .screen {
+        width: var(--w);
+        height: var(--h);
+        border-radius: 44px;
+        background: linear-gradient(180deg, #ffffff, var(--bg));
+        overflow: hidden;
+        position: relative;
+      }
+      .content {
+        position: absolute;
+        inset: 0;
+        padding: var(--safeTop) 16px calc(var(--safeBot) + 74px);
+        overflow: hidden;
+      }
+
+      /* App chrome */
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 12px;
+      }
+      .left {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        min-width: 0;
+      }
+      .back {
+        width: 36px;
+        height: 36px;
+        border-radius: 14px;
+        display: grid;
+        place-items: center;
+        border: 1px solid rgba(230, 232, 240, 0.95);
+        background: rgba(255, 255, 255, 0.9);
+        box-shadow: var(--shadow-sm);
+        font-weight: 1000;
+        color: rgba(13, 18, 38, 0.86);
+      }
+      .title {
+        font-weight: 1000;
+        letter-spacing: 0.1px;
+        font-size: 15px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .ghost {
+        height: 36px;
+        padding: 0 12px;
+        border-radius: 14px;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 950;
+        border: 1px solid rgba(230, 232, 240, 0.95);
+        background: rgba(255, 255, 255, 0.9);
+        color: rgba(13, 18, 38, 0.76);
+        box-shadow: var(--shadow-sm);
+      }
+
+      .list {
+        display: grid;
+        gap: 10px;
+      }
+      .tile {
+        padding: 12px;
+        border-radius: 20px;
+        border: 1px solid rgba(230, 232, 240, 0.95);
+        background: rgba(255, 255, 255, 0.92);
+        box-shadow: var(--shadow-sm);
+      }
+      .row {
+        display: flex;
+        align-items: start;
+        justify-content: space-between;
+        gap: 10px;
+      }
+      .t {
+        font-weight: 1000;
+        font-size: 13px;
+        letter-spacing: 0.1px;
+      }
+      .m {
+        margin-top: 6px;
+        color: rgba(13, 18, 38, 0.68);
+        font-size: 12px;
+        line-height: 1.45;
+      }
+      .badge {
+        height: 26px;
+        padding: 0 10px;
+        border-radius: 999px;
+        display: inline-flex;
+        align-items: center;
+        font-weight: 1000;
+        font-size: 11px;
+        border: 1px solid rgba(15, 163, 177, 0.26);
+        background: rgba(15, 163, 177, 0.1);
+        color: rgba(13, 18, 38, 0.86);
+        white-space: nowrap;
+      }
+      .badge.warn {
+        border-color: rgba(242, 193, 78, 0.32);
+        background: rgba(242, 193, 78, 0.18);
+      }
+      .badge.ok {
+        border-color: rgba(3, 152, 85, 0.26);
+        background: rgba(3, 152, 85, 0.12);
+      }
+      .badge.lock {
+        border-color: rgba(217, 45, 32, 0.22);
+        background: rgba(217, 45, 32, 0.08);
+      }
+
+      .ctaRow {
+        margin-top: 12px;
+        display: grid;
+        gap: 10px;
+      }
+      .cta {
+        height: 44px;
+        border-radius: 18px;
+        display: grid;
+        place-items: center;
+        font-weight: 1000;
+        letter-spacing: 0.1px;
+        color: #ffffff;
+        background: linear-gradient(135deg, rgba(30, 42, 120, 0.96), rgba(15, 163, 177, 0.92));
+        box-shadow: 0 18px 40px rgba(30, 42, 120, 0.22);
+        border: 1px solid rgba(30, 42, 120, 0.18);
+      }
+      .cta.secondary {
+        color: rgba(13, 18, 38, 0.9);
+        background: rgba(255, 255, 255, 0.92);
+        border: 1px solid rgba(230, 232, 240, 0.95);
+        box-shadow: var(--shadow-sm);
+      }
+
+      .chips {
+        margin-top: 10px;
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .chipBtn {
+        height: 32px;
+        padding: 0 10px;
+        border-radius: 999px;
+        border: 1px solid rgba(230, 232, 240, 0.95);
+        background: rgba(255, 255, 255, 0.92);
+        box-shadow: var(--shadow-sm);
+        font-size: 12px;
+        font-weight: 950;
+        color: rgba(13, 18, 38, 0.78);
+        white-space: nowrap;
+      }
+      .chipBtn.primary {
+        border-color: rgba(30, 42, 120, 0.18);
+        background: rgba(30, 42, 120, 0.08);
+        color: rgba(13, 18, 38, 0.92);
+      }
+
+      .tabbar {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        padding: 10px 12px calc(var(--safeBot) + 10px);
+        background: rgba(255, 255, 255, 0.92);
+        border-top: 1px solid rgba(230, 232, 240, 0.95);
+        backdrop-filter: blur(10px);
+      }
+      .tabRow {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 8px;
+      }
+      .tabItem {
+        height: 46px;
+        border-radius: 18px;
+        display: grid;
+        place-items: center;
+        color: rgba(13, 18, 38, 0.68);
+        font-weight: 950;
+        font-size: 11px;
+        border: 1px solid rgba(230, 232, 240, 0.95);
+        background: rgba(255, 255, 255, 0.86);
+      }
+      .tabItem.active {
+        border-color: rgba(30, 42, 120, 0.2);
+        background: rgba(30, 42, 120, 0.08);
+        color: rgba(13, 18, 38, 0.92);
+      }
+
+      .logoWrap {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        min-width: 0;
+      }
+      .logoImg {
+        height: 22px;
+        width: auto;
+        object-fit: contain;
+        display: block;
+      }
+      .logoFallback {
+        display: none;
+        width: 26px;
+        height: 26px;
+        border-radius: 12px;
+        background: radial-gradient(circle at 30% 30%, rgba(15, 163, 177, 1), rgba(30, 42, 120, 1));
+        border: 1px solid rgba(13, 18, 38, 0.08);
+        box-shadow: var(--shadow-sm);
+      }
+
+      .muted {
+        color: rgba(13, 18, 38, 0.66);
+      }
+
+      @media (max-width: 1120px) {
+        .wrap {
+          grid-template-columns: 1fr;
+        }
+        .side {
+          position: relative;
+          height: auto;
+        }
+        .section {
+          grid-template-columns: 1fr;
+        }
+      }
+
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <aside class="side">
+        <div class="titleRow">
+          <div>
+            <h1>3.12 — Topluluk: Birlikte Okuma + Kitap Kulübü</h1>
+            <p class="sub">Light mode • iPhone 17 Pro frame • US + Acceptance Criteria gömülü</p>
+          </div>
+          <div class="pill">3.12</div>
+        </div>
+
+        <div class="swatches" aria-label="Renk paleti">
+          <div class="swatch">
+            <div class="chip" style="background: var(--primary)"></div>
+            <div class="k">Primary</div>
+            <div class="v">#1E2A78</div>
+          </div>
+          <div class="swatch">
+            <div class="chip" style="background: var(--accent)"></div>
+            <div class="k">Accent</div>
+            <div class="v">#0FA3B1</div>
+          </div>
+          <div class="swatch">
+            <div class="chip" style="background: var(--gold)"></div>
+            <div class="k">Gold</div>
+            <div class="v">#F2C14E</div>
+          </div>
+          <div class="swatch">
+            <div class="chip" style="background: var(--bg)"></div>
+            <div class="k">Background</div>
+            <div class="v">#F7F8FB</div>
+          </div>
+        </div>
+        <div class="note">
+          Palet logo bazlı <strong>yaklaşık</strong>. Logo dosyası: <code>Model1/Designs/assets/pst-coaching-logo.png</code>
+        </div>
+
+        <div class="nav" aria-label="Ekran listesi">
+          <a class="homeLink" href="index.html"><span class="k">⟵</span> Home (Index)</a>
+          <a href="#groups"><span class="k">01</span> Birlikte Okuma Ana Ekranı (Gruplar)</a>
+          <a href="#create-group"><span class="k">02</span> Grup Oluşturma</a>
+          <a href="#invite"><span class="k">03</span> Davet Et / Katıl (Kod/Link)</a>
+          <a href="#plan-rules"><span class="k">04</span> Okuma Planı &amp; Kurallar</a>
+          <a href="#shared-progress"><span class="k">05</span> Ortak İlerleme (Harita/Tablo)</a>
+          <a href="#group-chat"><span class="k">06</span> Grup Sohbeti</a>
+          <a href="#members"><span class="k">07</span> Üyeler &amp; Kurallar (Roller/Limit)</a>
+          <a href="#club-home"><span class="k">08</span> Kitap Kulübü Ana Ekranı</a>
+          <a href="#club-detail"><span class="k">09</span> Kulüp Detayı (Hedef + Tartışma)</a>
+          <a href="#club-reader"><span class="k">10</span> Okuyucu (Kulüp)</a>
+          <a href="#quotes"><span class="k">11</span> Notlar &amp; Alıntılar</a>
+          <a href="#discussion"><span class="k">12</span> Tartışma</a>
+          <a href="#moderation"><span class="k">13</span> Kurallar &amp; Moderasyon</a>
+        </div>
+      </aside>
+
+      <main class="main">
+
+        <section id="groups" class="section">
+          <div class="card">
+            <h2>01 — Birlikte Okuma Ana Ekranı (Gruplar)</h2>
+            <div class="meta">
+              <span class="tag brand">EPIC 12</span><span class="tag brand">US US-12.1</span><span class="tag">Faz-2</span>
+            </div>
+            <table class="infoTable" aria-label="Ekran bilgileri">
+              <tr><th>Rol</th><td>Danışan</td></tr>
+              <tr><th>Segment</th><td>Bireysel / Aile / Grup</td></tr>
+              <tr><th>Plan</th><td>Plan</td></tr>
+              <tr><th>Navigasyon</th><td>Topluluk</td></tr>
+            </table>
+            <ul>
+              <li>Grup listesi + katıl/oluştur.</li>
+              <li>Aktif hedef/ilerleme özeti.</li>
+              <li>Gizlilik ve rol rozetleri.</li>
+            </ul>
+            <details open>
+              <summary>Acceptance Criteria <span class="hint">US-12.1</span></summary>
+              <div class="body">
+                <ul class="ac">
+                  <li>•	Önkoşul: Giriş yaptım. Ne zaman “Topluluk &gt; Birlikte Okuma” ekranını açarsam, o zaman aktif gruplarım listelenir.</li>
+                  <li>•	Önkoşul: Aktif grup var. Ne zaman bir gruba dokunursam, o zaman grup detayına (plan/ilerleme/sohbet) giderim.</li>
+                  <li>•	Önkoşul: Yeni grup başlatmak istiyorum. Ne zaman “Birlikte Okuma Oluştur” dersem, o zaman grup oluşturma akışı açılır.</li>
+                  <li>•	Önkoşul: Davet kodum var. Ne zaman “Davet Kodu ile Katıl” dersem, o zaman kod girişi ve doğrulama ekranı açılır.</li>
+                </ul>
+              </div>
+            </details>
+          </div>
+
+          <div class="device">
+            <div class="bezel">
+              <div class="status"><span>07:32</span><span class="right"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span></div>
+              <div class="island"></div>
+              <div class="screen">
+                <div class="content">
+                  <div class="topbar">
+                    <div class="logoWrap">
+                      <img
+                        class="logoImg"
+                        src="assets/pst-coaching-logo.png"
+                        alt="PST Coaching"
+                        onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+                      />
+                      <div class="logoFallback" aria-hidden="true"></div>
+                      <div class="title">Topluluk</div>
+                    </div>
+                    <div class="ghost">Gruplar</div>
+                  </div>
+
+                  <div class="list">
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">Grup</div>
+                          <div class="m">Şükür — 5 kişi</div>
+                        </div>
+                        <span class="badge">Aç</span>
+                      </div>
+                    </div>
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">Katıl</div>
+                          <div class="m">Kod/Link</div>
+                        </div>
+                        <span class="badge">→</span>
+                      </div>
+                    </div>
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">Oluştur</div>
+                          <div class="m">Yeni grup</div>
+                        </div>
+                        <span class="badge">+</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="tabbar" role="navigation" aria-label="Tab bar">
+                    <div class="tabRow">
+                      <div class="tabItem">Ana Sayfa</div>
+                      <div class="tabItem">Keşfet</div>
+                      <div class="tabItem active">Topluluk</div>
+                      <div class="tabItem">Profil</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="create-group" class="section">
+          <div class="card">
+            <h2>02 — Grup Oluşturma</h2>
+            <div class="meta">
+              <span class="tag brand">EPIC 12</span><span class="tag brand">US US-12.2</span><span class="tag">Faz-2</span>
+            </div>
+            <table class="infoTable" aria-label="Ekran bilgileri">
+              <tr><th>Rol</th><td>Danışan</td></tr>
+              <tr><th>Segment</th><td>Bireysel / Aile / Grup</td></tr>
+              <tr><th>Plan</th><td>Plan</td></tr>
+              <tr><th>Navigasyon</th><td>Topluluk → Oluştur</td></tr>
+            </table>
+            <ul>
+              <li>Ad + tür + kişi sayısı.</li>
+              <li>Gizlilik seçimi.</li>
+              <li>Kurallar varsayılan.</li>
+            </ul>
+            <details open>
+              <summary>Acceptance Criteria <span class="hint">US-12.2</span></summary>
+              <div class="body">
+                <ul class="ac">
+                  <li>•	Önkoşul: Planım aktif. Ne zaman grup oluşturma ekranı açılırsa, o zaman “grup adı, grup türü (Aile/Grup), kişi sayısı (mevcut plan)” alanları görünür.</li>
+                  <li>•	Önkoşul: Plan kişi sayısı limiti var. Ne zaman limit aşılacak bir ayar seçilirse, o zaman sistem ek kişi sayısı add-on’ını önerir veya üye eklemeyi engeller.</li>
+                  <li>•	Önkoşul: Grup adı girdim. Ne zaman “Grubu Oluştur” dersem, o zaman grup oluşturulur ve davet ekranına yönlendirilirim.</li>
+                </ul>
+              </div>
+            </details>
+          </div>
+
+          <div class="device">
+            <div class="bezel">
+              <div class="status"><span>07:32</span><span class="right"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span></div>
+              <div class="island"></div>
+              <div class="screen">
+                <div class="content">
+                  <div class="topbar">
+                    <div class="logoWrap">
+                      <img
+                        class="logoImg"
+                        src="assets/pst-coaching-logo.png"
+                        alt="PST Coaching"
+                        onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+                      />
+                      <div class="logoFallback" aria-hidden="true"></div>
+                      <div class="title">Grup Oluştur</div>
+                    </div>
+                    <div class="ghost">Ayar</div>
+                  </div>
+
+                  <div class="list">
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">Ad</div>
+                          <div class="m">Şükür Grubu</div>
+                        </div>
+                        <span class="badge">Yaz</span>
+                      </div>
+                    </div>
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">Limit</div>
+                          <div class="m">10 kişi</div>
+                        </div>
+                        <span class="badge">Seç</span>
+                      </div>
+                    </div>
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">Gizlilik</div>
+                          <div class="m">Özel</div>
+                        </div>
+                        <span class="badge">Seç</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="tabbar" role="navigation" aria-label="Tab bar">
+                    <div class="tabRow">
+                      <div class="tabItem">Ana Sayfa</div>
+                      <div class="tabItem">Keşfet</div>
+                      <div class="tabItem active">Topluluk</div>
+                      <div class="tabItem">Profil</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="invite" class="section">
+          <div class="card">
+            <h2>03 — Davet Et / Katıl (Kod/Link)</h2>
+            <div class="meta">
+              <span class="tag brand">EPIC 12</span><span class="tag brand">US US-12.3</span><span class="tag">Faz-2</span>
+            </div>
+            <table class="infoTable" aria-label="Ekran bilgileri">
+              <tr><th>Rol</th><td>Danışan</td></tr>
+              <tr><th>Segment</th><td>Bireysel / Aile / Grup</td></tr>
+              <tr><th>Plan</th><td>Plan</td></tr>
+              <tr><th>Navigasyon</th><td>Topluluk</td></tr>
+            </table>
+            <ul>
+              <li>Davet kodu/link.</li>
+              <li>Katılım onayı.</li>
+              <li>Spam önleme/limit.</li>
+            </ul>
+            <details open>
+              <summary>Acceptance Criteria <span class="hint">US-12.3</span></summary>
+              <div class="body">
+                <ul class="ac">
+                  <li>•	Önkoşul: Organizatörüm. Ne zaman “Davet Et” ekranını açarsam, o zaman davet kodu görünür ve “Kopyala” aksiyonu çalışır.</li>
+                  <li>•	Önkoşul: Katılım onayı açık. Ne zaman bir kullanıcı kod ile katılmak isterse, o zaman katılım isteği organizatör onayına düşer.</li>
+                  <li>•	Önkoşul: Katılım onayı kapalı. Ne zaman kullanıcı kodu girerse, o zaman doğrulama sonrası doğrudan gruba eklenir.</li>
+                  <li>•	Önkoşul: Güvenlik ihtiyacı var. Ne zaman organizatör “Davet kodunu yenile” derse, o zaman eski kod geçersiz olur ve yeni kod üretilir.</li>
+                </ul>
+              </div>
+            </details>
+          </div>
+
+          <div class="device">
+            <div class="bezel">
+              <div class="status"><span>07:32</span><span class="right"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span></div>
+              <div class="island"></div>
+              <div class="screen">
+                <div class="content">
+                  <div class="topbar">
+                    <div class="logoWrap">
+                      <img
+                        class="logoImg"
+                        src="assets/pst-coaching-logo.png"
+                        alt="PST Coaching"
+                        onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+                      />
+                      <div class="logoFallback" aria-hidden="true"></div>
+                      <div class="title">Davet</div>
+                    </div>
+                    <div class="ghost">Kod</div>
+                  </div>
+
+                  <div class="list">
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">Kod</div>
+                          <div class="m">ABCD-1234</div>
+                        </div>
+                        <span class="badge">Kopyala</span>
+                      </div>
+                    </div>
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">Katıl</div>
+                          <div class="m">Kod gir</div>
+                        </div>
+                        <span class="badge">→</span>
+                      </div>
+                    </div>
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">Onay</div>
+                          <div class="m">Katılım onayı</div>
+                        </div>
+                        <span class="badge">OK</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="tabbar" role="navigation" aria-label="Tab bar">
+                    <div class="tabRow">
+                      <div class="tabItem">Ana Sayfa</div>
+                      <div class="tabItem">Keşfet</div>
+                      <div class="tabItem active">Topluluk</div>
+                      <div class="tabItem">Profil</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="plan-rules" class="section">
+          <div class="card">
+            <h2>04 — Okuma Planı &amp; Kurallar</h2>
+            <div class="meta">
+              <span class="tag brand">EPIC 12</span><span class="tag brand">US US-12.4</span><span class="tag">Faz-2</span>
+            </div>
+            <table class="infoTable" aria-label="Ekran bilgileri">
+              <tr><th>Rol</th><td>Danışan</td></tr>
+              <tr><th>Segment</th><td>Bireysel / Aile / Grup</td></tr>
+              <tr><th>Plan</th><td>Plan</td></tr>
+              <tr><th>Navigasyon</th><td>Grup detayı</td></tr>
+            </table>
+            <ul>
+              <li>Tempo + hedef.</li>
+              <li>Kurallar görünür.</li>
+              <li>Değişiklik duyurusu.</li>
+            </ul>
+            <details open>
+              <summary>Acceptance Criteria <span class="hint">US-12.4</span></summary>
+              <div class="body">
+                <ul class="ac">
+                  <li>•	Önkoşul: Organizatörüm. Ne zaman “Okuma Planı” ekranını açarsam, o zaman materyal seçimi ve günlük hedef (örn. 5 sayfa) alanları görünür.</li>
+                  <li>•	Önkoşul: Hatırlatıcı ayarı var. Ne zaman plan saati belirlersem, o zaman grup üyeleri için hatırlatma davranışı kuralı gösterilir (kullanıcı kendi cihazında sessize alabilir).</li>
+                  <li>•	Önkoşul: Kilit kuralı aktif. Ne zaman plan kaydedilirse, o zaman “yolculuk kilidi” ve “grup kilidi” seçenekleri açıkça belirtilir.</li>
+                  <li>•	Önkoşul: Plan güncellendi. Ne zaman plan değişirse, o zaman tüm üyeler uygulama içi bildirimle bilgilendirilir.</li>
+                </ul>
+              </div>
+            </details>
+          </div>
+
+          <div class="device">
+            <div class="bezel">
+              <div class="status"><span>07:32</span><span class="right"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span></div>
+              <div class="island"></div>
+              <div class="screen">
+                <div class="content">
+                  <div class="topbar">
+                    <div class="logoWrap">
+                      <img
+                        class="logoImg"
+                        src="assets/pst-coaching-logo.png"
+                        alt="PST Coaching"
+                        onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+                      />
+                      <div class="logoFallback" aria-hidden="true"></div>
+                      <div class="title">Plan</div>
+                    </div>
+                    <div class="ghost">Kurallar</div>
+                  </div>
+
+                  <div class="list">
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">Hedef</div>
+                          <div class="m">Haftada 2 bölüm</div>
+                        </div>
+                        <span class="badge">Seç</span>
+                      </div>
+                    </div>
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">Kurallar</div>
+                          <div class="m">Nazik dil</div>
+                        </div>
+                        <span class="badge">Oku</span>
+                      </div>
+                    </div>
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">Duyuru</div>
+                          <div class="m">Değişiklik</div>
+                        </div>
+                        <span class="badge">→</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="tabbar" role="navigation" aria-label="Tab bar">
+                    <div class="tabRow">
+                      <div class="tabItem">Ana Sayfa</div>
+                      <div class="tabItem">Keşfet</div>
+                      <div class="tabItem active">Topluluk</div>
+                      <div class="tabItem">Profil</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="shared-progress" class="section">
+          <div class="card">
+            <h2>05 — Ortak İlerleme (Harita/Tablo)</h2>
+            <div class="meta">
+              <span class="tag brand">EPIC 12</span><span class="tag brand">US US-12.5</span><span class="tag">Faz-2</span>
+            </div>
+            <table class="infoTable" aria-label="Ekran bilgileri">
+              <tr><th>Rol</th><td>Danışan</td></tr>
+              <tr><th>Segment</th><td>Bireysel / Aile / Grup</td></tr>
+              <tr><th>Plan</th><td>Plan</td></tr>
+              <tr><th>Navigasyon</th><td>Grup detayı</td></tr>
+            </table>
+            <ul>
+              <li>Üye bazlı ilerleme.</li>
+              <li>Haftalık hedef karşılaştırması.</li>
+              <li>Gizlilik seçenekleri.</li>
+            </ul>
+            <details open>
+              <summary>Acceptance Criteria <span class="hint">US-12.5</span></summary>
+              <div class="body">
+                <ul class="ac">
+                  <li>•	Önkoşul: Bir gruptayım. Ne zaman “İlerleme” ekranını açarsam, o zaman harita görünümü ve kişi bazlı ilerleme barları gösterilir.</li>
+                  <li>•	Önkoşul: Detay görmek istiyorum. Ne zaman “Detaylı Tabloyu Aç” dersem, o zaman kişi bazlı (okunan sayfa/konu) detaylar listelenir.</li>
+                  <li>•	Önkoşul: Gizlilik sınırı var. Ne zaman üyeler gizlilik ayarı gereği yorum paylaşmıyorsa, o zaman sadece ilerleme yüzdesi gibi sınırlı metrikler gösterilir.</li>
+                </ul>
+              </div>
+            </details>
+          </div>
+
+          <div class="device">
+            <div class="bezel">
+              <div class="status"><span>07:32</span><span class="right"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span></div>
+              <div class="island"></div>
+              <div class="screen">
+                <div class="content">
+                  <div class="topbar">
+                    <div class="logoWrap">
+                      <img
+                        class="logoImg"
+                        src="assets/pst-coaching-logo.png"
+                        alt="PST Coaching"
+                        onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+                      />
+                      <div class="logoFallback" aria-hidden="true"></div>
+                      <div class="title">İlerleme</div>
+                    </div>
+                    <div class="ghost">Tablo</div>
+                  </div>
+
+                  <div class="list">
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">Sen</div>
+                          <div class="m">2/2</div>
+                        </div>
+                        <span class="badge">✓</span>
+                      </div>
+                    </div>
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">Ayşe</div>
+                          <div class="m">1/2</div>
+                        </div>
+                        <span class="badge">→</span>
+                      </div>
+                    </div>
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">Mehmet</div>
+                          <div class="m">0/2</div>
+                        </div>
+                        <span class="badge">→</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="tabbar" role="navigation" aria-label="Tab bar">
+                    <div class="tabRow">
+                      <div class="tabItem">Ana Sayfa</div>
+                      <div class="tabItem">Keşfet</div>
+                      <div class="tabItem active">Topluluk</div>
+                      <div class="tabItem">Profil</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="group-chat" class="section">
+          <div class="card">
+            <h2>06 — Grup Sohbeti</h2>
+            <div class="meta">
+              <span class="tag brand">EPIC 12</span><span class="tag brand">US US-12.6</span><span class="tag">Faz-2</span>
+            </div>
+            <table class="infoTable" aria-label="Ekran bilgileri">
+              <tr><th>Rol</th><td>Danışan</td></tr>
+              <tr><th>Segment</th><td>Bireysel / Aile / Grup</td></tr>
+              <tr><th>Plan</th><td>Plan</td></tr>
+              <tr><th>Navigasyon</th><td>Grup detayı</td></tr>
+            </table>
+            <ul>
+              <li>Mesajlaşma + güvenli alan.</li>
+              <li>Şikayet/rapor.</li>
+              <li>Sessize alma.</li>
+            </ul>
+            <details open>
+              <summary>Acceptance Criteria <span class="hint">US-12.6</span></summary>
+              <div class="body">
+                <ul class="ac">
+                  <li>•	Önkoşul: Gruba üyeyim. Ne zaman “Sohbet” ekranını açarsam, o zaman mesajlar kronolojik listelenir ve yeni mesaj gönderebilirim.</li>
+                  <li>•	Önkoşul: Rahatsız edilmek istemiyorum. Ne zaman “Sessize al” seçersem, o zaman bu grubun bildirimleri sessize alınır (uygulama içi merkezde kayıt kalır).</li>
+                  <li>•	Önkoşul: Uygunsuz içerik var. Ne zaman bir mesajı “Şikayet” edersem, o zaman şikayet kaydı alınır ve kullanıcıya süreç bilgisi gösterilir.</li>
+                </ul>
+              </div>
+            </details>
+          </div>
+
+          <div class="device">
+            <div class="bezel">
+              <div class="status"><span>07:32</span><span class="right"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span></div>
+              <div class="island"></div>
+              <div class="screen">
+                <div class="content">
+                  <div class="topbar">
+                    <div class="logoWrap">
+                      <img
+                        class="logoImg"
+                        src="assets/pst-coaching-logo.png"
+                        alt="PST Coaching"
+                        onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+                      />
+                      <div class="logoFallback" aria-hidden="true"></div>
+                      <div class="title">Sohbet</div>
+                    </div>
+                    <div class="ghost">Güvenli</div>
+                  </div>
+
+                  <div class="list">
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">Mesaj</div>
+                          <div class="m">Gönder</div>
+                        </div>
+                        <span class="badge">→</span>
+                      </div>
+                    </div>
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">Şikayet</div>
+                          <div class="m">Uygunsuz içerik</div>
+                        </div>
+                        <span class="badge">!</span>
+                      </div>
+                    </div>
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">Sessize al</div>
+                          <div class="m">Bildirim durur</div>
+                        </div>
+                        <span class="badge">🔕</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="tabbar" role="navigation" aria-label="Tab bar">
+                    <div class="tabRow">
+                      <div class="tabItem">Ana Sayfa</div>
+                      <div class="tabItem">Keşfet</div>
+                      <div class="tabItem active">Topluluk</div>
+                      <div class="tabItem">Profil</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="members" class="section">
+          <div class="card">
+            <h2>07 — Üyeler &amp; Kurallar (Roller/Limit)</h2>
+            <div class="meta">
+              <span class="tag brand">EPIC 12</span><span class="tag brand">US US-12.7</span><span class="tag">Faz-2</span>
+            </div>
+            <table class="infoTable" aria-label="Ekran bilgileri">
+              <tr><th>Rol</th><td>Danışan (Moderatör/Üye)</td></tr>
+              <tr><th>Segment</th><td>Bireysel / Aile / Grup</td></tr>
+              <tr><th>Plan</th><td>Plan</td></tr>
+              <tr><th>Navigasyon</th><td>Grup detayı</td></tr>
+            </table>
+            <ul>
+              <li>Üye listesi + roller.</li>
+              <li>Limit/kurallar.</li>
+              <li>Moderatör aksiyonları.</li>
+            </ul>
+            <details open>
+              <summary>Acceptance Criteria <span class="hint">US-12.7</span></summary>
+              <div class="body">
+                <ul class="ac">
+                  <li>•	Önkoşul: Organizatörüm. Ne zaman “Üyeler ve Kurallar” ekranını açarsam, o zaman üye listesi ve roller (Organizatör/Üye) görünür.</li>
+                  <li>•	Önkoşul: Kişi sayısı limitim var. Ne zaman üye ekleme yapılacaksa, o zaman “mevcut kişi sayısı / limit” gösterilir ve limit aşımı engellenir veya add-on önerilir.</li>
+                  <li>•	Önkoşul: Üye yönetimi. Ne zaman bir üyeyi kaldırırsam, o zaman üye erişimi iptal olur ve grup geçmişi gizlilik kurallarına göre korunur.</li>
+                  <li>•	Önkoşul: Grubu bitirmek istiyorum. Ne zaman “Grubu Sonlandır” dersem, o zaman onay adımı istenir ve sonlandırma sonrası grup pasife alınır.</li>
+                </ul>
+              </div>
+            </details>
+          </div>
+
+          <div class="device">
+            <div class="bezel">
+              <div class="status"><span>07:32</span><span class="right"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span></div>
+              <div class="island"></div>
+              <div class="screen">
+                <div class="content">
+                  <div class="topbar">
+                    <div class="logoWrap">
+                      <img
+                        class="logoImg"
+                        src="assets/pst-coaching-logo.png"
+                        alt="PST Coaching"
+                        onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+                      />
+                      <div class="logoFallback" aria-hidden="true"></div>
+                      <div class="title">Üyeler</div>
+                    </div>
+                    <div class="ghost">Roller</div>
+                  </div>
+
+                  <div class="list">
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">Moderatör</div>
+                          <div class="m">Sen</div>
+                        </div>
+                        <span class="badge">✓</span>
+                      </div>
+                    </div>
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">Üyeler</div>
+                          <div class="m">10 kişi</div>
+                        </div>
+                        <span class="badge">→</span>
+                      </div>
+                    </div>
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">Kurallar</div>
+                          <div class="m">Güncelle</div>
+                        </div>
+                        <span class="badge">→</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="tabbar" role="navigation" aria-label="Tab bar">
+                    <div class="tabRow">
+                      <div class="tabItem">Ana Sayfa</div>
+                      <div class="tabItem">Keşfet</div>
+                      <div class="tabItem active">Topluluk</div>
+                      <div class="tabItem">Profil</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="club-home" class="section">
+          <div class="card">
+            <h2>08 — Kitap Kulübü Ana Ekranı</h2>
+            <div class="meta">
+              <span class="tag brand">EPIC 13</span><span class="tag brand">US US-13.1</span><span class="tag brand">US US-13.2</span><span class="tag">Faz-2</span>
+            </div>
+            <table class="infoTable" aria-label="Ekran bilgileri">
+              <tr><th>Rol</th><td>Danışan</td></tr>
+              <tr><th>Segment</th><td>Bireysel / Aile / Grup</td></tr>
+              <tr><th>Plan</th><td>Plan</td></tr>
+              <tr><th>Navigasyon</th><td>Topluluk → Kitap Kulübü</td></tr>
+            </table>
+            <ul>
+              <li>Kulüp listesi + katıl/oluştur.</li>
+              <li>Materyal + tempo.</li>
+              <li>Gizlilik.</li>
+            </ul>
+            <details open>
+              <summary>Acceptance Criteria <span class="hint">US-13.1 + US-13.2</span></summary>
+              <div class="body">
+                <ul class="ac">
+                  <li>•	Önkoşul: Giriş yaptım. Ne zaman “Topluluk &gt; Kitap Kulübü” ekranını açarsam, o zaman aktif kulüplerim listelenir.</li>
+                  <li>•	Önkoşul: Kulübüm var. Ne zaman bir kulübe dokunursam, o zaman kulüp detay ekranı açılır.</li>
+                  <li>•	Önkoşul: Yeni kulüp istiyorum. Ne zaman “Kulüp Oluştur” dersem, o zaman kulüp oluşturma akışı başlar.</li>
+                  <li>•	Önkoşul: Davet kodum var. Ne zaman “Davet Kodu ile Katıl” dersem, o zaman kod doğrulama adımı açılır.</li>
+                  <li>•	Önkoşul: Kulüp oluşturma ekranındayım. Ne zaman ekran açılırsa, o zaman “Kulüp adı, Materyal, Tempo, Gizlilik” alanları görünür.</li>
+                  <li>•	Önkoşul: Gizlilik seçtim. Ne zaman “Gizli” seçersem, o zaman kulüp sadece davetle katılıma açık olur.</li>
+                  <li>•	Önkoşul: Oluşturmak istiyorum. Ne zaman “Kulübü Oluştur” dersem, o zaman kulüp oluşturulur ve davet ekranına yönlendirilirim.</li>
+                  <li>•	Önkoşul: Kulüp kuralları gerekli. Ne zaman kulüp oluşturulursa, o zaman varsayılan davranış kuralları eklenir (moderatör düzenleyebilir).</li>
+                </ul>
+              </div>
+            </details>
+          </div>
+
+          <div class="device">
+            <div class="bezel">
+              <div class="status"><span>07:32</span><span class="right"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span></div>
+              <div class="island"></div>
+              <div class="screen">
+                <div class="content">
+                  <div class="topbar">
+                    <div class="logoWrap">
+                      <img
+                        class="logoImg"
+                        src="assets/pst-coaching-logo.png"
+                        alt="PST Coaching"
+                        onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+                      />
+                      <div class="logoFallback" aria-hidden="true"></div>
+                      <div class="title">Kitap Kulübü</div>
+                    </div>
+                    <div class="ghost">Kulüpler</div>
+                  </div>
+
+                  <div class="list">
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">Kulüp</div>
+                          <div class="m">Kur’an Analizleri — El Fatiha</div>
+                        </div>
+                        <span class="badge">Aç</span>
+                      </div>
+                    </div>
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">Oluştur</div>
+                          <div class="m">Yeni kulüp</div>
+                        </div>
+                        <span class="badge">+</span>
+                      </div>
+                    </div>
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">Katıl</div>
+                          <div class="m">Kod</div>
+                        </div>
+                        <span class="badge">→</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="tabbar" role="navigation" aria-label="Tab bar">
+                    <div class="tabRow">
+                      <div class="tabItem">Ana Sayfa</div>
+                      <div class="tabItem">Keşfet</div>
+                      <div class="tabItem active">Topluluk</div>
+                      <div class="tabItem">Profil</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="club-detail" class="section">
+          <div class="card">
+            <h2>09 — Kulüp Detayı (Hedef + Tartışma)</h2>
+            <div class="meta">
+              <span class="tag brand">EPIC 13</span><span class="tag brand">US US-13.3</span><span class="tag">Faz-2</span>
+            </div>
+            <table class="infoTable" aria-label="Ekran bilgileri">
+              <tr><th>Rol</th><td>Danışan</td></tr>
+              <tr><th>Segment</th><td>Bireysel / Aile / Grup</td></tr>
+              <tr><th>Plan</th><td>Plan</td></tr>
+              <tr><th>Navigasyon</th><td>Kitap Kulübü</td></tr>
+            </table>
+            <ul>
+              <li>Bu hafta hedefi + ilerleme.</li>
+              <li>Okumaya devam et CTA.</li>
+              <li>Tartışma ve alıntılar kısayolu.</li>
+            </ul>
+            <details open>
+              <summary>Acceptance Criteria <span class="hint">US-13.3</span></summary>
+              <div class="body">
+                <ul class="ac">
+                  <li>•	Önkoşul: Kulüp içindeyim. Ne zaman kulüp detayını açarsam, o zaman “bu hafta hedefi” ve ilerleme görünür.</li>
+                  <li>•	Önkoşul: Okumaya devam edeceğim. Ne zaman “Okumaya Devam Et” dersem, o zaman okuyucu ilgili sayfadan açılır.</li>
+                  <li>•	Önkoşul: Tartışma var. Ne zaman tartışma kartına dokunursam, o zaman tartışma ekranı açılır.</li>
+                  <li>•	Önkoşul: Alıntılar var. Ne zaman “En çok vurgulanan alıntılar” alanını açarsam, o zaman popüler alıntılar listelenir.</li>
+                </ul>
+              </div>
+            </details>
+          </div>
+
+          <div class="device">
+            <div class="bezel">
+              <div class="status"><span>07:32</span><span class="right"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span></div>
+              <div class="island"></div>
+              <div class="screen">
+                <div class="content">
+                  <div class="topbar">
+                    <div class="logoWrap">
+                      <img
+                        class="logoImg"
+                        src="assets/pst-coaching-logo.png"
+                        alt="PST Coaching"
+                        onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+                      />
+                      <div class="logoFallback" aria-hidden="true"></div>
+                      <div class="title">Kulüp Detayı</div>
+                    </div>
+                    <div class="ghost">Hedef</div>
+                  </div>
+
+                  <div class="list">
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">Hedef</div>
+                          <div class="m">Bu hafta: 10 sayfa</div>
+                        </div>
+                        <span class="badge">Gör</span>
+                      </div>
+                    </div>
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">Okumaya Devam</div>
+                          <div class="m">Kaldığın yer</div>
+                        </div>
+                        <span class="badge">Devam</span>
+                      </div>
+                    </div>
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">Tartışma</div>
+                          <div class="m">Konu</div>
+                        </div>
+                        <span class="badge">Aç</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="tabbar" role="navigation" aria-label="Tab bar">
+                    <div class="tabRow">
+                      <div class="tabItem">Ana Sayfa</div>
+                      <div class="tabItem">Keşfet</div>
+                      <div class="tabItem active">Topluluk</div>
+                      <div class="tabItem">Profil</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="club-reader" class="section">
+          <div class="card">
+            <h2>10 — Okuyucu (Kulüp)</h2>
+            <div class="meta">
+              <span class="tag brand">EPIC 13</span><span class="tag brand">US US-13.4</span><span class="tag">Faz-2</span>
+            </div>
+            <table class="infoTable" aria-label="Ekran bilgileri">
+              <tr><th>Rol</th><td>Danışan</td></tr>
+              <tr><th>Segment</th><td>Bireysel / Aile / Grup</td></tr>
+              <tr><th>Plan</th><td>Plan</td></tr>
+              <tr><th>Navigasyon</th><td>Kitap Kulübü</td></tr>
+            </table>
+            <ul>
+              <li>Metin seçimi aksiyonları: altını çiz/not/paylaş/günlüğe ekle.</li>
+              <li>Kaydedilen vurgu Notlar &amp; Alıntılar’a eklenir.</li>
+              <li>Reflow + erişilebilirlik.</li>
+            </ul>
+            <details open>
+              <summary>Acceptance Criteria <span class="hint">US-13.4</span></summary>
+              <div class="body">
+                <ul class="ac">
+                  <li>•	Önkoşul: Okuyucu açık. Ne zaman metin seçersem, o zaman “Altını Çiz / Not Ekle / Paylaş / Günlüğe Ekle” aksiyonları görünür.</li>
+                  <li>•	Önkoşul: Altını çizdim. Ne zaman vurguyu kaydedersem, o zaman vurgu “Notlar &amp; Alıntılar” alanına eklenir.</li>
+                  <li>•	Önkoşul: Not ekledim. Ne zaman notu kaydedersem, o zaman not, ilgili sayfa/konum ile birlikte saklanır.</li>
+                  <li>•	Önkoşul: Erişilebilirlik. Ne zaman yazı boyutu ayarlanırsa, o zaman okuyucu anında yeniden akış (reflow) yapar.</li>
+                </ul>
+              </div>
+            </details>
+          </div>
+
+          <div class="device">
+            <div class="bezel">
+              <div class="status"><span>07:32</span><span class="right"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span></div>
+              <div class="island"></div>
+              <div class="screen">
+                <div class="content">
+                  <div class="topbar">
+                    <div class="logoWrap">
+                      <img
+                        class="logoImg"
+                        src="assets/pst-coaching-logo.png"
+                        alt="PST Coaching"
+                        onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+                      />
+                      <div class="logoFallback" aria-hidden="true"></div>
+                      <div class="title">Okuyucu</div>
+                    </div>
+                    <div class="ghost">Vurgu</div>
+                  </div>
+
+                  <div class="list">
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">Aksiyon</div>
+                          <div class="m">Altını Çiz / Not / Paylaş</div>
+                        </div>
+                        <span class="badge">⋯</span>
+                      </div>
+                    </div>
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">Reflow</div>
+                          <div class="m">Metin boyutu</div>
+                        </div>
+                        <span class="badge">✓</span>
+                      </div>
+                    </div>
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">Kaydet</div>
+                          <div class="m">Alıntılara ekle</div>
+                        </div>
+                        <span class="badge">✓</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="tabbar" role="navigation" aria-label="Tab bar">
+                    <div class="tabRow">
+                      <div class="tabItem">Ana Sayfa</div>
+                      <div class="tabItem">Keşfet</div>
+                      <div class="tabItem active">Topluluk</div>
+                      <div class="tabItem">Profil</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="quotes" class="section">
+          <div class="card">
+            <h2>11 — Notlar &amp; Alıntılar</h2>
+            <div class="meta">
+              <span class="tag brand">EPIC 13</span><span class="tag brand">US US-13.5</span><span class="tag">Faz-2</span>
+            </div>
+            <table class="infoTable" aria-label="Ekran bilgileri">
+              <tr><th>Rol</th><td>Danışan</td></tr>
+              <tr><th>Segment</th><td>Bireysel / Aile / Grup</td></tr>
+              <tr><th>Plan</th><td>Plan</td></tr>
+              <tr><th>Navigasyon</th><td>Kitap Kulübü</td></tr>
+            </table>
+            <ul>
+              <li>Alıntı/not listesi.</li>
+              <li>Kulüple paylaş + günlüğe monte et (undo).</li>
+              <li>Kaldığım yeri işaretle.</li>
+            </ul>
+            <details open>
+              <summary>Acceptance Criteria <span class="hint">US-13.5</span></summary>
+              <div class="body">
+                <ul class="ac">
+                  <li>•	Önkoşul: Notlar ekranındayım. Ne zaman ekran açılırsa, o zaman alıntılar ve notlar listelenir.</li>
+                  <li>•	Önkoşul: Paylaşmak istiyorum. Ne zaman “Paylaş (Kulüp)” dersem, o zaman alıntı tartışma akışında kaynak bilgisiyle paylaşılır.</li>
+                  <li>•	Önkoşul: Günlüğe eklemek istiyorum. Ne zaman “Günlüğe Monte Et” dersem, o zaman alıntı/not günlük girişine eklenir ve geri dönüş (undo) sunulur.</li>
+                  <li>•	Önkoşul: Kaldığım yeri işaretlemek istiyorum. Ne zaman “Kaldığı yeri işaretle” dersem, o zaman okuma konumu kaydedilir ve “Okumaya Devam Et” bu noktaya döner.</li>
+                </ul>
+              </div>
+            </details>
+          </div>
+
+          <div class="device">
+            <div class="bezel">
+              <div class="status"><span>07:32</span><span class="right"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span></div>
+              <div class="island"></div>
+              <div class="screen">
+                <div class="content">
+                  <div class="topbar">
+                    <div class="logoWrap">
+                      <img
+                        class="logoImg"
+                        src="assets/pst-coaching-logo.png"
+                        alt="PST Coaching"
+                        onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+                      />
+                      <div class="logoFallback" aria-hidden="true"></div>
+                      <div class="title">Alıntılar</div>
+                    </div>
+                    <div class="ghost">Paylaş</div>
+                  </div>
+
+                  <div class="list">
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">Alıntı</div>
+                          <div class="m">Bölüm 2</div>
+                        </div>
+                        <span class="badge">Aç</span>
+                      </div>
+                    </div>
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">Paylaş</div>
+                          <div class="m">Kulüp</div>
+                        </div>
+                        <span class="badge">Gönder</span>
+                      </div>
+                    </div>
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">Günlüğe ekle</div>
+                          <div class="m">Undo</div>
+                        </div>
+                        <span class="badge">↩︎</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="tabbar" role="navigation" aria-label="Tab bar">
+                    <div class="tabRow">
+                      <div class="tabItem">Ana Sayfa</div>
+                      <div class="tabItem">Keşfet</div>
+                      <div class="tabItem active">Topluluk</div>
+                      <div class="tabItem">Profil</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="discussion" class="section">
+          <div class="card">
+            <h2>12 — Tartışma</h2>
+            <div class="meta">
+              <span class="tag brand">EPIC 13</span><span class="tag brand">US US-13.6</span><span class="tag">Faz-2</span>
+            </div>
+            <table class="infoTable" aria-label="Ekran bilgileri">
+              <tr><th>Rol</th><td>Danışan</td></tr>
+              <tr><th>Segment</th><td>Bireysel / Aile / Grup</td></tr>
+              <tr><th>Plan</th><td>Plan</td></tr>
+              <tr><th>Navigasyon</th><td>Kitap Kulübü</td></tr>
+            </table>
+            <ul>
+              <li>Sabitlenmiş konu + yorumlar.</li>
+              <li>Gönder geri bildirimi.</li>
+              <li>Şikayet + sessize al.</li>
+            </ul>
+            <details open>
+              <summary>Acceptance Criteria <span class="hint">US-13.6</span></summary>
+              <div class="body">
+                <ul class="ac">
+                  <li>•	Önkoşul: Tartışma ekranındayım. Ne zaman ekran açılırsa, o zaman sabitlenmiş konu ve yorumlar sıralı görünür.</li>
+                  <li>•	Önkoşul: Mesaj yazdım. Ne zaman “Gönder” dersem, o zaman mesaj yayınlanır ve kullanıcıya iletildi geri bildirimi verilir.</li>
+                  <li>•	Önkoşul: Uygunsuz içerik var. Ne zaman “Şikayet” edersem, o zaman şikayet kaydı alınır ve mesaj görünürlüğü moderasyon kurallarına göre işlenir.</li>
+                  <li>•	Önkoşul: Sessize almak istiyorum. Ne zaman kulübü sessize alırsam, o zaman push bildirimleri durur (uygulama içi merkezde kayıt kalır).</li>
+                </ul>
+              </div>
+            </details>
+          </div>
+
+          <div class="device">
+            <div class="bezel">
+              <div class="status"><span>07:32</span><span class="right"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span></div>
+              <div class="island"></div>
+              <div class="screen">
+                <div class="content">
+                  <div class="topbar">
+                    <div class="logoWrap">
+                      <img
+                        class="logoImg"
+                        src="assets/pst-coaching-logo.png"
+                        alt="PST Coaching"
+                        onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+                      />
+                      <div class="logoFallback" aria-hidden="true"></div>
+                      <div class="title">Tartışma</div>
+                    </div>
+                    <div class="ghost">Gönder</div>
+                  </div>
+
+                  <div class="list">
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">Konu</div>
+                          <div class="m">Bu bölümde ne öğrendin?</div>
+                        </div>
+                        <span class="badge">📌</span>
+                      </div>
+                    </div>
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">Yorum</div>
+                          <div class="m">Gönder</div>
+                        </div>
+                        <span class="badge">→</span>
+                      </div>
+                    </div>
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">Şikayet</div>
+                          <div class="m">Uygunsuz içerik</div>
+                        </div>
+                        <span class="badge">!</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="tabbar" role="navigation" aria-label="Tab bar">
+                    <div class="tabRow">
+                      <div class="tabItem">Ana Sayfa</div>
+                      <div class="tabItem">Keşfet</div>
+                      <div class="tabItem active">Topluluk</div>
+                      <div class="tabItem">Profil</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="moderation" class="section">
+          <div class="card">
+            <h2>13 — Kurallar &amp; Moderasyon</h2>
+            <div class="meta">
+              <span class="tag brand">EPIC 13</span><span class="tag brand">US US-13.7</span><span class="tag">Faz-2</span>
+            </div>
+            <table class="infoTable" aria-label="Ekran bilgileri">
+              <tr><th>Rol</th><td>Moderatör</td></tr>
+              <tr><th>Segment</th><td>Bireysel / Aile / Grup</td></tr>
+              <tr><th>Plan</th><td>Plan</td></tr>
+              <tr><th>Navigasyon</th><td>Kitap Kulübü</td></tr>
+            </table>
+            <ul>
+              <li>Gizlilik, roller, kurallar.</li>
+              <li>Üye yönetimi.</li>
+              <li>Kulüp sonlandırma onayı.</li>
+            </ul>
+            <details open>
+              <summary>Acceptance Criteria <span class="hint">US-13.7</span></summary>
+              <div class="body">
+                <ul class="ac">
+                  <li>•	Önkoşul: Moderatörüm. Ne zaman “Kurallar &amp; Moderasyon” ekranını açarsam, o zaman gizlilik, roller ve kurallar bölümleri görünür.</li>
+                  <li>•	Önkoşul: Kural güncellemesi. Ne zaman kuralları değiştirirsem, o zaman değişiklikler kaydedilir ve kulüpte duyuru olarak görünür.</li>
+                  <li>•	Önkoşul: Üye yönetimi. Ne zaman “Üyeleri Yönet” dersem, o zaman üye listesi ve moderasyon aksiyonları açılır.</li>
+                  <li>•	Önkoşul: Kulüp kapatma. Ne zaman “Kulübü Sonlandır” dersem, o zaman onay adımı istenir ve kulüp pasife alınır.</li>
+                </ul>
+              </div>
+            </details>
+          </div>
+
+          <div class="device">
+            <div class="bezel">
+              <div class="status"><span>07:32</span><span class="right"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span></div>
+              <div class="island"></div>
+              <div class="screen">
+                <div class="content">
+                  <div class="topbar">
+                    <div class="logoWrap">
+                      <img
+                        class="logoImg"
+                        src="assets/pst-coaching-logo.png"
+                        alt="PST Coaching"
+                        onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+                      />
+                      <div class="logoFallback" aria-hidden="true"></div>
+                      <div class="title">Moderasyon</div>
+                    </div>
+                    <div class="ghost">Kurallar</div>
+                  </div>
+
+                  <div class="list">
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">Gizlilik</div>
+                          <div class="m">Özel/Açık</div>
+                        </div>
+                        <span class="badge">Seç</span>
+                      </div>
+                    </div>
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">Üyeler</div>
+                          <div class="m">Yönet</div>
+                        </div>
+                        <span class="badge">→</span>
+                      </div>
+                    </div>
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">Sonlandır</div>
+                          <div class="m">Onay</div>
+                        </div>
+                        <span class="badge">⚠️</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="tabbar" role="navigation" aria-label="Tab bar">
+                    <div class="tabRow">
+                      <div class="tabItem">Ana Sayfa</div>
+                      <div class="tabItem">Keşfet</div>
+                      <div class="tabItem active">Topluluk</div>
+                      <div class="tabItem">Profil</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>

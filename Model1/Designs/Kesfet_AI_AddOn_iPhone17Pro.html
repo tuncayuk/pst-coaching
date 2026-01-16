@@ -1,0 +1,1142 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>3.11 — Keşfet: AI (Add-on) (Light Mode, iPhone 17 Pro)</title>
+    <style>
+
+      :root {
+        color-scheme: light;
+
+        /* Palette — derived from the provided logo (approx by visual sampling). */
+        --primary: #1e2a78; /* PST navy */
+        --accent: #0fa3b1; /* PST teal */
+        --gold: #f2c14e; /* warm highlight */
+        --danger: #d92d20;
+        --success: #039855;
+
+        /* Neutrals */
+        --bg: #f7f8fb;
+        --surface: #ffffff;
+        --surface2: #f2f4fb;
+        --stroke: #e6e8f0;
+        --stroke2: #d7dbeb;
+        --text: #0d1226;
+        --muted: #5b647a;
+        --muted2: #7a849c;
+
+        /* Effects */
+        --shadow-sm: 0 6px 18px rgba(13, 18, 38, 0.08);
+        --shadow-md: 0 18px 50px rgba(13, 18, 38, 0.12);
+        --shadow-lg: 0 36px 120px rgba(13, 18, 38, 0.18);
+
+        /* Radii */
+        --r12: 12px;
+        --r16: 16px;
+        --r20: 20px;
+        --r24: 24px;
+        --r32: 32px;
+
+        /* iPhone 17 Pro ref (approx) */
+        --w: 393px;
+        --h: 852px;
+        --safeTop: 56px;
+        --safeBot: 34px;
+
+        --font:
+          ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display",
+          "Segoe UI", Roboto, Helvetica, Arial;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        height: 100%;
+      }
+      body {
+        margin: 0;
+        font-family: var(--font);
+        background:
+          radial-gradient(900px 520px at 0% 0%, rgba(15, 163, 177, 0.12), transparent 55%),
+          radial-gradient(900px 520px at 100% 10%, rgba(30, 42, 120, 0.1), transparent 55%),
+          radial-gradient(900px 520px at 40% 115%, rgba(242, 193, 78, 0.12), transparent 55%),
+          linear-gradient(180deg, #ffffff, var(--bg));
+        color: var(--text);
+      }
+
+      code {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        font-size: 0.95em;
+        color: rgba(13, 18, 38, 0.85);
+      }
+      a {
+        color: inherit;
+      }
+
+      .wrap {
+        display: grid;
+        grid-template-columns: 360px 1fr;
+        gap: 24px;
+        padding: 28px;
+        min-height: 100%;
+      }
+
+      .side {
+        position: sticky;
+        top: 28px;
+        height: calc(100vh - 56px);
+        border-radius: 22px;
+        background: rgba(255, 255, 255, 0.82);
+        border: 1px solid rgba(230, 232, 240, 0.9);
+        box-shadow: var(--shadow-md);
+        backdrop-filter: blur(12px);
+        padding: 18px;
+        overflow: auto;
+      }
+
+      .titleRow {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 10px;
+      }
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 10px;
+        border-radius: 999px;
+        background: rgba(15, 163, 177, 0.1);
+        border: 1px solid rgba(15, 163, 177, 0.22);
+        color: rgba(13, 18, 38, 0.86);
+        font-size: 12px;
+        white-space: nowrap;
+        font-weight: 900;
+      }
+      h1 {
+        font-size: 16px;
+        margin: 0;
+        letter-spacing: 0.1px;
+        line-height: 1.25;
+      }
+      .sub {
+        margin: 4px 0 0;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.45;
+      }
+
+      .swatches {
+        margin-top: 14px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+      .swatch {
+        padding: 10px;
+        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.72);
+        border: 1px solid rgba(230, 232, 240, 0.92);
+        box-shadow: var(--shadow-sm);
+      }
+      .chip {
+        height: 18px;
+        border-radius: 999px;
+        border: 1px solid rgba(13, 18, 38, 0.08);
+      }
+      .k {
+        margin-top: 8px;
+        font-size: 11px;
+        color: rgba(13, 18, 38, 0.72);
+        font-weight: 900;
+      }
+      .v {
+        font-size: 12px;
+        color: rgba(13, 18, 38, 0.86);
+        font-weight: 900;
+      }
+
+      .note {
+        margin-top: 12px;
+        padding: 12px;
+        border-radius: var(--r20);
+        background: rgba(242, 193, 78, 0.14);
+        border: 1px solid rgba(242, 193, 78, 0.28);
+        color: rgba(13, 18, 38, 0.86);
+        font-size: 12px;
+        line-height: 1.5;
+      }
+      .nav {
+        margin-top: 14px;
+        display: grid;
+        gap: 6px;
+      }
+      .nav a {
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 10px 12px;
+        border-radius: 14px;
+        border: 1px solid rgba(230, 232, 240, 0.92);
+        background: rgba(255, 255, 255, 0.72);
+        box-shadow: var(--shadow-sm);
+        font-weight: 900;
+        font-size: 12px;
+      }
+      .nav a:hover {
+        border-color: rgba(15, 163, 177, 0.35);
+        box-shadow: 0 10px 26px rgba(13, 18, 38, 0.11);
+      }
+      .homeLink {
+        background: rgba(15, 163, 177, 0.08);
+        border-color: rgba(15, 163, 177, 0.22);
+      }
+
+      .main {
+        display: grid;
+        gap: 18px;
+        align-content: start;
+      }
+      .section {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+        align-items: start;
+      }
+      .card {
+        border-radius: var(--r24);
+        background: rgba(255, 255, 255, 0.86);
+        border: 1px solid rgba(230, 232, 240, 0.95);
+        box-shadow: var(--shadow-md);
+        padding: 16px;
+      }
+      .card h2 {
+        margin: 0;
+        font-size: 16px;
+        letter-spacing: 0.1px;
+      }
+      .meta {
+        margin-top: 10px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 10px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 900;
+        border: 1px solid rgba(230, 232, 240, 0.92);
+        background: rgba(255, 255, 255, 0.72);
+        color: rgba(13, 18, 38, 0.88);
+      }
+      .tag.brand {
+        border-color: rgba(30, 42, 120, 0.18);
+        background: rgba(30, 42, 120, 0.08);
+      }
+      .tag.warn {
+        border-color: rgba(242, 193, 78, 0.35);
+        background: rgba(242, 193, 78, 0.18);
+      }
+      .tag.ok {
+        border-color: rgba(3, 152, 85, 0.26);
+        background: rgba(3, 152, 85, 0.12);
+      }
+      .tag.danger {
+        border-color: rgba(217, 45, 32, 0.25);
+        background: rgba(217, 45, 32, 0.1);
+      }
+
+      .infoTable {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 12px;
+        overflow: hidden;
+        border-radius: 18px;
+        border: 1px solid rgba(230, 232, 240, 0.95);
+        background: rgba(255, 255, 255, 0.72);
+      }
+      .infoTable th,
+      .infoTable td {
+        padding: 10px 12px;
+        text-align: left;
+        font-size: 12px;
+        border-bottom: 1px solid rgba(230, 232, 240, 0.95);
+        vertical-align: top;
+      }
+      .infoTable th {
+        width: 128px;
+        color: rgba(13, 18, 38, 0.7);
+        font-weight: 900;
+      }
+      .infoTable tr:last-child th,
+      .infoTable tr:last-child td {
+        border-bottom: none;
+      }
+
+      .card ul {
+        margin: 10px 0 0;
+        padding-left: 18px;
+        color: rgba(13, 18, 38, 0.9);
+        font-size: 12px;
+        line-height: 1.6;
+      }
+
+      details {
+        margin-top: 12px;
+        border-radius: 18px;
+        border: 1px solid rgba(230, 232, 240, 0.95);
+        background: rgba(255, 255, 255, 0.72);
+        overflow: hidden;
+      }
+      summary {
+        cursor: pointer;
+        list-style: none;
+        padding: 12px;
+        font-size: 12px;
+        font-weight: 950;
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 8px;
+      }
+      summary::-webkit-details-marker {
+        display: none;
+      }
+      .hint {
+        color: rgba(13, 18, 38, 0.68);
+        font-weight: 900;
+      }
+      .body {
+        padding: 0 12px 12px;
+        border-top: 1px solid rgba(230, 232, 240, 0.95);
+      }
+      .ac {
+        margin: 10px 0 0;
+        padding-left: 18px;
+        color: rgba(13, 18, 38, 0.92);
+        font-size: 12px;
+        line-height: 1.6;
+      }
+
+      /* Device frame */
+      .device {
+        display: grid;
+        place-items: center;
+      }
+      .bezel {
+        width: calc(var(--w) + 18px);
+        height: calc(var(--h) + 18px);
+        padding: 9px;
+        border-radius: 54px;
+        background: linear-gradient(180deg, #0b0e16, #141a2a);
+        box-shadow: var(--shadow-lg);
+        position: relative;
+      }
+      .status {
+        position: absolute;
+        top: 16px;
+        left: 22px;
+        right: 22px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        color: rgba(255, 255, 255, 0.86);
+        font-size: 12px;
+        font-weight: 900;
+        pointer-events: none;
+      }
+      .right {
+        display: inline-flex;
+        gap: 6px;
+        align-items: center;
+      }
+      .dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.8);
+      }
+      .island {
+        position: absolute;
+        top: 14px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 140px;
+        height: 36px;
+        border-radius: 999px;
+        background: rgba(0, 0, 0, 0.9);
+        box-shadow: 0 12px 22px rgba(0, 0, 0, 0.55);
+        pointer-events: none;
+      }
+      .screen {
+        width: var(--w);
+        height: var(--h);
+        border-radius: 44px;
+        background: linear-gradient(180deg, #ffffff, var(--bg));
+        overflow: hidden;
+        position: relative;
+      }
+      .content {
+        position: absolute;
+        inset: 0;
+        padding: var(--safeTop) 16px calc(var(--safeBot) + 74px);
+        overflow: hidden;
+      }
+
+      /* App chrome */
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 12px;
+      }
+      .left {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        min-width: 0;
+      }
+      .back {
+        width: 36px;
+        height: 36px;
+        border-radius: 14px;
+        display: grid;
+        place-items: center;
+        border: 1px solid rgba(230, 232, 240, 0.95);
+        background: rgba(255, 255, 255, 0.9);
+        box-shadow: var(--shadow-sm);
+        font-weight: 1000;
+        color: rgba(13, 18, 38, 0.86);
+      }
+      .title {
+        font-weight: 1000;
+        letter-spacing: 0.1px;
+        font-size: 15px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .ghost {
+        height: 36px;
+        padding: 0 12px;
+        border-radius: 14px;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 950;
+        border: 1px solid rgba(230, 232, 240, 0.95);
+        background: rgba(255, 255, 255, 0.9);
+        color: rgba(13, 18, 38, 0.76);
+        box-shadow: var(--shadow-sm);
+      }
+
+      .list {
+        display: grid;
+        gap: 10px;
+      }
+      .tile {
+        padding: 12px;
+        border-radius: 20px;
+        border: 1px solid rgba(230, 232, 240, 0.95);
+        background: rgba(255, 255, 255, 0.92);
+        box-shadow: var(--shadow-sm);
+      }
+      .row {
+        display: flex;
+        align-items: start;
+        justify-content: space-between;
+        gap: 10px;
+      }
+      .t {
+        font-weight: 1000;
+        font-size: 13px;
+        letter-spacing: 0.1px;
+      }
+      .m {
+        margin-top: 6px;
+        color: rgba(13, 18, 38, 0.68);
+        font-size: 12px;
+        line-height: 1.45;
+      }
+      .badge {
+        height: 26px;
+        padding: 0 10px;
+        border-radius: 999px;
+        display: inline-flex;
+        align-items: center;
+        font-weight: 1000;
+        font-size: 11px;
+        border: 1px solid rgba(15, 163, 177, 0.26);
+        background: rgba(15, 163, 177, 0.1);
+        color: rgba(13, 18, 38, 0.86);
+        white-space: nowrap;
+      }
+      .badge.warn {
+        border-color: rgba(242, 193, 78, 0.32);
+        background: rgba(242, 193, 78, 0.18);
+      }
+      .badge.ok {
+        border-color: rgba(3, 152, 85, 0.26);
+        background: rgba(3, 152, 85, 0.12);
+      }
+      .badge.lock {
+        border-color: rgba(217, 45, 32, 0.22);
+        background: rgba(217, 45, 32, 0.08);
+      }
+
+      .ctaRow {
+        margin-top: 12px;
+        display: grid;
+        gap: 10px;
+      }
+      .cta {
+        height: 44px;
+        border-radius: 18px;
+        display: grid;
+        place-items: center;
+        font-weight: 1000;
+        letter-spacing: 0.1px;
+        color: #ffffff;
+        background: linear-gradient(135deg, rgba(30, 42, 120, 0.96), rgba(15, 163, 177, 0.92));
+        box-shadow: 0 18px 40px rgba(30, 42, 120, 0.22);
+        border: 1px solid rgba(30, 42, 120, 0.18);
+      }
+      .cta.secondary {
+        color: rgba(13, 18, 38, 0.9);
+        background: rgba(255, 255, 255, 0.92);
+        border: 1px solid rgba(230, 232, 240, 0.95);
+        box-shadow: var(--shadow-sm);
+      }
+
+      .chips {
+        margin-top: 10px;
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .chipBtn {
+        height: 32px;
+        padding: 0 10px;
+        border-radius: 999px;
+        border: 1px solid rgba(230, 232, 240, 0.95);
+        background: rgba(255, 255, 255, 0.92);
+        box-shadow: var(--shadow-sm);
+        font-size: 12px;
+        font-weight: 950;
+        color: rgba(13, 18, 38, 0.78);
+        white-space: nowrap;
+      }
+      .chipBtn.primary {
+        border-color: rgba(30, 42, 120, 0.18);
+        background: rgba(30, 42, 120, 0.08);
+        color: rgba(13, 18, 38, 0.92);
+      }
+
+      .tabbar {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        padding: 10px 12px calc(var(--safeBot) + 10px);
+        background: rgba(255, 255, 255, 0.92);
+        border-top: 1px solid rgba(230, 232, 240, 0.95);
+        backdrop-filter: blur(10px);
+      }
+      .tabRow {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 8px;
+      }
+      .tabItem {
+        height: 46px;
+        border-radius: 18px;
+        display: grid;
+        place-items: center;
+        color: rgba(13, 18, 38, 0.68);
+        font-weight: 950;
+        font-size: 11px;
+        border: 1px solid rgba(230, 232, 240, 0.95);
+        background: rgba(255, 255, 255, 0.86);
+      }
+      .tabItem.active {
+        border-color: rgba(30, 42, 120, 0.2);
+        background: rgba(30, 42, 120, 0.08);
+        color: rgba(13, 18, 38, 0.92);
+      }
+
+      .logoWrap {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        min-width: 0;
+      }
+      .logoImg {
+        height: 22px;
+        width: auto;
+        object-fit: contain;
+        display: block;
+      }
+      .logoFallback {
+        display: none;
+        width: 26px;
+        height: 26px;
+        border-radius: 12px;
+        background: radial-gradient(circle at 30% 30%, rgba(15, 163, 177, 1), rgba(30, 42, 120, 1));
+        border: 1px solid rgba(13, 18, 38, 0.08);
+        box-shadow: var(--shadow-sm);
+      }
+
+      .muted {
+        color: rgba(13, 18, 38, 0.66);
+      }
+
+      @media (max-width: 1120px) {
+        .wrap {
+          grid-template-columns: 1fr;
+        }
+        .side {
+          position: relative;
+          height: auto;
+        }
+        .section {
+          grid-template-columns: 1fr;
+        }
+      }
+
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <aside class="side">
+        <div class="titleRow">
+          <div>
+            <h1>3.11 — Keşfet: AI (Add-on)</h1>
+            <p class="sub">Light mode • iPhone 17 Pro frame • US + Acceptance Criteria gömülü</p>
+          </div>
+          <div class="pill">3.11</div>
+        </div>
+
+        <div class="swatches" aria-label="Renk paleti">
+          <div class="swatch">
+            <div class="chip" style="background: var(--primary)"></div>
+            <div class="k">Primary</div>
+            <div class="v">#1E2A78</div>
+          </div>
+          <div class="swatch">
+            <div class="chip" style="background: var(--accent)"></div>
+            <div class="k">Accent</div>
+            <div class="v">#0FA3B1</div>
+          </div>
+          <div class="swatch">
+            <div class="chip" style="background: var(--gold)"></div>
+            <div class="k">Gold</div>
+            <div class="v">#F2C14E</div>
+          </div>
+          <div class="swatch">
+            <div class="chip" style="background: var(--bg)"></div>
+            <div class="k">Background</div>
+            <div class="v">#F7F8FB</div>
+          </div>
+        </div>
+        <div class="note">
+          Palet logo bazlı <strong>yaklaşık</strong>. Logo dosyası: <code>Model1/Designs/assets/pst-coaching-logo.png</code>
+        </div>
+
+        <div class="nav" aria-label="Ekran listesi">
+          <a class="homeLink" href="index.html"><span class="k">⟵</span> Home (Index)</a>
+          <a href="#ai-chat"><span class="k">01</span> AI Sohbet (Bağlamlı + Kaynaklı)</a>
+          <a href="#daily"><span class="k">02</span> Günlük Derleme (Katalogdan)</a>
+          <a href="#planning"><span class="k">03</span> Otomatik Planlama (Sıklık + Saat + Kural)</a>
+          <a href="#analysis"><span class="k">04</span> AI Analiz &amp; Özet</a>
+          <a href="#ai-privacy"><span class="k">05</span> Gizlilik &amp; Kontrol (İndir/Sil/Devre Dışı)</a>
+        </div>
+      </aside>
+
+      <main class="main">
+
+        <section id="ai-chat" class="section">
+          <div class="card">
+            <h2>01 — AI Sohbet (Bağlamlı + Kaynaklı)</h2>
+            <div class="meta">
+              <span class="tag brand">EPIC 10</span><span class="tag brand">US US-10.1</span><span class="tag">Faz-2</span>
+            </div>
+            <table class="infoTable" aria-label="Ekran bilgileri">
+              <tr><th>Rol</th><td>Danışan</td></tr>
+              <tr><th>Segment</th><td>Bireysel / Aile / Grup</td></tr>
+              <tr><th>Plan</th><td>AI Paketi (Add-on)</td></tr>
+              <tr><th>Navigasyon</th><td>Keşfet → AI</td></tr>
+            </table>
+            <ul>
+              <li>Aktif bağlam (örn. Bugünkü Not) görünür.</li>
+              <li>Yanıt kaynak gösterir + Kaynağa Git.</li>
+              <li>İçerik yoksa uydurmaz, yönlendirir.</li>
+            </ul>
+            <details open>
+              <summary>Acceptance Criteria <span class="hint">US-10.1</span></summary>
+              <div class="body">
+                <ul class="ac">
+                  <li>•	Önkoşul: AI Pack aktif. Ne zaman “AI Sohbet” ekranını açarsam, o zaman sohbet alanı ve aktif bağlam (örn. “Bugünkü Not: Niyet”) görünür.</li>
+                  <li>•	Önkoşul: Bağlam açık. Ne zaman soru sorarsam, o zaman AI yanıtı seçili içeriğe göre bağlamlı olur.</li>
+                  <li>•	Önkoşul: Kaynak şeffaflığı. Ne zaman AI yanıt verirse, o zaman yanıtın hangi sistem içeriğine dayandığı (kitap/bölüm/yolculuk günü/atölye adımı vb.) gösterilir ve kullanıcı “Kaynağa Git” ile açabilir.</li>
+                  <li>•	Önkoşul: İçerik yok. Ne zaman soru sistem içeriğinde karşılanamıyorsa, o zaman AI bunu açıkça söyler ve kullanıcıyı ilgili kütüphane/arama ekranına yönlendirir (uydurma cevap üretmez).</li>
+                  <li>•	Önkoşul: Bağlamı kapatmak istiyorum. Ne zaman bağlamı kapatırsam, o zaman AI genel sohbet moduna geçer ve bunu ekranda belirtir.</li>
+                  <li>•	Önkoşul: AI Pack yok. Ne zaman kullanıcı AI sohbeti açmaya çalışırsa, o zaman “AI Pack gerekli” bilgisi ve satın alma/yükseltme CTA’sı gösterilir.</li>
+                </ul>
+              </div>
+            </details>
+          </div>
+
+          <div class="device">
+            <div class="bezel">
+              <div class="status"><span>07:32</span><span class="right"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span></div>
+              <div class="island"></div>
+              <div class="screen">
+                <div class="content">
+                  <div class="topbar">
+                    <div class="logoWrap">
+                      <img
+                        class="logoImg"
+                        src="assets/pst-coaching-logo.png"
+                        alt="PST Coaching"
+                        onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+                      />
+                      <div class="logoFallback" aria-hidden="true"></div>
+                      <div class="title">AI Sohbet</div>
+                    </div>
+                    <div class="ghost">Kaynak</div>
+                  </div>
+
+                  <div class="list">
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">Bağlam</div>
+                          <div class="m">Gün 7: Odak</div>
+                        </div>
+                        <span class="badge">Açık</span>
+                      </div>
+                    </div>
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">Yanıt</div>
+                          <div class="m">Kaynak: Şükür Şifresi Böl.2</div>
+                        </div>
+                        <span class="badge">Git</span>
+                      </div>
+                    </div>
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">Kilit</div>
+                          <div class="m">AI Paketi gerekir</div>
+                        </div>
+                        <span class="badge">Aç</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="tabbar" role="navigation" aria-label="Tab bar">
+                    <div class="tabRow">
+                      <div class="tabItem">Ana Sayfa</div>
+                      <div class="tabItem active">Keşfet</div>
+                      <div class="tabItem">Yolculuklarım</div>
+                      <div class="tabItem">Profil</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="daily" class="section">
+          <div class="card">
+            <h2>02 — Günlük Derleme (Katalogdan)</h2>
+            <div class="meta">
+              <span class="tag brand">EPIC 10</span><span class="tag brand">US US-10.2</span><span class="tag">Faz-2</span>
+            </div>
+            <table class="infoTable" aria-label="Ekran bilgileri">
+              <tr><th>Rol</th><td>Danışan</td></tr>
+              <tr><th>Segment</th><td>Bireysel / Aile / Grup</td></tr>
+              <tr><th>Plan</th><td>AI Paketi (Add-on)</td></tr>
+              <tr><th>Navigasyon</th><td>Keşfet → AI</td></tr>
+            </table>
+            <ul>
+              <li>Hedef/niyet seçimi.</li>
+              <li>Derleme sistem içeriğinden seçilir.</li>
+              <li>Her bölüm kaynak + Kaynağa Git.</li>
+            </ul>
+            <details open>
+              <summary>Acceptance Criteria <span class="hint">US-10.2</span></summary>
+              <div class="body">
+                <ul class="ac">
+                  <li>•	Önkoşul: AI Pack aktif. Ne zaman “Günlük Derleme” ekranını açarsam, o zaman hedef/niyet seçimi ve “Derlemeyi Oluştur” CTA’sı görünür.</li>
+                  <li>•	Önkoşul: Derleme oluşturma. Ne zaman “Derlemeyi Oluştur” dersem, o zaman sistemdeki içeriklerden (yolculuk/atölye/e‑kitap/video metinleri vb.) uygun parçalar seçilir ve derleme halinde sunulur.</li>
+                  <li>•	Önkoşul: Kaynak şeffaflığı. Ne zaman derleme gösterilirse, o zaman her bölüm için kaynak (kitap/bölüm/yolculuk günü vb.) görünür ve “Kaynağa Git” ile ilgili ekrana geçilir.</li>
+                  <li>•	Önkoşul: İçerik yetersiz. Ne zaman seçilen niyete uygun içerik bulunamazsa, o zaman sistem bunu açıkça söyler ve alternatif içerik/konu önerir (uydurma içerik üretmez).</li>
+                </ul>
+              </div>
+            </details>
+          </div>
+
+          <div class="device">
+            <div class="bezel">
+              <div class="status"><span>07:32</span><span class="right"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span></div>
+              <div class="island"></div>
+              <div class="screen">
+                <div class="content">
+                  <div class="topbar">
+                    <div class="logoWrap">
+                      <img
+                        class="logoImg"
+                        src="assets/pst-coaching-logo.png"
+                        alt="PST Coaching"
+                        onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+                      />
+                      <div class="logoFallback" aria-hidden="true"></div>
+                      <div class="title">Günlük Derleme</div>
+                    </div>
+                    <div class="ghost">300 kelime</div>
+                  </div>
+
+                  <div class="list">
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">Niyet</div>
+                          <div class="m">Odak</div>
+                        </div>
+                        <span class="badge">Seç</span>
+                      </div>
+                    </div>
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">Derleme</div>
+                          <div class="m">Kaynaklı bölümler</div>
+                        </div>
+                        <span class="badge">Gör</span>
+                      </div>
+                    </div>
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">Kaynağa Git</div>
+                          <div class="m">Bölüm 2</div>
+                        </div>
+                        <span class="badge">→</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="tabbar" role="navigation" aria-label="Tab bar">
+                    <div class="tabRow">
+                      <div class="tabItem">Ana Sayfa</div>
+                      <div class="tabItem active">Keşfet</div>
+                      <div class="tabItem">Yolculuklarım</div>
+                      <div class="tabItem">Profil</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="planning" class="section">
+          <div class="card">
+            <h2>03 — Otomatik Planlama (Sıklık + Saat + Kural)</h2>
+            <div class="meta">
+              <span class="tag brand">EPIC 10</span><span class="tag brand">US US-10.3</span><span class="tag">Faz-2</span>
+            </div>
+            <table class="infoTable" aria-label="Ekran bilgileri">
+              <tr><th>Rol</th><td>Danışan</td></tr>
+              <tr><th>Segment</th><td>Bireysel / Aile / Grup</td></tr>
+              <tr><th>Plan</th><td>AI Paketi (Add-on)</td></tr>
+              <tr><th>Navigasyon</th><td>Keşfet → AI</td></tr>
+            </table>
+            <ul>
+              <li>Sıklık + saat seçimi.</li>
+              <li>Kaynaklı otomatik seçim.</li>
+              <li>08:00 / 23:59 kuralı şeffaf.</li>
+            </ul>
+            <details open>
+              <summary>Acceptance Criteria <span class="hint">US-10.3</span></summary>
+              <div class="body">
+                <ul class="ac">
+                  <li>•	Önkoşul: AI Pack aktif. Ne zaman “Planlama” ekranını açarsam, o zaman sıklık (her gün/haftada 3) ve saat seçimi görünür.</li>
+                  <li>•	Önkoşul: Plan aktif. Ne zaman planı aktif edersem, o zaman seçilen zamanda sistem içerikten uygun bir parça seçip ana akışa ekler; içerik kaynakları her zaman görünür olur.</li>
+                  <li>•	Önkoşul: Program kuralı var. Ne zaman kullanıcı planı aktif ederse, o zaman “içerik 08:00’de aktif olur, teslim gerekiyorsa 23:59’a kadar” kuralı açıkça gösterilir.</li>
+                  <li>•	Önkoşul: Planı kapatmak istiyorum. Ne zaman planı kapatırsam, o zaman otomatik seçim durur ve kullanıcı manuel seçimle devam edebilir.</li>
+                </ul>
+              </div>
+            </details>
+          </div>
+
+          <div class="device">
+            <div class="bezel">
+              <div class="status"><span>07:32</span><span class="right"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span></div>
+              <div class="island"></div>
+              <div class="screen">
+                <div class="content">
+                  <div class="topbar">
+                    <div class="logoWrap">
+                      <img
+                        class="logoImg"
+                        src="assets/pst-coaching-logo.png"
+                        alt="PST Coaching"
+                        onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+                      />
+                      <div class="logoFallback" aria-hidden="true"></div>
+                      <div class="title">Planlama</div>
+                    </div>
+                    <div class="ghost">Sıklık</div>
+                  </div>
+
+                  <div class="list">
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">Sıklık</div>
+                          <div class="m">Her gün</div>
+                        </div>
+                        <span class="badge">Seç</span>
+                      </div>
+                    </div>
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">Saat</div>
+                          <div class="m">08:10</div>
+                        </div>
+                        <span class="badge">Seç</span>
+                      </div>
+                    </div>
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">Kural</div>
+                          <div class="m">08:00 aktif • teslim varsa 23:59</div>
+                        </div>
+                        <span class="badge">Bilgi</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="tabbar" role="navigation" aria-label="Tab bar">
+                    <div class="tabRow">
+                      <div class="tabItem">Ana Sayfa</div>
+                      <div class="tabItem active">Keşfet</div>
+                      <div class="tabItem">Yolculuklarım</div>
+                      <div class="tabItem">Profil</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="analysis" class="section">
+          <div class="card">
+            <h2>04 — AI Analiz &amp; Özet</h2>
+            <div class="meta">
+              <span class="tag brand">EPIC 10</span><span class="tag brand">US US-10.4</span><span class="tag">Faz-2</span>
+            </div>
+            <table class="infoTable" aria-label="Ekran bilgileri">
+              <tr><th>Rol</th><td>Danışan</td></tr>
+              <tr><th>Segment</th><td>Bireysel / Aile / Grup</td></tr>
+              <tr><th>Plan</th><td>AI Paketi (Add-on)</td></tr>
+              <tr><th>Navigasyon</th><td>Keşfet → AI</td></tr>
+            </table>
+            <ul>
+              <li>Gün/hafta bazlı özet kartları.</li>
+              <li>Tema/güçlü alan/zorlanma/öneri.</li>
+              <li>Veri yetersizse net mesaj.</li>
+            </ul>
+            <details open>
+              <summary>Acceptance Criteria <span class="hint">US-10.4</span></summary>
+              <div class="body">
+                <ul class="ac">
+                  <li>•	Önkoşul: AI Pack aktif ve yorum verisi mevcut. Ne zaman “AI Analiz” ekranını açarsam, o zaman gün/hafta bazlı özet kartları gösterilir.</li>
+                  <li>•	Önkoşul: Analiz görüntüleniyor. Ne zaman kullanıcı özet kartına girerse, o zaman “tema, güçlü alan, zorlanma noktası, öneri” alanları görünür.</li>
+                  <li>•	Önkoşul: Yeni öneri. Ne zaman AI yeni bir yolculuk/atölye/okuma öneriyorsa, o zaman öneri sistem içeriğine dayanır ve kaynakları görünür olur; kullanıcı “Asistana Git / İçeriği Aç” CTA’sı ile yönlendirilir.</li>
+                  <li>•	Önkoşul: Veri yetersiz. Ne zaman analiz için yeterli veri yoksa, o zaman kullanıcıya “daha iyi analiz için şu kadar yorum gerekli” mesajı gösterilir.</li>
+                </ul>
+              </div>
+            </details>
+          </div>
+
+          <div class="device">
+            <div class="bezel">
+              <div class="status"><span>07:32</span><span class="right"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span></div>
+              <div class="island"></div>
+              <div class="screen">
+                <div class="content">
+                  <div class="topbar">
+                    <div class="logoWrap">
+                      <img
+                        class="logoImg"
+                        src="assets/pst-coaching-logo.png"
+                        alt="PST Coaching"
+                        onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+                      />
+                      <div class="logoFallback" aria-hidden="true"></div>
+                      <div class="title">AI Analiz</div>
+                    </div>
+                    <div class="ghost">Özet</div>
+                  </div>
+
+                  <div class="list">
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">Özet</div>
+                          <div class="m">Son 7 gün</div>
+                        </div>
+                        <span class="badge">Aç</span>
+                      </div>
+                    </div>
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">Öneri</div>
+                          <div class="m">Kaynaklı öneri</div>
+                        </div>
+                        <span class="badge">Git</span>
+                      </div>
+                    </div>
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">Veri</div>
+                          <div class="m">Yetersizse mesaj</div>
+                        </div>
+                        <span class="badge">Info</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="tabbar" role="navigation" aria-label="Tab bar">
+                    <div class="tabRow">
+                      <div class="tabItem">Ana Sayfa</div>
+                      <div class="tabItem active">Keşfet</div>
+                      <div class="tabItem">Yolculuklarım</div>
+                      <div class="tabItem">Profil</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="ai-privacy" class="section">
+          <div class="card">
+            <h2>05 — Gizlilik &amp; Kontrol (İndir/Sil/Devre Dışı)</h2>
+            <div class="meta">
+              <span class="tag brand">EPIC 10</span><span class="tag brand">US US-10.5</span><span class="tag">Faz-2</span>
+            </div>
+            <table class="infoTable" aria-label="Ekran bilgileri">
+              <tr><th>Rol</th><td>Danışan</td></tr>
+              <tr><th>Segment</th><td>Bireysel / Aile / Grup</td></tr>
+              <tr><th>Plan</th><td>AI Paketi (Add-on)</td></tr>
+              <tr><th>Navigasyon</th><td>Keşfet → AI</td></tr>
+            </table>
+            <ul>
+              <li>İndir/sil/devre dışı seçenekleri.</li>
+              <li>Silme onay + geri alınamaz.</li>
+              <li>Devre dışı kalınca menüde pasif.</li>
+            </ul>
+            <details open>
+              <summary>Acceptance Criteria <span class="hint">US-10.5</span></summary>
+              <div class="body">
+                <ul class="ac">
+                  <li>•	Önkoşul: Gizlilik ekranındayım. Ne zaman ekran açılırsa, o zaman “indir, sil, devre dışı bırak” seçenekleri görünür.</li>
+                  <li>•	Önkoşul: Sohbet silme. Ne zaman kullanıcı sohbet geçmişini silerse, o zaman silme işlemi onay adımıyla tamamlanır ve geri alınamaz uyarısı gösterilir.</li>
+                  <li>•	Önkoşul: Veri indirme. Ne zaman kullanıcı “indir” seçerse, o zaman indirilecek veri kapsamı (sohbet/özetler) net açıklanır.</li>
+                  <li>•	Önkoşul: AI devre dışı. Ne zaman kullanıcı AI’ı devre dışı bırakırsa, o zaman AI özellikleri menüden pasif olur ve kullanıcı tekrar açabilmelidir.</li>
+                </ul>
+              </div>
+            </details>
+          </div>
+
+          <div class="device">
+            <div class="bezel">
+              <div class="status"><span>07:32</span><span class="right"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span></div>
+              <div class="island"></div>
+              <div class="screen">
+                <div class="content">
+                  <div class="topbar">
+                    <div class="logoWrap">
+                      <img
+                        class="logoImg"
+                        src="assets/pst-coaching-logo.png"
+                        alt="PST Coaching"
+                        onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+                      />
+                      <div class="logoFallback" aria-hidden="true"></div>
+                      <div class="title">AI Gizlilik</div>
+                    </div>
+                    <div class="ghost">Kontrol</div>
+                  </div>
+
+                  <div class="list">
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">İndir</div>
+                          <div class="m">Kapsam şeffaf</div>
+                        </div>
+                        <span class="badge">İndir</span>
+                      </div>
+                    </div>
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">Sil</div>
+                          <div class="m">Onay + geri alınamaz</div>
+                        </div>
+                        <span class="badge">Sil</span>
+                      </div>
+                    </div>
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">Devre dışı</div>
+                          <div class="m">AI özellikleri pasif</div>
+                        </div>
+                        <span class="badge">Kapat</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="tabbar" role="navigation" aria-label="Tab bar">
+                    <div class="tabRow">
+                      <div class="tabItem">Ana Sayfa</div>
+                      <div class="tabItem active">Keşfet</div>
+                      <div class="tabItem">Yolculuklarım</div>
+                      <div class="tabItem">Profil</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>

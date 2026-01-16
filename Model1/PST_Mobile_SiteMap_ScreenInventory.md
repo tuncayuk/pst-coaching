@@ -395,7 +395,7 @@ Bu doküman yalnızca `Model1/UserStoriesRev3.md` ve `Model1/UserStoriesRev3_Sum
 | Screen | Faz | Birincil erişim | US |
 | --- | --- | --- | --- |
 | AI Sohbet | Faz-2 | Keşfet -> AI | EPIC 10: US-10.1 |
-| Günlük içerik üretimi | Faz-2 | Keşfet -> AI | EPIC 10: US-10.2 |
+| Günlük derleme (katalogdan) | Faz-2 | Keşfet -> AI | EPIC 10: US-10.2 |
 | Otomatik planlama | Faz-2 | Keşfet -> AI | EPIC 10: US-10.3 |
 | AI Analiz & Özet | Faz-2 | Keşfet -> AI | EPIC 10: US-10.4 |
 | Gizlilik & kontrol | Faz-2 | Keşfet -> AI | EPIC 10: US-10.5 |

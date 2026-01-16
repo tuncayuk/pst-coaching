@@ -1,0 +1,1327 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>3.9 — Keşfet: Videolar (Light Mode, iPhone 17 Pro)</title>
+    <style>
+
+      :root {
+        color-scheme: light;
+
+        /* Palette — derived from the provided logo (approx by visual sampling). */
+        --primary: #1e2a78; /* PST navy */
+        --accent: #0fa3b1; /* PST teal */
+        --gold: #f2c14e; /* warm highlight */
+        --danger: #d92d20;
+        --success: #039855;
+
+        /* Neutrals */
+        --bg: #f7f8fb;
+        --surface: #ffffff;
+        --surface2: #f2f4fb;
+        --stroke: #e6e8f0;
+        --stroke2: #d7dbeb;
+        --text: #0d1226;
+        --muted: #5b647a;
+        --muted2: #7a849c;
+
+        /* Effects */
+        --shadow-sm: 0 6px 18px rgba(13, 18, 38, 0.08);
+        --shadow-md: 0 18px 50px rgba(13, 18, 38, 0.12);
+        --shadow-lg: 0 36px 120px rgba(13, 18, 38, 0.18);
+
+        /* Radii */
+        --r12: 12px;
+        --r16: 16px;
+        --r20: 20px;
+        --r24: 24px;
+        --r32: 32px;
+
+        /* iPhone 17 Pro ref (approx) */
+        --w: 393px;
+        --h: 852px;
+        --safeTop: 56px;
+        --safeBot: 34px;
+
+        --font:
+          ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display",
+          "Segoe UI", Roboto, Helvetica, Arial;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        height: 100%;
+      }
+      body {
+        margin: 0;
+        font-family: var(--font);
+        background:
+          radial-gradient(900px 520px at 0% 0%, rgba(15, 163, 177, 0.12), transparent 55%),
+          radial-gradient(900px 520px at 100% 10%, rgba(30, 42, 120, 0.1), transparent 55%),
+          radial-gradient(900px 520px at 40% 115%, rgba(242, 193, 78, 0.12), transparent 55%),
+          linear-gradient(180deg, #ffffff, var(--bg));
+        color: var(--text);
+      }
+
+      code {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        font-size: 0.95em;
+        color: rgba(13, 18, 38, 0.85);
+      }
+      a {
+        color: inherit;
+      }
+
+      .wrap {
+        display: grid;
+        grid-template-columns: 360px 1fr;
+        gap: 24px;
+        padding: 28px;
+        min-height: 100%;
+      }
+
+      .side {
+        position: sticky;
+        top: 28px;
+        height: calc(100vh - 56px);
+        border-radius: 22px;
+        background: rgba(255, 255, 255, 0.82);
+        border: 1px solid rgba(230, 232, 240, 0.9);
+        box-shadow: var(--shadow-md);
+        backdrop-filter: blur(12px);
+        padding: 18px;
+        overflow: auto;
+      }
+
+      .titleRow {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 10px;
+      }
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 10px;
+        border-radius: 999px;
+        background: rgba(15, 163, 177, 0.1);
+        border: 1px solid rgba(15, 163, 177, 0.22);
+        color: rgba(13, 18, 38, 0.86);
+        font-size: 12px;
+        white-space: nowrap;
+        font-weight: 900;
+      }
+      h1 {
+        font-size: 16px;
+        margin: 0;
+        letter-spacing: 0.1px;
+        line-height: 1.25;
+      }
+      .sub {
+        margin: 4px 0 0;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.45;
+      }
+
+      .swatches {
+        margin-top: 14px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+      .swatch {
+        padding: 10px;
+        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.72);
+        border: 1px solid rgba(230, 232, 240, 0.92);
+        box-shadow: var(--shadow-sm);
+      }
+      .chip {
+        height: 18px;
+        border-radius: 999px;
+        border: 1px solid rgba(13, 18, 38, 0.08);
+      }
+      .k {
+        margin-top: 8px;
+        font-size: 11px;
+        color: rgba(13, 18, 38, 0.72);
+        font-weight: 900;
+      }
+      .v {
+        font-size: 12px;
+        color: rgba(13, 18, 38, 0.86);
+        font-weight: 900;
+      }
+
+      .note {
+        margin-top: 12px;
+        padding: 12px;
+        border-radius: var(--r20);
+        background: rgba(242, 193, 78, 0.14);
+        border: 1px solid rgba(242, 193, 78, 0.28);
+        color: rgba(13, 18, 38, 0.86);
+        font-size: 12px;
+        line-height: 1.5;
+      }
+      .nav {
+        margin-top: 14px;
+        display: grid;
+        gap: 6px;
+      }
+      .nav a {
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 10px 12px;
+        border-radius: 14px;
+        border: 1px solid rgba(230, 232, 240, 0.92);
+        background: rgba(255, 255, 255, 0.72);
+        box-shadow: var(--shadow-sm);
+        font-weight: 900;
+        font-size: 12px;
+      }
+      .nav a:hover {
+        border-color: rgba(15, 163, 177, 0.35);
+        box-shadow: 0 10px 26px rgba(13, 18, 38, 0.11);
+      }
+      .homeLink {
+        background: rgba(15, 163, 177, 0.08);
+        border-color: rgba(15, 163, 177, 0.22);
+      }
+
+      .main {
+        display: grid;
+        gap: 18px;
+        align-content: start;
+      }
+      .section {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+        align-items: start;
+      }
+      .card {
+        border-radius: var(--r24);
+        background: rgba(255, 255, 255, 0.86);
+        border: 1px solid rgba(230, 232, 240, 0.95);
+        box-shadow: var(--shadow-md);
+        padding: 16px;
+      }
+      .card h2 {
+        margin: 0;
+        font-size: 16px;
+        letter-spacing: 0.1px;
+      }
+      .meta {
+        margin-top: 10px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 10px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 900;
+        border: 1px solid rgba(230, 232, 240, 0.92);
+        background: rgba(255, 255, 255, 0.72);
+        color: rgba(13, 18, 38, 0.88);
+      }
+      .tag.brand {
+        border-color: rgba(30, 42, 120, 0.18);
+        background: rgba(30, 42, 120, 0.08);
+      }
+      .tag.warn {
+        border-color: rgba(242, 193, 78, 0.35);
+        background: rgba(242, 193, 78, 0.18);
+      }
+      .tag.ok {
+        border-color: rgba(3, 152, 85, 0.26);
+        background: rgba(3, 152, 85, 0.12);
+      }
+      .tag.danger {
+        border-color: rgba(217, 45, 32, 0.25);
+        background: rgba(217, 45, 32, 0.1);
+      }
+
+      .infoTable {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 12px;
+        overflow: hidden;
+        border-radius: 18px;
+        border: 1px solid rgba(230, 232, 240, 0.95);
+        background: rgba(255, 255, 255, 0.72);
+      }
+      .infoTable th,
+      .infoTable td {
+        padding: 10px 12px;
+        text-align: left;
+        font-size: 12px;
+        border-bottom: 1px solid rgba(230, 232, 240, 0.95);
+        vertical-align: top;
+      }
+      .infoTable th {
+        width: 128px;
+        color: rgba(13, 18, 38, 0.7);
+        font-weight: 900;
+      }
+      .infoTable tr:last-child th,
+      .infoTable tr:last-child td {
+        border-bottom: none;
+      }
+
+      .card ul {
+        margin: 10px 0 0;
+        padding-left: 18px;
+        color: rgba(13, 18, 38, 0.9);
+        font-size: 12px;
+        line-height: 1.6;
+      }
+
+      details {
+        margin-top: 12px;
+        border-radius: 18px;
+        border: 1px solid rgba(230, 232, 240, 0.95);
+        background: rgba(255, 255, 255, 0.72);
+        overflow: hidden;
+      }
+      summary {
+        cursor: pointer;
+        list-style: none;
+        padding: 12px;
+        font-size: 12px;
+        font-weight: 950;
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 8px;
+      }
+      summary::-webkit-details-marker {
+        display: none;
+      }
+      .hint {
+        color: rgba(13, 18, 38, 0.68);
+        font-weight: 900;
+      }
+      .body {
+        padding: 0 12px 12px;
+        border-top: 1px solid rgba(230, 232, 240, 0.95);
+      }
+      .ac {
+        margin: 10px 0 0;
+        padding-left: 18px;
+        color: rgba(13, 18, 38, 0.92);
+        font-size: 12px;
+        line-height: 1.6;
+      }
+
+      /* Device frame */
+      .device {
+        display: grid;
+        place-items: center;
+      }
+      .bezel {
+        width: calc(var(--w) + 18px);
+        height: calc(var(--h) + 18px);
+        padding: 9px;
+        border-radius: 54px;
+        background: linear-gradient(180deg, #0b0e16, #141a2a);
+        box-shadow: var(--shadow-lg);
+        position: relative;
+      }
+      .status {
+        position: absolute;
+        top: 16px;
+        left: 22px;
+        right: 22px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        color: rgba(255, 255, 255, 0.86);
+        font-size: 12px;
+        font-weight: 900;
+        pointer-events: none;
+      }
+      .right {
+        display: inline-flex;
+        gap: 6px;
+        align-items: center;
+      }
+      .dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.8);
+      }
+      .island {
+        position: absolute;
+        top: 14px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 140px;
+        height: 36px;
+        border-radius: 999px;
+        background: rgba(0, 0, 0, 0.9);
+        box-shadow: 0 12px 22px rgba(0, 0, 0, 0.55);
+        pointer-events: none;
+      }
+      .screen {
+        width: var(--w);
+        height: var(--h);
+        border-radius: 44px;
+        background: linear-gradient(180deg, #ffffff, var(--bg));
+        overflow: hidden;
+        position: relative;
+      }
+      .content {
+        position: absolute;
+        inset: 0;
+        padding: var(--safeTop) 16px calc(var(--safeBot) + 74px);
+        overflow: hidden;
+      }
+
+      /* App chrome */
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 12px;
+      }
+      .left {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        min-width: 0;
+      }
+      .back {
+        width: 36px;
+        height: 36px;
+        border-radius: 14px;
+        display: grid;
+        place-items: center;
+        border: 1px solid rgba(230, 232, 240, 0.95);
+        background: rgba(255, 255, 255, 0.9);
+        box-shadow: var(--shadow-sm);
+        font-weight: 1000;
+        color: rgba(13, 18, 38, 0.86);
+      }
+      .title {
+        font-weight: 1000;
+        letter-spacing: 0.1px;
+        font-size: 15px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .ghost {
+        height: 36px;
+        padding: 0 12px;
+        border-radius: 14px;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 950;
+        border: 1px solid rgba(230, 232, 240, 0.95);
+        background: rgba(255, 255, 255, 0.9);
+        color: rgba(13, 18, 38, 0.76);
+        box-shadow: var(--shadow-sm);
+      }
+
+      .list {
+        display: grid;
+        gap: 10px;
+      }
+      .tile {
+        padding: 12px;
+        border-radius: 20px;
+        border: 1px solid rgba(230, 232, 240, 0.95);
+        background: rgba(255, 255, 255, 0.92);
+        box-shadow: var(--shadow-sm);
+      }
+      .row {
+        display: flex;
+        align-items: start;
+        justify-content: space-between;
+        gap: 10px;
+      }
+      .t {
+        font-weight: 1000;
+        font-size: 13px;
+        letter-spacing: 0.1px;
+      }
+      .m {
+        margin-top: 6px;
+        color: rgba(13, 18, 38, 0.68);
+        font-size: 12px;
+        line-height: 1.45;
+      }
+      .badge {
+        height: 26px;
+        padding: 0 10px;
+        border-radius: 999px;
+        display: inline-flex;
+        align-items: center;
+        font-weight: 1000;
+        font-size: 11px;
+        border: 1px solid rgba(15, 163, 177, 0.26);
+        background: rgba(15, 163, 177, 0.1);
+        color: rgba(13, 18, 38, 0.86);
+        white-space: nowrap;
+      }
+      .badge.warn {
+        border-color: rgba(242, 193, 78, 0.32);
+        background: rgba(242, 193, 78, 0.18);
+      }
+      .badge.ok {
+        border-color: rgba(3, 152, 85, 0.26);
+        background: rgba(3, 152, 85, 0.12);
+      }
+      .badge.lock {
+        border-color: rgba(217, 45, 32, 0.22);
+        background: rgba(217, 45, 32, 0.08);
+      }
+
+      .ctaRow {
+        margin-top: 12px;
+        display: grid;
+        gap: 10px;
+      }
+      .cta {
+        height: 44px;
+        border-radius: 18px;
+        display: grid;
+        place-items: center;
+        font-weight: 1000;
+        letter-spacing: 0.1px;
+        color: #ffffff;
+        background: linear-gradient(135deg, rgba(30, 42, 120, 0.96), rgba(15, 163, 177, 0.92));
+        box-shadow: 0 18px 40px rgba(30, 42, 120, 0.22);
+        border: 1px solid rgba(30, 42, 120, 0.18);
+      }
+      .cta.secondary {
+        color: rgba(13, 18, 38, 0.9);
+        background: rgba(255, 255, 255, 0.92);
+        border: 1px solid rgba(230, 232, 240, 0.95);
+        box-shadow: var(--shadow-sm);
+      }
+
+      .chips {
+        margin-top: 10px;
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .chipBtn {
+        height: 32px;
+        padding: 0 10px;
+        border-radius: 999px;
+        border: 1px solid rgba(230, 232, 240, 0.95);
+        background: rgba(255, 255, 255, 0.92);
+        box-shadow: var(--shadow-sm);
+        font-size: 12px;
+        font-weight: 950;
+        color: rgba(13, 18, 38, 0.78);
+        white-space: nowrap;
+      }
+      .chipBtn.primary {
+        border-color: rgba(30, 42, 120, 0.18);
+        background: rgba(30, 42, 120, 0.08);
+        color: rgba(13, 18, 38, 0.92);
+      }
+
+      .tabbar {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        padding: 10px 12px calc(var(--safeBot) + 10px);
+        background: rgba(255, 255, 255, 0.92);
+        border-top: 1px solid rgba(230, 232, 240, 0.95);
+        backdrop-filter: blur(10px);
+      }
+      .tabRow {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 8px;
+      }
+      .tabItem {
+        height: 46px;
+        border-radius: 18px;
+        display: grid;
+        place-items: center;
+        color: rgba(13, 18, 38, 0.68);
+        font-weight: 950;
+        font-size: 11px;
+        border: 1px solid rgba(230, 232, 240, 0.95);
+        background: rgba(255, 255, 255, 0.86);
+      }
+      .tabItem.active {
+        border-color: rgba(30, 42, 120, 0.2);
+        background: rgba(30, 42, 120, 0.08);
+        color: rgba(13, 18, 38, 0.92);
+      }
+
+      .logoWrap {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        min-width: 0;
+      }
+      .logoImg {
+        height: 22px;
+        width: auto;
+        object-fit: contain;
+        display: block;
+      }
+      .logoFallback {
+        display: none;
+        width: 26px;
+        height: 26px;
+        border-radius: 12px;
+        background: radial-gradient(circle at 30% 30%, rgba(15, 163, 177, 1), rgba(30, 42, 120, 1));
+        border: 1px solid rgba(13, 18, 38, 0.08);
+        box-shadow: var(--shadow-sm);
+      }
+
+      .muted {
+        color: rgba(13, 18, 38, 0.66);
+      }
+
+      @media (max-width: 1120px) {
+        .wrap {
+          grid-template-columns: 1fr;
+        }
+        .side {
+          position: relative;
+          height: auto;
+        }
+        .section {
+          grid-template-columns: 1fr;
+        }
+      }
+
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <aside class="side">
+        <div class="titleRow">
+          <div>
+            <h1>3.9 — Keşfet: Videolar</h1>
+            <p class="sub">Light mode • iPhone 17 Pro frame • US + Acceptance Criteria gömülü</p>
+          </div>
+          <div class="pill">3.9</div>
+        </div>
+
+        <div class="swatches" aria-label="Renk paleti">
+          <div class="swatch">
+            <div class="chip" style="background: var(--primary)"></div>
+            <div class="k">Primary</div>
+            <div class="v">#1E2A78</div>
+          </div>
+          <div class="swatch">
+            <div class="chip" style="background: var(--accent)"></div>
+            <div class="k">Accent</div>
+            <div class="v">#0FA3B1</div>
+          </div>
+          <div class="swatch">
+            <div class="chip" style="background: var(--gold)"></div>
+            <div class="k">Gold</div>
+            <div class="v">#F2C14E</div>
+          </div>
+          <div class="swatch">
+            <div class="chip" style="background: var(--bg)"></div>
+            <div class="k">Background</div>
+            <div class="v">#F7F8FB</div>
+          </div>
+        </div>
+        <div class="note">
+          Palet logo bazlı <strong>yaklaşık</strong>. Logo dosyası: <code>Model1/Designs/assets/pst-coaching-logo.png</code>
+        </div>
+
+        <div class="nav" aria-label="Ekran listesi">
+          <a class="homeLink" href="index.html"><span class="k">⟵</span> Home (Index)</a>
+          <a href="#video-lib"><span class="k">01</span> Video Kütüphanesi</a>
+          <a href="#video-detail"><span class="k">02</span> Video Detayı</a>
+          <a href="#player"><span class="k">03</span> Video Oynatıcı</a>
+          <a href="#downloads"><span class="k">04</span> İndirmeler (Çevrimdışı)</a>
+          <a href="#video-collections"><span class="k">05</span> Koleksiyonlar</a>
+          <a href="#watchlater"><span class="k">06</span> Sonradan İzle / Favoriler</a>
+          <a href="#video-feedback"><span class="k">07</span> İçerik Geri Bildirimi / Hata Bildir</a>
+        </div>
+      </aside>
+
+      <main class="main">
+
+        <section id="video-lib" class="section">
+          <div class="card">
+            <h2>01 — Video Kütüphanesi</h2>
+            <div class="meta">
+              <span class="tag brand">EPIC 18</span><span class="tag brand">US US-18.1</span><span class="tag">Faz-2</span>
+            </div>
+            <table class="infoTable" aria-label="Ekran bilgileri">
+              <tr><th>Rol</th><td>Danışan</td></tr>
+              <tr><th>Segment</th><td>Bireysel / Aile / Grup</td></tr>
+              <tr><th>Plan</th><td>Plan + entitlements</td></tr>
+              <tr><th>Navigasyon</th><td>Keşfet → Videolar</td></tr>
+            </table>
+            <ul>
+              <li>Kategori + keşfet listesi.</li>
+              <li>Arama/filtre.</li>
+              <li>Erişim kilidi plan/add-on ile.</li>
+            </ul>
+            <details open>
+              <summary>Acceptance Criteria <span class="hint">US-18.1</span></summary>
+              <div class="body">
+                <ul class="ac">
+                  <li>•	Önkoşul: Uygulamaya giriş yaptım. Ne zaman “Videolar” sekmesini açarsam, o zaman kategoriler (İbadet Rehberi / Manevi Koçluk / Örtünme vb.) görünür.</li>
+                  <li>•	Önkoşul: Bir kategori seçtim. Ne zaman kategori filtresini uygularsam, o zaman listelenen videolar kategoriye göre güncellenir.</li>
+                  <li>•	Önkoşul: Bir video kartını gördüm. Ne zaman kart görüntülenirse, o zaman süre (7/10/15 dk), seviye/etiket ve hızlı aksiyon (İzle/Devam) görünür.</li>
+                </ul>
+              </div>
+            </details>
+          </div>
+
+          <div class="device">
+            <div class="bezel">
+              <div class="status"><span>07:32</span><span class="right"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span></div>
+              <div class="island"></div>
+              <div class="screen">
+                <div class="content">
+                  <div class="topbar">
+                    <div class="logoWrap">
+                      <img
+                        class="logoImg"
+                        src="assets/pst-coaching-logo.png"
+                        alt="PST Coaching"
+                        onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+                      />
+                      <div class="logoFallback" aria-hidden="true"></div>
+                      <div class="title">Videolar</div>
+                    </div>
+                    <div class="ghost">Kategori</div>
+                  </div>
+
+                  <div class="list">
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">Yeni</div>
+                          <div class="m">Odak — 8 dk</div>
+                        </div>
+                        <span class="badge">Aç</span>
+                      </div>
+                    </div>
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">Popüler</div>
+                          <div class="m">Şükür — 12 dk</div>
+                        </div>
+                        <span class="badge">Aç</span>
+                      </div>
+                    </div>
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">Kilitli</div>
+                          <div class="m">Plan gerekir</div>
+                        </div>
+                        <span class="badge">Kilit</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="tabbar" role="navigation" aria-label="Tab bar">
+                    <div class="tabRow">
+                      <div class="tabItem">Ana Sayfa</div>
+                      <div class="tabItem active">Keşfet</div>
+                      <div class="tabItem">Yolculuklarım</div>
+                      <div class="tabItem">Profil</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="video-detail" class="section">
+          <div class="card">
+            <h2>02 — Video Detayı</h2>
+            <div class="meta">
+              <span class="tag brand">EPIC 18</span><span class="tag brand">US US-18.2</span><span class="tag">Faz-2</span>
+            </div>
+            <table class="infoTable" aria-label="Ekran bilgileri">
+              <tr><th>Rol</th><td>Danışan</td></tr>
+              <tr><th>Segment</th><td>Bireysel / Aile / Grup</td></tr>
+              <tr><th>Plan</th><td>Plan + entitlements</td></tr>
+              <tr><th>Navigasyon</th><td>Videolar → Detay</td></tr>
+            </table>
+            <ul>
+              <li>Bölümler, kaydet, erişim durumu.</li>
+              <li>Favoriye/sonradan izle.</li>
+              <li>Erişim yoksa paywall ve bağlam korunur.</li>
+            </ul>
+            <details open>
+              <summary>Acceptance Criteria <span class="hint">US-18.2</span></summary>
+              <div class="body">
+                <ul class="ac">
+                  <li>•	Önkoşul: Video detay ekranındayım. Ne zaman ekran açılırsa, o zaman başlık, özet, süre, seviye ve dil/altyazı durumu görünür.</li>
+                  <li>•	Önkoşul: Video bölümlemeli. Ne zaman “Bölümler” alanı gösterilirse, o zaman kullanıcı bölüm adlarını görür ve bölüme atlayabileceğini anlar.</li>
+                  <li>•	Önkoşul: Plan kontrolü gerekli. Ne zaman içerik plan kısıtı taşıyorsa, o zaman “Erişim durumu” açıkça gösterilir (uygun değilse yükseltme akışı sunulur).</li>
+                  <li>•	Önkoşul: Kaydetmek istiyorum. Ne zaman “Kaydet” dersem, o zaman video Favoriler/Sonradan İzle listesine eklenir.</li>
+                </ul>
+              </div>
+            </details>
+          </div>
+
+          <div class="device">
+            <div class="bezel">
+              <div class="status"><span>07:32</span><span class="right"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span></div>
+              <div class="island"></div>
+              <div class="screen">
+                <div class="content">
+                  <div class="topbar">
+                    <div class="logoWrap">
+                      <img
+                        class="logoImg"
+                        src="assets/pst-coaching-logo.png"
+                        alt="PST Coaching"
+                        onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+                      />
+                      <div class="logoFallback" aria-hidden="true"></div>
+                      <div class="title">Video Detayı</div>
+                    </div>
+                    <div class="ghost">Kaydet</div>
+                  </div>
+
+                  <div class="list">
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">Bölümler</div>
+                          <div class="m">3 bölüm</div>
+                        </div>
+                        <span class="badge">Aç</span>
+                      </div>
+                    </div>
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">Sonradan İzle</div>
+                          <div class="m">Kaydedildi</div>
+                        </div>
+                        <span class="badge">✓</span>
+                      </div>
+                    </div>
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">Paywall</div>
+                          <div class="m">Gerekirse</div>
+                        </div>
+                        <span class="badge">Aç</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="tabbar" role="navigation" aria-label="Tab bar">
+                    <div class="tabRow">
+                      <div class="tabItem">Ana Sayfa</div>
+                      <div class="tabItem active">Keşfet</div>
+                      <div class="tabItem">Yolculuklarım</div>
+                      <div class="tabItem">Profil</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="player" class="section">
+          <div class="card">
+            <h2>03 — Video Oynatıcı</h2>
+            <div class="meta">
+              <span class="tag brand">EPIC 18</span><span class="tag brand">US US-18.3</span><span class="tag">Faz-2</span>
+            </div>
+            <table class="infoTable" aria-label="Ekran bilgileri">
+              <tr><th>Rol</th><td>Danışan</td></tr>
+              <tr><th>Segment</th><td>Bireysel / Aile / Grup</td></tr>
+              <tr><th>Plan</th><td>Plan + entitlements</td></tr>
+              <tr><th>Navigasyon</th><td>Video Detayı → Oynat</td></tr>
+            </table>
+            <ul>
+              <li>Altyazı, hız, bölüm seçimi.</li>
+              <li>Erişilebilir kontroller.</li>
+              <li>Kaldığın yer kaydı.</li>
+            </ul>
+            <details open>
+              <summary>Acceptance Criteria <span class="hint">US-18.3</span></summary>
+              <div class="body">
+                <ul class="ac">
+                  <li>•	Önkoşul: Video oynuyor. Ne zaman oynatıcı açılırsa, o zaman süre çubuğu ve “kaldığın yer” bilgisi görünür.</li>
+                  <li>•	Önkoşul: Altyazı kullanmak istiyorum. Ne zaman altyazıyı açarsam, o zaman altyazılar ekranda görünür (destek yoksa net mesaj gösterilir).</li>
+                  <li>•	Önkoşul: Hız değiştirmek istiyorum. Ne zaman 0.9×/1.0×/1.2×/1.5× seçersem, o zaman hız anında değişir.</li>
+                  <li>•	Önkoşul: Bölüme atlamak istiyorum. Ne zaman bölüm seçersem, o zaman video ilgili zaman koduna gider.</li>
+                </ul>
+              </div>
+            </details>
+          </div>
+
+          <div class="device">
+            <div class="bezel">
+              <div class="status"><span>07:32</span><span class="right"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span></div>
+              <div class="island"></div>
+              <div class="screen">
+                <div class="content">
+                  <div class="topbar">
+                    <div class="logoWrap">
+                      <img
+                        class="logoImg"
+                        src="assets/pst-coaching-logo.png"
+                        alt="PST Coaching"
+                        onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+                      />
+                      <div class="logoFallback" aria-hidden="true"></div>
+                      <div class="title">Oynatıcı</div>
+                    </div>
+                    <div class="ghost">Altyazı</div>
+                  </div>
+
+                  <div class="list">
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">Kontrol</div>
+                          <div class="m">Play/Pause • 1.25×</div>
+                        </div>
+                        <span class="badge">⋯</span>
+                      </div>
+                    </div>
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">Altyazı</div>
+                          <div class="m">Açık</div>
+                        </div>
+                        <span class="badge">CC</span>
+                      </div>
+                    </div>
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">Bölüm</div>
+                          <div class="m">02:10</div>
+                        </div>
+                        <span class="badge">Git</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="tabbar" role="navigation" aria-label="Tab bar">
+                    <div class="tabRow">
+                      <div class="tabItem">Ana Sayfa</div>
+                      <div class="tabItem active">Keşfet</div>
+                      <div class="tabItem">Yolculuklarım</div>
+                      <div class="tabItem">Profil</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="downloads" class="section">
+          <div class="card">
+            <h2>04 — İndirmeler (Çevrimdışı)</h2>
+            <div class="meta">
+              <span class="tag brand">EPIC 18</span><span class="tag brand">US US-18.4</span><span class="tag">Faz-2</span>
+            </div>
+            <table class="infoTable" aria-label="Ekran bilgileri">
+              <tr><th>Rol</th><td>Danışan</td></tr>
+              <tr><th>Segment</th><td>Bireysel / Aile / Grup</td></tr>
+              <tr><th>Plan</th><td>Plan + depolama</td></tr>
+              <tr><th>Navigasyon</th><td>Videolar → İndirmeler</td></tr>
+            </table>
+            <ul>
+              <li>İndirilen videolar offline oynar.</li>
+              <li>Depolama uyarısı ve yönetim.</li>
+              <li>Senkron.</li>
+            </ul>
+            <details open>
+              <summary>Acceptance Criteria <span class="hint">US-18.4</span></summary>
+              <div class="body">
+                <ul class="ac">
+                  <li>•	Önkoşul: Video indirilebilir. Ne zaman “Çevrimdışı indir” dersem, o zaman indirme başlar ve ilerleme yüzdesi görünür.</li>
+                  <li>•	Önkoşul: İndirilenler ekranındayım. Ne zaman ekran açılırsa, o zaman durumlar (tamamlandı/indiriliyor/kuyrukta) ayrı ayrı görünür.</li>
+                  <li>•	Önkoşul: Depolama kontrolü gerekli. Ne zaman depolama limiti aşılacaksa, o zaman kullanıcıya uyarı verilir ve yönetim seçenekleri sunulur.</li>
+                  <li>•	Önkoşul: Wi-Fi kuralı istiyorum. Ne zaman “Sadece Wi-Fi’da indir” ayarını açarsam, o zaman mobil veride indirme başlamaz.</li>
+                </ul>
+              </div>
+            </details>
+          </div>
+
+          <div class="device">
+            <div class="bezel">
+              <div class="status"><span>07:32</span><span class="right"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span></div>
+              <div class="island"></div>
+              <div class="screen">
+                <div class="content">
+                  <div class="topbar">
+                    <div class="logoWrap">
+                      <img
+                        class="logoImg"
+                        src="assets/pst-coaching-logo.png"
+                        alt="PST Coaching"
+                        onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+                      />
+                      <div class="logoFallback" aria-hidden="true"></div>
+                      <div class="title">İndirmeler</div>
+                    </div>
+                    <div class="ghost">Offline</div>
+                  </div>
+
+                  <div class="list">
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">İndirildi</div>
+                          <div class="m">Odak — 8 dk</div>
+                        </div>
+                        <span class="badge">Aç</span>
+                      </div>
+                    </div>
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">Depolama</div>
+                          <div class="m">Uyarı</div>
+                        </div>
+                        <span class="badge">Yönet</span>
+                      </div>
+                    </div>
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">Sil</div>
+                          <div class="m">İndirilenleri yönet</div>
+                        </div>
+                        <span class="badge">Sil</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="tabbar" role="navigation" aria-label="Tab bar">
+                    <div class="tabRow">
+                      <div class="tabItem">Ana Sayfa</div>
+                      <div class="tabItem active">Keşfet</div>
+                      <div class="tabItem">Yolculuklarım</div>
+                      <div class="tabItem">Profil</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="video-collections" class="section">
+          <div class="card">
+            <h2>05 — Koleksiyonlar</h2>
+            <div class="meta">
+              <span class="tag brand">EPIC 18</span><span class="tag brand">US US-18.5</span><span class="tag">Faz-2</span>
+            </div>
+            <table class="infoTable" aria-label="Ekran bilgileri">
+              <tr><th>Rol</th><td>Danışan</td></tr>
+              <tr><th>Segment</th><td>Bireysel / Aile / Grup</td></tr>
+              <tr><th>Plan</th><td>Plan</td></tr>
+              <tr><th>Navigasyon</th><td>Videolar → Koleksiyonlar</td></tr>
+            </table>
+            <ul>
+              <li>Koleksiyon listesi.</li>
+              <li>Koleksiyona ekle/çıkar.</li>
+              <li>Sıralama/arama.</li>
+            </ul>
+            <details open>
+              <summary>Acceptance Criteria <span class="hint">US-18.5</span></summary>
+              <div class="body">
+                <ul class="ac">
+                  <li>•	Önkoşul: Koleksiyonlar ekranındayım. Ne zaman ekran açılırsa, o zaman set kartları (başlık, açıklama, içerik kapsamı) görünür.</li>
+                  <li>•	Önkoşul: Koleksiyon seçtim. Ne zaman “Aç” dersem, o zaman koleksiyon içindeki videolar sıralı listelenir.</li>
+                  <li>•	Önkoşul: Koleksiyonu kaydetmek istiyorum. Ne zaman “Favorile” dersem, o zaman koleksiyon Favoriler/Sonradan İzle listeme eklenir.</li>
+                </ul>
+              </div>
+            </details>
+          </div>
+
+          <div class="device">
+            <div class="bezel">
+              <div class="status"><span>07:32</span><span class="right"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span></div>
+              <div class="island"></div>
+              <div class="screen">
+                <div class="content">
+                  <div class="topbar">
+                    <div class="logoWrap">
+                      <img
+                        class="logoImg"
+                        src="assets/pst-coaching-logo.png"
+                        alt="PST Coaching"
+                        onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+                      />
+                      <div class="logoFallback" aria-hidden="true"></div>
+                      <div class="title">Koleksiyonlar</div>
+                    </div>
+                    <div class="ghost">Video</div>
+                  </div>
+
+                  <div class="list">
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">Başlangıç</div>
+                          <div class="m">6 video</div>
+                        </div>
+                        <span class="badge">Aç</span>
+                      </div>
+                    </div>
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">Odak</div>
+                          <div class="m">4 video</div>
+                        </div>
+                        <span class="badge">Aç</span>
+                      </div>
+                    </div>
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">Yeni</div>
+                          <div class="m">Oluştur</div>
+                        </div>
+                        <span class="badge">Ekle</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="tabbar" role="navigation" aria-label="Tab bar">
+                    <div class="tabRow">
+                      <div class="tabItem">Ana Sayfa</div>
+                      <div class="tabItem active">Keşfet</div>
+                      <div class="tabItem">Yolculuklarım</div>
+                      <div class="tabItem">Profil</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="watchlater" class="section">
+          <div class="card">
+            <h2>06 — Sonradan İzle / Favoriler</h2>
+            <div class="meta">
+              <span class="tag brand">EPIC 18</span><span class="tag brand">US US-18.6</span><span class="tag">Faz-2</span>
+            </div>
+            <table class="infoTable" aria-label="Ekran bilgileri">
+              <tr><th>Rol</th><td>Danışan</td></tr>
+              <tr><th>Segment</th><td>Bireysel / Aile / Grup</td></tr>
+              <tr><th>Plan</th><td>Plan</td></tr>
+              <tr><th>Navigasyon</th><td>Videolar</td></tr>
+            </table>
+            <ul>
+              <li>Kaydet/çıkar.</li>
+              <li>Kaldığın yer ile devam.</li>
+              <li>Liste filtreleri.</li>
+            </ul>
+            <details open>
+              <summary>Acceptance Criteria <span class="hint">US-18.6</span></summary>
+              <div class="body">
+                <ul class="ac">
+                  <li>•	Önkoşul: Sonradan İzle ekranındayım. Ne zaman ekran açılırsa, o zaman kaydedilen video/koleksiyonlar ve “kaldığın yer” bilgisi görünür.</li>
+                  <li>•	Önkoşul: Bir öğeyi açmak istiyorum. Ne zaman “Aç” dersem, o zaman ilgili video oynatıcıya veya koleksiyon detayına giderim.</li>
+                  <li>•	Önkoşul: Listeyi düzenlemek istiyorum. Ne zaman sıralama/filtre uygularsam, o zaman liste anında güncellenir.</li>
+                </ul>
+              </div>
+            </details>
+          </div>
+
+          <div class="device">
+            <div class="bezel">
+              <div class="status"><span>07:32</span><span class="right"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span></div>
+              <div class="island"></div>
+              <div class="screen">
+                <div class="content">
+                  <div class="topbar">
+                    <div class="logoWrap">
+                      <img
+                        class="logoImg"
+                        src="assets/pst-coaching-logo.png"
+                        alt="PST Coaching"
+                        onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+                      />
+                      <div class="logoFallback" aria-hidden="true"></div>
+                      <div class="title">Sonradan İzle</div>
+                    </div>
+                    <div class="ghost">Devam</div>
+                  </div>
+
+                  <div class="list">
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">Devam</div>
+                          <div class="m">02:10 kaldı</div>
+                        </div>
+                        <span class="badge">Devam</span>
+                      </div>
+                    </div>
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">Favori</div>
+                          <div class="m">Kaydedildi</div>
+                        </div>
+                        <span class="badge">✓</span>
+                      </div>
+                    </div>
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">Sil</div>
+                          <div class="m">Listeden çıkar</div>
+                        </div>
+                        <span class="badge">Sil</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="tabbar" role="navigation" aria-label="Tab bar">
+                    <div class="tabRow">
+                      <div class="tabItem">Ana Sayfa</div>
+                      <div class="tabItem active">Keşfet</div>
+                      <div class="tabItem">Yolculuklarım</div>
+                      <div class="tabItem">Profil</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="video-feedback" class="section">
+          <div class="card">
+            <h2>07 — İçerik Geri Bildirimi / Hata Bildir</h2>
+            <div class="meta">
+              <span class="tag brand">EPIC 18</span><span class="tag brand">US US-18.7</span><span class="tag">Faz-2</span>
+            </div>
+            <table class="infoTable" aria-label="Ekran bilgileri">
+              <tr><th>Rol</th><td>Danışan</td></tr>
+              <tr><th>Segment</th><td>Bireysel / Aile / Grup</td></tr>
+              <tr><th>Plan</th><td>Plan</td></tr>
+              <tr><th>Navigasyon</th><td>Video Detayı → Geri bildirim</td></tr>
+            </table>
+            <ul>
+              <li>Hata türü seçimi.</li>
+              <li>Kısa açıklama + gönder.</li>
+              <li>Takip numarası/teşekkür.</li>
+            </ul>
+            <details open>
+              <summary>Acceptance Criteria <span class="hint">US-18.7</span></summary>
+              <div class="body">
+                <ul class="ac">
+                  <li>•	Önkoşul: Video detayında/oynatıcıdayım. Ne zaman “Geri bildirim”i açarsam, o zaman konu seçimi (altyazı/ses senkron/öneri) görünür.</li>
+                  <li>•	Önkoşul: Açıklama gireceğim. Ne zaman metin alanına yazarsam, o zaman örnek format (örn. “00:42’de altyazı eksik”) kullanıcıya ipucu verir.</li>
+                  <li>•	Önkoşul: Göndereceğim. Ne zaman “Gönder” dersem, o zaman bildirim başarıyla alınır ve kullanıcıya onay mesajı gösterilir.</li>
+                  <li>•	Önkoşul: Anonim kalmak istiyorum. Ne zaman anonim gönderim seçiliyse, o zaman kimlik bilgisi gösterilmeden kayıt alınır (ürün kararına göre).</li>
+                </ul>
+              </div>
+            </details>
+          </div>
+
+          <div class="device">
+            <div class="bezel">
+              <div class="status"><span>07:32</span><span class="right"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span></div>
+              <div class="island"></div>
+              <div class="screen">
+                <div class="content">
+                  <div class="topbar">
+                    <div class="logoWrap">
+                      <img
+                        class="logoImg"
+                        src="assets/pst-coaching-logo.png"
+                        alt="PST Coaching"
+                        onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+                      />
+                      <div class="logoFallback" aria-hidden="true"></div>
+                      <div class="title">Geri Bildirim</div>
+                    </div>
+                    <div class="ghost">Gönder</div>
+                  </div>
+
+                  <div class="list">
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">Tür</div>
+                          <div class="m">Altyazı hatalı / Ses / İçerik</div>
+                        </div>
+                        <span class="badge">Seç</span>
+                      </div>
+                    </div>
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">Açıklama</div>
+                          <div class="m">Kısa not</div>
+                        </div>
+                        <span class="badge">Yaz</span>
+                      </div>
+                    </div>
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">Gönder</div>
+                          <div class="m">Teşekkür</div>
+                        </div>
+                        <span class="badge">✓</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="tabbar" role="navigation" aria-label="Tab bar">
+                    <div class="tabRow">
+                      <div class="tabItem">Ana Sayfa</div>
+                      <div class="tabItem active">Keşfet</div>
+                      <div class="tabItem">Yolculuklarım</div>
+                      <div class="tabItem">Profil</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>

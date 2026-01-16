@@ -1,0 +1,1330 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>3.7 — Hatırlatıcılar &amp; Bildirimler (Light Mode, iPhone 17 Pro)</title>
+    <style>
+
+      :root {
+        color-scheme: light;
+
+        /* Palette — derived from the provided logo (approx by visual sampling). */
+        --primary: #1e2a78; /* PST navy */
+        --accent: #0fa3b1; /* PST teal */
+        --gold: #f2c14e; /* warm highlight */
+        --danger: #d92d20;
+        --success: #039855;
+
+        /* Neutrals */
+        --bg: #f7f8fb;
+        --surface: #ffffff;
+        --surface2: #f2f4fb;
+        --stroke: #e6e8f0;
+        --stroke2: #d7dbeb;
+        --text: #0d1226;
+        --muted: #5b647a;
+        --muted2: #7a849c;
+
+        /* Effects */
+        --shadow-sm: 0 6px 18px rgba(13, 18, 38, 0.08);
+        --shadow-md: 0 18px 50px rgba(13, 18, 38, 0.12);
+        --shadow-lg: 0 36px 120px rgba(13, 18, 38, 0.18);
+
+        /* Radii */
+        --r12: 12px;
+        --r16: 16px;
+        --r20: 20px;
+        --r24: 24px;
+        --r32: 32px;
+
+        /* iPhone 17 Pro ref (approx) */
+        --w: 393px;
+        --h: 852px;
+        --safeTop: 56px;
+        --safeBot: 34px;
+
+        --font:
+          ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display",
+          "Segoe UI", Roboto, Helvetica, Arial;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        height: 100%;
+      }
+      body {
+        margin: 0;
+        font-family: var(--font);
+        background:
+          radial-gradient(900px 520px at 0% 0%, rgba(15, 163, 177, 0.12), transparent 55%),
+          radial-gradient(900px 520px at 100% 10%, rgba(30, 42, 120, 0.1), transparent 55%),
+          radial-gradient(900px 520px at 40% 115%, rgba(242, 193, 78, 0.12), transparent 55%),
+          linear-gradient(180deg, #ffffff, var(--bg));
+        color: var(--text);
+      }
+
+      code {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        font-size: 0.95em;
+        color: rgba(13, 18, 38, 0.85);
+      }
+      a {
+        color: inherit;
+      }
+
+      .wrap {
+        display: grid;
+        grid-template-columns: 360px 1fr;
+        gap: 24px;
+        padding: 28px;
+        min-height: 100%;
+      }
+
+      .side {
+        position: sticky;
+        top: 28px;
+        height: calc(100vh - 56px);
+        border-radius: 22px;
+        background: rgba(255, 255, 255, 0.82);
+        border: 1px solid rgba(230, 232, 240, 0.9);
+        box-shadow: var(--shadow-md);
+        backdrop-filter: blur(12px);
+        padding: 18px;
+        overflow: auto;
+      }
+
+      .titleRow {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 10px;
+      }
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 10px;
+        border-radius: 999px;
+        background: rgba(15, 163, 177, 0.1);
+        border: 1px solid rgba(15, 163, 177, 0.22);
+        color: rgba(13, 18, 38, 0.86);
+        font-size: 12px;
+        white-space: nowrap;
+        font-weight: 900;
+      }
+      h1 {
+        font-size: 16px;
+        margin: 0;
+        letter-spacing: 0.1px;
+        line-height: 1.25;
+      }
+      .sub {
+        margin: 4px 0 0;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.45;
+      }
+
+      .swatches {
+        margin-top: 14px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+      .swatch {
+        padding: 10px;
+        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.72);
+        border: 1px solid rgba(230, 232, 240, 0.92);
+        box-shadow: var(--shadow-sm);
+      }
+      .chip {
+        height: 18px;
+        border-radius: 999px;
+        border: 1px solid rgba(13, 18, 38, 0.08);
+      }
+      .k {
+        margin-top: 8px;
+        font-size: 11px;
+        color: rgba(13, 18, 38, 0.72);
+        font-weight: 900;
+      }
+      .v {
+        font-size: 12px;
+        color: rgba(13, 18, 38, 0.86);
+        font-weight: 900;
+      }
+
+      .note {
+        margin-top: 12px;
+        padding: 12px;
+        border-radius: var(--r20);
+        background: rgba(242, 193, 78, 0.14);
+        border: 1px solid rgba(242, 193, 78, 0.28);
+        color: rgba(13, 18, 38, 0.86);
+        font-size: 12px;
+        line-height: 1.5;
+      }
+      .nav {
+        margin-top: 14px;
+        display: grid;
+        gap: 6px;
+      }
+      .nav a {
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 10px 12px;
+        border-radius: 14px;
+        border: 1px solid rgba(230, 232, 240, 0.92);
+        background: rgba(255, 255, 255, 0.72);
+        box-shadow: var(--shadow-sm);
+        font-weight: 900;
+        font-size: 12px;
+      }
+      .nav a:hover {
+        border-color: rgba(15, 163, 177, 0.35);
+        box-shadow: 0 10px 26px rgba(13, 18, 38, 0.11);
+      }
+      .homeLink {
+        background: rgba(15, 163, 177, 0.08);
+        border-color: rgba(15, 163, 177, 0.22);
+      }
+
+      .main {
+        display: grid;
+        gap: 18px;
+        align-content: start;
+      }
+      .section {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+        align-items: start;
+      }
+      .card {
+        border-radius: var(--r24);
+        background: rgba(255, 255, 255, 0.86);
+        border: 1px solid rgba(230, 232, 240, 0.95);
+        box-shadow: var(--shadow-md);
+        padding: 16px;
+      }
+      .card h2 {
+        margin: 0;
+        font-size: 16px;
+        letter-spacing: 0.1px;
+      }
+      .meta {
+        margin-top: 10px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 10px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 900;
+        border: 1px solid rgba(230, 232, 240, 0.92);
+        background: rgba(255, 255, 255, 0.72);
+        color: rgba(13, 18, 38, 0.88);
+      }
+      .tag.brand {
+        border-color: rgba(30, 42, 120, 0.18);
+        background: rgba(30, 42, 120, 0.08);
+      }
+      .tag.warn {
+        border-color: rgba(242, 193, 78, 0.35);
+        background: rgba(242, 193, 78, 0.18);
+      }
+      .tag.ok {
+        border-color: rgba(3, 152, 85, 0.26);
+        background: rgba(3, 152, 85, 0.12);
+      }
+      .tag.danger {
+        border-color: rgba(217, 45, 32, 0.25);
+        background: rgba(217, 45, 32, 0.1);
+      }
+
+      .infoTable {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 12px;
+        overflow: hidden;
+        border-radius: 18px;
+        border: 1px solid rgba(230, 232, 240, 0.95);
+        background: rgba(255, 255, 255, 0.72);
+      }
+      .infoTable th,
+      .infoTable td {
+        padding: 10px 12px;
+        text-align: left;
+        font-size: 12px;
+        border-bottom: 1px solid rgba(230, 232, 240, 0.95);
+        vertical-align: top;
+      }
+      .infoTable th {
+        width: 128px;
+        color: rgba(13, 18, 38, 0.7);
+        font-weight: 900;
+      }
+      .infoTable tr:last-child th,
+      .infoTable tr:last-child td {
+        border-bottom: none;
+      }
+
+      .card ul {
+        margin: 10px 0 0;
+        padding-left: 18px;
+        color: rgba(13, 18, 38, 0.9);
+        font-size: 12px;
+        line-height: 1.6;
+      }
+
+      details {
+        margin-top: 12px;
+        border-radius: 18px;
+        border: 1px solid rgba(230, 232, 240, 0.95);
+        background: rgba(255, 255, 255, 0.72);
+        overflow: hidden;
+      }
+      summary {
+        cursor: pointer;
+        list-style: none;
+        padding: 12px;
+        font-size: 12px;
+        font-weight: 950;
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 8px;
+      }
+      summary::-webkit-details-marker {
+        display: none;
+      }
+      .hint {
+        color: rgba(13, 18, 38, 0.68);
+        font-weight: 900;
+      }
+      .body {
+        padding: 0 12px 12px;
+        border-top: 1px solid rgba(230, 232, 240, 0.95);
+      }
+      .ac {
+        margin: 10px 0 0;
+        padding-left: 18px;
+        color: rgba(13, 18, 38, 0.92);
+        font-size: 12px;
+        line-height: 1.6;
+      }
+
+      /* Device frame */
+      .device {
+        display: grid;
+        place-items: center;
+      }
+      .bezel {
+        width: calc(var(--w) + 18px);
+        height: calc(var(--h) + 18px);
+        padding: 9px;
+        border-radius: 54px;
+        background: linear-gradient(180deg, #0b0e16, #141a2a);
+        box-shadow: var(--shadow-lg);
+        position: relative;
+      }
+      .status {
+        position: absolute;
+        top: 16px;
+        left: 22px;
+        right: 22px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        color: rgba(255, 255, 255, 0.86);
+        font-size: 12px;
+        font-weight: 900;
+        pointer-events: none;
+      }
+      .right {
+        display: inline-flex;
+        gap: 6px;
+        align-items: center;
+      }
+      .dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.8);
+      }
+      .island {
+        position: absolute;
+        top: 14px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 140px;
+        height: 36px;
+        border-radius: 999px;
+        background: rgba(0, 0, 0, 0.9);
+        box-shadow: 0 12px 22px rgba(0, 0, 0, 0.55);
+        pointer-events: none;
+      }
+      .screen {
+        width: var(--w);
+        height: var(--h);
+        border-radius: 44px;
+        background: linear-gradient(180deg, #ffffff, var(--bg));
+        overflow: hidden;
+        position: relative;
+      }
+      .content {
+        position: absolute;
+        inset: 0;
+        padding: var(--safeTop) 16px calc(var(--safeBot) + 74px);
+        overflow: hidden;
+      }
+
+      /* App chrome */
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 12px;
+      }
+      .left {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        min-width: 0;
+      }
+      .back {
+        width: 36px;
+        height: 36px;
+        border-radius: 14px;
+        display: grid;
+        place-items: center;
+        border: 1px solid rgba(230, 232, 240, 0.95);
+        background: rgba(255, 255, 255, 0.9);
+        box-shadow: var(--shadow-sm);
+        font-weight: 1000;
+        color: rgba(13, 18, 38, 0.86);
+      }
+      .title {
+        font-weight: 1000;
+        letter-spacing: 0.1px;
+        font-size: 15px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .ghost {
+        height: 36px;
+        padding: 0 12px;
+        border-radius: 14px;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 950;
+        border: 1px solid rgba(230, 232, 240, 0.95);
+        background: rgba(255, 255, 255, 0.9);
+        color: rgba(13, 18, 38, 0.76);
+        box-shadow: var(--shadow-sm);
+      }
+
+      .list {
+        display: grid;
+        gap: 10px;
+      }
+      .tile {
+        padding: 12px;
+        border-radius: 20px;
+        border: 1px solid rgba(230, 232, 240, 0.95);
+        background: rgba(255, 255, 255, 0.92);
+        box-shadow: var(--shadow-sm);
+      }
+      .row {
+        display: flex;
+        align-items: start;
+        justify-content: space-between;
+        gap: 10px;
+      }
+      .t {
+        font-weight: 1000;
+        font-size: 13px;
+        letter-spacing: 0.1px;
+      }
+      .m {
+        margin-top: 6px;
+        color: rgba(13, 18, 38, 0.68);
+        font-size: 12px;
+        line-height: 1.45;
+      }
+      .badge {
+        height: 26px;
+        padding: 0 10px;
+        border-radius: 999px;
+        display: inline-flex;
+        align-items: center;
+        font-weight: 1000;
+        font-size: 11px;
+        border: 1px solid rgba(15, 163, 177, 0.26);
+        background: rgba(15, 163, 177, 0.1);
+        color: rgba(13, 18, 38, 0.86);
+        white-space: nowrap;
+      }
+      .badge.warn {
+        border-color: rgba(242, 193, 78, 0.32);
+        background: rgba(242, 193, 78, 0.18);
+      }
+      .badge.ok {
+        border-color: rgba(3, 152, 85, 0.26);
+        background: rgba(3, 152, 85, 0.12);
+      }
+      .badge.lock {
+        border-color: rgba(217, 45, 32, 0.22);
+        background: rgba(217, 45, 32, 0.08);
+      }
+
+      .ctaRow {
+        margin-top: 12px;
+        display: grid;
+        gap: 10px;
+      }
+      .cta {
+        height: 44px;
+        border-radius: 18px;
+        display: grid;
+        place-items: center;
+        font-weight: 1000;
+        letter-spacing: 0.1px;
+        color: #ffffff;
+        background: linear-gradient(135deg, rgba(30, 42, 120, 0.96), rgba(15, 163, 177, 0.92));
+        box-shadow: 0 18px 40px rgba(30, 42, 120, 0.22);
+        border: 1px solid rgba(30, 42, 120, 0.18);
+      }
+      .cta.secondary {
+        color: rgba(13, 18, 38, 0.9);
+        background: rgba(255, 255, 255, 0.92);
+        border: 1px solid rgba(230, 232, 240, 0.95);
+        box-shadow: var(--shadow-sm);
+      }
+
+      .chips {
+        margin-top: 10px;
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .chipBtn {
+        height: 32px;
+        padding: 0 10px;
+        border-radius: 999px;
+        border: 1px solid rgba(230, 232, 240, 0.95);
+        background: rgba(255, 255, 255, 0.92);
+        box-shadow: var(--shadow-sm);
+        font-size: 12px;
+        font-weight: 950;
+        color: rgba(13, 18, 38, 0.78);
+        white-space: nowrap;
+      }
+      .chipBtn.primary {
+        border-color: rgba(30, 42, 120, 0.18);
+        background: rgba(30, 42, 120, 0.08);
+        color: rgba(13, 18, 38, 0.92);
+      }
+
+      .tabbar {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        padding: 10px 12px calc(var(--safeBot) + 10px);
+        background: rgba(255, 255, 255, 0.92);
+        border-top: 1px solid rgba(230, 232, 240, 0.95);
+        backdrop-filter: blur(10px);
+      }
+      .tabRow {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 8px;
+      }
+      .tabItem {
+        height: 46px;
+        border-radius: 18px;
+        display: grid;
+        place-items: center;
+        color: rgba(13, 18, 38, 0.68);
+        font-weight: 950;
+        font-size: 11px;
+        border: 1px solid rgba(230, 232, 240, 0.95);
+        background: rgba(255, 255, 255, 0.86);
+      }
+      .tabItem.active {
+        border-color: rgba(30, 42, 120, 0.2);
+        background: rgba(30, 42, 120, 0.08);
+        color: rgba(13, 18, 38, 0.92);
+      }
+
+      .logoWrap {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        min-width: 0;
+      }
+      .logoImg {
+        height: 22px;
+        width: auto;
+        object-fit: contain;
+        display: block;
+      }
+      .logoFallback {
+        display: none;
+        width: 26px;
+        height: 26px;
+        border-radius: 12px;
+        background: radial-gradient(circle at 30% 30%, rgba(15, 163, 177, 1), rgba(30, 42, 120, 1));
+        border: 1px solid rgba(13, 18, 38, 0.08);
+        box-shadow: var(--shadow-sm);
+      }
+
+      .muted {
+        color: rgba(13, 18, 38, 0.66);
+      }
+
+      @media (max-width: 1120px) {
+        .wrap {
+          grid-template-columns: 1fr;
+        }
+        .side {
+          position: relative;
+          height: auto;
+        }
+        .section {
+          grid-template-columns: 1fr;
+        }
+      }
+
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <aside class="side">
+        <div class="titleRow">
+          <div>
+            <h1>3.7 — Hatırlatıcılar &amp; Bildirimler</h1>
+            <p class="sub">Light mode • iPhone 17 Pro frame • US + Acceptance Criteria gömülü</p>
+          </div>
+          <div class="pill">3.7</div>
+        </div>
+
+        <div class="swatches" aria-label="Renk paleti">
+          <div class="swatch">
+            <div class="chip" style="background: var(--primary)"></div>
+            <div class="k">Primary</div>
+            <div class="v">#1E2A78</div>
+          </div>
+          <div class="swatch">
+            <div class="chip" style="background: var(--accent)"></div>
+            <div class="k">Accent</div>
+            <div class="v">#0FA3B1</div>
+          </div>
+          <div class="swatch">
+            <div class="chip" style="background: var(--gold)"></div>
+            <div class="k">Gold</div>
+            <div class="v">#F2C14E</div>
+          </div>
+          <div class="swatch">
+            <div class="chip" style="background: var(--bg)"></div>
+            <div class="k">Background</div>
+            <div class="v">#F7F8FB</div>
+          </div>
+        </div>
+        <div class="note">
+          Palet logo bazlı <strong>yaklaşık</strong>. Logo dosyası: <code>Model1/Designs/assets/pst-coaching-logo.png</code>
+        </div>
+
+        <div class="nav" aria-label="Ekran listesi">
+          <a class="homeLink" href="index.html"><span class="k">⟵</span> Home (Index)</a>
+          <a href="#perm"><span class="k">01</span> Bildirim İzin Akışı (Neden + Seçenek)</a>
+          <a href="#inbox"><span class="k">02</span> Bildirim Merkezi (Uygulama İçi Gelen Kutusu)</a>
+          <a href="#reminders"><span class="k">03</span> Hatırlatıcı Ayarları (Okuma/Yorum/Oyun)</a>
+          <a href="#streak"><span class="k">04</span> Alışkanlık Zinciri (Takvim + Görevler)</a>
+          <a href="#dnd"><span class="k">05</span> Sessiz Saatler &amp; Kanallar (DND)</a>
+          <a href="#smart"><span class="k">06</span> Akıllı Öneriler</a>
+          <a href="#streak-save"><span class="k">07</span> Seri Kurtarma</a>
+        </div>
+      </aside>
+
+      <main class="main">
+
+        <section id="perm" class="section">
+          <div class="card">
+            <h2>01 — Bildirim İzin Akışı (Neden + Seçenek)</h2>
+            <div class="meta">
+              <span class="tag brand">EPIC 11</span><span class="tag brand">US US-11.1</span><span class="tag">Faz-1</span>
+            </div>
+            <table class="infoTable" aria-label="Ekran bilgileri">
+              <tr><th>Rol</th><td>Danışan</td></tr>
+              <tr><th>Segment</th><td>Bireysel / Aile / Grup</td></tr>
+              <tr><th>Plan</th><td>Bireysel / Aile / Grup</td></tr>
+              <tr><th>Navigasyon</th><td>Profil → Ayarlar → Hatırlatıcılar</td></tr>
+            </table>
+            <ul>
+              <li>Neden gerekli açıklaması + örnek kullanım.</li>
+              <li>“Bildirimleri Aç” → sistem izin penceresi.</li>
+              <li>“Şimdilik Geç” ile akış bloklanmaz.</li>
+            </ul>
+            <details open>
+              <summary>Acceptance Criteria <span class="hint">US-11.1</span></summary>
+              <div class="body">
+                <ul class="ac">
+                  <li>•	Önkoşul: Uygulamayı ilk kez kullanıyorum. Ne zaman bildirim izni adımı gelirse, o zaman “neden gerekli” açıklaması ve örnek kullanım alanları gösterilir.</li>
+                  <li>•	Önkoşul: İzin vermek istiyorum. Ne zaman “Bildirimleri Aç” dersem, o zaman sistem izin penceresi açılır.</li>
+                  <li>•	Önkoşul: İzin vermek istemiyorum. Ne zaman “Şimdilik Geç” dersem, o zaman kullanıcı uygulamayı kullanmaya devam eder ve uygulama içi bildirim merkezi yine çalışır.</li>
+                  <li>•	Önkoşul: İzin reddedildi. Ne zaman kullanıcı daha sonra Ayarlar’dan izin vermek isterse, o zaman sistem ayarlarına yönlendirme sunulur.</li>
+                </ul>
+              </div>
+            </details>
+          </div>
+
+          <div class="device">
+            <div class="bezel">
+              <div class="status"><span>07:32</span><span class="right"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span></div>
+              <div class="island"></div>
+              <div class="screen">
+                <div class="content">
+                  <div class="topbar">
+                    <div class="logoWrap">
+                      <img
+                        class="logoImg"
+                        src="assets/pst-coaching-logo.png"
+                        alt="PST Coaching"
+                        onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+                      />
+                      <div class="logoFallback" aria-hidden="true"></div>
+                      <div class="title">Bildirim İzni</div>
+                    </div>
+                    <div class="ghost">Neden?</div>
+                  </div>
+
+                  <div class="list">
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">Neden?</div>
+                          <div class="m">08:00 yeni gün, 23:59 teslim, okuma</div>
+                        </div>
+                        <span class="badge">Bilgi</span>
+                      </div>
+                    </div>
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">Bildirimleri Aç</div>
+                          <div class="m">Sistem izni</div>
+                        </div>
+                        <span class="badge">Aç</span>
+                      </div>
+                    </div>
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">Şimdilik Geç</div>
+                          <div class="m">Uygulama içi merkez çalışır</div>
+                        </div>
+                        <span class="badge">Geç</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="tabbar" role="navigation" aria-label="Tab bar">
+                    <div class="tabRow">
+                      <div class="tabItem">Ana Sayfa</div>
+                      <div class="tabItem">Keşfet</div>
+                      <div class="tabItem">Yolculuklarım</div>
+                      <div class="tabItem active">Profil</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="inbox" class="section">
+          <div class="card">
+            <h2>02 — Bildirim Merkezi (Uygulama İçi Gelen Kutusu)</h2>
+            <div class="meta">
+              <span class="tag brand">EPIC 11</span><span class="tag brand">US US-11.2</span><span class="tag">Faz-1</span>
+            </div>
+            <table class="infoTable" aria-label="Ekran bilgileri">
+              <tr><th>Rol</th><td>Danışan</td></tr>
+              <tr><th>Segment</th><td>Bireysel / Aile / Grup</td></tr>
+              <tr><th>Plan</th><td>Bireysel / Aile / Grup</td></tr>
+              <tr><th>Navigasyon</th><td>Profil → Ayarlar → Hatırlatıcılar</td></tr>
+            </table>
+            <ul>
+              <li>Okunmuş/okunmamış listesi.</li>
+              <li>Tümü/Yolculuk/Önemli/Sistem filtreleri.</li>
+              <li>Bildirim tıklayınca ilgili ekrana gider.</li>
+            </ul>
+            <details open>
+              <summary>Acceptance Criteria <span class="hint">US-11.2</span></summary>
+              <div class="body">
+                <ul class="ac">
+                  <li>•	Önkoşul: Giriş yaptım. Ne zaman “Bildirimler” sekmesini açarsam, o zaman okunmamış/okunmuş bildirimler listelenir.</li>
+                  <li>•	Önkoşul: Filtreleme var. Ne zaman “Tümü / Yolculuk / Önemli / Sistem” filtresini seçersem, o zaman liste buna göre güncellenir.</li>
+                  <li>•	Önkoşul: Bildirime tıklama. Ne zaman bir bildirime tıklarsam, o zaman ilgili ekrana (örn. Bugünkü Not / Teslim / Oyun) giderim.</li>
+                  <li>•	Önkoşul: Toplu işlem. Ne zaman “Tümünü okundu işaretle” dersem, o zaman tüm bildirimler okundu olur.</li>
+                </ul>
+              </div>
+            </details>
+          </div>
+
+          <div class="device">
+            <div class="bezel">
+              <div class="status"><span>07:32</span><span class="right"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span></div>
+              <div class="island"></div>
+              <div class="screen">
+                <div class="content">
+                  <div class="topbar">
+                    <div class="logoWrap">
+                      <img
+                        class="logoImg"
+                        src="assets/pst-coaching-logo.png"
+                        alt="PST Coaching"
+                        onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+                      />
+                      <div class="logoFallback" aria-hidden="true"></div>
+                      <div class="title">Bildirimler</div>
+                    </div>
+                    <div class="ghost">Filtre</div>
+                  </div>
+
+                  <div class="list">
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">Teslim</div>
+                          <div class="m">23:59’a 2 saat kaldı</div>
+                        </div>
+                        <span class="badge">Aç</span>
+                      </div>
+                    </div>
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">Yeni gün</div>
+                          <div class="m">08:00’de açıldı</div>
+                        </div>
+                        <span class="badge">Aç</span>
+                      </div>
+                    </div>
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">Tümünü okundu</div>
+                          <div class="m">Toplu işlem</div>
+                        </div>
+                        <span class="badge">İşaretle</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="tabbar" role="navigation" aria-label="Tab bar">
+                    <div class="tabRow">
+                      <div class="tabItem">Ana Sayfa</div>
+                      <div class="tabItem">Keşfet</div>
+                      <div class="tabItem">Yolculuklarım</div>
+                      <div class="tabItem active">Profil</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="reminders" class="section">
+          <div class="card">
+            <h2>03 — Hatırlatıcı Ayarları (Okuma/Yorum/Oyun)</h2>
+            <div class="meta">
+              <span class="tag brand">EPIC 11</span><span class="tag brand">US US-11.3</span><span class="tag">Faz-1</span>
+            </div>
+            <table class="infoTable" aria-label="Ekran bilgileri">
+              <tr><th>Rol</th><td>Danışan</td></tr>
+              <tr><th>Segment</th><td>Bireysel / Aile / Grup</td></tr>
+              <tr><th>Plan</th><td>Bireysel / Aile / Grup</td></tr>
+              <tr><th>Navigasyon</th><td>Profil → Ayarlar → Hatırlatıcılar</td></tr>
+            </table>
+            <ul>
+              <li>Varsayılan hatırlatmalar listelenir.</li>
+              <li>Aç/Kapat + yeni hatırlatıcı ekle.</li>
+              <li>Yorum hatırlatıcılarında 23:59 kuralı görünür.</li>
+            </ul>
+            <details open>
+              <summary>Acceptance Criteria <span class="hint">US-11.3</span></summary>
+              <div class="body">
+                <ul class="ac">
+                  <li>•	Önkoşul: Hatırlatıcılar ekranındayım. Ne zaman ekran açılırsa, o zaman varsayılan hatırlatmalar (Yeni gün 08:00, okuma, yorum teslim) listelenir.</li>
+                  <li>•	Önkoşul: Aç/Kapat. Ne zaman bir hatırlatıcıyı kapatırsam, o zaman ilgili bildirimler artık gönderilmez.</li>
+                  <li>•	Önkoşul: Kişiselleştirme. Ne zaman “Yeni Hatırlatıcı Ekle” dersem, o zaman gün seçimi + birden çok saat + sessiz bildirim seçenekleri sunulur.</li>
+                  <li>•	Önkoşul: Kural bilgilendirmesi. Ne zaman yorum hatırlatıcıları ayarlanırsa, o zaman “teslim 23:59” kuralı açıkça gösterilir.</li>
+                </ul>
+              </div>
+            </details>
+          </div>
+
+          <div class="device">
+            <div class="bezel">
+              <div class="status"><span>07:32</span><span class="right"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span></div>
+              <div class="island"></div>
+              <div class="screen">
+                <div class="content">
+                  <div class="topbar">
+                    <div class="logoWrap">
+                      <img
+                        class="logoImg"
+                        src="assets/pst-coaching-logo.png"
+                        alt="PST Coaching"
+                        onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+                      />
+                      <div class="logoFallback" aria-hidden="true"></div>
+                      <div class="title">Hatırlatıcılar</div>
+                    </div>
+                    <div class="ghost">Saat</div>
+                  </div>
+
+                  <div class="list">
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">Yeni gün</div>
+                          <div class="m">08:00</div>
+                        </div>
+                        <span class="badge">Açık</span>
+                      </div>
+                    </div>
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">Okuma</div>
+                          <div class="m">20:00</div>
+                        </div>
+                        <span class="badge">Açık</span>
+                      </div>
+                    </div>
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">Yorum</div>
+                          <div class="m">21:30 (23:59 kuralı)</div>
+                        </div>
+                        <span class="badge">Açık</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="tabbar" role="navigation" aria-label="Tab bar">
+                    <div class="tabRow">
+                      <div class="tabItem">Ana Sayfa</div>
+                      <div class="tabItem">Keşfet</div>
+                      <div class="tabItem">Yolculuklarım</div>
+                      <div class="tabItem active">Profil</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="streak" class="section">
+          <div class="card">
+            <h2>04 — Alışkanlık Zinciri (Takvim + Görevler)</h2>
+            <div class="meta">
+              <span class="tag brand">EPIC 11</span><span class="tag brand">US US-11.4</span><span class="tag">Faz-1</span>
+            </div>
+            <table class="infoTable" aria-label="Ekran bilgileri">
+              <tr><th>Rol</th><td>Danışan</td></tr>
+              <tr><th>Segment</th><td>Bireysel / Aile / Grup</td></tr>
+              <tr><th>Plan</th><td>Bireysel / Aile / Grup</td></tr>
+              <tr><th>Navigasyon</th><td>Profil → Ayarlar → Hatırlatıcılar</td></tr>
+            </table>
+            <ul>
+              <li>Haftalık takvim + seri bilgisi.</li>
+              <li>Bugünkü görev durumu (oku/yorum/oyun).</li>
+              <li>Görev tamamlayınca güncellenir.</li>
+            </ul>
+            <details open>
+              <summary>Acceptance Criteria <span class="hint">US-11.4</span></summary>
+              <div class="body">
+                <ul class="ac">
+                  <li>•	Önkoşul: Zincir ekranındayım. Ne zaman ekran açılırsa, o zaman haftalık takvim görünümü ve seri bilgisi gösterilir.</li>
+                  <li>•	Önkoşul: Günlük görevler var. Ne zaman ekran açılırsa, o zaman “Bugünkü notu oku / yorum yaz / oyun oyna” gibi görevlerin durumu görünür.</li>
+                  <li>•	Önkoşul: İlerleme güncellenmesi. Ne zaman bir görevi tamamlarsam, o zaman ilerleme barı ve seri durumu anında güncellenir.</li>
+                  <li>•	Önkoşul: Öneri. Ne zaman gün bitimine yaklaşılır ve görev eksikse, o zaman nazik bir öneri (örn. “2 dk oyunla seriyi tamamla”) gösterilir.</li>
+                </ul>
+              </div>
+            </details>
+          </div>
+
+          <div class="device">
+            <div class="bezel">
+              <div class="status"><span>07:32</span><span class="right"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span></div>
+              <div class="island"></div>
+              <div class="screen">
+                <div class="content">
+                  <div class="topbar">
+                    <div class="logoWrap">
+                      <img
+                        class="logoImg"
+                        src="assets/pst-coaching-logo.png"
+                        alt="PST Coaching"
+                        onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+                      />
+                      <div class="logoFallback" aria-hidden="true"></div>
+                      <div class="title">Zincir</div>
+                    </div>
+                    <div class="ghost">Takvim</div>
+                  </div>
+
+                  <div class="list">
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">Seri</div>
+                          <div class="m">7 gün</div>
+                        </div>
+                        <span class="badge">👍</span>
+                      </div>
+                    </div>
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">Görev</div>
+                          <div class="m">Bugün: Oku</div>
+                        </div>
+                        <span class="badge">Bekliyor</span>
+                      </div>
+                    </div>
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">Görev</div>
+                          <div class="m">Bugün: Yorum</div>
+                        </div>
+                        <span class="badge">Bekliyor</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="tabbar" role="navigation" aria-label="Tab bar">
+                    <div class="tabRow">
+                      <div class="tabItem">Ana Sayfa</div>
+                      <div class="tabItem">Keşfet</div>
+                      <div class="tabItem">Yolculuklarım</div>
+                      <div class="tabItem active">Profil</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="dnd" class="section">
+          <div class="card">
+            <h2>05 — Sessiz Saatler &amp; Kanallar (DND)</h2>
+            <div class="meta">
+              <span class="tag brand">EPIC 11</span><span class="tag brand">US US-11.5</span><span class="tag">Faz-1</span>
+            </div>
+            <table class="infoTable" aria-label="Ekran bilgileri">
+              <tr><th>Rol</th><td>Danışan</td></tr>
+              <tr><th>Segment</th><td>Bireysel / Aile / Grup</td></tr>
+              <tr><th>Plan</th><td>Bireysel / Aile / Grup</td></tr>
+              <tr><th>Navigasyon</th><td>Profil → Ayarlar → Hatırlatıcılar</td></tr>
+            </table>
+            <ul>
+              <li>DND aralığı seçimi.</li>
+              <li>Kanal bazlı aç/kapat (Yolculuk/Oyun/AI/Sistem).</li>
+              <li>İstisnalar (örn. güvenlik uyarısı).</li>
+            </ul>
+            <details open>
+              <summary>Acceptance Criteria <span class="hint">US-11.5</span></summary>
+              <div class="body">
+                <ul class="ac">
+                  <li>•	Önkoşul: Sessiz saatler ekranındayım. Ne zaman sessiz saatleri aktif edersem, o zaman seçilen aralıkta bildirimler sessiz modda gelir (veya hiç gelmez).</li>
+                  <li>•	Önkoşul: İstisna listesi var. Ne zaman kullanıcı istisna belirlerse, o zaman (örn. güvenlik uyarısı) sessiz saatlerden muaf olabilir.</li>
+                  <li>•	Önkoşul: Kanal yönetimi. Ne zaman kanal bazında (Yolculuk/Oyun/AI/Sistem) aç-kapat yaparsam, o zaman ilgili bildirim tipi buna göre davranır.</li>
+                  <li>•	Önkoşul: Şeffaflık. Ne zaman sessiz saatler açıksa, o zaman kullanıcı bildirim merkezinde yine tüm kayıtları görür.</li>
+                </ul>
+              </div>
+            </details>
+          </div>
+
+          <div class="device">
+            <div class="bezel">
+              <div class="status"><span>07:32</span><span class="right"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span></div>
+              <div class="island"></div>
+              <div class="screen">
+                <div class="content">
+                  <div class="topbar">
+                    <div class="logoWrap">
+                      <img
+                        class="logoImg"
+                        src="assets/pst-coaching-logo.png"
+                        alt="PST Coaching"
+                        onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+                      />
+                      <div class="logoFallback" aria-hidden="true"></div>
+                      <div class="title">Sessiz Saatler</div>
+                    </div>
+                    <div class="ghost">DND</div>
+                  </div>
+
+                  <div class="list">
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">Aralık</div>
+                          <div class="m">22:00–07:00</div>
+                        </div>
+                        <span class="badge">Aktif</span>
+                      </div>
+                    </div>
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">Kanallar</div>
+                          <div class="m">Yolculuk/Oyun/AI/Sistem</div>
+                        </div>
+                        <span class="badge">Yönet</span>
+                      </div>
+                    </div>
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">İstisna</div>
+                          <div class="m">Önemli uyarılar</div>
+                        </div>
+                        <span class="badge">Seç</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="tabbar" role="navigation" aria-label="Tab bar">
+                    <div class="tabRow">
+                      <div class="tabItem">Ana Sayfa</div>
+                      <div class="tabItem">Keşfet</div>
+                      <div class="tabItem">Yolculuklarım</div>
+                      <div class="tabItem active">Profil</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="smart" class="section">
+          <div class="card">
+            <h2>06 — Akıllı Öneriler</h2>
+            <div class="meta">
+              <span class="tag brand">EPIC 11</span><span class="tag brand">US US-11.6</span><span class="tag">Faz-1</span>
+            </div>
+            <table class="infoTable" aria-label="Ekran bilgileri">
+              <tr><th>Rol</th><td>Danışan</td></tr>
+              <tr><th>Segment</th><td>Bireysel / Aile / Grup</td></tr>
+              <tr><th>Plan</th><td>Bireysel / Aile / Grup</td></tr>
+              <tr><th>Navigasyon</th><td>Profil → Ayarlar → Hatırlatıcılar</td></tr>
+            </table>
+            <ul>
+              <li>Davranışa göre önerilen saatler.</li>
+              <li>Kabul/ertele ve kontrol kullanıcıda.</li>
+              <li>Rahatsız etmeyen sunum.</li>
+            </ul>
+            <details open>
+              <summary>Acceptance Criteria <span class="hint">US-11.6</span></summary>
+              <div class="body">
+                <ul class="ac">
+                  <li>•	Önkoşul: En az 7 günlük kullanım var. Ne zaman kullanıcı “Akıllı Öneriler” ekranını açarsa, o zaman okuma/yorum için önerilen saatler gösterilir.</li>
+                  <li>•	Önkoşul: Onay şart. Ne zaman “Öneriyi Uygula” dersem, o zaman hatırlatıcı saatlerim önerilen şekilde güncellenir.</li>
+                  <li>•	Önkoşul: Reddetme. Ne zaman kullanıcı öneriyi reddederse, o zaman mevcut ayarlar korunur ve öneri zorlanmaz.</li>
+                  <li>•	Önkoşul: Önizleme. Ne zaman öneriler gösterilirse, o zaman bildirim önizlemesi de sunulur.</li>
+                </ul>
+              </div>
+            </details>
+          </div>
+
+          <div class="device">
+            <div class="bezel">
+              <div class="status"><span>07:32</span><span class="right"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span></div>
+              <div class="island"></div>
+              <div class="screen">
+                <div class="content">
+                  <div class="topbar">
+                    <div class="logoWrap">
+                      <img
+                        class="logoImg"
+                        src="assets/pst-coaching-logo.png"
+                        alt="PST Coaching"
+                        onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+                      />
+                      <div class="logoFallback" aria-hidden="true"></div>
+                      <div class="title">Öneriler</div>
+                    </div>
+                    <div class="ghost">Akıllı</div>
+                  </div>
+
+                  <div class="list">
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">Öneri</div>
+                          <div class="m">Okuma 20:30</div>
+                        </div>
+                        <span class="badge">Uygula</span>
+                      </div>
+                    </div>
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">Öneri</div>
+                          <div class="m">Yorum 21:45</div>
+                        </div>
+                        <span class="badge">Uygula</span>
+                      </div>
+                    </div>
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">Kontrol</div>
+                          <div class="m">Sessiz mod ile uyum</div>
+                        </div>
+                        <span class="badge">Ayarla</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="tabbar" role="navigation" aria-label="Tab bar">
+                    <div class="tabRow">
+                      <div class="tabItem">Ana Sayfa</div>
+                      <div class="tabItem">Keşfet</div>
+                      <div class="tabItem">Yolculuklarım</div>
+                      <div class="tabItem active">Profil</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="streak-save" class="section">
+          <div class="card">
+            <h2>07 — Seri Kurtarma</h2>
+            <div class="meta">
+              <span class="tag brand">EPIC 11</span><span class="tag brand">US US-11.7</span><span class="tag">Faz-1</span>
+            </div>
+            <table class="infoTable" aria-label="Ekran bilgileri">
+              <tr><th>Rol</th><td>Danışan</td></tr>
+              <tr><th>Segment</th><td>Bireysel / Aile / Grup</td></tr>
+              <tr><th>Plan</th><td>Bireysel / Aile / Grup</td></tr>
+              <tr><th>Navigasyon</th><td>Profil → Ayarlar → Hatırlatıcılar</td></tr>
+            </table>
+            <ul>
+              <li>Seri bozulunca nazik kurtarma opsiyonu.</li>
+              <li>Kural/limitler şeffaf.</li>
+              <li>Kullanım sonrası seri güncellenir.</li>
+            </ul>
+            <details open>
+              <summary>Acceptance Criteria <span class="hint">US-11.7</span></summary>
+              <div class="body">
+                <ul class="ac">
+                  <li>•	Önkoşul: Seri bozuldu. Ne zaman kullanıcı seri kurtarma ekranını açarsa, o zaman bozulan kural (örn. “23:59 teslim kaçırıldı”) net gösterilir.</li>
+                  <li>•	Önkoşul: Kullanım limiti var. Ne zaman seri kurtarma sunulursa, o zaman “ayda 1 kez” gibi limit ve etkisi (gün “eksik” işaretlenir) açıkça belirtilir.</li>
+                  <li>•	Önkoşul: Onay. Ne zaman “Seriyi Koru” dersem, o zaman seri korunur ve işlem kayıt altına alınır.</li>
+                  <li>•	Önkoşul: Vazgeçme. Ne zaman vazgeçersem, o zaman seri sıfırlanır ve kullanıcıya yeni hedef önerisi sunulur.</li>
+                </ul>
+              </div>
+            </details>
+          </div>
+
+          <div class="device">
+            <div class="bezel">
+              <div class="status"><span>07:32</span><span class="right"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span></div>
+              <div class="island"></div>
+              <div class="screen">
+                <div class="content">
+                  <div class="topbar">
+                    <div class="logoWrap">
+                      <img
+                        class="logoImg"
+                        src="assets/pst-coaching-logo.png"
+                        alt="PST Coaching"
+                        onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+                      />
+                      <div class="logoFallback" aria-hidden="true"></div>
+                      <div class="title">Seri Kurtarma</div>
+                    </div>
+                    <div class="ghost">Kural</div>
+                  </div>
+
+                  <div class="list">
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">Durum</div>
+                          <div class="m">Seri bozuldu</div>
+                        </div>
+                        <span class="badge">⚠️</span>
+                      </div>
+                    </div>
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">Kurtar</div>
+                          <div class="m">Kural/limit</div>
+                        </div>
+                        <span class="badge">Kullan</span>
+                      </div>
+                    </div>
+                    <div class="tile">
+                      <div class="row">
+                        <div>
+                          <div class="t">Geri bildirim</div>
+                          <div class="m">Seri güncellendi</div>
+                        </div>
+                        <span class="badge">✓</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="tabbar" role="navigation" aria-label="Tab bar">
+                    <div class="tabRow">
+                      <div class="tabItem">Ana Sayfa</div>
+                      <div class="tabItem">Keşfet</div>
+                      <div class="tabItem">Yolculuklarım</div>
+                      <div class="tabItem active">Profil</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>
