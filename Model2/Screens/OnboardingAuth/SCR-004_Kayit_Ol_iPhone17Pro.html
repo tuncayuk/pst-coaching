@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SCR-004 — Kayıt Ol (Spec, iPhone 17 Pro)</title>
+    <link rel="stylesheet" href="assets/styles.css" />
+  </head>
+  <body>
+    <div class="wrap">
+      <aside class="side">
+        <div class="brand">
+          <img class="logo" src="assets/pst-coaching-logo.png" alt="PST Coaching" />
+          <div style="min-width:0">
+            <h1>Onboarding &amp; Auth</h1>
+            <p class="sub">Spec pack • 2026-01-16 • <a href="index.html">Index</a></p>
+          </div>
+        </div>
+
+        <div class="meta">
+          <span class="tag brand">Route: <code>auth/register</code></span>
+          <span class="tag">Faz: 1</span>
+          <span class="tag warn">Kaynak: Model2/PST_Mobile_PRD.md → EPIC 1 → US-1.2</span>
+        </div>
+
+        <div class="nav">
+          <a class="" href="SCR-001_Dil_Secimi_iPhone17Pro.html"><span class="k">SCR-001</span> Dil Seçimi</a>
+<a class="" href="SCR-002_Karsilama_Giris_Kayit_iPhone17Pro.html"><span class="k">SCR-002</span> Karşılama (Giriş/Kayıt)</a>
+<a class="" href="SCR-003_Giris_iPhone17Pro.html"><span class="k">SCR-003</span> Giriş</a>
+<a class="active" href="SCR-004_Kayit_Ol_iPhone17Pro.html"><span class="k">SCR-004</span> Kayıt Ol</a>
+<a class="" href="SCR-005_OTP_Dogrulama_iPhone17Pro.html"><span class="k">SCR-005</span> OTP Doğrulama</a>
+<a class="" href="SCR-006_Sifremi_Unuttum_iPhone17Pro.html"><span class="k">SCR-006</span> Şifremi Unuttum</a>
+<a class="" href="SCR-007_Yeni_Sifre_iPhone17Pro.html"><span class="k">SCR-007</span> Yeni Şifre</a>
+        </div>
+      </aside>
+
+      <main class="main">
+        <div class="grid2">
+          <section class="card">
+            <h2>SCR-004 — Kayıt Ol</h2>
+            <div class="md"><p># SCR-004 — Kayıt Ol</p>
+<p><strong>Route:</strong> <code>auth/register</code></p>
+<p><strong>Faz:</strong> 1</p>
+<p><strong>Kaynak:</strong> <code>Model2/PST_Mobile_PRD.md</code> → EPIC 1 → US-1.2</p>
+<hr />
+<p>## Amaç</p>
+<p>Kullanıcının e-posta veya telefon numarası ile kayıt başlatmasını ve OTP doğrulama adımına geçmesini sağlamak.</p>
+<p>## İlgili User Story ve Kabul Kriterleri (PRD)</p>
+<p><strong>US-1.2 Kayıt Olma</strong></p>
+<p>- Geçerli format kontrolü yapılır</p>
+<p>- OTP doğrulama ile hesap oluşturulur</p>
+<p>- Yanlış kod girildiğinde kalan deneme gösterilir</p>
+<p>- Mevcut hesap kontrolü yapılır</p>
+<p>## UI Bileşenleri</p>
+<p>- E-posta/Telefon alanı</p>
+<p>- Birincil CTA: <code>Devam Et</code> (OTP’ye geç)</p>
+<p>- Link: <code>Zaten hesabın var mı? Giriş Yap</code> → <code>SCR-003</code></p>
+<p>## Validasyon</p>
+<p>- E-posta/telefon format kontrolü (client-side)</p>
+<p>- Backend “mevcut hesap” kontrolü sonucu:</p>
+<p>- Mevcutsa: kullanıcıyı <code>SCR-003</code>’e yönlendiren mesaj + CTA.</p>
+<p>## Navigasyon</p>
+<p>- <code>Devam Et</code> → <code>SCR-005</code> (<code>auth/otp</code>) <em>(kayıt doğrulaması)</em></p>
+<p>## Hata Durumları</p>
+<p>- Geçersiz format: inline hata</p>
+<p>- Ağ/servis hatası: tekrar dene</p>
+<p>## Analitik (Öneri)</p>
+<p>- <code>register_started</code></p>
+<p>- <code>register_identifier_submitted</code> { <code>type</code>:(<code>email</code>|<code>phone</code>) }</p>
+<p>## Erişilebilirlik</p>
+<p>- OTP’ye geçişte ekran okuyucu odağı yeni ekrana taşınır.</p></div>
+          </section>
+
+          <section class="card phoneWrap">
+            <h2>Mock Preview</h2>
+            <div class="phone">
+              <div class="screen">
+                <div class="statusbar">
+                  <div>09:41</div>
+                  <div>SCR-004</div>
+                </div>
+                <div class="content">
+                  <div class="tile">
+                    <div class="t">Kayıt Ol</div>
+                    <div class="d">Route: <code>auth/register</code></div>
+                  </div>
+                  <div class="tile"><div class="t">Spec Preview</div><div class="d">Bu ekran için UI bileşenleri bölümü bulunamadı.</div></div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>
