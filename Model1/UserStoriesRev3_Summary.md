@@ -9,6 +9,19 @@
 
 `Model1/UserStoriesRev3.md`; mobil uygulama için **EPIC 1–21** backlog’unu fazlara ayırır ve her user story için **Role, Description, Acceptance Criteria, Navigation Steps** tanımlar.
 
+## 1.1) İçerik Modeli (Kısa)
+
+Uygulama içeriğinin temeli:
+
+- **Hazır Yolculuklar**: PST Koçlarının oluşturduğu, **modül + atölye + e‑kitap** parçalarından oluşan kürasyonlu programlar.
+- **Atölyeler**: Okuma + uygulama adımları; süreç **tamamen uygulama içinde** tamamlanır (harici doküman yok).
+- **Modüller**: Birden çok **paketten** oluşur; okuma/uygulama adımları app içinde yürür.
+- **e‑Kitaplar**: PST kitapları; okuyucu, kaldığın yer, not/vurgu ve (gerekirse) offline erişim app içinde sağlanır.
+
+AI kuralı:
+
+- **AI cevapları ve önerileri** yalnızca sistemdeki içeriklere dayanır; mümkünse **kaynak gösterir**, içerik yoksa “bulunamadı” diyerek doğru içeriğe yönlendirir.
+
 ---
 
 ## 2) Bilgi Mimarisi (Tab Bar — MVP)
@@ -16,7 +29,7 @@
 `Model1/UserStoriesRev3.md` içindeki MVP tab bar yapısı:
 
 - **Ana Sayfa**: Bugün kartı, aktif yolculuk özeti, hızlı devam, öneriler
-- **Keşfet**: Yolculuklar, Videolar, Oyunlar, Favoriler, Asistan (AI/Gated)
+- **Keşfet**: Yolculuklar, Atölyeler, e‑Kitaplar, Videolar, Oyunlar, Favoriler, Asistan (AI/Gated)
 - **Yolculuklarım**: Aktif/Pasif yolculuklar, modüller, kilitli ilerleme, teslim & yorum
 - **Topluluk**: Birlikte Okuma, Kitap Kulübü, Grup akışları (Faz-2’de genişler)
 - **Profil**: Hesap, Abonelik & Add-on’lar, Kişi Yönetimi (Aile/Grup), Ayarlar, Erişilebilirlik
@@ -89,6 +102,7 @@ Bu liste; Faz-1 EPIC’lerini “uçtan uca çalışıyor” seviyesinde doğrul
 - Onboarding/Login akışları tamam; oturum güvenliği + abonelik/rol senkronu tutarlı.
 - Abonelik/paywall entegre; erişim kısıtı açıklaması net; “ödedim ama açılmadı” tipi riskler için geri yükleme/entitlement mantığı net.
 - Keşfet → Yolculuk detayı → başlat → Yolculuklarım → gün/modül → okuma + yorum/teslim akışı uçtan uca çalışıyor.
+- Keşfet → Atölyeler → oturum (okuma+uygulama) ve Keşfet → e‑Kitaplar → okuyucu akışları “harici doküman yok” ilkesine uyuyor.
 - Kilitli ilerleme davranışı (önkoşul/08:00/23:59) tüm ekranlarda tutarlı; kullanıcıya sürpriz yok.
 - Hatırlatıcılar + alışkanlık zinciri temel işlevleri çalışıyor; bildirim izinleri doğru yönetiliyor.
 - Favoriler/Arşiv ve Erişilebilirlik temel beklentileri karşılıyor.
@@ -111,4 +125,3 @@ Bu doküman içinde “ürün kararına göre” olarak işaretlenen veya kural�
   - `Model1/UserStoriesRev3.md` (tek kaynak)
   - `Model1/UserStoriesRev3_Summary.md` (bu özet)
 - Toplantı formatı (öneri): 45 dk okuma + 30 dk soru/karar (Açık Noktalar üzerinden), ardından kararları dokümana işleme.
-

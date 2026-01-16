@@ -28,6 +28,14 @@ Bu doküman yalnızca `Model1/UserStoriesRev3.md` ve `Model1/UserStoriesRev3_Sum
   - Katalog (liste + arama/filtre/sıralama)
   - Yolculuk Detayı
   - Yolculuğu Başlat (hedef + kurallar + hatırlatıcı)
+- Atölyeler
+  - Atölye Kataloğu (liste + arama/filtre)
+  - Atölye Detayı (okuma + uygulama adımları)
+  - Atölye Oturumu (app içi okuma + uygulama)
+- e‑Kitaplar
+  - Kitap Kütüphanesi (liste + kategori + arama)
+  - Kitap Detayı (özet + bölüm listesi + kaldığın yer + indir)
+  - Kitap Okuyucu (TOC + arama + not/vurgu + kaldığın yer)
 - Favoriler
   - Favoriler / Favori Detayı / Koleksiyonlar / Paylaş-Export
 - Videolar (Faz-2)
@@ -35,7 +43,7 @@ Bu doküman yalnızca `Model1/UserStoriesRev3.md` ve `Model1/UserStoriesRev3_Sum
 - Oyunlar (Faz-2)
   - Oyunlar Ana / Oyun Detayı / Oyun Oturumu / Sonuç-Ödül / Çocuk Profili / Veli Paneli
 - AI (Add-on) (Faz-2)
-  - AI Sohbet / Günlük İçerik / Planlama / AI Analiz / Gizlilik & Kontrol
+  - AI Sohbet / Günlük Derleme (katalogdan) / Planlama (otomatik seçim) / AI Analiz / Gizlilik & Kontrol
 - Asistan (Faz-2)
   - Başlat / Anket / Duygu Kontrolü / Öneriler-Karşılaştırma / Plan Oluştur / Plan Güncelle
 
@@ -121,6 +129,21 @@ Bu doküman yalnızca `Model1/UserStoriesRev3.md` ve `Model1/UserStoriesRev3_Sum
 - Kurallar: plan erişimi yoksa paywall; “08:00 yeni gün / 23:59 teslim” kuralı başlatmada net görünür.
 - US: EPIC 4 (US-4.1–US-4.6) + EPIC 2 (US-2.6)
 
+### 10A) Atölye keşfi → detay → oturum (app içi okuma + uygulama)
+- Adımlar: Keşfet -> Atölyeler → Atölye Kataloğu → Atölye Detayı → Atölye Oturumu → Tamamla
+- Kurallar: harici doküman yok; uygulama adımlarında taslak autosave; erişim yoksa paywall ve geri dönüşte bağlam korunur.
+- US: EPIC 4 (US-4.7–US-4.8) + EPIC 5 (US-5.9) + EPIC 3 (US-3.1–US-3.2)
+
+### 10B) e‑Kitap keşfi → kitap detayı → okuyucu (kaldığın yer + not/vurgu)
+- Adımlar: Keşfet -> e‑Kitaplar → Kitap Kütüphanesi → Kitap Detayı → Okuyucu → (Not/Vurgu → Favoriler)
+- Kurallar: okuma tamamen app içinde; TOC/arama/kaldığın yer; offline için indir/önbellek; not/vurgu Favoriler’de bulunur.
+- US: EPIC 4 (US-4.9–US-4.10) + EPIC 5 (US-5.8) + EPIC 8 (US-8.1–US-8.2)
+
+### 10C) AI cevapları: yalnızca sistem içeriği + kaynak gösterimi
+- Adımlar: (Bağlamlı içerik veya genel) → Keşfet -> AI → Soru sor → Kaynaklar (Kaynağa Git)
+- Kurallar: AI sadece sistem içeriğine dayanır; kaynak gösterir; içerik yoksa “bulunamadı” diyerek ilgili kütüphaneye yönlendirir.
+- US: EPIC 10 (US-10.1–US-10.4)
+
 ### 11) Günlük döngü: okuma → not/vurgu → yorum taslağı
 - Adımlar: Ana Sayfa (“Devam Et”) → Yolculuklarım -> Gün/Modül → okuma/sesli okuma → vurgu/not → yorum yazma (taslak)
 - Kurallar: offline cache; erişilebilir okuma; taslak kaydı.
@@ -156,9 +179,9 @@ Bu doküman yalnızca `Model1/UserStoriesRev3.md` ve `Model1/UserStoriesRev3_Sum
 - Kurallar: ayarlar anında uygulanır; offline saklama; screen reader etiket standardı.
 - US: EPIC 9 (US-9.1–US-9.7) + EPIC 16 (US-16.1–US-16.7)
 
-### 18) (Faz-2) AI: sohbet → içerik üret → planla → analiz → gizlilik
-- Adımlar: Keşfet -> AI → AI Sohbet / Günlük İçerik / Planlama / AI Analiz / Gizlilik
-- Kurallar: add-on kapısı; veri yetersizliği mesajı; “indir/sil/devre dışı” kontrolleri.
+### 18) (Faz-2) AI: sohbet → derleme (katalogdan) → planla (otomatik seçim) → analiz → gizlilik
+- Adımlar: Keşfet -> AI → AI Sohbet / Günlük Derleme / Planlama / AI Analiz / Gizlilik
+- Kurallar: add-on kapısı; AI yalnızca sistem içeriğine dayanır ve kaynak gösterir; veri yetersizliği mesajı; “indir/sil/devre dışı” kontrolleri.
 - US: EPIC 10 (US-10.1–US-10.5)
 
 ### 19) (Faz-2) Videolar: keşfet → izle → altyazı/transkript → indir
@@ -255,6 +278,22 @@ Bu doküman yalnızca `Model1/UserStoriesRev3.md` ve `Model1/UserStoriesRev3_Sum
 | Plan oluşturma (hedef + hatırlatıcı) | Faz-2 | Asistan | EPIC 20: US-20.5 |
 | AI gerekçe (AI Paket) | Faz-2 | Asistan | EPIC 20: US-20.6 |
 | Plan güncelle / yeniden öneri | Faz-2 | Asistan | EPIC 20: US-20.7 |
+
+#### 3.3A Keşfet: Atölyeler (app içi okuma + uygulama)
+
+| Screen | Faz | Birincil erişim | US |
+| --- | --- | --- | --- |
+| Atölye kataloğu (liste/arama/filtre) | Faz-1 | Keşfet -> Atölyeler | EPIC 4: US-4.7 |
+| Atölye detayı (yapı + kazanım + CTA) | Faz-1 | Keşfet -> Atölyeler | EPIC 4: US-4.8 |
+| Atölye oturumu (okuma + uygulama adımları) | Faz-1 | Atölye detayı CTA | EPIC 5: US-5.9 |
+
+#### 3.3B Keşfet: e‑Kitaplar (tamamen app içi okuyucu)
+
+| Screen | Faz | Birincil erişim | US |
+| --- | --- | --- | --- |
+| Kitap kütüphanesi (liste/kategori/arama) | Faz-1 | Keşfet -> e‑Kitaplar | EPIC 4: US-4.9 |
+| Kitap detayı (özet + TOC + kaldığın yer + indir) | Faz-1 | Keşfet -> e‑Kitaplar | EPIC 4: US-4.10 |
+| e‑Kitap okuyucu (TOC + arama + not/vurgu + offline) | Faz-1 | Kitap detayı CTA | EPIC 5: US-5.8; EPIC 8: US-8.1–8.2 |
 
 ### 3.4 Yolculuklarım: Gün/Modül & Modüller (kilitli ilerleme)
 

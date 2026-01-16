@@ -1,6 +1,6 @@
 # 3.3 Keşfet: Yolculuklar & Asistan — Production Ready Ekran Spesifikasyonu
 
-Kaynak: `Model1/UserStoriesRev3.md` (EPIC 4: US-4.1–US-4.6, EPIC 20: US-20.1–US-20.7).  
+Kaynak: `Model1/UserStoriesRev3.md` (bu paket: EPIC 4: US-4.1–US-4.6, EPIC 20: US-20.1–US-20.7).  
 Hedef cihaz: iPhone 17 Pro (tasarım referansı: 393×852 pt, Dynamic Island, safe area üst/alt).  
 Tasarım dosyası: `Model1/Designs/Kesfet_Yolculuklar_Asistan_iPhone17Pro.html`
 
@@ -28,6 +28,7 @@ Logo dosyasını `Model1/Designs/assets/pst-coaching-logo.png` olarak eklerseniz
 - Erişilebilirlik: VoiceOver etiketleri, odak sırası, dokunma hedefleri, kontrast, Dynamic Type.
 - Arama/filtre: debounce (UI tarafı), sonuç sayısı/boş durum metni, filtre reset.
 - Navigasyon: Keşfet tabı altında “Yolculuklar” ve “Asistan” sekmeleri; tüm derin linkler geri stack’te doğru.
+- Not: `Model1/UserStoriesRev3.md` içinde Keşfet ayrıca **Atölyeler** ve **e‑Kitaplar** alanlarını da kapsar (ayrı ekran paketi olarak ele alınır).
 
 ---
 
@@ -51,4 +52,3 @@ Logo dosyasını `Model1/Designs/assets/pst-coaching-logo.png` olarak eklerseniz
 - **Rol**: Danışan (Genel Kullanıcı)
 - **Segment**: Bireysel / Aile / Grup
 - **Plan**: Bireysel / Aile / Grup (AI gerekçe ekranı AI Paket ile gated)
-
