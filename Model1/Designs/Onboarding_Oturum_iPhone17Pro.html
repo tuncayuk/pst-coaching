@@ -254,6 +254,39 @@
         margin-top: 6px;
       }
 
+      .infoTable {
+        margin: 12px 0 0;
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        overflow: hidden;
+        border-radius: 16px;
+        border: 1px solid var(--stroke);
+        background: rgba(255, 255, 255, 0.86);
+        box-shadow: var(--shadow-sm);
+      }
+      .infoTable th,
+      .infoTable td {
+        padding: 10px 12px;
+        font-size: 12px;
+        vertical-align: top;
+      }
+      .infoTable th {
+        width: 120px;
+        text-align: left;
+        color: rgba(13, 18, 38, 0.84);
+        font-weight: 900;
+        border-right: 1px solid rgba(230, 232, 240, 0.95);
+      }
+      .infoTable td {
+        color: rgba(13, 18, 38, 0.78);
+        font-weight: 700;
+      }
+      .infoTable tr + tr th,
+      .infoTable tr + tr td {
+        border-top: 1px solid rgba(230, 232, 240, 0.95);
+      }
+
       details {
         margin-top: 12px;
         border-radius: 16px;
@@ -714,6 +747,13 @@
               <span class="tag brand">US-1.7</span>
               <span class="tag warn">Loading + offline</span>
             </div>
+            <table class="infoTable" aria-label="Ekran bilgileri">
+              <tr><th>Rol</th><td>Genel Kullanıcı (giriş öncesi)</td></tr>
+              <tr><th>Segment</th><td>Bireysel / Aile / Grup (danışanlar)</td></tr>
+              <tr><th>Plan</th><td>Bireysel / Aile / Grup</td></tr>
+              <tr><th>Faz</th><td>Faz-1</td></tr>
+              <tr><th>Navigasyon</th><td>Uygulama Açılışı → Oturum Kontrolü (Site Map: Onboarding / Hesap)</td></tr>
+            </table>
             <ul>
               <li>Hızlı açılış: kullanıcı beklerken “ne oluyor”u tek cümlede anlatır.</li>
               <li>Oturum geçersizse güvenli yönlendirme (US-1.6).</li>
@@ -788,6 +828,13 @@
               <span class="tag brand">US-1.1</span>
               <span class="tag warn">Offline destekli</span>
             </div>
+            <table class="infoTable" aria-label="Ekran bilgileri">
+              <tr><th>Rol</th><td>Genel Kullanıcı</td></tr>
+              <tr><th>Segment</th><td>Bireysel / Aile / Grup (danışanlar)</td></tr>
+              <tr><th>Plan</th><td>Bireysel / Aile / Grup</td></tr>
+              <tr><th>Faz</th><td>Faz-1</td></tr>
+              <tr><th>Navigasyon</th><td>Onboarding → Dil Seçimi</td></tr>
+            </table>
             <ul>
               <li>TR/EN/ES listesi; seçim profile kaydedilir, offline ise yerelde saklanır.</li>
               <li>CTA yalnızca seçim yapılınca aktif.</li>
@@ -864,6 +911,13 @@
               <span class="tag brand">US-1.2</span>
               <span class="tag brand">US-1.3</span>
             </div>
+            <table class="infoTable" aria-label="Ekran bilgileri">
+              <tr><th>Rol</th><td>Genel Kullanıcı</td></tr>
+              <tr><th>Segment</th><td>Bireysel / Aile / Grup (danışanlar)</td></tr>
+              <tr><th>Plan</th><td>Bireysel / Aile / Grup</td></tr>
+              <tr><th>Faz</th><td>Faz-1</td></tr>
+              <tr><th>Navigasyon</th><td>Onboarding → (Giriş Yap / Kayıt Ol seçim ekranı)</td></tr>
+            </table>
             <ul>
               <li>Giriş ve kayıt CTA’ları net ve simetrik.</li>
               <li>Güvenlik ve gizlilik beklentisi en başta belirtilir.</li>
@@ -926,6 +980,13 @@
               <span class="tag warn">Validasyon</span>
               <span class="tag danger">Mevcut hesap</span>
             </div>
+            <table class="infoTable" aria-label="Ekran bilgileri">
+              <tr><th>Rol</th><td>Genel Kullanıcı</td></tr>
+              <tr><th>Segment</th><td>Bireysel / Aile / Grup (danışanlar)</td></tr>
+              <tr><th>Plan</th><td>Bireysel / Aile / Grup</td></tr>
+              <tr><th>Faz</th><td>Faz-1</td></tr>
+              <tr><th>Navigasyon</th><td>Onboarding → Kayıt Ol</td></tr>
+            </table>
             <ul>
               <li>Geçerli formatta “Devam” aktif; geçersizde alan altı hata.</li>
               <li>Mevcut hesap yakalanınca “Bu hesap zaten var → Giriş yap”.</li>
@@ -990,6 +1051,13 @@
               <span class="tag warn">Kalan deneme</span>
               <span class="tag danger">Cooldown</span>
             </div>
+            <table class="infoTable" aria-label="Ekran bilgileri">
+              <tr><th>Rol</th><td>Genel Kullanıcı</td></tr>
+              <tr><th>Segment</th><td>Bireysel / Aile / Grup (danışanlar)</td></tr>
+              <tr><th>Plan</th><td>Bireysel / Aile / Grup</td></tr>
+              <tr><th>Faz</th><td>Faz-1</td></tr>
+              <tr><th>Navigasyon</th><td>Onboarding → Kayıt Ol → OTP Doğrulama</td></tr>
+            </table>
             <ul>
               <li>Yanlış kod: “Kod hatalı” + kalan deneme sayısı.</li>
               <li>Süresi doldu: “Kodun süresi doldu” + yeniden gönder.</li>
@@ -1057,6 +1125,13 @@
               <span class="tag warn">Offline</span>
               <span class="tag danger">Geçici kilit</span>
             </div>
+            <table class="infoTable" aria-label="Ekran bilgileri">
+              <tr><th>Rol</th><td>Genel Kullanıcı</td></tr>
+              <tr><th>Segment</th><td>Bireysel / Aile / Grup (danışanlar)</td></tr>
+              <tr><th>Plan</th><td>Bireysel / Aile / Grup</td></tr>
+              <tr><th>Faz</th><td>Faz-1</td></tr>
+              <tr><th>Navigasyon</th><td>Onboarding → Giriş Yap</td></tr>
+            </table>
             <ul>
               <li>Hatalı girişte genel hata (hesap var/yok sızdırmaz).</li>
               <li>Offline: net mesaj + tekrar dene.</li>
@@ -1125,6 +1200,13 @@
               <span class="tag brand">US-1.4</span>
               <span class="tag warn">Rate-limit</span>
             </div>
+            <table class="infoTable" aria-label="Ekran bilgileri">
+              <tr><th>Rol</th><td>Genel Kullanıcı</td></tr>
+              <tr><th>Segment</th><td>Bireysel / Aile / Grup (danışanlar)</td></tr>
+              <tr><th>Plan</th><td>Bireysel / Aile / Grup</td></tr>
+              <tr><th>Faz</th><td>Faz-1</td></tr>
+              <tr><th>Navigasyon</th><td>Onboarding → Şifremi Unuttum</td></tr>
+            </table>
             <ul>
               <li>Giriş ekranından ulaşılır; e‑posta/telefon doğrulama akışını başlatır.</li>
               <li>Rate-limit olduğunda bekleme süresi net gösterilir.</li>
@@ -1182,6 +1264,13 @@
               <span class="tag brand">US-1.4</span>
               <span class="tag warn">Şifre politikası</span>
             </div>
+            <table class="infoTable" aria-label="Ekran bilgileri">
+              <tr><th>Rol</th><td>Genel Kullanıcı</td></tr>
+              <tr><th>Segment</th><td>Bireysel / Aile / Grup (danışanlar)</td></tr>
+              <tr><th>Plan</th><td>Bireysel / Aile / Grup</td></tr>
+              <tr><th>Faz</th><td>Faz-1</td></tr>
+              <tr><th>Navigasyon</th><td>Onboarding → Şifremi Unuttum → Doğrulama → Yeni Şifre</td></tr>
+            </table>
             <ul>
               <li>Politikaya uygun şifre girilince “Kaydet” aktif olur.</li>
               <li>Başarı mesajı sonrası giriş ekranına dönüş.</li>
@@ -1244,6 +1333,13 @@
               <span class="tag brand">US-1.6</span>
               <span class="tag warn">Korumalı ekran geçidi</span>
             </div>
+            <table class="infoTable" aria-label="Ekran bilgileri">
+              <tr><th>Rol</th><td>Genel Kullanıcı</td></tr>
+              <tr><th>Segment</th><td>Bireysel / Aile / Grup (danışanlar)</td></tr>
+              <tr><th>Plan</th><td>Bireysel / Aile / Grup</td></tr>
+              <tr><th>Faz</th><td>Faz-1</td></tr>
+              <tr><th>Navigasyon</th><td>Korumalı ekran → Oturum geçersiz → Onboarding → Giriş Yap</td></tr>
+            </table>
             <ul>
               <li>Net mesaj + tek güçlü CTA.</li>
               <li>Güvenlik dili suçlayıcı değil; açıklayıcı.</li>
@@ -1305,6 +1401,13 @@
               <span class="tag brand">US-1.5</span>
               <span class="tag warn">Token temizliği</span>
             </div>
+            <table class="infoTable" aria-label="Ekran bilgileri">
+              <tr><th>Rol</th><td>Genel Kullanıcı</td></tr>
+              <tr><th>Segment</th><td>Bireysel / Aile / Grup (danışanlar)</td></tr>
+              <tr><th>Plan</th><td>Bireysel / Aile / Grup</td></tr>
+              <tr><th>Faz</th><td>Faz-1</td></tr>
+              <tr><th>Navigasyon</th><td>Profil → Hesap → Çıkış Yap (sheet)</td></tr>
+            </table>
             <ul>
               <li>Çıkış eylemi bilinçli onay ister; hassas veri temizliği açıkça yazılır.</li>
               <li>Onay sonrası giriş ekranına dönüş (korumalı alanlara erişim yok).</li>
@@ -1370,4 +1473,3 @@
     </div>
   </body>
 </html>
-
