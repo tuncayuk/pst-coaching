@@ -77,7 +77,7 @@ Bu doküman yalnızca `Model1/UserStoriesRev3.md` ve `Model1/UserStoriesRev3_Sum
 
 ---
 
-## 2.1) Tüm Kritik User Flow’lar (Faz-1 + Faz-2)
+## 2.1) Tüm User Flow’lar (Faz-1 + Faz-2)
 
 ### 1) İlk açılış: oturum kontrolü + dil
 - Adımlar: Splash/Oturum kontrolü → Onboarding -> Dil Seçimi → (gerekirse) Onboarding -> Giriş/Kayıt → Ana Sayfa
