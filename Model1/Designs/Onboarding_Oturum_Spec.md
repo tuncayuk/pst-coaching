@@ -3,6 +3,23 @@
 Kaynak: `Model1/UserStoriesRev3.md` (EPIC 1: US-1.1–US-1.7).  
 Hedef cihaz: iPhone 17 Pro (tasarım referansı: 393×852 pt, Dynamic Island, safe area üst/alt).  
 
+## Renk paleti (Light Mode)
+
+Bu palet, paylaşılan logo görseli baz alınarak **yaklaşık** çıkarılmıştır (workspace içinde logo dosyası olmadığı için piksellerden kesin örnekleme yapamadım).
+
+- **Primary (Navy)**: `#1E2A78` (başlıklar, primary CTA metin/ikon)
+- **Accent (Teal)**: `#0FA3B1` (vurgular, link, focus ring)
+- **Highlight (Gold)**: `#F2C14E` (kısa rozet/uyarı vurgusu)
+- **Background**: `#F7F8FB`
+- **Surface**: `#FFFFFF`
+- **Stroke**: `#E6E8F0`
+- **Text**: `#0D1226`
+- **Muted text**: `#5B647A`
+- **Danger**: `#D92D20`
+- **Success**: `#039855`
+
+Logo dosyasını `Model1/Designs/assets/pst-coaching-logo.png` olarak eklerseniz, bu paleti logodan daha doğru (pipet) değerlerle güncelleyebilirim.
+
 ## Ortak “Production Ready” standartları (tüm ekranlar)
 
 - Durumlar: loading/skeleton, empty (varsa), error + retry, offline bilgilendirme.
@@ -172,4 +189,3 @@ Hedef cihaz: iPhone 17 Pro (tasarım referansı: 393×852 pt, Dynamic Island, sa
 - Sheet başlığı + kısa açıklama
 - CTA: “Çıkış Yap”
 - CTA: “Vazgeç”
-
