@@ -322,6 +322,22 @@
       .tileTitle { font-weight: 950; font-size: 12px; }
       .tileMeta { margin-top: 3px; font-size: 11px; color: var(--muted); }
       .tileRight { color: rgba(13, 18, 38, 0.45); font-weight: 950; }
+      .tileBadge { margin-left: auto; }
+      .b {
+        display: inline-flex;
+        align-items: center;
+        height: 22px;
+        padding: 0 10px;
+        border-radius: 999px;
+        font-weight: 950;
+        font-size: 11px;
+        border: 1px solid rgba(230, 232, 240, 0.95);
+        background: rgba(255, 255, 255, 0.92);
+        color: rgba(13, 18, 38, 0.86);
+      }
+      .b.info { background: rgba(15, 163, 177, 0.10); border-color: rgba(15, 163, 177, 0.22); }
+      .b.warn { background: rgba(242, 193, 78, 0.14); border-color: rgba(242, 193, 78, 0.28); }
+      .b.ok { background: rgba(3, 152, 85, 0.10); border-color: rgba(3, 152, 85, 0.22); }
       .field { margin-top: 10px; }
       .field label { display: block; font-size: 11px; font-weight: 900; color: rgba(13, 18, 38, 0.78); margin-bottom: 6px; }
       .input {
@@ -362,6 +378,111 @@
       }
       .heroTitle { font-weight: 950; font-size: 18px; }
       .heroSub { margin-top: 6px; color: var(--muted); font-size: 12px; }
+      .stateRow {
+        margin-top: 10px;
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      .search {
+        height: 40px;
+        border-radius: 16px;
+        border: 1px solid rgba(230, 232, 240, 0.95);
+        background: rgba(255, 255, 255, 0.92);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 0 12px;
+      }
+      .searchIcon { color: rgba(13, 18, 38, 0.45); font-weight: 950; }
+      .searchText { color: rgba(13, 18, 38, 0.62); font-weight: 900; }
+      .chips {
+        margin-top: 10px;
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .chip {
+        height: 28px;
+        display: inline-flex;
+        align-items: center;
+        padding: 0 10px;
+        border-radius: 999px;
+        border: 1px solid rgba(230, 232, 240, 0.95);
+        background: rgba(255, 255, 255, 0.92);
+        color: rgba(13, 18, 38, 0.86);
+        font-size: 11px;
+        font-weight: 900;
+      }
+      .kpis {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 10px;
+      }
+      .kpi {
+        border-radius: 16px;
+        border: 1px solid rgba(230, 232, 240, 0.95);
+        background: rgba(255, 255, 255, 0.92);
+        padding: 10px;
+      }
+      .kpiV { font-weight: 950; font-size: 14px; }
+      .kpiK { margin-top: 3px; color: var(--muted); font-size: 11px; font-weight: 900; }
+      .chart {
+        margin-top: 10px;
+        height: 110px;
+        border-radius: 16px;
+        border: 1px dashed rgba(30, 42, 120, 0.28);
+        background: linear-gradient(90deg, rgba(30, 42, 120, 0.08), rgba(15, 163, 177, 0.08));
+      }
+      .playerFrame {
+        height: 160px;
+        border-radius: 18px;
+        background: radial-gradient(600px 280px at 30% 0%, rgba(15, 163, 177, 0.22), transparent 55%),
+          radial-gradient(600px 280px at 70% 10%, rgba(30, 42, 120, 0.18), transparent 55%),
+          linear-gradient(180deg, rgba(13, 18, 38, 0.86), rgba(13, 18, 38, 0.72));
+        border: 1px solid rgba(230, 232, 240, 0.18);
+        display: grid;
+        place-items: center;
+        color: #fff;
+      }
+      .playerPlay {
+        width: 56px;
+        height: 56px;
+        border-radius: 999px;
+        display: grid;
+        place-items: center;
+        background: rgba(255, 255, 255, 0.14);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        font-weight: 950;
+      }
+      .playerRow {
+        margin-top: 10px;
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .checklist {
+        margin-top: 10px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .check {
+        display: grid;
+        grid-template-columns: 34px 1fr;
+        gap: 10px;
+        align-items: center;
+        padding: 10px;
+        border-radius: 16px;
+        border: 1px solid rgba(230, 232, 240, 0.95);
+        background: rgba(255, 255, 255, 0.92);
+      }
+      .checkT {
+        font-weight: 900;
+        font-size: 12px;
+        color: rgba(13, 18, 38, 0.86);
+      }
 
       /* Info panel */
       .info {
@@ -452,8 +573,8 @@
                   <div class="deviceBody">
                     
         <div class="card">
-          <div class="h2">Bu özellik plan gerektirir</div>
-          <div class="muted">Neden kilitli olduğunu net şekilde açıklarız.</div>
+          <div class="h2">Kilitli</div>
+          <div class="muted">Bu özellik plan gerektirir. Neden kilitli olduğunu tek cümlede açıklarız.</div>
         </div>
         <div class="card">
           
@@ -462,17 +583,20 @@
             <div class="tileTitle">Planları karşılaştır</div>
             <div class="tileMeta">Bireysel • Aile • Grup</div>
           </div>
+          <div class="tileBadge"><span class="b info">Şeffaf</span></div>
           <div class="tileRight">›</div>
         </div>
           
         <div class="tile">
           <div class="tileText">
-            <div class="tileTitle">Add-on’lar</div>
-            <div class="tileMeta">AI / Koçluk vb.</div>
+            <div class="tileTitle">Satın alımları geri yükle</div>
+            <div class="tileMeta">Ödedim ama açılmadı</div>
           </div>
+          
           <div class="tileRight">›</div>
         </div>
         </div>
+        <div class="stateRow"><span class="b info">Loading</span><span class="b warn">Error+Retry</span></div>
         <div class="row"><button class="btn primary" data-go="UF8-S2-plan-secimi">Plan Seç</button></div>
                   </div>
 
@@ -586,11 +710,18 @@
         </div>
         <div class="card">
           
+        <div class="search">
+          <div class="searchIcon">⌕</div>
+          <div class="searchText">Plan ara / karşılaştır</div>
+        </div>
+          <div class="chips"><span class="chip">Bireysel</span><span class="chip">Aile</span><span class="chip">Grup</span><span class="chip">Öğrenci %50</span></div>
+          
         <div class="tile">
           <div class="tileText">
             <div class="tileTitle">Bireysel</div>
             <div class="tileMeta">1 kişi • Core içerikler</div>
           </div>
+          <div class="tileBadge"><span class="b info">Popüler</span></div>
           <div class="tileRight">Seç</div>
         </div>
           
@@ -599,6 +730,7 @@
             <div class="tileTitle">Aile</div>
             <div class="tileMeta">5 kişi • Seat yönetimi</div>
           </div>
+          
           <div class="tileRight">Seç</div>
         </div>
           
@@ -607,9 +739,11 @@
             <div class="tileTitle">Grup</div>
             <div class="tileMeta">10 kişi • Grup yönetimi</div>
           </div>
+          
           <div class="tileRight">Seç</div>
         </div>
         </div>
+        <div class="stateRow"><span class="b info">Loading</span><span class="b warn">Error+Retry</span></div>
         <div class="row"><button class="btn" data-go="UF8-S1-paywall">Geri</button><button class="btn primary" data-go="UF8-S3-satin-alma">Devam Et</button></div>
                   </div>
 
@@ -719,7 +853,7 @@
                     
         <div class="card">
           <div class="h2">Satın Alma</div>
-          <div class="muted">Erişim doğrulanıyor…</div>
+          <div class="muted">Erişim doğrulanıyor… (gerekirse “doğrulanıyor” durumu gösterilir)</div>
         </div>
         <div class="card">
           
@@ -728,6 +862,16 @@
             <div class="tileTitle">Seçili Plan</div>
             <div class="tileMeta">Aile • Aylık</div>
           </div>
+          
+          <div class="tileRight"></div>
+        </div>
+          
+        <div class="tile">
+          <div class="tileText">
+            <div class="tileTitle">Entitlement</div>
+            <div class="tileMeta">Server-side doğrulama</div>
+          </div>
+          
           <div class="tileRight"></div>
         </div>
           
@@ -736,9 +880,11 @@
             <div class="tileTitle">Toplam</div>
             <div class="tileMeta">₺XXX,XX</div>
           </div>
+          
           <div class="tileRight"></div>
         </div>
         </div>
+        <div class="stateRow"><span class="b info">Loading</span><span class="b warn">Error+Retry</span></div>
         <div class="row"><button class="btn" data-go="UF8-S2-plan-secimi">Geri</button><button class="btn primary" data-go="UF8-S4-erisim-acildi">Satın Al</button></div>
                   </div>
 
@@ -850,6 +996,10 @@
           <div class="h2">Erişim Aktif</div>
           <div class="muted">Planın doğrulandı. Devam edebilirsin.</div>
         </div>
+        <div class="card">
+          <div class="kpis"><div class="kpi"><div class="kpiV">Aktif</div><div class="kpiK">Durum</div></div><div class="kpi"><div class="kpiV">Plan Sahibi</div><div class="kpiK">Rol</div></div><div class="kpi"><div class="kpiV">—</div><div class="kpiK">Koltuk</div></div></div>
+        </div>
+        <div class="stateRow"><span class="b info">Loading</span><span class="b warn">Error+Retry</span></div>
         <div class="row"><button class="btn primary" data-go="UF8-S5-geri-donus-ana-sayfa-kesfet">Ana Sayfa</button><button class="btn" data-go="UF8-S3-satin-alma">Geri</button></div>
                   </div>
 
@@ -960,26 +1110,37 @@
         <div class="card">
           <div class="h2">geri dönüş (Ana Sayfa/Keşfet)</div>
           <div class="muted">Paywall → plan seçimi → satın alma → erişim aktivasyonu</div>
+          <div class="stateRow"><span class="b info">Loading</span><span class="b warn">Error+Retry</span></div>
         </div>
-        <div class="card">
-          
+<div class='card'>
         <div class="tile">
           <div class="tileText">
-            <div class="tileTitle">Örnek öğe</div>
-            <div class="tileMeta">Liste / Detay / Aksiyon</div>
+            <div class="tileTitle">geri dönüş (Ana Sayfa/Keşfet) — Kart 1</div>
+            <div class="tileMeta">Durum etiketi • Kısa açıklama</div>
           </div>
+          <div class="tileBadge"><span class="b info">Yeni</span></div>
           <div class="tileRight">›</div>
         </div>
-          
         <div class="tile">
           <div class="tileText">
-            <div class="tileTitle">Örnek öğe</div>
-            <div class="tileMeta">Loading/Empty/Error/Offline durumları prod-ready düşünülür</div>
+            <div class="tileTitle">geri dönüş (Ana Sayfa/Keşfet) — Kart 2</div>
+            <div class="tileMeta">Kaldığın yer • İlerleme</div>
           </div>
+          
           <div class="tileRight">›</div>
         </div>
-        </div>
-        <div class="row"><button class="btn" data-go="UF8-S4-erisim-acildi">Geri</button><button class="btn primary" data-go="UF9-S1-plani-yonet">Devam</button></div>
+        <div class="tile">
+          <div class="tileText">
+            <div class="tileTitle">geri dönüş (Ana Sayfa/Keşfet) — Kart 3</div>
+            <div class="tileMeta">Kilitli/erişim etiketi</div>
+          </div>
+          <div class="tileBadge"><span class="b info">Kilitli</span></div>
+          <div class="tileRight">›</div>
+        </div></div>
+<div class='card'><div class="kpis"><div class="kpi"><div class="kpiV">23:59</div><div class="kpiK">Deadline</div></div><div class="kpi"><div class="kpiV">08:00</div><div class="kpiK">Yeni Gün</div></div><div class="kpi"><div class="kpiV">120/300</div><div class="kpiK">Kelime</div></div></div></div>
+<div class='card'><div class='field'><label>Yanıt</label><div class='input' style='height:90px; align-items:flex-start; padding-top:10px;'>Metin taslağı…</div></div></div>
+<div class='card'><div class='h2' style='font-size:12px;'>Önkoşullar</div><div class="checklist"><div class="check"><div class="checkL"><span class="b ok">✓</span></div><div class="checkT">Önceki görev tamamlandı</div></div><div class="check"><div class="checkL"><span class="b">•</span></div><div class="checkT">Yorum teslim edildi</div></div><div class="check"><div class="checkL"><span class="b">•</span></div><div class="checkT">08:00 kapısı bekleniyor</div></div></div></div>
+<div class='row'><button class="btn" data-go="UF8-S4-erisim-acildi">Geri</button><button class="btn primary" data-go="UF9-S1-plani-yonet">Devam</button></div>
                   </div>
 
                   <div class="deviceBottom">
@@ -1089,26 +1250,12 @@
         <div class="card">
           <div class="h2">Planı Yönet</div>
           <div class="muted">Profil / Abonelik</div>
+          <div class="stateRow"><span class="b warn">Error+Retry</span></div>
         </div>
-        <div class="card">
-          
-        <div class="tile">
-          <div class="tileText">
-            <div class="tileTitle">Örnek öğe</div>
-            <div class="tileMeta">Liste / Detay / Aksiyon</div>
-          </div>
-          <div class="tileRight">›</div>
-        </div>
-          
-        <div class="tile">
-          <div class="tileText">
-            <div class="tileTitle">Örnek öğe</div>
-            <div class="tileMeta">Loading/Empty/Error/Offline durumları prod-ready düşünülür</div>
-          </div>
-          <div class="tileRight">›</div>
-        </div>
-        </div>
-        <div class="row"><button class="btn" data-go="UF8-S5-geri-donus-ana-sayfa-kesfet">Geri</button><button class="btn primary" data-go="UF9-S2-plan-degistir">Devam</button></div>
+<div class='card'><div class="kpis"><div class="kpi"><div class="kpiV">23:59</div><div class="kpiK">Deadline</div></div><div class="kpi"><div class="kpiV">08:00</div><div class="kpiK">Yeni Gün</div></div><div class="kpi"><div class="kpiV">120/300</div><div class="kpiK">Kelime</div></div></div></div>
+<div class='card'><div class='field'><label>Yanıt</label><div class='input' style='height:90px; align-items:flex-start; padding-top:10px;'>Metin taslağı…</div></div></div>
+<div class='card'><div class='h2' style='font-size:12px;'>Önkoşullar</div><div class="checklist"><div class="check"><div class="checkL"><span class="b ok">✓</span></div><div class="checkT">Önceki görev tamamlandı</div></div><div class="check"><div class="checkL"><span class="b">•</span></div><div class="checkT">Yorum teslim edildi</div></div><div class="check"><div class="checkL"><span class="b">•</span></div><div class="checkT">08:00 kapısı bekleniyor</div></div></div></div>
+<div class='row'><button class="btn" data-go="UF8-S5-geri-donus-ana-sayfa-kesfet">Geri</button><button class="btn primary" data-go="UF9-S2-plan-degistir">Devam</button></div>
                   </div>
 
                   <div class="deviceBottom">
@@ -1183,26 +1330,12 @@
         <div class="card">
           <div class="h2">plan değiştir</div>
           <div class="muted">Planı yönetme (değiştir/yükselt/düşür) + kişi limiti etkileri</div>
+          <div class="stateRow"><span class="b warn">Error+Retry</span></div>
         </div>
-        <div class="card">
-          
-        <div class="tile">
-          <div class="tileText">
-            <div class="tileTitle">Örnek öğe</div>
-            <div class="tileMeta">Liste / Detay / Aksiyon</div>
-          </div>
-          <div class="tileRight">›</div>
-        </div>
-          
-        <div class="tile">
-          <div class="tileText">
-            <div class="tileTitle">Örnek öğe</div>
-            <div class="tileMeta">Loading/Empty/Error/Offline durumları prod-ready düşünülür</div>
-          </div>
-          <div class="tileRight">›</div>
-        </div>
-        </div>
-        <div class="row"><button class="btn" data-go="UF9-S1-plani-yonet">Geri</button><button class="btn primary" data-go="UF9-S3-limit-uygunsa-onayla">Devam</button></div>
+<div class='card'><div class="kpis"><div class="kpi"><div class="kpiV">23:59</div><div class="kpiK">Deadline</div></div><div class="kpi"><div class="kpiV">08:00</div><div class="kpiK">Yeni Gün</div></div><div class="kpi"><div class="kpiV">120/300</div><div class="kpiK">Kelime</div></div></div></div>
+<div class='card'><div class='field'><label>Yanıt</label><div class='input' style='height:90px; align-items:flex-start; padding-top:10px;'>Metin taslağı…</div></div></div>
+<div class='card'><div class='h2' style='font-size:12px;'>Önkoşullar</div><div class="checklist"><div class="check"><div class="checkL"><span class="b ok">✓</span></div><div class="checkT">Önceki görev tamamlandı</div></div><div class="check"><div class="checkL"><span class="b">•</span></div><div class="checkT">Yorum teslim edildi</div></div><div class="check"><div class="checkL"><span class="b">•</span></div><div class="checkT">08:00 kapısı bekleniyor</div></div></div></div>
+<div class='row'><button class="btn" data-go="UF9-S1-plani-yonet">Geri</button><button class="btn primary" data-go="UF9-S3-limit-uygunsa-onayla">Devam</button></div>
                   </div>
 
                   <div class="deviceBottom">
@@ -1277,26 +1410,12 @@
         <div class="card">
           <div class="h2">(limit uygunsa) onayla</div>
           <div class="muted">Planı yönetme (değiştir/yükselt/düşür) + kişi limiti etkileri</div>
+          <div class="stateRow"><span class="b warn">Error+Retry</span></div>
         </div>
-        <div class="card">
-          
-        <div class="tile">
-          <div class="tileText">
-            <div class="tileTitle">Örnek öğe</div>
-            <div class="tileMeta">Liste / Detay / Aksiyon</div>
-          </div>
-          <div class="tileRight">›</div>
-        </div>
-          
-        <div class="tile">
-          <div class="tileText">
-            <div class="tileTitle">Örnek öğe</div>
-            <div class="tileMeta">Loading/Empty/Error/Offline durumları prod-ready düşünülür</div>
-          </div>
-          <div class="tileRight">›</div>
-        </div>
-        </div>
-        <div class="row"><button class="btn" data-go="UF9-S2-plan-degistir">Geri</button><button class="btn primary" data-go="UF9-S4-erisimler-guncellenir">Devam</button></div>
+<div class='card'><div class="kpis"><div class="kpi"><div class="kpiV">23:59</div><div class="kpiK">Deadline</div></div><div class="kpi"><div class="kpiV">08:00</div><div class="kpiK">Yeni Gün</div></div><div class="kpi"><div class="kpiV">120/300</div><div class="kpiK">Kelime</div></div></div></div>
+<div class='card'><div class='field'><label>Yanıt</label><div class='input' style='height:90px; align-items:flex-start; padding-top:10px;'>Metin taslağı…</div></div></div>
+<div class='card'><div class='h2' style='font-size:12px;'>Önkoşullar</div><div class="checklist"><div class="check"><div class="checkL"><span class="b ok">✓</span></div><div class="checkT">Önceki görev tamamlandı</div></div><div class="check"><div class="checkL"><span class="b">•</span></div><div class="checkT">Yorum teslim edildi</div></div><div class="check"><div class="checkL"><span class="b">•</span></div><div class="checkT">08:00 kapısı bekleniyor</div></div></div></div>
+<div class='row'><button class="btn" data-go="UF9-S2-plan-degistir">Geri</button><button class="btn primary" data-go="UF9-S4-erisimler-guncellenir">Devam</button></div>
                   </div>
 
                   <div class="deviceBottom">
@@ -1371,26 +1490,12 @@
         <div class="card">
           <div class="h2">erişimler güncellenir</div>
           <div class="muted">Planı yönetme (değiştir/yükselt/düşür) + kişi limiti etkileri</div>
+          <div class="stateRow"><span class="b warn">Error+Retry</span></div>
         </div>
-        <div class="card">
-          
-        <div class="tile">
-          <div class="tileText">
-            <div class="tileTitle">Örnek öğe</div>
-            <div class="tileMeta">Liste / Detay / Aksiyon</div>
-          </div>
-          <div class="tileRight">›</div>
-        </div>
-          
-        <div class="tile">
-          <div class="tileText">
-            <div class="tileTitle">Örnek öğe</div>
-            <div class="tileMeta">Loading/Empty/Error/Offline durumları prod-ready düşünülür</div>
-          </div>
-          <div class="tileRight">›</div>
-        </div>
-        </div>
-        <div class="row"><button class="btn" data-go="UF9-S3-limit-uygunsa-onayla">Geri</button><button class="btn primary" data-go="UF10-S1-iptal">Devam</button></div>
+<div class='card'><div class="kpis"><div class="kpi"><div class="kpiV">23:59</div><div class="kpiK">Deadline</div></div><div class="kpi"><div class="kpiV">08:00</div><div class="kpiK">Yeni Gün</div></div><div class="kpi"><div class="kpiV">120/300</div><div class="kpiK">Kelime</div></div></div></div>
+<div class='card'><div class='field'><label>Yanıt</label><div class='input' style='height:90px; align-items:flex-start; padding-top:10px;'>Metin taslağı…</div></div></div>
+<div class='card'><div class='h2' style='font-size:12px;'>Önkoşullar</div><div class="checklist"><div class="check"><div class="checkL"><span class="b ok">✓</span></div><div class="checkT">Önceki görev tamamlandı</div></div><div class="check"><div class="checkL"><span class="b">•</span></div><div class="checkT">Yorum teslim edildi</div></div><div class="check"><div class="checkL"><span class="b">•</span></div><div class="checkT">08:00 kapısı bekleniyor</div></div></div></div>
+<div class='row'><button class="btn" data-go="UF9-S3-limit-uygunsa-onayla">Geri</button><button class="btn primary" data-go="UF10-S1-iptal">Devam</button></div>
                   </div>
 
                   <div class="deviceBottom">
@@ -1465,26 +1570,35 @@
         <div class="card">
           <div class="h2">İptal</div>
           <div class="muted">Profil / Abonelik</div>
+          <div class="stateRow"><span class="b">Prod-ready states</span></div>
         </div>
-        <div class="card">
-          
+<div class='card'>
         <div class="tile">
           <div class="tileText">
-            <div class="tileTitle">Örnek öğe</div>
-            <div class="tileMeta">Liste / Detay / Aksiyon</div>
+            <div class="tileTitle">İptal — Kart 1</div>
+            <div class="tileMeta">Durum etiketi • Kısa açıklama</div>
           </div>
+          <div class="tileBadge"><span class="b info">Yeni</span></div>
           <div class="tileRight">›</div>
         </div>
-          
         <div class="tile">
           <div class="tileText">
-            <div class="tileTitle">Örnek öğe</div>
-            <div class="tileMeta">Loading/Empty/Error/Offline durumları prod-ready düşünülür</div>
+            <div class="tileTitle">İptal — Kart 2</div>
+            <div class="tileMeta">Kaldığın yer • İlerleme</div>
           </div>
+          
           <div class="tileRight">›</div>
         </div>
-        </div>
-        <div class="row"><button class="btn" data-go="UF9-S4-erisimler-guncellenir">Geri</button><button class="btn primary" data-go="UF10-S2-etkileri-gor">Devam</button></div>
+        <div class="tile">
+          <div class="tileText">
+            <div class="tileTitle">İptal — Kart 3</div>
+            <div class="tileMeta">Kilitli/erişim etiketi</div>
+          </div>
+          <div class="tileBadge"><span class="b info">Kilitli</span></div>
+          <div class="tileRight">›</div>
+        </div></div>
+<div class='card'><div class='h2' style='font-size:12px;'>Önkoşullar</div><div class="checklist"><div class="check"><div class="checkL"><span class="b ok">✓</span></div><div class="checkT">Önceki görev tamamlandı</div></div><div class="check"><div class="checkL"><span class="b">•</span></div><div class="checkT">Yorum teslim edildi</div></div><div class="check"><div class="checkL"><span class="b">•</span></div><div class="checkT">08:00 kapısı bekleniyor</div></div></div></div>
+<div class='row'><button class="btn" data-go="UF9-S4-erisimler-guncellenir">Geri</button><button class="btn primary" data-go="UF10-S2-etkileri-gor">Devam</button></div>
                   </div>
 
                   <div class="deviceBottom">
@@ -1557,26 +1671,35 @@
         <div class="card">
           <div class="h2">etkileri gör</div>
           <div class="muted">Abonelik iptali → iptal etkileri → geri dönüş</div>
+          <div class="stateRow"><span class="b">Prod-ready states</span></div>
         </div>
-        <div class="card">
-          
+<div class='card'>
         <div class="tile">
           <div class="tileText">
-            <div class="tileTitle">Örnek öğe</div>
-            <div class="tileMeta">Liste / Detay / Aksiyon</div>
+            <div class="tileTitle">etkileri gör — Kart 1</div>
+            <div class="tileMeta">Durum etiketi • Kısa açıklama</div>
           </div>
+          <div class="tileBadge"><span class="b info">Yeni</span></div>
           <div class="tileRight">›</div>
         </div>
-          
         <div class="tile">
           <div class="tileText">
-            <div class="tileTitle">Örnek öğe</div>
-            <div class="tileMeta">Loading/Empty/Error/Offline durumları prod-ready düşünülür</div>
+            <div class="tileTitle">etkileri gör — Kart 2</div>
+            <div class="tileMeta">Kaldığın yer • İlerleme</div>
           </div>
+          
           <div class="tileRight">›</div>
         </div>
-        </div>
-        <div class="row"><button class="btn" data-go="UF10-S1-iptal">Geri</button><button class="btn primary" data-go="UF10-S3-gecit">Devam</button></div>
+        <div class="tile">
+          <div class="tileText">
+            <div class="tileTitle">etkileri gör — Kart 3</div>
+            <div class="tileMeta">Kilitli/erişim etiketi</div>
+          </div>
+          <div class="tileBadge"><span class="b info">Kilitli</span></div>
+          <div class="tileRight">›</div>
+        </div></div>
+<div class='card'><div class='h2' style='font-size:12px;'>Önkoşullar</div><div class="checklist"><div class="check"><div class="checkL"><span class="b ok">✓</span></div><div class="checkT">Önceki görev tamamlandı</div></div><div class="check"><div class="checkL"><span class="b">•</span></div><div class="checkT">Yorum teslim edildi</div></div><div class="check"><div class="checkL"><span class="b">•</span></div><div class="checkT">08:00 kapısı bekleniyor</div></div></div></div>
+<div class='row'><button class="btn" data-go="UF10-S1-iptal">Geri</button><button class="btn primary" data-go="UF10-S3-gecit">Devam</button></div>
                   </div>
 
                   <div class="deviceBottom">
@@ -1649,26 +1772,35 @@
         <div class="card">
           <div class="h2">Geçit</div>
           <div class="muted">Abonelik iptali → iptal etkileri → geri dönüş</div>
+          <div class="stateRow"><span class="b">Prod-ready states</span></div>
         </div>
-        <div class="card">
-          
+<div class='card'>
         <div class="tile">
           <div class="tileText">
-            <div class="tileTitle">Örnek öğe</div>
-            <div class="tileMeta">Liste / Detay / Aksiyon</div>
+            <div class="tileTitle">Geçit — Kart 1</div>
+            <div class="tileMeta">Durum etiketi • Kısa açıklama</div>
           </div>
+          <div class="tileBadge"><span class="b info">Yeni</span></div>
           <div class="tileRight">›</div>
         </div>
-          
         <div class="tile">
           <div class="tileText">
-            <div class="tileTitle">Örnek öğe</div>
-            <div class="tileMeta">Loading/Empty/Error/Offline durumları prod-ready düşünülür</div>
+            <div class="tileTitle">Geçit — Kart 2</div>
+            <div class="tileMeta">Kaldığın yer • İlerleme</div>
           </div>
+          
           <div class="tileRight">›</div>
         </div>
-        </div>
-        <div class="row"><button class="btn" data-go="UF10-S2-etkileri-gor">Geri</button><button class="btn primary" data-go="UF10-S4-plan-durumu-guncellenir">Devam</button></div>
+        <div class="tile">
+          <div class="tileText">
+            <div class="tileTitle">Geçit — Kart 3</div>
+            <div class="tileMeta">Kilitli/erişim etiketi</div>
+          </div>
+          <div class="tileBadge"><span class="b info">Kilitli</span></div>
+          <div class="tileRight">›</div>
+        </div></div>
+<div class='card'><div class='h2' style='font-size:12px;'>Önkoşullar</div><div class="checklist"><div class="check"><div class="checkL"><span class="b ok">✓</span></div><div class="checkT">Önceki görev tamamlandı</div></div><div class="check"><div class="checkL"><span class="b">•</span></div><div class="checkT">Yorum teslim edildi</div></div><div class="check"><div class="checkL"><span class="b">•</span></div><div class="checkT">08:00 kapısı bekleniyor</div></div></div></div>
+<div class='row'><button class="btn" data-go="UF10-S2-etkileri-gor">Geri</button><button class="btn primary" data-go="UF10-S4-plan-durumu-guncellenir">Devam</button></div>
                   </div>
 
                   <div class="deviceBottom">
@@ -1741,26 +1873,35 @@
         <div class="card">
           <div class="h2">plan durumu güncellenir</div>
           <div class="muted">Abonelik iptali → iptal etkileri → geri dönüş</div>
+          <div class="stateRow"><span class="b">Prod-ready states</span></div>
         </div>
-        <div class="card">
-          
+<div class='card'>
         <div class="tile">
           <div class="tileText">
-            <div class="tileTitle">Örnek öğe</div>
-            <div class="tileMeta">Liste / Detay / Aksiyon</div>
+            <div class="tileTitle">plan durumu güncellenir — Kart 1</div>
+            <div class="tileMeta">Durum etiketi • Kısa açıklama</div>
           </div>
+          <div class="tileBadge"><span class="b info">Yeni</span></div>
           <div class="tileRight">›</div>
         </div>
-          
         <div class="tile">
           <div class="tileText">
-            <div class="tileTitle">Örnek öğe</div>
-            <div class="tileMeta">Loading/Empty/Error/Offline durumları prod-ready düşünülür</div>
+            <div class="tileTitle">plan durumu güncellenir — Kart 2</div>
+            <div class="tileMeta">Kaldığın yer • İlerleme</div>
           </div>
+          
           <div class="tileRight">›</div>
         </div>
-        </div>
-        <div class="row"><button class="btn" data-go="UF10-S3-gecit">Geri</button><button class="btn primary" data-go="UF11-S1-odemeler">Devam</button></div>
+        <div class="tile">
+          <div class="tileText">
+            <div class="tileTitle">plan durumu güncellenir — Kart 3</div>
+            <div class="tileMeta">Kilitli/erişim etiketi</div>
+          </div>
+          <div class="tileBadge"><span class="b info">Kilitli</span></div>
+          <div class="tileRight">›</div>
+        </div></div>
+<div class='card'><div class='h2' style='font-size:12px;'>Önkoşullar</div><div class="checklist"><div class="check"><div class="checkL"><span class="b ok">✓</span></div><div class="checkT">Önceki görev tamamlandı</div></div><div class="check"><div class="checkL"><span class="b">•</span></div><div class="checkT">Yorum teslim edildi</div></div><div class="check"><div class="checkL"><span class="b">•</span></div><div class="checkT">08:00 kapısı bekleniyor</div></div></div></div>
+<div class='row'><button class="btn" data-go="UF10-S3-gecit">Geri</button><button class="btn primary" data-go="UF11-S1-odemeler">Devam</button></div>
                   </div>
 
                   <div class="deviceBottom">
@@ -1833,26 +1974,35 @@
         <div class="card">
           <div class="h2">Ödemeler</div>
           <div class="muted">Profil / Abonelik</div>
+          <div class="stateRow"><span class="b warn">Error+Retry</span></div>
         </div>
-        <div class="card">
-          
+<div class='card'>
         <div class="tile">
           <div class="tileText">
-            <div class="tileTitle">Örnek öğe</div>
-            <div class="tileMeta">Liste / Detay / Aksiyon</div>
+            <div class="tileTitle">İşlem #2026</div>
+            <div class="tileMeta">Plan • ₺XXX,XX • Başarılı</div>
           </div>
+          
           <div class="tileRight">›</div>
         </div>
-          
         <div class="tile">
           <div class="tileText">
-            <div class="tileTitle">Örnek öğe</div>
-            <div class="tileMeta">Loading/Empty/Error/Offline durumları prod-ready düşünülür</div>
+            <div class="tileTitle">İşlem #2025</div>
+            <div class="tileMeta">Add-on • ₺XX,XX • Başarılı</div>
           </div>
+          
           <div class="tileRight">›</div>
         </div>
-        </div>
-        <div class="row"><button class="btn" data-go="UF10-S4-plan-durumu-guncellenir">Geri</button><button class="btn primary" data-go="UF11-S2-gecmisi-gor">Devam</button></div>
+        <div class="tile">
+          <div class="tileText">
+            <div class="tileTitle">Satın alımları geri yükle</div>
+            <div class="tileMeta">Doğrula ve güncelle</div>
+          </div>
+          <div class="tileBadge"><span class="b info">CTA</span></div>
+          <div class="tileRight">›</div>
+        </div></div>
+<div class='card'><div class='h2' style='font-size:12px;'>Önkoşullar</div><div class="checklist"><div class="check"><div class="checkL"><span class="b ok">✓</span></div><div class="checkT">Önceki görev tamamlandı</div></div><div class="check"><div class="checkL"><span class="b">•</span></div><div class="checkT">Yorum teslim edildi</div></div><div class="check"><div class="checkL"><span class="b">•</span></div><div class="checkT">08:00 kapısı bekleniyor</div></div></div></div>
+<div class='row'><button class="btn" data-go="UF10-S4-plan-durumu-guncellenir">Geri</button><button class="btn primary" data-go="UF11-S2-gecmisi-gor">Devam</button></div>
                   </div>
 
                   <div class="deviceBottom">
@@ -1926,26 +2076,35 @@
         <div class="card">
           <div class="h2">geçmişi gör</div>
           <div class="muted">Ödeme geçmişi / makbuzlar + “Satın alımları geri yükle”</div>
+          <div class="stateRow"><span class="b warn">Error+Retry</span></div>
         </div>
-        <div class="card">
-          
+<div class='card'>
         <div class="tile">
           <div class="tileText">
-            <div class="tileTitle">Örnek öğe</div>
-            <div class="tileMeta">Liste / Detay / Aksiyon</div>
+            <div class="tileTitle">İşlem #2026</div>
+            <div class="tileMeta">Plan • ₺XXX,XX • Başarılı</div>
           </div>
+          
           <div class="tileRight">›</div>
         </div>
-          
         <div class="tile">
           <div class="tileText">
-            <div class="tileTitle">Örnek öğe</div>
-            <div class="tileMeta">Loading/Empty/Error/Offline durumları prod-ready düşünülür</div>
+            <div class="tileTitle">İşlem #2025</div>
+            <div class="tileMeta">Add-on • ₺XX,XX • Başarılı</div>
           </div>
+          
           <div class="tileRight">›</div>
         </div>
-        </div>
-        <div class="row"><button class="btn" data-go="UF11-S1-odemeler">Geri</button><button class="btn primary" data-go="UF11-S3-satin-alimlari-geri-yukle">Devam</button></div>
+        <div class="tile">
+          <div class="tileText">
+            <div class="tileTitle">Satın alımları geri yükle</div>
+            <div class="tileMeta">Doğrula ve güncelle</div>
+          </div>
+          <div class="tileBadge"><span class="b info">CTA</span></div>
+          <div class="tileRight">›</div>
+        </div></div>
+<div class='card'><div class='h2' style='font-size:12px;'>Önkoşullar</div><div class="checklist"><div class="check"><div class="checkL"><span class="b ok">✓</span></div><div class="checkT">Önceki görev tamamlandı</div></div><div class="check"><div class="checkL"><span class="b">•</span></div><div class="checkT">Yorum teslim edildi</div></div><div class="check"><div class="checkL"><span class="b">•</span></div><div class="checkT">08:00 kapısı bekleniyor</div></div></div></div>
+<div class='row'><button class="btn" data-go="UF11-S1-odemeler">Geri</button><button class="btn primary" data-go="UF11-S3-satin-alimlari-geri-yukle">Devam</button></div>
                   </div>
 
                   <div class="deviceBottom">
@@ -2019,26 +2178,35 @@
         <div class="card">
           <div class="h2">Satın Alımları Geri Yükle</div>
           <div class="muted">Ödeme geçmişi / makbuzlar + “Satın alımları geri yükle”</div>
+          <div class="stateRow"><span class="b warn">Error+Retry</span></div>
         </div>
-        <div class="card">
-          
+<div class='card'>
         <div class="tile">
           <div class="tileText">
-            <div class="tileTitle">Örnek öğe</div>
-            <div class="tileMeta">Liste / Detay / Aksiyon</div>
+            <div class="tileTitle">İşlem #2026</div>
+            <div class="tileMeta">Plan • ₺XXX,XX • Başarılı</div>
           </div>
+          
           <div class="tileRight">›</div>
         </div>
-          
         <div class="tile">
           <div class="tileText">
-            <div class="tileTitle">Örnek öğe</div>
-            <div class="tileMeta">Loading/Empty/Error/Offline durumları prod-ready düşünülür</div>
+            <div class="tileTitle">İşlem #2025</div>
+            <div class="tileMeta">Add-on • ₺XX,XX • Başarılı</div>
           </div>
+          
           <div class="tileRight">›</div>
         </div>
-        </div>
-        <div class="row"><button class="btn" data-go="UF11-S2-gecmisi-gor">Geri</button><button class="btn primary" data-go="UF11-S4-erisimler-guncellenir">Devam</button></div>
+        <div class="tile">
+          <div class="tileText">
+            <div class="tileTitle">Satın alımları geri yükle</div>
+            <div class="tileMeta">Doğrula ve güncelle</div>
+          </div>
+          <div class="tileBadge"><span class="b info">CTA</span></div>
+          <div class="tileRight">›</div>
+        </div></div>
+<div class='card'><div class='h2' style='font-size:12px;'>Önkoşullar</div><div class="checklist"><div class="check"><div class="checkL"><span class="b ok">✓</span></div><div class="checkT">Önceki görev tamamlandı</div></div><div class="check"><div class="checkL"><span class="b">•</span></div><div class="checkT">Yorum teslim edildi</div></div><div class="check"><div class="checkL"><span class="b">•</span></div><div class="checkT">08:00 kapısı bekleniyor</div></div></div></div>
+<div class='row'><button class="btn" data-go="UF11-S2-gecmisi-gor">Geri</button><button class="btn primary" data-go="UF11-S4-erisimler-guncellenir">Devam</button></div>
                   </div>
 
                   <div class="deviceBottom">
@@ -2112,26 +2280,35 @@
         <div class="card">
           <div class="h2">erişimler güncellenir</div>
           <div class="muted">Ödeme geçmişi / makbuzlar + “Satın alımları geri yükle”</div>
+          <div class="stateRow"><span class="b warn">Error+Retry</span></div>
         </div>
-        <div class="card">
-          
+<div class='card'>
         <div class="tile">
           <div class="tileText">
-            <div class="tileTitle">Örnek öğe</div>
-            <div class="tileMeta">Liste / Detay / Aksiyon</div>
+            <div class="tileTitle">İşlem #2026</div>
+            <div class="tileMeta">Plan • ₺XXX,XX • Başarılı</div>
           </div>
+          
           <div class="tileRight">›</div>
         </div>
-          
         <div class="tile">
           <div class="tileText">
-            <div class="tileTitle">Örnek öğe</div>
-            <div class="tileMeta">Loading/Empty/Error/Offline durumları prod-ready düşünülür</div>
+            <div class="tileTitle">İşlem #2025</div>
+            <div class="tileMeta">Add-on • ₺XX,XX • Başarılı</div>
           </div>
+          
           <div class="tileRight">›</div>
         </div>
-        </div>
-        <div class="row"><button class="btn" data-go="UF11-S3-satin-alimlari-geri-yukle">Geri</button><button class="btn primary" data-go="UF12-S1-abonelik">Devam</button></div>
+        <div class="tile">
+          <div class="tileText">
+            <div class="tileTitle">Satın alımları geri yükle</div>
+            <div class="tileMeta">Doğrula ve güncelle</div>
+          </div>
+          <div class="tileBadge"><span class="b info">CTA</span></div>
+          <div class="tileRight">›</div>
+        </div></div>
+<div class='card'><div class='h2' style='font-size:12px;'>Önkoşullar</div><div class="checklist"><div class="check"><div class="checkL"><span class="b ok">✓</span></div><div class="checkT">Önceki görev tamamlandı</div></div><div class="check"><div class="checkL"><span class="b">•</span></div><div class="checkT">Yorum teslim edildi</div></div><div class="check"><div class="checkL"><span class="b">•</span></div><div class="checkT">08:00 kapısı bekleniyor</div></div></div></div>
+<div class='row'><button class="btn" data-go="UF11-S3-satin-alimlari-geri-yukle">Geri</button><button class="btn primary" data-go="UF12-S1-abonelik">Devam</button></div>
                   </div>
 
                   <div class="deviceBottom">
@@ -2205,26 +2382,12 @@
         <div class="card">
           <div class="h2">Abonelik</div>
           <div class="muted">Profil</div>
+          <div class="stateRow"><span class="b">Prod-ready states</span></div>
         </div>
-        <div class="card">
-          
-        <div class="tile">
-          <div class="tileText">
-            <div class="tileTitle">Örnek öğe</div>
-            <div class="tileMeta">Liste / Detay / Aksiyon</div>
-          </div>
-          <div class="tileRight">›</div>
-        </div>
-          
-        <div class="tile">
-          <div class="tileText">
-            <div class="tileTitle">Örnek öğe</div>
-            <div class="tileMeta">Loading/Empty/Error/Offline durumları prod-ready düşünülür</div>
-          </div>
-          <div class="tileRight">›</div>
-        </div>
-        </div>
-        <div class="row"><button class="btn" data-go="UF11-S4-erisimler-guncellenir">Geri</button><button class="btn primary" data-go="UF12-S2-add-on-lar">Devam</button></div>
+<div class='card'><div class="kpis"><div class="kpi"><div class="kpiV">23:59</div><div class="kpiK">Deadline</div></div><div class="kpi"><div class="kpiV">08:00</div><div class="kpiK">Yeni Gün</div></div><div class="kpi"><div class="kpiV">120/300</div><div class="kpiK">Kelime</div></div></div></div>
+<div class='card'><div class='field'><label>Yanıt</label><div class='input' style='height:90px; align-items:flex-start; padding-top:10px;'>Metin taslağı…</div></div></div>
+<div class='card'><div class='h2' style='font-size:12px;'>Önkoşullar</div><div class="checklist"><div class="check"><div class="checkL"><span class="b ok">✓</span></div><div class="checkT">Önceki görev tamamlandı</div></div><div class="check"><div class="checkL"><span class="b">•</span></div><div class="checkT">Yorum teslim edildi</div></div><div class="check"><div class="checkL"><span class="b">•</span></div><div class="checkT">08:00 kapısı bekleniyor</div></div></div></div>
+<div class='row'><button class="btn" data-go="UF11-S4-erisimler-guncellenir">Geri</button><button class="btn primary" data-go="UF12-S2-add-on-lar">Devam</button></div>
                   </div>
 
                   <div class="deviceBottom">
@@ -2300,26 +2463,37 @@
         <div class="card">
           <div class="h2">Add-on’lar</div>
           <div class="muted">Add-on satın alma / yönetim (AI, Koçluk vb.)</div>
+          <div class="stateRow"><span class="b info">Loading</span></div>
         </div>
-        <div class="card">
-          
+<div class='card'><div class="kpis"><div class="kpi"><div class="kpiV">23:59</div><div class="kpiK">Deadline</div></div><div class="kpi"><div class="kpiV">08:00</div><div class="kpiK">Yeni Gün</div></div><div class="kpi"><div class="kpiV">120/300</div><div class="kpiK">Kelime</div></div></div></div>
+<div class='card'><div class='field'><label>Yanıt</label><div class='input' style='height:90px; align-items:flex-start; padding-top:10px;'>Metin taslağı…</div></div></div>
+<div class='card'><div class='h2' style='font-size:12px;'>Önkoşullar</div><div class="checklist"><div class="check"><div class="checkL"><span class="b ok">✓</span></div><div class="checkT">Önceki görev tamamlandı</div></div><div class="check"><div class="checkL"><span class="b">•</span></div><div class="checkT">Yorum teslim edildi</div></div><div class="check"><div class="checkL"><span class="b">•</span></div><div class="checkT">08:00 kapısı bekleniyor</div></div></div></div>
+<div class='card'>
         <div class="tile">
           <div class="tileText">
-            <div class="tileTitle">Örnek öğe</div>
-            <div class="tileMeta">Liste / Detay / Aksiyon</div>
+            <div class="tileTitle">Verimi indir</div>
+            <div class="tileMeta">Kapsamı göster</div>
           </div>
+          
           <div class="tileRight">›</div>
         </div>
-          
         <div class="tile">
           <div class="tileText">
-            <div class="tileTitle">Örnek öğe</div>
-            <div class="tileMeta">Loading/Empty/Error/Offline durumları prod-ready düşünülür</div>
+            <div class="tileTitle">Geçmişi sil</div>
+            <div class="tileMeta">Onay adımı</div>
           </div>
+          
           <div class="tileRight">›</div>
         </div>
-        </div>
-        <div class="row"><button class="btn" data-go="UF12-S1-abonelik">Geri</button><button class="btn primary" data-go="UF12-S3-gecit">Devam</button></div>
+        <div class="tile">
+          <div class="tileText">
+            <div class="tileTitle">AI’ı devre dışı bırak</div>
+            <div class="tileMeta">Geri açılabilir</div>
+          </div>
+          
+          <div class="tileRight">›</div>
+        </div></div>
+<div class='row'><button class="btn" data-go="UF12-S1-abonelik">Geri</button><button class="btn primary" data-go="UF12-S3-gecit">Devam</button></div>
                   </div>
 
                   <div class="deviceBottom">
@@ -2412,26 +2586,37 @@
         <div class="card">
           <div class="h2">Geçit</div>
           <div class="muted">Add-on satın alma / yönetim (AI, Koçluk vb.)</div>
+          <div class="stateRow"><span class="b info">Loading</span></div>
         </div>
-        <div class="card">
-          
+<div class='card'><div class="kpis"><div class="kpi"><div class="kpiV">23:59</div><div class="kpiK">Deadline</div></div><div class="kpi"><div class="kpiV">08:00</div><div class="kpiK">Yeni Gün</div></div><div class="kpi"><div class="kpiV">120/300</div><div class="kpiK">Kelime</div></div></div></div>
+<div class='card'><div class='field'><label>Yanıt</label><div class='input' style='height:90px; align-items:flex-start; padding-top:10px;'>Metin taslağı…</div></div></div>
+<div class='card'><div class='h2' style='font-size:12px;'>Önkoşullar</div><div class="checklist"><div class="check"><div class="checkL"><span class="b ok">✓</span></div><div class="checkT">Önceki görev tamamlandı</div></div><div class="check"><div class="checkL"><span class="b">•</span></div><div class="checkT">Yorum teslim edildi</div></div><div class="check"><div class="checkL"><span class="b">•</span></div><div class="checkT">08:00 kapısı bekleniyor</div></div></div></div>
+<div class='card'>
         <div class="tile">
           <div class="tileText">
-            <div class="tileTitle">Örnek öğe</div>
-            <div class="tileMeta">Liste / Detay / Aksiyon</div>
+            <div class="tileTitle">Verimi indir</div>
+            <div class="tileMeta">Kapsamı göster</div>
           </div>
+          
           <div class="tileRight">›</div>
         </div>
-          
         <div class="tile">
           <div class="tileText">
-            <div class="tileTitle">Örnek öğe</div>
-            <div class="tileMeta">Loading/Empty/Error/Offline durumları prod-ready düşünülür</div>
+            <div class="tileTitle">Geçmişi sil</div>
+            <div class="tileMeta">Onay adımı</div>
           </div>
+          
           <div class="tileRight">›</div>
         </div>
-        </div>
-        <div class="row"><button class="btn" data-go="UF12-S2-add-on-lar">Geri</button><button class="btn primary" data-go="UF12-S4-ana-sayfa-rozetleri-ve-kilit">Devam</button></div>
+        <div class="tile">
+          <div class="tileText">
+            <div class="tileTitle">AI’ı devre dışı bırak</div>
+            <div class="tileMeta">Geri açılabilir</div>
+          </div>
+          
+          <div class="tileRight">›</div>
+        </div></div>
+<div class='row'><button class="btn" data-go="UF12-S2-add-on-lar">Geri</button><button class="btn primary" data-go="UF12-S4-ana-sayfa-rozetleri-ve-kilit">Devam</button></div>
                   </div>
 
                   <div class="deviceBottom">
@@ -2524,26 +2709,37 @@
         <div class="card">
           <div class="h2">Ana Sayfa rozetleri ve kilitler güncellenir</div>
           <div class="muted">Add-on satın alma / yönetim (AI, Koçluk vb.)</div>
+          <div class="stateRow"><span class="b info">Loading</span></div>
         </div>
-        <div class="card">
-          
+<div class='card'><div class="kpis"><div class="kpi"><div class="kpiV">23:59</div><div class="kpiK">Deadline</div></div><div class="kpi"><div class="kpiV">08:00</div><div class="kpiK">Yeni Gün</div></div><div class="kpi"><div class="kpiV">120/300</div><div class="kpiK">Kelime</div></div></div></div>
+<div class='card'><div class='field'><label>Yanıt</label><div class='input' style='height:90px; align-items:flex-start; padding-top:10px;'>Metin taslağı…</div></div></div>
+<div class='card'><div class='h2' style='font-size:12px;'>Önkoşullar</div><div class="checklist"><div class="check"><div class="checkL"><span class="b ok">✓</span></div><div class="checkT">Önceki görev tamamlandı</div></div><div class="check"><div class="checkL"><span class="b">•</span></div><div class="checkT">Yorum teslim edildi</div></div><div class="check"><div class="checkL"><span class="b">•</span></div><div class="checkT">08:00 kapısı bekleniyor</div></div></div></div>
+<div class='card'>
         <div class="tile">
           <div class="tileText">
-            <div class="tileTitle">Örnek öğe</div>
-            <div class="tileMeta">Liste / Detay / Aksiyon</div>
+            <div class="tileTitle">Verimi indir</div>
+            <div class="tileMeta">Kapsamı göster</div>
           </div>
+          
           <div class="tileRight">›</div>
         </div>
-          
         <div class="tile">
           <div class="tileText">
-            <div class="tileTitle">Örnek öğe</div>
-            <div class="tileMeta">Loading/Empty/Error/Offline durumları prod-ready düşünülür</div>
+            <div class="tileTitle">Geçmişi sil</div>
+            <div class="tileMeta">Onay adımı</div>
           </div>
+          
           <div class="tileRight">›</div>
         </div>
-        </div>
-        <div class="row"><button class="btn" data-go="UF12-S3-gecit">Geri</button><button class="btn primary" data-go="UF13-S1-abonelik">Devam</button></div>
+        <div class="tile">
+          <div class="tileText">
+            <div class="tileTitle">AI’ı devre dışı bırak</div>
+            <div class="tileMeta">Geri açılabilir</div>
+          </div>
+          
+          <div class="tileRight">›</div>
+        </div></div>
+<div class='row'><button class="btn" data-go="UF12-S3-gecit">Geri</button><button class="btn primary" data-go="UF13-S1-abonelik">Devam</button></div>
                   </div>
 
                   <div class="deviceBottom">
@@ -2636,26 +2832,37 @@
         <div class="card">
           <div class="h2">Abonelik</div>
           <div class="muted">Profil</div>
+          <div class="stateRow"><span class="b info">Loading</span><span class="b">Empty</span></div>
         </div>
-        <div class="card">
-          
+<div class='card'>
         <div class="tile">
           <div class="tileText">
-            <div class="tileTitle">Örnek öğe</div>
-            <div class="tileMeta">Liste / Detay / Aksiyon</div>
+            <div class="tileTitle">Üye: Aile Üyesi 1</div>
+            <div class="tileMeta">Aktif • koltuk bağlı</div>
           </div>
+          
           <div class="tileRight">›</div>
         </div>
-          
         <div class="tile">
           <div class="tileText">
-            <div class="tileTitle">Örnek öğe</div>
-            <div class="tileMeta">Loading/Empty/Error/Offline durumları prod-ready düşünülür</div>
+            <div class="tileTitle">Üye: Aile Üyesi 2</div>
+            <div class="tileMeta">Davet bekliyor</div>
           </div>
+          <div class="tileBadge"><span class="b info">Bekliyor</span></div>
           <div class="tileRight">›</div>
         </div>
-        </div>
-        <div class="row"><button class="btn" data-go="UF12-S4-ana-sayfa-rozetleri-ve-kilit">Geri</button><button class="btn primary" data-go="UF13-S2-kisi-yonetimi">Devam</button></div>
+        <div class="tile">
+          <div class="tileText">
+            <div class="tileTitle">Üye ekle</div>
+            <div class="tileMeta">Limit/plan kuralı</div>
+          </div>
+          <div class="tileBadge"><span class="b info">CTA</span></div>
+          <div class="tileRight">›</div>
+        </div></div>
+<div class='card'><div class="kpis"><div class="kpi"><div class="kpiV">23:59</div><div class="kpiK">Deadline</div></div><div class="kpi"><div class="kpiV">08:00</div><div class="kpiK">Yeni Gün</div></div><div class="kpi"><div class="kpiV">120/300</div><div class="kpiK">Kelime</div></div></div></div>
+<div class='card'><div class='field'><label>Yanıt</label><div class='input' style='height:90px; align-items:flex-start; padding-top:10px;'>Metin taslağı…</div></div></div>
+<div class='card'><div class='h2' style='font-size:12px;'>Önkoşullar</div><div class="checklist"><div class="check"><div class="checkL"><span class="b ok">✓</span></div><div class="checkT">Önceki görev tamamlandı</div></div><div class="check"><div class="checkL"><span class="b">•</span></div><div class="checkT">Yorum teslim edildi</div></div><div class="check"><div class="checkL"><span class="b">•</span></div><div class="checkT">08:00 kapısı bekleniyor</div></div></div></div>
+<div class='row'><button class="btn" data-go="UF12-S4-ana-sayfa-rozetleri-ve-kilit">Geri</button><button class="btn primary" data-go="UF13-S2-kisi-yonetimi">Devam</button></div>
                   </div>
 
                   <div class="deviceBottom">
@@ -2747,26 +2954,37 @@
         <div class="card">
           <div class="h2">Kişi Yönetimi</div>
           <div class="muted">Aile/Grup kişi (seat) yönetimi: davet / kaldır / bekleyenler</div>
+          <div class="stateRow"><span class="b info">Loading</span><span class="b">Empty</span></div>
         </div>
-        <div class="card">
-          
+<div class='card'>
         <div class="tile">
           <div class="tileText">
-            <div class="tileTitle">Örnek öğe</div>
-            <div class="tileMeta">Liste / Detay / Aksiyon</div>
+            <div class="tileTitle">Üye: Aile Üyesi 1</div>
+            <div class="tileMeta">Aktif • koltuk bağlı</div>
           </div>
+          
           <div class="tileRight">›</div>
         </div>
-          
         <div class="tile">
           <div class="tileText">
-            <div class="tileTitle">Örnek öğe</div>
-            <div class="tileMeta">Loading/Empty/Error/Offline durumları prod-ready düşünülür</div>
+            <div class="tileTitle">Üye: Aile Üyesi 2</div>
+            <div class="tileMeta">Davet bekliyor</div>
           </div>
+          <div class="tileBadge"><span class="b info">Bekliyor</span></div>
           <div class="tileRight">›</div>
         </div>
-        </div>
-        <div class="row"><button class="btn" data-go="UF13-S1-abonelik">Geri</button><button class="btn primary" data-go="UF13-S3-davet-et-kaldir-bekleyen-dav">Devam</button></div>
+        <div class="tile">
+          <div class="tileText">
+            <div class="tileTitle">Üye ekle</div>
+            <div class="tileMeta">Limit/plan kuralı</div>
+          </div>
+          <div class="tileBadge"><span class="b info">CTA</span></div>
+          <div class="tileRight">›</div>
+        </div></div>
+<div class='card'><div class="kpis"><div class="kpi"><div class="kpiV">23:59</div><div class="kpiK">Deadline</div></div><div class="kpi"><div class="kpiV">08:00</div><div class="kpiK">Yeni Gün</div></div><div class="kpi"><div class="kpiV">120/300</div><div class="kpiK">Kelime</div></div></div></div>
+<div class='card'><div class='field'><label>Yanıt</label><div class='input' style='height:90px; align-items:flex-start; padding-top:10px;'>Metin taslağı…</div></div></div>
+<div class='card'><div class='h2' style='font-size:12px;'>Önkoşullar</div><div class="checklist"><div class="check"><div class="checkL"><span class="b ok">✓</span></div><div class="checkT">Önceki görev tamamlandı</div></div><div class="check"><div class="checkL"><span class="b">•</span></div><div class="checkT">Yorum teslim edildi</div></div><div class="check"><div class="checkL"><span class="b">•</span></div><div class="checkT">08:00 kapısı bekleniyor</div></div></div></div>
+<div class='row'><button class="btn" data-go="UF13-S1-abonelik">Geri</button><button class="btn primary" data-go="UF13-S3-davet-et-kaldir-bekleyen-dav">Devam</button></div>
                   </div>
 
                   <div class="deviceBottom">
@@ -2858,26 +3076,37 @@
         <div class="card">
           <div class="h2">Davet Et / Kaldır / Bekleyen Davetler</div>
           <div class="muted">Aile/Grup kişi (seat) yönetimi: davet / kaldır / bekleyenler</div>
+          <div class="stateRow"><span class="b info">Loading</span><span class="b">Empty</span></div>
         </div>
-        <div class="card">
-          
+<div class='card'>
         <div class="tile">
           <div class="tileText">
-            <div class="tileTitle">Örnek öğe</div>
-            <div class="tileMeta">Liste / Detay / Aksiyon</div>
+            <div class="tileTitle">Üye: Aile Üyesi 1</div>
+            <div class="tileMeta">Aktif • koltuk bağlı</div>
           </div>
+          
           <div class="tileRight">›</div>
         </div>
-          
         <div class="tile">
           <div class="tileText">
-            <div class="tileTitle">Örnek öğe</div>
-            <div class="tileMeta">Loading/Empty/Error/Offline durumları prod-ready düşünülür</div>
+            <div class="tileTitle">Üye: Aile Üyesi 2</div>
+            <div class="tileMeta">Davet bekliyor</div>
           </div>
+          <div class="tileBadge"><span class="b info">Bekliyor</span></div>
           <div class="tileRight">›</div>
         </div>
-        </div>
-        <div class="row"><button class="btn" data-go="UF13-S2-kisi-yonetimi">Geri</button><button class="btn primary" data-go="UF14-S1-ogrenci-indirimi">Devam</button></div>
+        <div class="tile">
+          <div class="tileText">
+            <div class="tileTitle">Üye ekle</div>
+            <div class="tileMeta">Limit/plan kuralı</div>
+          </div>
+          <div class="tileBadge"><span class="b info">CTA</span></div>
+          <div class="tileRight">›</div>
+        </div></div>
+<div class='card'><div class="kpis"><div class="kpi"><div class="kpiV">23:59</div><div class="kpiK">Deadline</div></div><div class="kpi"><div class="kpiV">08:00</div><div class="kpiK">Yeni Gün</div></div><div class="kpi"><div class="kpiV">120/300</div><div class="kpiK">Kelime</div></div></div></div>
+<div class='card'><div class='field'><label>Yanıt</label><div class='input' style='height:90px; align-items:flex-start; padding-top:10px;'>Metin taslağı…</div></div></div>
+<div class='card'><div class='h2' style='font-size:12px;'>Önkoşullar</div><div class="checklist"><div class="check"><div class="checkL"><span class="b ok">✓</span></div><div class="checkT">Önceki görev tamamlandı</div></div><div class="check"><div class="checkL"><span class="b">•</span></div><div class="checkT">Yorum teslim edildi</div></div><div class="check"><div class="checkL"><span class="b">•</span></div><div class="checkT">08:00 kapısı bekleniyor</div></div></div></div>
+<div class='row'><button class="btn" data-go="UF13-S2-kisi-yonetimi">Geri</button><button class="btn primary" data-go="UF14-S1-ogrenci-indirimi">Devam</button></div>
                   </div>
 
                   <div class="deviceBottom">
@@ -2969,26 +3198,63 @@
         <div class="card">
           <div class="h2">Öğrenci İndirimi</div>
           <div class="muted">Profil / Abonelik</div>
+          <div class="stateRow"><span class="b">Prod-ready states</span></div>
         </div>
-        <div class="card">
-          
+<div class='card'>
         <div class="tile">
           <div class="tileText">
-            <div class="tileTitle">Örnek öğe</div>
-            <div class="tileMeta">Liste / Detay / Aksiyon</div>
+            <div class="tileTitle">Öğrenci İndirimi — Kart 1</div>
+            <div class="tileMeta">Durum etiketi • Kısa açıklama</div>
           </div>
+          <div class="tileBadge"><span class="b info">Yeni</span></div>
           <div class="tileRight">›</div>
         </div>
-          
         <div class="tile">
           <div class="tileText">
-            <div class="tileTitle">Örnek öğe</div>
-            <div class="tileMeta">Loading/Empty/Error/Offline durumları prod-ready düşünülür</div>
+            <div class="tileTitle">Öğrenci İndirimi — Kart 2</div>
+            <div class="tileMeta">Kaldığın yer • İlerleme</div>
           </div>
+          
           <div class="tileRight">›</div>
         </div>
+        <div class="tile">
+          <div class="tileText">
+            <div class="tileTitle">Öğrenci İndirimi — Kart 3</div>
+            <div class="tileMeta">Kilitli/erişim etiketi</div>
+          </div>
+          <div class="tileBadge"><span class="b info">Kilitli</span></div>
+          <div class="tileRight">›</div>
+        </div></div>
+<div class='card'><div class="kpis"><div class="kpi"><div class="kpiV">23:59</div><div class="kpiK">Deadline</div></div><div class="kpi"><div class="kpiV">08:00</div><div class="kpiK">Yeni Gün</div></div><div class="kpi"><div class="kpiV">120/300</div><div class="kpiK">Kelime</div></div></div></div>
+<div class='card'><div class='field'><label>Yanıt</label><div class='input' style='height:90px; align-items:flex-start; padding-top:10px;'>Metin taslağı…</div></div></div>
+<div class='card'><div class='h2' style='font-size:12px;'>Önkoşullar</div><div class="checklist"><div class="check"><div class="checkL"><span class="b ok">✓</span></div><div class="checkT">Önceki görev tamamlandı</div></div><div class="check"><div class="checkL"><span class="b">•</span></div><div class="checkT">Yorum teslim edildi</div></div><div class="check"><div class="checkL"><span class="b">•</span></div><div class="checkT">08:00 kapısı bekleniyor</div></div></div></div>
+<div class='card'><div class="kpis"><div class="kpi"><div class="kpiV">19/21</div><div class="kpiK">Teslim</div></div><div class="kpi"><div class="kpiV">7 gün</div><div class="kpiK">Zincir</div></div><div class="kpi"><div class="kpiV">+</div><div class="kpiK">Trend</div></div></div><div class='chart' aria-hidden='true'></div></div>
+<div class='card'>
+        <div class="tile">
+          <div class="tileText">
+            <div class="tileTitle">Verimi indir</div>
+            <div class="tileMeta">Kapsamı göster</div>
+          </div>
+          
+          <div class="tileRight">›</div>
         </div>
-        <div class="row"><button class="btn" data-go="UF13-S3-davet-et-kaldir-bekleyen-dav">Geri</button><button class="btn primary" data-go="UF14-S2-uygunluk">Devam</button></div>
+        <div class="tile">
+          <div class="tileText">
+            <div class="tileTitle">Geçmişi sil</div>
+            <div class="tileMeta">Onay adımı</div>
+          </div>
+          
+          <div class="tileRight">›</div>
+        </div>
+        <div class="tile">
+          <div class="tileText">
+            <div class="tileTitle">AI’ı devre dışı bırak</div>
+            <div class="tileMeta">Geri açılabilir</div>
+          </div>
+          
+          <div class="tileRight">›</div>
+        </div></div>
+<div class='row'><button class="btn" data-go="UF13-S3-davet-et-kaldir-bekleyen-dav">Geri</button><button class="btn primary" data-go="UF14-S2-uygunluk">Devam</button></div>
                   </div>
 
                   <div class="deviceBottom">
@@ -3173,26 +3439,63 @@
         <div class="card">
           <div class="h2">Uygunluk</div>
           <div class="muted">Öğrenci indirimi: uygunluk → doğrulama → durum/itiraz → indirimli checkout → yenileme</div>
+          <div class="stateRow"><span class="b">Prod-ready states</span></div>
         </div>
-        <div class="card">
-          
+<div class='card'>
         <div class="tile">
           <div class="tileText">
-            <div class="tileTitle">Örnek öğe</div>
-            <div class="tileMeta">Liste / Detay / Aksiyon</div>
+            <div class="tileTitle">Uygunluk — Kart 1</div>
+            <div class="tileMeta">Durum etiketi • Kısa açıklama</div>
           </div>
+          <div class="tileBadge"><span class="b info">Yeni</span></div>
           <div class="tileRight">›</div>
         </div>
-          
         <div class="tile">
           <div class="tileText">
-            <div class="tileTitle">Örnek öğe</div>
-            <div class="tileMeta">Loading/Empty/Error/Offline durumları prod-ready düşünülür</div>
+            <div class="tileTitle">Uygunluk — Kart 2</div>
+            <div class="tileMeta">Kaldığın yer • İlerleme</div>
           </div>
+          
           <div class="tileRight">›</div>
         </div>
+        <div class="tile">
+          <div class="tileText">
+            <div class="tileTitle">Uygunluk — Kart 3</div>
+            <div class="tileMeta">Kilitli/erişim etiketi</div>
+          </div>
+          <div class="tileBadge"><span class="b info">Kilitli</span></div>
+          <div class="tileRight">›</div>
+        </div></div>
+<div class='card'><div class="kpis"><div class="kpi"><div class="kpiV">23:59</div><div class="kpiK">Deadline</div></div><div class="kpi"><div class="kpiV">08:00</div><div class="kpiK">Yeni Gün</div></div><div class="kpi"><div class="kpiV">120/300</div><div class="kpiK">Kelime</div></div></div></div>
+<div class='card'><div class='field'><label>Yanıt</label><div class='input' style='height:90px; align-items:flex-start; padding-top:10px;'>Metin taslağı…</div></div></div>
+<div class='card'><div class='h2' style='font-size:12px;'>Önkoşullar</div><div class="checklist"><div class="check"><div class="checkL"><span class="b ok">✓</span></div><div class="checkT">Önceki görev tamamlandı</div></div><div class="check"><div class="checkL"><span class="b">•</span></div><div class="checkT">Yorum teslim edildi</div></div><div class="check"><div class="checkL"><span class="b">•</span></div><div class="checkT">08:00 kapısı bekleniyor</div></div></div></div>
+<div class='card'><div class="kpis"><div class="kpi"><div class="kpiV">19/21</div><div class="kpiK">Teslim</div></div><div class="kpi"><div class="kpiV">7 gün</div><div class="kpiK">Zincir</div></div><div class="kpi"><div class="kpiV">+</div><div class="kpiK">Trend</div></div></div><div class='chart' aria-hidden='true'></div></div>
+<div class='card'>
+        <div class="tile">
+          <div class="tileText">
+            <div class="tileTitle">Verimi indir</div>
+            <div class="tileMeta">Kapsamı göster</div>
+          </div>
+          
+          <div class="tileRight">›</div>
         </div>
-        <div class="row"><button class="btn" data-go="UF14-S1-ogrenci-indirimi">Geri</button><button class="btn primary" data-go="UF14-S3-dogrulama">Devam</button></div>
+        <div class="tile">
+          <div class="tileText">
+            <div class="tileTitle">Geçmişi sil</div>
+            <div class="tileMeta">Onay adımı</div>
+          </div>
+          
+          <div class="tileRight">›</div>
+        </div>
+        <div class="tile">
+          <div class="tileText">
+            <div class="tileTitle">AI’ı devre dışı bırak</div>
+            <div class="tileMeta">Geri açılabilir</div>
+          </div>
+          
+          <div class="tileRight">›</div>
+        </div></div>
+<div class='row'><button class="btn" data-go="UF14-S1-ogrenci-indirimi">Geri</button><button class="btn primary" data-go="UF14-S3-dogrulama">Devam</button></div>
                   </div>
 
                   <div class="deviceBottom">
@@ -3377,26 +3680,63 @@
         <div class="card">
           <div class="h2">Doğrulama</div>
           <div class="muted">Öğrenci indirimi: uygunluk → doğrulama → durum/itiraz → indirimli checkout → yenileme</div>
+          <div class="stateRow"><span class="b">Prod-ready states</span></div>
         </div>
-        <div class="card">
-          
+<div class='card'>
         <div class="tile">
           <div class="tileText">
-            <div class="tileTitle">Örnek öğe</div>
-            <div class="tileMeta">Liste / Detay / Aksiyon</div>
+            <div class="tileTitle">Doğrulama — Kart 1</div>
+            <div class="tileMeta">Durum etiketi • Kısa açıklama</div>
           </div>
+          <div class="tileBadge"><span class="b info">Yeni</span></div>
           <div class="tileRight">›</div>
         </div>
-          
         <div class="tile">
           <div class="tileText">
-            <div class="tileTitle">Örnek öğe</div>
-            <div class="tileMeta">Loading/Empty/Error/Offline durumları prod-ready düşünülür</div>
+            <div class="tileTitle">Doğrulama — Kart 2</div>
+            <div class="tileMeta">Kaldığın yer • İlerleme</div>
           </div>
+          
           <div class="tileRight">›</div>
         </div>
+        <div class="tile">
+          <div class="tileText">
+            <div class="tileTitle">Doğrulama — Kart 3</div>
+            <div class="tileMeta">Kilitli/erişim etiketi</div>
+          </div>
+          <div class="tileBadge"><span class="b info">Kilitli</span></div>
+          <div class="tileRight">›</div>
+        </div></div>
+<div class='card'><div class="kpis"><div class="kpi"><div class="kpiV">23:59</div><div class="kpiK">Deadline</div></div><div class="kpi"><div class="kpiV">08:00</div><div class="kpiK">Yeni Gün</div></div><div class="kpi"><div class="kpiV">120/300</div><div class="kpiK">Kelime</div></div></div></div>
+<div class='card'><div class='field'><label>Yanıt</label><div class='input' style='height:90px; align-items:flex-start; padding-top:10px;'>Metin taslağı…</div></div></div>
+<div class='card'><div class='h2' style='font-size:12px;'>Önkoşullar</div><div class="checklist"><div class="check"><div class="checkL"><span class="b ok">✓</span></div><div class="checkT">Önceki görev tamamlandı</div></div><div class="check"><div class="checkL"><span class="b">•</span></div><div class="checkT">Yorum teslim edildi</div></div><div class="check"><div class="checkL"><span class="b">•</span></div><div class="checkT">08:00 kapısı bekleniyor</div></div></div></div>
+<div class='card'><div class="kpis"><div class="kpi"><div class="kpiV">19/21</div><div class="kpiK">Teslim</div></div><div class="kpi"><div class="kpiV">7 gün</div><div class="kpiK">Zincir</div></div><div class="kpi"><div class="kpiV">+</div><div class="kpiK">Trend</div></div></div><div class='chart' aria-hidden='true'></div></div>
+<div class='card'>
+        <div class="tile">
+          <div class="tileText">
+            <div class="tileTitle">Verimi indir</div>
+            <div class="tileMeta">Kapsamı göster</div>
+          </div>
+          
+          <div class="tileRight">›</div>
         </div>
-        <div class="row"><button class="btn" data-go="UF14-S2-uygunluk">Geri</button><button class="btn primary" data-go="UF14-S4-durum-onay-red-beklemede">Devam</button></div>
+        <div class="tile">
+          <div class="tileText">
+            <div class="tileTitle">Geçmişi sil</div>
+            <div class="tileMeta">Onay adımı</div>
+          </div>
+          
+          <div class="tileRight">›</div>
+        </div>
+        <div class="tile">
+          <div class="tileText">
+            <div class="tileTitle">AI’ı devre dışı bırak</div>
+            <div class="tileMeta">Geri açılabilir</div>
+          </div>
+          
+          <div class="tileRight">›</div>
+        </div></div>
+<div class='row'><button class="btn" data-go="UF14-S2-uygunluk">Geri</button><button class="btn primary" data-go="UF14-S4-durum-onay-red-beklemede">Devam</button></div>
                   </div>
 
                   <div class="deviceBottom">
@@ -3581,26 +3921,63 @@
         <div class="card">
           <div class="h2">Durum (Onay/Red/Beklemede)</div>
           <div class="muted">Öğrenci indirimi: uygunluk → doğrulama → durum/itiraz → indirimli checkout → yenileme</div>
+          <div class="stateRow"><span class="b">Prod-ready states</span></div>
         </div>
-        <div class="card">
-          
+<div class='card'>
         <div class="tile">
           <div class="tileText">
-            <div class="tileTitle">Örnek öğe</div>
-            <div class="tileMeta">Liste / Detay / Aksiyon</div>
+            <div class="tileTitle">Durum (Onay/Red/Beklemede) — Kart 1</div>
+            <div class="tileMeta">Durum etiketi • Kısa açıklama</div>
           </div>
+          <div class="tileBadge"><span class="b info">Yeni</span></div>
           <div class="tileRight">›</div>
         </div>
-          
         <div class="tile">
           <div class="tileText">
-            <div class="tileTitle">Örnek öğe</div>
-            <div class="tileMeta">Loading/Empty/Error/Offline durumları prod-ready düşünülür</div>
+            <div class="tileTitle">Durum (Onay/Red/Beklemede) — Kart 2</div>
+            <div class="tileMeta">Kaldığın yer • İlerleme</div>
           </div>
+          
           <div class="tileRight">›</div>
         </div>
+        <div class="tile">
+          <div class="tileText">
+            <div class="tileTitle">Durum (Onay/Red/Beklemede) — Kart 3</div>
+            <div class="tileMeta">Kilitli/erişim etiketi</div>
+          </div>
+          <div class="tileBadge"><span class="b info">Kilitli</span></div>
+          <div class="tileRight">›</div>
+        </div></div>
+<div class='card'><div class="kpis"><div class="kpi"><div class="kpiV">23:59</div><div class="kpiK">Deadline</div></div><div class="kpi"><div class="kpiV">08:00</div><div class="kpiK">Yeni Gün</div></div><div class="kpi"><div class="kpiV">120/300</div><div class="kpiK">Kelime</div></div></div></div>
+<div class='card'><div class='field'><label>Yanıt</label><div class='input' style='height:90px; align-items:flex-start; padding-top:10px;'>Metin taslağı…</div></div></div>
+<div class='card'><div class='h2' style='font-size:12px;'>Önkoşullar</div><div class="checklist"><div class="check"><div class="checkL"><span class="b ok">✓</span></div><div class="checkT">Önceki görev tamamlandı</div></div><div class="check"><div class="checkL"><span class="b">•</span></div><div class="checkT">Yorum teslim edildi</div></div><div class="check"><div class="checkL"><span class="b">•</span></div><div class="checkT">08:00 kapısı bekleniyor</div></div></div></div>
+<div class='card'><div class="kpis"><div class="kpi"><div class="kpiV">19/21</div><div class="kpiK">Teslim</div></div><div class="kpi"><div class="kpiV">7 gün</div><div class="kpiK">Zincir</div></div><div class="kpi"><div class="kpiV">+</div><div class="kpiK">Trend</div></div></div><div class='chart' aria-hidden='true'></div></div>
+<div class='card'>
+        <div class="tile">
+          <div class="tileText">
+            <div class="tileTitle">Verimi indir</div>
+            <div class="tileMeta">Kapsamı göster</div>
+          </div>
+          
+          <div class="tileRight">›</div>
         </div>
-        <div class="row"><button class="btn" data-go="UF14-S3-dogrulama">Geri</button><button class="btn primary" data-go="UF14-S5-indirimli-odeme-ozeti">Devam</button></div>
+        <div class="tile">
+          <div class="tileText">
+            <div class="tileTitle">Geçmişi sil</div>
+            <div class="tileMeta">Onay adımı</div>
+          </div>
+          
+          <div class="tileRight">›</div>
+        </div>
+        <div class="tile">
+          <div class="tileText">
+            <div class="tileTitle">AI’ı devre dışı bırak</div>
+            <div class="tileMeta">Geri açılabilir</div>
+          </div>
+          
+          <div class="tileRight">›</div>
+        </div></div>
+<div class='row'><button class="btn" data-go="UF14-S3-dogrulama">Geri</button><button class="btn primary" data-go="UF14-S5-indirimli-odeme-ozeti">Devam</button></div>
                   </div>
 
                   <div class="deviceBottom">
@@ -3785,26 +4162,63 @@
         <div class="card">
           <div class="h2">İndirimli ödeme özeti</div>
           <div class="muted">Öğrenci indirimi: uygunluk → doğrulama → durum/itiraz → indirimli checkout → yenileme</div>
+          <div class="stateRow"><span class="b">Prod-ready states</span></div>
         </div>
-        <div class="card">
-          
+<div class='card'>
         <div class="tile">
           <div class="tileText">
-            <div class="tileTitle">Örnek öğe</div>
-            <div class="tileMeta">Liste / Detay / Aksiyon</div>
+            <div class="tileTitle">İlerleme Özeti</div>
+            <div class="tileMeta">19/21 gün • zincir 7</div>
           </div>
+          
           <div class="tileRight">›</div>
         </div>
-          
         <div class="tile">
           <div class="tileText">
-            <div class="tileTitle">Örnek öğe</div>
-            <div class="tileMeta">Loading/Empty/Error/Offline durumları prod-ready düşünülür</div>
+            <div class="tileTitle">Kilit Geçmişi</div>
+            <div class="tileMeta">08:00 açılma • teslim</div>
           </div>
+          <div class="tileBadge"><span class="b info">Şeffaf</span></div>
           <div class="tileRight">›</div>
         </div>
+        <div class="tile">
+          <div class="tileText">
+            <div class="tileTitle">Sertifikayı Gör</div>
+            <div class="tileMeta">Koşul sağlanınca aktif</div>
+          </div>
+          <div class="tileBadge"><span class="b info">PDF</span></div>
+          <div class="tileRight">›</div>
+        </div></div>
+<div class='card'><div class="kpis"><div class="kpi"><div class="kpiV">23:59</div><div class="kpiK">Deadline</div></div><div class="kpi"><div class="kpiV">08:00</div><div class="kpiK">Yeni Gün</div></div><div class="kpi"><div class="kpiV">120/300</div><div class="kpiK">Kelime</div></div></div></div>
+<div class='card'><div class='field'><label>Yanıt</label><div class='input' style='height:90px; align-items:flex-start; padding-top:10px;'>Metin taslağı…</div></div></div>
+<div class='card'><div class='h2' style='font-size:12px;'>Önkoşullar</div><div class="checklist"><div class="check"><div class="checkL"><span class="b ok">✓</span></div><div class="checkT">Önceki görev tamamlandı</div></div><div class="check"><div class="checkL"><span class="b">•</span></div><div class="checkT">Yorum teslim edildi</div></div><div class="check"><div class="checkL"><span class="b">•</span></div><div class="checkT">08:00 kapısı bekleniyor</div></div></div></div>
+<div class='card'><div class="kpis"><div class="kpi"><div class="kpiV">19/21</div><div class="kpiK">Teslim</div></div><div class="kpi"><div class="kpiV">7 gün</div><div class="kpiK">Zincir</div></div><div class="kpi"><div class="kpiV">+</div><div class="kpiK">Trend</div></div></div><div class='chart' aria-hidden='true'></div></div>
+<div class='card'>
+        <div class="tile">
+          <div class="tileText">
+            <div class="tileTitle">Verimi indir</div>
+            <div class="tileMeta">Kapsamı göster</div>
+          </div>
+          
+          <div class="tileRight">›</div>
         </div>
-        <div class="row"><button class="btn" data-go="UF14-S4-durum-onay-red-beklemede">Geri</button><button class="btn primary" data-go="UF14-S6-satin-alma">Devam</button></div>
+        <div class="tile">
+          <div class="tileText">
+            <div class="tileTitle">Geçmişi sil</div>
+            <div class="tileMeta">Onay adımı</div>
+          </div>
+          
+          <div class="tileRight">›</div>
+        </div>
+        <div class="tile">
+          <div class="tileText">
+            <div class="tileTitle">AI’ı devre dışı bırak</div>
+            <div class="tileMeta">Geri açılabilir</div>
+          </div>
+          
+          <div class="tileRight">›</div>
+        </div></div>
+<div class='row'><button class="btn" data-go="UF14-S4-durum-onay-red-beklemede">Geri</button><button class="btn primary" data-go="UF14-S6-satin-alma">Devam</button></div>
                   </div>
 
                   <div class="deviceBottom">
@@ -3988,7 +4402,7 @@
                     
         <div class="card">
           <div class="h2">Satın Alma</div>
-          <div class="muted">Erişim doğrulanıyor…</div>
+          <div class="muted">Erişim doğrulanıyor… (gerekirse “doğrulanıyor” durumu gösterilir)</div>
         </div>
         <div class="card">
           
@@ -3997,6 +4411,16 @@
             <div class="tileTitle">Seçili Plan</div>
             <div class="tileMeta">Aile • Aylık</div>
           </div>
+          
+          <div class="tileRight"></div>
+        </div>
+          
+        <div class="tile">
+          <div class="tileText">
+            <div class="tileTitle">Entitlement</div>
+            <div class="tileMeta">Server-side doğrulama</div>
+          </div>
+          
           <div class="tileRight"></div>
         </div>
           
@@ -4005,9 +4429,11 @@
             <div class="tileTitle">Toplam</div>
             <div class="tileMeta">₺XXX,XX</div>
           </div>
+          
           <div class="tileRight"></div>
         </div>
         </div>
+        <div class="stateRow"><span class="b">Prod-ready states</span></div>
         <div class="row"><button class="btn" data-go="UF14-S5-indirimli-odeme-ozeti">Geri</button><button class="btn primary" data-go="UF14-S7-gecit">Satın Al</button></div>
                   </div>
 
@@ -4193,26 +4619,88 @@
         <div class="card">
           <div class="h2">Geçit</div>
           <div class="muted">Öğrenci indirimi: uygunluk → doğrulama → durum/itiraz → indirimli checkout → yenileme</div>
+          <div class="stateRow"><span class="b">Prod-ready states</span></div>
         </div>
-        <div class="card">
-          
+<div class='card'>
         <div class="tile">
           <div class="tileText">
-            <div class="tileTitle">Örnek öğe</div>
-            <div class="tileMeta">Liste / Detay / Aksiyon</div>
+            <div class="tileTitle">Aç / Kapat</div>
+            <div class="tileMeta">Tercih yönetimi</div>
           </div>
+          
           <div class="tileRight">›</div>
         </div>
-          
         <div class="tile">
           <div class="tileText">
-            <div class="tileTitle">Örnek öğe</div>
-            <div class="tileMeta">Loading/Empty/Error/Offline durumları prod-ready düşünülür</div>
+            <div class="tileTitle">Zamanlama</div>
+            <div class="tileMeta">Saat / gün seçimi</div>
           </div>
+          
           <div class="tileRight">›</div>
         </div>
+        <div class="tile">
+          <div class="tileText">
+            <div class="tileTitle">Sessiz saatler</div>
+            <div class="tileMeta">DND + kanallar</div>
+          </div>
+          
+          <div class="tileRight">›</div>
+        </div></div>
+<div class='card'>
+        <div class="tile">
+          <div class="tileText">
+            <div class="tileTitle">Geçit — Kart 1</div>
+            <div class="tileMeta">Durum etiketi • Kısa açıklama</div>
+          </div>
+          <div class="tileBadge"><span class="b info">Yeni</span></div>
+          <div class="tileRight">›</div>
         </div>
-        <div class="row"><button class="btn" data-go="UF14-S6-satin-alma">Geri</button></div>
+        <div class="tile">
+          <div class="tileText">
+            <div class="tileTitle">Geçit — Kart 2</div>
+            <div class="tileMeta">Kaldığın yer • İlerleme</div>
+          </div>
+          
+          <div class="tileRight">›</div>
+        </div>
+        <div class="tile">
+          <div class="tileText">
+            <div class="tileTitle">Geçit — Kart 3</div>
+            <div class="tileMeta">Kilitli/erişim etiketi</div>
+          </div>
+          <div class="tileBadge"><span class="b info">Kilitli</span></div>
+          <div class="tileRight">›</div>
+        </div></div>
+<div class='card'><div class="kpis"><div class="kpi"><div class="kpiV">23:59</div><div class="kpiK">Deadline</div></div><div class="kpi"><div class="kpiV">08:00</div><div class="kpiK">Yeni Gün</div></div><div class="kpi"><div class="kpiV">120/300</div><div class="kpiK">Kelime</div></div></div></div>
+<div class='card'><div class='field'><label>Yanıt</label><div class='input' style='height:90px; align-items:flex-start; padding-top:10px;'>Metin taslağı…</div></div></div>
+<div class='card'><div class='h2' style='font-size:12px;'>Önkoşullar</div><div class="checklist"><div class="check"><div class="checkL"><span class="b ok">✓</span></div><div class="checkT">Önceki görev tamamlandı</div></div><div class="check"><div class="checkL"><span class="b">•</span></div><div class="checkT">Yorum teslim edildi</div></div><div class="check"><div class="checkL"><span class="b">•</span></div><div class="checkT">08:00 kapısı bekleniyor</div></div></div></div>
+<div class='card'><div class="kpis"><div class="kpi"><div class="kpiV">19/21</div><div class="kpiK">Teslim</div></div><div class="kpi"><div class="kpiV">7 gün</div><div class="kpiK">Zincir</div></div><div class="kpi"><div class="kpiV">+</div><div class="kpiK">Trend</div></div></div><div class='chart' aria-hidden='true'></div></div>
+<div class='card'>
+        <div class="tile">
+          <div class="tileText">
+            <div class="tileTitle">Verimi indir</div>
+            <div class="tileMeta">Kapsamı göster</div>
+          </div>
+          
+          <div class="tileRight">›</div>
+        </div>
+        <div class="tile">
+          <div class="tileText">
+            <div class="tileTitle">Geçmişi sil</div>
+            <div class="tileMeta">Onay adımı</div>
+          </div>
+          
+          <div class="tileRight">›</div>
+        </div>
+        <div class="tile">
+          <div class="tileText">
+            <div class="tileTitle">AI’ı devre dışı bırak</div>
+            <div class="tileMeta">Geri açılabilir</div>
+          </div>
+          
+          <div class="tileRight">›</div>
+        </div></div>
+<div class='row'><button class="btn" data-go="UF14-S6-satin-alma">Geri</button></div>
                   </div>
 
                   <div class="deviceBottom">

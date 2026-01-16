@@ -299,8 +299,24 @@ def screens_for_flow(flow: Flow) -> list[Screen]:
 
 
 def render_app_ui(screen: Screen, next_id: str | None, prev_id: str | None) -> str:
+    raise RuntimeError("render_app_ui now requires stories; call render_app_ui_from_stories()")
+
+
+def render_app_ui_from_stories(
+    screen: Screen,
+    stories: list[UserStory],
+    next_id: str | None,
+    prev_id: str | None,
+) -> str:
+    """
+    Render production-oriented UI inside the device using heuristics from US/AC.
+    US/AC codes and full details must NOT appear inside the device UI.
+    """
     t = screen.title.lower()
     raw_l = screen.raw.lower()
+    story_titles = " ".join(st.title for st in stories).lower()
+    ac_text = " ".join(" ".join(ac_to_list_items(s.acceptance_html)) for s in stories).lower()
+    corpus = " ".join([t, raw_l, story_titles, ac_text])
 
     def btn(label: str, go: str | None, primary: bool = False) -> str:
         if not go:
@@ -311,17 +327,181 @@ def render_app_ui(screen: Screen, next_id: str | None, prev_id: str | None) -> s
     back = btn("Geri", prev_id, primary=False) if prev_id else ""
     primary = btn("Devam", next_id, primary=True) if next_id else ""
 
-    def tile(title: str, meta: str = "", right: str = "›") -> str:
+    def badge(text: str, tone: str = "neutral") -> str:
+        cls = "b"
+        if tone == "ok":
+            cls = "b ok"
+        elif tone == "warn":
+            cls = "b warn"
+        elif tone == "info":
+            cls = "b info"
+        return f'<span class="{cls}">{html_escape(text)}</span>'
+
+    def tile(title: str, meta: str = "", right: str = "›", badge_text: str = "") -> str:
         m = f'<div class="tileMeta">{html_escape(meta)}</div>' if meta else ""
+        b = f'<div class="tileBadge">{badge(badge_text, "info")}</div>' if badge_text else ""
         return f"""
         <div class="tile">
           <div class="tileText">
             <div class="tileTitle">{html_escape(title)}</div>
             {m}
           </div>
+          {b}
           <div class="tileRight">{html_escape(right)}</div>
         </div>
         """.rstrip()
+
+    def checklist(items: list[tuple[str, bool]]) -> str:
+        rows = []
+        for text, ok in items:
+            icon = "✓" if ok else "•"
+            tone = "ok" if ok else "neutral"
+            rows.append(
+                f'<div class="check"><div class="checkL">{badge(icon, tone)}</div><div class="checkT">{html_escape(text)}</div></div>'
+            )
+        return '<div class="checklist">' + "".join(rows) + "</div>"
+
+    def search_bar(placeholder: str = "Ara") -> str:
+        return f"""
+        <div class="search">
+          <div class="searchIcon">⌕</div>
+          <div class="searchText">{html_escape(placeholder)}</div>
+        </div>
+        """.rstrip()
+
+    def chips(items: list[str]) -> str:
+        if not items:
+            return ""
+        return (
+            '<div class="chips">'
+            + "".join(f'<span class="chip">{html_escape(x)}</span>' for x in items)
+            + "</div>"
+        )
+
+    def kpis(items: list[tuple[str, str]]) -> str:
+        return (
+            '<div class="kpis">'
+            + "".join(
+                f'<div class="kpi"><div class="kpiV">{html_escape(v)}</div><div class="kpiK">{html_escape(k)}</div></div>'
+                for k, v in items
+            )
+            + "</div>"
+        )
+
+    def status_strip() -> str:
+        # Always show a subtle prod-ready state row (non-interactive).
+        parts: list[str] = []
+        if "skeleton" in corpus or "yüklen" in corpus:
+            parts.append(badge("Loading", "info"))
+        if "offline" in corpus or "bağlantı yok" in corpus:
+            parts.append(badge("Offline", "warn"))
+        if "hata" in corpus or "tekrar dene" in corpus:
+            parts.append(badge("Error+Retry", "warn"))
+        if "boş" in corpus or "veri yok" in corpus or "empty" in corpus:
+            parts.append(badge("Empty", "neutral"))
+        if not parts:
+            parts = [badge("Prod-ready states", "neutral")]
+        return '<div class="stateRow">' + "".join(parts) + "</div>"
+
+    def is_settings_screen() -> bool:
+        head = " ".join([t, raw_l, (screen.breadcrumb or "").lower()])
+        return any(
+            k in head
+            for k in [
+                "ayar",
+                "erişilebilir",
+                "bildirim",
+                "hatırlat",
+                "dnd",
+                "gizlilik",
+                "kontrol",
+                "dil",
+            ]
+        )
+
+    def list_item_templates() -> list[tuple[str, str, str, str]]:
+        """
+        Returns list of (title, meta, chevron, badge_text) for contextual list screens.
+        """
+        head = " ".join([t, raw_l, (screen.breadcrumb or "").lower(), screen.flow_title.lower()])
+        if "modül" in head:
+            return [
+                ("Modül 1", "Tamamlandı • 3/3 görev", "›", "Tamamlandı"),
+                ("Modül 2", "Devam • 1/3 görev", "›", "Devam"),
+                ("Modül 3", "Kilitli • Önkoşul eksik", "›", "Kilitli"),
+            ]
+        if "görev" in head:
+            return [
+                ("Görev 1", "Taslak kaydediliyor", "›", "Taslak"),
+                ("Görev 2", "Bekliyor", "›", ""),
+                ("Gönder ve Tamamla", "Deadline varsa şeffaf gösterilir", "›", "CTA"),
+            ]
+        if "sertifika" in head or "özeti" in head or "kilit geçmiş" in head:
+            return [
+                ("İlerleme Özeti", "19/21 gün • zincir 7", "›", ""),
+                ("Kilit Geçmişi", "08:00 açılma • teslim", "›", "Şeffaf"),
+                ("Sertifikayı Gör", "Koşul sağlanınca aktif", "›", "PDF"),
+            ]
+        if "koltuk" in head or "seat" in head or "kişi yönetimi" in head or "üye" in head:
+            return [
+                ("Üye: Aile Üyesi 1", "Aktif • koltuk bağlı", "›", ""),
+                ("Üye: Aile Üyesi 2", "Davet bekliyor", "›", "Bekliyor"),
+                ("Üye ekle", "Limit/plan kuralı", "›", "CTA"),
+            ]
+        if "ödeme" in head or "makbuz" in head or "işlem" in head:
+            return [
+                ("İşlem #2026", "Plan • ₺XXX,XX • Başarılı", "›", ""),
+                ("İşlem #2025", "Add-on • ₺XX,XX • Başarılı", "›", ""),
+                ("Satın alımları geri yükle", "Doğrula ve güncelle", "›", "CTA"),
+            ]
+        if "favori" in head or "arşiv" in head:
+            return [
+                ("Koleksiyon: Benim Notlarım", "12 öğe", "›", ""),
+                ("Son görüntülenenler", "Kaldığın yer ile", "›", "Son"),
+                ("Paylaş / Export", "Gizlilik önizlemesi", "›", "CTA"),
+            ]
+        if "video" in head:
+            return [
+                ("Video: Rehber 1", "7 dk • kaldığın yer", "›", "Devam"),
+                ("Koleksiyon: İbadet Rehberi", "10 video", "›", ""),
+                ("İndirilenler", "Çevrimdışı", "›", "Offline"),
+            ]
+        if "oyun" in head:
+            return [
+                ("Oyun: Quiz 1", "5 dk • seri", "›", "Başla"),
+                ("Çocuk Profili", "Veli onayı/PIN", "›", ""),
+                ("Veli Paneli", "Limit / gece modu", "›", "PIN"),
+            ]
+        if "topluluk" in head or "kulüp" in head or "grup" in head:
+            return [
+                ("Grup: Birlikte Okuma", "Üyeler • plan", "›", "Yeni"),
+                ("Kulüp: Kitap Kulübü", "Tartışma • alıntılar", "›", ""),
+                ("Davet et", "Kod/link", "›", "CTA"),
+            ]
+        if "asistan" in head:
+            return [
+                ("Hedef/Niyet", "Kısa anket", "›", ""),
+                ("Duygu Check‑in", "Bugün nasıl hissediyorsun?", "›", ""),
+                ("Plan Oluştur", "Sıklık + saat", "›", "CTA"),
+            ]
+        if "ai" in head:
+            return [
+                ("AI Sohbet", "Kaynak gösterimli", "›", "Add-on"),
+                ("Günlük Derleme", "Katalogdan seç", "›", ""),
+                ("Gizlilik & Kontrol", "İndir/sil/devre dışı", "›", ""),
+            ]
+        if "yolculuk" in head:
+            return [
+                ("Yolculuk: Örnek", "Detay • hedef", "›", ""),
+                ("Başlat", "08:00 / 23:59", "›", "CTA"),
+                ("Yolculuklarım", "Aktif/Pasif", "›", ""),
+            ]
+        base = screen.title.strip() or "İçerik"
+        return [
+            (f"{base} — Kart 1", "Durum etiketi • Kısa açıklama", "›", "Yeni"),
+            (f"{base} — Kart 2", "Kaldığın yer • İlerleme", "›", ""),
+            (f"{base} — Kart 3", "Kilitli/erişim etiketi", "›", "Kilitli"),
+        ]
 
     if "splash" in t or "oturum kontrol" in raw_l:
         return f"""
@@ -330,6 +510,7 @@ def render_app_ui(screen: Screen, next_id: str | None, prev_id: str | None) -> s
           <div class="heroLogoFallback" aria-hidden="true"></div>
           <div class="heroTitle">Hoş Geldin</div>
           <div class="heroSub">Oturum kontrol ediliyor…</div>
+          {status_strip()}
           <div class="row">{primary}</div>
         </div>
         """.rstrip()
@@ -345,6 +526,7 @@ def render_app_ui(screen: Screen, next_id: str | None, prev_id: str | None) -> s
           {tile("English")}
           {tile("Español")}
         </div>
+        {status_strip()}
         <div class="row">{back}{primary}</div>
         """.rstrip()
 
@@ -355,6 +537,7 @@ def render_app_ui(screen: Screen, next_id: str | None, prev_id: str | None) -> s
           <div class="muted">E‑posta veya telefon ile devam et.</div>
         </div>
         <div class="card">
+          {status_strip()}
           <div class="field">
             <label>E‑posta / Telefon</label>
             <div class="input">ornek@pstcoaching.com</div>
@@ -368,9 +551,10 @@ def render_app_ui(screen: Screen, next_id: str | None, prev_id: str | None) -> s
         return f"""
         <div class="card">
           <div class="h2">OTP Doğrulama</div>
-          <div class="muted">Kodu gir, hesabın oluşturulsun.</div>
+          <div class="muted">Kodu gir (retry/cooldown kuralları uygulanır).</div>
         </div>
         <div class="card">
+          {status_strip()}
           <div class="otpRow">
             <div class="otp">•</div><div class="otp">•</div><div class="otp">•</div><div class="otp">•</div><div class="otp">•</div><div class="otp">•</div>
           </div>
@@ -384,9 +568,10 @@ def render_app_ui(screen: Screen, next_id: str | None, prev_id: str | None) -> s
         return f"""
         <div class="card">
           <div class="h2">Giriş Yap</div>
-          <div class="muted">Hesabına güvenli şekilde eriş.</div>
+          <div class="muted">Güvenli giriş • Rol/plan senkronu açılışta yapılır.</div>
         </div>
         <div class="card">
+          {status_strip()}
           <div class="field">
             <label>E‑posta / Telefon</label>
             <div class="input">ornek@pstcoaching.com</div>
@@ -407,6 +592,7 @@ def render_app_ui(screen: Screen, next_id: str | None, prev_id: str | None) -> s
           <div class="muted">E‑posta/telefon doğrulaması ile sıfırla.</div>
         </div>
         <div class="card">
+          {status_strip()}
           <div class="field">
             <label>E‑posta / Telefon</label>
             <div class="input">ornek@pstcoaching.com</div>
@@ -423,6 +609,7 @@ def render_app_ui(screen: Screen, next_id: str | None, prev_id: str | None) -> s
           <div class="muted">Politikalara uygun bir şifre belirle.</div>
         </div>
         <div class="card">
+          {status_strip()}
           <div class="field">
             <label>Yeni şifre</label>
             <div class="input">••••••••••</div>
@@ -441,21 +628,26 @@ def render_app_ui(screen: Screen, next_id: str | None, prev_id: str | None) -> s
         <div class="card warn">
           <div class="h2">Oturum Süresi Doldu</div>
           <div class="muted">Devam etmek için tekrar giriş yap.</div>
+          {status_strip()}
           <div class="row">{primary}</div>
         </div>
         <div class="row">{back}</div>
         """.rstrip()
 
     if "paywall" in t:
+        reason = "Bu özellik plan gerektirir."
+        if "ai" in corpus and "add-on" in corpus:
+            reason = "Bu özellik AI Add‑on gerektirir."
         return f"""
         <div class="card">
-          <div class="h2">Bu özellik plan gerektirir</div>
-          <div class="muted">Neden kilitli olduğunu net şekilde açıklarız.</div>
+          <div class="h2">Kilitli</div>
+          <div class="muted">{html_escape(reason)} Neden kilitli olduğunu tek cümlede açıklarız.</div>
         </div>
         <div class="card">
-          {tile("Planları karşılaştır", "Bireysel • Aile • Grup")}
-          {tile("Add-on’lar", "AI / Koçluk vb.")}
+          {tile("Planları karşılaştır", "Bireysel • Aile • Grup", "›", "Şeffaf")}
+          {tile("Satın alımları geri yükle", "Ödedim ama açılmadı", "›")}
         </div>
+        {status_strip()}
         <div class="row">{back}{btn("Plan Seç", next_id, primary=True)}</div>
         """.rstrip()
 
@@ -466,10 +658,13 @@ def render_app_ui(screen: Screen, next_id: str | None, prev_id: str | None) -> s
           <div class="muted">Planlar ve kişi limitleri şeffaf görünür.</div>
         </div>
         <div class="card">
-          {tile("Bireysel", "1 kişi • Core içerikler", "Seç")}
+          {search_bar("Plan ara / karşılaştır")}
+          {chips(["Bireysel", "Aile", "Grup", "Öğrenci %50"])}
+          {tile("Bireysel", "1 kişi • Core içerikler", "Seç", "Popüler")}
           {tile("Aile", "5 kişi • Seat yönetimi", "Seç")}
           {tile("Grup", "10 kişi • Grup yönetimi", "Seç")}
         </div>
+        {status_strip()}
         <div class="row">{back}{btn("Devam Et", next_id, primary=True)}</div>
         """.rstrip()
 
@@ -477,12 +672,14 @@ def render_app_ui(screen: Screen, next_id: str | None, prev_id: str | None) -> s
         return f"""
         <div class="card">
           <div class="h2">Satın Alma</div>
-          <div class="muted">Erişim doğrulanıyor…</div>
+          <div class="muted">Erişim doğrulanıyor… (gerekirse “doğrulanıyor” durumu gösterilir)</div>
         </div>
         <div class="card">
           {tile("Seçili Plan", "Aile • Aylık", "")}
+          {tile("Entitlement", "Server-side doğrulama", "")}
           {tile("Toplam", "₺XXX,XX", "")}
         </div>
+        {status_strip()}
         <div class="row">{back}{btn("Satın Al", next_id, primary=True)}</div>
         """.rstrip()
 
@@ -492,20 +689,122 @@ def render_app_ui(screen: Screen, next_id: str | None, prev_id: str | None) -> s
           <div class="h2">Erişim Aktif</div>
           <div class="muted">Planın doğrulandı. Devam edebilirsin.</div>
         </div>
+        <div class="card">
+          {kpis([("Durum", "Aktif"), ("Rol", "Plan Sahibi"), ("Koltuk", "—")])}
+        </div>
+        {status_strip()}
         <div class="row">{btn("Ana Sayfa", next_id, primary=True)}{back}</div>
         """.rstrip()
 
-    return f"""
+    # Generic production-ready renderer based on detected features.
+    sections: list[str] = []
+    header = f"""
         <div class="card">
           <div class="h2">{html_escape(screen.title)}</div>
           <div class="muted">{html_escape(screen.breadcrumb or screen.flow_title)}</div>
+          {status_strip()}
         </div>
-        <div class="card">
-          {tile("Örnek öğe", "Liste / Detay / Aksiyon")}
-          {tile("Örnek öğe", "Loading/Empty/Error/Offline durumları prod-ready düşünülür")}
-        </div>
-        <div class="row">{back}{primary}</div>
     """.rstrip()
+    sections.append(header)
+
+    if ("arama" in corpus or "search" in corpus) and not is_settings_screen():
+        sections.append(f'<div class="card">{search_bar("Ara")}{chips(["Tümü", "Önemli", "Son"])}' + "</div>")
+
+    if "filtre" in corpus or "kategori" in corpus or "sırala" in corpus:
+        sections.append(f'<div class="card">{chips(["Filtre", "Kategori", "Sırala", "Seviye"])}' + "</div>")
+
+    if is_settings_screen():
+        sections.append(
+            "<div class='card'>"
+            + tile("Aç / Kapat", "Tercih yönetimi", "›")
+            + tile("Zamanlama", "Saat / gün seçimi", "›")
+            + tile("Sessiz saatler", "DND + kanallar", "›")
+            + "</div>"
+        )
+
+    if "liste" in corpus or "katalog" in corpus or "kütüphane" in corpus or "geçmiş" in corpus:
+        items = list_item_templates()
+        sections.append(
+            "<div class='card'>"
+            + "".join(tile(a, b, c, d) for a, b, c, d in items)
+            + "</div>"
+        )
+
+    if "yorum" in corpus or "taslak" in corpus or "gönder" in corpus or "teslim" in corpus:
+        sections.append(
+            "<div class='card'>"
+            + kpis([("Deadline", "23:59"), ("Yeni Gün", "08:00"), ("Kelime", "120/300")])
+            + "</div>"
+        )
+        sections.append(
+            "<div class='card'>"
+            + "<div class='field'><label>Yanıt</label><div class='input' style='height:90px; align-items:flex-start; padding-top:10px;'>Metin taslağı…</div></div>"
+            + "</div>"
+        )
+
+    if "önkoşul" in corpus or "checklist" in corpus or "kilit" in corpus:
+        sections.append(
+            "<div class='card'>"
+            + "<div class='h2' style='font-size:12px;'>Önkoşullar</div>"
+            + checklist(
+                [
+                    ("Önceki görev tamamlandı", True),
+                    ("Yorum teslim edildi", "teslim" in corpus),
+                    ("08:00 kapısı bekleniyor", "08:00" in corpus),
+                ]
+            )
+            + "</div>"
+        )
+
+    if "video" in corpus or "oynatıcı" in corpus or "altyaz" in corpus or "transkript" in corpus:
+        sections.append(
+            "<div class='card'>"
+            + "<div class='player'>"
+            + "<div class='playerFrame'><div class='playerPlay'>▶</div></div>"
+            + "<div class='playerRow'>"
+            + badge("1.0×", "neutral")
+            + badge("Altyazı", "info")
+            + badge("Bölümler", "neutral")
+            + "</div>"
+            + "</div>"
+            + "</div>"
+        )
+
+    if "oyun" in corpus or "veli" in corpus or "pin" in corpus:
+        sections.append(
+            "<div class='card'>"
+            + tile("Çocuk Profili", "Veli onayı/PIN", "›")
+            + tile("Süre limiti", "15 dk / 30 dk", "›")
+            + tile("Gece modu", "22:00 sonrası", "›")
+            + "</div>"
+        )
+
+    if "grafik" in corpus or "harita" in corpus or "özet" in corpus or "rapor" in corpus:
+        sections.append(
+            "<div class='card'>"
+            + kpis([("Teslim", "19/21"), ("Zincir", "7 gün"), ("Trend", "+")])
+            + "<div class='chart' aria-hidden='true'></div>"
+            + "</div>"
+        )
+
+    if "gizlilik" in corpus or "indir" in corpus or "sil" in corpus or "devre dış" in corpus:
+        sections.append(
+            "<div class='card'>"
+            + tile("Verimi indir", "Kapsamı göster", "›")
+            + tile("Geçmişi sil", "Onay adımı", "›")
+            + tile("AI’ı devre dışı bırak", "Geri açılabilir", "›")
+            + "</div>"
+        )
+
+    if len(sections) == 1:
+        sections.append(
+            "<div class='card'>"
+            + tile("Durumlar", "loading/empty/error/offline", "›")
+            + tile("Aksiyonlar", "tek CTA + geri dönüş bağlamı", "›")
+            + "</div>"
+        )
+
+    return "\n".join(sections) + f"\n<div class='row'>{back}{primary}</div>"
 
 
 def render_category_html(category: str, flows: list[Flow], story_by_code: dict[str, UserStory]) -> str:
@@ -563,6 +862,9 @@ def render_category_html(category: str, flows: list[Flow], story_by_code: dict[s
         rules_list = chunk_rules(flow.rules_raw if flow else "")
         rules_html = "\n".join(f"<li>{html_escape(r)}</li>" for r in rules_list) or "<li>—</li>"
 
+        # Render inside-device UI from matching stories (no US/AC codes inside).
+        in_device_ui = render_app_ui_from_stories(s, stories, next_id=next_id, prev_id=prev_id)
+
         pages.append(
             f"""
         <section class="page" id="{s.screen_id}" data-flow="{html_escape(s.flow_number)}">
@@ -583,7 +885,7 @@ def render_category_html(category: str, flows: list[Flow], story_by_code: dict[s
                   </div>
 
                   <div class="deviceBody">
-                    {render_app_ui(s, next_id=next_id, prev_id=prev_id)}
+                    {in_device_ui}
                   </div>
 
                   <div class="deviceBottom">
@@ -948,6 +1250,22 @@ def render_category_html(category: str, flows: list[Flow], story_by_code: dict[s
       .tileTitle {{ font-weight: 950; font-size: 12px; }}
       .tileMeta {{ margin-top: 3px; font-size: 11px; color: var(--muted); }}
       .tileRight {{ color: rgba(13, 18, 38, 0.45); font-weight: 950; }}
+      .tileBadge {{ margin-left: auto; }}
+      .b {{
+        display: inline-flex;
+        align-items: center;
+        height: 22px;
+        padding: 0 10px;
+        border-radius: 999px;
+        font-weight: 950;
+        font-size: 11px;
+        border: 1px solid rgba(230, 232, 240, 0.95);
+        background: rgba(255, 255, 255, 0.92);
+        color: rgba(13, 18, 38, 0.86);
+      }}
+      .b.info {{ background: rgba(15, 163, 177, 0.10); border-color: rgba(15, 163, 177, 0.22); }}
+      .b.warn {{ background: rgba(242, 193, 78, 0.14); border-color: rgba(242, 193, 78, 0.28); }}
+      .b.ok {{ background: rgba(3, 152, 85, 0.10); border-color: rgba(3, 152, 85, 0.22); }}
       .field {{ margin-top: 10px; }}
       .field label {{ display: block; font-size: 11px; font-weight: 900; color: rgba(13, 18, 38, 0.78); margin-bottom: 6px; }}
       .input {{
@@ -988,6 +1306,111 @@ def render_category_html(category: str, flows: list[Flow], story_by_code: dict[s
       }}
       .heroTitle {{ font-weight: 950; font-size: 18px; }}
       .heroSub {{ margin-top: 6px; color: var(--muted); font-size: 12px; }}
+      .stateRow {{
+        margin-top: 10px;
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }}
+      .search {{
+        height: 40px;
+        border-radius: 16px;
+        border: 1px solid rgba(230, 232, 240, 0.95);
+        background: rgba(255, 255, 255, 0.92);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 0 12px;
+      }}
+      .searchIcon {{ color: rgba(13, 18, 38, 0.45); font-weight: 950; }}
+      .searchText {{ color: rgba(13, 18, 38, 0.62); font-weight: 900; }}
+      .chips {{
+        margin-top: 10px;
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }}
+      .chip {{
+        height: 28px;
+        display: inline-flex;
+        align-items: center;
+        padding: 0 10px;
+        border-radius: 999px;
+        border: 1px solid rgba(230, 232, 240, 0.95);
+        background: rgba(255, 255, 255, 0.92);
+        color: rgba(13, 18, 38, 0.86);
+        font-size: 11px;
+        font-weight: 900;
+      }}
+      .kpis {{
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 10px;
+      }}
+      .kpi {{
+        border-radius: 16px;
+        border: 1px solid rgba(230, 232, 240, 0.95);
+        background: rgba(255, 255, 255, 0.92);
+        padding: 10px;
+      }}
+      .kpiV {{ font-weight: 950; font-size: 14px; }}
+      .kpiK {{ margin-top: 3px; color: var(--muted); font-size: 11px; font-weight: 900; }}
+      .chart {{
+        margin-top: 10px;
+        height: 110px;
+        border-radius: 16px;
+        border: 1px dashed rgba(30, 42, 120, 0.28);
+        background: linear-gradient(90deg, rgba(30, 42, 120, 0.08), rgba(15, 163, 177, 0.08));
+      }}
+      .playerFrame {{
+        height: 160px;
+        border-radius: 18px;
+        background: radial-gradient(600px 280px at 30% 0%, rgba(15, 163, 177, 0.22), transparent 55%),
+          radial-gradient(600px 280px at 70% 10%, rgba(30, 42, 120, 0.18), transparent 55%),
+          linear-gradient(180deg, rgba(13, 18, 38, 0.86), rgba(13, 18, 38, 0.72));
+        border: 1px solid rgba(230, 232, 240, 0.18);
+        display: grid;
+        place-items: center;
+        color: #fff;
+      }}
+      .playerPlay {{
+        width: 56px;
+        height: 56px;
+        border-radius: 999px;
+        display: grid;
+        place-items: center;
+        background: rgba(255, 255, 255, 0.14);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        font-weight: 950;
+      }}
+      .playerRow {{
+        margin-top: 10px;
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }}
+      .checklist {{
+        margin-top: 10px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }}
+      .check {{
+        display: grid;
+        grid-template-columns: 34px 1fr;
+        gap: 10px;
+        align-items: center;
+        padding: 10px;
+        border-radius: 16px;
+        border: 1px solid rgba(230, 232, 240, 0.95);
+        background: rgba(255, 255, 255, 0.92);
+      }}
+      .checkT {{
+        font-weight: 900;
+        font-size: 12px;
+        color: rgba(13, 18, 38, 0.86);
+      }}
 
       /* Info panel */
       .info {{
@@ -1295,4 +1718,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
