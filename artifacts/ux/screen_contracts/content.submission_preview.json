@@ -1,0 +1,66 @@
+{
+  "id": "content.submission_preview",
+  "title": "Submission Preview",
+  "type": "modal",
+  "route": "/content/:type/:id/reflection/:unitId/preview",
+  "purpose": "Preview reflection submission before final submit.",
+  "entryPoints": [
+    "content.reflection"
+  ],
+  "inputs": [
+    {
+      "name": "type",
+      "type": "string",
+      "required": true,
+      "source": "route"
+    },
+    {
+      "name": "id",
+      "type": "string",
+      "required": true,
+      "source": "route"
+    },
+    {
+      "name": "unitId",
+      "type": "string",
+      "required": true,
+      "source": "route"
+    }
+  ],
+  "dataDependencies": [
+    "Submission",
+    "ContentUnit"
+  ],
+  "uiStates": {
+    "loading": {
+      "description": "Show skeletons and prevent destructive actions.",
+      "actions": [
+        "retry_fetch_if_timeout"
+      ]
+    },
+    "ready": {
+      "description": "Primary content is visible and interactive."
+    },
+    "empty": {
+      "description": "No data available; show guidance and a primary CTA."
+    },
+    "error": {
+      "description": "Display error message with retry and support options."
+    },
+    "offline": {
+      "description": "Show offline banner; use cached content when possible."
+    }
+  },
+  "analytics": {
+    "screen_viewed": "content_submission_preview_viewed",
+    "events": [
+      "reflection_submitted"
+    ]
+  },
+  "acRefs": [
+    "requirements:Reading and interaction"
+  ],
+  "gates": [
+    "subscription_active_or_trial"
+  ]
+}

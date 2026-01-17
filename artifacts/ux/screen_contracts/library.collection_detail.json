@@ -1,0 +1,54 @@
+{
+  "id": "library.collection_detail",
+  "title": "Collection Detail",
+  "type": "stack",
+  "route": "/library/collections/:id",
+  "purpose": "View items inside a collection and manage membership.",
+  "entryPoints": [
+    "library.collections"
+  ],
+  "inputs": [
+    {
+      "name": "id",
+      "type": "string",
+      "required": true,
+      "source": "route"
+    }
+  ],
+  "dataDependencies": [
+    "Collection",
+    "Favorite",
+    "ContentItem"
+  ],
+  "uiStates": {
+    "loading": {
+      "description": "Show skeletons and prevent destructive actions.",
+      "actions": [
+        "retry_fetch_if_timeout"
+      ]
+    },
+    "ready": {
+      "description": "Primary content is visible and interactive."
+    },
+    "empty": {
+      "description": "No data available; show guidance and a primary CTA."
+    },
+    "error": {
+      "description": "Display error message with retry and support options."
+    },
+    "offline": {
+      "description": "Show offline banner; use cached content when possible."
+    }
+  },
+  "analytics": {
+    "screen_viewed": "library_collection_detail_viewed",
+    "events": [
+      "collection_item_removed",
+      "collection_renamed"
+    ]
+  },
+  "acRefs": [
+    "requirements:Favorites and archive"
+  ],
+  "gates": []
+}

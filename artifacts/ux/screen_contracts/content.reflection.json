@@ -1,0 +1,69 @@
+{
+  "id": "content.reflection",
+  "title": "Reflection",
+  "type": "stack",
+  "route": "/content/:type/:id/reflection/:unitId",
+  "purpose": "Answer guided reflection questions with autosave.",
+  "entryPoints": [
+    "content.reader",
+    "workshop.detail"
+  ],
+  "inputs": [
+    {
+      "name": "type",
+      "type": "string",
+      "required": true,
+      "source": "route"
+    },
+    {
+      "name": "id",
+      "type": "string",
+      "required": true,
+      "source": "route"
+    },
+    {
+      "name": "unitId",
+      "type": "string",
+      "required": true,
+      "source": "route"
+    }
+  ],
+  "dataDependencies": [
+    "ContentUnit",
+    "UnitProgress",
+    "Submission"
+  ],
+  "uiStates": {
+    "loading": {
+      "description": "Show skeletons and prevent destructive actions.",
+      "actions": [
+        "retry_fetch_if_timeout"
+      ]
+    },
+    "ready": {
+      "description": "Primary content is visible and interactive."
+    },
+    "empty": {
+      "description": "No data available; show guidance and a primary CTA."
+    },
+    "error": {
+      "description": "Display error message with retry and support options."
+    },
+    "offline": {
+      "description": "Show offline banner; use cached content when possible."
+    }
+  },
+  "analytics": {
+    "screen_viewed": "content_reflection_viewed",
+    "events": [
+      "reflection_saved",
+      "reflection_submit_tapped"
+    ]
+  },
+  "acRefs": [
+    "requirements:Reading and interaction"
+  ],
+  "gates": [
+    "subscription_active_or_trial"
+  ]
+}

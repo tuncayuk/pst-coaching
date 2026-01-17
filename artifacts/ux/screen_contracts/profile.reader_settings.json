@@ -1,0 +1,46 @@
+{
+  "id": "profile.reader_settings",
+  "title": "Reader Settings",
+  "type": "stack",
+  "route": "/profile/settings/reader",
+  "purpose": "Adjust reader settings for e-books.",
+  "entryPoints": [
+    "profile.settings",
+    "ebook.reader"
+  ],
+  "inputs": [],
+  "dataDependencies": [
+    "ReaderSettings"
+  ],
+  "uiStates": {
+    "loading": {
+      "description": "Show skeletons and prevent destructive actions.",
+      "actions": [
+        "retry_fetch_if_timeout"
+      ]
+    },
+    "ready": {
+      "description": "Primary content is visible and interactive."
+    },
+    "empty": {
+      "description": "No data available; show guidance and a primary CTA."
+    },
+    "error": {
+      "description": "Display error message with retry and support options."
+    },
+    "offline": {
+      "description": "Show offline banner; use cached content when possible."
+    }
+  },
+  "analytics": {
+    "screen_viewed": "profile_reader_settings_viewed",
+    "events": [
+      "reader_settings_changed"
+    ]
+  },
+  "acRefs": [
+    "requirements:Subscription and seats",
+    "requirements:Accessibility"
+  ],
+  "gates": []
+}

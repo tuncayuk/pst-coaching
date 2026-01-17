@@ -1,0 +1,121 @@
+{
+  "designSystem": "Material 3",
+  "version": "1.0",
+  "components": [
+    {
+      "name": "TopAppBar",
+      "usage": "Primary screen header with title and actions.",
+      "rules": ["Use large variant on top-level screens", "Keep max 2 actions"]
+    },
+    {
+      "name": "NavigationBar",
+      "usage": "Primary tab navigation for Ana Sayfa, Keşfet, Kütüphane, Gelişim, Profil.",
+      "rules": ["Always visible on tab roots", "Use labels for all items"]
+    },
+    {
+      "name": "NavigationRail",
+      "usage": "Tablet/landscape alternative to NavigationBar.",
+      "rules": ["Sync selection with tab routes"]
+    },
+    {
+      "name": "Card",
+      "usage": "Content summaries and quick actions.",
+      "rules": ["Use outlined for secondary content", "Use filled for featured content"]
+    },
+    {
+      "name": "List",
+      "usage": "Scrollable collections of content items.",
+      "rules": ["Use dividers only when necessary", "Support leading thumbnails"]
+    },
+    {
+      "name": "Chip",
+      "usage": "Filters, tags, and statuses.",
+      "rules": ["Use input chips for filters", "Use assist chips for quick actions"]
+    },
+    {
+      "name": "Button",
+      "usage": "Primary and secondary actions.",
+      "rules": ["One primary per screen", "Use tonal for secondary"]
+    },
+    {
+      "name": "FloatingActionButton",
+      "usage": "High-emphasis creation or add actions.",
+      "rules": ["Only when action is primary and persistent"]
+    },
+    {
+      "name": "TextField",
+      "usage": "Inputs for auth, search, and reflections.",
+      "rules": ["Use supporting text for validation", "Avoid placeholder as label"]
+    },
+    {
+      "name": "SegmentedButtons",
+      "usage": "Switch between content types in discovery.",
+      "rules": ["Limit to 2-5 options"]
+    },
+    {
+      "name": "Dialog",
+      "usage": "Critical confirmations and consent.",
+      "rules": ["Require explicit action for destructive changes"]
+    },
+    {
+      "name": "BottomSheet",
+      "usage": "Start content flow and filters.",
+      "rules": ["Use modal sheet for multi-step input"]
+    },
+    {
+      "name": "Snackbar",
+      "usage": "Transient feedback for non-blocking actions.",
+      "rules": ["Auto-dismiss within 4s"]
+    },
+    {
+      "name": "ProgressIndicator",
+      "usage": "Loading and progress states.",
+      "rules": ["Use linear for progress", "Use circular for blocking loads"]
+    },
+    {
+      "name": "Badge",
+      "usage": "Subscription status and notifications.",
+      "rules": ["Use semantic colors for status"]
+    },
+    {
+      "name": "Tabs",
+      "usage": "Secondary navigation within a screen.",
+      "rules": ["Use scrollable variant for many items"]
+    },
+    {
+      "name": "Slider",
+      "usage": "Reader settings and audio speed.",
+      "rules": ["Show current value as label"]
+    },
+    {
+      "name": "Switch",
+      "usage": "Toggle settings (reminders, accessibility).",
+      "rules": ["Apply changes immediately", "Provide descriptive label"]
+    },
+    {
+      "name": "Checkbox",
+      "usage": "Multi-select filters and consent.",
+      "rules": ["Use for non-exclusive selection"]
+    },
+    {
+      "name": "RadioButton",
+      "usage": "Single-select choices (language, plan type).",
+      "rules": ["Show all options in a group"]
+    },
+    {
+      "name": "Divider",
+      "usage": "Separate content groups.",
+      "rules": ["Avoid overuse in dense lists"]
+    },
+    {
+      "name": "IconButton",
+      "usage": "Compact actions (favorite, download, share).",
+      "rules": ["Provide accessible label", "Use only with clear iconography"]
+    },
+    {
+      "name": "Menu",
+      "usage": "Overflow actions for content cards.",
+      "rules": ["Keep to 5 items max"]
+    }
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "id": "library.favorite_detail",
+  "title": "Favorite Detail",
+  "type": "stack",
+  "route": "/library/favorites/:id",
+  "purpose": "View and edit a saved highlight or note.",
+  "entryPoints": [
+    "library.favorites"
+  ],
+  "inputs": [
+    {
+      "name": "id",
+      "type": "string",
+      "required": true,
+      "source": "route"
+    }
+  ],
+  "dataDependencies": [
+    "Favorite",
+    "Highlight",
+    "ContentItem"
+  ],
+  "uiStates": {
+    "loading": {
+      "description": "Show skeletons and prevent destructive actions.",
+      "actions": [
+        "retry_fetch_if_timeout"
+      ]
+    },
+    "ready": {
+      "description": "Primary content is visible and interactive."
+    },
+    "empty": {
+      "description": "No data available; show guidance and a primary CTA."
+    },
+    "error": {
+      "description": "Display error message with retry and support options."
+    },
+    "offline": {
+      "description": "Show offline banner; use cached content when possible."
+    }
+  },
+  "analytics": {
+    "screen_viewed": "library_favorite_detail_viewed",
+    "events": []
+  },
+  "acRefs": [
+    "requirements:Favorites and archive"
+  ],
+  "gates": []
+}
