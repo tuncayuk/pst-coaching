@@ -1,0 +1,13 @@
+app:
+  name: PST Coaching
+  platforms: [ios, android]
+  designSystem: material3
+  languageSupport: [tr, en, es]
+scope:
+  phase: 1
+navigation:
+  tabs: [Ana Sayfa, Keşfet, Kütüphane, Gelişim, Profil]
+constraints:
+  offline: true
+  accessibility: AA
+  analytics: true

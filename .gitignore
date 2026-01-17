@@ -1,1 +1,15 @@
+# OS
 .DS_Store
+
+# Node
+node_modules/
+
+# Build
+build/
+dist/
+
+# Logs
+*.log
+
+# Codex (if it creates local state)
+.codex/
