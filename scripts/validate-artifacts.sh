@@ -7,7 +7,7 @@ python3 - <<'PY'
 import json
 from pathlib import Path
 
-root = Path(__file__).resolve().parent.parent
+root = Path(__file__).resolve().parent
 
 required = [
   root/"artifacts"/"prd"/"PST_Mobile_PRD_Rev0.md",
