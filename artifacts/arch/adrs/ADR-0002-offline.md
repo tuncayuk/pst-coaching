@@ -4,7 +4,7 @@
 Accepted
 
 ## Context
-The PRD requires offline support for content, progress, and key library features. Screen contracts define offline states for every screen. The domain model includes downloads, progress, submissions, and entitlements that must remain consistent when connectivity is intermittent.
+The PRD requires offline support for content, progress, and key library features. Screen contracts define offline states for every screen. The domain model includes downloads, progress, submissions, and entitlements that must remain consistent when connectivity is intermittent, plus day-cycle timing rules (08:00 unlock, 23:59 cutoff).
 
 ## Decision
 - **Offline-first reads:** Persist content metadata, progress, favorites, collections, and settings in a local SQLite store.

@@ -4,7 +4,7 @@
 Accepted
 
 ## Context
-The app must implement a multi-tab navigation structure with modal/sheet flows, provide offline support, use Material 3, support i18n (tr/en/es), and capture analytics while minimizing PII. The solution must align with screen contracts and domain entities.
+The app must implement a multi-tab navigation structure with modal/sheet flows, provide offline support, use Material 3, support i18n (tr/en/es), and capture analytics while minimizing PII. The solution must align with screen contracts (including loading/empty/error/offline states) and domain entities.
 
 ## Decision
 1) **Navigation:** React Navigation v6 with Bottom Tabs + Native Stack.
