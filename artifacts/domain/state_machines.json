@@ -1,0 +1,135 @@
+{
+  "state_machines": [
+    {
+      "name": "content_progression",
+      "description": "Unit-level progression with locking and completion.",
+      "initial_state": "locked",
+      "states": [
+        "locked",
+        "available",
+        "in_progress",
+        "completed"
+      ],
+      "transitions": [
+        {
+          "from": "locked",
+          "to": "available",
+          "event": "prerequisites_met",
+          "guards": ["time_window_open", "entitlement_active"],
+          "actions": ["show_unlock_message"]
+        },
+        {
+          "from": "available",
+          "to": "in_progress",
+          "event": "start_unit",
+          "actions": ["open_unit"]
+        },
+        {
+          "from": "in_progress",
+          "to": "completed",
+          "event": "submit_reflection",
+          "guards": ["before_submission_deadline"],
+          "actions": ["lock_submission", "update_progress"]
+        },
+        {
+          "from": "in_progress",
+          "to": "completed",
+          "event": "complete_exercise",
+          "actions": ["update_progress"]
+        }
+      ],
+      "notes": [
+        "Next unit remains locked until current unit is completed.",
+        "Submission is required for reflection units when applicable."
+      ]
+    },
+    {
+      "name": "day_cycle_rules",
+      "description": "Daily unlock and submission window for content.",
+      "initial_state": "pre_unlock",
+      "states": [
+        "pre_unlock",
+        "open_window",
+        "closed_window"
+      ],
+      "transitions": [
+        {
+          "from": "pre_unlock",
+          "to": "open_window",
+          "event": "time_reaches_08_00",
+          "actions": ["unlock_today_content", "start_countdown_to_23_59"]
+        },
+        {
+          "from": "open_window",
+          "to": "closed_window",
+          "event": "time_reaches_23_59",
+          "actions": ["lock_submissions", "show_deadline_passed_behavior"]
+        },
+        {
+          "from": "closed_window",
+          "to": "pre_unlock",
+          "event": "next_day",
+          "actions": ["prepare_next_day"]
+        }
+      ],
+      "notes": [
+        "New day unlock at 08:00.",
+        "Submission deadline at 23:59; after this time, submissions are locked."
+      ]
+    },
+    {
+      "name": "subscription_entitlement_gating",
+      "description": "Controls access to content based on subscription status and add-ons.",
+      "initial_state": "no_subscription",
+      "states": [
+        "no_subscription",
+        "trial",
+        "active",
+        "canceled_grace",
+        "expired"
+      ],
+      "transitions": [
+        {
+          "from": "no_subscription",
+          "to": "trial",
+          "event": "trial_started",
+          "actions": ["grant_content_access", "sync_entitlements"]
+        },
+        {
+          "from": "no_subscription",
+          "to": "active",
+          "event": "purchase_validated",
+          "actions": ["grant_content_access", "sync_entitlements"]
+        },
+        {
+          "from": "trial",
+          "to": "active",
+          "event": "purchase_validated",
+          "actions": ["sync_entitlements"]
+        },
+        {
+          "from": "active",
+          "to": "canceled_grace",
+          "event": "subscription_canceled",
+          "actions": ["retain_access_until_period_end"]
+        },
+        {
+          "from": "canceled_grace",
+          "to": "expired",
+          "event": "period_ended",
+          "actions": ["revoke_content_access", "show_paywall"]
+        },
+        {
+          "from": "active",
+          "to": "expired",
+          "event": "payment_failed",
+          "actions": ["revoke_content_access", "show_paywall"]
+        }
+      ],
+      "notes": [
+        "Plan status badges map to active, trial, and canceled (grace) states.",
+        "Server-side validation is required to transition into active."
+      ]
+    }
+  ]
+}

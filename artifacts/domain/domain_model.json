@@ -1,0 +1,323 @@
+{
+  "app": {
+    "name": "PST Coaching",
+    "version": "1.1"
+  },
+  "entities": [
+    {
+      "name": "User",
+      "description": "Application user (plan owner or member).",
+      "fields": [
+        {"name": "id", "type": "uuid", "required": true},
+        {"name": "email", "type": "string"},
+        {"name": "phone", "type": "string"},
+        {"name": "display_name", "type": "string"},
+        {"name": "language", "type": "Language", "required": true},
+        {"name": "role", "type": "UserRole", "required": true},
+        {"name": "status", "type": "string"},
+        {"name": "created_at", "type": "datetime", "required": true}
+      ]
+    },
+    {
+      "name": "SubscriptionPlan",
+      "description": "Plan definition with seat limits and eligibility rules.",
+      "fields": [
+        {"name": "id", "type": "uuid", "required": true},
+        {"name": "name", "type": "PlanType", "required": true},
+        {"name": "seat_limit", "type": "integer", "required": true},
+        {"name": "includes_all_content", "type": "boolean", "required": true},
+        {"name": "student_discount_eligible", "type": "boolean", "required": true}
+      ]
+    },
+    {
+      "name": "AddOn",
+      "description": "Optional subscription add-on.",
+      "fields": [
+        {"name": "id", "type": "uuid", "required": true},
+        {"name": "type", "type": "AddOnType", "required": true},
+        {"name": "description", "type": "string"},
+        {"name": "eligible_plans", "type": "string[]"}
+      ]
+    },
+    {
+      "name": "Subscription",
+      "description": "Active or historical subscription.",
+      "fields": [
+        {"name": "id", "type": "uuid", "required": true},
+        {"name": "plan_id", "type": "uuid", "required": true},
+        {"name": "owner_user_id", "type": "uuid", "required": true},
+        {"name": "status", "type": "SubscriptionStatus", "required": true},
+        {"name": "platform", "type": "string", "notes": "apple|google"},
+        {"name": "student_discount_active", "type": "boolean"},
+        {"name": "start_date", "type": "date"},
+        {"name": "end_date", "type": "date"},
+        {"name": "renewal_date", "type": "date"}
+      ]
+    },
+    {
+      "name": "SubscriptionSeat",
+      "description": "Seat assignment for family/group plans.",
+      "fields": [
+        {"name": "id", "type": "uuid", "required": true},
+        {"name": "subscription_id", "type": "uuid", "required": true},
+        {"name": "user_id", "type": "uuid"},
+        {"name": "status", "type": "string", "notes": "invited|active|removed"},
+        {"name": "invited_at", "type": "datetime"}
+      ]
+    },
+    {
+      "name": "Entitlement",
+      "description": "Computed access rights for a subscription.",
+      "fields": [
+        {"name": "id", "type": "uuid", "required": true},
+        {"name": "subscription_id", "type": "uuid", "required": true},
+        {"name": "content_access", "type": "boolean", "required": true},
+        {"name": "add_on_ids", "type": "uuid[]"},
+        {"name": "last_sync_at", "type": "datetime"}
+      ]
+    },
+    {
+      "name": "ContentItem",
+      "description": "Top-level content record for all types.",
+      "fields": [
+        {"name": "id", "type": "uuid", "required": true},
+        {"name": "type", "type": "ContentType", "required": true},
+        {"name": "title", "type": "string", "required": true},
+        {"name": "description", "type": "string"},
+        {"name": "category", "type": "string"},
+        {"name": "language", "type": "Language"},
+        {"name": "cover_image_url", "type": "string"},
+        {"name": "estimated_duration", "type": "string"},
+        {"name": "status", "type": "string", "notes": "active|archived"}
+      ]
+    },
+    {
+      "name": "Journey",
+      "description": "Pre-built program composed of modules, workshops, and e-books.",
+      "fields": [
+        {"name": "id", "type": "uuid", "required": true},
+        {"name": "content_item_id", "type": "uuid", "required": true},
+        {"name": "total_days", "type": "integer"},
+        {"name": "daily_target_min", "type": "integer"},
+        {"name": "daily_target_max", "type": "integer"}
+      ]
+    },
+    {
+      "name": "Module",
+      "description": "Thematic content group that contains packages.",
+      "fields": [
+        {"name": "id", "type": "uuid", "required": true},
+        {"name": "content_item_id", "type": "uuid", "required": true}
+      ]
+    },
+    {
+      "name": "Package",
+      "description": "Module sub-unit with ordered sections.",
+      "fields": [
+        {"name": "id", "type": "uuid", "required": true},
+        {"name": "module_id", "type": "uuid", "required": true},
+        {"name": "title", "type": "string", "required": true},
+        {"name": "description", "type": "string"},
+        {"name": "order_index", "type": "integer", "required": true}
+      ]
+    },
+    {
+      "name": "Workshop",
+      "description": "Interactive content with readings and exercises.",
+      "fields": [
+        {"name": "id", "type": "uuid", "required": true},
+        {"name": "content_item_id", "type": "uuid", "required": true},
+        {"name": "total_sections", "type": "integer"}
+      ]
+    },
+    {
+      "name": "Ebook",
+      "description": "Digital book content.",
+      "fields": [
+        {"name": "id", "type": "uuid", "required": true},
+        {"name": "content_item_id", "type": "uuid", "required": true},
+        {"name": "author", "type": "string"},
+        {"name": "page_count", "type": "integer"},
+        {"name": "has_audio", "type": "boolean"}
+      ]
+    },
+    {
+      "name": "ContentUnit",
+      "description": "Ordered unit within a package, workshop, journey day, or e-book chapter.",
+      "fields": [
+        {"name": "id", "type": "uuid", "required": true},
+        {"name": "parent_type", "type": "ContentType", "required": true},
+        {"name": "parent_id", "type": "uuid", "required": true},
+        {"name": "title", "type": "string", "required": true},
+        {"name": "order_index", "type": "integer", "required": true},
+        {"name": "day_index", "type": "integer", "notes": "Used for daily progression when applicable"},
+        {"name": "unit_type", "type": "string", "notes": "reading|exercise|reflection"}
+      ]
+    },
+    {
+      "name": "UserProgress",
+      "description": "Progress per user and content item.",
+      "fields": [
+        {"name": "id", "type": "uuid", "required": true},
+        {"name": "user_id", "type": "uuid", "required": true},
+        {"name": "content_item_id", "type": "uuid", "required": true},
+        {"name": "current_unit_id", "type": "uuid"},
+        {"name": "progress_percent", "type": "number"},
+        {"name": "status", "type": "ProgressStatus", "required": true},
+        {"name": "daily_target", "type": "integer"},
+        {"name": "started_at", "type": "datetime"},
+        {"name": "completed_at", "type": "datetime"}
+      ]
+    },
+    {
+      "name": "UnitProgress",
+      "description": "Per-user unit state, used for locking and submissions.",
+      "fields": [
+        {"name": "id", "type": "uuid", "required": true},
+        {"name": "user_id", "type": "uuid", "required": true},
+        {"name": "content_unit_id", "type": "uuid", "required": true},
+        {"name": "status", "type": "ProgressStatus", "required": true},
+        {"name": "submission_status", "type": "SubmissionStatus"},
+        {"name": "opened_at", "type": "datetime"},
+        {"name": "completed_at", "type": "datetime"}
+      ]
+    },
+    {
+      "name": "Submission",
+      "description": "Reflection/comment submission for a unit.",
+      "fields": [
+        {"name": "id", "type": "uuid", "required": true},
+        {"name": "user_id", "type": "uuid", "required": true},
+        {"name": "content_unit_id", "type": "uuid", "required": true},
+        {"name": "text", "type": "string"},
+        {"name": "status", "type": "SubmissionStatus", "required": true},
+        {"name": "submitted_at", "type": "datetime"}
+      ]
+    },
+    {
+      "name": "Highlight",
+      "description": "Highlighted text and optional note.",
+      "fields": [
+        {"name": "id", "type": "uuid", "required": true},
+        {"name": "user_id", "type": "uuid", "required": true},
+        {"name": "content_item_id", "type": "uuid", "required": true},
+        {"name": "text_range", "type": "string"},
+        {"name": "note", "type": "string"},
+        {"name": "created_at", "type": "datetime"}
+      ]
+    },
+    {
+      "name": "Favorite",
+      "description": "Saved content, highlight, or note.",
+      "fields": [
+        {"name": "id", "type": "uuid", "required": true},
+        {"name": "user_id", "type": "uuid", "required": true},
+        {"name": "content_item_id", "type": "uuid"},
+        {"name": "highlight_id", "type": "uuid"},
+        {"name": "collection_id", "type": "uuid"},
+        {"name": "created_at", "type": "datetime"}
+      ]
+    },
+    {
+      "name": "Collection",
+      "description": "User-defined grouping of favorites.",
+      "fields": [
+        {"name": "id", "type": "uuid", "required": true},
+        {"name": "user_id", "type": "uuid", "required": true},
+        {"name": "name", "type": "string", "required": true},
+        {"name": "created_at", "type": "datetime"}
+      ]
+    },
+    {
+      "name": "Download",
+      "description": "Offline download record.",
+      "fields": [
+        {"name": "id", "type": "uuid", "required": true},
+        {"name": "user_id", "type": "uuid", "required": true},
+        {"name": "content_item_id", "type": "uuid", "required": true},
+        {"name": "status", "type": "DownloadStatus", "required": true},
+        {"name": "storage_bytes", "type": "integer"},
+        {"name": "updated_at", "type": "datetime"}
+      ]
+    },
+    {
+      "name": "Reminder",
+      "description": "Daily reminder setting.",
+      "fields": [
+        {"name": "id", "type": "uuid", "required": true},
+        {"name": "user_id", "type": "uuid", "required": true},
+        {"name": "time_of_day", "type": "time", "required": true},
+        {"name": "enabled", "type": "boolean", "required": true}
+      ]
+    },
+    {
+      "name": "AccessibilitySettings",
+      "description": "User accessibility preferences.",
+      "fields": [
+        {"name": "id", "type": "uuid", "required": true},
+        {"name": "user_id", "type": "uuid", "required": true},
+        {"name": "text_size", "type": "integer"},
+        {"name": "high_contrast", "type": "boolean"},
+        {"name": "reduce_motion", "type": "boolean"},
+        {"name": "theme", "type": "Theme"}
+      ]
+    },
+    {
+      "name": "ReaderSettings",
+      "description": "E-book reader settings persisted across books.",
+      "fields": [
+        {"name": "id", "type": "uuid", "required": true},
+        {"name": "user_id", "type": "uuid", "required": true},
+        {"name": "font_size", "type": "integer"},
+        {"name": "background", "type": "ReaderBackground"},
+        {"name": "line_spacing", "type": "number"}
+      ]
+    }
+  ],
+  "enums": [
+    {"name": "Language", "values": ["tr", "en", "es"]},
+    {"name": "UserRole", "values": ["plan_owner", "member"]},
+    {"name": "PlanType", "values": ["individual", "family", "group"]},
+    {"name": "SubscriptionStatus", "values": ["active", "trial", "canceled", "expired"]},
+    {"name": "AddOnType", "values": ["ai_package", "coaching_school", "extra_seat_5", "extra_seat_10"]},
+    {"name": "ContentType", "values": ["journey", "module", "package", "workshop", "ebook"]},
+    {"name": "ProgressStatus", "values": ["locked", "available", "in_progress", "completed"]},
+    {"name": "SubmissionStatus", "values": ["draft", "submitted", "locked", "late"]},
+    {"name": "DownloadStatus", "values": ["queued", "downloading", "available", "failed"]},
+    {"name": "Theme", "values": ["light", "dark", "system"]},
+    {"name": "ReaderBackground", "values": ["white", "sepia", "dark"]}
+  ],
+  "relationships": [
+    {"from": "Subscription", "to": "SubscriptionPlan", "type": "many_to_one", "field": "plan_id"},
+    {"from": "Subscription", "to": "User", "type": "many_to_one", "field": "owner_user_id"},
+    {"from": "SubscriptionSeat", "to": "Subscription", "type": "many_to_one", "field": "subscription_id"},
+    {"from": "SubscriptionSeat", "to": "User", "type": "many_to_one", "field": "user_id"},
+    {"from": "Entitlement", "to": "Subscription", "type": "many_to_one", "field": "subscription_id"},
+    {"from": "ContentItem", "to": "Journey", "type": "one_to_one", "field": "content_item_id"},
+    {"from": "ContentItem", "to": "Module", "type": "one_to_one", "field": "content_item_id"},
+    {"from": "ContentItem", "to": "Workshop", "type": "one_to_one", "field": "content_item_id"},
+    {"from": "ContentItem", "to": "Ebook", "type": "one_to_one", "field": "content_item_id"},
+    {"from": "Module", "to": "Package", "type": "one_to_many", "field": "module_id"},
+    {"from": "Package", "to": "ContentUnit", "type": "one_to_many", "field": "parent_id"},
+    {"from": "Workshop", "to": "ContentUnit", "type": "one_to_many", "field": "parent_id"},
+    {"from": "Ebook", "to": "ContentUnit", "type": "one_to_many", "field": "parent_id"},
+    {"from": "UserProgress", "to": "User", "type": "many_to_one", "field": "user_id"},
+    {"from": "UserProgress", "to": "ContentItem", "type": "many_to_one", "field": "content_item_id"},
+    {"from": "UnitProgress", "to": "User", "type": "many_to_one", "field": "user_id"},
+    {"from": "UnitProgress", "to": "ContentUnit", "type": "many_to_one", "field": "content_unit_id"},
+    {"from": "Submission", "to": "User", "type": "many_to_one", "field": "user_id"},
+    {"from": "Submission", "to": "ContentUnit", "type": "many_to_one", "field": "content_unit_id"},
+    {"from": "Highlight", "to": "User", "type": "many_to_one", "field": "user_id"},
+    {"from": "Highlight", "to": "ContentItem", "type": "many_to_one", "field": "content_item_id"},
+    {"from": "Favorite", "to": "User", "type": "many_to_one", "field": "user_id"},
+    {"from": "Favorite", "to": "ContentItem", "type": "many_to_one", "field": "content_item_id"},
+    {"from": "Favorite", "to": "Highlight", "type": "many_to_one", "field": "highlight_id"},
+    {"from": "Favorite", "to": "Collection", "type": "many_to_one", "field": "collection_id"},
+    {"from": "Collection", "to": "User", "type": "many_to_one", "field": "user_id"},
+    {"from": "Download", "to": "User", "type": "many_to_one", "field": "user_id"},
+    {"from": "Download", "to": "ContentItem", "type": "many_to_one", "field": "content_item_id"},
+    {"from": "Reminder", "to": "User", "type": "many_to_one", "field": "user_id"},
+    {"from": "AccessibilitySettings", "to": "User", "type": "one_to_one", "field": "user_id"},
+    {"from": "ReaderSettings", "to": "User", "type": "one_to_one", "field": "user_id"}
+  ]
+}
