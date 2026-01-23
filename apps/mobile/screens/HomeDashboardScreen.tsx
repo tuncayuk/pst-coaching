@@ -10,39 +10,50 @@ import {
   Text,
   useTheme,
 } from "react-native-paper";
+import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "./components/OfflineNotice";
 import { ScreenLayout } from "./components/ScreenLayout";
 import { SectionCard } from "./components/SectionCard";
 import { SkeletonBlock } from "./components/SkeletonBlock";
 import { StateMessage } from "./components/StateMessage";
 import { resolveScreenState } from "./components/ScreenState";
-
-const highlightItems = [
-  {
-    title: "Vicdandan Karaktere",
-    subtitle: "3. gün · 12 dk",
-    progress: 0.6,
-  },
-  {
-    title: "Duygu Günlüğü",
-    subtitle: "1. bölüm · 8 dk",
-    progress: 0.3,
-  },
-];
-
-const recommendations = [
-  {
-    title: "Sınır Koyma Atölyesi",
-    subtitle: "45 dk · 4 bölüm",
-  },
-  {
-    title: "Kendine Şefkat Modülü",
-    subtitle: "5 gün · 20 dk",
-  },
-];
+import { getEbooks, getJourneys, getWorkshops } from "../data/mockSelectors";
 
 const HomeReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
   const theme = useTheme();
+  const navigation = useNavigation<any>();
+  const journeys = getJourneys();
+  const workshops = getWorkshops();
+  const ebooks = getEbooks();
+  const highlightItems = [
+    {
+      title: journeys[0]?.title ?? "Vicdandan Karaktere",
+      subtitle: `${journeys[0]?.duration_days ?? 3} gün · ${journeys[0]?.daily_target ?? "12 dk"}`,
+      progress: 0.6,
+      journeyId: journeys[0]?.id,
+    },
+    {
+      title: workshops[0]?.title ?? "Duygu Günlüğü",
+      subtitle: "1. bölüm · 8 dk",
+      progress: 0.3,
+      journeyId: journeys[0]?.id,
+    },
+  ];
+
+  const recommendations = [
+    {
+      title: workshops[0]?.title ?? "Sınır Koyma Atölyesi",
+      subtitle: "45 dk · 4 bölüm",
+      target: "ContentWorkshopDetail",
+      id: workshops[0]?.id,
+    },
+    {
+      title: ebooks[0]?.title ?? "Kendine Şefkat e-Kitap",
+      subtitle: `${ebooks[0]?.total_pages ?? 120} sayfa`,
+      target: "ContentEbookDetail",
+      id: ebooks[0]?.id,
+    },
+  ];
 
   return (
     <>
@@ -60,7 +71,17 @@ const HomeReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
             {index < highlightItems.length - 1 ? <Divider style={styles.divider} /> : null}
           </View>
         ))}
-        <Button mode="contained" style={styles.primaryButton} disabled={isOffline}>
+        <Button
+          mode="contained"
+          style={styles.primaryButton}
+          disabled={isOffline}
+          onPress={() =>
+            navigation.navigate("Content", {
+              screen: "ContentJourneyHome",
+              params: { id: highlightItems[0]?.journeyId ?? journeys[0]?.id },
+            })
+          }
+        >
           Devam Et
         </Button>
       </SectionCard>
@@ -70,7 +91,16 @@ const HomeReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
           <Card key={item.title} style={styles.card}>
             <Card.Title title={item.title} subtitle={item.subtitle} />
             <Card.Actions>
-              <Button mode="outlined" disabled={isOffline}>
+              <Button
+                mode="outlined"
+                disabled={isOffline}
+                onPress={() =>
+                  navigation.navigate("Content", {
+                    screen: item.target,
+                    params: { id: item.id },
+                  })
+                }
+              >
                 İncele
               </Button>
             </Card.Actions>

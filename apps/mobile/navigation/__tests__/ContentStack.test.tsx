@@ -3,16 +3,24 @@ import { contentStackScreens, contentSheetScreenOptions, ContentStackParamList }
 describe("Content stack routes", () => {
   it("registers all content routes", () => {
     const expected: Array<keyof ContentStackParamList> = [
+      "ContentJourneyHome",
+      "ContentJourneyDay",
       "ContentJourneyDetail",
+      "ContentWorkshopHome",
+      "ContentWorkshopSection",
       "ContentWorkshopDetail",
+      "ContentModuleHome",
       "ContentModuleDetail",
       "ContentPackageDetail",
       "ContentEbookDetail",
       "ContentEbookReader",
       "ContentEbookToc",
       "ContentEbookHighlights",
+      "ContentReading",
+      "ContentExercise",
       "ContentComment",
       "ContentCommentPreview",
+      "ContentAchievement",
       "ContentReviewPrompt",
       "ContentPaywall",
     ];

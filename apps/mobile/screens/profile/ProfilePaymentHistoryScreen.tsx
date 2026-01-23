@@ -13,23 +13,30 @@ import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState } from "../components/ScreenState";
-
-const transactions = [
-  { date: "12 Ocak 2025", amount: "₺899,00", status: "Başarılı" },
-  { date: "12 Ocak 2024", amount: "₺699,00", status: "Başarılı" },
-  { date: "12 Ocak 2023", amount: "₺599,00", status: "Başarılı" },
-];
+import {
+  getPaymentTransactions,
+  getPrimaryUser,
+  getSubscriptionForUser,
+} from "../../data/mockSelectors";
 
 const ProfilePaymentHistoryContent = ({ isOffline }: { isOffline?: boolean }) => {
+  const user = getPrimaryUser();
+  const subscription = getSubscriptionForUser(user?.id);
+  const transactions = getPaymentTransactions().filter(
+    (item) => item.subscription_id === subscription?.id
+  );
+
   return (
     <>
       <SectionCard title="Ödemeler" actionLabel="">
         {transactions.map((transaction) => (
-          <Card key={transaction.date} style={styles.card}>
+          <Card key={transaction.id} style={styles.card}>
             <Card.Content style={styles.cardRow}>
-              <Text variant="bodyMedium">{transaction.date}</Text>
-              <Text variant="bodyMedium">{transaction.amount}</Text>
-              <Chip compact>{transaction.status}</Chip>
+              <Text variant="bodyMedium">{transaction.purchased_at.slice(0, 10)}</Text>
+              <Text variant="bodyMedium">
+                {transaction.amount} {transaction.currency}
+              </Text>
+              <Chip compact>Başarılı</Chip>
             </Card.Content>
             <Card.Actions>
               <Button mode="text" disabled={isOffline}>

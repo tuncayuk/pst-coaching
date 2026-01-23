@@ -7,29 +7,19 @@ import {
   Chip,
   Text,
 } from "react-native-paper";
+import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState } from "../components/ScreenState";
-
-const journeyItems = [
-  {
-    title: "Duygusal Dayanıklılık",
-    subtitle: "7 gün · 20 dk",
-  },
-  {
-    title: "Öz Şefkat",
-    subtitle: "6 gün · 15 dk",
-  },
-  {
-    title: "İlişkilerde Sınırlar",
-    subtitle: "5 gün · 18 dk",
-  },
-];
+import { getJourneys } from "../../data/mockSelectors";
 
 const DiscoverJourneysContent = ({ isOffline }: { isOffline?: boolean }) => {
+  const navigation = useNavigation<any>();
+  const journeys = getJourneys();
+
   return (
     <>
       <SectionCard title="Filtreler" actionLabel="Sıfırla">
@@ -40,15 +30,27 @@ const DiscoverJourneysContent = ({ isOffline }: { isOffline?: boolean }) => {
             </Chip>
           ))}
         </View>
-        <Text variant="bodySmall">12 yolculuk bulundu</Text>
+        <Text variant="bodySmall">{journeys.length} yolculuk bulundu</Text>
       </SectionCard>
 
       <SectionCard title="Yolculuklar" actionLabel="Sırala">
-        {journeyItems.map((item) => (
-          <Card key={item.title} style={styles.card}>
-            <Card.Title title={item.title} subtitle={item.subtitle} />
+        {journeys.map((item) => (
+          <Card key={item.id} style={styles.card}>
+            <Card.Title
+              title={item.title}
+              subtitle={`${item.duration_days ?? 0} gün · ${item.daily_target ?? "10 dk"}`}
+            />
             <Card.Actions>
-              <Button mode="outlined" disabled={isOffline}>
+              <Button
+                mode="outlined"
+                disabled={isOffline}
+                onPress={() =>
+                  navigation.navigate("Content", {
+                    screen: "ContentJourneyDetail",
+                    params: { id: item.id },
+                  })
+                }
+              >
                 İncele
               </Button>
             </Card.Actions>

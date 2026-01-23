@@ -5,8 +5,13 @@ describe("Profile stack routes", () => {
     const expected: Array<keyof ProfileStackParamList> = [
       "ProfileOverview",
       "ProfileSettings",
+      "ProfileLanguage",
+      "ProfileAccessibility",
+      "ProfileReminders",
       "ProfileAccount",
+      "ProfileChangePassword",
       "ProfileSubscription",
+      "ProfilePlanComparison",
       "ProfileCheckout",
       "ProfileAddons",
       "ProfileSeatManagement",

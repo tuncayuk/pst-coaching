@@ -8,23 +8,28 @@ import {
   List,
   Text,
 } from "react-native-paper";
+import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState } from "../components/ScreenState";
+import { getPrimaryUser } from "../../data/mockSelectors";
 
 const ProfileAccountContent = ({ isOffline }: { isOffline?: boolean }) => {
+  const navigation = useNavigation<any>();
+  const user = getPrimaryUser();
+
   return (
     <>
       <SectionCard title="Profil Bilgileri" actionLabel="Düzenle">
         <View style={styles.profileHeader}>
-          <Avatar.Text size={64} label="EA" />
+          <Avatar.Text size={64} label={(user?.email ?? "EA").slice(0, 2).toUpperCase()} />
           <View style={styles.profileInfo}>
-            <Text variant="titleMedium">Elif Aksoy</Text>
-            <Text variant="bodySmall">elif@example.com</Text>
-            <Text variant="bodySmall">+90 555 123 45 67</Text>
+            <Text variant="titleMedium">{user?.email ?? "Kullanıcı"}</Text>
+            <Text variant="bodySmall">{user?.email ?? "demo@pstcoaching.app"}</Text>
+            <Text variant="bodySmall">{user?.phone ?? "+90 555 123 45 67"}</Text>
           </View>
         </View>
         <Button mode="outlined" style={styles.actionButton} disabled={isOffline}>
@@ -37,6 +42,7 @@ const ProfileAccountContent = ({ isOffline }: { isOffline?: boolean }) => {
           title="Şifre Değiştir"
           description="Son güncelleme 2 ay önce"
           left={(props) => <List.Icon {...props} icon="lock-outline" />}
+          onPress={() => navigation.navigate("ProfileChangePassword")}
         />
         <Divider />
         <List.Item
@@ -60,6 +66,7 @@ const ProfileAccountContent = ({ isOffline }: { isOffline?: boolean }) => {
           title="Çıkış Yap"
           description="Hesabından güvenli çıkış"
           left={(props) => <List.Icon {...props} icon="logout" />}
+          onPress={() => navigation.navigate("ProfileLogoutConfirm")}
         />
       </SectionCard>
     </>

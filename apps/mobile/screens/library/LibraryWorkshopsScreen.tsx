@@ -7,29 +7,21 @@ import {
   Chip,
   Text,
 } from "react-native-paper";
+import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState } from "../components/ScreenState";
-
-const upcomingWorkshops = [
-  {
-    title: "Stres Yönetimi",
-    subtitle: "45 dk · Canlı",
-    time: "Bugün 20:00",
-  },
-  {
-    title: "Nefes ve Denge",
-    subtitle: "30 dk · Kayıt",
-    time: "Yarın 10:00",
-  },
-];
+import { getWorkshops } from "../../data/mockSelectors";
 
 const categories = ["Canlı", "Kayıt", "Mini", "Toplu"];
 
 const LibraryWorkshopsContent = ({ isOffline }: { isOffline?: boolean }) => {
+  const navigation = useNavigation<any>();
+  const upcomingWorkshops = getWorkshops();
+
   return (
     <>
       <SectionCard title="Kategoriler" actionLabel="Filtre">
@@ -44,13 +36,22 @@ const LibraryWorkshopsContent = ({ isOffline }: { isOffline?: boolean }) => {
 
       <SectionCard title="Yaklaşan Atölyeler" actionLabel="Takvim">
         {upcomingWorkshops.map((workshop) => (
-          <Card key={workshop.title} style={styles.card}>
-            <Card.Title title={workshop.title} subtitle={workshop.subtitle} />
+          <Card key={workshop.id} style={styles.card}>
+            <Card.Title title={workshop.title} subtitle={workshop.description} />
             <Card.Content>
-              <Text variant="bodySmall">{workshop.time}</Text>
+              <Text variant="bodySmall">Bugün 20:00</Text>
             </Card.Content>
             <Card.Actions>
-              <Button mode="outlined" disabled={isOffline}>
+              <Button
+                mode="outlined"
+                disabled={isOffline}
+                onPress={() =>
+                  navigation.navigate("Content", {
+                    screen: "ContentWorkshopHome",
+                    params: { id: workshop.id },
+                  })
+                }
+              >
                 Kaydol
               </Button>
             </Card.Actions>

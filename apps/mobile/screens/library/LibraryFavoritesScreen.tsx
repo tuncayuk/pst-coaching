@@ -6,27 +6,48 @@ import {
   Card,
   Chip,
 } from "react-native-paper";
+import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState } from "../components/ScreenState";
-
-const favoriteItems = [
-  {
-    title: "Nefes Egzersizi",
-    subtitle: "Atölye · 15 dk",
-  },
-  {
-    title: "Kendine Şefkat",
-    subtitle: "Yolculuk · 7 gün",
-  },
-];
+import {
+  getEbooks,
+  getFavoritesForUser,
+  getJourneys,
+  getModules,
+  getNotes,
+  getPrimaryUser,
+  getWorkshops,
+} from "../../data/mockSelectors";
 
 const filters = ["Tümü", "Yolculuk", "Atölye", "Modül", "e-Kitap"];
 
 const LibraryFavoritesContent = ({ isOffline }: { isOffline?: boolean }) => {
+  const navigation = useNavigation<any>();
+  const user = getPrimaryUser();
+  const favorites = getFavoritesForUser(user?.id);
+  const journeys = getJourneys();
+  const workshops = getWorkshops();
+  const modules = getModules();
+  const ebooks = getEbooks();
+  const notes = getNotes();
+  const favoriteItems = favorites.map((favorite) => {
+    const contentItem =
+      journeys.find((item) => item.id === favorite.item_id) ??
+      workshops.find((item) => item.id === favorite.item_id) ??
+      modules.find((item) => item.id === favorite.item_id) ??
+      ebooks.find((item) => item.id === favorite.item_id);
+    const noteItem = notes.find((item) => item.id === favorite.item_id);
+    return {
+      id: favorite.id,
+      title: contentItem?.title ?? noteItem?.text ?? "Favori",
+      subtitle: contentItem ? "İçerik" : "Not",
+    };
+  });
+
   return (
     <>
       <SectionCard title="Filtre" actionLabel="Sırala">
@@ -41,10 +62,14 @@ const LibraryFavoritesContent = ({ isOffline }: { isOffline?: boolean }) => {
 
       <SectionCard title="Favoriler" actionLabel="Tümü">
         {favoriteItems.map((item) => (
-          <Card key={item.title} style={styles.card}>
+          <Card key={item.id} style={styles.card}>
             <Card.Title title={item.title} subtitle={item.subtitle} />
             <Card.Actions>
-              <Button mode="outlined" disabled={isOffline}>
+              <Button
+                mode="outlined"
+                disabled={isOffline}
+                onPress={() => navigation.navigate("LibraryFavoriteDetail", { id: item.id })}
+              >
                 Aç
               </Button>
             </Card.Actions>

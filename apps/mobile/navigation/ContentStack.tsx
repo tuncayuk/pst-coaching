@@ -2,15 +2,23 @@ import React from "react";
 import { createNativeStackNavigator, NativeStackNavigationOptions } from "@react-navigation/native-stack";
 import { ScreenState } from "../screens/components/ScreenState";
 import { ContentJourneyDetailScreen } from "../screens/content/ContentJourneyDetailScreen";
+import { ContentJourneyHomeScreen } from "../screens/content/ContentJourneyHomeScreen";
+import { ContentJourneyDayScreen } from "../screens/content/ContentJourneyDayScreen";
 import { ContentWorkshopDetailScreen } from "../screens/content/ContentWorkshopDetailScreen";
+import { ContentWorkshopHomeScreen } from "../screens/content/ContentWorkshopHomeScreen";
+import { ContentWorkshopSectionScreen } from "../screens/content/ContentWorkshopSectionScreen";
 import { ContentModuleDetailScreen } from "../screens/content/ContentModuleDetailScreen";
+import { ContentModuleHomeScreen } from "../screens/content/ContentModuleHomeScreen";
 import { ContentPackageDetailScreen } from "../screens/content/ContentPackageDetailScreen";
 import { ContentEbookDetailScreen } from "../screens/content/ContentEbookDetailScreen";
 import { ContentEbookReaderScreen } from "../screens/content/ContentEbookReaderScreen";
 import { ContentEbookTocScreen } from "../screens/content/ContentEbookTocScreen";
 import { ContentEbookHighlightsScreen } from "../screens/content/ContentEbookHighlightsScreen";
+import { ContentReadingScreen } from "../screens/content/ContentReadingScreen";
+import { ContentExerciseScreen } from "../screens/content/ContentExerciseScreen";
 import { ContentCommentScreen } from "../screens/content/ContentCommentScreen";
 import { ContentCommentPreviewScreen } from "../screens/content/ContentCommentPreviewScreen";
+import { ContentAchievementScreen } from "../screens/content/ContentAchievementScreen";
 import { ContentReviewPromptScreen } from "../screens/content/ContentReviewPromptScreen";
 import { ContentPaywallScreen } from "../screens/content/ContentPaywallScreen";
 
@@ -23,16 +31,24 @@ type ContentItemParam = { contentItemId: string; state?: ScreenState };
 type ReviewPromptParam = { targetType: string; id: string; state?: ScreenState };
 
 export type ContentStackParamList = {
+  ContentJourneyHome: ContentIdParam;
+  ContentJourneyDay: { id: string; day: string; state?: ScreenState };
   ContentJourneyDetail: ContentIdParam;
+  ContentWorkshopHome: ContentIdParam;
+  ContentWorkshopSection: { id: string; sectionId: string; state?: ScreenState };
   ContentWorkshopDetail: ContentIdParam;
+  ContentModuleHome: ContentIdParam;
   ContentModuleDetail: ContentIdParam;
   ContentPackageDetail: ContentIdParam;
   ContentEbookDetail: ContentIdParam;
   ContentEbookReader: ContentIdParam;
   ContentEbookToc: ContentIdParam;
   ContentEbookHighlights: ContentIdParam;
+  ContentReading: ContentIdParam;
+  ContentExercise: ContentIdParam;
   ContentComment: ContentItemParam;
   ContentCommentPreview: ContentItemParam;
+  ContentAchievement: ContentIdParam;
   ContentReviewPrompt: ReviewPromptParam;
   ContentPaywall: ScreenStateParam;
 };
@@ -53,8 +69,13 @@ type ContentStackScreen = {
 };
 
 export const contentStackScreens: ContentStackScreen[] = [
+  { name: "ContentJourneyHome", component: ContentJourneyHomeScreen },
+  { name: "ContentJourneyDay", component: ContentJourneyDayScreen },
   { name: "ContentJourneyDetail", component: ContentJourneyDetailScreen },
+  { name: "ContentWorkshopHome", component: ContentWorkshopHomeScreen },
+  { name: "ContentWorkshopSection", component: ContentWorkshopSectionScreen },
   { name: "ContentWorkshopDetail", component: ContentWorkshopDetailScreen },
+  { name: "ContentModuleHome", component: ContentModuleHomeScreen },
   { name: "ContentModuleDetail", component: ContentModuleDetailScreen },
   { name: "ContentPackageDetail", component: ContentPackageDetailScreen },
   { name: "ContentEbookDetail", component: ContentEbookDetailScreen },
@@ -65,8 +86,11 @@ export const contentStackScreens: ContentStackScreen[] = [
     options: contentSheetScreenOptions.ContentEbookToc,
   },
   { name: "ContentEbookHighlights", component: ContentEbookHighlightsScreen },
+  { name: "ContentReading", component: ContentReadingScreen },
+  { name: "ContentExercise", component: ContentExerciseScreen },
   { name: "ContentComment", component: ContentCommentScreen },
   { name: "ContentCommentPreview", component: ContentCommentPreviewScreen },
+  { name: "ContentAchievement", component: ContentAchievementScreen },
   {
     name: "ContentReviewPrompt",
     component: ContentReviewPromptScreen,

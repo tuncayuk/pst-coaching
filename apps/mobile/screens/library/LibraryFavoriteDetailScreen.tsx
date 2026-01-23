@@ -14,18 +14,43 @@ import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState } from "../components/ScreenState";
+import {
+  getEbooks,
+  getFavoritesForUser,
+  getJourneys,
+  getModules,
+  getNotes,
+  getPrimaryUser,
+  getWorkshops,
+} from "../../data/mockSelectors";
 
 const focusTags = ["Şefkat", "Nefes", "Uyku"];
 
-const LibraryFavoriteDetailContent = ({ isOffline }: { isOffline?: boolean }) => {
+const LibraryFavoriteDetailContent = ({
+  favoriteId,
+  isOffline,
+}: {
+  favoriteId?: string;
+  isOffline?: boolean;
+}) => {
+  const user = getPrimaryUser();
+  const favorite = getFavoritesForUser(user?.id).find((item) => item.id === favoriteId);
+  const contentItem =
+    getJourneys().find((item) => item.id === favorite?.item_id) ??
+    getWorkshops().find((item) => item.id === favorite?.item_id) ??
+    getModules().find((item) => item.id === favorite?.item_id) ??
+    getEbooks().find((item) => item.id === favorite?.item_id);
+  const noteItem = getNotes().find((item) => item.id === favorite?.item_id);
+
   return (
     <>
       <SectionCard title="Favori Detay">
         <Text variant="titleMedium" style={styles.title}>
-          Kendine Nazik Olma
+          {contentItem?.title ?? noteItem?.text ?? "Favori İçerik"}
         </Text>
         <Text variant="bodyMedium" style={styles.paragraph}>
-          Bu atölye, günlük yaşamda kendine daha şefkatli yaklaşman için pratikler sunar.
+          {contentItem?.description ??
+            "Bu içerik, kişisel gelişim yolculuğunda sana rehberlik etmek için hazırlandı."}
         </Text>
         <View style={styles.tagRow}>
           {focusTags.map((tag) => (
@@ -70,9 +95,10 @@ const LibraryFavoriteDetailContent = ({ isOffline }: { isOffline?: boolean }) =>
 export const LibraryFavoriteDetailScreen = ({
   route,
 }: {
-  route?: { params?: { state?: string } };
+  route?: { params?: { state?: string; id?: string } };
 }) => {
   const state = resolveScreenState(route);
+  const favoriteId = route?.params?.id;
 
   if (state === "loading") {
     return (
@@ -120,14 +146,14 @@ export const LibraryFavoriteDetailScreen = ({
     return (
       <ScreenLayout title="Favori Detay" subtitle="Önbellekteki içerik">
         <OfflineNotice />
-        <LibraryFavoriteDetailContent isOffline />
+        <LibraryFavoriteDetailContent favoriteId={favoriteId} isOffline />
       </ScreenLayout>
     );
   }
 
   return (
     <ScreenLayout title="Favori Detay" subtitle="Favori içeriğin">
-      <LibraryFavoriteDetailContent />
+      <LibraryFavoriteDetailContent favoriteId={favoriteId} />
     </ScreenLayout>
   );
 };

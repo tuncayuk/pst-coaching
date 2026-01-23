@@ -8,33 +8,43 @@ import {
   Switch,
   Text,
 } from "react-native-paper";
+import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState } from "../components/ScreenState";
+import { getAccessibilitySettings, getPrimaryUser, getReminderSettings } from "../../data/mockSelectors";
 
 const ProfileSettingsContent = ({ isOffline }: { isOffline?: boolean }) => {
+  const navigation = useNavigation<any>();
+  const user = getPrimaryUser();
+  const accessibility = getAccessibilitySettings().find((item) => item.user_id === user?.id);
+  const reminders = getReminderSettings().find((item) => item.user_id === user?.id);
+
   return (
     <>
       <SectionCard title="Genel Ayarlar" actionLabel="">
         <List.Item
           title="Dil"
-          description="Türkçe"
+          description={user?.language?.toUpperCase() ?? "TR"}
           left={(props) => <List.Icon {...props} icon="translate" />}
+          onPress={() => navigation.navigate("ProfileLanguage")}
         />
         <Divider />
         <List.Item
           title="Hatırlatmalar"
-          description="Haftada 3 gün"
+          description={reminders?.enabled ? "Açık" : "Kapalı"}
           left={(props) => <List.Icon {...props} icon="bell-outline" />}
+          onPress={() => navigation.navigate("ProfileReminders")}
         />
         <Divider />
         <List.Item
           title="Erişilebilirlik"
-          description="Dinamik yazı tipi"
+          description={accessibility?.text_size ?? "medium"}
           left={(props) => <List.Icon {...props} icon="human-handsup" />}
+          onPress={() => navigation.navigate("ProfileAccessibility")}
         />
       </SectionCard>
 

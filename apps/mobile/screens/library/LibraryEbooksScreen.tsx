@@ -8,29 +8,30 @@ import {
   ProgressBar,
   Text,
 } from "react-native-paper";
+import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState } from "../components/ScreenState";
-
-const ebooks = [
-  {
-    title: "Öz Şefkat Rehberi",
-    subtitle: "120 sayfa",
-    progress: 0.3,
-  },
-  {
-    title: "Zor Konuşmalar",
-    subtitle: "80 sayfa",
-    progress: 0.75,
-  },
-];
+import { getEbookProgressForUser, getEbooks, getPrimaryUser } from "../../data/mockSelectors";
 
 const filters = ["Yeni", "Devam Eden", "Tamamlanan", "İndirilen"];
 
 const LibraryEbooksContent = ({ isOffline }: { isOffline?: boolean }) => {
+  const navigation = useNavigation<any>();
+  const user = getPrimaryUser();
+  const ebooks = getEbooks();
+  const progress = getEbookProgressForUser(user?.id);
+  const ebooksWithProgress = ebooks.map((book) => {
+    const found = progress.find((item) => item.ebook_id === book.id);
+    return {
+      ...book,
+      progress: (found?.progress_percent ?? 0) / 100,
+    };
+  });
+
   return (
     <>
       <SectionCard title="Filtre" actionLabel="Sırala">
@@ -44,9 +45,9 @@ const LibraryEbooksContent = ({ isOffline }: { isOffline?: boolean }) => {
       </SectionCard>
 
       <SectionCard title="e-Kitaplar" actionLabel="Tümü">
-        {ebooks.map((book) => (
-          <Card key={book.title} style={styles.card}>
-            <Card.Title title={book.title} subtitle={book.subtitle} />
+        {ebooksWithProgress.map((book) => (
+          <Card key={book.id} style={styles.card}>
+            <Card.Title title={book.title} subtitle={`${book.total_pages ?? 0} sayfa`} />
             <Card.Content>
               <Text variant="bodySmall" style={styles.progressLabel}>
                 {Math.round(book.progress * 100)}% tamamlandı
@@ -54,7 +55,16 @@ const LibraryEbooksContent = ({ isOffline }: { isOffline?: boolean }) => {
               <ProgressBar progress={book.progress} />
             </Card.Content>
             <Card.Actions>
-              <Button mode="outlined" disabled={isOffline}>
+              <Button
+                mode="outlined"
+                disabled={isOffline}
+                onPress={() =>
+                  navigation.navigate("Content", {
+                    screen: "ContentEbookReader",
+                    params: { id: book.id },
+                  })
+                }
+              >
                 Oku
               </Button>
             </Card.Actions>

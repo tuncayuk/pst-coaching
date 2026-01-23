@@ -12,27 +12,21 @@ import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState } from "../components/ScreenState";
-
-const downloads = [
-  {
-    title: "Öz Şefkat e-Kitap",
-    subtitle: "PDF · 18 MB",
-    status: "Tamamlandı",
-  },
-  {
-    title: "Nefes Atölyesi",
-    subtitle: "Video · 250 MB",
-    status: "Kısmen indirildi",
-  },
-];
+import { getDownloadsForUser, getPrimaryUser } from "../../data/mockSelectors";
 
 const LibraryDownloadsContent = ({ isOffline }: { isOffline?: boolean }) => {
+  const user = getPrimaryUser();
+  const downloads = getDownloadsForUser(user?.id);
+
   return (
     <>
       <SectionCard title="İndirilenler" actionLabel="Temizle">
         {downloads.map((item) => (
-          <Card key={item.title} style={styles.card}>
-            <Card.Title title={item.title} subtitle={item.subtitle} />
+          <Card key={item.id} style={styles.card}>
+            <Card.Title
+              title={`İndirilen ${item.content_type}`}
+              subtitle={`${(item.size_bytes / 1048576).toFixed(1)} MB`}
+            />
             <Card.Content>
               <Text variant="bodySmall">Durum: {item.status}</Text>
             </Card.Content>

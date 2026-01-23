@@ -13,19 +13,35 @@ import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState } from "../components/ScreenState";
-
-const seats = [
-  { name: "Elif Aksoy", role: "Plan sahibi", status: "Aktif" },
-  { name: "Deniz A.", role: "Üye", status: "Aktif" },
-  { name: "Davet Bekliyor", role: "Üye", status: "Beklemede" },
-];
+import {
+  getInvitesForSubscription,
+  getPrimaryUser,
+  getSeatsForSubscription,
+  getSubscriptionForUser,
+  getUsers,
+} from "../../data/mockSelectors";
 
 const ProfileSeatManagementContent = ({ isOffline }: { isOffline?: boolean }) => {
+  const user = getPrimaryUser();
+  const subscription = getSubscriptionForUser(user?.id);
+  const seats = getSeatsForSubscription(subscription?.id);
+  const invites = getInvitesForSubscription(subscription?.id);
+  const users = getUsers();
+  const seatEntries = seats.map((seat) => {
+    const seatUser = users.find((entry) => entry.id === seat.user_id);
+    return {
+      id: seat.id,
+      name: seatUser?.email ?? "Boş Koltuk",
+      role: seatUser?.id === subscription?.owner_user_id ? "Plan sahibi" : "Üye",
+      status: seat.status === "available" ? "Boş" : "Aktif",
+    };
+  });
+
   return (
     <>
       <SectionCard title="Kişiler" actionLabel="">
-        {seats.map((seat) => (
-          <Card key={seat.name} style={styles.card}>
+        {seatEntries.map((seat) => (
+          <Card key={seat.id} style={styles.card}>
             <Card.Content style={styles.cardRow}>
               <View>
                 <Text variant="bodyMedium">{seat.name}</Text>
@@ -48,11 +64,13 @@ const ProfileSeatManagementContent = ({ isOffline }: { isOffline?: boolean }) =>
       <SectionCard title="Koltuk Kullanımı" actionLabel="">
         <View style={styles.row}>
           <Text variant="bodyMedium">Kullanılan</Text>
-          <Text variant="bodyMedium">2 / 4</Text>
+          <Text variant="bodyMedium">
+            {seatEntries.filter((seat) => seat.status === "Aktif").length} / {seatEntries.length}
+          </Text>
         </View>
         <View style={styles.row}>
           <Text variant="bodyMedium">Bekleyen Davet</Text>
-          <Text variant="bodyMedium">1</Text>
+          <Text variant="bodyMedium">{invites.length}</Text>
         </View>
       </SectionCard>
     </>

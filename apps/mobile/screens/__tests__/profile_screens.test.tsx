@@ -1,8 +1,13 @@
 import React from "react";
 import { render } from "@testing-library/react-native";
 import { ProfileSettingsScreen } from "../profile/ProfileSettingsScreen";
+import { ProfileLanguageScreen } from "../profile/ProfileLanguageScreen";
+import { ProfileAccessibilityScreen } from "../profile/ProfileAccessibilityScreen";
+import { ProfileRemindersScreen } from "../profile/ProfileRemindersScreen";
 import { ProfileAccountScreen } from "../profile/ProfileAccountScreen";
+import { ProfileChangePasswordScreen } from "../profile/ProfileChangePasswordScreen";
 import { ProfileSubscriptionScreen } from "../profile/ProfileSubscriptionScreen";
+import { ProfilePlanComparisonScreen } from "../profile/ProfilePlanComparisonScreen";
 import { ProfileCheckoutScreen } from "../profile/ProfileCheckoutScreen";
 import { ProfileAddonsScreen } from "../profile/ProfileAddonsScreen";
 import { ProfileSeatManagementScreen } from "../profile/ProfileSeatManagementScreen";
@@ -24,6 +29,39 @@ const cases = [
     },
   },
   {
+    name: "profile.language",
+    Screen: ProfileLanguageScreen,
+    expectations: {
+      loading: "Dil hazırlanıyor",
+      ready: "Dilini seç",
+      empty: "Dil bulunamadı",
+      error: "Dil yüklenemedi",
+      offline: "Çevrimdışısınız",
+    },
+  },
+  {
+    name: "profile.accessibility",
+    Screen: ProfileAccessibilityScreen,
+    expectations: {
+      loading: "Ayarlar hazırlanıyor",
+      ready: "Erişilebilirlik ayarları",
+      empty: "Ayar bulunamadı",
+      error: "Ayarlar yüklenemedi",
+      offline: "Çevrimdışısınız",
+    },
+  },
+  {
+    name: "profile.reminders",
+    Screen: ProfileRemindersScreen,
+    expectations: {
+      loading: "Ayarlar hazırlanıyor",
+      ready: "Günlük hatırlatıcı",
+      empty: "Hatırlatıcı bulunamadı",
+      error: "Hatırlatıcı yüklenemedi",
+      offline: "Çevrimdışısınız",
+    },
+  },
+  {
     name: "profile.account",
     Screen: ProfileAccountScreen,
     expectations: {
@@ -35,6 +73,17 @@ const cases = [
     },
   },
   {
+    name: "profile.change_password",
+    Screen: ProfileChangePasswordScreen,
+    expectations: {
+      loading: "Şifre hazırlanıyor",
+      ready: "Şifreni güncelle",
+      empty: "Şifre bilgisi yok",
+      error: "Şifre değiştirilemedi",
+      offline: "Çevrimdışısınız",
+    },
+  },
+  {
     name: "profile.subscription",
     Screen: ProfileSubscriptionScreen,
     expectations: {
@@ -42,6 +91,17 @@ const cases = [
       ready: "Planını yönet",
       empty: "Abonelik bulunamadı",
       error: "Abonelik yüklenemedi",
+      offline: "Çevrimdışısınız",
+    },
+  },
+  {
+    name: "profile.plan_comparison",
+    Screen: ProfilePlanComparisonScreen,
+    expectations: {
+      loading: "Planlar hazırlanıyor",
+      ready: "Planları karşılaştır",
+      empty: "Plan bulunamadı",
+      error: "Planlar yüklenemedi",
       offline: "Çevrimdışısınız",
     },
   },

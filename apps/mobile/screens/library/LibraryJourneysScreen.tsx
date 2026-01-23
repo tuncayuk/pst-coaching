@@ -8,38 +8,30 @@ import {
   ProgressBar,
   Text,
 } from "react-native-paper";
+import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState } from "../components/ScreenState";
-
-const activeJourneys = [
-  {
-    title: "Duygularla Barış",
-    progress: 0.45,
-    next: "2. Gün · Niyet belirleme",
-  },
-  {
-    title: "Sınırlarını Güçlendir",
-    progress: 0.2,
-    next: "Başlangıç · Tanışma",
-  },
-];
-
-const suggestedJourneys = [
-  {
-    title: "Kendine Şefkat",
-    subtitle: "7 gün · 5 içerik",
-  },
-  {
-    title: "İlişkilerde Denge",
-    subtitle: "10 gün · 8 içerik",
-  },
-];
+import { getJourneys } from "../../data/mockSelectors";
 
 const LibraryJourneysContent = ({ isOffline }: { isOffline?: boolean }) => {
+  const navigation = useNavigation<any>();
+  const journeys = getJourneys();
+  const activeJourneys = journeys.slice(0, 2).map((journey, index) => ({
+    id: journey.id,
+    title: journey.title,
+    progress: 0.2 + index * 0.2,
+    next: `Gün ${index + 1} · ${journey.daily_target ?? "10 dk"}`,
+  }));
+  const suggestedJourneys = journeys.slice(2, 4).map((journey) => ({
+    id: journey.id,
+    title: journey.title,
+    subtitle: `${journey.duration_days ?? 0} gün · ${journey.daily_target ?? "10 dk"}`,
+  }));
+
   return (
     <>
       <SectionCard title="Aktif Yolculuklar" actionLabel="Tümü">
@@ -55,7 +47,17 @@ const LibraryJourneysContent = ({ isOffline }: { isOffline?: boolean }) => {
             <ProgressBar progress={journey.progress} />
           </View>
         ))}
-        <Button mode="contained" disabled={isOffline} style={styles.primaryButton}>
+        <Button
+          mode="contained"
+          disabled={isOffline}
+          style={styles.primaryButton}
+          onPress={() =>
+            navigation.navigate("Content", {
+              screen: "ContentJourneyDay",
+              params: { id: activeJourneys[0]?.id, day: "1" },
+            })
+          }
+        >
           Bugünkü Adımı Aç
         </Button>
       </SectionCard>
@@ -65,7 +67,16 @@ const LibraryJourneysContent = ({ isOffline }: { isOffline?: boolean }) => {
           <Card key={journey.title} style={styles.card}>
             <Card.Title title={journey.title} subtitle={journey.subtitle} />
             <Card.Actions>
-              <Button mode="outlined" disabled={isOffline}>
+              <Button
+                mode="outlined"
+                disabled={isOffline}
+                onPress={() =>
+                  navigation.navigate("Content", {
+                    screen: "ContentJourneyDetail",
+                    params: { id: journey.id },
+                  })
+                }
+              >
                 İncele
               </Button>
             </Card.Actions>

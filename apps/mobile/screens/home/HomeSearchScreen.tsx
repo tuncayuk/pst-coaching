@@ -7,6 +7,7 @@ import {
   Chip,
   TextInput,
 } from "react-native-paper";
+import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
@@ -28,6 +29,8 @@ const popularTopics = [
 ];
 
 const HomeSearchContent = ({ isOffline }: { isOffline?: boolean }) => {
+  const navigation = useNavigation<any>();
+
   return (
     <>
       <SectionCard title="Arama" actionLabel="Filtrele">
@@ -45,7 +48,11 @@ const HomeSearchContent = ({ isOffline }: { isOffline?: boolean }) => {
             </Chip>
           ))}
         </View>
-        <Button mode="contained" disabled={isOffline}>
+        <Button
+          mode="contained"
+          disabled={isOffline}
+          onPress={() => navigation.navigate("HomeSearchResults")}
+        >
           Ara
         </Button>
       </SectionCard>

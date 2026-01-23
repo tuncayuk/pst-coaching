@@ -5,33 +5,39 @@ import {
   Button,
   Card,
 } from "react-native-paper";
+import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState } from "../components/ScreenState";
-
-const collections = [
-  {
-    title: "Sabah Rutini",
-    subtitle: "5 içerik",
-  },
-  {
-    title: "Duygu Günlüğü",
-    subtitle: "3 içerik",
-  },
-];
+import {
+  getCollectionItems,
+  getCollectionsForUser,
+  getPrimaryUser,
+} from "../../data/mockSelectors";
 
 const LibraryCollectionsContent = ({ isOffline }: { isOffline?: boolean }) => {
+  const navigation = useNavigation<any>();
+  const user = getPrimaryUser();
+  const collections = getCollectionsForUser(user?.id);
+
   return (
     <>
       <SectionCard title="Koleksiyonlar" actionLabel="Yeni">
         {collections.map((collection) => (
-          <Card key={collection.title} style={styles.card}>
-            <Card.Title title={collection.title} subtitle={collection.subtitle} />
+          <Card key={collection.id} style={styles.card}>
+            <Card.Title
+              title={collection.name}
+              subtitle={`${getCollectionItems().filter((item) => item.collection_id === collection.id).length} içerik`}
+            />
             <Card.Actions>
-              <Button mode="outlined" disabled={isOffline}>
+              <Button
+                mode="outlined"
+                disabled={isOffline}
+                onPress={() => navigation.navigate("LibraryCollectionDetail", { id: collection.id })}
+              >
                 Aç
               </Button>
             </Card.Actions>

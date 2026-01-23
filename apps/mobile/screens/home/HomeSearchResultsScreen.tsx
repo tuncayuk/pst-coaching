@@ -7,33 +7,37 @@ import {
   Chip,
   Text,
 } from "react-native-paper";
+import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState } from "../components/ScreenState";
-
-const resultGroups = [
-  {
-    title: "Yolculuklar",
-    items: ["Öz Şefkat", "Duygusal Dayanıklılık"],
-  },
-  {
-    title: "Atölyeler",
-    items: ["Zor Konuşmalar", "Sınır Koyma"],
-  },
-  {
-    title: "Modüller",
-    items: ["Stres Yönetimi", "İletişim Becerileri"],
-  },
-  {
-    title: "e-Kitaplar",
-    items: ["İç Sesinle Dostluk", "Kendini Anlama"],
-  },
-];
+import { getEbooks, getJourneys, getModules, getWorkshops } from "../../data/mockSelectors";
 
 const HomeSearchResultsContent = ({ isOffline }: { isOffline?: boolean }) => {
+  const navigation = useNavigation<any>();
+  const resultGroups = [
+    {
+      title: "Yolculuklar",
+      items: getJourneys().map((item) => ({ id: item.id, title: item.title, route: "ContentJourneyDetail" })),
+    },
+    {
+      title: "Atölyeler",
+      items: getWorkshops().map((item) => ({ id: item.id, title: item.title, route: "ContentWorkshopDetail" })),
+    },
+    {
+      title: "Modüller",
+      items: getModules().map((item) => ({ id: item.id, title: item.title, route: "ContentModuleDetail" })),
+    },
+    {
+      title: "e-Kitaplar",
+      items: getEbooks().map((item) => ({ id: item.id, title: item.title, route: "ContentEbookDetail" })),
+    },
+  ];
+  const totalCount = resultGroups.reduce((sum, group) => sum + group.items.length, 0);
+
   return (
     <>
       <SectionCard title="Filtreler" actionLabel="Sıfırla">
@@ -44,16 +48,25 @@ const HomeSearchResultsContent = ({ isOffline }: { isOffline?: boolean }) => {
             </Chip>
           ))}
         </View>
-        <Text variant="bodySmall">12 sonuç bulundu</Text>
+        <Text variant="bodySmall">{totalCount} sonuç bulundu</Text>
       </SectionCard>
 
       {resultGroups.map((group) => (
         <SectionCard key={group.title} title={group.title} actionLabel="Tümü">
           {group.items.map((item) => (
-            <Card key={item} style={styles.card}>
-              <Card.Title title={item} subtitle="30-45 dk · 4 içerik" />
+            <Card key={item.id} style={styles.card}>
+              <Card.Title title={item.title} subtitle="30-45 dk · 4 içerik" />
               <Card.Actions>
-                <Button mode="outlined" disabled={isOffline}>
+                <Button
+                  mode="outlined"
+                  disabled={isOffline}
+                  onPress={() =>
+                    navigation.navigate("Content", {
+                      screen: item.route,
+                      params: { id: item.id },
+                    })
+                  }
+                >
                   İncele
                 </Button>
               </Card.Actions>

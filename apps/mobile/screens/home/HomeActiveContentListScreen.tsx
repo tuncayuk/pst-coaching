@@ -7,32 +7,44 @@ import {
   ProgressBar,
   Text,
 } from "react-native-paper";
+import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState } from "../components/ScreenState";
-
-const activeItems = [
-  {
-    title: "Vicdandan Karaktere",
-    subtitle: "Gün 3 · 12 dk",
-    progress: 0.42,
-  },
-  {
-    title: "Duygu Günlüğü",
-    subtitle: "Bölüm 1 · 8 dk",
-    progress: 0.18,
-  },
-  {
-    title: "Sınır Koyma Atölyesi",
-    subtitle: "Bölüm 2 · 14 dk",
-    progress: 0.6,
-  },
-];
+import { getEbooks, getJourneys, getWorkshops } from "../../data/mockSelectors";
 
 const HomeActiveContentListContent = ({ isOffline }: { isOffline?: boolean }) => {
+  const navigation = useNavigation<any>();
+  const journeys = getJourneys();
+  const workshops = getWorkshops();
+  const ebooks = getEbooks();
+  const activeItems = [
+    {
+      id: journeys[0]?.id,
+      title: journeys[0]?.title ?? "Yolculuk",
+      subtitle: "Gün 1 · 12 dk",
+      progress: 0.42,
+      target: "ContentJourneyHome",
+    },
+    {
+      id: ebooks[0]?.id,
+      title: ebooks[0]?.title ?? "e-Kitap",
+      subtitle: "Bölüm 1 · 8 dk",
+      progress: 0.18,
+      target: "ContentEbookReader",
+    },
+    {
+      id: workshops[0]?.id,
+      title: workshops[0]?.title ?? "Atölye",
+      subtitle: "Bölüm 2 · 14 dk",
+      progress: 0.6,
+      target: "ContentWorkshopHome",
+    },
+  ];
+
   return (
     <>
       <SectionCard title="Aktif İçeriklerin">
@@ -46,7 +58,16 @@ const HomeActiveContentListContent = ({ isOffline }: { isOffline?: boolean }) =>
               </View>
             </Card.Content>
             <Card.Actions>
-              <Button mode="contained" disabled={isOffline}>
+              <Button
+                mode="contained"
+                disabled={isOffline}
+                onPress={() =>
+                  navigation.navigate("Content", {
+                    screen: item.target,
+                    params: { id: item.id },
+                  })
+                }
+              >
                 Devam Et
               </Button>
             </Card.Actions>

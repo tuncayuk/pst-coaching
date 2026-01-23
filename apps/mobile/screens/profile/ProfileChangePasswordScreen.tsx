@@ -1,0 +1,108 @@
+import React from "react";
+import { StyleSheet } from "react-native";
+import { ActivityIndicator, Button, TextInput } from "react-native-paper";
+import { OfflineNotice } from "../components/OfflineNotice";
+import { ScreenLayout } from "../components/ScreenLayout";
+import { SectionCard } from "../components/SectionCard";
+import { SkeletonBlock } from "../components/SkeletonBlock";
+import { StateMessage } from "../components/StateMessage";
+import { resolveScreenState } from "../components/ScreenState";
+
+const ProfileChangePasswordContent = ({ isOffline }: { isOffline?: boolean }) => {
+  return (
+    <SectionCard title="Şifreyi Güncelle">
+      <TextInput
+        label="Mevcut Şifre"
+        mode="outlined"
+        secureTextEntry
+        style={styles.input}
+        editable={!isOffline}
+      />
+      <TextInput
+        label="Yeni Şifre"
+        mode="outlined"
+        secureTextEntry
+        style={styles.input}
+        editable={!isOffline}
+      />
+      <TextInput
+        label="Yeni Şifre (Tekrar)"
+        mode="outlined"
+        secureTextEntry
+        style={styles.input}
+        editable={!isOffline}
+      />
+      <Button mode="contained" disabled={isOffline}>
+        Şifreyi Güncelle
+      </Button>
+    </SectionCard>
+  );
+};
+
+export const ProfileChangePasswordScreen = ({
+  route,
+}: {
+  route?: { params?: { state?: string } };
+}) => {
+  const state = resolveScreenState(route);
+
+  if (state === "loading") {
+    return (
+      <ScreenLayout title="Şifre Değiştir" subtitle="Şifre hazırlanıyor">
+        <SectionCard title="Yükleniyor">
+          <ActivityIndicator animating />
+          <SkeletonBlock height={20} />
+          <SkeletonBlock height={20} />
+        </SectionCard>
+      </ScreenLayout>
+    );
+  }
+
+  if (state === "empty") {
+    return (
+      <ScreenLayout title="Şifre Değiştir" subtitle="Şifre bilgisi">
+        <StateMessage
+          title="Şifre bilgisi yok"
+          description="Şifre değişikliği için bilgiler hazır değil."
+          actionLabel="Tekrar Dene"
+          icon="lock-outline"
+        />
+      </ScreenLayout>
+    );
+  }
+
+  if (state === "error") {
+    return (
+      <ScreenLayout title="Şifre Değiştir" subtitle="Bir sorun oluştu">
+        <StateMessage
+          title="Şifre değiştirilemedi"
+          description="Bağlantını kontrol edip tekrar dene."
+          actionLabel="Tekrar Dene"
+          icon="alert-circle-outline"
+          tone="error"
+        />
+      </ScreenLayout>
+    );
+  }
+
+  if (state === "offline") {
+    return (
+      <ScreenLayout title="Şifre Değiştir" subtitle="Çevrimdışı">
+        <OfflineNotice />
+        <ProfileChangePasswordContent isOffline />
+      </ScreenLayout>
+    );
+  }
+
+  return (
+    <ScreenLayout title="Şifre Değiştir" subtitle="Şifreni güncelle">
+      <ProfileChangePasswordContent />
+    </ScreenLayout>
+  );
+};
+
+const styles = StyleSheet.create({
+  input: {
+    marginBottom: 12,
+  },
+});

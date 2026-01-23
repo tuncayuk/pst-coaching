@@ -3,8 +3,13 @@ import { createNativeStackNavigator, NativeStackNavigationOptions } from "@react
 import { ScreenState } from "../screens/components/ScreenState";
 import { ProfileOverviewScreen } from "../screens/ProfileOverviewScreen";
 import { ProfileSettingsScreen } from "../screens/profile/ProfileSettingsScreen";
+import { ProfileLanguageScreen } from "../screens/profile/ProfileLanguageScreen";
+import { ProfileAccessibilityScreen } from "../screens/profile/ProfileAccessibilityScreen";
+import { ProfileRemindersScreen } from "../screens/profile/ProfileRemindersScreen";
 import { ProfileAccountScreen } from "../screens/profile/ProfileAccountScreen";
+import { ProfileChangePasswordScreen } from "../screens/profile/ProfileChangePasswordScreen";
 import { ProfileSubscriptionScreen } from "../screens/profile/ProfileSubscriptionScreen";
+import { ProfilePlanComparisonScreen } from "../screens/profile/ProfilePlanComparisonScreen";
 import { ProfileCheckoutScreen } from "../screens/profile/ProfileCheckoutScreen";
 import { ProfileAddonsScreen } from "../screens/profile/ProfileAddonsScreen";
 import { ProfileSeatManagementScreen } from "../screens/profile/ProfileSeatManagementScreen";
@@ -18,8 +23,13 @@ type ScreenStateParam = { state?: ScreenState } | undefined;
 export type ProfileStackParamList = {
   ProfileOverview: ScreenStateParam;
   ProfileSettings: ScreenStateParam;
+  ProfileLanguage: ScreenStateParam;
+  ProfileAccessibility: ScreenStateParam;
+  ProfileReminders: ScreenStateParam;
   ProfileAccount: ScreenStateParam;
+  ProfileChangePassword: ScreenStateParam;
   ProfileSubscription: ScreenStateParam;
+  ProfilePlanComparison: ScreenStateParam;
   ProfileCheckout: ScreenStateParam;
   ProfileAddons: ScreenStateParam;
   ProfileSeatManagement: ScreenStateParam;
@@ -40,8 +50,13 @@ type ProfileStackScreen = {
 export const profileStackScreens: ProfileStackScreen[] = [
   { name: "ProfileOverview", component: ProfileOverviewScreen },
   { name: "ProfileSettings", component: ProfileSettingsScreen },
+  { name: "ProfileLanguage", component: ProfileLanguageScreen },
+  { name: "ProfileAccessibility", component: ProfileAccessibilityScreen },
+  { name: "ProfileReminders", component: ProfileRemindersScreen },
   { name: "ProfileAccount", component: ProfileAccountScreen },
+  { name: "ProfileChangePassword", component: ProfileChangePasswordScreen },
   { name: "ProfileSubscription", component: ProfileSubscriptionScreen },
+  { name: "ProfilePlanComparison", component: ProfilePlanComparisonScreen },
   { name: "ProfileCheckout", component: ProfileCheckoutScreen },
   { name: "ProfileAddons", component: ProfileAddonsScreen },
   { name: "ProfileSeatManagement", component: ProfileSeatManagementScreen },

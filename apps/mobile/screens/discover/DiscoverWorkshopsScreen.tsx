@@ -7,29 +7,19 @@ import {
   Chip,
   Text,
 } from "react-native-paper";
+import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState } from "../components/ScreenState";
-
-const workshopItems = [
-  {
-    title: "Zor Konuşmalar",
-    subtitle: "3 bölüm · 40 dk",
-  },
-  {
-    title: "Nefes ve Odak",
-    subtitle: "2 bölüm · 25 dk",
-  },
-  {
-    title: "Kendine Güven",
-    subtitle: "4 bölüm · 50 dk",
-  },
-];
+import { getWorkshops } from "../../data/mockSelectors";
 
 const DiscoverWorkshopsContent = ({ isOffline }: { isOffline?: boolean }) => {
+  const navigation = useNavigation<any>();
+  const workshops = getWorkshops();
+
   return (
     <>
       <SectionCard title="Filtreler" actionLabel="Sıfırla">
@@ -40,15 +30,24 @@ const DiscoverWorkshopsContent = ({ isOffline }: { isOffline?: boolean }) => {
             </Chip>
           ))}
         </View>
-        <Text variant="bodySmall">8 atölye bulundu</Text>
+        <Text variant="bodySmall">{workshops.length} atölye bulundu</Text>
       </SectionCard>
 
       <SectionCard title="Atölyeler" actionLabel="Sırala">
-        {workshopItems.map((item) => (
-          <Card key={item.title} style={styles.card}>
-            <Card.Title title={item.title} subtitle={item.subtitle} />
+        {workshops.map((item) => (
+          <Card key={item.id} style={styles.card}>
+            <Card.Title title={item.title} subtitle={item.description} />
             <Card.Actions>
-              <Button mode="outlined" disabled={isOffline}>
+              <Button
+                mode="outlined"
+                disabled={isOffline}
+                onPress={() =>
+                  navigation.navigate("Content", {
+                    screen: "ContentWorkshopDetail",
+                    params: { id: item.id },
+                  })
+                }
+              >
                 İncele
               </Button>
             </Card.Actions>

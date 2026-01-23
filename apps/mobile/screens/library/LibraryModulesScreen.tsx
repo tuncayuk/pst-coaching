@@ -1,29 +1,27 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
 import { ActivityIndicator, Button, Card, Chip, ProgressBar } from "react-native-paper";
+import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState } from "../components/ScreenState";
-
-const moduleProgress = [
-  {
-    title: "İlişkilerde Empati",
-    progress: 0.6,
-    subtitle: "3/5 bölüm tamamlandı",
-  },
-  {
-    title: "Öz Bakım Rutinleri",
-    progress: 0.25,
-    subtitle: "1/4 bölüm tamamlandı",
-  },
-];
+import { getModules } from "../../data/mockSelectors";
 
 const focusAreas = ["Sınırlar", "Kendine Şefkat", "Kaygı", "İletişim"];
 
 const LibraryModulesContent = ({ isOffline }: { isOffline?: boolean }) => {
+  const navigation = useNavigation<any>();
+  const modules = getModules();
+  const moduleProgress = modules.map((module, index) => ({
+    id: module.id,
+    title: module.title,
+    progress: 0.25 + index * 0.2,
+    subtitle: `${index + 1}/4 bölüm tamamlandı`,
+  }));
+
   return (
     <>
       <SectionCard title="Odak Alanları" actionLabel="Filtrele">
@@ -44,7 +42,16 @@ const LibraryModulesContent = ({ isOffline }: { isOffline?: boolean }) => {
               <ProgressBar progress={module.progress} />
             </Card.Content>
             <Card.Actions>
-              <Button mode="outlined" disabled={isOffline}>
+              <Button
+                mode="outlined"
+                disabled={isOffline}
+                onPress={() =>
+                  navigation.navigate("Content", {
+                    screen: "ContentModuleHome",
+                    params: { id: module.id },
+                  })
+                }
+              >
                 Devam Et
               </Button>
             </Card.Actions>

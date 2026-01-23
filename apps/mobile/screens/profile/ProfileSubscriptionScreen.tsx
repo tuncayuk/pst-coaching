@@ -9,25 +9,43 @@ import {
   List,
   Text,
 } from "react-native-paper";
+import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState } from "../components/ScreenState";
+import {
+  getAddOnsForSubscription,
+  getPlanForSubscription,
+  getPrimaryUser,
+  getSeatsForSubscription,
+  getSubscriptionForUser,
+} from "../../data/mockSelectors";
 
 const benefits = ["Sınırsız içerik", "Offline indirme", "Aile paylaşımı"];
 
 const ProfileSubscriptionContent = ({ isOffline }: { isOffline?: boolean }) => {
+  const navigation = useNavigation<any>();
+  const user = getPrimaryUser();
+  const subscription = getSubscriptionForUser(user?.id);
+  const plan = getPlanForSubscription(subscription?.plan_id);
+  const addOns = getAddOnsForSubscription(subscription?.id);
+  const seats = getSeatsForSubscription(subscription?.id);
+
   return (
     <>
       <SectionCard title="Plan" actionLabel="Karşılaştır">
         <Card style={styles.card}>
-          <Card.Title title="Yıllık Premium" subtitle="Sonraki yenileme 12 Ocak 2026" />
+          <Card.Title
+            title={plan?.name ?? "Plan"}
+            subtitle={`Sonraki yenileme ${subscription?.renewal_at?.slice(0, 10) ?? "-"}`}
+          />
           <Card.Content>
             <View style={styles.row}>
-              <Chip compact>Aktif</Chip>
-              <Text variant="bodySmall">₺899,00 / yıl</Text>
+              <Chip compact>{subscription?.status ?? "aktif"}</Chip>
+              <Text variant="bodySmall">{plan?.seat_limit ?? 1} kişilik</Text>
             </View>
             <View style={styles.benefitList}>
               {benefits.map((benefit) => (
@@ -43,7 +61,11 @@ const ProfileSubscriptionContent = ({ isOffline }: { isOffline?: boolean }) => {
             </Button>
           </Card.Actions>
         </Card>
-        <Button mode="outlined" disabled={isOffline}>
+        <Button
+          mode="outlined"
+          disabled={isOffline}
+          onPress={() => navigation.navigate("ProfilePlanComparison")}
+        >
           Fatura Bilgileri
         </Button>
       </SectionCard>
@@ -51,31 +73,43 @@ const ProfileSubscriptionContent = ({ isOffline }: { isOffline?: boolean }) => {
       <SectionCard title="Ek Özellikler" actionLabel="">
         <List.Item
           title="Add-on Yönetimi"
-          description="2 aktif eklenti"
+          description={`${addOns.length} aktif eklenti`}
           left={(props) => <List.Icon {...props} icon="puzzle" />}
+          onPress={() => navigation.navigate("ProfileAddons")}
         />
         <Divider />
         <List.Item
           title="Kişi Yönetimi"
-          description="2/4 koltuk kullanılıyor"
+          description={`${seats.filter((seat) => seat.status === "active").length}/${seats.length} koltuk`}
           left={(props) => <List.Icon {...props} icon="account-multiple" />}
+          onPress={() => navigation.navigate("ProfileSeatManagement")}
         />
         <Divider />
         <List.Item
           title="Öğrenci İndirimi"
           description="Uygunluk kontrolü"
           left={(props) => <List.Icon {...props} icon="school-outline" />}
+          onPress={() => navigation.navigate("ProfileStudentDiscount")}
         />
       </SectionCard>
 
       <SectionCard title="Satın Alma" actionLabel="">
-        <Button mode="contained-tonal" disabled={isOffline}>
+        <Button
+          mode="contained-tonal"
+          disabled={isOffline}
+          onPress={() => navigation.navigate("ProfileCheckout")}
+        >
           Yeni Plan Satın Al
         </Button>
-        <Button mode="outlined" style={styles.secondaryButton} disabled={isOffline}>
+        <Button
+          mode="outlined"
+          style={styles.secondaryButton}
+          disabled={isOffline}
+          onPress={() => navigation.navigate("ProfileRestorePurchases")}
+        >
           Satın Alımları Geri Yükle
         </Button>
-        <Button mode="text" disabled={isOffline}>
+        <Button mode="text" disabled={isOffline} onPress={() => navigation.navigate("ProfilePaymentHistory")}>
           Ödeme Geçmişi
         </Button>
       </SectionCard>

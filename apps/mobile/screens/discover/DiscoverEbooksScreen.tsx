@@ -7,29 +7,19 @@ import {
   Chip,
   Text,
 } from "react-native-paper";
+import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState } from "../components/ScreenState";
-
-const ebookItems = [
-  {
-    title: "Kendini Anlama",
-    subtitle: "120 sayfa · 45 dk",
-  },
-  {
-    title: "Duygularla Barış",
-    subtitle: "98 sayfa · 40 dk",
-  },
-  {
-    title: "İç Sesinle Dostluk",
-    subtitle: "110 sayfa · 42 dk",
-  },
-];
+import { getEbooks } from "../../data/mockSelectors";
 
 const DiscoverEbooksContent = ({ isOffline }: { isOffline?: boolean }) => {
+  const navigation = useNavigation<any>();
+  const ebooks = getEbooks();
+
   return (
     <>
       <SectionCard title="Filtreler" actionLabel="Sıfırla">
@@ -40,15 +30,27 @@ const DiscoverEbooksContent = ({ isOffline }: { isOffline?: boolean }) => {
             </Chip>
           ))}
         </View>
-        <Text variant="bodySmall">6 e-Kitap bulundu</Text>
+        <Text variant="bodySmall">{ebooks.length} e-Kitap bulundu</Text>
       </SectionCard>
 
       <SectionCard title="e-Kitaplar" actionLabel="Sırala">
-        {ebookItems.map((item) => (
-          <Card key={item.title} style={styles.card}>
-            <Card.Title title={item.title} subtitle={item.subtitle} />
+        {ebooks.map((item) => (
+          <Card key={item.id} style={styles.card}>
+            <Card.Title
+              title={item.title}
+              subtitle={`${item.total_pages ?? 0} sayfa · ${item.category ?? ""}`}
+            />
             <Card.Actions>
-              <Button mode="outlined" disabled={isOffline}>
+              <Button
+                mode="outlined"
+                disabled={isOffline}
+                onPress={() =>
+                  navigation.navigate("Content", {
+                    screen: "ContentEbookDetail",
+                    params: { id: item.id },
+                  })
+                }
+              >
                 İncele
               </Button>
             </Card.Actions>

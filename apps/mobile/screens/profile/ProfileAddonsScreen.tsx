@@ -13,31 +13,29 @@ import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState } from "../components/ScreenState";
-
-const addons = [
-  {
-    name: "Odak Paket",
-    description: "4 ek meditasyon",
-    status: "Aktif",
-  },
-  {
-    name: "Uyku Paketi",
-    description: "Uyku rutinleri",
-    status: "Deneme",
-  },
-  {
-    name: "Aile Arşivi",
-    description: "Ek 10 içerik",
-    status: "Pasif",
-  },
-];
+import {
+  getAddOns,
+  getAddOnsForSubscription,
+  getPrimaryUser,
+  getSubscriptionForUser,
+} from "../../data/mockSelectors";
 
 const ProfileAddonsContent = ({ isOffline }: { isOffline?: boolean }) => {
+  const user = getPrimaryUser();
+  const subscription = getSubscriptionForUser(user?.id);
+  const activeAddons = getAddOnsForSubscription(subscription?.id);
+  const addons = getAddOns().map((addon) => ({
+    id: addon.id,
+    name: addon.name,
+    description: addon.code,
+    status: activeAddons.some((item) => item.id === addon.id) ? "Aktif" : "Pasif",
+  }));
+
   return (
     <>
       <SectionCard title="Add-on Paketleri" actionLabel="">
         {addons.map((addon) => (
-          <Card key={addon.name} style={styles.card}>
+          <Card key={addon.id} style={styles.card}>
             <Card.Title title={addon.name} subtitle={addon.description} />
             <Card.Content>
               <Chip compact>{addon.status}</Chip>

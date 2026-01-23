@@ -10,49 +10,52 @@ import {
   Text,
   useTheme,
 } from "react-native-paper";
+import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState } from "../components/ScreenState";
-
-const libraryHighlights = [
-  {
-    title: "Favoriler",
-    subtitle: "12 içerik",
-  },
-  {
-    title: "Koleksiyonlar",
-    subtitle: "3 koleksiyon",
-  },
-];
-
-const readingProgress = [
-  {
-    title: "Duygularla Barış",
-    progress: 0.4,
-  },
-  {
-    title: "Günlük Notlar",
-    progress: 0.7,
-  },
-];
+import {
+  getCollectionsForUser,
+  getDownloadsForUser,
+  getEbookById,
+  getEbookProgressForUser,
+  getFavoritesForUser,
+  getHighlightsForUser,
+  getPrimaryUser,
+} from "../../data/mockSelectors";
 
 const LibraryReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
   const theme = useTheme();
+  const navigation = useNavigation<any>();
+  const user = getPrimaryUser();
+  const favorites = getFavoritesForUser(user?.id);
+  const collections = getCollectionsForUser(user?.id);
+  const ebookProgress = getEbookProgressForUser(user?.id);
+  const downloads = getDownloadsForUser(user?.id);
+  const highlights = getHighlightsForUser(user?.id);
+  const readingProgress = ebookProgress.slice(0, 2).map((item) => ({
+    title: getEbookById(item.ebook_id)?.title ?? "e-Kitap",
+    progress: (item.progress_percent ?? 0) / 100,
+  }));
 
   return (
     <>
       <SectionCard title="Kütüphane Özeti" actionLabel="Yönet">
-        {libraryHighlights.map((item) => (
-          <List.Item
-            key={item.title}
-            title={item.title}
-            description={item.subtitle}
-            left={(props) => <List.Icon {...props} icon="bookmark-outline" />}
-          />
-        ))}
+        <List.Item
+          title="Favoriler"
+          description={`${favorites.length} içerik`}
+          left={(props) => <List.Icon {...props} icon="bookmark-outline" />}
+          onPress={() => navigation.navigate("LibraryFavorites")}
+        />
+        <List.Item
+          title="Koleksiyonlar"
+          description={`${collections.length} koleksiyon`}
+          left={(props) => <List.Icon {...props} icon="folder-outline" />}
+          onPress={() => navigation.navigate("LibraryCollections")}
+        />
         <Button mode="outlined" style={styles.actionButton} disabled={isOffline}>
           Koleksiyon Oluştur
         </Button>
@@ -71,31 +74,28 @@ const LibraryReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
       </SectionCard>
 
       <SectionCard title="İndirilenler" actionLabel="Yönet">
-        <Card style={styles.card}>
-          <Card.Title title="Atölye Notları" subtitle="2 dosya · 35 MB" />
-          <Card.Actions>
-            <Button mode="outlined" disabled={isOffline}>
-              Aç
-            </Button>
-          </Card.Actions>
-        </Card>
-        <Card style={styles.card}>
-          <Card.Title title="e-Kitap: Öz Şefkat" subtitle="PDF · 18 MB" />
-          <Card.Actions>
-            <Button mode="outlined" disabled={isOffline}>
-              Oku
-            </Button>
-          </Card.Actions>
-        </Card>
+        {downloads.slice(0, 2).map((download) => (
+          <Card key={download.id} style={styles.card}>
+            <Card.Title
+              title={`İndirilen ${download.content_type}`}
+              subtitle={`${download.status} · ${(download.size_bytes / 1048576).toFixed(1)} MB`}
+            />
+            <Card.Actions>
+              <Button mode="outlined" disabled={isOffline}>
+                Aç
+              </Button>
+            </Card.Actions>
+          </Card>
+        ))}
       </SectionCard>
 
       <SectionCard title="Vurgular & Notlar" actionLabel="Tümü">
         <View style={styles.noteBox}>
           <Text variant="bodyMedium" style={{ color: theme.colors.onSurfaceVariant }}>
-            “Kendine karşı nazik olmak, dönüşümün ilk adımıdır.”
+            “{highlights[0]?.quote ?? "Kendine karşı nazik olmak, dönüşümün ilk adımıdır."}”
           </Text>
           <Text variant="labelSmall" style={{ color: theme.colors.primary }}>
-            Duygularla Barış · Sayfa 12
+            {getEbookById(highlights[0]?.source_id)?.title ?? "Kişisel Notlar"}
           </Text>
         </View>
       </SectionCard>

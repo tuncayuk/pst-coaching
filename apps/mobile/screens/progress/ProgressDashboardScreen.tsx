@@ -10,41 +10,26 @@ import {
   Text,
   useTheme,
 } from "react-native-paper";
+import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState } from "../components/ScreenState";
-
-const achievements = [
-  {
-    title: "7 Günlük Seri",
-    subtitle: "Aralıksız pratik",
-  },
-  {
-    title: "3 Atölye Tamamlandı",
-    subtitle: "Yeni beceriler",
-  },
-];
-
-const weeklySummary = [
-  {
-    label: "Duygu Günlüğü",
-    value: 4,
-  },
-  {
-    label: "Okuma",
-    value: 2,
-  },
-  {
-    label: "Nefes",
-    value: 3,
-  },
-];
+import { getAchievements, getContentProgressForUser, getPrimaryUser } from "../../data/mockSelectors";
 
 const ProgressReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
   const theme = useTheme();
+  const navigation = useNavigation<any>();
+  const user = getPrimaryUser();
+  const progressItems = getContentProgressForUser(user?.id);
+  const achievements = getAchievements().filter((item) => item.user_id === user?.id);
+  const weeklySummary = [
+    { label: "Yolculuk", value: progressItems.filter((item) => item.content_type === "journey_day").length },
+    { label: "Paket", value: progressItems.filter((item) => item.content_type === "package").length },
+    { label: "Atölye", value: progressItems.filter((item) => item.content_type === "workshop").length },
+  ];
 
   return (
     <>
@@ -55,7 +40,12 @@ const ProgressReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
             <Chip compact>{item.value} seans</Chip>
           </View>
         ))}
-        <Button mode="contained" style={styles.primaryButton} disabled={isOffline}>
+        <Button
+          mode="contained"
+          style={styles.primaryButton}
+          disabled={isOffline}
+          onPress={() => navigation.navigate("ProgressWeeklySummary")}
+        >
           Haftayı İncele
         </Button>
       </SectionCard>
@@ -78,10 +68,16 @@ const ProgressReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
       <SectionCard title="Başarılar" actionLabel="Tümü">
         {achievements.map((item) => (
           <List.Item
-            key={item.title}
-            title={item.title}
-            description={item.subtitle}
+            key={item.id}
+            title={item.type === "certificate" ? "Sertifika" : "Rozet"}
+            description={item.source_type}
             left={(props) => <List.Icon {...props} icon="trophy-outline" />}
+            onPress={() =>
+              navigation.navigate("Content", {
+                screen: "ContentAchievement",
+                params: { id: item.id },
+              })
+            }
           />
         ))}
       </SectionCard>
@@ -90,7 +86,17 @@ const ProgressReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
         <Text variant="bodyMedium" style={{ color: theme.colors.onSurfaceVariant }}>
           Son atölyeni değerlendirerek önerilerimizi güçlendirebilirsin.
         </Text>
-        <Button mode="outlined" style={styles.actionButton} disabled={isOffline}>
+        <Button
+          mode="outlined"
+          style={styles.actionButton}
+          disabled={isOffline}
+          onPress={() =>
+            navigation.navigate("Content", {
+              screen: "ContentReviewPrompt",
+              params: { targetType: "journey", id: "latest" },
+            })
+          }
+        >
           Değerlendirme Yap
         </Button>
       </SectionCard>

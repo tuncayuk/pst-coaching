@@ -7,29 +7,19 @@ import {
   Chip,
   Text,
 } from "react-native-paper";
+import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState } from "../components/ScreenState";
-
-const moduleItems = [
-  {
-    title: "Stres Yönetimi",
-    subtitle: "4 gün · 15 dk",
-  },
-  {
-    title: "İlişki Dinamikleri",
-    subtitle: "5 gün · 20 dk",
-  },
-  {
-    title: "Öz Saygı",
-    subtitle: "3 gün · 12 dk",
-  },
-];
+import { getModules } from "../../data/mockSelectors";
 
 const DiscoverModulesContent = ({ isOffline }: { isOffline?: boolean }) => {
+  const navigation = useNavigation<any>();
+  const modules = getModules();
+
   return (
     <>
       <SectionCard title="Filtreler" actionLabel="Sıfırla">
@@ -40,15 +30,24 @@ const DiscoverModulesContent = ({ isOffline }: { isOffline?: boolean }) => {
             </Chip>
           ))}
         </View>
-        <Text variant="bodySmall">10 modül bulundu</Text>
+        <Text variant="bodySmall">{modules.length} modül bulundu</Text>
       </SectionCard>
 
       <SectionCard title="Modüller" actionLabel="Sırala">
-        {moduleItems.map((item) => (
-          <Card key={item.title} style={styles.card}>
-            <Card.Title title={item.title} subtitle={item.subtitle} />
+        {modules.map((item) => (
+          <Card key={item.id} style={styles.card}>
+            <Card.Title title={item.title} subtitle={item.description} />
             <Card.Actions>
-              <Button mode="outlined" disabled={isOffline}>
+              <Button
+                mode="outlined"
+                disabled={isOffline}
+                onPress={() =>
+                  navigation.navigate("Content", {
+                    screen: "ContentModuleDetail",
+                    params: { id: item.id },
+                  })
+                }
+              >
                 İncele
               </Button>
             </Card.Actions>

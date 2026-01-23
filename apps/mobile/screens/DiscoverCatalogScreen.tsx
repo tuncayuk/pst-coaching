@@ -8,34 +8,40 @@ import {
   Text,
   useTheme,
 } from "react-native-paper";
+import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "./components/OfflineNotice";
 import { ScreenLayout } from "./components/ScreenLayout";
 import { SectionCard } from "./components/SectionCard";
 import { SkeletonBlock } from "./components/SkeletonBlock";
 import { StateMessage } from "./components/StateMessage";
 import { resolveScreenState } from "./components/ScreenState";
-
-const discoverSections = [
-  {
-    title: "Yolculuklar",
-    items: ["Duygusal Dayanıklılık", "Öz Şefkat", "Sınır Koyma"],
-  },
-  {
-    title: "Atölyeler",
-    items: ["Zor Konuşmalar", "Yeniden Başlangıç", "Nefes ve Odak"],
-  },
-  {
-    title: "Modüller",
-    items: ["Stres Yönetimi", "İlişki Dinamikleri", "Güçlü Alışkanlıklar"],
-  },
-  {
-    title: "e-Kitaplar",
-    items: ["Kendini Anlama", "Duygularla Barış", "İç Sesinle Dostluk"],
-  },
-];
+import { getEbooks, getJourneys, getModules, getWorkshops } from "../data/mockSelectors";
 
 const DiscoverReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
   const theme = useTheme();
+  const navigation = useNavigation<any>();
+  const journeys = getJourneys().slice(0, 3);
+  const workshops = getWorkshops().slice(0, 3);
+  const modules = getModules().slice(0, 3);
+  const ebooks = getEbooks().slice(0, 3);
+  const discoverSections = [
+    {
+      title: "Yolculuklar",
+      items: journeys.map((item) => ({ id: item.id, title: item.title, route: "ContentJourneyDetail" })),
+    },
+    {
+      title: "Atölyeler",
+      items: workshops.map((item) => ({ id: item.id, title: item.title, route: "ContentWorkshopDetail" })),
+    },
+    {
+      title: "Modüller",
+      items: modules.map((item) => ({ id: item.id, title: item.title, route: "ContentModuleDetail" })),
+    },
+    {
+      title: "e-Kitaplar",
+      items: ebooks.map((item) => ({ id: item.id, title: item.title, route: "ContentEbookDetail" })),
+    },
+  ];
 
   return (
     <>
@@ -52,10 +58,19 @@ const DiscoverReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
       {discoverSections.map((section) => (
         <SectionCard key={section.title} title={section.title} actionLabel="Tümü">
           {section.items.map((item) => (
-            <Card key={item} style={styles.card}>
-              <Card.Title title={item} subtitle="30-60 dk · 4 bölüm" />
+            <Card key={item.id} style={styles.card}>
+              <Card.Title title={item.title} subtitle="30-60 dk · 4 bölüm" />
               <Card.Actions>
-                <Button mode="outlined" disabled={isOffline}>
+                <Button
+                  mode="outlined"
+                  disabled={isOffline}
+                  onPress={() =>
+                    navigation.navigate("Content", {
+                      screen: item.route,
+                      params: { id: item.id },
+                    })
+                  }
+                >
                   İncele
                 </Button>
               </Card.Actions>
@@ -69,7 +84,12 @@ const DiscoverReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
           Bu hafta sınır koyma ve öz saygı odağında seçkiler hazırladık. Kendine uygun bir
           yolculukla başlayabilirsin.
         </Text>
-        <Button mode="contained" style={styles.primaryButton} disabled={isOffline}>
+        <Button
+          mode="contained"
+          style={styles.primaryButton}
+          disabled={isOffline}
+          onPress={() => navigation.navigate("DiscoverJourneys")}
+        >
           Temayı Keşfet
         </Button>
       </SectionCard>
