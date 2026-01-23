@@ -1,0 +1,148 @@
+import React from "react";
+import { StyleSheet, View } from "react-native";
+import {
+  ActivityIndicator,
+  Button,
+  Chip,
+  Text,
+  TextInput,
+} from "react-native-paper";
+import { OfflineNotice } from "../components/OfflineNotice";
+import { ScreenLayout } from "../components/ScreenLayout";
+import { SectionCard } from "../components/SectionCard";
+import { SkeletonBlock } from "../components/SkeletonBlock";
+import { StateMessage } from "../components/StateMessage";
+import { resolveScreenState } from "../components/ScreenState";
+
+const goalOptions = ["Sınır koyma", "Öz şefkat", "Stres yönetimi", "İletişim"];
+const durationOptions = ["10-20 dk", "30-45 dk", "60+ dk"];
+const formatOptions = ["Yolculuk", "Atölye", "Modül", "e-Kitap"];
+
+const DiscoverAssistantQuestionsContent = ({ isOffline }: { isOffline?: boolean }) => {
+  return (
+    <>
+      <SectionCard title="Hedefini Seç">
+        <View style={styles.chipRow}>
+          {goalOptions.map((option) => (
+            <Chip key={option} style={styles.chip} disabled={isOffline}>
+              {option}
+            </Chip>
+          ))}
+        </View>
+      </SectionCard>
+
+      <SectionCard title="Süre Tercihin">
+        <View style={styles.chipRow}>
+          {durationOptions.map((option) => (
+            <Chip key={option} style={styles.chip} disabled={isOffline}>
+              {option}
+            </Chip>
+          ))}
+        </View>
+      </SectionCard>
+
+      <SectionCard title="Format Tercihi" actionLabel="Opsiyonel">
+        <View style={styles.chipRow}>
+          {formatOptions.map((option) => (
+            <Chip key={option} style={styles.chip} disabled={isOffline}>
+              {option}
+            </Chip>
+          ))}
+        </View>
+      </SectionCard>
+
+      <SectionCard title="Notun">
+        <TextInput
+          label="Özel bir ihtiyaç var mı?"
+          mode="outlined"
+          placeholder="Örn: yoğun bir haftam var"
+          editable={!isOffline}
+        />
+        <Button mode="contained" style={styles.primaryButton} disabled={isOffline}>
+          Önerileri Gör
+        </Button>
+      </SectionCard>
+    </>
+  );
+};
+
+export const DiscoverAssistantQuestionsScreen = ({
+  route,
+}: {
+  route?: { params?: { state?: string } };
+}) => {
+  const state = resolveScreenState(route);
+
+  if (state === "loading") {
+    return (
+      <ScreenLayout title="İçerik Asistanı Soruları" subtitle="Sorular hazırlanıyor">
+        <SectionCard title="Yükleniyor">
+          <ActivityIndicator animating />
+          <SkeletonBlock height={18} />
+          <SkeletonBlock height={18} />
+        </SectionCard>
+        <SectionCard title="Seçimler">
+          <SkeletonBlock height={60} />
+          <SkeletonBlock height={60} />
+        </SectionCard>
+      </ScreenLayout>
+    );
+  }
+
+  if (state === "empty") {
+    return (
+      <ScreenLayout title="İçerik Asistanı Soruları" subtitle="Soru bulunamadı">
+        <StateMessage
+          title="Sorular bulunamadı"
+          description="Şu anda soru listesi yüklenemiyor."
+          actionLabel="Tekrar Dene"
+          icon="help-circle-outline"
+        />
+      </ScreenLayout>
+    );
+  }
+
+  if (state === "error") {
+    return (
+      <ScreenLayout title="İçerik Asistanı Soruları" subtitle="Bir sorun oluştu">
+        <StateMessage
+          title="Sorular yüklenemedi"
+          description="Bağlantını kontrol edip tekrar dene."
+          actionLabel="Tekrar Dene"
+          icon="alert-circle-outline"
+          tone="error"
+        />
+      </ScreenLayout>
+    );
+  }
+
+  if (state === "offline") {
+    return (
+      <ScreenLayout title="İçerik Asistanı Soruları" subtitle="Önbellekteki sorular">
+        <OfflineNotice />
+        <DiscoverAssistantQuestionsContent isOffline />
+      </ScreenLayout>
+    );
+  }
+
+  return (
+    <ScreenLayout title="İçerik Asistanı Soruları" subtitle="Soruları yanıtla">
+      <DiscoverAssistantQuestionsContent />
+    </ScreenLayout>
+  );
+};
+
+const styles = StyleSheet.create({
+  chipRow: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+  },
+  chip: {
+    marginRight: 8,
+    marginBottom: 8,
+  },
+  primaryButton: {
+    marginTop: 12,
+    alignSelf: "flex-start",
+  },
+});

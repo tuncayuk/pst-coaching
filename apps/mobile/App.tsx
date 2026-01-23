@@ -2,8 +2,8 @@ import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { MD3LightTheme as DefaultTheme, PaperProvider } from "react-native-paper";
-import { HomeDashboardScreen } from "./screens/HomeDashboardScreen";
-import { DiscoverCatalogScreen } from "./screens/DiscoverCatalogScreen";
+import { HomeStack } from "./navigation/HomeStack";
+import { DiscoverStack } from "./navigation/DiscoverStack";
 import { LibraryOverviewScreen } from "./screens/LibraryOverviewScreen";
 import { ProgressDashboardScreen } from "./screens/ProgressDashboardScreen";
 import { ProfileOverviewScreen } from "./screens/ProfileOverviewScreen";
@@ -48,14 +48,10 @@ export default function App() {
             },
           }}
         >
-          <Tab.Screen
-            name="Home"
-            component={HomeDashboardScreen}
-            options={{ tabBarLabel: "Ana Sayfa" }}
-          />
+          <Tab.Screen name="Home" component={HomeStack} options={{ tabBarLabel: "Ana Sayfa" }} />
           <Tab.Screen
             name="Discover"
-            component={DiscoverCatalogScreen}
+            component={DiscoverStack}
             options={{ tabBarLabel: "Keşfet" }}
           />
           <Tab.Screen
