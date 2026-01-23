@@ -1,0 +1,65 @@
+{
+  "id": "content.paywall",
+  "title": "Abonelik Gerekli",
+  "route": "/paywall",
+  "purpose": "Abonelik erişim kısıtını açıklamak ve plan karşılaştırmaya yönlendirmek.",
+  "entryPoints": [
+    "content.* detay ekranları",
+    "library.*",
+    "progress.*"
+  ],
+  "inputs": [
+    {
+      "name": "locale",
+      "type": "LanguageCode",
+      "required": true,
+      "source": "app_state"
+    }
+  ],
+  "dataDependencies": [
+    "ContentItem",
+    "ContentProgress",
+    "Comment",
+    "Highlight",
+    "Note",
+    "Achievement",
+    "Download",
+    "Journey",
+    "JourneyDay",
+    "Workshop",
+    "Module",
+    "Package",
+    "Ebook",
+    "EbookProgress"
+  ],
+  "uiStates": {
+    "loading": {
+      "description": "Abonelik Gerekli yüklenirken iskelet ve temel CTA'lar gösterilir."
+    },
+    "ready": {
+      "description": "Abonelik Gerekli içeriği ve etkileşimler hazır."
+    },
+    "empty": {
+      "description": "İçerik yoksa açıklayıcı boş durum ve birincil aksiyon sunulur."
+    },
+    "error": {
+      "description": "Hata mesajı ve tekrar dene aksiyonu gösterilir."
+    },
+    "offline": {
+      "description": "Çevrimdışı modda önbellek içerik gösterilir, senkron bekler."
+    }
+  },
+  "analytics": {
+    "screenView": "content_paywall_viewed",
+    "events": [
+      "content_paywall_viewed"
+    ]
+  },
+  "acceptanceCriteriaRefs": [
+    "RQ-05",
+    "RQ-06"
+  ],
+  "gates": [
+    "subscription:trial_or_active"
+  ]
+}

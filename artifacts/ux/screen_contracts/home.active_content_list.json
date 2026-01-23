@@ -1,0 +1,53 @@
+{
+  "id": "home.active_content_list",
+  "title": "Aktif İçerikler",
+  "route": "/home/active-content",
+  "purpose": "Aktif İçerikler deneyimini sunmak.",
+  "entryPoints": [
+    "home.dashboard"
+  ],
+  "inputs": [
+    {
+      "name": "locale",
+      "type": "LanguageCode",
+      "required": true,
+      "source": "app_state"
+    }
+  ],
+  "dataDependencies": [
+    "Subscription",
+    "SubscriptionAddOn",
+    "ContentProgress",
+    "Journey",
+    "Workshop",
+    "Ebook",
+    "Module"
+  ],
+  "uiStates": {
+    "loading": {
+      "description": "Aktif İçerikler yüklenirken iskelet ve temel CTA'lar gösterilir."
+    },
+    "ready": {
+      "description": "Aktif İçerikler içeriği ve etkileşimler hazır."
+    },
+    "empty": {
+      "description": "İçerik yoksa açıklayıcı boş durum ve birincil aksiyon sunulur."
+    },
+    "error": {
+      "description": "Hata mesajı ve tekrar dene aksiyonu gösterilir."
+    },
+    "offline": {
+      "description": "Çevrimdışı modda önbellek içerik gösterilir, senkron bekler."
+    }
+  },
+  "analytics": {
+    "screenView": "home_active_content_list_viewed",
+    "events": [
+      "home_active_content_list_viewed"
+    ]
+  },
+  "acceptanceCriteriaRefs": [
+    "RQ-04"
+  ],
+  "gates": []
+}

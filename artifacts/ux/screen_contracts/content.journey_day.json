@@ -1,0 +1,75 @@
+{
+  "id": "content.journey_day",
+  "title": "Gün İçeriği",
+  "route": "/content/journeys/:id/days/:day",
+  "purpose": "Günlük içerikleri ve kilit durumlarını göstermek.",
+  "entryPoints": [
+    "content.* detail/home screens"
+  ],
+  "inputs": [
+    {
+      "name": "locale",
+      "type": "LanguageCode",
+      "required": true,
+      "source": "app_state"
+    },
+    {
+      "name": "id",
+      "type": "string",
+      "required": true,
+      "source": "route"
+    },
+    {
+      "name": "day",
+      "type": "string",
+      "required": true,
+      "source": "route"
+    }
+  ],
+  "dataDependencies": [
+    "ContentItem",
+    "ContentProgress",
+    "Comment",
+    "Highlight",
+    "Note",
+    "Achievement",
+    "Download",
+    "Journey",
+    "JourneyDay",
+    "Workshop",
+    "Module",
+    "Package",
+    "Ebook",
+    "EbookProgress"
+  ],
+  "uiStates": {
+    "loading": {
+      "description": "Gün İçeriği yüklenirken iskelet ve temel CTA'lar gösterilir."
+    },
+    "ready": {
+      "description": "Gün İçeriği içeriği ve etkileşimler hazır."
+    },
+    "empty": {
+      "description": "İçerik yoksa açıklayıcı boş durum ve birincil aksiyon sunulur."
+    },
+    "error": {
+      "description": "Hata mesajı ve tekrar dene aksiyonu gösterilir."
+    },
+    "offline": {
+      "description": "Çevrimdışı modda önbellek içerik gösterilir, senkron bekler."
+    }
+  },
+  "analytics": {
+    "screenView": "content_journey_day_viewed",
+    "events": [
+      "content_journey_day_viewed"
+    ]
+  },
+  "acceptanceCriteriaRefs": [
+    "RQ-08",
+    "RQ-07"
+  ],
+  "gates": [
+    "subscription:trial_or_active"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "home.vicdandan_karaktere_detail",
+  "title": "Vicdandan Karaktere",
+  "route": "/home/vicdandan-karaktere",
+  "purpose": "Vicdandan Karaktere deneyimini sunmak.",
+  "entryPoints": [
+    "home.dashboard"
+  ],
+  "inputs": [
+    {
+      "name": "locale",
+      "type": "LanguageCode",
+      "required": true,
+      "source": "app_state"
+    }
+  ],
+  "dataDependencies": [
+    "Subscription",
+    "SubscriptionAddOn",
+    "ContentProgress",
+    "Journey",
+    "Workshop",
+    "Ebook",
+    "Module"
+  ],
+  "uiStates": {
+    "loading": {
+      "description": "Vicdandan Karaktere yüklenirken iskelet ve temel CTA'lar gösterilir."
+    },
+    "ready": {
+      "description": "Vicdandan Karaktere içeriği ve etkileşimler hazır."
+    },
+    "empty": {
+      "description": "İçerik yoksa açıklayıcı boş durum ve birincil aksiyon sunulur."
+    },
+    "error": {
+      "description": "Hata mesajı ve tekrar dene aksiyonu gösterilir."
+    },
+    "offline": {
+      "description": "Çevrimdışı modda önbellek içerik gösterilir, senkron bekler."
+    }
+  },
+  "analytics": {
+    "screenView": "home_vicdandan_karaktere_detail_viewed",
+    "events": [
+      "home_vicdandan_karaktere_detail_viewed"
+    ]
+  },
+  "acceptanceCriteriaRefs": [
+    "RQ-04"
+  ],
+  "gates": []
+}

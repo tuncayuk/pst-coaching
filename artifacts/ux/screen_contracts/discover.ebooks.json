@@ -1,0 +1,50 @@
+{
+  "id": "discover.ebooks",
+  "title": "e-Kitaplar",
+  "route": "/discover/ebooks",
+  "purpose": "e-Kitaplar deneyimini sunmak.",
+  "entryPoints": [
+    "discover.catalog"
+  ],
+  "inputs": [
+    {
+      "name": "locale",
+      "type": "LanguageCode",
+      "required": true,
+      "source": "app_state"
+    }
+  ],
+  "dataDependencies": [
+    "Journey",
+    "Workshop",
+    "Module",
+    "Ebook"
+  ],
+  "uiStates": {
+    "loading": {
+      "description": "e-Kitaplar yüklenirken iskelet ve temel CTA'lar gösterilir."
+    },
+    "ready": {
+      "description": "e-Kitaplar içeriği ve etkileşimler hazır."
+    },
+    "empty": {
+      "description": "İçerik yoksa açıklayıcı boş durum ve birincil aksiyon sunulur."
+    },
+    "error": {
+      "description": "Hata mesajı ve tekrar dene aksiyonu gösterilir."
+    },
+    "offline": {
+      "description": "Çevrimdışı modda önbellek içerik gösterilir, senkron bekler."
+    }
+  },
+  "analytics": {
+    "screenView": "discover_ebooks_viewed",
+    "events": [
+      "discover_ebooks_viewed"
+    ]
+  },
+  "acceptanceCriteriaRefs": [
+    "RQ-05"
+  ],
+  "gates": []
+}

@@ -1,0 +1,114 @@
+{
+  "designSystem": "material3",
+  "primitives": [
+    "color",
+    "typography",
+    "shape",
+    "elevation",
+    "motion",
+    "iconography",
+    "spacing"
+  ],
+  "components": [
+    {
+      "name": "NavigationBar",
+      "usage": "5 ana sekme için alt gezinme; ikon + etiket zorunlu.",
+      "rules": ["Sekme sayısı sabit 5", "Rozet sadece bildirim veya yeni içerik için"]
+    },
+    {
+      "name": "TopAppBar",
+      "usage": "Ekran başlıkları, geri ve eylem ikonları.",
+      "rules": ["Uzun başlıklarda iki satıra izin", "Eylem sayısı 2'yi geçmez"]
+    },
+    {
+      "name": "Tabs",
+      "usage": "Keşfet segmentleri ve içerik türü filtreleri.",
+      "rules": ["Kaydırılabilir sekmeler; 4+ segmentte zorunlu"]
+    },
+    {
+      "name": "Card",
+      "usage": "İçerik özetleri, giriş kartları ve öneriler.",
+      "rules": ["Kart başına tek birincil CTA", "İlerleme göstergesi kart altına"]
+    },
+    {
+      "name": "List",
+      "usage": "Kataloglar, favoriler, koleksiyonlar, paket/section listeleri.",
+      "rules": ["Satır yüksekliği min 56dp", "Durum etiketi sağda"]
+    },
+    {
+      "name": "Button",
+      "usage": "Birincil CTA (Devam Et, Başlat, Satın Al).",
+      "rules": ["Birincil buton başına ekran max 1", "Disabled durumları net"]
+    },
+    {
+      "name": "TextField",
+      "usage": "Giriş, kayıt, OTP, arama, yorum yazımı.",
+      "rules": ["Hata metni tek satır; ekran okuyucu etiketi zorunlu"]
+    },
+    {
+      "name": "Chips",
+      "usage": "Filtre, etiket ve içerik türü seçimi.",
+      "rules": ["Maks 2 aktif filtre; temizle aksiyonu sağlanır"]
+    },
+    {
+      "name": "ProgressIndicator",
+      "usage": "İlerleme yüzdesi, yükleme ve indirme durumları.",
+      "rules": ["Belirsiz yükleme max 10s, sonra retry"]
+    },
+    {
+      "name": "LinearProgress",
+      "usage": "İçerik kartlarında ilerleme göstergesi.",
+      "rules": ["% etiketi ile birlikte kullan"]
+    },
+    {
+      "name": "Snackbar",
+      "usage": "Kısa geri bildirim ve undo aksiyonları.",
+      "rules": ["Undo yalnızca silme için", "Otomatik kapanma 4-6s"]
+    },
+    {
+      "name": "Dialog",
+      "usage": "Kritik onaylar (çıkış, satın alma uyarısı).",
+      "rules": ["İkili aksiyon: birincil/ikincil"]
+    },
+    {
+      "name": "BottomSheet",
+      "usage": "Paywall, yorum önizleme, rapor dışa aktarım.",
+      "rules": ["Kısa içerik için modal sheet, uzun için full-height"]
+    },
+    {
+      "name": "TimePicker",
+      "usage": "Günlük hatırlatma zamanı ayarı.",
+      "rules": ["Varsayılan 20:00; yerel saat göster"]
+    },
+    {
+      "name": "Switch",
+      "usage": "Erişilebilirlik ve hatırlatma aç/kapat.",
+      "rules": ["Açık/kapalı durum metni yanına"]
+    },
+    {
+      "name": "Slider",
+      "usage": "Font boyutu ve satır aralığı ayarı.",
+      "rules": ["Minimum 3 kademeli", "Canlı önizleme göster"]
+    },
+    {
+      "name": "Badge",
+      "usage": "Abonelik durumu ve yeni içerik göstergesi.",
+      "rules": ["Metin kısa (max 8 karakter)"]
+    },
+    {
+      "name": "IconButton",
+      "usage": "Favori, paylaş, indirme aksiyonları.",
+      "rules": ["Dokunma alanı min 48dp"]
+    },
+    {
+      "name": "Menu",
+      "usage": "Sıralama ve hızlı eylem menüleri.",
+      "rules": ["Menü öğesi sayısı 6'yı geçmez"]
+    },
+    {
+      "name": "Divider",
+      "usage": "Bölüm ayrımları ve liste ayırıcıları.",
+      "rules": ["Liste ayırıcıları inset"]
+    }
+  ]
+}

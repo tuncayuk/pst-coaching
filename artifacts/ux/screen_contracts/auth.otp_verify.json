@@ -1,0 +1,49 @@
+{
+  "id": "auth.otp_verify",
+  "title": "OTP Doğrulama",
+  "route": "/auth/otp",
+  "purpose": "OTP Doğrulama deneyimini sunmak.",
+  "entryPoints": [
+    "onboarding.welcome",
+    "profile.account"
+  ],
+  "inputs": [
+    {
+      "name": "locale",
+      "type": "LanguageCode",
+      "required": true,
+      "source": "app_state"
+    }
+  ],
+  "dataDependencies": [
+    "User",
+    "UserSession"
+  ],
+  "uiStates": {
+    "loading": {
+      "description": "OTP Doğrulama yüklenirken iskelet ve temel CTA'lar gösterilir."
+    },
+    "ready": {
+      "description": "OTP Doğrulama içeriği ve etkileşimler hazır."
+    },
+    "empty": {
+      "description": "İçerik yoksa açıklayıcı boş durum ve birincil aksiyon sunulur."
+    },
+    "error": {
+      "description": "Hata mesajı ve tekrar dene aksiyonu gösterilir."
+    },
+    "offline": {
+      "description": "Çevrimdışı modda önbellek içerik gösterilir, senkron bekler."
+    }
+  },
+  "analytics": {
+    "screenView": "auth_otp_verify_viewed",
+    "events": [
+      "auth_otp_verify_viewed"
+    ]
+  },
+  "acceptanceCriteriaRefs": [
+    "RQ-03"
+  ],
+  "gates": []
+}

@@ -1,0 +1,49 @@
+{
+  "id": "auth.login",
+  "title": "Giriş",
+  "route": "/auth/login",
+  "purpose": "Giriş deneyimini sunmak.",
+  "entryPoints": [
+    "onboarding.welcome",
+    "profile.account"
+  ],
+  "inputs": [
+    {
+      "name": "locale",
+      "type": "LanguageCode",
+      "required": true,
+      "source": "app_state"
+    }
+  ],
+  "dataDependencies": [
+    "User",
+    "UserSession"
+  ],
+  "uiStates": {
+    "loading": {
+      "description": "Giriş yüklenirken iskelet ve temel CTA'lar gösterilir."
+    },
+    "ready": {
+      "description": "Giriş içeriği ve etkileşimler hazır."
+    },
+    "empty": {
+      "description": "İçerik yoksa açıklayıcı boş durum ve birincil aksiyon sunulur."
+    },
+    "error": {
+      "description": "Hata mesajı ve tekrar dene aksiyonu gösterilir."
+    },
+    "offline": {
+      "description": "Çevrimdışı modda önbellek içerik gösterilir, senkron bekler."
+    }
+  },
+  "analytics": {
+    "screenView": "auth_login_viewed",
+    "events": [
+      "auth_login_viewed"
+    ]
+  },
+  "acceptanceCriteriaRefs": [
+    "RQ-03"
+  ],
+  "gates": []
+}

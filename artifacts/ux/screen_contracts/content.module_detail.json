@@ -1,0 +1,70 @@
+{
+  "id": "content.module_detail",
+  "title": "Modül Detay",
+  "route": "/content/modules/:id",
+  "purpose": "Modül Detay deneyimini sunmak.",
+  "entryPoints": [
+    "content.* detail/home screens"
+  ],
+  "inputs": [
+    {
+      "name": "locale",
+      "type": "LanguageCode",
+      "required": true,
+      "source": "app_state"
+    },
+    {
+      "name": "id",
+      "type": "string",
+      "required": true,
+      "source": "route"
+    }
+  ],
+  "dataDependencies": [
+    "ContentItem",
+    "ContentProgress",
+    "Comment",
+    "Highlight",
+    "Note",
+    "Achievement",
+    "Download",
+    "Journey",
+    "JourneyDay",
+    "Workshop",
+    "Module",
+    "Package",
+    "Ebook",
+    "EbookProgress"
+  ],
+  "uiStates": {
+    "loading": {
+      "description": "Modül Detay yüklenirken iskelet ve temel CTA'lar gösterilir."
+    },
+    "ready": {
+      "description": "Modül Detay içeriği ve etkileşimler hazır."
+    },
+    "empty": {
+      "description": "İçerik yoksa açıklayıcı boş durum ve birincil aksiyon sunulur."
+    },
+    "error": {
+      "description": "Hata mesajı ve tekrar dene aksiyonu gösterilir."
+    },
+    "offline": {
+      "description": "Çevrimdışı modda önbellek içerik gösterilir, senkron bekler."
+    }
+  },
+  "analytics": {
+    "screenView": "content_module_detail_viewed",
+    "events": [
+      "content_module_detail_viewed"
+    ]
+  },
+  "acceptanceCriteriaRefs": [
+    "RQ-07",
+    "RQ-08",
+    "RQ-09",
+    "RQ-10",
+    "RQ-11"
+  ],
+  "gates": []
+}

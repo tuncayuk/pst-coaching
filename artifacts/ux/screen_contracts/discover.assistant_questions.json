@@ -1,0 +1,50 @@
+{
+  "id": "discover.assistant_questions",
+  "title": "İçerik Asistanı Soruları",
+  "route": "/discover/assistant/questions",
+  "purpose": "Hedef, süre ve tercih sorularını toplamak.",
+  "entryPoints": [
+    "discover.catalog"
+  ],
+  "inputs": [
+    {
+      "name": "answers",
+      "type": "object",
+      "required": false,
+      "source": "local_state"
+    }
+  ],
+  "dataDependencies": [
+    "Journey",
+    "Workshop",
+    "Module",
+    "Ebook"
+  ],
+  "uiStates": {
+    "loading": {
+      "description": "İçerik Asistanı Soruları yüklenirken iskelet ve temel CTA'lar gösterilir."
+    },
+    "ready": {
+      "description": "İçerik Asistanı Soruları içeriği ve etkileşimler hazır."
+    },
+    "empty": {
+      "description": "İçerik yoksa açıklayıcı boş durum ve birincil aksiyon sunulur."
+    },
+    "error": {
+      "description": "Hata mesajı ve tekrar dene aksiyonu gösterilir."
+    },
+    "offline": {
+      "description": "Çevrimdışı modda önbellek içerik gösterilir, senkron bekler."
+    }
+  },
+  "analytics": {
+    "screenView": "discover_assistant_questions_viewed",
+    "events": [
+      "discover_assistant_questions_viewed"
+    ]
+  },
+  "acceptanceCriteriaRefs": [
+    "RQ-05"
+  ],
+  "gates": []
+}

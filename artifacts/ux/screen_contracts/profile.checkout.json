@@ -1,0 +1,56 @@
+{
+  "id": "profile.checkout",
+  "title": "Satın Alma",
+  "route": "/profile/subscription/checkout",
+  "purpose": "Mağaza satın alma akışını başlatmak ve sunucu doğrulamasını tetiklemek.",
+  "entryPoints": [
+    "profile.overview"
+  ],
+  "inputs": [
+    {
+      "name": "locale",
+      "type": "LanguageCode",
+      "required": true,
+      "source": "app_state"
+    }
+  ],
+  "dataDependencies": [
+    "User",
+    "Subscription",
+    "SubscriptionPlan",
+    "AddOn",
+    "Seat",
+    "Invitation",
+    "PaymentTransaction",
+    "AccessibilitySettings",
+    "ReminderSettings",
+    "ReadingSettings"
+  ],
+  "uiStates": {
+    "loading": {
+      "description": "Satın Alma yüklenirken iskelet ve temel CTA'lar gösterilir."
+    },
+    "ready": {
+      "description": "Satın Alma içeriği ve etkileşimler hazır."
+    },
+    "empty": {
+      "description": "İçerik yoksa açıklayıcı boş durum ve birincil aksiyon sunulur."
+    },
+    "error": {
+      "description": "Hata mesajı ve tekrar dene aksiyonu gösterilir."
+    },
+    "offline": {
+      "description": "Çevrimdışı modda önbellek içerik gösterilir, senkron bekler."
+    }
+  },
+  "analytics": {
+    "screenView": "profile_checkout_viewed",
+    "events": [
+      "profile_checkout_viewed"
+    ]
+  },
+  "acceptanceCriteriaRefs": [
+    "RQ-06"
+  ],
+  "gates": []
+}

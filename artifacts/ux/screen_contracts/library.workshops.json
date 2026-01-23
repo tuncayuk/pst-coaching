@@ -1,0 +1,56 @@
+{
+  "id": "library.workshops",
+  "title": "Kütüphane Atölyeler",
+  "route": "/library/workshops",
+  "purpose": "Kütüphane Atölyeler deneyimini sunmak.",
+  "entryPoints": [
+    "library.overview"
+  ],
+  "inputs": [
+    {
+      "name": "locale",
+      "type": "LanguageCode",
+      "required": true,
+      "source": "app_state"
+    }
+  ],
+  "dataDependencies": [
+    "ContentProgress",
+    "Favorite",
+    "Collection",
+    "Download",
+    "EbookProgress",
+    "Highlight",
+    "Note"
+  ],
+  "uiStates": {
+    "loading": {
+      "description": "Kütüphane Atölyeler yüklenirken iskelet ve temel CTA'lar gösterilir."
+    },
+    "ready": {
+      "description": "Kütüphane Atölyeler içeriği ve etkileşimler hazır."
+    },
+    "empty": {
+      "description": "İçerik yoksa açıklayıcı boş durum ve birincil aksiyon sunulur."
+    },
+    "error": {
+      "description": "Hata mesajı ve tekrar dene aksiyonu gösterilir."
+    },
+    "offline": {
+      "description": "Çevrimdışı modda önbellek içerik gösterilir, senkron bekler."
+    }
+  },
+  "analytics": {
+    "screenView": "library_workshops_viewed",
+    "events": [
+      "library_workshops_viewed"
+    ]
+  },
+  "acceptanceCriteriaRefs": [
+    "RQ-12",
+    "RQ-11"
+  ],
+  "gates": [
+    "subscription:trial_or_active"
+  ]
+}

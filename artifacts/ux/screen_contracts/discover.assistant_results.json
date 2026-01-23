@@ -1,0 +1,50 @@
+{
+  "id": "discover.assistant_results",
+  "title": "İçerik Asistanı Sonuçları",
+  "route": "/discover/assistant/results",
+  "purpose": "1 ana + 2 alternatif öneri göstermek ve kataloğa geçiş sağlamak.",
+  "entryPoints": [
+    "discover.catalog"
+  ],
+  "inputs": [
+    {
+      "name": "locale",
+      "type": "LanguageCode",
+      "required": true,
+      "source": "app_state"
+    }
+  ],
+  "dataDependencies": [
+    "Journey",
+    "Workshop",
+    "Module",
+    "Ebook"
+  ],
+  "uiStates": {
+    "loading": {
+      "description": "İçerik Asistanı Sonuçları yüklenirken iskelet ve temel CTA'lar gösterilir."
+    },
+    "ready": {
+      "description": "İçerik Asistanı Sonuçları içeriği ve etkileşimler hazır."
+    },
+    "empty": {
+      "description": "İçerik yoksa açıklayıcı boş durum ve birincil aksiyon sunulur."
+    },
+    "error": {
+      "description": "Hata mesajı ve tekrar dene aksiyonu gösterilir."
+    },
+    "offline": {
+      "description": "Çevrimdışı modda önbellek içerik gösterilir, senkron bekler."
+    }
+  },
+  "analytics": {
+    "screenView": "discover_assistant_results_viewed",
+    "events": [
+      "discover_assistant_results_viewed"
+    ]
+  },
+  "acceptanceCriteriaRefs": [
+    "RQ-05"
+  ],
+  "gates": []
+}

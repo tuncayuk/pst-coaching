@@ -1,0 +1,537 @@
+{
+  "appName": "PST Coaching",
+  "navigation": {
+    "tabs": ["Ana Sayfa", "Keşfet", "Kütüphane", "Gelişim", "Profil"]
+  },
+  "screens": [
+    {
+      "id": "home.dashboard",
+      "route": "/home",
+      "title": "Ana Sayfa",
+      "type": "tab",
+      "states": ["loading", "ready", "empty", "error", "offline"]
+    },
+    {
+      "id": "discover.catalog",
+      "route": "/discover",
+      "title": "Keşfet",
+      "type": "tab",
+      "states": ["loading", "ready", "empty", "error", "offline"]
+    },
+    {
+      "id": "library.overview",
+      "route": "/library",
+      "title": "Kütüphane",
+      "type": "tab",
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["subscription:trial_or_active"]
+    },
+    {
+      "id": "progress.dashboard",
+      "route": "/progress",
+      "title": "Gelişim",
+      "type": "tab",
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["subscription:trial_or_active"]
+    },
+    {
+      "id": "profile.overview",
+      "route": "/profile",
+      "title": "Profil",
+      "type": "tab",
+      "states": ["loading", "ready", "empty", "error", "offline"]
+    },
+    {
+      "id": "onboarding.language_select",
+      "route": "/onboarding/language",
+      "title": "Dil Seçimi",
+      "type": "stack",
+      "states": ["loading", "ready", "empty", "error", "offline"]
+    },
+    {
+      "id": "onboarding.welcome",
+      "route": "/onboarding/welcome",
+      "title": "Hoş Geldiniz",
+      "type": "stack",
+      "states": ["loading", "ready", "empty", "error", "offline"]
+    },
+    {
+      "id": "auth.login",
+      "route": "/auth/login",
+      "title": "Giriş",
+      "type": "stack",
+      "states": ["loading", "ready", "empty", "error", "offline"]
+    },
+    {
+      "id": "auth.register",
+      "route": "/auth/register",
+      "title": "Kayıt Ol",
+      "type": "stack",
+      "states": ["loading", "ready", "empty", "error", "offline"]
+    },
+    {
+      "id": "auth.otp_verify",
+      "route": "/auth/otp",
+      "title": "OTP Doğrulama",
+      "type": "stack",
+      "states": ["loading", "ready", "empty", "error", "offline"]
+    },
+    {
+      "id": "auth.password_reset",
+      "route": "/auth/password-reset",
+      "title": "Şifre Sıfırlama",
+      "type": "stack",
+      "states": ["loading", "ready", "empty", "error", "offline"]
+    },
+    {
+      "id": "auth.session_timeout",
+      "route": "/auth/session-timeout",
+      "title": "Oturum Süresi Doldu",
+      "type": "modal",
+      "states": ["loading", "ready", "empty", "error", "offline"]
+    },
+    {
+      "id": "home.search",
+      "route": "/home/search",
+      "title": "Arama",
+      "type": "stack",
+      "states": ["loading", "ready", "empty", "error", "offline"]
+    },
+    {
+      "id": "home.search_results",
+      "route": "/home/search/results",
+      "title": "Arama Sonuçları",
+      "type": "stack",
+      "states": ["loading", "ready", "empty", "error", "offline"]
+    },
+    {
+      "id": "home.vicdandan_karaktere_detail",
+      "route": "/home/vicdandan-karaktere",
+      "title": "Vicdandan Karaktere",
+      "type": "stack",
+      "states": ["loading", "ready", "empty", "error", "offline"]
+    },
+    {
+      "id": "home.active_content_list",
+      "route": "/home/active-content",
+      "title": "Aktif İçerikler",
+      "type": "stack",
+      "states": ["loading", "ready", "empty", "error", "offline"]
+    },
+    {
+      "id": "discover.assistant_intro",
+      "route": "/discover/assistant",
+      "title": "İçerik Asistanı",
+      "type": "stack",
+      "states": ["loading", "ready", "empty", "error", "offline"]
+    },
+    {
+      "id": "discover.assistant_questions",
+      "route": "/discover/assistant/questions",
+      "title": "İçerik Asistanı Soruları",
+      "type": "stack",
+      "states": ["loading", "ready", "empty", "error", "offline"]
+    },
+    {
+      "id": "discover.assistant_results",
+      "route": "/discover/assistant/results",
+      "title": "İçerik Asistanı Sonuçları",
+      "type": "stack",
+      "states": ["loading", "ready", "empty", "error", "offline"]
+    },
+    {
+      "id": "discover.journeys",
+      "route": "/discover/journeys",
+      "title": "Yolculuklar",
+      "type": "stack",
+      "states": ["loading", "ready", "empty", "error", "offline"]
+    },
+    {
+      "id": "discover.workshops",
+      "route": "/discover/workshops",
+      "title": "Atölyeler",
+      "type": "stack",
+      "states": ["loading", "ready", "empty", "error", "offline"]
+    },
+    {
+      "id": "discover.modules",
+      "route": "/discover/modules",
+      "title": "Modüller",
+      "type": "stack",
+      "states": ["loading", "ready", "empty", "error", "offline"]
+    },
+    {
+      "id": "discover.ebooks",
+      "route": "/discover/ebooks",
+      "title": "e-Kitaplar",
+      "type": "stack",
+      "states": ["loading", "ready", "empty", "error", "offline"]
+    },
+    {
+      "id": "content.journey_detail",
+      "route": "/content/journeys/:id",
+      "title": "Yolculuk Detay",
+      "type": "stack",
+      "states": ["loading", "ready", "empty", "error", "offline"]
+    },
+    {
+      "id": "content.workshop_detail",
+      "route": "/content/workshops/:id",
+      "title": "Atölye Detay",
+      "type": "stack",
+      "states": ["loading", "ready", "empty", "error", "offline"]
+    },
+    {
+      "id": "content.module_detail",
+      "route": "/content/modules/:id",
+      "title": "Modül Detay",
+      "type": "stack",
+      "states": ["loading", "ready", "empty", "error", "offline"]
+    },
+    {
+      "id": "content.package_detail",
+      "route": "/content/packages/:id",
+      "title": "Paket Detay",
+      "type": "stack",
+      "states": ["loading", "ready", "empty", "error", "offline"]
+    },
+    {
+      "id": "content.ebook_detail",
+      "route": "/content/ebooks/:id",
+      "title": "e-Kitap Detay",
+      "type": "stack",
+      "states": ["loading", "ready", "empty", "error", "offline"]
+    },
+    {
+      "id": "content.paywall",
+      "route": "/paywall",
+      "title": "Abonelik Gerekli",
+      "type": "sheet",
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["subscription:trial_or_active"]
+    },
+    {
+      "id": "library.journeys",
+      "route": "/library/journeys",
+      "title": "Kütüphane Yolculuklar",
+      "type": "stack",
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["subscription:trial_or_active"]
+    },
+    {
+      "id": "library.workshops",
+      "route": "/library/workshops",
+      "title": "Kütüphane Atölyeler",
+      "type": "stack",
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["subscription:trial_or_active"]
+    },
+    {
+      "id": "library.modules",
+      "route": "/library/modules",
+      "title": "Kütüphane Modüller",
+      "type": "stack",
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["subscription:trial_or_active"]
+    },
+    {
+      "id": "library.ebooks",
+      "route": "/library/ebooks",
+      "title": "Kütüphane e-Kitaplar",
+      "type": "stack",
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["subscription:trial_or_active"]
+    },
+    {
+      "id": "library.favorites",
+      "route": "/library/favorites",
+      "title": "Favoriler",
+      "type": "stack",
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["subscription:trial_or_active"]
+    },
+    {
+      "id": "library.favorite_detail",
+      "route": "/library/favorites/:id",
+      "title": "Favori Detay",
+      "type": "stack",
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["subscription:trial_or_active"]
+    },
+    {
+      "id": "library.collections",
+      "route": "/library/collections",
+      "title": "Koleksiyonlar",
+      "type": "stack",
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["subscription:trial_or_active"]
+    },
+    {
+      "id": "library.collection_detail",
+      "route": "/library/collections/:id",
+      "title": "Koleksiyon Detay",
+      "type": "stack",
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["subscription:trial_or_active"]
+    },
+    {
+      "id": "library.downloads",
+      "route": "/library/downloads",
+      "title": "İndirilenler",
+      "type": "stack",
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["subscription:trial_or_active"]
+    },
+    {
+      "id": "progress.emotional_map",
+      "route": "/progress/emotional-map",
+      "title": "Duygusal Harita",
+      "type": "stack",
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["subscription:trial_or_active"]
+    },
+    {
+      "id": "progress.weekly_summary",
+      "route": "/progress/weekly-summary",
+      "title": "Haftalık Özet",
+      "type": "stack",
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["subscription:trial_or_active"]
+    },
+    {
+      "id": "progress.strengths",
+      "route": "/progress/strengths",
+      "title": "Güçlü Alanlar",
+      "type": "stack",
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["subscription:trial_or_active"]
+    },
+    {
+      "id": "progress.report_export",
+      "route": "/progress/report-export",
+      "title": "Rapor Dışa Aktar",
+      "type": "sheet",
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["subscription:trial_or_active"]
+    },
+    {
+      "id": "profile.settings",
+      "route": "/profile/settings",
+      "title": "Ayarlar",
+      "type": "stack",
+      "states": ["loading", "ready", "empty", "error", "offline"]
+    },
+    {
+      "id": "profile.language",
+      "route": "/profile/settings/language",
+      "title": "Dil",
+      "type": "stack",
+      "states": ["loading", "ready", "empty", "error", "offline"]
+    },
+    {
+      "id": "profile.accessibility",
+      "route": "/profile/settings/accessibility",
+      "title": "Erişilebilirlik",
+      "type": "stack",
+      "states": ["loading", "ready", "empty", "error", "offline"]
+    },
+    {
+      "id": "profile.reminders",
+      "route": "/profile/settings/reminders",
+      "title": "Hatırlatmalar",
+      "type": "stack",
+      "states": ["loading", "ready", "empty", "error", "offline"]
+    },
+    {
+      "id": "profile.subscription",
+      "route": "/profile/subscription",
+      "title": "Abonelik",
+      "type": "stack",
+      "states": ["loading", "ready", "empty", "error", "offline"]
+    },
+    {
+      "id": "profile.plan_comparison",
+      "route": "/profile/subscription/compare",
+      "title": "Plan Karşılaştırma",
+      "type": "stack",
+      "states": ["loading", "ready", "empty", "error", "offline"]
+    },
+    {
+      "id": "profile.checkout",
+      "route": "/profile/subscription/checkout",
+      "title": "Satın Alma",
+      "type": "stack",
+      "states": ["loading", "ready", "empty", "error", "offline"]
+    },
+    {
+      "id": "profile.seat_management",
+      "route": "/profile/subscription/seats",
+      "title": "Kişi Yönetimi",
+      "type": "stack",
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["role:plan_owner"]
+    },
+    {
+      "id": "profile.addons",
+      "route": "/profile/subscription/addons",
+      "title": "Add-on Yönetimi",
+      "type": "stack",
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["role:plan_owner"]
+    },
+    {
+      "id": "profile.payment_history",
+      "route": "/profile/subscription/payments",
+      "title": "Ödeme Geçmişi",
+      "type": "stack",
+      "states": ["loading", "ready", "empty", "error", "offline"]
+    },
+    {
+      "id": "profile.restore_purchases",
+      "route": "/profile/subscription/restore",
+      "title": "Satın Alımları Geri Yükle",
+      "type": "stack",
+      "states": ["loading", "ready", "empty", "error", "offline"]
+    },
+    {
+      "id": "profile.student_discount",
+      "route": "/profile/subscription/student-discount",
+      "title": "Öğrenci İndirimi",
+      "type": "stack",
+      "states": ["loading", "ready", "empty", "error", "offline"]
+    },
+    {
+      "id": "profile.account",
+      "route": "/profile/account",
+      "title": "Hesap",
+      "type": "stack",
+      "states": ["loading", "ready", "empty", "error", "offline"]
+    },
+    {
+      "id": "profile.change_password",
+      "route": "/profile/account/change-password",
+      "title": "Şifre Değiştir",
+      "type": "stack",
+      "states": ["loading", "ready", "empty", "error", "offline"]
+    },
+    {
+      "id": "profile.logout_confirm",
+      "route": "/profile/account/logout",
+      "title": "Çıkış Yap",
+      "type": "sheet",
+      "states": ["loading", "ready", "empty", "error", "offline"]
+    },
+    {
+      "id": "content.journey_home",
+      "route": "/content/journeys/:id/home",
+      "title": "Yolculuk",
+      "type": "stack",
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["subscription:trial_or_active"]
+    },
+    {
+      "id": "content.journey_day",
+      "route": "/content/journeys/:id/days/:day",
+      "title": "Gün İçeriği",
+      "type": "stack",
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["subscription:trial_or_active"]
+    },
+    {
+      "id": "content.reading",
+      "route": "/content/readings/:id",
+      "title": "Okuma",
+      "type": "stack",
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["subscription:trial_or_active"]
+    },
+    {
+      "id": "content.exercise",
+      "route": "/content/exercises/:id",
+      "title": "Uygulama",
+      "type": "stack",
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["subscription:trial_or_active"]
+    },
+    {
+      "id": "content.comment",
+      "route": "/content/comments/:contentItemId",
+      "title": "Yorum",
+      "type": "stack",
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["subscription:trial_or_active"]
+    },
+    {
+      "id": "content.comment_preview",
+      "route": "/content/comments/:contentItemId/preview",
+      "title": "Yorum Önizleme",
+      "type": "stack",
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["subscription:trial_or_active"]
+    },
+    {
+      "id": "content.workshop_home",
+      "route": "/content/workshops/:id/home",
+      "title": "Atölye",
+      "type": "stack",
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["subscription:trial_or_active"]
+    },
+    {
+      "id": "content.workshop_section",
+      "route": "/content/workshops/:id/sections/:sectionId",
+      "title": "Atölye Bölümü",
+      "type": "stack",
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["subscription:trial_or_active"]
+    },
+    {
+      "id": "content.module_home",
+      "route": "/content/modules/:id/home",
+      "title": "Modül",
+      "type": "stack",
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["subscription:trial_or_active"]
+    },
+    {
+      "id": "content.ebook_reader",
+      "route": "/content/ebooks/:id/reader",
+      "title": "e-Kitap Okuyucu",
+      "type": "stack",
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["subscription:trial_or_active"]
+    },
+    {
+      "id": "content.ebook_toc",
+      "route": "/content/ebooks/:id/toc",
+      "title": "e-Kitap İçindekiler",
+      "type": "sheet",
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["subscription:trial_or_active"]
+    },
+    {
+      "id": "content.ebook_highlights",
+      "route": "/content/ebooks/:id/highlights",
+      "title": "Vurgular ve Notlar",
+      "type": "stack",
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["subscription:trial_or_active"]
+    },
+    {
+      "id": "content.achievement",
+      "route": "/content/achievements/:id",
+      "title": "Sertifika/Rozet",
+      "type": "stack",
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["subscription:trial_or_active"]
+    },
+    {
+      "id": "content.review_prompt",
+      "route": "/content/review/:targetType/:id",
+      "title": "Değerlendirme",
+      "type": "sheet",
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["subscription:trial_or_active"]
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "id": "progress.dashboard",
+  "title": "Gelişim",
+  "route": "/progress",
+  "purpose": "Gelişim deneyimini sunmak.",
+  "entryPoints": [
+    "progress.dashboard"
+  ],
+  "inputs": [
+    {
+      "name": "locale",
+      "type": "LanguageCode",
+      "required": true,
+      "source": "app_state"
+    }
+  ],
+  "dataDependencies": [
+    "ContentProgress",
+    "Comment",
+    "Achievement",
+    "ContentReview"
+  ],
+  "uiStates": {
+    "loading": {
+      "description": "Gelişim yüklenirken iskelet ve temel CTA'lar gösterilir."
+    },
+    "ready": {
+      "description": "Gelişim içeriği ve etkileşimler hazır."
+    },
+    "empty": {
+      "description": "İçerik yoksa açıklayıcı boş durum ve birincil aksiyon sunulur."
+    },
+    "error": {
+      "description": "Hata mesajı ve tekrar dene aksiyonu gösterilir."
+    },
+    "offline": {
+      "description": "Çevrimdışı modda önbellek içerik gösterilir, senkron bekler."
+    }
+  },
+  "analytics": {
+    "screenView": "progress_dashboard_viewed",
+    "events": [
+      "progress_dashboard_viewed"
+    ]
+  },
+  "acceptanceCriteriaRefs": [
+    "RQ-13"
+  ],
+  "gates": [
+    "subscription:trial_or_active"
+  ]
+}

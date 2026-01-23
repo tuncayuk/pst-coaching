@@ -1,0 +1,50 @@
+{
+  "id": "discover.catalog",
+  "title": "Keşfet",
+  "route": "/discover",
+  "purpose": "Keşfet deneyimini sunmak.",
+  "entryPoints": [
+    "discover.catalog"
+  ],
+  "inputs": [
+    {
+      "name": "locale",
+      "type": "LanguageCode",
+      "required": true,
+      "source": "app_state"
+    }
+  ],
+  "dataDependencies": [
+    "Journey",
+    "Workshop",
+    "Module",
+    "Ebook"
+  ],
+  "uiStates": {
+    "loading": {
+      "description": "Keşfet yüklenirken iskelet ve temel CTA'lar gösterilir."
+    },
+    "ready": {
+      "description": "Keşfet içeriği ve etkileşimler hazır."
+    },
+    "empty": {
+      "description": "İçerik yoksa açıklayıcı boş durum ve birincil aksiyon sunulur."
+    },
+    "error": {
+      "description": "Hata mesajı ve tekrar dene aksiyonu gösterilir."
+    },
+    "offline": {
+      "description": "Çevrimdışı modda önbellek içerik gösterilir, senkron bekler."
+    }
+  },
+  "analytics": {
+    "screenView": "discover_catalog_viewed",
+    "events": [
+      "discover_catalog_viewed"
+    ]
+  },
+  "acceptanceCriteriaRefs": [
+    "RQ-05"
+  ],
+  "gates": []
+}

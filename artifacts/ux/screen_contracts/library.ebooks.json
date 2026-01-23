@@ -1,0 +1,56 @@
+{
+  "id": "library.ebooks",
+  "title": "Kütüphane e-Kitaplar",
+  "route": "/library/ebooks",
+  "purpose": "Kütüphane e-Kitaplar deneyimini sunmak.",
+  "entryPoints": [
+    "library.overview"
+  ],
+  "inputs": [
+    {
+      "name": "locale",
+      "type": "LanguageCode",
+      "required": true,
+      "source": "app_state"
+    }
+  ],
+  "dataDependencies": [
+    "ContentProgress",
+    "Favorite",
+    "Collection",
+    "Download",
+    "EbookProgress",
+    "Highlight",
+    "Note"
+  ],
+  "uiStates": {
+    "loading": {
+      "description": "Kütüphane e-Kitaplar yüklenirken iskelet ve temel CTA'lar gösterilir."
+    },
+    "ready": {
+      "description": "Kütüphane e-Kitaplar içeriği ve etkileşimler hazır."
+    },
+    "empty": {
+      "description": "İçerik yoksa açıklayıcı boş durum ve birincil aksiyon sunulur."
+    },
+    "error": {
+      "description": "Hata mesajı ve tekrar dene aksiyonu gösterilir."
+    },
+    "offline": {
+      "description": "Çevrimdışı modda önbellek içerik gösterilir, senkron bekler."
+    }
+  },
+  "analytics": {
+    "screenView": "library_ebooks_viewed",
+    "events": [
+      "library_ebooks_viewed"
+    ]
+  },
+  "acceptanceCriteriaRefs": [
+    "RQ-12",
+    "RQ-11"
+  ],
+  "gates": [
+    "subscription:trial_or_active"
+  ]
+}

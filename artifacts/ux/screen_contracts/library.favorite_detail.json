@@ -1,0 +1,61 @@
+{
+  "id": "library.favorite_detail",
+  "title": "Favori Detay",
+  "route": "/library/favorites/:id",
+  "purpose": "Favori detayını ve not düzenlemeyi göstermek.",
+  "entryPoints": [
+    "library.overview"
+  ],
+  "inputs": [
+    {
+      "name": "locale",
+      "type": "LanguageCode",
+      "required": true,
+      "source": "app_state"
+    },
+    {
+      "name": "id",
+      "type": "string",
+      "required": true,
+      "source": "route"
+    }
+  ],
+  "dataDependencies": [
+    "ContentProgress",
+    "Favorite",
+    "Collection",
+    "Download",
+    "EbookProgress",
+    "Highlight",
+    "Note"
+  ],
+  "uiStates": {
+    "loading": {
+      "description": "Favori Detay yüklenirken iskelet ve temel CTA'lar gösterilir."
+    },
+    "ready": {
+      "description": "Favori Detay içeriği ve etkileşimler hazır."
+    },
+    "empty": {
+      "description": "İçerik yoksa açıklayıcı boş durum ve birincil aksiyon sunulur."
+    },
+    "error": {
+      "description": "Hata mesajı ve tekrar dene aksiyonu gösterilir."
+    },
+    "offline": {
+      "description": "Çevrimdışı modda önbellek içerik gösterilir, senkron bekler."
+    }
+  },
+  "analytics": {
+    "screenView": "library_favorite_detail_viewed",
+    "events": [
+      "library_favorite_detail_viewed"
+    ]
+  },
+  "acceptanceCriteriaRefs": [
+    "RQ-12"
+  ],
+  "gates": [
+    "subscription:trial_or_active"
+  ]
+}

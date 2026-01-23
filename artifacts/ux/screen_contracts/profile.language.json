@@ -1,0 +1,59 @@
+{
+  "id": "profile.language",
+  "title": "Dil",
+  "route": "/profile/settings/language",
+  "purpose": "Dil deneyimini sunmak.",
+  "entryPoints": [
+    "profile.overview"
+  ],
+  "inputs": [
+    {
+      "name": "locale",
+      "type": "LanguageCode",
+      "required": true,
+      "source": "app_state"
+    }
+  ],
+  "dataDependencies": [
+    "User",
+    "Subscription",
+    "SubscriptionPlan",
+    "AddOn",
+    "Seat",
+    "Invitation",
+    "PaymentTransaction",
+    "AccessibilitySettings",
+    "ReminderSettings",
+    "ReadingSettings"
+  ],
+  "uiStates": {
+    "loading": {
+      "description": "Dil yüklenirken iskelet ve temel CTA'lar gösterilir."
+    },
+    "ready": {
+      "description": "Dil içeriği ve etkileşimler hazır."
+    },
+    "empty": {
+      "description": "İçerik yoksa açıklayıcı boş durum ve birincil aksiyon sunulur."
+    },
+    "error": {
+      "description": "Hata mesajı ve tekrar dene aksiyonu gösterilir."
+    },
+    "offline": {
+      "description": "Çevrimdışı modda önbellek içerik gösterilir, senkron bekler."
+    }
+  },
+  "analytics": {
+    "screenView": "profile_language_viewed",
+    "events": [
+      "profile_language_viewed"
+    ]
+  },
+  "acceptanceCriteriaRefs": [
+    "RQ-03",
+    "RQ-06",
+    "RQ-14",
+    "RQ-15"
+  ],
+  "gates": []
+}
