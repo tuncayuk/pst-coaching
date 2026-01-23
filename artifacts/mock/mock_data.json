@@ -198,6 +198,42 @@
       "duration_days": 14,
       "daily_target": "10 dk okuma",
       "language": "tr"
+    },
+    {
+      "id": "abababab-0000-0000-0000-000000000001",
+      "title": "Mindfulness Baslangic",
+      "description": "7 gunluk farkindalik ve nefes programi.",
+      "level": "baslangic",
+      "duration_days": 7,
+      "daily_target": "8 dk okuma",
+      "language": "tr"
+    },
+    {
+      "id": "abababab-0000-0000-0000-000000000002",
+      "title": "Duygusal Esneklik",
+      "description": "Duygularla saglikli bas etme becerileri.",
+      "level": "orta",
+      "duration_days": 21,
+      "daily_target": "12 dk okuma",
+      "language": "tr"
+    },
+    {
+      "id": "abababab-0000-0000-0000-000000000003",
+      "title": "Inner Calm Starter",
+      "description": "5-day reset for calm routines.",
+      "level": "beginner",
+      "duration_days": 5,
+      "daily_target": "6 min reading",
+      "language": "en"
+    },
+    {
+      "id": "abababab-0000-0000-0000-000000000004",
+      "title": "Balance Semanal",
+      "description": "Equilibrio diario con ejercicios breves.",
+      "level": "basico",
+      "duration_days": 7,
+      "daily_target": "7 min lectura",
+      "language": "es"
     }
   ],
   "journey_days": [
@@ -280,6 +316,506 @@
       "title": "Gun 2 Okuma",
       "body": "Beden taramasi calismasi.",
       "order_index": 1,
+      "has_audio": false
+    },
+    {
+      "id": "c1c1c1c1-0000-0000-0000-000000000001",
+      "parent_type": "journey_day",
+      "parent_id": "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb",
+      "content_type": "reading",
+      "title": "journey_day reading item 1",
+      "body": "Okuma metni ornegi 1.",
+      "order_index": 1,
+      "has_audio": false
+    },
+    {
+      "id": "c1c1c1c1-0000-0000-0000-000000000002",
+      "parent_type": "journey_day",
+      "parent_id": "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbb1",
+      "content_type": "exercise",
+      "title": "journey_day exercise item 2",
+      "body": "Uygulama aciklamasi 2.",
+      "order_index": 2,
+      "has_audio": false
+    },
+    {
+      "id": "c1c1c1c1-0000-0000-0000-000000000003",
+      "parent_type": "package",
+      "parent_id": "dddddddd-dddd-dddd-dddd-dddddddddddd",
+      "content_type": "question",
+      "title": "package question item 3",
+      "body": "Soru ornegi 3.",
+      "order_index": 3,
+      "has_audio": false
+    },
+    {
+      "id": "c1c1c1c1-0000-0000-0000-000000000004",
+      "parent_type": "workshop",
+      "parent_id": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee",
+      "content_type": "reading",
+      "title": "workshop reading item 4",
+      "body": "Okuma metni ornegi 4.",
+      "order_index": 4,
+      "has_audio": true
+    },
+    {
+      "id": "c1c1c1c1-0000-0000-0000-000000000005",
+      "parent_type": "journey_day",
+      "parent_id": "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb",
+      "content_type": "exercise",
+      "title": "journey_day exercise item 5",
+      "body": "Uygulama aciklamasi 5.",
+      "order_index": 5,
+      "has_audio": false
+    },
+    {
+      "id": "c1c1c1c1-0000-0000-0000-000000000006",
+      "parent_type": "journey_day",
+      "parent_id": "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbb1",
+      "content_type": "question",
+      "title": "journey_day question item 6",
+      "body": "Soru ornegi 6.",
+      "order_index": 6,
+      "has_audio": false
+    },
+    {
+      "id": "c1c1c1c1-0000-0000-0000-000000000007",
+      "parent_type": "package",
+      "parent_id": "dddddddd-dddd-dddd-dddd-dddddddddddd",
+      "content_type": "reading",
+      "title": "package reading item 7",
+      "body": "Okuma metni ornegi 7.",
+      "order_index": 7,
+      "has_audio": false
+    },
+    {
+      "id": "c1c1c1c1-0000-0000-0000-000000000008",
+      "parent_type": "workshop",
+      "parent_id": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee",
+      "content_type": "exercise",
+      "title": "workshop exercise item 8",
+      "body": "Uygulama aciklamasi 8.",
+      "order_index": 8,
+      "has_audio": true
+    },
+    {
+      "id": "c1c1c1c1-0000-0000-0000-000000000009",
+      "parent_type": "journey_day",
+      "parent_id": "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb",
+      "content_type": "question",
+      "title": "journey_day question item 9",
+      "body": "Soru ornegi 9.",
+      "order_index": 9,
+      "has_audio": false
+    },
+    {
+      "id": "c1c1c1c1-0000-0000-0000-000000000010",
+      "parent_type": "journey_day",
+      "parent_id": "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbb1",
+      "content_type": "reading",
+      "title": "journey_day reading item 10",
+      "body": "Okuma metni ornegi 10.",
+      "order_index": 10,
+      "has_audio": false
+    },
+    {
+      "id": "c1c1c1c1-0000-0000-0000-000000000011",
+      "parent_type": "package",
+      "parent_id": "dddddddd-dddd-dddd-dddd-dddddddddddd",
+      "content_type": "exercise",
+      "title": "package exercise item 11",
+      "body": "Uygulama aciklamasi 11.",
+      "order_index": 11,
+      "has_audio": false
+    },
+    {
+      "id": "c1c1c1c1-0000-0000-0000-000000000012",
+      "parent_type": "workshop",
+      "parent_id": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee",
+      "content_type": "question",
+      "title": "workshop question item 12",
+      "body": "Soru ornegi 12.",
+      "order_index": 12,
+      "has_audio": true
+    },
+    {
+      "id": "c1c1c1c1-0000-0000-0000-000000000013",
+      "parent_type": "journey_day",
+      "parent_id": "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb",
+      "content_type": "reading",
+      "title": "journey_day reading item 13",
+      "body": "Okuma metni ornegi 13.",
+      "order_index": 13,
+      "has_audio": false
+    },
+    {
+      "id": "c1c1c1c1-0000-0000-0000-000000000014",
+      "parent_type": "journey_day",
+      "parent_id": "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbb1",
+      "content_type": "exercise",
+      "title": "journey_day exercise item 14",
+      "body": "Uygulama aciklamasi 14.",
+      "order_index": 14,
+      "has_audio": false
+    },
+    {
+      "id": "c1c1c1c1-0000-0000-0000-000000000015",
+      "parent_type": "package",
+      "parent_id": "dddddddd-dddd-dddd-dddd-dddddddddddd",
+      "content_type": "question",
+      "title": "package question item 15",
+      "body": "Soru ornegi 15.",
+      "order_index": 15,
+      "has_audio": false
+    },
+    {
+      "id": "c1c1c1c1-0000-0000-0000-000000000016",
+      "parent_type": "workshop",
+      "parent_id": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee",
+      "content_type": "reading",
+      "title": "workshop reading item 16",
+      "body": "Okuma metni ornegi 16.",
+      "order_index": 16,
+      "has_audio": true
+    },
+    {
+      "id": "c1c1c1c1-0000-0000-0000-000000000017",
+      "parent_type": "journey_day",
+      "parent_id": "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb",
+      "content_type": "exercise",
+      "title": "journey_day exercise item 17",
+      "body": "Uygulama aciklamasi 17.",
+      "order_index": 17,
+      "has_audio": false
+    },
+    {
+      "id": "c1c1c1c1-0000-0000-0000-000000000018",
+      "parent_type": "journey_day",
+      "parent_id": "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbb1",
+      "content_type": "question",
+      "title": "journey_day question item 18",
+      "body": "Soru ornegi 18.",
+      "order_index": 18,
+      "has_audio": false
+    },
+    {
+      "id": "c1c1c1c1-0000-0000-0000-000000000019",
+      "parent_type": "package",
+      "parent_id": "dddddddd-dddd-dddd-dddd-dddddddddddd",
+      "content_type": "reading",
+      "title": "package reading item 19",
+      "body": "Okuma metni ornegi 19.",
+      "order_index": 19,
+      "has_audio": false
+    },
+    {
+      "id": "c1c1c1c1-0000-0000-0000-000000000020",
+      "parent_type": "workshop",
+      "parent_id": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee",
+      "content_type": "exercise",
+      "title": "workshop exercise item 20",
+      "body": "Uygulama aciklamasi 20.",
+      "order_index": 20,
+      "has_audio": true
+    },
+    {
+      "id": "c1c1c1c1-0000-0000-0000-000000000021",
+      "parent_type": "journey_day",
+      "parent_id": "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb",
+      "content_type": "question",
+      "title": "journey_day question item 21",
+      "body": "Soru ornegi 21.",
+      "order_index": 21,
+      "has_audio": false
+    },
+    {
+      "id": "c1c1c1c1-0000-0000-0000-000000000022",
+      "parent_type": "journey_day",
+      "parent_id": "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbb1",
+      "content_type": "reading",
+      "title": "journey_day reading item 22",
+      "body": "Okuma metni ornegi 22.",
+      "order_index": 22,
+      "has_audio": false
+    },
+    {
+      "id": "c1c1c1c1-0000-0000-0000-000000000023",
+      "parent_type": "package",
+      "parent_id": "dddddddd-dddd-dddd-dddd-dddddddddddd",
+      "content_type": "exercise",
+      "title": "package exercise item 23",
+      "body": "Uygulama aciklamasi 23.",
+      "order_index": 23,
+      "has_audio": false
+    },
+    {
+      "id": "c1c1c1c1-0000-0000-0000-000000000024",
+      "parent_type": "workshop",
+      "parent_id": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee",
+      "content_type": "question",
+      "title": "workshop question item 24",
+      "body": "Soru ornegi 24.",
+      "order_index": 24,
+      "has_audio": true
+    },
+    {
+      "id": "c1c1c1c1-0000-0000-0000-000000000025",
+      "parent_type": "journey_day",
+      "parent_id": "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb",
+      "content_type": "reading",
+      "title": "journey_day reading item 25",
+      "body": "Okuma metni ornegi 25.",
+      "order_index": 25,
+      "has_audio": false
+    },
+    {
+      "id": "c1c1c1c1-0000-0000-0000-000000000026",
+      "parent_type": "journey_day",
+      "parent_id": "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbb1",
+      "content_type": "exercise",
+      "title": "journey_day exercise item 26",
+      "body": "Uygulama aciklamasi 26.",
+      "order_index": 26,
+      "has_audio": false
+    },
+    {
+      "id": "c1c1c1c1-0000-0000-0000-000000000027",
+      "parent_type": "package",
+      "parent_id": "dddddddd-dddd-dddd-dddd-dddddddddddd",
+      "content_type": "question",
+      "title": "package question item 27",
+      "body": "Soru ornegi 27.",
+      "order_index": 27,
+      "has_audio": false
+    },
+    {
+      "id": "c1c1c1c1-0000-0000-0000-000000000028",
+      "parent_type": "workshop",
+      "parent_id": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee",
+      "content_type": "reading",
+      "title": "workshop reading item 28",
+      "body": "Okuma metni ornegi 28.",
+      "order_index": 28,
+      "has_audio": true
+    },
+    {
+      "id": "c1c1c1c1-0000-0000-0000-000000000029",
+      "parent_type": "journey_day",
+      "parent_id": "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb",
+      "content_type": "exercise",
+      "title": "journey_day exercise item 29",
+      "body": "Uygulama aciklamasi 29.",
+      "order_index": 29,
+      "has_audio": false
+    },
+    {
+      "id": "c1c1c1c1-0000-0000-0000-000000000030",
+      "parent_type": "journey_day",
+      "parent_id": "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbb1",
+      "content_type": "question",
+      "title": "journey_day question item 30",
+      "body": "Soru ornegi 30.",
+      "order_index": 30,
+      "has_audio": false
+    },
+    {
+      "id": "c1c1c1c1-0000-0000-0000-000000000031",
+      "parent_type": "package",
+      "parent_id": "dddddddd-dddd-dddd-dddd-dddddddddddd",
+      "content_type": "reading",
+      "title": "package reading item 31",
+      "body": "Okuma metni ornegi 31.",
+      "order_index": 31,
+      "has_audio": false
+    },
+    {
+      "id": "c1c1c1c1-0000-0000-0000-000000000032",
+      "parent_type": "workshop",
+      "parent_id": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee",
+      "content_type": "exercise",
+      "title": "workshop exercise item 32",
+      "body": "Uygulama aciklamasi 32.",
+      "order_index": 32,
+      "has_audio": true
+    },
+    {
+      "id": "c1c1c1c1-0000-0000-0000-000000000033",
+      "parent_type": "journey_day",
+      "parent_id": "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb",
+      "content_type": "question",
+      "title": "journey_day question item 33",
+      "body": "Soru ornegi 33.",
+      "order_index": 33,
+      "has_audio": false
+    },
+    {
+      "id": "c1c1c1c1-0000-0000-0000-000000000034",
+      "parent_type": "journey_day",
+      "parent_id": "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbb1",
+      "content_type": "reading",
+      "title": "journey_day reading item 34",
+      "body": "Okuma metni ornegi 34.",
+      "order_index": 34,
+      "has_audio": false
+    },
+    {
+      "id": "c1c1c1c1-0000-0000-0000-000000000035",
+      "parent_type": "package",
+      "parent_id": "dddddddd-dddd-dddd-dddd-dddddddddddd",
+      "content_type": "exercise",
+      "title": "package exercise item 35",
+      "body": "Uygulama aciklamasi 35.",
+      "order_index": 35,
+      "has_audio": false
+    },
+    {
+      "id": "c1c1c1c1-0000-0000-0000-000000000036",
+      "parent_type": "workshop",
+      "parent_id": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee",
+      "content_type": "question",
+      "title": "workshop question item 36",
+      "body": "Soru ornegi 36.",
+      "order_index": 36,
+      "has_audio": true
+    },
+    {
+      "id": "c1c1c1c1-0000-0000-0000-000000000037",
+      "parent_type": "journey_day",
+      "parent_id": "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb",
+      "content_type": "reading",
+      "title": "journey_day reading item 37",
+      "body": "Okuma metni ornegi 37.",
+      "order_index": 37,
+      "has_audio": false
+    },
+    {
+      "id": "c1c1c1c1-0000-0000-0000-000000000038",
+      "parent_type": "journey_day",
+      "parent_id": "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbb1",
+      "content_type": "exercise",
+      "title": "journey_day exercise item 38",
+      "body": "Uygulama aciklamasi 38.",
+      "order_index": 38,
+      "has_audio": false
+    },
+    {
+      "id": "c1c1c1c1-0000-0000-0000-000000000039",
+      "parent_type": "package",
+      "parent_id": "dddddddd-dddd-dddd-dddd-dddddddddddd",
+      "content_type": "question",
+      "title": "package question item 39",
+      "body": "Soru ornegi 39.",
+      "order_index": 39,
+      "has_audio": false
+    },
+    {
+      "id": "c1c1c1c1-0000-0000-0000-000000000040",
+      "parent_type": "workshop",
+      "parent_id": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee",
+      "content_type": "reading",
+      "title": "workshop reading item 40",
+      "body": "Okuma metni ornegi 40.",
+      "order_index": 40,
+      "has_audio": true
+    },
+    {
+      "id": "c1c1c1c1-0000-0000-0000-000000000041",
+      "parent_type": "journey_day",
+      "parent_id": "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb",
+      "content_type": "exercise",
+      "title": "journey_day exercise item 41",
+      "body": "Uygulama aciklamasi 41.",
+      "order_index": 41,
+      "has_audio": false
+    },
+    {
+      "id": "c1c1c1c1-0000-0000-0000-000000000042",
+      "parent_type": "journey_day",
+      "parent_id": "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbb1",
+      "content_type": "question",
+      "title": "journey_day question item 42",
+      "body": "Soru ornegi 42.",
+      "order_index": 42,
+      "has_audio": false
+    },
+    {
+      "id": "c1c1c1c1-0000-0000-0000-000000000043",
+      "parent_type": "package",
+      "parent_id": "dddddddd-dddd-dddd-dddd-dddddddddddd",
+      "content_type": "reading",
+      "title": "package reading item 43",
+      "body": "Okuma metni ornegi 43.",
+      "order_index": 43,
+      "has_audio": false
+    },
+    {
+      "id": "c1c1c1c1-0000-0000-0000-000000000044",
+      "parent_type": "workshop",
+      "parent_id": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee",
+      "content_type": "exercise",
+      "title": "workshop exercise item 44",
+      "body": "Uygulama aciklamasi 44.",
+      "order_index": 44,
+      "has_audio": true
+    },
+    {
+      "id": "c1c1c1c1-0000-0000-0000-000000000045",
+      "parent_type": "journey_day",
+      "parent_id": "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb",
+      "content_type": "question",
+      "title": "journey_day question item 45",
+      "body": "Soru ornegi 45.",
+      "order_index": 45,
+      "has_audio": false
+    },
+    {
+      "id": "c1c1c1c1-0000-0000-0000-000000000046",
+      "parent_type": "journey_day",
+      "parent_id": "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbb1",
+      "content_type": "reading",
+      "title": "journey_day reading item 46",
+      "body": "Okuma metni ornegi 46.",
+      "order_index": 46,
+      "has_audio": false
+    },
+    {
+      "id": "c1c1c1c1-0000-0000-0000-000000000047",
+      "parent_type": "package",
+      "parent_id": "dddddddd-dddd-dddd-dddd-dddddddddddd",
+      "content_type": "exercise",
+      "title": "package exercise item 47",
+      "body": "Uygulama aciklamasi 47.",
+      "order_index": 47,
+      "has_audio": false
+    },
+    {
+      "id": "c1c1c1c1-0000-0000-0000-000000000048",
+      "parent_type": "workshop",
+      "parent_id": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee",
+      "content_type": "question",
+      "title": "workshop question item 48",
+      "body": "Soru ornegi 48.",
+      "order_index": 48,
+      "has_audio": true
+    },
+    {
+      "id": "c1c1c1c1-0000-0000-0000-000000000049",
+      "parent_type": "journey_day",
+      "parent_id": "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb",
+      "content_type": "reading",
+      "title": "journey_day reading item 49",
+      "body": "Okuma metni ornegi 49.",
+      "order_index": 49,
+      "has_audio": false
+    },
+    {
+      "id": "c1c1c1c1-0000-0000-0000-000000000050",
+      "parent_type": "journey_day",
+      "parent_id": "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbb1",
+      "content_type": "exercise",
+      "title": "journey_day exercise item 50",
+      "body": "Uygulama aciklamasi 50.",
+      "order_index": 50,
       "has_audio": false
     }
   ],
