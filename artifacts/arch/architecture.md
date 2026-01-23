@@ -23,6 +23,7 @@ This architecture supports the screen contracts and PRD requirements for offline
 ### Data Layer
 - **Networking:** urql client with typed schema/codegen. Use fetch + auth/error/retry only; omit cacheExchange so TanStack Query owns caching.
 - **API layer:** AWS AppSync for queries and mutations.
+- **Mock data:** when `useMock=true`, route all data access through local fixtures in `artifacts/mock/mock_data.json` and skip network calls.
 - **Local persistence:**
   - **SQLite (react-native-quick-sqlite or expo-sqlite):** primary local store for content (journeys, modules, packages, workshops, ebooks), progress, and downloads metadata.
   - **MMKV:** fast key-value for small settings (language, accessibility, session tokens).

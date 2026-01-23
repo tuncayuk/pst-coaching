@@ -1,0 +1,508 @@
+{
+  "meta": {
+    "generated_at": "2026-01-12T09:00:00Z",
+    "notes": "Mock fixtures for useMock=true; values align to domain_model.json."
+  },
+  "users": [
+    {
+      "id": "11111111-1111-1111-1111-111111111111",
+      "email": "demo@pstcoaching.app",
+      "phone": "+905550000000",
+      "password_hash": "mock",
+      "role": "plan_owner",
+      "language": "tr",
+      "created_at": "2025-12-01T10:00:00Z",
+      "status": "active"
+    },
+    {
+      "id": "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
+      "email": "member@pstcoaching.app",
+      "phone": "+905550000001",
+      "password_hash": "mock",
+      "role": "plan_member",
+      "language": "en",
+      "created_at": "2025-12-10T10:00:00Z",
+      "status": "active"
+    },
+    {
+      "id": "99990000-0000-0000-0000-000000000000",
+      "email": "inactive@pstcoaching.app",
+      "phone": "+905550000002",
+      "password_hash": "mock",
+      "role": "plan_member",
+      "language": "es",
+      "created_at": "2025-11-01T09:00:00Z",
+      "status": "disabled"
+    }
+  ],
+  "user_sessions": [
+    {
+      "id": "22222222-2222-2222-2222-222222222222",
+      "user_id": "11111111-1111-1111-1111-111111111111",
+      "token": "mock-token",
+      "expires_at": "2026-02-01T10:00:00Z",
+      "last_active_at": "2026-01-12T08:55:00Z"
+    },
+    {
+      "id": "aaaaaaaa-2222-3333-4444-555555555555",
+      "user_id": "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
+      "token": "mock-token-2",
+      "expires_at": "2026-02-01T10:00:00Z",
+      "last_active_at": "2026-01-12T09:10:00Z"
+    }
+  ],
+  "accessibility_settings": [
+    {
+      "user_id": "11111111-1111-1111-1111-111111111111",
+      "text_size": "medium",
+      "high_contrast": false,
+      "reduce_motion": false,
+      "theme": "system"
+    }
+  ],
+  "reading_settings": [
+    {
+      "user_id": "11111111-1111-1111-1111-111111111111",
+      "font_size": 16,
+      "line_height": "1.5",
+      "background": "white"
+    }
+  ],
+  "reminder_settings": [
+    {
+      "user_id": "11111111-1111-1111-1111-111111111111",
+      "enabled": true,
+      "time_local": "20:00",
+      "last_sent_at": "2026-01-11T20:00:00Z"
+    }
+  ],
+  "subscription_plans": [
+    {
+      "id": "33333333-3333-3333-3333-333333333333",
+      "name": "Bireysel",
+      "plan_type": "individual",
+      "seat_limit": 1,
+      "student_discount_eligible": true
+    },
+    {
+      "id": "bbbbbbbb-3333-4444-5555-666666666666",
+      "name": "Aile",
+      "plan_type": "family",
+      "seat_limit": 5,
+      "student_discount_eligible": false
+    }
+  ],
+  "subscriptions": [
+    {
+      "id": "44444444-4444-4444-4444-444444444444",
+      "owner_user_id": "11111111-1111-1111-1111-111111111111",
+      "plan_id": "33333333-3333-3333-3333-333333333333",
+      "status": "active",
+      "started_at": "2025-12-15T10:00:00Z",
+      "renewal_at": "2026-01-15T10:00:00Z",
+      "ends_at": null,
+      "platform": "apple",
+      "student_discount_applied": false
+    },
+    {
+      "id": "cccccccc-4444-5555-6666-777777777777",
+      "owner_user_id": "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
+      "plan_id": "bbbbbbbb-3333-4444-5555-666666666666",
+      "status": "trial",
+      "started_at": "2026-01-01T10:00:00Z",
+      "renewal_at": "2026-02-01T10:00:00Z",
+      "ends_at": null,
+      "platform": "google",
+      "student_discount_applied": false
+    },
+    {
+      "id": "dddddddd-5555-6666-7777-888888888888",
+      "owner_user_id": "99990000-0000-0000-0000-000000000000",
+      "plan_id": "33333333-3333-3333-3333-333333333333",
+      "status": "canceled",
+      "started_at": "2025-09-01T10:00:00Z",
+      "renewal_at": null,
+      "ends_at": "2025-12-01T10:00:00Z",
+      "platform": "apple",
+      "student_discount_applied": true
+    }
+  ],
+  "add_ons": [
+    {
+      "id": "55555555-5555-5555-5555-555555555555",
+      "code": "ai_package",
+      "name": "AI Paketi",
+      "eligible_plan_types": [
+        "individual",
+        "family",
+        "group"
+      ]
+    }
+  ],
+  "subscription_add_ons": [
+    {
+      "id": "66666666-6666-6666-6666-666666666666",
+      "subscription_id": "44444444-4444-4444-4444-444444444444",
+      "addon_id": "55555555-5555-5555-5555-555555555555",
+      "status": "active",
+      "activated_at": "2025-12-20T10:00:00Z",
+      "deactivated_at": null
+    }
+  ],
+  "seats": [
+    {
+      "id": "77777777-7777-7777-7777-777777777777",
+      "subscription_id": "44444444-4444-4444-4444-444444444444",
+      "user_id": "11111111-1111-1111-1111-111111111111",
+      "status": "active"
+    },
+    {
+      "id": "abababab-abab-abab-abab-abababababab",
+      "subscription_id": "cccccccc-4444-5555-6666-777777777777",
+      "user_id": "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
+      "status": "active"
+    },
+    {
+      "id": "bcbcbcbc-bcbc-bcbc-bcbc-bcbcbcbcbcbc",
+      "subscription_id": "cccccccc-4444-5555-6666-777777777777",
+      "user_id": null,
+      "status": "available"
+    }
+  ],
+  "invitations": [
+    {
+      "id": "88888888-8888-8888-8888-888888888888",
+      "subscription_id": "44444444-4444-4444-4444-444444444444",
+      "invitee_contact": "guest@pstcoaching.app",
+      "status": "pending",
+      "sent_at": "2026-01-05T12:00:00Z",
+      "accepted_at": null
+    }
+  ],
+  "payment_transactions": [
+    {
+      "id": "99999999-9999-9999-9999-999999999999",
+      "subscription_id": "44444444-4444-4444-4444-444444444444",
+      "store_transaction_id": "mock-tx-001",
+      "amount": 129.99,
+      "currency": "TRY",
+      "purchased_at": "2025-12-15T10:00:00Z"
+    }
+  ],
+  "journeys": [
+    {
+      "id": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+      "title": "Ozsefkat Yolculugu",
+      "description": "Duygusal dayan\u0131kl\u0131l\u0131k i\u00e7in 14 gunluk program.",
+      "level": "baslangic",
+      "duration_days": 14,
+      "daily_target": "10 dk okuma",
+      "language": "tr"
+    }
+  ],
+  "journey_days": [
+    {
+      "id": "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb",
+      "journey_id": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+      "day_number": 1,
+      "title": "Nefes ve Farkindalik",
+      "unlock_time_local": "08:00"
+    },
+    {
+      "id": "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbb1",
+      "journey_id": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+      "day_number": 2,
+      "title": "Bedensel Farkindalik",
+      "unlock_time_local": "08:00"
+    }
+  ],
+  "modules": [
+    {
+      "id": "cccccccc-cccc-cccc-cccc-cccccccccccc",
+      "title": "Stres Yonetimi Modulu",
+      "description": "Stresle bas etme teknikleri.",
+      "language": "tr"
+    }
+  ],
+  "packages": [
+    {
+      "id": "dddddddd-dddd-dddd-dddd-dddddddddddd",
+      "module_id": "cccccccc-cccc-cccc-cccc-cccccccccccc",
+      "title": "Nefes Teknikleri Paketi",
+      "description": "Uygulama ve okuma bolumleri.",
+      "order_index": 1
+    }
+  ],
+  "workshops": [
+    {
+      "id": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee",
+      "title": "Duygusal Dayaniklilik Atolyesi",
+      "description": "Canli uygulamalar ve okuma.",
+      "language": "tr"
+    }
+  ],
+  "ebooks": [
+    {
+      "id": "ffffffff-ffff-ffff-ffff-ffffffffffff",
+      "title": "Icsel Huzur Rehberi",
+      "category": "kisisel gelisim",
+      "total_pages": 120,
+      "has_audio": false,
+      "language": "tr"
+    }
+  ],
+  "ebook_chapters": [
+    {
+      "id": "10101010-1010-1010-1010-101010101010",
+      "ebook_id": "ffffffff-ffff-ffff-ffff-ffffffffffff",
+      "title": "Baslangic",
+      "order_index": 1,
+      "page_start": 1,
+      "page_end": 12
+    }
+  ],
+  "content_items": [
+    {
+      "id": "11111111-2222-3333-4444-555555555555",
+      "parent_type": "journey_day",
+      "parent_id": "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb",
+      "content_type": "reading",
+      "title": "Gun 1 Okuma",
+      "body": "Farkindalik uygulamasina giris.",
+      "order_index": 1,
+      "has_audio": false
+    },
+    {
+      "id": "11111111-2222-3333-4444-666666666666",
+      "parent_type": "journey_day",
+      "parent_id": "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbb1",
+      "content_type": "reading",
+      "title": "Gun 2 Okuma",
+      "body": "Beden taramasi calismasi.",
+      "order_index": 1,
+      "has_audio": false
+    }
+  ],
+  "exercise_steps": [
+    {
+      "id": "12121212-1212-1212-1212-121212121212",
+      "content_item_id": "11111111-2222-3333-4444-555555555555",
+      "step_number": 1,
+      "text": "3 dakika boyunca nefesine odaklan."
+    }
+  ],
+  "content_progress": [
+    {
+      "id": "13131313-1313-1313-1313-131313131313",
+      "user_id": "11111111-1111-1111-1111-111111111111",
+      "content_type": "journey_day",
+      "content_id": "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb",
+      "status": "in_progress",
+      "started_at": "2026-01-12T08:00:00Z",
+      "completed_at": null
+    },
+    {
+      "id": "23232323-2323-2323-2323-232323232323",
+      "user_id": "11111111-1111-1111-1111-111111111111",
+      "content_type": "package",
+      "content_id": "dddddddd-dddd-dddd-dddd-dddddddddddd",
+      "status": "completed",
+      "started_at": "2026-01-05T08:00:00Z",
+      "completed_at": "2026-01-05T08:30:00Z"
+    },
+    {
+      "id": "24242424-2424-2424-2424-242424242424",
+      "user_id": "11111111-1111-1111-1111-111111111111",
+      "content_type": "workshop",
+      "content_id": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee",
+      "status": "available",
+      "started_at": null,
+      "completed_at": null
+    }
+  ],
+  "comments": [
+    {
+      "id": "14141414-1414-1414-1414-141414141414",
+      "user_id": "11111111-1111-1111-1111-111111111111",
+      "content_item_id": "11111111-2222-3333-4444-555555555555",
+      "text": "Bugun kendimi daha sakin hissettim.",
+      "status": "draft",
+      "word_count": 6,
+      "submitted_at": null,
+      "updated_at": "2026-01-12T08:30:00Z"
+    },
+    {
+      "id": "25252525-2525-2525-2525-252525252525",
+      "user_id": "11111111-1111-1111-1111-111111111111",
+      "content_item_id": "11111111-2222-3333-4444-555555555555",
+      "text": "Bugun biraz daha odakliydim.",
+      "status": "submitted",
+      "word_count": 5,
+      "submitted_at": "2026-01-12T08:40:00Z",
+      "updated_at": "2026-01-12T08:40:00Z"
+    }
+  ],
+  "highlights": [
+    {
+      "id": "15151515-1515-1515-1515-151515151515",
+      "user_id": "11111111-1111-1111-1111-111111111111",
+      "source_type": "ebook",
+      "source_id": "ffffffff-ffff-ffff-ffff-ffffffffffff",
+      "quote": "Huzur, nefesle baslar.",
+      "color": "yellow",
+      "created_at": "2026-01-10T09:00:00Z"
+    },
+    {
+      "id": "26262626-2626-2626-2626-262626262626",
+      "user_id": "11111111-1111-1111-1111-111111111111",
+      "source_type": "package",
+      "source_id": "dddddddd-dddd-dddd-dddd-dddddddddddd",
+      "quote": "Nefes, duygularin pusulasidir.",
+      "color": "blue",
+      "created_at": "2026-01-06T09:00:00Z"
+    }
+  ],
+  "notes": [
+    {
+      "id": "16161616-1616-1616-1616-161616161616",
+      "user_id": "11111111-1111-1111-1111-111111111111",
+      "highlight_id": "15151515-1515-1515-1515-151515151515",
+      "source_type": "ebook",
+      "source_id": "ffffffff-ffff-ffff-ffff-ffffffffffff",
+      "text": "Gunluk nefes pratigi ekle.",
+      "updated_at": "2026-01-10T09:05:00Z"
+    },
+    {
+      "id": "27272727-2727-2727-2727-272727272727",
+      "user_id": "11111111-1111-1111-1111-111111111111",
+      "highlight_id": null,
+      "source_type": "journey_day",
+      "source_id": "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb",
+      "text": "Sabah uygulamasini hatirla.",
+      "updated_at": "2026-01-06T09:05:00Z"
+    }
+  ],
+  "favorites": [
+    {
+      "id": "17171717-1717-1717-1717-171717171717",
+      "user_id": "11111111-1111-1111-1111-111111111111",
+      "item_type": "content",
+      "item_id": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+      "created_at": "2026-01-08T12:00:00Z"
+    },
+    {
+      "id": "28282828-2828-2828-2828-282828282828",
+      "user_id": "11111111-1111-1111-1111-111111111111",
+      "item_type": "note",
+      "item_id": "16161616-1616-1616-1616-161616161616",
+      "created_at": "2026-01-08T12:30:00Z"
+    }
+  ],
+  "collections": [
+    {
+      "id": "18181818-1818-1818-1818-181818181818",
+      "user_id": "11111111-1111-1111-1111-111111111111",
+      "name": "Sabah Rutinim",
+      "created_at": "2026-01-08T12:05:00Z"
+    },
+    {
+      "id": "29292929-2929-2929-2929-292929292929",
+      "user_id": "11111111-1111-1111-1111-111111111111",
+      "name": "Aksam Notlarim",
+      "created_at": "2026-01-09T12:05:00Z"
+    }
+  ],
+  "collection_items": [
+    {
+      "collection_id": "18181818-1818-1818-1818-181818181818",
+      "favorite_id": "17171717-1717-1717-1717-171717171717",
+      "created_at": "2026-01-08T12:10:00Z"
+    },
+    {
+      "collection_id": "29292929-2929-2929-2929-292929292929",
+      "favorite_id": "28282828-2828-2828-2828-282828282828",
+      "created_at": "2026-01-09T12:10:00Z"
+    }
+  ],
+  "ebook_progress": [
+    {
+      "id": "19191919-1919-1919-1919-191919191919",
+      "user_id": "11111111-1111-1111-1111-111111111111",
+      "ebook_id": "ffffffff-ffff-ffff-ffff-ffffffffffff",
+      "current_page": 12,
+      "progress_percent": 10,
+      "last_read_at": "2026-01-12T07:30:00Z"
+    },
+    {
+      "id": "30303030-3030-3030-3030-303030303030",
+      "user_id": "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
+      "ebook_id": "ffffffff-ffff-ffff-ffff-ffffffffffff",
+      "current_page": 45,
+      "progress_percent": 38,
+      "last_read_at": "2026-01-12T07:45:00Z"
+    }
+  ],
+  "downloads": [
+    {
+      "id": "20202020-2020-2020-2020-202020202020",
+      "user_id": "11111111-1111-1111-1111-111111111111",
+      "content_type": "ebook",
+      "content_id": "ffffffff-ffff-ffff-ffff-ffffffffffff",
+      "status": "downloaded",
+      "size_bytes": 5242880,
+      "updated_at": "2026-01-10T11:00:00Z"
+    },
+    {
+      "id": "31313131-3131-3131-3131-313131313131",
+      "user_id": "11111111-1111-1111-1111-111111111111",
+      "content_type": "workshop",
+      "content_id": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee",
+      "status": "failed",
+      "size_bytes": 10485760,
+      "updated_at": "2026-01-11T11:00:00Z"
+    }
+  ],
+  "achievements": [
+    {
+      "id": "21212121-2121-2121-2121-212121212121",
+      "user_id": "11111111-1111-1111-1111-111111111111",
+      "type": "badge",
+      "source_type": "journey",
+      "source_id": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+      "issued_at": "2026-01-11T18:00:00Z"
+    },
+    {
+      "id": "32323232-3232-3232-3232-323232323232",
+      "user_id": "11111111-1111-1111-1111-111111111111",
+      "type": "certificate",
+      "source_type": "module",
+      "source_id": "cccccccc-cccc-cccc-cccc-cccccccccccc",
+      "issued_at": "2026-01-07T18:00:00Z"
+    }
+  ],
+  "content_reviews": [
+    {
+      "id": "22222222-3333-4444-5555-666666666666",
+      "user_id": "11111111-1111-1111-1111-111111111111",
+      "content_type": "journey",
+      "content_id": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+      "response": "Iyi hissettirdi.",
+      "submitted_at": "2026-01-11T19:00:00Z"
+    },
+    {
+      "id": "33333333-4444-5555-6666-777777777777",
+      "user_id": "11111111-1111-1111-1111-111111111111",
+      "content_type": "module",
+      "content_id": "cccccccc-cccc-cccc-cccc-cccccccccccc",
+      "response": "Cok faydaliydi.",
+      "submitted_at": "2026-01-07T19:00:00Z"
+    }
+  ],
+  "coach_assignments": [
+    {
+      "coach_user_id": "11111111-1111-1111-1111-111111111111",
+      "client_user_id": "11111111-1111-1111-1111-111111111111",
+      "created_at": "2026-01-01T09:00:00Z"
+    }
+  ]
+}

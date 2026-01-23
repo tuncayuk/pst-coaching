@@ -147,6 +147,7 @@ Scope source: PRD v1.1 (Ocak 2026) + app_blueprint.yaml
 ## Cross-cutting constraints and rules
 
 - **Offline support:** content, language, accessibility settings, favorites must be cached and synced on reconnect.
+- **Mock mode:** when environment variable `useMock=true`, the app must use local mock data from `artifacts/mock/mock_data.json` and bypass network calls.
 - **Time rules:** content unlocks daily at **08:00**; comment submission allowed until **23:59**; show **23:00** warning.
 - **Locked progression:** a step cannot be accessed until prerequisite is completed.
 - **Server-side purchase validation:** all store purchases validated server-side before entitlement.
@@ -155,4 +156,3 @@ Scope source: PRD v1.1 (Ocak 2026) + app_blueprint.yaml
 - **Platform IAP:** use Apple/Google purchase flows and restore purchases.
 - **Analytics:** analytics enabled per blueprint; avoid logging sensitive data.
 - **All content is in-app:** no external documents required for core content.
-
