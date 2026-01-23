@@ -80,7 +80,7 @@ export default function App() {
             onReady={navigationAnalytics.onReady}
             onStateChange={navigationAnalytics.onStateChange}
           >
-            <RootStack.Navigator screenOptions={{ headerShown: false }}>
+            <RootStack.Navigator screenOptions={{ headerShown: false }} initialRouteName="Auth">
               <RootStack.Screen name="MainTabs" component={MainTabs} />
               <RootStack.Screen name="Auth" component={AuthStack} />
               <RootStack.Screen name="Content" component={ContentStack} />
