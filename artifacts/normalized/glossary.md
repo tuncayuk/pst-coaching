@@ -1,0 +1,27 @@
+# PST Mobile Glossary
+
+- **Yolculuk (Journey):** PST koçları tarafından hazırlanmış kapsamlı program; modüller, atölyeler ve e‑kitapları kapsar.
+- **Modül (Module):** Tematik içerik grubu; birden çok paket içerir.
+- **Paket (Package):** Modülün alt birimi; odaklanmış okuma ve uygulama içerir.
+- **Atölye (Workshop):** Okuma + uygulamalardan oluşan etkileşimli içerik.
+- **e‑Kitap (Ebook):** PST Coaching tarafından hazırlanan dijital kitap; bölümler ve okuma içerir.
+- **Okuma (Reading):** Metin temelli içerik bölümü; vurgulama/not alma desteklenir.
+- **Uygulama / Egzersiz (Exercise):** Adım adım yapılacak pratik bölüm; tamamlandıkça işaretlenir.
+- **Günlük İçerik (Daily Content):** Gün bazlı ilerleyen içerik; yeni gün 08:00’de açılır.
+- **Kilitli İlerleme (Locked Progression):** Ön koşul tamamlanmadan sonraki adımlar erişime kapalıdır.
+- **Abonelik (Subscription):** İçerik erişimini belirleyen plan (Bireysel/Aile/Grup) ve statü (Aktif/Deneme/İptal).
+- **Plan Sahibi (Owner):** Abonelik planını yöneten ve add‑on/kişi yönetimi yapabilen kullanıcı.
+- **Plan Üyesi (Member):** Plan sahibi tarafından davet edilen kullanıcı; satın alma yapamaz.
+- **Add‑on:** Aboneliğe eklenen özellik (AI Paketi, Koçluk Eğitimi, Ek Kişi).
+- **Kişi / Seat:** Aile/Grup planında erişim verilen kullanıcı kontenjanı.
+- **Entitlement (Erişim Hakkı):** Kullanıcının içerik ve özelliklere erişim yetkisi.
+- **Favoriler:** Vurgu, not veya içeriklerin kullanıcı tarafından kaydedilmiş listesi.
+- **Koleksiyon:** Favorilerin kullanıcı tarafından gruplandığı özel liste.
+- **Vurgu (Highlight):** Okuma sırasında seçilen ve renklendirilen metin parçası.
+- **Not (Note):** Vurguya veya içeriğe eklenen kişisel açıklama.
+- **Yorum (Comment):** Yönlendirici sorulara verilen yazılı yanıt; 23:59’a kadar teslim edilir.
+- **Teslim (Submit):** Yorumu gönderme; gönderim sonrası düzenleme kilitlenir.
+- **Duygusal Harita:** Yorumlardan türetilen duygu durumu görselleştirmesi.
+- **Sertifika / Rozet:** İçerik tamamlamada verilen başarı göstergesi.
+- **İçerik Asistanı:** Kullanıcıya hedef/süre/tercih sorularıyla uygun içerik öneren akış.
+- **Paywall:** Abonelik olmayan kullanıcılarda erişim kısıtı açıklayan ekran.

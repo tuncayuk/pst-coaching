@@ -1,0 +1,111 @@
+{
+  "content_progression": {
+    "description": "Generic progression for content items or parents with locked sequencing.",
+    "initial_state": "locked",
+    "states": ["locked", "available", "in_progress", "completed"],
+    "transitions": [
+      {
+        "from": "locked",
+        "to": "available",
+        "trigger": "prerequisite_completed_and_unlocked"
+      },
+      {
+        "from": "available",
+        "to": "in_progress",
+        "trigger": "user_starts"
+      },
+      {
+        "from": "in_progress",
+        "to": "completed",
+        "trigger": "all_steps_completed"
+      },
+      {
+        "from": "available",
+        "to": "completed",
+        "trigger": "complete_without_tracking"
+      }
+    ]
+  },
+  "day_cycle_rules": {
+    "description": "Daily unlock at 08:00 and submission window until 23:59 (local time).",
+    "initial_state": "locked_until_08_00",
+    "states": [
+      "locked_until_08_00",
+      "open_for_progress_and_submission",
+      "submission_closed",
+      "next_day_pending"
+    ],
+    "transitions": [
+      {
+        "from": "locked_until_08_00",
+        "to": "open_for_progress_and_submission",
+        "trigger": "time_reaches_08_00"
+      },
+      {
+        "from": "open_for_progress_and_submission",
+        "to": "submission_closed",
+        "trigger": "time_reaches_23_59"
+      },
+      {
+        "from": "submission_closed",
+        "to": "next_day_pending",
+        "trigger": "day_end"
+      },
+      {
+        "from": "next_day_pending",
+        "to": "locked_until_08_00",
+        "trigger": "next_day_starts"
+      }
+    ],
+    "notes": [
+      "Show a warning at 23:00 before submission closes.",
+      "If today is completed early, next day stays locked until 08:00."
+    ]
+  },
+  "subscription_entitlement_gating": {
+    "description": "Access gating based on subscription status and period end rules.",
+    "initial_state": "inactive",
+    "states": ["inactive", "trial", "active", "canceled"],
+    "transitions": [
+      {
+        "from": "inactive",
+        "to": "trial",
+        "trigger": "trial_started"
+      },
+      {
+        "from": "inactive",
+        "to": "active",
+        "trigger": "purchase_validated"
+      },
+      {
+        "from": "trial",
+        "to": "active",
+        "trigger": "trial_converted"
+      },
+      {
+        "from": "active",
+        "to": "canceled",
+        "trigger": "user_cancels"
+      },
+      {
+        "from": "trial",
+        "to": "canceled",
+        "trigger": "trial_canceled"
+      },
+      {
+        "from": "canceled",
+        "to": "inactive",
+        "trigger": "period_end_reached"
+      },
+      {
+        "from": "canceled",
+        "to": "active",
+        "trigger": "subscription_restored"
+      }
+    ],
+    "notes": [
+      "Canceled subscriptions retain access until period end.",
+      "Access to Kütüphane and Gelişim requires trial or active status."
+    ]
+  }
+}
