@@ -6,7 +6,7 @@ import { HomeStack } from "./navigation/HomeStack";
 import { DiscoverStack } from "./navigation/DiscoverStack";
 import { LibraryStack } from "./navigation/LibraryStack";
 import { ProgressStack } from "./navigation/ProgressStack";
-import { ProfileOverviewScreen } from "./screens/ProfileOverviewScreen";
+import { ProfileStack } from "./navigation/ProfileStack";
 
 type RootTabParamList = {
   Home: undefined;
@@ -60,11 +60,7 @@ export default function App() {
             component={ProgressStack}
             options={{ tabBarLabel: "Gelişim" }}
           />
-          <Tab.Screen
-            name="Profile"
-            component={ProfileOverviewScreen}
-            options={{ tabBarLabel: "Profil" }}
-          />
+          <Tab.Screen name="Profile" component={ProfileStack} options={{ tabBarLabel: "Profil" }} />
         </Tab.Navigator>
       </NavigationContainer>
     </PaperProvider>
