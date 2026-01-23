@@ -10,6 +10,7 @@ import { DiscoverStack } from "./navigation/DiscoverStack";
 import { LibraryStack } from "./navigation/LibraryStack";
 import { ProgressStack } from "./navigation/ProgressStack";
 import { ProfileStack } from "./navigation/ProfileStack";
+import { navigationAnalytics, navigationRef } from "./navigation/analytics";
 import { appStore } from "./state/store";
 
 type RootTabParamList = {
@@ -40,7 +41,11 @@ export default function App() {
       <QueryProvider>
         <PaperProvider theme={theme}>
           <OfflineBanner />
-          <NavigationContainer>
+          <NavigationContainer
+            ref={navigationRef}
+            onReady={navigationAnalytics.onReady}
+            onStateChange={navigationAnalytics.onStateChange}
+          >
             <Tab.Navigator
               screenOptions={{
                 headerShown: false,
