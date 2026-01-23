@@ -1,0 +1,53 @@
+import React from "react";
+import { NavigationContainer } from "@react-navigation/native";
+import { render } from "@testing-library/react-native";
+import { AuthStack, AuthStackParamList } from "../AuthStack";
+
+jest.mock("react-native-safe-area-context", () => ({
+  SafeAreaView: ({ children }: { children: React.ReactNode }) => children,
+}));
+
+const cases: Array<{ name: keyof AuthStackParamList; text: string }> = [
+  {
+    name: "OnboardingLanguageSelect",
+    text: "Dilini seç",
+  },
+  {
+    name: "OnboardingWelcome",
+    text: "Yeni bir yolculuğa hoş geldin",
+  },
+  {
+    name: "AuthLogin",
+    text: "Hesabına giriş yap",
+  },
+  {
+    name: "AuthRegister",
+    text: "Yeni hesap oluştur",
+  },
+  {
+    name: "AuthOtpVerify",
+    text: "Doğrulama kodunu gir",
+  },
+  {
+    name: "AuthPasswordReset",
+    text: "Şifre sıfırlama bağlantısı gönder",
+  },
+  {
+    name: "AuthSessionTimeout",
+    text: "Oturum süren doldu",
+  },
+];
+
+describe("Auth stack routes", () => {
+  cases.forEach(({ name, text }) => {
+    it(`renders ${name} route`, () => {
+      const { getByText } = render(
+        <NavigationContainer>
+          <AuthStack initialRouteName={name} />
+        </NavigationContainer>
+      );
+
+      expect(getByText(text)).toBeTruthy();
+    });
+  });
+});
