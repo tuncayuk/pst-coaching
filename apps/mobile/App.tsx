@@ -2,11 +2,15 @@ import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { MD3LightTheme as DefaultTheme, PaperProvider } from "react-native-paper";
+import { Provider as StoreProvider } from "react-redux";
+import { OfflineBanner } from "./components/OfflineBanner";
+import { QueryProvider } from "./data/QueryProvider";
 import { HomeStack } from "./navigation/HomeStack";
 import { DiscoverStack } from "./navigation/DiscoverStack";
 import { LibraryStack } from "./navigation/LibraryStack";
 import { ProgressStack } from "./navigation/ProgressStack";
 import { ProfileStack } from "./navigation/ProfileStack";
+import { appStore } from "./state/store";
 
 type RootTabParamList = {
   Home: undefined;
@@ -32,37 +36,50 @@ const theme = {
 
 export default function App() {
   return (
-    <PaperProvider theme={theme}>
-      <NavigationContainer>
-        <Tab.Navigator
-          screenOptions={{
-            headerShown: false,
-            tabBarActiveTintColor: theme.colors.primary,
-            tabBarInactiveTintColor: theme.colors.onSurfaceVariant,
-            tabBarStyle: {
-              borderTopColor: theme.colors.outlineVariant,
-              backgroundColor: theme.colors.surface,
-              paddingBottom: 6,
-              paddingTop: 6,
-              height: 60,
-            },
-          }}
-        >
-          <Tab.Screen name="Home" component={HomeStack} options={{ tabBarLabel: "Ana Sayfa" }} />
-          <Tab.Screen
-            name="Discover"
-            component={DiscoverStack}
-            options={{ tabBarLabel: "Keşfet" }}
-          />
-          <Tab.Screen name="Library" component={LibraryStack} options={{ tabBarLabel: "Kütüphane" }} />
-          <Tab.Screen
-            name="Progress"
-            component={ProgressStack}
-            options={{ tabBarLabel: "Gelişim" }}
-          />
-          <Tab.Screen name="Profile" component={ProfileStack} options={{ tabBarLabel: "Profil" }} />
-        </Tab.Navigator>
-      </NavigationContainer>
-    </PaperProvider>
+    <StoreProvider store={appStore}>
+      <QueryProvider>
+        <PaperProvider theme={theme}>
+          <OfflineBanner />
+          <NavigationContainer>
+            <Tab.Navigator
+              screenOptions={{
+                headerShown: false,
+                tabBarActiveTintColor: theme.colors.primary,
+                tabBarInactiveTintColor: theme.colors.onSurfaceVariant,
+                tabBarStyle: {
+                  borderTopColor: theme.colors.outlineVariant,
+                  backgroundColor: theme.colors.surface,
+                  paddingBottom: 6,
+                  paddingTop: 6,
+                  height: 60,
+                },
+              }}
+            >
+              <Tab.Screen name="Home" component={HomeStack} options={{ tabBarLabel: "Ana Sayfa" }} />
+              <Tab.Screen
+                name="Discover"
+                component={DiscoverStack}
+                options={{ tabBarLabel: "Keşfet" }}
+              />
+              <Tab.Screen
+                name="Library"
+                component={LibraryStack}
+                options={{ tabBarLabel: "Kütüphane" }}
+              />
+              <Tab.Screen
+                name="Progress"
+                component={ProgressStack}
+                options={{ tabBarLabel: "Gelişim" }}
+              />
+              <Tab.Screen
+                name="Profile"
+                component={ProfileStack}
+                options={{ tabBarLabel: "Profil" }}
+              />
+            </Tab.Navigator>
+          </NavigationContainer>
+        </PaperProvider>
+      </QueryProvider>
+    </StoreProvider>
   );
 }
