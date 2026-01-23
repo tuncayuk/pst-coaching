@@ -21,8 +21,8 @@ This architecture supports the screen contracts and PRD requirements for offline
 - **Why:** Keeps UI simple, reduces boilerplate, supports optimistic updates, and works well with caching.
 
 ### Data Layer
-- **Networking:** urql client with typed schema/codegen. Use fetch + auth/error/retry + subscriptionExchange (AppSync: Cognito JWT in prod, IAM/SigV4 in dev) only; omit cacheExchange so TanStack Query owns caching.
-- **API layer:** AWS AppSync for queries, mutations, and subscriptions.
+- **Networking:** urql client with typed schema/codegen. Use fetch + auth/error/retry only; omit cacheExchange so TanStack Query owns caching.
+- **API layer:** AWS AppSync for queries and mutations.
 - **Local persistence:**
   - **SQLite (react-native-quick-sqlite or expo-sqlite):** primary local store for content (journeys, modules, packages, workshops, ebooks), progress, and downloads metadata.
   - **MMKV:** fast key-value for small settings (language, accessibility, session tokens).
@@ -33,9 +33,8 @@ This architecture supports the screen contracts and PRD requirements for offline
 
 ### Offline Strategy (high level)
 - **Offline-first:** render cached content and progress state when offline.
-- **Write actions:** queue writes (progress updates, comments, highlights, favorites) for later sync. Store in a SQLite outbox table with exponential backoff retries; prune rows after 30 days or 20,000 entries, and cap storage at 50 MB. UI shows pending state and sync banner.
-- **Conflict resolution:** AppSync conflict resolution set to last-write-wins (LWW) for progress + comments with server timestamp reconciliation; configured in AppSync backend settings.
-- **Subscriptions:** reconnect-only after network is restored; missed events are not replayed. UI only resumes live updates on reconnect.
+- **Write actions:** queue writes (progress updates, comments, highlights, favorites) for later sync. Store in a SQLite outbox table with exponential backoff retries; move to a dead-letter table after 10 failed attempts, surface via per-screen error-state retry actions in affected screens (no new screen), prune oldest rows after 30 days or 20,000 entries, and cap storage at 50 MB. UI shows pending state and sync banner.
+- **Conflict resolution:** AppSync conflict resolution set to last-write-wins (LWW) for progress + comments with server timestamp reconciliation; source of truth is AppSync IaC configuration in `infra/` (CloudFormation/Amplify).
 
 ### Security and Privacy
 - **Tokens:** stored in secure storage (Keychain/Keystore). Do not persist raw credentials.
@@ -50,7 +49,7 @@ This architecture supports the screen contracts and PRD requirements for offline
 
 ## Telemetry and Error Handling
 - **Crash + performance:** Sentry (RN SDK) with release tagging and source maps.
-- **Analytics pipeline:** production events always flow to Grafana Cloud (grafana.net) ingestion (via Grafana Alloy / OpenTelemetry), then into ClickHouse for storage and Grafana dashboards/alerting.
+- **Analytics pipeline:** production telemetry must flow to Grafana Cloud (grafana.net) ingestion (via Grafana Alloy / OpenTelemetry), then into ClickHouse for storage and Grafana dashboards/alerting.
 - **Non-prod exception:** direct HTTP batching from the app to ClickHouse is allowed for non-prod/testing only.
 - **Event conventions:**
   - Screen view: `{screen}_viewed`
@@ -68,8 +67,8 @@ This architecture supports the screen contracts and PRD requirements for offline
 - **Sync triggers:**
   - App foreground
   - Pull-to-refresh
-  - Connectivity regained
-  - Explicit retry action
+  - Connectivity regained (auto-retry)
+  - Explicit retry action from per-screen error-state actions
 
 ## Trade-offs
 - **Redux Toolkit + TanStack Query** keeps data flow consistent but adds some boilerplate and requires discipline to avoid state duplication.
