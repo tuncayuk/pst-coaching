@@ -17,28 +17,36 @@ import { SectionCard } from "./components/SectionCard";
 import { SkeletonBlock } from "./components/SkeletonBlock";
 import { StateMessage } from "./components/StateMessage";
 import { resolveScreenState } from "./components/ScreenState";
-import { getEbooks, getJourneys, getWorkshops } from "../data/mockSelectors";
+import {
+  getAddOnsForSubscription,
+  getContentProgressForUser,
+  getEbooks,
+  getJourneyById,
+  getJourneyDays,
+  getJourneys,
+  getPackages,
+  getPlanForSubscription,
+  getPrimaryUser,
+  getSubscriptionForUser,
+  getWorkshops,
+} from "../data/mockSelectors";
 
 const HomeReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
   const theme = useTheme();
   const navigation = useNavigation<any>();
+  const user = getPrimaryUser();
+  const subscription = getSubscriptionForUser(user?.id);
+  const plan = getPlanForSubscription(subscription?.plan_id);
+  const addOns = getAddOnsForSubscription(subscription?.id);
   const journeys = getJourneys();
+  const journeyDays = getJourneyDays();
   const workshops = getWorkshops();
+  const packages = getPackages();
   const ebooks = getEbooks();
-  const highlightItems = [
-    {
-      title: journeys[0]?.title ?? "Vicdandan Karaktere",
-      subtitle: `${journeys[0]?.duration_days ?? 3} gün · ${journeys[0]?.daily_target ?? "12 dk"}`,
-      progress: 0.6,
-      journeyId: journeys[0]?.id,
-    },
-    {
-      title: workshops[0]?.title ?? "Duygu Günlüğü",
-      subtitle: "1. bölüm · 8 dk",
-      progress: 0.3,
-      journeyId: journeys[0]?.id,
-    },
-  ];
+  const progressItems = getContentProgressForUser(user?.id);
+  const nextStep = progressItems.find((item) => item.status === "in_progress") ?? progressItems[0];
+  const nextJourneyDay = journeyDays.find((day) => day.id === nextStep?.content_id);
+  const nextJourney = getJourneyById(nextJourneyDay?.journey_id);
 
   const recommendations = [
     {
@@ -55,34 +63,226 @@ const HomeReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
     },
   ];
 
+  const activeItems = progressItems.slice(0, 3).map((item, index) => {
+    if (item.content_type === "journey_day") {
+      const day = journeyDays.find((entry) => entry.id === item.content_id);
+      const journey = getJourneyById(day?.journey_id);
+      return {
+        title: journey?.title ?? "Yolculuk",
+        subtitle: `Gün ${day?.day_number ?? 1} · ${journey?.daily_target ?? "10 dk"}`,
+        progress: 0.2 + index * 0.2,
+        action: () =>
+          navigation.navigate("Content", {
+            screen: "ContentJourneyDay",
+            params: {
+              id: journey?.id,
+              day: String(day?.day_number ?? 1),
+            },
+          }),
+      };
+    }
+    if (item.content_type === "package") {
+      const pkg = packages.find((entry) => entry.id === item.content_id);
+      return {
+        title: pkg?.title ?? "Paket",
+        subtitle: "Paket · Uygulama",
+        progress: 0.3 + index * 0.2,
+        action: () =>
+          navigation.navigate("Content", {
+            screen: "ContentPackageDetail",
+            params: { id: pkg?.id },
+          }),
+      };
+    }
+    const workshop = workshops.find((entry) => entry.id === item.content_id);
+    return {
+      title: workshop?.title ?? "Atölye",
+      subtitle: "Atölye · Okuma",
+      progress: 0.4 + index * 0.2,
+      action: () =>
+        navigation.navigate("Content", {
+          screen: "ContentWorkshopHome",
+          params: { id: workshop?.id },
+        }),
+    };
+  });
+
+  const requiresSubscription = subscription?.status !== "active" && subscription?.status !== "trial";
+
+  const handleEntryNavigation = (screen: string) => {
+    if (requiresSubscription) {
+      navigation.navigate("Content", { screen: "ContentPaywall" });
+      return;
+    }
+    navigation.navigate("Discover", { screen });
+  };
+
+  const handleContinue = () => {
+    if (!nextStep) {
+      navigation.navigate("Discover");
+      return;
+    }
+    if (nextStep.content_type === "journey_day") {
+      navigation.navigate("Content", {
+        screen: "ContentJourneyDay",
+        params: {
+          id: nextJourney?.id,
+          day: String(nextJourneyDay?.day_number ?? 1),
+        },
+      });
+      return;
+    }
+    if (nextStep.content_type === "package") {
+      navigation.navigate("Content", {
+        screen: "ContentPackageDetail",
+        params: { id: nextStep.content_id },
+      });
+      return;
+    }
+    navigation.navigate("Content", {
+      screen: "ContentWorkshopHome",
+      params: { id: nextStep.content_id },
+    });
+  };
+
   return (
     <>
       <SectionCard title="Bugün" actionLabel="Tümü">
-        {highlightItems.map((item, index) => (
+        <View style={styles.rowItem}>
+          <View style={styles.rowHeader}>
+            <Text variant="titleSmall">{nextJourney?.title ?? "Günlük Odak"}</Text>
+            <Chip compact>{subscription?.status ?? "aktif"}</Chip>
+          </View>
+          <Text variant="bodySmall" style={{ color: theme.colors.onSurfaceVariant }}>
+            {nextJourneyDay
+              ? `Gün ${nextJourneyDay.day_number} · ${nextJourney?.daily_target ?? "10 dk"}`
+              : "Bugünkü içeriklerini tamamla"}
+          </Text>
+          <ProgressBar progress={0.4} style={styles.progress} />
+        </View>
+        <Button mode="contained" style={styles.primaryButton} disabled={isOffline} onPress={handleContinue}>
+          Devam Et
+        </Button>
+      </SectionCard>
+
+      <SectionCard title="Abonelik Durumu" actionLabel="Planlar">
+        <View style={styles.rowHeader}>
+          <Text variant="titleSmall">{plan?.name ?? "Plan"}</Text>
+          <Chip compact>{subscription?.status ?? "aktif"}</Chip>
+        </View>
+        <Text variant="bodySmall" style={{ color: theme.colors.onSurfaceVariant }}>
+          {addOns.length > 0 ? "Aktif eklentiler:" : "Aktif eklenti yok"}
+        </Text>
+        <View style={styles.chipRow}>
+          {addOns.map((addon) => (
+            <Chip key={addon.id} style={styles.chip} disabled={isOffline}>
+              {addon.name}
+            </Chip>
+          ))}
+        </View>
+        <Button
+          mode="outlined"
+          disabled={isOffline}
+          onPress={() => navigation.navigate("Profile", { screen: "ProfileSubscription" })}
+        >
+          Planı Yönet
+        </Button>
+      </SectionCard>
+
+      <SectionCard title="Hızlı Arama" actionLabel="">
+        <Text variant="bodySmall" style={{ color: theme.colors.onSurfaceVariant }}>
+          Tüm içeriklerde hızlı arama yap.
+        </Text>
+        <Button
+          mode="contained-tonal"
+          style={styles.actionButton}
+          disabled={isOffline}
+          onPress={() => navigation.navigate("HomeSearch")}
+        >
+          Aramaya Başla
+        </Button>
+      </SectionCard>
+
+      <SectionCard title="İçerik Alanları" actionLabel="">
+        <View style={styles.entryRow}>
+          <Button
+            mode="outlined"
+            style={styles.entryButton}
+            disabled={isOffline}
+            onPress={() => handleEntryNavigation("DiscoverJourneys")}
+          >
+            Yolculuklar
+          </Button>
+          <Button
+            mode="outlined"
+            style={styles.entryButton}
+            disabled={isOffline}
+            onPress={() => handleEntryNavigation("DiscoverWorkshops")}
+          >
+            Atölyeler
+          </Button>
+        </View>
+        <View style={styles.entryRow}>
+          <Button
+            mode="outlined"
+            style={styles.entryButton}
+            disabled={isOffline}
+            onPress={() => handleEntryNavigation("DiscoverModules")}
+          >
+            Modüller
+          </Button>
+          <Button
+            mode="outlined"
+            style={styles.entryButton}
+            disabled={isOffline}
+            onPress={() => handleEntryNavigation("DiscoverEbooks")}
+          >
+            e-Kitaplar
+          </Button>
+        </View>
+        <Button
+          mode="text"
+          disabled={isOffline}
+          onPress={() => navigation.navigate("Discover", { screen: "DiscoverCatalog" })}
+        >
+          Koçluk Okulu (yakında)
+        </Button>
+      </SectionCard>
+
+      <SectionCard title="Vicdandan Karaktere" actionLabel="Detay">
+        <Text variant="bodySmall" style={{ color: theme.colors.onSurfaceVariant }}>
+          Değer temelli gelişim yaklaşımımızın kısa bir özeti.
+        </Text>
+        <Button
+          mode="outlined"
+          style={styles.actionButton}
+          disabled={isOffline}
+          onPress={() => navigation.navigate("HomeVicdandanKaraktereDetail")}
+        >
+          Detayları Gör
+        </Button>
+      </SectionCard>
+
+      <SectionCard title="Aktif İçeriklerim" actionLabel="Tümünü Gör">
+        {activeItems.map((item, index) => (
           <View key={item.title} style={styles.rowItem}>
             <View style={styles.rowHeader}>
               <Text variant="titleSmall">{item.title}</Text>
               <Chip compact>{Math.round(item.progress * 100)}%</Chip>
             </View>
+            {item.progress < 0.2 ? <Chip compact>Kilitli</Chip> : null}
             <Text variant="bodySmall" style={{ color: theme.colors.onSurfaceVariant }}>
               {item.subtitle}
             </Text>
             <ProgressBar progress={item.progress} style={styles.progress} />
-            {index < highlightItems.length - 1 ? <Divider style={styles.divider} /> : null}
+            <Button mode="text" disabled={isOffline} onPress={item.action}>
+              Devam Et
+            </Button>
+            {index < activeItems.length - 1 ? <Divider style={styles.divider} /> : null}
           </View>
         ))}
-        <Button
-          mode="contained"
-          style={styles.primaryButton}
-          disabled={isOffline}
-          onPress={() =>
-            navigation.navigate("Content", {
-              screen: "ContentJourneyHome",
-              params: { id: highlightItems[0]?.journeyId ?? journeys[0]?.id },
-            })
-          }
-        >
-          Devam Et
+        <Button mode="outlined" disabled={isOffline} onPress={() => navigation.navigate("HomeActiveContentList")}>
+          Tümünü Gör
         </Button>
       </SectionCard>
 
@@ -207,6 +407,10 @@ const styles = StyleSheet.create({
     marginTop: 12,
     alignSelf: "flex-start",
   },
+  actionButton: {
+    marginTop: 8,
+    alignSelf: "flex-start",
+  },
   card: {
     marginBottom: 12,
   },
@@ -215,6 +419,15 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
   },
   chip: {
+    marginRight: 8,
+    marginBottom: 8,
+  },
+  entryRow: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    marginBottom: 8,
+  },
+  entryButton: {
     marginRight: 8,
     marginBottom: 8,
   },

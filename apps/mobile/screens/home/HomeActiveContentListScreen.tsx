@@ -4,6 +4,7 @@ import {
   ActivityIndicator,
   Button,
   Card,
+  Chip,
   ProgressBar,
   Text,
 } from "react-native-paper";
@@ -52,6 +53,7 @@ const HomeActiveContentListContent = ({ isOffline }: { isOffline?: boolean }) =>
           <Card key={item.title} style={styles.card}>
             <Card.Title title={item.title} subtitle={item.subtitle} />
             <Card.Content>
+              {item.progress < 0.2 ? <Chip compact>Kilitli</Chip> : null}
               <View style={styles.progressRow}>
                 <ProgressBar progress={item.progress} style={styles.progress} />
                 <Text variant="labelSmall">{Math.round(item.progress * 100)}%</Text>
