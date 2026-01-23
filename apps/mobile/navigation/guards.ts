@@ -27,7 +27,7 @@ type NavigationLike = {
 };
 
 export const withSubscriptionGate = <P extends { navigation?: NavigationLike; route?: { params?: GateRouteParams } }>(
-  Screen: React.ComponentType<P>,
+  ScreenComponent: React.ComponentType<P>,
   fallbackRoute: string = "ContentPaywall",
   requiredGate: SubscriptionGate = "subscription:trial_or_active",
 ) => {
@@ -52,10 +52,10 @@ export const withSubscriptionGate = <P extends { navigation?: NavigationLike; ro
       return null;
     }
 
-    return <Screen {...props} />;
+    return <ScreenComponent {...props} />;
   };
 
-  GatedScreen.displayName = `SubscriptionGate(${Screen.displayName ?? Screen.name ?? "Screen"})`;
+  GatedScreen.displayName = `SubscriptionGate(${ScreenComponent.displayName ?? ScreenComponent.name ?? "Screen"})`;
 
   return GatedScreen;
 };
