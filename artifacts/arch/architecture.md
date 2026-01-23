@@ -15,16 +15,17 @@ This architecture supports the screen contracts and PRD requirements for offline
 - **Route guards:** subscription and role gates enforced in a single navigation guard (reads session + entitlement state). Paywall sheet is the fallback route.
 
 ### State Management
-- **App state (client):** Zustand for light-weight app state (session, settings, connectivity, feature flags).
-- **Server state:** TanStack Query (React Query) for data fetching, caching, invalidation, and offline retries.
+- **App state (client):** Redux Toolkit for app state (session, settings, connectivity).
+- **Server state:** TanStack Query (@tanstack/react-query) for GraphQL data fetching, caching, invalidation, and offline-aware retries.
 - **Derived state:** selectors on top of normalized local DB and cached query data.
-- **Why:** Keeps UI simple, reduces boilerplate, supports optimistic updates, and works well with offline cache.
+- **Why:** Keeps UI simple, reduces boilerplate, supports optimistic updates, and works well with caching.
 
 ### Data Layer
-- **Networking:** Axios + typed API client. Standard interceptors for auth, refresh, and error mapping.
+- **Networking:** urql client with typed schema/codegen. Use fetch + auth/error/retry + subscriptionExchange (AppSync: Cognito JWT in prod, IAM/SigV4 in dev) only; omit cacheExchange so TanStack Query owns caching.
+- **API layer:** AWS AppSync for queries, mutations, and subscriptions.
 - **Local persistence:**
   - **SQLite (react-native-quick-sqlite or expo-sqlite):** primary local store for content (journeys, modules, packages, workshops, ebooks), progress, and downloads metadata.
-  - **MMKV:** fast key-value for small settings (language, accessibility, session tokens, flags).
+  - **MMKV:** fast key-value for small settings (language, accessibility, session tokens).
 - **File storage:** react-native-blob-util or expo-file-system for e-book files and media.
 - **Cache strategy:**
   - List/detail queries seed from SQLite if available, then refresh in background.
@@ -32,11 +33,13 @@ This architecture supports the screen contracts and PRD requirements for offline
 
 ### Offline Strategy (high level)
 - **Offline-first:** render cached content and progress state when offline.
-- **Write actions:** queue writes (progress updates, comments, highlights, favorites) for later sync. UI shows pending state and sync banner.
-- **Conflict resolution:** last-write-wins for progress + comments with server timestamp reconciliation.
+- **Write actions:** queue writes (progress updates, comments, highlights, favorites) for later sync. Store in a SQLite outbox table with exponential backoff retries; prune rows after 30 days or 20,000 entries, and cap storage at 50 MB. UI shows pending state and sync banner.
+- **Conflict resolution:** AppSync conflict resolution set to last-write-wins (LWW) for progress + comments with server timestamp reconciliation; configured in AppSync backend settings.
+- **Subscriptions:** reconnect-only after network is restored; missed events are not replayed. UI only resumes live updates on reconnect.
 
 ### Security and Privacy
 - **Tokens:** stored in secure storage (Keychain/Keystore). Do not persist raw credentials.
+- **Auth provider:** AWS Cognito for user authentication and session management.
 - **PII:** minimal analytics events; scrub content text from telemetry.
 - **Consent:** export/share flows require explicit consent per PRD.
 
@@ -45,18 +48,10 @@ This architecture supports the screen contracts and PRD requirements for offline
 - **Reduce Motion:** use accessibility settings to minimize animations.
 - **High Contrast:** theme supports high-contrast palette for Material 3.
 
-## Feature Flagging Strategy (Phase 2)
-- **Provider:** Firebase Remote Config (or equivalent) with local override for QA.
-- **Flag layers:**
-  - Remote defaults from config service.
-  - User/device overrides stored in MMKV (debug only).
-  - Rollout targeting by user role (coach vs member), plan type, and locale.
-- **Use cases:** AI assistant, coaching panel, community features, video content.
-- **Fail-safe:** flags default to disabled; no crashes if config fetch fails.
-
 ## Telemetry and Error Handling
 - **Crash + performance:** Sentry (RN SDK) with release tagging and source maps.
-- **Analytics:** Segment or Firebase Analytics, events aligned to PRD (snake_case). Opt-in if platform policy requires.
+- **Analytics pipeline:** production events always flow to Grafana Cloud (grafana.net) ingestion (via Grafana Alloy / OpenTelemetry), then into ClickHouse for storage and Grafana dashboards/alerting.
+- **Non-prod exception:** direct HTTP batching from the app to ClickHouse is allowed for non-prod/testing only.
 - **Event conventions:**
   - Screen view: `{screen}_viewed`
   - CTA taps: `{screen}_{cta}_tapped`
@@ -65,10 +60,11 @@ This architecture supports the screen contracts and PRD requirements for offline
   - Map API errors to user-friendly copy and retry actions.
   - Surface network/offline banners globally.
   - Log errors with context (screen, action, request id), exclude content body/PII.
+  - Telemetry events stored in ClickHouse are strictly de-identified; analytics is opt-in if platform policy requires.
 
 ## Data Ownership and Sync Flow
 - **Source of truth:** server for subscriptions, entitlements, user profile.
-- **Local source of truth:** content catalogs and reading assets, once downloaded.
+- **Local cached copy:** content catalogs and reading assets, once downloaded.
 - **Sync triggers:**
   - App foreground
   - Pull-to-refresh
@@ -76,9 +72,8 @@ This architecture supports the screen contracts and PRD requirements for offline
   - Explicit retry action
 
 ## Trade-offs
-- **Zustand + React Query** keeps implementation lean but requires discipline to avoid state duplication.
+- **Redux Toolkit + TanStack Query** keeps data flow consistent but adds some boilerplate and requires discipline to avoid state duplication.
 - **SQLite + file storage** supports offline reading but adds migration and storage management overhead.
-- **Remote Config** keeps Phase 2 features gated but introduces dependency on third-party service.
 
 ## Implementation Notes
 - Enforce the screen contracts and loading/empty/error/offline states for every screen.
