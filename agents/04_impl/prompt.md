@@ -18,4 +18,5 @@ Goal: Convert architecture + screen contracts into small PR-sized implementation
 
 ## Output rules
 - Do not implement screens lacking contracts
-- Ensure a minimal runnable shell (navigation + placeholder screens) can be built early
+- Do not use placeholder screens or placeholder UI
+- Implement production-ready screen UIs based strictly on screen contracts, including loading/empty/error/offline states
