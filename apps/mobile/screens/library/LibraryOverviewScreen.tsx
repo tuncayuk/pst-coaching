@@ -10,12 +10,12 @@ import {
   Text,
   useTheme,
 } from "react-native-paper";
-import { OfflineNotice } from "./components/OfflineNotice";
-import { ScreenLayout } from "./components/ScreenLayout";
-import { SectionCard } from "./components/SectionCard";
-import { SkeletonBlock } from "./components/SkeletonBlock";
-import { StateMessage } from "./components/StateMessage";
-import { resolveScreenState } from "./components/ScreenState";
+import { OfflineNotice } from "../components/OfflineNotice";
+import { ScreenLayout } from "../components/ScreenLayout";
+import { SectionCard } from "../components/SectionCard";
+import { SkeletonBlock } from "../components/SkeletonBlock";
+import { StateMessage } from "../components/StateMessage";
+import { resolveScreenState } from "../components/ScreenState";
 
 const libraryHighlights = [
   {

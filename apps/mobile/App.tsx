@@ -4,8 +4,8 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { MD3LightTheme as DefaultTheme, PaperProvider } from "react-native-paper";
 import { HomeStack } from "./navigation/HomeStack";
 import { DiscoverStack } from "./navigation/DiscoverStack";
-import { LibraryOverviewScreen } from "./screens/LibraryOverviewScreen";
-import { ProgressDashboardScreen } from "./screens/ProgressDashboardScreen";
+import { LibraryStack } from "./navigation/LibraryStack";
+import { ProgressStack } from "./navigation/ProgressStack";
 import { ProfileOverviewScreen } from "./screens/ProfileOverviewScreen";
 
 type RootTabParamList = {
@@ -54,14 +54,10 @@ export default function App() {
             component={DiscoverStack}
             options={{ tabBarLabel: "Keşfet" }}
           />
-          <Tab.Screen
-            name="Library"
-            component={LibraryOverviewScreen}
-            options={{ tabBarLabel: "Kütüphane" }}
-          />
+          <Tab.Screen name="Library" component={LibraryStack} options={{ tabBarLabel: "Kütüphane" }} />
           <Tab.Screen
             name="Progress"
-            component={ProgressDashboardScreen}
+            component={ProgressStack}
             options={{ tabBarLabel: "Gelişim" }}
           />
           <Tab.Screen

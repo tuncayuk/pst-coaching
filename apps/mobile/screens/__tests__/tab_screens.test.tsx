@@ -2,8 +2,8 @@ import React from "react";
 import { render } from "@testing-library/react-native";
 import { HomeDashboardScreen } from "../HomeDashboardScreen";
 import { DiscoverCatalogScreen } from "../DiscoverCatalogScreen";
-import { LibraryOverviewScreen } from "../LibraryOverviewScreen";
-import { ProgressDashboardScreen } from "../ProgressDashboardScreen";
+import { LibraryOverviewScreen } from "../library/LibraryOverviewScreen";
+import { ProgressDashboardScreen } from "../progress/ProgressDashboardScreen";
 import { ProfileOverviewScreen } from "../ProfileOverviewScreen";
 
 const cases = [
