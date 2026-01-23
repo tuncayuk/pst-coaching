@@ -61,6 +61,8 @@ const routeNameToScreenId: Record<string, string> = {
   AuthOtpVerify: "auth.otp_verify",
   AuthPasswordReset: "auth.password_reset",
   AuthSessionTimeout: "auth.session_timeout",
+  AuthLockout: "auth.lockout",
+  AuthReauth: "auth.reauth",
   ContentJourneyDetail: "content.journey_detail",
   ContentJourneyHome: "content.journey_home",
   ContentJourneyDay: "content.journey_day",

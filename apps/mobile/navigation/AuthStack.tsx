@@ -7,6 +7,8 @@ import { AuthRegisterScreen } from "../screens/auth/AuthRegisterScreen";
 import { AuthOtpVerifyScreen } from "../screens/auth/AuthOtpVerifyScreen";
 import { AuthPasswordResetScreen } from "../screens/auth/AuthPasswordResetScreen";
 import { AuthSessionTimeoutScreen } from "../screens/auth/AuthSessionTimeoutScreen";
+import { AuthLockoutScreen } from "../screens/auth/AuthLockoutScreen";
+import { AuthReauthScreen } from "../screens/auth/AuthReauthScreen";
 import { ScreenState } from "../screens/components/ScreenState";
 
 type ScreenStateParam = { state?: ScreenState } | undefined;
@@ -19,6 +21,8 @@ export type AuthStackParamList = {
   AuthOtpVerify: ScreenStateParam;
   AuthPasswordReset: ScreenStateParam;
   AuthSessionTimeout: ScreenStateParam;
+  AuthLockout: ScreenStateParam;
+  AuthReauth: ScreenStateParam;
 };
 
 type AuthStackProps = {
@@ -39,6 +43,16 @@ export const AuthStack = ({ initialRouteName = "OnboardingWelcome" }: AuthStackP
       <Stack.Screen
         name="AuthSessionTimeout"
         component={AuthSessionTimeoutScreen}
+        options={{ presentation: "modal" }}
+      />
+      <Stack.Screen
+        name="AuthLockout"
+        component={AuthLockoutScreen}
+        options={{ presentation: "modal" }}
+      />
+      <Stack.Screen
+        name="AuthReauth"
+        component={AuthReauthScreen}
         options={{ presentation: "modal" }}
       />
     </Stack.Navigator>

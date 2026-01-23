@@ -7,6 +7,8 @@ import { AuthRegisterScreen } from "../auth/AuthRegisterScreen";
 import { AuthOtpVerifyScreen } from "../auth/AuthOtpVerifyScreen";
 import { AuthPasswordResetScreen } from "../auth/AuthPasswordResetScreen";
 import { AuthSessionTimeoutScreen } from "../auth/AuthSessionTimeoutScreen";
+import { AuthLockoutScreen } from "../auth/AuthLockoutScreen";
+import { AuthReauthScreen } from "../auth/AuthReauthScreen";
 
 const cases = [
   {
@@ -83,6 +85,28 @@ const cases = [
       ready: "Oturum süren doldu",
       empty: "Oturum durumu yok",
       error: "Oturum bilgisi alınamadı",
+      offline: "Çevrimdışısınız",
+    },
+  },
+  {
+    name: "auth.lockout",
+    Screen: AuthLockoutScreen,
+    expectations: {
+      loading: "Kilit bilgisi hazırlanıyor",
+      ready: "Güvenlik bilgilendirmesi",
+      empty: "Kilit bilgisi yok",
+      error: "Kilit bilgisi alınamadı",
+      offline: "Çevrimdışısınız",
+    },
+  },
+  {
+    name: "auth.reauth",
+    Screen: AuthReauthScreen,
+    expectations: {
+      loading: "Doğrulama hazırlanıyor",
+      ready: "Devam etmek için doğrula",
+      empty: "Doğrulama bilgisi yok",
+      error: "Doğrulama yüklenemedi",
       offline: "Çevrimdışısınız",
     },
   },

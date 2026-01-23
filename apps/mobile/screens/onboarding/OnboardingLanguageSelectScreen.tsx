@@ -6,15 +6,19 @@ import {
   RadioButton,
   Text,
 } from "react-native-paper";
+import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState } from "../components/ScreenState";
+import { getPrimaryUser } from "../../data/mockSelectors";
 
 const LanguageSelectContent = ({ isOffline }: { isOffline?: boolean }) => {
-  const [selectedLanguage, setSelectedLanguage] = React.useState("tr");
+  const navigation = useNavigation<any>();
+  const user = getPrimaryUser();
+  const [selectedLanguage, setSelectedLanguage] = React.useState(user?.language ?? "tr");
 
   return (
     <>
@@ -36,8 +40,18 @@ const LanguageSelectContent = ({ isOffline }: { isOffline?: boolean }) => {
             value="en"
             disabled={isOffline}
           />
+          <RadioButton.Item
+            label="Español"
+            value="es"
+            disabled={isOffline}
+          />
         </RadioButton.Group>
-        <Button mode="contained" style={styles.primaryButton} disabled={isOffline}>
+        <Button
+          mode="contained"
+          style={styles.primaryButton}
+          disabled={isOffline}
+          onPress={() => navigation.navigate("AuthRegister")}
+        >
           Devam Et
         </Button>
       </SectionCard>

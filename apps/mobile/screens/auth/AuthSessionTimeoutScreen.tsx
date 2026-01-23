@@ -6,6 +6,7 @@ import {
   Button,
   Text,
 } from "react-native-paper";
+import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
@@ -14,6 +15,8 @@ import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState } from "../components/ScreenState";
 
 const SessionTimeoutContent = ({ isOffline }: { isOffline?: boolean }) => {
+  const navigation = useNavigation<any>();
+
   return (
     <SectionCard title="Oturum süren doldu">
       <View style={styles.iconWrap}>
@@ -23,10 +26,15 @@ const SessionTimeoutContent = ({ isOffline }: { isOffline?: boolean }) => {
         Güvenliğin için oturumun sonlandırıldı. Tekrar giriş yaparak kaldığın yerden devam
         edebilirsin.
       </Text>
-      <Button mode="contained" disabled={isOffline} style={styles.primaryButton}>
+      <Button
+        mode="contained"
+        disabled={isOffline}
+        style={styles.primaryButton}
+        onPress={() => navigation.navigate("AuthReauth")}
+      >
         Tekrar Giriş Yap
       </Button>
-      <Button mode="text" disabled={isOffline}>
+      <Button mode="text" disabled={isOffline} onPress={() => navigation.navigate("AuthLogin")}>
         Daha Sonra
       </Button>
     </SectionCard>

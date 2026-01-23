@@ -6,6 +6,7 @@ import {
   Text,
   TextInput,
 } from "react-native-paper";
+import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
@@ -14,6 +15,8 @@ import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState } from "../components/ScreenState";
 
 const PasswordResetContent = ({ isOffline }: { isOffline?: boolean }) => {
+  const navigation = useNavigation<any>();
+
   return (
     <>
       <SectionCard title="Şifre sıfırlama bağlantısı gönder">
@@ -28,7 +31,7 @@ const PasswordResetContent = ({ isOffline }: { isOffline?: boolean }) => {
           style={styles.input}
           editable={!isOffline}
         />
-        <Button mode="contained" disabled={isOffline}>
+        <Button mode="contained" disabled={isOffline} onPress={() => navigation.navigate("AuthLogin")}>
           Bağlantı Gönder
         </Button>
       </SectionCard>
@@ -36,7 +39,7 @@ const PasswordResetContent = ({ isOffline }: { isOffline?: boolean }) => {
         <Text variant="bodySmall" style={styles.bodyText}>
           E-posta erişimin yoksa SMS ile doğrulama isteyebilirsin.
         </Text>
-        <Button mode="outlined" disabled={isOffline}>
+        <Button mode="outlined" disabled={isOffline} onPress={() => navigation.navigate("AuthOtpVerify")}>
           SMS ile Gönder
         </Button>
       </SectionCard>

@@ -7,6 +7,7 @@ import {
   Text,
   TextInput,
 } from "react-native-paper";
+import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
@@ -16,6 +17,7 @@ import { resolveScreenState } from "../components/ScreenState";
 
 const RegisterContent = ({ isOffline }: { isOffline?: boolean }) => {
   const [accepted, setAccepted] = React.useState(false);
+  const navigation = useNavigation<any>();
 
   return (
     <>
@@ -56,7 +58,11 @@ const RegisterContent = ({ isOffline }: { isOffline?: boolean }) => {
           position="leading"
           style={styles.checkbox}
         />
-        <Button mode="contained" disabled={isOffline || !accepted}>
+        <Button
+          mode="contained"
+          disabled={isOffline || !accepted}
+          onPress={() => navigation.navigate("AuthOtpVerify")}
+        >
           Hesap Oluştur
         </Button>
       </SectionCard>
@@ -64,7 +70,7 @@ const RegisterContent = ({ isOffline }: { isOffline?: boolean }) => {
         <Text variant="bodySmall" style={styles.helperText}>
           Giriş yaparak içeriklerine erişebilirsin.
         </Text>
-        <Button mode="outlined" disabled={isOffline}>
+        <Button mode="outlined" disabled={isOffline} onPress={() => navigation.navigate("AuthLogin")}>
           Giriş Yap
         </Button>
       </SectionCard>

@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
 import { Button, Chip, Text } from "react-native-paper";
+import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
@@ -9,6 +10,8 @@ import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState } from "../components/ScreenState";
 
 const WelcomeContent = ({ isOffline }: { isOffline?: boolean }) => {
+  const navigation = useNavigation<any>();
+
   return (
     <>
       <SectionCard title="Hoş geldin">
@@ -26,7 +29,12 @@ const WelcomeContent = ({ isOffline }: { isOffline?: boolean }) => {
             </Chip>
           ))}
         </View>
-        <Button mode="contained" style={styles.primaryButton} disabled={isOffline}>
+        <Button
+          mode="contained"
+          style={styles.primaryButton}
+          disabled={isOffline}
+          onPress={() => navigation.navigate("OnboardingLanguageSelect")}
+        >
           Başla
         </Button>
       </SectionCard>
@@ -35,10 +43,15 @@ const WelcomeContent = ({ isOffline }: { isOffline?: boolean }) => {
           Daha önce kayıt olduysan giriş yaparak kaldığın yerden devam edebilirsin.
         </Text>
         <View style={styles.buttonRow}>
-          <Button mode="outlined" style={styles.secondaryButton} disabled={isOffline}>
+          <Button
+            mode="outlined"
+            style={styles.secondaryButton}
+            disabled={isOffline}
+            onPress={() => navigation.navigate("AuthLogin")}
+          >
             Giriş Yap
           </Button>
-          <Button mode="text" disabled={isOffline}>
+          <Button mode="text" disabled={isOffline} onPress={() => navigation.navigate("AuthRegister")}>
             Kayıt Ol
           </Button>
         </View>

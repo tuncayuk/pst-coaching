@@ -7,15 +7,25 @@ import {
   Text,
   TextInput,
 } from "react-native-paper";
+import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState } from "../components/ScreenState";
+import {
+  getPlanForSubscription,
+  getPrimaryUser,
+  getSubscriptionForUser,
+} from "../../data/mockSelectors";
 
 const LoginContent = ({ isOffline }: { isOffline?: boolean }) => {
   const [rememberMe, setRememberMe] = React.useState(true);
+  const navigation = useNavigation<any>();
+  const user = getPrimaryUser();
+  const subscription = getSubscriptionForUser(user?.id);
+  const plan = getPlanForSubscription(subscription?.plan_id);
 
   return (
     <>
@@ -43,18 +53,39 @@ const LoginContent = ({ isOffline }: { isOffline?: boolean }) => {
           position="leading"
           style={styles.checkbox}
         />
-        <Button mode="contained" disabled={isOffline}>
+        <Text variant="bodySmall" style={styles.helperText}>
+          Kalan deneme: 3 · Başarısız denemeler geçici kilide neden olur.
+        </Text>
+        <Button
+          mode="contained"
+          disabled={isOffline}
+          onPress={() => navigation.getParent()?.navigate("MainTabs")}
+        >
           Giriş Yap
         </Button>
-        <Button mode="text" style={styles.linkButton} disabled={isOffline}>
+        <Button
+          mode="text"
+          style={styles.linkButton}
+          disabled={isOffline}
+          onPress={() => navigation.navigate("AuthPasswordReset")}
+        >
           Şifremi Unuttum
+        </Button>
+      </SectionCard>
+      <SectionCard title="Hesap Durumu" actionLabel="">
+        <Text variant="bodySmall">
+          Plan: {plan?.name ?? "Plan"} · Durum: {subscription?.status ?? "aktif"}
+        </Text>
+        <Text variant="bodySmall">Rol: {user?.role ?? "plan_owner"}</Text>
+        <Button mode="outlined" style={styles.linkButton} disabled={isOffline} onPress={() => navigation.navigate("AuthLockout")}>
+          Geçici Kilidi Gör
         </Button>
       </SectionCard>
       <SectionCard title="Yeni misin?">
         <Text variant="bodySmall" style={styles.helperText}>
           Kayıt olarak kişisel gelişim yolculuğunu başlatabilirsin.
         </Text>
-        <Button mode="outlined" disabled={isOffline}>
+        <Button mode="outlined" disabled={isOffline} onPress={() => navigation.navigate("AuthRegister")}>
           Kayıt Ol
         </Button>
       </SectionCard>

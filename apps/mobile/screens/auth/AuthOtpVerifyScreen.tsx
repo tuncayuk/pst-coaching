@@ -7,6 +7,7 @@ import {
   Text,
   TextInput,
 } from "react-native-paper";
+import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
@@ -15,6 +16,8 @@ import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState } from "../components/ScreenState";
 
 const OtpVerifyContent = ({ isOffline }: { isOffline?: boolean }) => {
+  const navigation = useNavigation<any>();
+
   return (
     <>
       <SectionCard title="Doğrulama kodunu gir">
@@ -29,6 +32,9 @@ const OtpVerifyContent = ({ isOffline }: { isOffline?: boolean }) => {
           style={styles.input}
           editable={!isOffline}
         />
+        <Text variant="bodySmall" style={styles.helperText}>
+          Kalan deneme: 3
+        </Text>
         <View style={styles.timerRow}>
           <Chip icon="clock-outline" disabled={isOffline}>
             Kalan süre: 00:52
@@ -37,7 +43,11 @@ const OtpVerifyContent = ({ isOffline }: { isOffline?: boolean }) => {
             Tekrar Gönder
           </Button>
         </View>
-        <Button mode="contained" disabled={isOffline}>
+        <Button
+          mode="contained"
+          disabled={isOffline}
+          onPress={() => navigation.getParent()?.navigate("MainTabs")}
+        >
           Kodu Doğrula
         </Button>
       </SectionCard>

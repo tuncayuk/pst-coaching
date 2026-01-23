@@ -36,6 +36,14 @@ const cases: Array<{ name: keyof AuthStackParamList; text: string }> = [
     name: "AuthSessionTimeout",
     text: "Oturum süren doldu",
   },
+  {
+    name: "AuthLockout",
+    text: "Geçici Kilit",
+  },
+  {
+    name: "AuthReauth",
+    text: "Yeniden Doğrulama",
+  },
 ];
 
 describe("Auth stack routes", () => {

@@ -91,6 +91,20 @@
       "states": ["loading", "ready", "empty", "error", "offline"]
     },
     {
+      "id": "auth.lockout",
+      "route": "/auth/lockout",
+      "title": "Geçici Kilit",
+      "type": "modal",
+      "states": ["loading", "ready", "empty", "error", "offline"]
+    },
+    {
+      "id": "auth.reauth",
+      "route": "/auth/reauth",
+      "title": "Yeniden Doğrulama",
+      "type": "modal",
+      "states": ["loading", "ready", "empty", "error", "offline"]
+    },
+    {
       "id": "home.search",
       "route": "/home/search",
       "title": "Arama",
