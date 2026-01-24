@@ -422,6 +422,13 @@
       "states": ["loading", "ready", "empty", "error", "offline"]
     },
     {
+      "id": "profile.demographics",
+      "route": "/profile/settings/demographics",
+      "title": "Demografi Bilgileri",
+      "type": "sheet",
+      "states": ["loading", "ready", "empty", "error", "offline"]
+    },
+    {
       "id": "profile.change_password",
       "route": "/profile/account/change-password",
       "title": "Şifre Değiştir",

@@ -16,6 +16,7 @@
   ],
   "dataDependencies": [
     "User",
+    "DemographicProfile",
     "Subscription",
     "SubscriptionPlan",
     "AddOn",
@@ -31,7 +32,7 @@
       "description": "Ayarlar yüklenirken iskelet ve temel CTA'lar gösterilir."
     },
     "ready": {
-      "description": "Ayarlar içeriği ve etkileşimler hazır."
+      "description": "Ayarlar içeriği ve etkileşimler hazır; demografi bilgileri guncelleme girisi bulunur."
     },
     "empty": {
       "description": "İçerik yoksa açıklayıcı boş durum ve birincil aksiyon sunulur."
@@ -46,7 +47,8 @@
   "analytics": {
     "screenView": "profile_settings_viewed",
     "events": [
-      "profile_settings_viewed"
+      "profile_settings_viewed",
+      "profile_demographics_opened"
     ]
   },
   "acceptanceCriteriaRefs": [

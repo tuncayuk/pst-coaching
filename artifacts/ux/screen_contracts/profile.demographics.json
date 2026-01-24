@@ -1,0 +1,65 @@
+{
+  "id": "profile.demographics",
+  "title": "Demografi Bilgileri",
+  "route": "/profile/settings/demographics",
+  "purpose": "Demografi bilgilerini (yas, cinsiyet, ulke) toplamak ve guncellemek.",
+  "entryPoints": [
+    "content.journey_detail",
+    "content.module_detail",
+    "content.ebook_detail",
+    "content.workshop_detail",
+    "profile.settings"
+  ],
+  "inputs": [
+    {
+      "name": "locale",
+      "type": "LanguageCode",
+      "required": true,
+      "source": "app_state"
+    },
+    {
+      "name": "contentType",
+      "type": "string",
+      "required": false,
+      "source": "app_state"
+    },
+    {
+      "name": "contentId",
+      "type": "string",
+      "required": false,
+      "source": "app_state"
+    }
+  ],
+  "dataDependencies": [
+    "User",
+    "DemographicProfile",
+    "Country"
+  ],
+  "uiStates": {
+    "loading": {
+      "description": "Demografi formu yuklenirken iskelet ve temel CTA'lar gosterilir."
+    },
+    "ready": {
+      "description": "Demografi formu doldurulabilir durumdadir."
+    },
+    "empty": {
+      "description": "Veri yoksa bilgilendirici bos durum ve birincil aksiyon sunulur."
+    },
+    "error": {
+      "description": "Kaydetme hatasi ve tekrar dene aksiyonu gosterilir."
+    },
+    "offline": {
+      "description": "Cevrimdisi modda onbellek verisi gosterilir, senkron bekler."
+    }
+  },
+  "analytics": {
+    "screenView": "profile_demographics_viewed",
+    "events": [
+      "profile_demographics_viewed",
+      "demographics_form_submitted",
+      "demographics_form_validation_failed"
+    ]
+  },
+  "acceptanceCriteriaRefs": [],
+  "gates": []
+}

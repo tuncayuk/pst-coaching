@@ -28,6 +28,7 @@
     "Note",
     "Achievement",
     "Download",
+    "DemographicProfile",
     "Journey",
     "JourneyDay",
     "Workshop",
@@ -41,7 +42,7 @@
       "description": "Yolculuk Detay yüklenirken iskelet ve temel CTA'lar gösterilir."
     },
     "ready": {
-      "description": "Yolculuk Detay içeriği ve etkileşimler hazır."
+      "description": "Yolculuk Detay içeriği ve etkileşimler hazır; demografi eksikse baslatmadan once form tetiklenir."
     },
     "empty": {
       "description": "İçerik yoksa açıklayıcı boş durum ve birincil aksiyon sunulur."
@@ -56,7 +57,9 @@
   "analytics": {
     "screenView": "content_journey_detail_viewed",
     "events": [
-      "content_journey_detail_viewed"
+      "content_journey_detail_viewed",
+      "demographics_gate_triggered",
+      "demographics_form_opened"
     ]
   },
   "acceptanceCriteriaRefs": [
