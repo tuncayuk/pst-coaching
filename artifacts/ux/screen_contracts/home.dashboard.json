@@ -28,7 +28,7 @@
       "description": "Ana Sayfa yüklenirken iskelet ve temel CTA'lar gösterilir."
     },
     "ready": {
-      "description": "Ana Sayfa içeriği ve etkileşimler hazır."
+      "description": "Ana Sayfa içeriği ve etkileşimler hazır; son goruntulenenler bolumu gosterilir."
     },
     "empty": {
       "description": "İçerik yoksa açıklayıcı boş durum ve birincil aksiyon sunulur."
@@ -43,7 +43,9 @@
   "analytics": {
     "screenView": "home_dashboard_viewed",
     "events": [
-      "home_dashboard_viewed"
+      "home_dashboard_viewed",
+      "recent_content_viewed",
+      "recent_content_item_clicked"
     ]
   },
   "acceptanceCriteriaRefs": [
