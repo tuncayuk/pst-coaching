@@ -59,7 +59,10 @@
     "events": [
       "content_journey_detail_viewed",
       "demographics_gate_triggered",
-      "demographics_form_opened"
+      "demographics_form_opened",
+      "ddl_test_started",
+      "ddl_test_completed",
+      "ddl_test_abandoned"
     ]
   },
   "acceptanceCriteriaRefs": [
