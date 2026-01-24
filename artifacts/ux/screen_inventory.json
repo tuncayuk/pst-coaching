@@ -546,6 +546,153 @@
       "type": "sheet",
       "states": ["loading", "ready", "empty", "error", "offline"],
       "gates": ["subscription:trial_or_active"]
+    },
+    {
+      "id": "coach.clients",
+      "route": "/coach/clients",
+      "title": "Danışanlar",
+      "type": "stack",
+      "states": ["loading", "ready", "empty", "error", "offline"]
+    },
+    {
+      "id": "coach.client_detail",
+      "route": "/coach/clients/:id",
+      "title": "Danışan Profili",
+      "type": "stack",
+      "states": ["loading", "ready", "empty", "error", "offline"]
+    },
+    {
+      "id": "coach.client_content",
+      "route": "/coach/clients/:id/content",
+      "title": "Danışan İçerik Takibi",
+      "type": "stack",
+      "states": ["loading", "ready", "empty", "error", "offline"]
+    },
+    {
+      "id": "coach.client_feedback",
+      "route": "/coach/clients/:id/feedback",
+      "title": "Koç Geri Bildirim",
+      "type": "stack",
+      "states": ["loading", "ready", "empty", "error", "offline"]
+    },
+    {
+      "id": "community.reading_groups",
+      "route": "/community/reading-groups",
+      "title": "Birlikte Okuma",
+      "type": "stack",
+      "states": ["loading", "ready", "empty", "error", "offline"]
+    },
+    {
+      "id": "community.reading_group_detail",
+      "route": "/community/reading-groups/:id",
+      "title": "Okuma Grubu Detay",
+      "type": "stack",
+      "states": ["loading", "ready", "empty", "error", "offline"]
+    },
+    {
+      "id": "community.reading_group_progress",
+      "route": "/community/reading-groups/:id/progress",
+      "title": "Ortak İlerleme",
+      "type": "stack",
+      "states": ["loading", "ready", "empty", "error", "offline"]
+    },
+    {
+      "id": "community.book_clubs",
+      "route": "/community/book-clubs",
+      "title": "Kitap Kulübü",
+      "type": "stack",
+      "states": ["loading", "ready", "empty", "error", "offline"]
+    },
+    {
+      "id": "community.book_club_detail",
+      "route": "/community/book-clubs/:id",
+      "title": "Kitap Kulübü Detay",
+      "type": "stack",
+      "states": ["loading", "ready", "empty", "error", "offline"]
+    },
+    {
+      "id": "ai.chat",
+      "route": "/ai/chat",
+      "title": "AI Sohbet",
+      "type": "stack",
+      "states": ["loading", "ready", "empty", "error", "offline"]
+    },
+    {
+      "id": "ai.answer",
+      "route": "/ai/answer",
+      "title": "AI Cevabı",
+      "type": "stack",
+      "states": ["loading", "ready", "empty", "error", "offline"]
+    },
+    {
+      "id": "ai.sources",
+      "route": "/ai/sources",
+      "title": "AI Kaynakları",
+      "type": "stack",
+      "states": ["loading", "ready", "empty", "error", "offline"]
+    },
+    {
+      "id": "ai.analysis",
+      "route": "/ai/analysis",
+      "title": "AI Analiz",
+      "type": "stack",
+      "states": ["loading", "ready", "empty", "error", "offline"]
+    },
+    {
+      "id": "gamification.hub",
+      "route": "/gamification",
+      "title": "Oyunlaştırma",
+      "type": "stack",
+      "states": ["loading", "ready", "empty", "error", "offline"]
+    },
+    {
+      "id": "gamification.badges",
+      "route": "/gamification/badges",
+      "title": "Rozetler",
+      "type": "stack",
+      "states": ["loading", "ready", "empty", "error", "offline"]
+    },
+    {
+      "id": "gamification.streaks",
+      "route": "/gamification/streaks",
+      "title": "Seriler",
+      "type": "stack",
+      "states": ["loading", "ready", "empty", "error", "offline"]
+    },
+    {
+      "id": "reminders.schedule",
+      "route": "/reminders/schedule",
+      "title": "Hatırlatıcı Takvimi",
+      "type": "stack",
+      "states": ["loading", "ready", "empty", "error", "offline"]
+    },
+    {
+      "id": "reminders.preferences",
+      "route": "/reminders/preferences",
+      "title": "Hatırlatıcı Tercihleri",
+      "type": "stack",
+      "states": ["loading", "ready", "empty", "error", "offline"]
+    },
+    {
+      "id": "video.catalog",
+      "route": "/videos",
+      "title": "Video Kataloğu",
+      "type": "stack",
+      "states": ["loading", "ready", "empty", "error", "offline"]
+    },
+    {
+      "id": "video.detail",
+      "route": "/videos/:id",
+      "title": "Video Detay",
+      "type": "stack",
+      "states": ["loading", "ready", "empty", "error", "offline"]
+    },
+    {
+      "id": "video.player",
+      "route": "/videos/:id/player",
+      "title": "Video Oynatıcı",
+      "type": "stack",
+      "states": ["loading", "ready", "empty", "error", "offline"]
     }
   ]
 }

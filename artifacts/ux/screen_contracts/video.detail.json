@@ -1,0 +1,55 @@
+{
+  "id": "video.detail",
+  "title": "Video Detay",
+  "route": "/videos/:id",
+  "purpose": "Video içeriğinin özetini ve oynatma seçeneklerini göstermek.",
+  "entryPoints": [
+    "video.catalog"
+  ],
+  "inputs": [
+    {
+      "name": "locale",
+      "type": "LanguageCode",
+      "required": true,
+      "source": "app_state"
+    },
+    {
+      "name": "id",
+      "type": "string",
+      "required": true,
+      "source": "route"
+    }
+  ],
+  "dataDependencies": [
+    "Video",
+    "VideoProgress",
+    "Content"
+  ],
+  "uiStates": {
+    "loading": {
+      "description": "Video Detay yüklenirken iskelet ve temel CTA'lar gösterilir."
+    },
+    "ready": {
+      "description": "Video açıklaması, bölüm listesi ve oynatma durumu hazır."
+    },
+    "empty": {
+      "description": "İçerik yoksa açıklayıcı boş durum ve birincil aksiyon sunulur."
+    },
+    "error": {
+      "description": "Hata mesajı ve tekrar dene aksiyonu gösterilir."
+    },
+    "offline": {
+      "description": "Çevrimdışı modda önbellek içerik gösterilir, senkron bekler."
+    }
+  },
+  "analytics": {
+    "screenView": "video_detail_viewed",
+    "events": [
+      "video_detail_viewed"
+    ]
+  },
+  "acceptanceCriteriaRefs": [
+    "RQ-21"
+  ],
+  "gates": []
+}

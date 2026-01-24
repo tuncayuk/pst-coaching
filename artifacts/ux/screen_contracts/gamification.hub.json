@@ -1,0 +1,49 @@
+{
+  "id": "gamification.hub",
+  "title": "Oyunlaştırma",
+  "route": "/gamification",
+  "purpose": "Kullanıcının rozet, seri ve hedef ilerlemesini merkezi bir ekranda göstermek.",
+  "entryPoints": [
+    "progress.dashboard"
+  ],
+  "inputs": [
+    {
+      "name": "locale",
+      "type": "LanguageCode",
+      "required": true,
+      "source": "app_state"
+    }
+  ],
+  "dataDependencies": [
+    "Achievement",
+    "Badge",
+    "Streak"
+  ],
+  "uiStates": {
+    "loading": {
+      "description": "Oyunlaştırma yüklenirken iskelet ve temel CTA'lar gösterilir."
+    },
+    "ready": {
+      "description": "Rozetler, seriler ve hedef kartları hazır."
+    },
+    "empty": {
+      "description": "İlerleme yoksa açıklayıcı boş durum ve birincil aksiyon sunulur."
+    },
+    "error": {
+      "description": "Hata mesajı ve tekrar dene aksiyonu gösterilir."
+    },
+    "offline": {
+      "description": "Çevrimdışı modda önbellek içerik gösterilir, senkron bekler."
+    }
+  },
+  "analytics": {
+    "screenView": "gamification_hub_viewed",
+    "events": [
+      "gamification_hub_viewed"
+    ]
+  },
+  "acceptanceCriteriaRefs": [
+    "RQ-18"
+  ],
+  "gates": []
+}

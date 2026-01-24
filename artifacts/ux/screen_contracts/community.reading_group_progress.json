@@ -1,0 +1,55 @@
+{
+  "id": "community.reading_group_progress",
+  "title": "Ortak İlerleme",
+  "route": "/community/reading-groups/:id/progress",
+  "purpose": "Okuma grubunun ortak ilerlemesini ve hedef takibini göstermek.",
+  "entryPoints": [
+    "community.reading_group_detail"
+  ],
+  "inputs": [
+    {
+      "name": "locale",
+      "type": "LanguageCode",
+      "required": true,
+      "source": "app_state"
+    },
+    {
+      "name": "id",
+      "type": "string",
+      "required": true,
+      "source": "route"
+    }
+  ],
+  "dataDependencies": [
+    "CommunityGroup",
+    "GroupProgress",
+    "ContentProgress"
+  ],
+  "uiStates": {
+    "loading": {
+      "description": "Ortak İlerleme yüklenirken iskelet ve temel CTA'lar gösterilir."
+    },
+    "ready": {
+      "description": "Grup ilerleme metrikleri ve grafikler hazır."
+    },
+    "empty": {
+      "description": "İlerleme yoksa açıklayıcı boş durum ve birincil aksiyon sunulur."
+    },
+    "error": {
+      "description": "Hata mesajı ve tekrar dene aksiyonu gösterilir."
+    },
+    "offline": {
+      "description": "Çevrimdışı modda önbellek içerik gösterilir, senkron bekler."
+    }
+  },
+  "analytics": {
+    "screenView": "community_reading_group_progress_viewed",
+    "events": [
+      "community_reading_group_progress_viewed"
+    ]
+  },
+  "acceptanceCriteriaRefs": [
+    "RQ-17"
+  ],
+  "gates": []
+}

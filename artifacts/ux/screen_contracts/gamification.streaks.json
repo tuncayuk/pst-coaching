@@ -1,0 +1,48 @@
+{
+  "id": "gamification.streaks",
+  "title": "Seriler",
+  "route": "/gamification/streaks",
+  "purpose": "Okuma ve içerik tamamlama serilerini detaylı göstermek.",
+  "entryPoints": [
+    "gamification.hub"
+  ],
+  "inputs": [
+    {
+      "name": "locale",
+      "type": "LanguageCode",
+      "required": true,
+      "source": "app_state"
+    }
+  ],
+  "dataDependencies": [
+    "Streak",
+    "ContentProgress"
+  ],
+  "uiStates": {
+    "loading": {
+      "description": "Seriler yüklenirken iskelet ve temel CTA'lar gösterilir."
+    },
+    "ready": {
+      "description": "Seri metrikleri ve hatırlatmalar hazır."
+    },
+    "empty": {
+      "description": "Seri yoksa açıklayıcı boş durum ve birincil aksiyon sunulur."
+    },
+    "error": {
+      "description": "Hata mesajı ve tekrar dene aksiyonu gösterilir."
+    },
+    "offline": {
+      "description": "Çevrimdışı modda önbellek içerik gösterilir, senkron bekler."
+    }
+  },
+  "analytics": {
+    "screenView": "gamification_streaks_viewed",
+    "events": [
+      "gamification_streaks_viewed"
+    ]
+  },
+  "acceptanceCriteriaRefs": [
+    "RQ-18"
+  ],
+  "gates": []
+}

@@ -1,0 +1,48 @@
+{
+  "id": "ai.sources",
+  "title": "AI Kaynakları",
+  "route": "/ai/sources",
+  "purpose": "AI yanıtındaki kaynakları şeffaf şekilde göstermek.",
+  "entryPoints": [
+    "ai.answer"
+  ],
+  "inputs": [
+    {
+      "name": "locale",
+      "type": "LanguageCode",
+      "required": true,
+      "source": "app_state"
+    }
+  ],
+  "dataDependencies": [
+    "AiSource",
+    "AiAnswer"
+  ],
+  "uiStates": {
+    "loading": {
+      "description": "AI Kaynakları yüklenirken iskelet ve temel CTA'lar gösterilir."
+    },
+    "ready": {
+      "description": "Kaynak listesi ve ilgili bağlantılar hazır."
+    },
+    "empty": {
+      "description": "Kaynak yoksa açıklayıcı boş durum ve birincil aksiyon sunulur."
+    },
+    "error": {
+      "description": "Hata mesajı ve tekrar dene aksiyonu gösterilir."
+    },
+    "offline": {
+      "description": "Çevrimdışı modda önbellek içerik gösterilir, senkron bekler."
+    }
+  },
+  "analytics": {
+    "screenView": "ai_sources_viewed",
+    "events": [
+      "ai_sources_viewed"
+    ]
+  },
+  "acceptanceCriteriaRefs": [
+    "RQ-19"
+  ],
+  "gates": []
+}

@@ -1,0 +1,56 @@
+{
+  "id": "coach.client_content",
+  "title": "Danışan İçerik Takibi",
+  "route": "/coach/clients/:id/content",
+  "purpose": "Danışanın yolculuk/atölye/e-kitap ilerlemesini göstermek.",
+  "entryPoints": [
+    "coach.client_detail"
+  ],
+  "inputs": [
+    {
+      "name": "locale",
+      "type": "LanguageCode",
+      "required": true,
+      "source": "app_state"
+    },
+    {
+      "name": "id",
+      "type": "string",
+      "required": true,
+      "source": "route"
+    }
+  ],
+  "dataDependencies": [
+    "ContentProgress",
+    "Journey",
+    "Workshop",
+    "Ebook"
+  ],
+  "uiStates": {
+    "loading": {
+      "description": "İçerik takibi yüklenirken iskelet ve temel CTA'lar gösterilir."
+    },
+    "ready": {
+      "description": "İçerik listeleri ve ilerleme hazır."
+    },
+    "empty": {
+      "description": "İçerik yoksa açıklayıcı boş durum ve birincil aksiyon sunulur."
+    },
+    "error": {
+      "description": "Hata mesajı ve tekrar dene aksiyonu gösterilir."
+    },
+    "offline": {
+      "description": "Çevrimdışı modda önbellek içerik gösterilir, senkron bekler."
+    }
+  },
+  "analytics": {
+    "screenView": "coach_client_content_viewed",
+    "events": [
+      "coach_client_content_viewed"
+    ]
+  },
+  "acceptanceCriteriaRefs": [
+    "RQ-16"
+  ],
+  "gates": []
+}

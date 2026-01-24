@@ -1,0 +1,49 @@
+{
+  "id": "ai.answer",
+  "title": "AI Cevabı",
+  "route": "/ai/answer",
+  "purpose": "AI yanıtını ve önerileri detaylı biçimde göstermek.",
+  "entryPoints": [
+    "ai.chat"
+  ],
+  "inputs": [
+    {
+      "name": "locale",
+      "type": "LanguageCode",
+      "required": true,
+      "source": "app_state"
+    }
+  ],
+  "dataDependencies": [
+    "AiAnswer",
+    "AiMessage",
+    "User"
+  ],
+  "uiStates": {
+    "loading": {
+      "description": "AI Cevabı yüklenirken iskelet ve temel CTA'lar gösterilir."
+    },
+    "ready": {
+      "description": "Yanıt içeriği, öneriler ve aksiyonlar hazır."
+    },
+    "empty": {
+      "description": "Yanıt yoksa açıklayıcı boş durum ve birincil aksiyon sunulur."
+    },
+    "error": {
+      "description": "Hata mesajı ve tekrar dene aksiyonu gösterilir."
+    },
+    "offline": {
+      "description": "Çevrimdışı modda önbellek içerik gösterilir, senkron bekler."
+    }
+  },
+  "analytics": {
+    "screenView": "ai_answer_viewed",
+    "events": [
+      "ai_answer_viewed"
+    ]
+  },
+  "acceptanceCriteriaRefs": [
+    "RQ-19"
+  ],
+  "gates": []
+}

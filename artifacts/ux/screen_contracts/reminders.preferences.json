@@ -1,0 +1,49 @@
+{
+  "id": "reminders.preferences",
+  "title": "Hatırlatıcı Tercihleri",
+  "route": "/reminders/preferences",
+  "purpose": "Hatırlatıcı kanalı ve sıklık tercihlerini yönetmek.",
+  "entryPoints": [
+    "reminders.schedule"
+  ],
+  "inputs": [
+    {
+      "name": "locale",
+      "type": "LanguageCode",
+      "required": true,
+      "source": "app_state"
+    }
+  ],
+  "dataDependencies": [
+    "ReminderPreference",
+    "NotificationPermission",
+    "User"
+  ],
+  "uiStates": {
+    "loading": {
+      "description": "Hatırlatıcı Tercihleri yüklenirken iskelet ve temel CTA'lar gösterilir."
+    },
+    "ready": {
+      "description": "Tercih formu ve kanal seçenekleri hazır."
+    },
+    "empty": {
+      "description": "Tercih yoksa açıklayıcı boş durum ve birincil aksiyon sunulur."
+    },
+    "error": {
+      "description": "Hata mesajı ve tekrar dene aksiyonu gösterilir."
+    },
+    "offline": {
+      "description": "Çevrimdışı modda önbellek içerik gösterilir, senkron bekler."
+    }
+  },
+  "analytics": {
+    "screenView": "reminders_preferences_viewed",
+    "events": [
+      "reminders_preferences_viewed"
+    ]
+  },
+  "acceptanceCriteriaRefs": [
+    "RQ-20"
+  ],
+  "gates": []
+}

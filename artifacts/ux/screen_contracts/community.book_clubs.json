@@ -1,0 +1,49 @@
+{
+  "id": "community.book_clubs",
+  "title": "Kitap Kulübü",
+  "route": "/community/book-clubs",
+  "purpose": "Kitap kulüplerini listelemek ve katılım akışını başlatmak.",
+  "entryPoints": [
+    "discover.catalog"
+  ],
+  "inputs": [
+    {
+      "name": "locale",
+      "type": "LanguageCode",
+      "required": true,
+      "source": "app_state"
+    }
+  ],
+  "dataDependencies": [
+    "BookClub",
+    "User",
+    "ContentProgress"
+  ],
+  "uiStates": {
+    "loading": {
+      "description": "Kitap Kulübü yüklenirken iskelet ve temel CTA'lar gösterilir."
+    },
+    "ready": {
+      "description": "Kulüp listesi ve katılım detayları hazır."
+    },
+    "empty": {
+      "description": "Kulüp yoksa açıklayıcı boş durum ve birincil aksiyon sunulur."
+    },
+    "error": {
+      "description": "Hata mesajı ve tekrar dene aksiyonu gösterilir."
+    },
+    "offline": {
+      "description": "Çevrimdışı modda önbellek içerik gösterilir, senkron bekler."
+    }
+  },
+  "analytics": {
+    "screenView": "community_book_clubs_viewed",
+    "events": [
+      "community_book_clubs_viewed"
+    ]
+  },
+  "acceptanceCriteriaRefs": [
+    "RQ-17"
+  ],
+  "gates": []
+}
