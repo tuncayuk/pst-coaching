@@ -255,8 +255,8 @@
   "modules": [
     {
       "id": "cccccccc-cccc-cccc-cccc-cccccccccccc",
-      "title": "Stres Yonetimi Modulu",
-      "description": "Stresle bas etme teknikleri.",
+      "title": "Ozfarkindalik Modulu",
+      "description": "Ozfarkindalik becerilerini guclendiren paketler.",
       "language": "tr"
     },
     {
@@ -322,11 +322,32 @@
   ],
   "packages": [
     {
-      "id": "dddddddd-dddd-dddd-dddd-dddddddddddd",
+      "id": "dddddddd-0000-0000-0000-000000000001",
       "module_id": "cccccccc-cccc-cccc-cccc-cccccccccccc",
-      "title": "Nefes Teknikleri Paketi",
-      "description": "Uygulama ve okuma bolumleri.",
+      "title": "Paket 1: Farkindaligin Temelleri",
+      "description": "Farkindalik becerilerini guclendir.",
       "order_index": 1
+    },
+    {
+      "id": "dddddddd-0000-0000-0000-000000000002",
+      "module_id": "cccccccc-cccc-cccc-cccc-cccccccccccc",
+      "title": "Paket 2: Duygulari Tanimak",
+      "description": "Duygulari fark etme ve adlandirma.",
+      "order_index": 2
+    },
+    {
+      "id": "dddddddd-0000-0000-0000-000000000003",
+      "module_id": "cccccccc-cccc-cccc-cccc-cccccccccccc",
+      "title": "Paket 3: Dusunce Kaliplari",
+      "description": "Otomatik dusunce kaliplarini fark et.",
+      "order_index": 3
+    },
+    {
+      "id": "dddddddd-0000-0000-0000-000000000004",
+      "module_id": "cccccccc-cccc-cccc-cccc-cccccccccccc",
+      "title": "Paket 4: Degisim Yolculugu",
+      "description": "Degisim adimlarini planla.",
+      "order_index": 4
     }
   ],
   "workshops": [
@@ -533,7 +554,7 @@
     {
       "id": "c1c1c1c1-0000-0000-0000-000000000003",
       "parent_type": "package",
-      "parent_id": "dddddddd-dddd-dddd-dddd-dddddddddddd",
+      "parent_id": "dddddddd-0000-0000-0000-000000000001",
       "content_type": "question",
       "title": "package question item 3",
       "body": "Soru ornegi 3.",
@@ -573,7 +594,7 @@
     {
       "id": "c1c1c1c1-0000-0000-0000-000000000007",
       "parent_type": "package",
-      "parent_id": "dddddddd-dddd-dddd-dddd-dddddddddddd",
+      "parent_id": "dddddddd-0000-0000-0000-000000000001",
       "content_type": "reading",
       "title": "package reading item 7",
       "body": "Okuma metni ornegi 7.",
@@ -613,7 +634,7 @@
     {
       "id": "c1c1c1c1-0000-0000-0000-000000000011",
       "parent_type": "package",
-      "parent_id": "dddddddd-dddd-dddd-dddd-dddddddddddd",
+      "parent_id": "dddddddd-0000-0000-0000-000000000001",
       "content_type": "exercise",
       "title": "package exercise item 11",
       "body": "Uygulama aciklamasi 11.",
@@ -653,7 +674,7 @@
     {
       "id": "c1c1c1c1-0000-0000-0000-000000000015",
       "parent_type": "package",
-      "parent_id": "dddddddd-dddd-dddd-dddd-dddddddddddd",
+      "parent_id": "dddddddd-0000-0000-0000-000000000001",
       "content_type": "question",
       "title": "package question item 15",
       "body": "Soru ornegi 15.",
@@ -693,7 +714,7 @@
     {
       "id": "c1c1c1c1-0000-0000-0000-000000000019",
       "parent_type": "package",
-      "parent_id": "dddddddd-dddd-dddd-dddd-dddddddddddd",
+      "parent_id": "dddddddd-0000-0000-0000-000000000001",
       "content_type": "reading",
       "title": "package reading item 19",
       "body": "Okuma metni ornegi 19.",
@@ -733,7 +754,7 @@
     {
       "id": "c1c1c1c1-0000-0000-0000-000000000023",
       "parent_type": "package",
-      "parent_id": "dddddddd-dddd-dddd-dddd-dddddddddddd",
+      "parent_id": "dddddddd-0000-0000-0000-000000000001",
       "content_type": "exercise",
       "title": "package exercise item 23",
       "body": "Uygulama aciklamasi 23.",
@@ -773,7 +794,7 @@
     {
       "id": "c1c1c1c1-0000-0000-0000-000000000027",
       "parent_type": "package",
-      "parent_id": "dddddddd-dddd-dddd-dddd-dddddddddddd",
+      "parent_id": "dddddddd-0000-0000-0000-000000000001",
       "content_type": "question",
       "title": "package question item 27",
       "body": "Soru ornegi 27.",
@@ -813,7 +834,7 @@
     {
       "id": "c1c1c1c1-0000-0000-0000-000000000031",
       "parent_type": "package",
-      "parent_id": "dddddddd-dddd-dddd-dddd-dddddddddddd",
+      "parent_id": "dddddddd-0000-0000-0000-000000000001",
       "content_type": "reading",
       "title": "package reading item 31",
       "body": "Okuma metni ornegi 31.",
@@ -853,7 +874,7 @@
     {
       "id": "c1c1c1c1-0000-0000-0000-000000000035",
       "parent_type": "package",
-      "parent_id": "dddddddd-dddd-dddd-dddd-dddddddddddd",
+      "parent_id": "dddddddd-0000-0000-0000-000000000001",
       "content_type": "exercise",
       "title": "package exercise item 35",
       "body": "Uygulama aciklamasi 35.",
@@ -893,7 +914,7 @@
     {
       "id": "c1c1c1c1-0000-0000-0000-000000000039",
       "parent_type": "package",
-      "parent_id": "dddddddd-dddd-dddd-dddd-dddddddddddd",
+      "parent_id": "dddddddd-0000-0000-0000-000000000001",
       "content_type": "question",
       "title": "package question item 39",
       "body": "Soru ornegi 39.",
@@ -933,7 +954,7 @@
     {
       "id": "c1c1c1c1-0000-0000-0000-000000000043",
       "parent_type": "package",
-      "parent_id": "dddddddd-dddd-dddd-dddd-dddddddddddd",
+      "parent_id": "dddddddd-0000-0000-0000-000000000001",
       "content_type": "reading",
       "title": "package reading item 43",
       "body": "Okuma metni ornegi 43.",
@@ -973,7 +994,7 @@
     {
       "id": "c1c1c1c1-0000-0000-0000-000000000047",
       "parent_type": "package",
-      "parent_id": "dddddddd-dddd-dddd-dddd-dddddddddddd",
+      "parent_id": "dddddddd-0000-0000-0000-000000000001",
       "content_type": "exercise",
       "title": "package exercise item 47",
       "body": "Uygulama aciklamasi 47.",
@@ -1009,7 +1030,38 @@
       "body": "Uygulama aciklamasi 50.",
       "order_index": 50,
       "has_audio": false
+    }    ,
+    {
+      "id": "c1c1c1c1-0000-0000-0000-000000000101",
+      "parent_type": "package",
+      "parent_id": "dddddddd-0000-0000-0000-000000000003",
+      "content_type": "reading",
+      "title": "Otomatik Dusunceler",
+      "body": "Zihnimizde otomatik olusan dusunceleri fark etme.",
+      "order_index": 1,
+      "has_audio": false
+    },
+    {
+      "id": "c1c1c1c1-0000-0000-0000-000000000102",
+      "parent_type": "package",
+      "parent_id": "dddddddd-0000-0000-0000-000000000003",
+      "content_type": "exercise",
+      "title": "Kaliplarimi Kesfetmek",
+      "body": "Otomatik dusunceleri yazma uygulamasi.",
+      "order_index": 2,
+      "has_audio": false
+    },
+    {
+      "id": "c1c1c1c1-0000-0000-0000-000000000103",
+      "parent_type": "package",
+      "parent_id": "dddddddd-0000-0000-0000-000000000003",
+      "content_type": "reading",
+      "title": "Bilissel Carpitmalar",
+      "body": "Dusunce carpitmalarini tanima.",
+      "order_index": 3,
+      "has_audio": false
     }
+
   ],
   "exercise_steps": [
     {
@@ -1017,6 +1069,24 @@
       "content_item_id": "11111111-2222-3333-4444-555555555555",
       "step_number": 1,
       "text": "3 dakika boyunca nefesine odaklan."
+    },
+    {
+      "id": "12121212-1212-1212-1212-121212121213",
+      "content_item_id": "c1c1c1c1-0000-0000-0000-000000000102",
+      "step_number": 1,
+      "text": "Durumu tanimlayin ve neler oldugunu yazin."
+    },
+    {
+      "id": "12121212-1212-1212-1212-121212121214",
+      "content_item_id": "c1c1c1c1-0000-0000-0000-000000000102",
+      "step_number": 2,
+      "text": "O anda aklinizdan gecen otomatik dusunceyi yazin."
+    },
+    {
+      "id": "12121212-1212-1212-1212-121212121215",
+      "content_item_id": "c1c1c1c1-0000-0000-0000-000000000102",
+      "step_number": 3,
+      "text": "Bu dusunceyi destekleyen ve curuten kanitlari listeleyin."
     }
   ],
   "content_progress": [
@@ -1033,7 +1103,7 @@
       "id": "23232323-2323-2323-2323-232323232323",
       "user_id": "11111111-1111-1111-1111-111111111111",
       "content_type": "package",
-      "content_id": "dddddddd-dddd-dddd-dddd-dddddddddddd",
+      "content_id": "dddddddd-0000-0000-0000-000000000001",
       "status": "completed",
       "started_at": "2026-01-05T08:00:00Z",
       "completed_at": "2026-01-05T08:30:00Z"
@@ -1084,7 +1154,7 @@
       "id": "26262626-2626-2626-2626-262626262626",
       "user_id": "11111111-1111-1111-1111-111111111111",
       "source_type": "package",
-      "source_id": "dddddddd-dddd-dddd-dddd-dddddddddddd",
+      "source_id": "dddddddd-0000-0000-0000-000000000001",
       "quote": "Nefes, duygularin pusulasidir.",
       "color": "blue",
       "created_at": "2026-01-06T09:00:00Z"
