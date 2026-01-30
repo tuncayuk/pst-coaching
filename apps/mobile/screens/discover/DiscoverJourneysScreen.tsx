@@ -42,6 +42,7 @@ const DiscoverJourneysContent = ({ isOffline }: { isOffline?: boolean }) => {
             disabled={isOffline}
             style={styles.sortButton}
             contentStyle={styles.sortButtonContent}
+            labelStyle={styles.sortButtonLabel}
             buttonColor={index === 0 ? "#00B4D8" : "#F5F5F5"}
             textColor={index === 0 ? "#FFFFFF" : "#525252"}
           >
@@ -208,8 +209,14 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   sortButtonContent: {
-    height: 32,
-    // paddingHorizontal: 12,
+    height: 36,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  sortButtonLabel: {
+    fontSize: 12,
+    fontWeight: "600",
+    lineHeight: 16,
   },
   card: {
     padding: 16,
