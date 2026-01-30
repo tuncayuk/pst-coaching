@@ -1,70 +1,94 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
-import { ScreenLayout } from "../components/ScreenLayout";
-import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
-import { PActivityIndicator, PButton, PCard, PDivider, PProgressBar, PText } from "../../components";
+import {
+  getEbooks,
+  getJourneyById,
+  getModules,
+  getWorkshops,
+} from "../../data/mockSelectors";
+import {
+  PActivityIndicator,
+  PButton,
+  PCard,
+  PChip,
+  PIconButton,
+  PText,
+} from "../../components";
 
+const ContentJourneyDetailContent = ({ journeyId, isOffline }: { journeyId?: string; isOffline?: boolean }) => {
+  const navigation = useNavigation<any>();
+  const journey = getJourneyById(journeyId);
+  const modules = getModules().slice(0, 3);
+  const workshops = getWorkshops().slice(0, 2);
+  const ebooks = getEbooks().slice(0, 2);
+  const duration = journey?.duration_days ?? 40;
+  const dailyGoal = journey?.daily_target ?? "10-20 dk";
 
-const journeyDays = [
-  { title: "1. Gün: Niyet", duration: "12 dk" },
-  { title: "2. Gün: Öz şefkat", duration: "14 dk" },
-  { title: "3. Gün: Sınırlar", duration: "16 dk" },
-];
-
-const journeyBenefits = [
-  "Günlük farkındalık pratiği",
-  "Kendinle şefkatli iletişim",
-  "Sürdürülebilir rutinler",
-];
-
-const ContentJourneyDetailContent = ({ isOffline }: { isOffline?: boolean }) => {
   return (
-    <>
-      <SectionCard title="Yolculuk Özeti">
-        <PText variant="bodyMedium" style={styles.paragraph}>
+    <View>
+      <View style={styles.headerRow}>
+        <PIconButton icon="arrow-left" onPress={() => navigation.goBack()} />
+        <PText style={styles.headerTitle}>Yolculuk Detay</PText>
+      </View>
+
+      <PCard style={styles.heroCard}>
+        <PText style={styles.heroTitle}>{journey?.title ?? "Sıdk ve Integrity Yolculuğu"}</PText>
+        <PText style={styles.heroDescription}>
           Kendine şefkatli bir yaklaşım geliştirirken her gün küçük adımlarla ilerleyebileceğin
           yapılandırılmış bir program.
         </PText>
-        <PCard style={styles.card}>
-          <PCard.Title title="İlerleme" subtitle="3/10 gün tamamlandı" />
-          <PCard.Content>
-            <PProgressBar progress={0.3} style={styles.progress} />
-          </PCard.Content>
-          <PCard.Actions>
-            <PButton mode="contained" disabled={isOffline}>
-              Yolculuğa Devam Et
-            </PButton>
-          </PCard.Actions>
-        </PCard>
-      </SectionCard>
+        <View style={styles.metaRow}>
+          <PChip style={styles.metaChip}>{duration} gün</PChip>
+          <PChip style={styles.metaChip}>{dailyGoal}</PChip>
+        </View>
+        <View style={styles.heroActions}>
+          <PButton mode="contained" disabled={isOffline}>
+            Yolculuğu Başlat
+          </PButton>
+          <PButton mode="outlined" disabled={isOffline}>
+            Favorilere Ekle
+          </PButton>
+        </View>
+      </PCard>
 
-      <SectionCard title="Gün Akışı" actionLabel="Tüm Günler">
-        {journeyDays.map((day, index) => (
-          <View key={day.title} style={styles.rowItem}>
-            <View style={styles.rowHeader}>
-              <PText variant="titleSmall">{day.title}</PText>
-              <PText variant="labelMedium">{day.duration}</PText>
-            </View>
-            {index < journeyDays.length - 1 ? <PDivider style={styles.divider} /> : null}
-          </View>
+      <View style={styles.section}>
+        <PText style={styles.sectionTitle}>Modüller</PText>
+        {modules.map((item) => (
+          <PCard key={item.id} style={styles.listCard}>
+            <PText style={styles.listTitle}>{item.title}</PText>
+            <PText style={styles.listSubtitle}>4 ders • 45 dk</PText>
+          </PCard>
         ))}
-      </SectionCard>
+      </View>
 
-      <SectionCard title="Kazanımlar" actionLabel="Paylaş">
-        {journeyBenefits.map((benefit) => (
-          <PText key={benefit} variant="bodySmall" style={styles.bullet}>
-            • {benefit}
-          </PText>
+      <View style={styles.section}>
+        <PText style={styles.sectionTitle}>Atölyeler</PText>
+        {workshops.map((item) => (
+          <PCard key={item.id} style={styles.listCard}>
+            <PText style={styles.listTitle}>{item.title}</PText>
+            <PText style={styles.listSubtitle}>60 dk • Orta seviye</PText>
+          </PCard>
         ))}
-        <PButton mode="outlined" style={styles.secondaryButton} disabled={isOffline}>
-          Hatırlatıcı Kur
-        </PButton>
-      </SectionCard>
-    </>
+      </View>
+
+      <View style={styles.section}>
+        <PText style={styles.sectionTitle}>e-Kitaplar</PText>
+        {ebooks.map((item) => (
+          <PCard key={item.id} style={styles.listCard}>
+            <PText style={styles.listTitle}>{item.title}</PText>
+            <PText style={styles.listSubtitle}>180 sayfa • TR</PText>
+          </PCard>
+        ))}
+      </View>
+
+      <View style={styles.bottomSpacer} />
+    </View>
   );
 };
 
@@ -74,92 +98,144 @@ export const ContentJourneyDetailScreen = ({
   route?: { params?: { state?: ScreenState; id?: string } };
 }) => {
   const state = resolveScreenState(route);
+  const journeyId = route?.params?.id;
 
   if (state === "loading") {
     return (
-      <ScreenLayout title="Yolculuk Detay" subtitle="Yolculuk yükleniyor">
-        <SectionCard title="Yükleniyor">
+      <SafeAreaView style={styles.root}>
+        <ScrollView contentContainerStyle={styles.content}>
           <PActivityIndicator animating />
-          <SkeletonBlock height={18} />
-          <SkeletonBlock height={18} />
-        </SectionCard>
-        <SectionCard title="Günler">
-          <SkeletonBlock height={60} />
-          <SkeletonBlock height={60} />
-        </SectionCard>
-      </ScreenLayout>
+          <SkeletonBlock height={20} />
+          <SkeletonBlock height={20} />
+          <SkeletonBlock height={120} />
+          <SkeletonBlock height={120} />
+        </ScrollView>
+      </SafeAreaView>
     );
   }
 
   if (state === "empty") {
     return (
-      <ScreenLayout title="Yolculuk Detay" subtitle="İçerik bulunamadı">
-        <StateMessage
-          title="Yolculuk bulunamadı"
-          description="Bu yolculuk şu anda erişilebilir değil."
-          actionLabel="Keşfe Dön"
-          icon="map-outline"
-        />
-      </ScreenLayout>
+      <SafeAreaView style={styles.root}>
+        <ScrollView contentContainerStyle={styles.content}>
+          <StateMessage
+            title="Yolculuk bulunamadı"
+            description="Bu yolculuk şu anda erişilebilir değil."
+            actionLabel="Keşfe Dön"
+            icon="map-outline"
+          />
+        </ScrollView>
+      </SafeAreaView>
     );
   }
 
   if (state === "error") {
     return (
-      <ScreenLayout title="Yolculuk Detay" subtitle="Bir sorun oluştu">
-        <StateMessage
-          title="Yolculuk yüklenemedi"
-          description="Bağlantını kontrol edip tekrar dene."
-          actionLabel="Tekrar Dene"
-          icon="alert-circle-outline"
-          tone="error"
-        />
-      </ScreenLayout>
+      <SafeAreaView style={styles.root}>
+        <ScrollView contentContainerStyle={styles.content}>
+          <StateMessage
+            title="Yolculuk yüklenemedi"
+            description="Bağlantını kontrol edip tekrar dene."
+            actionLabel="Tekrar Dene"
+            icon="alert-circle-outline"
+            tone="error"
+          />
+        </ScrollView>
+      </SafeAreaView>
     );
   }
 
   if (state === "offline") {
     return (
-      <ScreenLayout title="Yolculuk Detay" subtitle="Önbellekteki içerik">
-        <OfflineNotice />
-        <ContentJourneyDetailContent isOffline />
-      </ScreenLayout>
+      <SafeAreaView style={styles.root}>
+        <ScrollView contentContainerStyle={styles.content}>
+          <OfflineNotice />
+          <ContentJourneyDetailContent journeyId={journeyId} isOffline />
+        </ScrollView>
+      </SafeAreaView>
     );
   }
 
   return (
-    <ScreenLayout title="Yolculuk Detay" subtitle="Yolculuğa genel bakış">
-      <ContentJourneyDetailContent />
-    </ScreenLayout>
+    <SafeAreaView style={styles.root}>
+      <ScrollView contentContainerStyle={styles.content}>
+        <ContentJourneyDetailContent journeyId={journeyId} />
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  paragraph: {
-    marginBottom: 12,
+  root: {
+    flex: 1,
+    backgroundColor: "#FAFAFA",
   },
-  card: {
-    marginTop: 4,
+  content: {
+    padding: 16,
   },
-  progress: {
-    marginTop: 8,
-    marginBottom: 12,
-  },
-  rowItem: {
-    paddingVertical: 8,
-  },
-  rowHeader: {
+  headerRow: {
     flexDirection: "row",
-    justifyContent: "space-between",
+    alignItems: "center",
+    gap: 8,
+    marginBottom: 16,
   },
-  divider: {
-    marginTop: 8,
+  headerTitle: {
+    fontSize: 18,
+    fontWeight: "800",
+    color: "#2B1B5D",
   },
-  bullet: {
-    marginBottom: 6,
+  heroCard: {
+    padding: 16,
+    borderRadius: 16,
+    marginBottom: 20,
   },
-  secondaryButton: {
-    marginTop: 12,
-    alignSelf: "flex-start",
+  heroTitle: {
+    fontSize: 20,
+    fontWeight: "800",
+    color: "#2B1B5D",
+    marginBottom: 8,
+  },
+  heroDescription: {
+    fontSize: 14,
+    color: "#525252",
+    marginBottom: 12,
+  },
+  metaRow: {
+    flexDirection: "row",
+    gap: 8,
+    marginBottom: 16,
+  },
+  metaChip: {
+    backgroundColor: "#E0F7FA",
+  },
+  heroActions: {
+    gap: 8,
+  },
+  section: {
+    marginBottom: 20,
+  },
+  sectionTitle: {
+    fontSize: 16,
+    fontWeight: "700",
+    color: "#171717",
+    marginBottom: 12,
+  },
+  listCard: {
+    padding: 12,
+    borderRadius: 14,
+    marginBottom: 12,
+  },
+  listTitle: {
+    fontSize: 14,
+    fontWeight: "600",
+    color: "#171717",
+    marginBottom: 4,
+  },
+  listSubtitle: {
+    fontSize: 12,
+    color: "#525252",
+  },
+  bottomSpacer: {
+    height: 24,
   },
 });

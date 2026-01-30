@@ -1,94 +1,163 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
-import { useTheme } from "react-native-paper";
+import { ScrollView, StyleSheet, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "./components/OfflineNotice";
-import { ScreenLayout } from "./components/ScreenLayout";
-import { SectionCard } from "./components/SectionCard";
 import { SkeletonBlock } from "./components/SkeletonBlock";
 import { StateMessage } from "./components/StateMessage";
 import { resolveScreenState, ScreenState } from "./components/ScreenState";
-import { getEbooks, getJourneys, getModules, getWorkshops } from "../data/mockSelectors";
-import { PActivityIndicator, PButton, PCard, PChip, PText } from "../components";
+import {
+  getEbooks,
+  getJourneyById,
+  getJourneyDays,
+  getJourneys,
+  getPrimaryUser,
+  getSubscriptionForUser,
+  getWorkshops,
+} from "../data/mockSelectors";
+import { PActivityIndicator, PButton, PCard, PText } from "../components";
 
+const contentTabs = [
+  { key: "journeys", label: "🎯 Yolculuklar", screen: "DiscoverJourneys" },
+  { key: "workshops", label: "🎨 Atölyeler", screen: "DiscoverWorkshops" },
+  { key: "modules", label: "📦 Modüller", screen: "DiscoverModules" },
+  { key: "ebooks", label: "📖 e-Kitaplar", screen: "DiscoverEbooks" },
+];
 
 const DiscoverReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
-  const theme = useTheme();
   const navigation = useNavigation<any>();
-  const journeys = getJourneys().slice(0, 3);
-  const workshops = getWorkshops().slice(0, 3);
-  const modules = getModules().slice(0, 3);
-  const ebooks = getEbooks().slice(0, 3);
-  const discoverSections = [
-    {
-      title: "Yolculuklar",
-      items: journeys.map((item) => ({ id: item.id, title: item.title, route: "ContentJourneyDetail" })),
-    },
-    {
-      title: "Atölyeler",
-      items: workshops.map((item) => ({ id: item.id, title: item.title, route: "ContentWorkshopDetail" })),
-    },
-    {
-      title: "Modüller",
-      items: modules.map((item) => ({ id: item.id, title: item.title, route: "ContentModuleDetail" })),
-    },
-    {
-      title: "e-Kitaplar",
-      items: ebooks.map((item) => ({ id: item.id, title: item.title, route: "ContentEbookDetail" })),
-    },
-  ];
+  const user = getPrimaryUser();
+  const subscription = getSubscriptionForUser(user?.id);
+  const requiresSubscription = subscription?.status !== "active" && subscription?.status !== "trial";
+  const journeys = getJourneys();
+  const journeyDays = getJourneyDays();
+  const workshops = getWorkshops();
+  const ebooks = getEbooks();
+  const featuredJourney = journeys[0];
+  const featuredDayCount = journeyDays.filter((day) => day.journey_id === featuredJourney?.id).length || 40;
+  const featuredWorkshopCount = workshops.slice(0, 2).length || 2;
+  const featuredModuleCount = 3;
+  const featuredEbook = ebooks[0];
+
+  const handlePaywall = () => navigation.navigate("Content", { screen: "ContentPaywall" });
+
+  const handleDiscoverRoute = (screen: string) => {
+    if (requiresSubscription) {
+      handlePaywall();
+      return;
+    }
+    navigation.navigate("Discover", { screen });
+  };
+
+  const handleDetailRoute = (screen: string, id?: string) => {
+    if (requiresSubscription) {
+      handlePaywall();
+      return;
+    }
+    navigation.navigate("Content", { screen, params: { id } });
+  };
 
   return (
-    <>
-      <SectionCard title="Senin İçin" actionLabel="Filtrele">
-        <View style={styles.chipRow}>
-          {["Önerilen", "Yeni", "Kısa", "Sesli"].map((label) => (
-            <PChip key={label} style={styles.chip} disabled={isOffline}>
-              {label}
-            </PChip>
-          ))}
+    <View>
+      <PText style={styles.title}>Keşfet</PText>
+
+      <PCard style={styles.assistantCard}>
+        <View style={styles.assistantRow}>
+          <PText style={styles.assistantEmoji}>🤖</PText>
+          <View style={styles.assistantInfo}>
+            <PText style={styles.assistantTitle}>İçerik Asistanı</PText>
+            <PText style={styles.assistantSubtitle}>Size özel içerik önerisi alalım</PText>
+          </View>
+          <PText style={styles.assistantArrow}>→</PText>
         </View>
-      </SectionCard>
-
-      {discoverSections.map((section) => (
-        <SectionCard key={section.title} title={section.title} actionLabel="Tümü">
-          {section.items.map((item) => (
-            <PCard key={item.id} style={styles.card}>
-              <PCard.Title title={item.title} subtitle="30-60 dk · 4 bölüm" />
-              <PCard.Actions>
-                <PButton
-                  mode="outlined"
-                  disabled={isOffline}
-                  onPress={() =>
-                    navigation.navigate("Content", {
-                      screen: item.route,
-                      params: { id: item.id },
-                    })
-                  }
-                >
-                  İncele
-                </PButton>
-              </PCard.Actions>
-            </PCard>
-          ))}
-        </SectionCard>
-      ))}
-
-      <SectionCard title="Haftanın Teması" actionLabel="Paylaş">
-        <PText variant="bodyMedium" style={{ color: theme.colors.onSurfaceVariant }}>
-          Bu hafta sınır koyma ve öz saygı odağında seçkiler hazırladık. Kendine uygun bir
-          yolculukla başlayabilirsin.
-        </PText>
         <PButton
           mode="contained"
-          style={styles.primaryButton}
           disabled={isOffline}
-          onPress={() => navigation.navigate("DiscoverJourneys")}
+          onPress={() => handleDiscoverRoute("DiscoverAssistantQuestions")}
         >
-          Temayı Keşfet
+          Asistana Başla
         </PButton>
-      </SectionCard>
-    </>
+      </PCard>
+
+      {requiresSubscription ? (
+        <PCard style={styles.paywallCard}>
+          <PText style={styles.paywallTitle}>Premium içeriklere erişim</PText>
+          <PText style={styles.paywallSubtitle}>
+            Yolculuklar ve e-kitaplar için aboneliğini etkinleştir.
+          </PText>
+          <PButton mode="contained" onPress={handlePaywall} disabled={isOffline}>
+            Aboneliği Gör
+          </PButton>
+        </PCard>
+      ) : null}
+
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.tabsRow}>
+        {contentTabs.map((tab, index) => (
+          <PButton
+            key={tab.key}
+            mode={index === 0 ? "contained" : "outlined"}
+            compact
+            onPress={() => handleDiscoverRoute(tab.screen)}
+            disabled={isOffline}
+            style={styles.tabButton}
+          >
+            {tab.label}
+          </PButton>
+        ))}
+      </ScrollView>
+
+      <View style={styles.section}>
+        <PText style={styles.sectionTitle}>Öne Çıkanlar</PText>
+
+        <PCard style={styles.featureCard}>
+          <View style={styles.featureRow}>
+            <View style={styles.featureIcon}>
+              <PText style={styles.featureEmoji}>🎯</PText>
+            </View>
+            <View style={styles.featureInfo}>
+              <PText style={styles.featureTitle}>
+                {featuredJourney?.title ?? "Sıdk ve Integrity Yolculuğu"}
+              </PText>
+              <PText style={styles.featureMeta}>
+                {featuredDayCount} gün • Başlangıç
+              </PText>
+              <PText style={styles.featureSubMeta}>
+                📦 {featuredModuleCount} Modül • 🎨 {featuredWorkshopCount} Atölye
+              </PText>
+            </View>
+          </View>
+          <PButton
+            mode="outlined"
+            disabled={isOffline}
+            onPress={() => handleDetailRoute("ContentJourneyDetail", featuredJourney?.id)}
+          >
+            Yolculuğa Git
+          </PButton>
+        </PCard>
+
+        <PCard style={styles.featureCard}>
+          <View style={styles.featureRow}>
+            <View style={styles.ebookCover}>
+              <PText style={styles.featureEmoji}>📖</PText>
+            </View>
+            <View style={styles.featureInfo}>
+              <PText style={styles.featureTitle}>{featuredEbook?.title ?? "Şükür Şifresi"}</PText>
+              <PText style={styles.featureMeta}>PST Coaching • Şükür</PText>
+              <PText style={styles.featureSubMeta}>184 sayfa • ~3 saat okuma</PText>
+            </View>
+          </View>
+          <PButton
+            mode="outlined"
+            disabled={isOffline}
+            onPress={() => handleDetailRoute("ContentEbookDetail", featuredEbook?.id)}
+          >
+            Kitabı İncele
+          </PButton>
+        </PCard>
+      </View>
+
+      <View style={styles.bottomSpacer} />
+    </View>
   );
 };
 
@@ -97,79 +166,198 @@ export const DiscoverCatalogScreen = ({ route }: { route?: { params?: { state?: 
 
   if (state === "loading") {
     return (
-      <ScreenLayout title="Keşfet" subtitle="İçerikler hazırlanıyor">
-        <SectionCard title="Yükleniyor">
+      <SafeAreaView style={styles.root}>
+        <ScrollView contentContainerStyle={styles.content}>
           <PActivityIndicator animating />
-          <SkeletonBlock height={18} />
-          <SkeletonBlock height={18} />
-          <SkeletonBlock height={18} />
-        </SectionCard>
-        <SectionCard title="Kategoriler">
-          <SkeletonBlock height={72} />
-          <SkeletonBlock height={72} />
-        </SectionCard>
-      </ScreenLayout>
+          <SkeletonBlock height={20} />
+          <SkeletonBlock height={20} />
+          <SkeletonBlock height={120} />
+          <SkeletonBlock height={120} />
+        </ScrollView>
+      </SafeAreaView>
     );
   }
 
   if (state === "empty") {
     return (
-      <ScreenLayout title="Keşfet" subtitle="Yeni içerikler yolda">
-        <StateMessage
-          title="Henüz içerik yok"
-          description="Yakında yeni yolculuklar ve atölyeler eklenecek. Bildirimleri açarak
-          haberdar olabilirsin."
-          actionLabel="Bildirimleri Aç"
-          icon="bell-outline"
-        />
-      </ScreenLayout>
+      <SafeAreaView style={styles.root}>
+        <ScrollView contentContainerStyle={styles.content}>
+          <StateMessage
+            title="Henüz içerik yok"
+            description="Yakında yeni yolculuklar ve atölyeler eklenecek."
+            actionLabel="Bildirimleri Aç"
+            icon="bell-outline"
+          />
+        </ScrollView>
+      </SafeAreaView>
     );
   }
 
   if (state === "error") {
     return (
-      <ScreenLayout title="Keşfet" subtitle="Bir sorun oluştu">
-        <StateMessage
-          title="Keşfet yüklenemedi"
-          description="Sunucuya bağlanamadık. Lütfen tekrar dene."
-          actionLabel="Tekrar Dene"
-          icon="alert-circle-outline"
-          tone="error"
-        />
-      </ScreenLayout>
+      <SafeAreaView style={styles.root}>
+        <ScrollView contentContainerStyle={styles.content}>
+          <StateMessage
+            title="Keşfet yüklenemedi"
+            description="Sunucuya bağlanamadık. Lütfen tekrar dene."
+            actionLabel="Tekrar Dene"
+            icon="alert-circle-outline"
+            tone="error"
+          />
+        </ScrollView>
+      </SafeAreaView>
     );
   }
 
   if (state === "offline") {
     return (
-      <ScreenLayout title="Keşfet" subtitle="Önbellekteki içerikler">
-        <OfflineNotice />
-        <DiscoverReadyContent isOffline />
-      </ScreenLayout>
+      <SafeAreaView style={styles.root}>
+        <ScrollView contentContainerStyle={styles.content}>
+          <OfflineNotice />
+          <DiscoverReadyContent isOffline />
+        </ScrollView>
+      </SafeAreaView>
     );
   }
 
   return (
-    <ScreenLayout title="Keşfet" subtitle="Yeni içerikleri keşfet">
-      <DiscoverReadyContent />
-    </ScreenLayout>
+    <SafeAreaView style={styles.root}>
+      <ScrollView contentContainerStyle={styles.content}>
+        <DiscoverReadyContent />
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  chipRow: {
+  root: {
+    flex: 1,
+    backgroundColor: "#FAFAFA",
+  },
+  content: {
+    padding: 16,
+  },
+  title: {
+    fontSize: 32,
+    fontWeight: "800",
+    color: "#2B1B5D",
+    marginBottom: 24,
+  },
+  assistantCard: {
+    padding: 16,
+    borderRadius: 16,
+    borderWidth: 2,
+    borderColor: "#00B4D8",
+    backgroundColor: "#E0F7FA",
+    marginBottom: 20,
+  },
+  assistantRow: {
     flexDirection: "row",
-    flexWrap: "wrap",
-  },
-  chip: {
-    marginRight: 8,
-    marginBottom: 8,
-  },
-  card: {
+    alignItems: "center",
+    gap: 12,
     marginBottom: 12,
   },
-  primaryButton: {
-    marginTop: 12,
-    alignSelf: "flex-start",
+  assistantEmoji: {
+    fontSize: 32,
+  },
+  assistantInfo: {
+    flex: 1,
+  },
+  assistantTitle: {
+    fontSize: 18,
+    fontWeight: "700",
+    color: "#2B1B5D",
+    marginBottom: 4,
+  },
+  assistantSubtitle: {
+    fontSize: 14,
+    color: "#404040",
+  },
+  assistantArrow: {
+    fontSize: 20,
+    color: "#00B4D8",
+  },
+  paywallCard: {
+    padding: 16,
+    borderRadius: 16,
+    marginBottom: 20,
+  },
+  paywallTitle: {
+    fontSize: 16,
+    fontWeight: "700",
+    color: "#2B1B5D",
+    marginBottom: 6,
+  },
+  paywallSubtitle: {
+    fontSize: 13,
+    color: "#525252",
+    marginBottom: 12,
+  },
+  tabsRow: {
+    gap: 8,
+    paddingBottom: 8,
+    marginBottom: 16,
+  },
+  tabButton: {
+    borderRadius: 10,
+  },
+  section: {
+    marginBottom: 24,
+  },
+  sectionTitle: {
+    fontSize: 16,
+    fontWeight: "700",
+    color: "#171717",
+    marginBottom: 12,
+  },
+  featureCard: {
+    padding: 16,
+    borderRadius: 16,
+    marginBottom: 16,
+  },
+  featureRow: {
+    flexDirection: "row",
+    gap: 12,
+    marginBottom: 12,
+  },
+  featureIcon: {
+    width: 80,
+    height: 80,
+    borderRadius: 12,
+    backgroundColor: "#FFDDC1",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  ebookCover: {
+    width: 60,
+    height: 90,
+    borderRadius: 10,
+    backgroundColor: "#D1FAE5",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  featureEmoji: {
+    fontSize: 28,
+  },
+  featureInfo: {
+    flex: 1,
+  },
+  featureTitle: {
+    fontSize: 15,
+    fontWeight: "700",
+    color: "#171717",
+    marginBottom: 4,
+  },
+  featureMeta: {
+    fontSize: 13,
+    color: "#525252",
+    marginBottom: 6,
+  },
+  featureSubMeta: {
+    fontSize: 12,
+    color: "#525252",
+  },
+  bottomSpacer: {
+    height: 24,
   },
 });

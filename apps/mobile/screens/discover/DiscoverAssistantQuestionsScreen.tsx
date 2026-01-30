@@ -1,63 +1,103 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
-import { ScreenLayout } from "../components/ScreenLayout";
-import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
-import { PActivityIndicator, PButton, PChip, PTextInput } from "../../components";
+import {
+  PActivityIndicator,
+  PButton,
+  PCard,
+  PIconButton,
+  PRadioButtonGroup,
+  PRadioButtonItem,
+  PText,
+} from "../../components";
 
+const goalOptions = [
+  { label: "Kişisel gelişim", value: "personal" },
+  { label: "Maneviyat", value: "spiritual" },
+  { label: "Duygusal denge", value: "balance" },
+];
 
-const goalOptions = ["Sınır koyma", "Öz şefkat", "Stres yönetimi", "İletişim"];
-const durationOptions = ["10-20 dk", "30-45 dk", "60+ dk"];
-const formatOptions = ["Yolculuk", "Atölye", "Modül", "e-Kitap"];
+const durationOptions = [
+  { label: "10 dk", value: "10" },
+  { label: "20 dk", value: "20" },
+  { label: "30+ dk", value: "30" },
+];
 
 const DiscoverAssistantQuestionsContent = ({ isOffline }: { isOffline?: boolean }) => {
+  const navigation = useNavigation<any>();
+  const [goal, setGoal] = React.useState("personal");
+  const [duration, setDuration] = React.useState("20");
+
   return (
-    <>
-      <SectionCard title="Hedefini Seç">
-        <View style={styles.chipRow}>
-          {goalOptions.map((option) => (
-            <PChip key={option} style={styles.chip} disabled={isOffline}>
-              {option}
-            </PChip>
-          ))}
+    <SafeAreaView style={styles.root}>
+      <View style={styles.header}>
+        <View style={styles.headerRow}>
+          <PIconButton icon="arrow-left" onPress={() => navigation.goBack()} />
+          <PText style={styles.headerTitle}>İçerik Asistanı</PText>
         </View>
-      </SectionCard>
+      </View>
 
-      <SectionCard title="Süre Tercihin">
-        <View style={styles.chipRow}>
-          {durationOptions.map((option) => (
-            <PChip key={option} style={styles.chip} disabled={isOffline}>
-              {option}
-            </PChip>
-          ))}
+      <ScrollView contentContainerStyle={styles.content}>
+        <View style={styles.hero}>
+          <PText style={styles.heroEmoji}>🤖</PText>
+          <PText style={styles.heroTitle}>Size En Uygun İçeriği Bulalım</PText>
+          <PText style={styles.heroSubtitle}>Birkaç soruyla başlayalım</PText>
         </View>
-      </SectionCard>
 
-      <SectionCard title="Format Tercihi" actionLabel="Opsiyonel">
-        <View style={styles.chipRow}>
-          {formatOptions.map((option) => (
-            <PChip key={option} style={styles.chip} disabled={isOffline}>
-              {option}
-            </PChip>
-          ))}
-        </View>
-      </SectionCard>
+        <PCard style={styles.card}>
+          <PText style={styles.cardLabel}>1️⃣ Ana hedefiniz nedir?</PText>
+          <PRadioButtonGroup value={goal} onValueChange={setGoal}>
+            {goalOptions.map((option) => (
+              <PRadioButtonItem
+                key={option.value}
+                label={option.label}
+                value={option.value}
+                disabled={isOffline}
+                style={[
+                  styles.radioItem,
+                  goal === option.value ? styles.radioItemActive : styles.radioItemIdle,
+                ]}
+              />
+            ))}
+          </PRadioButtonGroup>
+        </PCard>
 
-      <SectionCard title="Notun">
-        <PTextInput
-          label="Özel bir ihtiyaç var mı?"
-          mode="outlined"
-          placeholder="Örn: yoğun bir haftam var"
-          editable={!isOffline}
-        />
-        <PButton mode="contained" style={styles.primaryButton} disabled={isOffline}>
-          Önerileri Gör
+        <PCard style={styles.card}>
+          <PText style={styles.cardLabel}>2️⃣ Ne kadar zaman ayırabilirsiniz?</PText>
+          <View style={styles.durationGrid}>
+            {durationOptions.map((option) => (
+              <PButton
+                key={option.value}
+                mode={duration === option.value ? "contained" : "outlined"}
+                disabled={isOffline}
+                onPress={() => setDuration(option.value)}
+                style={styles.durationButton}
+              >
+                {option.label}
+              </PButton>
+            ))}
+          </View>
+        </PCard>
+
+        <PButton
+          mode="contained"
+          style={styles.primaryButton}
+          disabled={isOffline}
+          onPress={() => navigation.navigate("DiscoverAssistantResults")}
+        >
+          Öneri Al
         </PButton>
-      </SectionCard>
-    </>
+
+        <PButton mode="text" disabled={isOffline} onPress={() => navigation.navigate("DiscoverCatalog")}>
+          Atla, Kataloğa Git
+        </PButton>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
@@ -70,74 +110,137 @@ export const DiscoverAssistantQuestionsScreen = ({
 
   if (state === "loading") {
     return (
-      <ScreenLayout title="İçerik Asistanı Soruları" subtitle="Sorular hazırlanıyor">
-        <SectionCard title="Yükleniyor">
+      <SafeAreaView style={styles.root}>
+        <ScrollView contentContainerStyle={styles.content}>
           <PActivityIndicator animating />
           <SkeletonBlock height={18} />
           <SkeletonBlock height={18} />
-        </SectionCard>
-        <SectionCard title="Seçimler">
-          <SkeletonBlock height={60} />
-          <SkeletonBlock height={60} />
-        </SectionCard>
-      </ScreenLayout>
+          <SkeletonBlock height={80} />
+        </ScrollView>
+      </SafeAreaView>
     );
   }
 
   if (state === "empty") {
     return (
-      <ScreenLayout title="İçerik Asistanı Soruları" subtitle="Soru bulunamadı">
-        <StateMessage
-          title="Sorular bulunamadı"
-          description="Şu anda soru listesi yüklenemiyor."
-          actionLabel="Tekrar Dene"
-          icon="help-circle-outline"
-        />
-      </ScreenLayout>
+      <SafeAreaView style={styles.root}>
+        <ScrollView contentContainerStyle={styles.content}>
+          <StateMessage
+            title="Sorular bulunamadı"
+            description="Şu anda soru listesi yüklenemiyor."
+            actionLabel="Tekrar Dene"
+            icon="help-circle-outline"
+          />
+        </ScrollView>
+      </SafeAreaView>
     );
   }
 
   if (state === "error") {
     return (
-      <ScreenLayout title="İçerik Asistanı Soruları" subtitle="Bir sorun oluştu">
-        <StateMessage
-          title="Sorular yüklenemedi"
-          description="Bağlantını kontrol edip tekrar dene."
-          actionLabel="Tekrar Dene"
-          icon="alert-circle-outline"
-          tone="error"
-        />
-      </ScreenLayout>
+      <SafeAreaView style={styles.root}>
+        <ScrollView contentContainerStyle={styles.content}>
+          <StateMessage
+            title="Sorular yüklenemedi"
+            description="Bağlantını kontrol edip tekrar dene."
+            actionLabel="Tekrar Dene"
+            icon="alert-circle-outline"
+            tone="error"
+          />
+        </ScrollView>
+      </SafeAreaView>
     );
   }
 
   if (state === "offline") {
     return (
-      <ScreenLayout title="İçerik Asistanı Soruları" subtitle="Önbellekteki sorular">
+      <SafeAreaView style={styles.root}>
         <OfflineNotice />
         <DiscoverAssistantQuestionsContent isOffline />
-      </ScreenLayout>
+      </SafeAreaView>
     );
   }
 
-  return (
-    <ScreenLayout title="İçerik Asistanı Soruları" subtitle="Soruları yanıtla">
-      <DiscoverAssistantQuestionsContent />
-    </ScreenLayout>
-  );
+  return <DiscoverAssistantQuestionsContent />;
 };
 
 const styles = StyleSheet.create({
-  chipRow: {
-    flexDirection: "row",
-    flexWrap: "wrap",
+  root: {
+    flex: 1,
+    backgroundColor: "#FAFAFA",
   },
-  chip: {
-    marginRight: 8,
-    marginBottom: 8,
+  header: {
+    backgroundColor: "#FFFFFF",
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: "#E5E5E5",
+  },
+  headerRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+  },
+  headerTitle: {
+    fontSize: 18,
+    fontWeight: "800",
+    color: "#2B1B5D",
+  },
+  content: {
+    padding: 16,
+  },
+  hero: {
+    alignItems: "center",
+    marginBottom: 24,
+  },
+  heroEmoji: {
+    fontSize: 48,
+    marginBottom: 12,
+  },
+  heroTitle: {
+    fontSize: 20,
+    fontWeight: "700",
+    color: "#2B1B5D",
+    textAlign: "center",
+    marginBottom: 6,
+  },
+  heroSubtitle: {
+    fontSize: 15,
+    color: "#525252",
+    textAlign: "center",
+  },
+  card: {
+    padding: 16,
+    borderRadius: 16,
+    marginBottom: 16,
+  },
+  cardLabel: {
+    fontSize: 15,
+    fontWeight: "600",
+    color: "#171717",
+    marginBottom: 12,
+  },
+  radioItem: {
+    borderWidth: 2,
+    borderRadius: 12,
+    marginBottom: 12,
+  },
+  radioItemActive: {
+    borderColor: "#00B4D8",
+    backgroundColor: "#E0F7FA",
+  },
+  radioItemIdle: {
+    borderColor: "#D4D4D4",
+    backgroundColor: "#FFFFFF",
+  },
+  durationGrid: {
+    flexDirection: "row",
+    gap: 8,
+  },
+  durationButton: {
+    flex: 1,
   },
   primaryButton: {
-    marginTop: 12,
-    alignSelf: "flex-start",
+    marginBottom: 8,
   },
 });
