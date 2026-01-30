@@ -101,6 +101,8 @@ const OtpVerifyContent = ({
         <Button
           mode="contained"
           disabled={isOffline || !isCodeComplete}
+          buttonColor="#00B4D8"
+          textColor="#FFFFFF"
           onPress={() => {
             if (source === "register") {
               navigation.navigate("AuthFaceIdSetup");
@@ -249,13 +251,16 @@ const styles = StyleSheet.create({
   },
   button: {
     marginBottom: 16,
+    borderRadius: 12,
   },
   primaryButtonContent: {
-    paddingVertical: 16,
+    height: 56,
+    justifyContent: "center",
   },
   primaryButtonLabel: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: "600",
+    color: "#FFFFFF",
   },
   resendContainer: {
     alignItems: "center",
