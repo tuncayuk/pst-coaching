@@ -11,7 +11,11 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.beyondworks.pstcoaching",
+      "infoPlist": {
+        "NSFaceIDUsageDescription": "This app uses Face ID to securely authenticate you and provide quick access to your account."
+      }
     },
     "android": {
       "adaptiveIcon": {
