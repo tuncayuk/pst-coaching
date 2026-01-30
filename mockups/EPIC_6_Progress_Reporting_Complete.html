@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PST Coaching Mobile - EPIC 6: Gelişim ve Raporlama</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #00B4D8; --primary-dark: #0096B8; --primary-light: #E0F7FA; --primary-100: #B2EBF2;
+            --secondary: #2B1B5D; --secondary-light: #EDE7F6;
+            --success: #10B981; --success-light: #D1FAE5; --success-dark: #065F46;
+            --warning: #F59E0B; --error: #EF4444; --purple: #8B5CF6; --purple-light: #EDE9FE;
+            --gray-50: #FAFAFA; --gray-100: #F5F5F5; --gray-200: #E5E5E5; --gray-300: #D4D4D4;
+            --gray-400: #A3A3A3; --gray-600: #525252; --gray-700: #404040; --gray-900: #171717;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #f0f0f0, #e0e0e0); overflow: hidden; }
+        .app { display: flex; height: 100vh; }
+        .sidebar { width: 400px; background: white; border-right: 1px solid var(--gray-200); overflow-y: auto; box-shadow: 2px 0 10px rgba(0,0,0,0.05); }
+        .main { flex: 1; display: flex; flex-direction: column; }
+        .topbar { background: white; border-bottom: 1px solid var(--gray-200); padding: 1.75rem 2.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+        .viewer { flex: 1; overflow-y: auto; padding: 3rem; display: flex; justify-content: center; align-items: flex-start; }
+        .logo { font-family: 'Poppins', sans-serif; font-size: 2rem; font-weight: 800; color: var(--primary); padding: 2.5rem; border-bottom: 1px solid var(--gray-200); background: linear-gradient(135deg, var(--primary-light), white); }
+        .subtitle { font-size: 0.875rem; color: var(--gray-600); font-weight: 500; margin-top: 0.5rem; }
+        .epic-header { padding: 1.5rem; background: linear-gradient(135deg, var(--success-light), #A7F3D0); border-bottom: 2px solid var(--success); }
+        .epic-title { font-family: 'Poppins', sans-serif; font-size: 1.25rem; font-weight: 700; color: var(--gray-900); margin-bottom: 0.5rem; }
+        .epic-meta { font-size: 0.8125rem; color: var(--gray-600); }
+        .nav-map { background: var(--purple-light); border-left: 4px solid var(--purple); padding: 1rem; margin: 1rem 1.75rem; border-radius: 0.5rem; }
+        .nav-map-title { font-weight: 700; color: var(--purple); font-size: 0.8125rem; margin-bottom: 0.75rem; text-transform: uppercase; display: flex; align-items: center; gap: 0.5rem; }
+        .nav-flow { display: flex; flex-direction: column; gap: 0.5rem; }
+        .nav-flow-item { display: flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; color: var(--gray-700); }
+        .nav-flow-box { background: white; padding: 0.375rem 0.625rem; border-radius: 0.375rem; border: 2px solid var(--gray-300); font-weight: 600; white-space: nowrap; font-size: 0.6875rem; }
+        .nav-flow-box.active { background: var(--primary); color: white; border-color: var(--primary); }
+        .nav-flow-arrow { color: var(--gray-400); font-weight: 700; }
+        .nav-flow-label { color: var(--gray-600); font-size: 0.625rem; font-style: italic; }
+        .nav-section { padding: 1.25rem 0; border-bottom: 1px solid var(--gray-100); }
+        .nav-title { padding: 0.75rem 1.75rem; font-size: 0.6875rem; font-weight: 700; color: var(--gray-600); text-transform: uppercase; }
+        .nav-item { padding: 1rem 1.75rem; cursor: pointer; font-size: 0.9375rem; transition: all 0.2s; color: var(--gray-700); display: flex; align-items: center; gap: 0.875rem; border-left: 3px solid transparent; }
+        .nav-item:hover { background: var(--gray-50); }
+        .nav-item.active { background: var(--primary-light); color: var(--primary-dark); font-weight: 600; border-left-color: var(--primary); }
+        .nav-icon { font-size: 1.375rem; }
+        .nav-badge { background: var(--primary); color: white; padding: 0.25rem 0.625rem; border-radius: 9999px; font-size: 0.6875rem; font-weight: 700; margin-left: auto; }
+        .ac-section { background: var(--secondary-light); border-left: 4px solid var(--secondary); padding: 1rem; margin: 0.75rem 1.75rem; border-radius: 0.5rem; }
+        .ac-title { font-weight: 700; color: var(--secondary); font-size: 0.75rem; margin-bottom: 0.5rem; text-transform: uppercase; }
+        .ac-list { list-style: none; }
+        .ac-list li { font-size: 0.75rem; color: var(--gray-700); margin-bottom: 0.375rem; padding-left: 1.25rem; position: relative; line-height: 1.4; }
+        .ac-list li:before { content: "✓"; position: absolute; left: 0; color: var(--success); font-weight: 700; }
+        .screen-title { font-family: 'Poppins', sans-serif; font-size: 2.25rem; font-weight: 700; color: var(--gray-900); }
+        .screen-meta { color: var(--gray-600); font-size: 0.9375rem; margin-top: 0.5rem; display: flex; align-items: center; gap: 1rem; }
+        .meta-badge { background: var(--success-light); color: var(--success-dark); padding: 0.375rem 0.875rem; border-radius: 0.5rem; font-size: 0.8125rem; font-weight: 600; }
+        .iphone { width: 393px; height: 852px; background: #1d1d1f; border-radius: 55px; padding: 12px; box-shadow: 0 60px 120px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.1); position: relative; }
+        .island { position: absolute; top: 20px; left: 50%; transform: translateX(-50%); width: 120px; height: 30px; background: #000; border-radius: 20px; z-index: 11; }
+        .screen { width: 100%; height: 100%; background: white; border-radius: 43px; overflow: hidden; position: relative; }
+        .content { width: 100%; height: 100%; overflow-y: auto; background: var(--gray-50); }
+        .content::-webkit-scrollbar { width: 4px; }
+        .content::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.3); border-radius: 10px; }
+        .status { height: 54px; display: flex; align-items: center; justify-content: space-between; padding: 0 1.5rem; font-size: 0.8125rem; font-weight: 600; background: white; }
+        .tabs { position: absolute; bottom: 0; left: 0; right: 0; height: 84px; background: white; border-top: 1px solid var(--gray-200); display: flex; justify-content: space-around; align-items: flex-start; padding: 0.75rem 0.5rem 1.5rem; z-index: 10; }
+        .tab { display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 0.625rem; font-weight: 600; color: var(--gray-600); min-width: 60px; text-align: center; cursor: pointer; }
+        .tab.active { color: var(--primary); }
+        .tab-icon { font-size: 1.5rem; }
+        .btn { padding: 0.875rem 1.5rem; border-radius: 0.75rem; font-weight: 600; font-size: 1rem; border: none; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.2s; }
+        .btn-primary { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; box-shadow: 0 4px 16px rgba(0,180,216,0.4); }
+        .card { background: white; border-radius: 1rem; padding: 1.25rem; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .fade-in { animation: fadeIn 0.3s ease-out; }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <div class="sidebar">
+            <div class="logo">PST Coaching<div class="subtitle">Gelişim & Raporlama</div></div>
+            <div class="epic-header">
+                <div class="epic-title">EPIC 6: Gelişim ve Raporlama</div>
+                <div class="epic-meta">6 User Stories • 6 Screens • 24 ACs</div>
+            </div>
+            <div class="nav-map">
+                <div class="nav-map-title"><span>🗺️</span><span>Navigation Map</span></div>
+                <div class="nav-flow">
+                    <div class="nav-flow-item"><div class="nav-flow-box active" id="nav-1">Progress Dashboard</div></div>
+                    <div class="nav-flow-item"><span class="nav-flow-arrow">├→</span><span class="nav-flow-label">tap Duygusal Harita</span></div>
+                    <div class="nav-flow-item" style="margin-left: 1rem;"><div class="nav-flow-box" id="nav-2">Emotional Map</div></div>
+                    <div class="nav-flow-item"><span class="nav-flow-arrow">├→</span><span class="nav-flow-label">tap Alanlarım</span></div>
+                    <div class="nav-flow-item" style="margin-left: 1rem;"><div class="nav-flow-box" id="nav-3">Strengths & Growth</div></div>
+                    <div class="nav-flow-item"><span class="nav-flow-arrow">├→</span><span class="nav-flow-label">tap Haftalık Özet</span></div>
+                    <div class="nav-flow-item" style="margin-left: 1rem;"><div class="nav-flow-box" id="nav-4">Weekly Summary</div></div>
+                    <div class="nav-flow-item"><span class="nav-flow-arrow">├→</span><span class="nav-flow-label">finish content</span></div>
+                    <div class="nav-flow-item" style="margin-left: 1rem;"><div class="nav-flow-box" id="nav-5">Content Review</div></div>
+                    <div class="nav-flow-item"><span class="nav-flow-arrow">└→</span><span class="nav-flow-label">tap Rapor</span></div>
+                    <div class="nav-flow-item" style="margin-left: 1rem;"><div class="nav-flow-box" id="nav-6">Download Report</div></div>
+                </div>
+                <div style="margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid var(--purple); font-size: 0.625rem; color: var(--gray-600); line-height: 1.4;">
+                    <strong>Entry:</strong> Tab Bar → Gelişim<br>
+                    <strong>Analytics:</strong> Charts, Maps, Insights
+                </div>
+            </div>
+            <div class="nav-section">
+                <div class="nav-title">US-6.1 & 6.2: Analytics</div>
+                <div class="nav-item active" onclick="showScreen(1)">
+                    <span class="nav-icon">📊</span><span>Progress Dashboard</span><span class="nav-badge">3 ACs</span>
+                </div>
+                <div class="ac-section">
+                    <div class="ac-title">✓ Acceptance Criteria</div>
+                    <ul class="ac-list">
+                        <li>Content type progress (journey/workshop/module/ebook)</li>
+                        <li>Submission rate and habit streak visible</li>
+                        <li>Chart summary text for screen readers</li>
+                    </ul>
+                </div>
+                <div class="nav-item" onclick="showScreen(2)">
+                    <span class="nav-icon">🎭</span><span>Emotional Map</span><span class="nav-badge">4 ACs</span>
+                </div>
+                <div class="ac-section">
+                    <div class="ac-title">✓ Acceptance Criteria</div>
+                    <ul class="ac-list">
+                        <li>Last 14/30 days view selectable</li>
+                        <li>Legend explanation (Calm/Clarity/Tense) shown</li>
+                        <li>"Not a diagnosis" disclaimer visible</li>
+                        <li>Icon/pattern support for color blindness</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="nav-section">
+                <div class="nav-title">US-6.3 & 6.4: Insights</div>
+                <div class="nav-item" onclick="showScreen(3)">
+                    <span class="nav-icon">💪</span><span>Strengths & Growth</span><span class="nav-badge">3 ACs</span>
+                </div>
+                <div class="ac-section">
+                    <div class="ac-title">✓ Acceptance Criteria</div>
+                    <ul class="ac-list">
+                        <li>Strengths and growth areas in separate cards</li>
+                        <li>Concrete recommendations (related content)</li>
+                        <li>"Apply Recommendations" action available</li>
+                    </ul>
+                </div>
+                <div class="nav-item" onclick="showScreen(4)">
+                    <span class="nav-icon">📅</span><span>Weekly Summary</span><span class="nav-badge">3 ACs</span>
+                </div>
+                <div class="ac-section">
+                    <div class="ac-title">✓ Acceptance Criteria</div>
+                    <ul class="ac-list">
+                        <li>Positive trend, challenge area, recommendation visible</li>
+                        <li>Completed content listed</li>
+                        <li>Explanation shown if no data</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="nav-section">
+                <div class="nav-title">US-6.5 & 6.6: Feedback</div>
+                <div class="nav-item" onclick="showScreen(5)">
+                    <span class="nav-icon">⭐</span><span>Content Review</span><span class="nav-badge">4 ACs</span>
+                </div>
+                <div class="ac-section">
+                    <div class="ac-title">✓ Acceptance Criteria</div>
+                    <ul class="ac-list">
+                        <li>Review prompted at content completion</li>
+                        <li>"Later" option to postpone</li>
+                        <li>Responses saved</li>
+                        <li>Next content recommendation shown</li>
+                    </ul>
+                </div>
+                <div class="nav-item" onclick="showScreen(6)">
+                    <span class="nav-icon">📄</span><span>Download Report</span><span class="nav-badge">3 ACs</span>
+                </div>
+                <div class="ac-section">
+                    <div class="ac-title">✓ Acceptance Criteria</div>
+                    <ul class="ac-list">
+                        <li>Summary metrics, themes, recommendations visible</li>
+                        <li>Downloadable as PDF</li>
+                        <li>Privacy consent shown before sharing</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="main">
+            <div class="topbar">
+                <h1 class="screen-title" id="screenTitle">Progress Dashboard</h1>
+                <div class="screen-meta">
+                    <span class="meta-badge" id="screenUS">US-6.1</span>
+                    <span id="screenMeta">Analytics overview • 3/3 ACs • Entry: Tab Bar → Gelişim</span>
+                </div>
+            </div>
+            <div class="viewer" id="viewer"></div>
+        </div>
+    </div>
+    <script>
+        const screenData = {
+            1: { title: 'Progress Dashboard', us: 'US-6.1', meta: 'Analytics overview • 3/3 ACs • Entry: Tab Bar → Gelişim' },
+            2: { title: 'Emotional Map', us: 'US-6.2', meta: 'Sentiment analysis • 4/4 ACs • From: Dashboard' },
+            3: { title: 'Strengths & Growth', us: 'US-6.3', meta: 'Personal insights • 3/3 ACs • From: Dashboard' },
+            4: { title: 'Weekly Summary', us: 'US-6.4', meta: 'Week recap • 3/3 ACs • From: Dashboard' },
+            5: { title: 'Content Review', us: 'US-6.5', meta: 'Rate experience • 4/4 ACs • From: Completion' },
+            6: { title: 'Download Report', us: 'US-6.6', meta: 'Export progress • 3/3 ACs • From: Dashboard' }
+        };
+        function showScreen(num) {
+            document.getElementById('screenTitle').textContent = screenData[num].title;
+            document.getElementById('screenUS').textContent = screenData[num].us;
+            document.getElementById('screenMeta').textContent = screenData[num].meta;
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            const navMap = {1: 0, 2: 1, 3: 2, 4: 3, 5: 4, 6: 5};
+            document.querySelectorAll('.nav-item')[navMap[num]].classList.add('active');
+            document.querySelectorAll('[id^="nav-"]').forEach(box => box.classList.remove('active'));
+            const navBox = document.getElementById('nav-' + num);
+            if (navBox) navBox.classList.add('active');
+            document.getElementById('viewer').innerHTML = getScreenHTML(num);
+        }
+        function getScreenHTML(num) {
+            const screens = {
+                1: `<div class="iphone fade-in"><div class="island"></div><div class="screen"><div class="content">
+                    <div class="status"><div>9:41</div><div>📶 📡 🔋</div></div>
+                    <div style="padding: 1.5rem 1.5rem 6rem;">
+                        <h1 style="font-family: Poppins, sans-serif; font-size: 2rem; font-weight: 800; color: var(--secondary); margin-bottom: 1.5rem;">Gelişim</h1>
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin-bottom: 1.5rem;">
+                            <div class="card" style="text-align: center; padding: 1rem; background: linear-gradient(135deg, var(--primary-light), var(--primary-100));">
+                                <div style="font-family: Poppins, sans-serif; font-size: 1.75rem; font-weight: 800; color: var(--primary); margin-bottom: 0.25rem;">42</div>
+                                <div style="font-size: 0.75rem; color: var(--gray-600); font-weight: 600;">Gün Aktif</div>
+                            </div>
+                            <div class="card" style="text-align: center; padding: 1rem; background: linear-gradient(135deg, var(--success-light), #A7F3D0);">
+                                <div style="font-family: Poppins, sans-serif; font-size: 1.75rem; font-weight: 800; color: var(--success-dark); margin-bottom: 0.25rem;">87%</div>
+                                <div style="font-size: 0.75rem; color: var(--gray-600); font-weight: 600;">Teslim Oranı</div>
+                            </div>
+                            <div class="card" style="text-align: center; padding: 1rem; background: linear-gradient(135deg, #FEF3C7, #FDE68A);">
+                                <div style="font-family: Poppins, sans-serif; font-size: 1.75rem; font-weight: 800; color: var(--warning); margin-bottom: 0.25rem;">12</div>
+                                <div style="font-size: 0.75rem; color: var(--gray-600); font-weight: 600;">Streak</div>
+                            </div>
+                        </div>
+                        <div class="card" style="margin-bottom: 1.5rem;">
+                            <h3 style="font-weight: 700; color: var(--gray-900); margin-bottom: 1rem; font-size: 1rem;">İçerik Türüne Göre İlerleme</h3>
+                            <div style="margin-bottom: 1rem;">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 0.875rem;">
+                                    <span style="color: var(--gray-700);">🎯 Yolculuklar</span>
+                                    <span style="font-weight: 700; color: var(--primary);">7/40 gün</span>
+                                </div>
+                                <div style="height: 8px; background: var(--gray-200); border-radius: 9999px; overflow: hidden;">
+                                    <div style="width: 17%; height: 100%; background: linear-gradient(90deg, var(--primary), var(--primary-dark));"></div>
+                                </div>
+                            </div>
+                            <div style="margin-bottom: 1rem;">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 0.875rem;">
+                                    <span style="color: var(--gray-700);">🎨 Atölyeler</span>
+                                    <span style="font-weight: 700; color: var(--success-dark);">2/3 tamamlandı</span>
+                                </div>
+                                <div style="height: 8px; background: var(--gray-200); border-radius: 9999px; overflow: hidden;">
+                                    <div style="width: 67%; height: 100%; background: linear-gradient(90deg, var(--success), var(--success-dark));"></div>
+                                </div>
+                            </div>
+                            <div style="margin-bottom: 1rem;">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 0.875rem;">
+                                    <span style="color: var(--gray-700);">📦 Modüller</span>
+                                    <span style="font-weight: 700; color: var(--warning);">5/8 paket</span>
+                                </div>
+                                <div style="height: 8px; background: var(--gray-200); border-radius: 9999px; overflow: hidden;">
+                                    <div style="width: 62%; height: 100%; background: linear-gradient(90deg, var(--warning), #D97706);"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 0.875rem;">
+                                    <span style="color: var(--gray-700);">📖 e-Kitaplar</span>
+                                    <span style="font-weight: 700; color: var(--secondary);">1/3 okundu</span>
+                                </div>
+                                <div style="height: 8px; background: var(--gray-200); border-radius: 9999px; overflow: hidden;">
+                                    <div style="width: 33%; height: 100%; background: linear-gradient(90deg, var(--secondary), #1E1548);"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-bottom: 1.5rem;">
+                            <div class="card" style="cursor: pointer;" onclick="parent.showScreen(2)">
+                                <div style="font-size: 2rem; margin-bottom: 0.5rem;">🎭</div>
+                                <h4 style="font-weight: 700; font-size: 0.875rem; color: var(--gray-900); margin-bottom: 0.25rem;">Duygusal Harita</h4>
+                                <p style="font-size: 0.75rem; color: var(--gray-600);">Son 30 gün</p>
+                            </div>
+                            <div class="card" style="cursor: pointer;" onclick="parent.showScreen(3)">
+                                <div style="font-size: 2rem; margin-bottom: 0.5rem;">💪</div>
+                                <h4 style="font-weight: 700; font-size: 0.875rem; color: var(--gray-900); margin-bottom: 0.25rem;">Alanlarım</h4>
+                                <p style="font-size: 0.75rem; color: var(--gray-600);">Güçlü & Gelişim</p>
+                            </div>
+                        </div>
+                        <div class="card" style="cursor: pointer;" onclick="parent.showScreen(4)">
+                            <div style="display: flex; align-items: center; gap: 1rem;">
+                                <div style="font-size: 2.5rem;">📅</div>
+                                <div style="flex: 1;">
+                                    <h4 style="font-weight: 700; font-size: 0.9375rem; color: var(--gray-900); margin-bottom: 0.25rem;">Haftalık Özet</h4>
+                                    <p style="font-size: 0.8125rem; color: var(--gray-600);">Son 7 günün özeti</p>
+                                </div>
+                                <div style="color: var(--gray-400);">›</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tabs">
+                        <div class="tab"><div class="tab-icon">🏠</div><div>Ana Sayfa</div></div>
+                        <div class="tab"><div class="tab-icon">🔍</div><div>Keşfet</div></div>
+                        <div class="tab"><div class="tab-icon">📚</div><div>Kütüphane</div></div>
+                        <div class="tab active"><div class="tab-icon">📈</div><div>Gelişim</div></div>
+                        <div class="tab"><div class="tab-icon">👤</div><div>Profil</div></div>
+                    </div>
+                </div></div></div>`,
+                2: `<div class="iphone fade-in"><div class="island"></div><div class="screen"><div class="content">
+                    <div class="status"><div>9:41</div><div>📶 📡 🔋</div></div>
+                    <div style="background: white; padding: 1rem 1.5rem; border-bottom: 1px solid var(--gray-200);">
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <button style="background: none; border: none; font-size: 1.5rem; cursor: pointer;" onclick="parent.showScreen(1)">←</button>
+                            <h2 style="font-family: Poppins, sans-serif; font-size: 1.25rem; font-weight: 800; color: var(--secondary);">Duygusal Harita</h2>
+                        </div>
+                    </div>
+                    <div style="padding: 1.5rem;">
+                        <div style="display: flex; gap: 0.5rem; margin-bottom: 1.5rem;">
+                            <button style="padding: 0.5rem 1rem; background: var(--gray-100); color: var(--gray-700); border: none; border-radius: 0.5rem; font-weight: 600; font-size: 0.8125rem;">Son 14 Gün</button>
+                            <button style="padding: 0.5rem 1rem; background: var(--primary); color: white; border: none; border-radius: 0.5rem; font-weight: 600; font-size: 0.8125rem;">Son 30 Gün</button>
+                        </div>
+                        <div class="card" style="margin-bottom: 1.5rem;">
+                            <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 0.5rem; margin-bottom: 1rem;">
+                                <div style="text-align: center; font-size: 0.625rem; color: var(--gray-600); font-weight: 600;">Pt</div>
+                                <div style="text-align: center; font-size: 0.625rem; color: var(--gray-600); font-weight: 600;">Sl</div>
+                                <div style="text-align: center; font-size: 0.625rem; color: var(--gray-600); font-weight: 600;">Ça</div>
+                                <div style="text-align: center; font-size: 0.625rem; color: var(--gray-600); font-weight: 600;">Pe</div>
+                                <div style="text-align: center; font-size: 0.625rem; color: var(--gray-600); font-weight: 600;">Cu</div>
+                                <div style="text-align: center; font-size: 0.625rem; color: var(--gray-600); font-weight: 600;">Ct</div>
+                                <div style="text-align: center; font-size: 0.625rem; color: var(--gray-600); font-weight: 600;">Pz</div>
+                            </div>
+                            <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 0.5rem; margin-bottom: 0.5rem;">
+                                <div style="aspect-ratio: 1; background: #D1FAE5; border-radius: 0.375rem; display: flex; align-items: center; justify-content: center; font-size: 1rem;">😌</div>
+                                <div style="aspect-ratio: 1; background: #A7F3D0; border-radius: 0.375rem; display: flex; align-items: center; justify-content: center; font-size: 1rem;">😊</div>
+                                <div style="aspect-ratio: 1; background: #D1FAE5; border-radius: 0.375rem; display: flex; align-items: center; justify-content: center; font-size: 1rem;">😌</div>
+                                <div style="aspect-ratio: 1; background: #E0F7FA; border-radius: 0.375rem; display: flex; align-items: center; justify-content: center; font-size: 1rem;">✨</div>
+                                <div style="aspect-ratio: 1; background: #B2EBF2; border-radius: 0.375rem; display: flex; align-items: center; justify-content: center; font-size: 1rem;">💎</div>
+                                <div style="aspect-ratio: 1; background: #FFDDC1; border-radius: 0.375rem; display: flex; align-items: center; justify-content: center; font-size: 1rem;">🤔</div>
+                                <div style="aspect-ratio: 1; background: #D1FAE5; border-radius: 0.375rem; display: flex; align-items: center; justify-content: center; font-size: 1rem;">😌</div>
+                            </div>
+                            <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 0.5rem; margin-bottom: 0.5rem;">
+                                <div style="aspect-ratio: 1; background: #E0F7FA; border-radius: 0.375rem; display: flex; align-items: center; justify-content: center; font-size: 1rem;">✨</div>
+                                <div style="aspect-ratio: 1; background: #A7F3D0; border-radius: 0.375rem; display: flex; align-items: center; justify-content: center; font-size: 1rem;">😊</div>
+                                <div style="aspect-ratio: 1; background: #FFDDC1; border-radius: 0.375rem; display: flex; align-items: center; justify-content: center; font-size: 1rem;">🤔</div>
+                                <div style="aspect-ratio: 1; background: #D1FAE5; border-radius: 0.375rem; display: flex; align-items: center; justify-content: center; font-size: 1rem;">😌</div>
+                                <div style="aspect-ratio: 1; background: #D1FAE5; border-radius: 0.375rem; display: flex; align-items: center; justify-content: center; font-size: 1rem;">😌</div>
+                                <div style="aspect-ratio: 1; background: #B2EBF2; border-radius: 0.375rem; display: flex; align-items: center; justify-content: center; font-size: 1rem;">💎</div>
+                                <div style="aspect-ratio: 1; background: #E0F7FA; border-radius: 0.375rem; display: flex; align-items: center; justify-content: center; font-size: 1rem;">✨</div>
+                            </div>
+                            <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 0.5rem; margin-bottom: 0.5rem;">
+                                <div style="aspect-ratio: 1; background: #A7F3D0; border-radius: 0.375rem; display: flex; align-items: center; justify-content: center; font-size: 1rem;">😊</div>
+                                <div style="aspect-ratio: 1; background: #D1FAE5; border-radius: 0.375rem; display: flex; align-items: center; justify-content: center; font-size: 1rem;">😌</div>
+                                <div style="aspect-ratio: 1; background: #B2EBF2; border-radius: 0.375rem; display: flex; align-items: center; justify-content: center; font-size: 1rem;">💎</div>
+                                <div style="aspect-ratio: 1; background: #E0F7FA; border-radius: 0.375rem; display: flex; align-items: center; justify-content: center; font-size: 1rem;">✨</div>
+                                <div style="aspect-ratio: 1; background: #FFDDC1; border-radius: 0.375rem; display: flex; align-items: center; justify-content: center; font-size: 1rem;">🤔</div>
+                                <div style="aspect-ratio: 1; background: #D1FAE5; border-radius: 0.375rem; display: flex; align-items: center; justify-content: center; font-size: 1rem;">😌</div>
+                                <div style="aspect-ratio: 1; background: #A7F3D0; border-radius: 0.375rem; display: flex; align-items: center; justify-content: center; font-size: 1rem;">😊</div>
+                            </div>
+                            <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 0.5rem;">
+                                <div style="aspect-ratio: 1; background: #E0F7FA; border-radius: 0.375rem; display: flex; align-items: center; justify-content: center; font-size: 1rem;">✨</div>
+                                <div style="aspect-ratio: 1; background: #D1FAE5; border-radius: 0.375rem; display: flex; align-items: center; justify-content: center; font-size: 1rem;">😌</div>
+                                <div style="aspect-ratio: 1; background: var(--gray-200); border-radius: 0.375rem;"></div>
+                                <div style="aspect-ratio: 1; background: var(--gray-200); border-radius: 0.375rem;"></div>
+                                <div style="aspect-ratio: 1; background: var(--gray-200); border-radius: 0.375rem;"></div>
+                                <div style="aspect-ratio: 1; background: var(--gray-200); border-radius: 0.375rem;"></div>
+                                <div style="aspect-ratio: 1; background: var(--gray-200); border-radius: 0.375rem;"></div>
+                            </div>
+                        </div>
+                        <div class="card" style="margin-bottom: 1.5rem; background: var(--gray-50);">
+                            <h4 style="font-weight: 700; color: var(--gray-900); margin-bottom: 0.75rem; font-size: 0.875rem;">Legend</h4>
+                            <div style="display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.8125rem;">
+                                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                                    <div style="width: 28px; height: 28px; background: #A7F3D0; border-radius: 0.375rem; display: flex; align-items: center; justify-content: center;">😊</div>
+                                    <span style="color: var(--gray-700);"><strong>Sakin:</strong> Huzurlu ve dengeli</span>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                                    <div style="width: 28px; height: 28px; background: #B2EBF2; border-radius: 0.375rem; display: flex; align-items: center; justify-content: center;">💎</div>
+                                    <span style="color: var(--gray-700);"><strong>Netlik:</strong> Açık ve odaklanmış</span>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                                    <div style="width: 28px; height: 28px; background: #FFDDC1; border-radius: 0.375rem; display: flex; align-items: center; justify-content: center;">🤔</div>
+                                    <span style="color: var(--gray-700);"><strong>Gergin:</strong> Düşünceli veya zorlanma</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card" style="background: var(--error); background: linear-gradient(135deg, #FEE2E2, #FECACA); border-left: 4px solid var(--error);">
+                            <p style="font-size: 0.8125rem; color: var(--gray-800); line-height: 1.5;">
+                                <strong style="color: var(--error);">⚠️ Önemli:</strong> Bu harita bir teşhis değildir. Sadece yansımalarınızdan türetilen duygusal eğilimleri gösterir.
+                            </p>
+                        </div>
+                    </div>
+                </div></div></div>`,
+                3: `<div class="iphone fade-in"><div class="island"></div><div class="screen"><div class="content">
+                    <div class="status"><div>9:41</div><div>📶 📡 🔋</div></div>
+                    <div style="background: white; padding: 1rem 1.5rem; border-bottom: 1px solid var(--gray-200);">
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <button style="background: none; border: none; font-size: 1.5rem; cursor: pointer;" onclick="parent.showScreen(1)">←</button>
+                            <h2 style="font-family: Poppins, sans-serif; font-size: 1.25rem; font-weight: 800; color: var(--secondary);">Alanlarım</h2>
+                        </div>
+                    </div>
+                    <div style="padding: 1.5rem;">
+                        <div class="card" style="margin-bottom: 1.5rem; background: linear-gradient(135deg, var(--success-light), #A7F3D0); border: 2px solid var(--success);">
+                            <h3 style="font-weight: 700; color: var(--success-dark); margin-bottom: 1rem; font-size: 1rem; display: flex; align-items: center; gap: 0.5rem;"><span>💪</span><span>Güçlü Alanlarınız</span></h3>
+                            <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                                <div style="background: white; padding: 1rem; border-radius: 0.75rem;">
+                                    <h4 style="font-weight: 700; font-size: 0.9375rem; color: var(--gray-900); margin-bottom: 0.5rem;">Özfarkındalık</h4>
+                                    <p style="font-size: 0.8125rem; color: var(--gray-700); line-height: 1.5;">Kendi duygularınızı tanımada ve ifade etmede güçlüsünüz. Yansımalarınız derin ve içgörülü.</p>
+                                </div>
+                                <div style="background: white; padding: 1rem; border-radius: 0.75rem;">
+                                    <h4 style="font-weight: 700; font-size: 0.9375rem; color: var(--gray-900); margin-bottom: 0.5rem;">Tutarlılık</h4>
+                                    <p style="font-size: 0.8125rem; color: var(--gray-700); line-height: 1.5;">%87 teslim oranı ve 12 günlük streak ile disiplinli bir yaklaşım gösteriyorsunuz.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card" style="margin-bottom: 1.5rem; background: linear-gradient(135deg, #FEF3C7, #FDE68A); border: 2px solid var(--warning);">
+                            <h3 style="font-weight: 700; color: var(--warning); margin-bottom: 1rem; font-size: 1rem; display: flex; align-items: center; gap: 0.5rem;"><span>🌱</span><span>Gelişim Alanlarınız</span></h3>
+                            <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                                <div style="background: white; padding: 1rem; border-radius: 0.75rem;">
+                                    <h4 style="font-weight: 700; font-size: 0.9375rem; color: var(--gray-900); margin-bottom: 0.5rem;">Eylem Alma</h4>
+                                    <p style="font-size: 0.8125rem; color: var(--gray-700); line-height: 1.5; margin-bottom: 0.75rem;">Fikir ve içgörüleri somut adımlara dönüştürmede gelişim alanı var.</p>
+                                    <div class="card" style="background: var(--primary-light); padding: 0.75rem; margin: 0;">
+                                        <div style="font-size: 0.75rem; color: var(--gray-700); margin-bottom: 0.375rem; font-weight: 600;">💡 Öneri</div>
+                                        <div style="font-size: 0.8125rem; color: var(--primary-dark); font-weight: 600;">→ Hedef Belirleme Atölyesi</div>
+                                    </div>
+                                </div>
+                                <div style="background: white; padding: 1rem; border-radius: 0.75rem;">
+                                    <h4 style="font-weight: 700; font-size: 0.9375rem; color: var(--gray-900); margin-bottom: 0.5rem;">Sabır</h4>
+                                    <p style="font-size: 0.8125rem; color: var(--gray-700); line-height: 1.5; margin-bottom: 0.75rem;">Zor durumlarda sabırlı kalmak için pratik yapabilirsiniz.</p>
+                                    <div class="card" style="background: var(--primary-light); padding: 0.75rem; margin: 0;">
+                                        <div style="font-size: 0.75rem; color: var(--gray-700); margin-bottom: 0.375rem; font-weight: 600;">💡 Öneri</div>
+                                        <div style="font-size: 0.8125rem; color: var(--primary-dark); font-weight: 600;">→ Sabır Yolculuğu (60 gün)</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary" style="width: 100%; padding: 1rem; font-size: 1.125rem;">Önerileri Keşfet</button>
+                    </div>
+                </div></div></div>`,
+                4: `<div class="iphone fade-in"><div class="island"></div><div class="screen"><div class="content">
+                    <div class="status"><div>9:41</div><div>📶 📡 🔋</div></div>
+                    <div style="background: white; padding: 1rem 1.5rem; border-bottom: 1px solid var(--gray-200);">
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <button style="background: none; border: none; font-size: 1.5rem; cursor: pointer;" onclick="parent.showScreen(1)">←</button>
+                            <h2 style="font-family: Poppins, sans-serif; font-size: 1.25rem; font-weight: 800; color: var(--secondary);">Haftalık Özet</h2>
+                        </div>
+                    </div>
+                    <div style="padding: 1.5rem;">
+                        <div style="text-align: center; margin-bottom: 1.5rem;">
+                            <div style="font-size: 0.875rem; color: var(--gray-600); margin-bottom: 0.5rem;">17-23 Ocak 2026</div>
+                            <h3 style="font-family: Poppins, sans-serif; font-size: 1.75rem; font-weight: 800; color: var(--secondary);">Bu Hafta</h3>
+                        </div>
+                        <div class="card" style="margin-bottom: 1rem; background: linear-gradient(135deg, var(--success-light), #A7F3D0); border-left: 4px solid var(--success);">
+                            <div style="margin-bottom: 0.75rem;">
+                                <div style="font-size: 0.75rem; color: var(--gray-700); margin-bottom: 0.375rem; font-weight: 600; text-transform: uppercase;">📈 Pozitif Trend</div>
+                                <h4 style="font-weight: 700; font-size: 1rem; color: var(--secondary); margin-bottom: 0.5rem;">Tutarlılık Arttı</h4>
+                                <p style="font-size: 0.875rem; color: var(--gray-800); line-height: 1.6;">Bu hafta 7/7 gün içerik tamamladınız. Alışkanlığınız güçleniyor!</p>
+                            </div>
+                        </div>
+                        <div class="card" style="margin-bottom: 1rem; background: linear-gradient(135deg, #FEF3C7, #FDE68A); border-left: 4px solid var(--warning);">
+                            <div style="margin-bottom: 0.75rem;">
+                                <div style="font-size: 0.75rem; color: var(--gray-700); margin-bottom: 0.375rem; font-weight: 600; text-transform: uppercase;">⚡ Zorlayan Alan</div>
+                                <h4 style="font-weight: 700; font-size: 1rem; color: var(--secondary); margin-bottom: 0.5rem;">Derin Yansıma</h4>
+                                <p style="font-size: 0.875rem; color: var(--gray-800); line-height: 1.6;">Yorum sorularına daha detaylı cevaplar vermeyi deneyebilirsiniz.</p>
+                            </div>
+                        </div>
+                        <div class="card" style="margin-bottom: 1.5rem; background: linear-gradient(135deg, var(--primary-light), var(--primary-100)); border-left: 4px solid var(--primary);">
+                            <div style="margin-bottom: 0.75rem;">
+                                <div style="font-size: 0.75rem; color: var(--gray-700); margin-bottom: 0.375rem; font-weight: 600; text-transform: uppercase;">💡 Öneri</div>
+                                <h4 style="font-weight: 700; font-size: 1rem; color: var(--secondary); margin-bottom: 0.5rem;">Sonraki Adım</h4>
+                                <p style="font-size: 0.875rem; color: var(--gray-800); line-height: 1.6;">Şükür Atölyesi'ne başlamak için harika bir zaman. Tutarlılığınızla mükemmel uyum sağlar.</p>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <h4 style="font-weight: 700; color: var(--gray-900); margin-bottom: 0.75rem; font-size: 0.9375rem;">Tamamlanan İçerikler</h4>
+                            <div style="display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.875rem;">
+                                <div style="display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem; background: var(--gray-50); border-radius: 0.5rem;">
+                                    <span style="font-size: 1.25rem;">📖</span>
+                                    <div style="flex: 1;">
+                                        <div style="font-weight: 600; color: var(--gray-900);">Gün 5-7: Sıdk Yolculuğu</div>
+                                        <div style="font-size: 0.75rem; color: var(--gray-600);">3 gün</div>
+                                    </div>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem; background: var(--gray-50); border-radius: 0.5rem;">
+                                    <span style="font-size: 1.25rem;">🎨</span>
+                                    <div style="flex: 1;">
+                                        <div style="font-weight: 600; color: var(--gray-900);">Vicdan Atölyesi</div>
+                                        <div style="font-size: 0.75rem; color: var(--gray-600);">Tamamlandı</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div></div></div>`,
+                5: `<div class="iphone fade-in"><div class="island"></div><div class="screen"><div class="content">
+                    <div class="status"><div>9:41</div><div>📶 📡 🔋</div></div>
+                    <div style="padding: 2rem 1.5rem; text-align: center;">
+                        <div style="font-size: 5rem; margin-bottom: 1.5rem;">🎉</div>
+                        <h1 style="font-family: Poppins, sans-serif; font-size: 2rem; font-weight: 800; color: var(--secondary); margin-bottom: 1rem;">Tebrikler!</h1>
+                        <p style="font-size: 1rem; color: var(--gray-700); margin-bottom: 2rem; line-height: 1.6;">
+                            <strong>Sıdk Yolculuğu</strong>'nu başarıyla tamamladınız.
+                        </p>
+                        <div class="card" style="margin-bottom: 2rem; text-align: left;">
+                            <h3 style="font-weight: 700; color: var(--secondary); margin-bottom: 1rem; font-size: 1rem;">Deneyiminizi Değerlendirin</h3>
+                            <div style="margin-bottom: 1.5rem;">
+                                <label style="display: block; font-weight: 600; color: var(--gray-900); margin-bottom: 0.75rem; font-size: 0.9375rem;">Bu yolculuk size ne kazandırdı?</label>
+                                <div style="display: flex; justify-content: center; gap: 1rem; margin-bottom: 0.75rem;">
+                                    <button style="width: 56px; height: 56px; background: white; border: 3px solid var(--primary); border-radius: 9999px; font-size: 2rem; cursor: pointer; display: flex; align-items: center; justify-content: center;">⭐</button>
+                                    <button style="width: 56px; height: 56px; background: white; border: 2px solid var(--gray-300); border-radius: 9999px; font-size: 2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; opacity: 0.5;">⭐</button>
+                                    <button style="width: 56px; height: 56px; background: white; border: 2px solid var(--gray-300); border-radius: 9999px; font-size: 2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; opacity: 0.5;">⭐</button>
+                                    <button style="width: 56px; height: 56px; background: white; border: 2px solid var(--gray-300); border-radius: 9999px; font-size: 2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; opacity: 0.5;">⭐</button>
+                                    <button style="width: 56px; height: 56px; background: white; border: 2px solid var(--gray-300); border-radius: 9999px; font-size: 2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; opacity: 0.5;">⭐</button>
+                                </div>
+                                <div style="text-align: center; font-size: 0.8125rem; color: var(--gray-600);">Çok Faydalı</div>
+                            </div>
+                            <div style="margin-bottom: 1.5rem;">
+                                <label style="display: block; font-weight: 600; color: var(--gray-900); margin-bottom: 0.75rem; font-size: 0.9375rem;">Ek görüşleriniz (İsteğe Bağlı)</label>
+                                <textarea placeholder="Deneyiminizi paylaşın..." style="width: 100%; min-height: 100px; padding: 1rem; border: 2px solid var(--gray-200); border-radius: 0.75rem; font-family: Inter, sans-serif; font-size: 0.9375rem; resize: vertical;"></textarea>
+                            </div>
+                        </div>
+                        <div class="card" style="margin-bottom: 1.5rem; background: var(--primary-light); border-left: 4px solid var(--primary); text-align: left;">
+                            <h4 style="font-weight: 700; color: var(--primary-dark); margin-bottom: 0.75rem; font-size: 0.9375rem;">💡 Sonraki Önerimiz</h4>
+                            <p style="font-size: 0.875rem; color: var(--gray-800); line-height: 1.6; margin-bottom: 0.75rem;">
+                                <strong>Şükür Yolculuğu</strong> sıdk temelini pekiştirecek ve derinleştirecek.
+                            </p>
+                            <button style="background: none; border: none; color: var(--primary); font-weight: 700; font-size: 0.875rem; padding: 0; cursor: pointer;">Keşfet →</button>
+                        </div>
+                        <button class="btn btn-primary" style="width: 100%; padding: 1rem; font-size: 1.125rem; margin-bottom: 0.75rem;">Değerlendirmeyi Gönder</button>
+                        <button style="background: none; border: none; color: var(--gray-600); font-weight: 600; font-size: 0.9375rem; width: 100%; padding: 0.75rem; cursor: pointer;">Daha Sonra</button>
+                    </div>
+                </div></div></div>`,
+                6: `<div class="iphone fade-in"><div class="island"></div><div class="screen"><div class="content">
+                    <div class="status"><div>9:41</div><div>📶 📡 🔋</div></div>
+                    <div style="background: white; padding: 1rem 1.5rem; border-bottom: 1px solid var(--gray-200);">
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <button style="background: none; border: none; font-size: 1.5rem; cursor: pointer;" onclick="parent.showScreen(1)">←</button>
+                            <h2 style="font-family: Poppins, sans-serif; font-size: 1.25rem; font-weight: 800; color: var(--secondary);">Gelişim Raporu</h2>
+                        </div>
+                    </div>
+                    <div style="padding: 1.5rem;">
+                        <div style="text-align: center; margin-bottom: 2rem;">
+                            <div style="font-size: 4rem; margin-bottom: 1rem;">📊</div>
+                            <h3 style="font-family: Poppins, sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--secondary); margin-bottom: 0.5rem;">42 Günlük Yolculuğunuz</h3>
+                            <p style="font-size: 0.875rem; color: var(--gray-600);">Ocak 2026 Raporu</p>
+                        </div>
+                        <div class="card" style="margin-bottom: 1rem;">
+                            <h4 style="font-weight: 700; color: var(--gray-900); margin-bottom: 1rem; font-size: 0.9375rem;">📈 Özet Metrikler</h4>
+                            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;">
+                                <div style="text-align: center; padding: 1rem; background: var(--gray-50); border-radius: 0.75rem;">
+                                    <div style="font-family: Poppins, sans-serif; font-size: 1.5rem; font-weight: 800; color: var(--primary); margin-bottom: 0.25rem;">42</div>
+                                    <div style="font-size: 0.75rem; color: var(--gray-600);">Aktif Gün</div>
+                                </div>
+                                <div style="text-align: center; padding: 1rem; background: var(--gray-50); border-radius: 0.75rem;">
+                                    <div style="font-family: Poppins, sans-serif; font-size: 1.5rem; font-weight: 800; color: var(--success); margin-bottom: 0.25rem;">87%</div>
+                                    <div style="font-size: 0.75rem; color: var(--gray-600);">Teslim Oranı</div>
+                                </div>
+                                <div style="text-align: center; padding: 1rem; background: var(--gray-50); border-radius: 0.75rem;">
+                                    <div style="font-family: Poppins, sans-serif; font-size: 1.5rem; font-weight: 800; color: var(--warning); margin-bottom: 0.25rem;">12</div>
+                                    <div style="font-size: 0.75rem; color: var(--gray-600);">Gün Streak</div>
+                                </div>
+                                <div style="text-align: center; padding: 1rem; background: var(--gray-50); border-radius: 0.75rem;">
+                                    <div style="font-family: Poppins, sans-serif; font-size: 1.5rem; font-weight: 800; color: var(--secondary); margin-bottom: 0.25rem;">3</div>
+                                    <div style="font-size: 0.75rem; color: var(--gray-600);">İçerik Tamamlandı</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card" style="margin-bottom: 1rem;">
+                            <h4 style="font-weight: 700; color: var(--gray-900); margin-bottom: 0.75rem; font-size: 0.9375rem;">🎯 Ana Temalar</h4>
+                            <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+                                <span style="background: var(--success-light); color: var(--success-dark); padding: 0.5rem 0.875rem; border-radius: 9999px; font-size: 0.8125rem; font-weight: 600;">Özfarkındalık</span>
+                                <span style="background: var(--primary-light); color: var(--primary-dark); padding: 0.5rem 0.875rem; border-radius: 9999px; font-size: 0.8125rem; font-weight: 600;">Tutarlılık</span>
+                                <span style="background: var(--secondary-light); color: var(--secondary); padding: 0.5rem 0.875rem; border-radius: 9999px; font-size: 0.8125rem; font-weight: 600;">Dürüstlük</span>
+                                <span style="background: #FEF3C7; color: var(--warning); padding: 0.5rem 0.875rem; border-radius: 9999px; font-size: 0.8125rem; font-weight: 600;">Sabır</span>
+                            </div>
+                        </div>
+                        <div class="card" style="margin-bottom: 1.5rem; background: var(--primary-light); border-left: 4px solid var(--primary);">
+                            <h4 style="font-weight: 700; color: var(--primary-dark); margin-bottom: 0.75rem; font-size: 0.9375rem;">💡 Öneriler</h4>
+                            <p style="font-size: 0.875rem; color: var(--gray-800); line-height: 1.6;">
+                                Tutarlılığınızı koruyarak daha derin yansımalar için Şükür Yolculuğu'na devam edebilirsiniz.
+                            </p>
+                        </div>
+                        <div class="card" style="margin-bottom: 1.5rem; background: linear-gradient(135deg, #FEE2E2, #FECACA); border-left: 4px solid var(--error);">
+                            <p style="font-size: 0.8125rem; color: var(--gray-800); line-height: 1.5;">
+                                <strong style="color: var(--error);">🔒 Gizlilik:</strong> Raporunuz kişisel verilerinizi içerir. Paylaşmadan önce içeriği gözden geçirin.
+                            </p>
+                        </div>
+                        <button class="btn btn-primary" style="width: 100%; padding: 1rem; font-size: 1.125rem; margin-bottom: 0.75rem;">📥 PDF İndir</button>
+                        <button style="background: white; border: 2px solid var(--primary); color: var(--primary); border-radius: 0.75rem; font-weight: 600; font-size: 1rem; width: 100%; padding: 1rem; cursor: pointer;">📤 Paylaş</button>
+                    </div>
+                </div></div></div>`
+            };
+            return screens[num] || screens[1];
+        }
+        document.getElementById('viewer').innerHTML = getScreenHTML(1);
+    </script>
+</body>
+</html>

@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PST Coaching Mobile - EPIC 5: Okuma Deneyimi</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #00B4D8; --primary-dark: #0096B8; --primary-light: #E0F7FA; --primary-100: #B2EBF2;
+            --secondary: #2B1B5D; --secondary-light: #EDE7F6;
+            --success: #10B981; --success-light: #D1FAE5; --success-dark: #065F46;
+            --warning: #F59E0B; --error: #EF4444; --purple: #8B5CF6; --purple-light: #EDE9FE;
+            --gray-50: #FAFAFA; --gray-100: #F5F5F5; --gray-200: #E5E5E5; --gray-300: #D4D4D4;
+            --gray-400: #A3A3A3; --gray-600: #525252; --gray-700: #404040; --gray-900: #171717;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #f0f0f0, #e0e0e0); overflow: hidden; }
+        .app { display: flex; height: 100vh; }
+        .sidebar { width: 400px; background: white; border-right: 1px solid var(--gray-200); overflow-y: auto; box-shadow: 2px 0 10px rgba(0,0,0,0.05); }
+        .main { flex: 1; display: flex; flex-direction: column; }
+        .topbar { background: white; border-bottom: 1px solid var(--gray-200); padding: 1.75rem 2.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+        .viewer { flex: 1; overflow-y: auto; padding: 3rem; display: flex; justify-content: center; align-items: flex-start; }
+        .logo { font-family: 'Poppins', sans-serif; font-size: 2rem; font-weight: 800; color: var(--primary); padding: 2.5rem; border-bottom: 1px solid var(--gray-200); background: linear-gradient(135deg, var(--primary-light), white); }
+        .subtitle { font-size: 0.875rem; color: var(--gray-600); font-weight: 500; margin-top: 0.5rem; }
+        .epic-header { padding: 1.5rem; background: linear-gradient(135deg, #FEF3C7, #FDE68A); border-bottom: 2px solid var(--warning); }
+        .epic-title { font-family: 'Poppins', sans-serif; font-size: 1.25rem; font-weight: 700; color: var(--gray-900); margin-bottom: 0.5rem; }
+        .epic-meta { font-size: 0.8125rem; color: var(--gray-600); }
+        .nav-map { background: var(--purple-light); border-left: 4px solid var(--purple); padding: 1rem; margin: 1rem 1.75rem; border-radius: 0.5rem; }
+        .nav-map-title { font-weight: 700; color: var(--purple); font-size: 0.8125rem; margin-bottom: 0.75rem; text-transform: uppercase; display: flex; align-items: center; gap: 0.5rem; }
+        .nav-flow { display: flex; flex-direction: column; gap: 0.5rem; }
+        .nav-flow-item { display: flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; color: var(--gray-700); }
+        .nav-flow-box { background: white; padding: 0.375rem 0.625rem; border-radius: 0.375rem; border: 2px solid var(--gray-300); font-weight: 600; white-space: nowrap; font-size: 0.6875rem; }
+        .nav-flow-box.active { background: var(--primary); color: white; border-color: var(--primary); }
+        .nav-flow-arrow { color: var(--gray-400); font-weight: 700; }
+        .nav-flow-label { color: var(--gray-600); font-size: 0.625rem; font-style: italic; }
+        .nav-section { padding: 1.25rem 0; border-bottom: 1px solid var(--gray-100); }
+        .nav-title { padding: 0.75rem 1.75rem; font-size: 0.6875rem; font-weight: 700; color: var(--gray-600); text-transform: uppercase; }
+        .nav-item { padding: 1rem 1.75rem; cursor: pointer; font-size: 0.9375rem; transition: all 0.2s; color: var(--gray-700); display: flex; align-items: center; gap: 0.875rem; border-left: 3px solid transparent; }
+        .nav-item:hover { background: var(--gray-50); }
+        .nav-item.active { background: var(--primary-light); color: var(--primary-dark); font-weight: 600; border-left-color: var(--primary); }
+        .nav-icon { font-size: 1.375rem; }
+        .nav-badge { background: var(--primary); color: white; padding: 0.25rem 0.625rem; border-radius: 9999px; font-size: 0.6875rem; font-weight: 700; margin-left: auto; }
+        .ac-section { background: var(--secondary-light); border-left: 4px solid var(--secondary); padding: 1rem; margin: 0.75rem 1.75rem; border-radius: 0.5rem; }
+        .ac-title { font-weight: 700; color: var(--secondary); font-size: 0.75rem; margin-bottom: 0.5rem; text-transform: uppercase; }
+        .ac-list { list-style: none; }
+        .ac-list li { font-size: 0.75rem; color: var(--gray-700); margin-bottom: 0.375rem; padding-left: 1.25rem; position: relative; line-height: 1.4; }
+        .ac-list li:before { content: "✓"; position: absolute; left: 0; color: var(--success); font-weight: 700; }
+        .screen-title { font-family: 'Poppins', sans-serif; font-size: 2.25rem; font-weight: 700; color: var(--gray-900); }
+        .screen-meta { color: var(--gray-600); font-size: 0.9375rem; margin-top: 0.5rem; display: flex; align-items: center; gap: 1rem; }
+        .meta-badge { background: #FEF3C7; color: var(--warning); padding: 0.375rem 0.875rem; border-radius: 0.5rem; font-size: 0.8125rem; font-weight: 600; }
+        .iphone { width: 393px; height: 852px; background: #1d1d1f; border-radius: 55px; padding: 12px; box-shadow: 0 60px 120px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.1); position: relative; }
+        .island { position: absolute; top: 20px; left: 50%; transform: translateX(-50%); width: 120px; height: 30px; background: #000; border-radius: 20px; z-index: 11; }
+        .screen { width: 100%; height: 100%; background: white; border-radius: 43px; overflow: hidden; position: relative; }
+        .content { width: 100%; height: 100%; overflow-y: auto; background: var(--gray-50); }
+        .content::-webkit-scrollbar { width: 4px; }
+        .content::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.3); border-radius: 10px; }
+        .status { height: 54px; display: flex; align-items: center; justify-content: space-between; padding: 0 1.5rem; font-size: 0.8125rem; font-weight: 600; background: white; }
+        .btn { padding: 0.875rem 1.5rem; border-radius: 0.75rem; font-weight: 600; font-size: 1rem; border: none; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.2s; }
+        .btn-primary { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; box-shadow: 0 4px 16px rgba(0,180,216,0.4); }
+        .card { background: white; border-radius: 1rem; padding: 1.25rem; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .fade-in { animation: fadeIn 0.3s ease-out; }
+        .highlight { background: #FFEB3B; padding: 0 0.25rem; border-radius: 0.25rem; }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <div class="sidebar">
+            <div class="logo">PST Coaching<div class="subtitle">Okuma Deneyimi</div></div>
+            <div class="epic-header">
+                <div class="epic-title">EPIC 5: Okuma Deneyimi</div>
+                <div class="epic-meta">7 User Stories • 6 Screens • 27 ACs</div>
+            </div>
+            <div class="nav-map">
+                <div class="nav-map-title"><span>🗺️</span><span>Navigation Map</span></div>
+                <div class="nav-flow">
+                    <div class="nav-flow-item"><div class="nav-flow-box active" id="nav-1">Read Content</div></div>
+                    <div class="nav-flow-item"><span class="nav-flow-arrow">├→</span><span class="nav-flow-label">tap 🔊</span></div>
+                    <div class="nav-flow-item" style="margin-left: 1rem;"><div class="nav-flow-box" id="nav-2">Audio Reading</div></div>
+                    <div class="nav-flow-item"><span class="nav-flow-arrow">├→</span><span class="nav-flow-label">select text</span></div>
+                    <div class="nav-flow-item" style="margin-left: 1rem;"><div class="nav-flow-box" id="nav-3">Highlight & Note</div></div>
+                    <div class="nav-flow-item"><span class="nav-flow-arrow">├→</span><span class="nav-flow-label">tap Yorum Yaz</span></div>
+                    <div class="nav-flow-item" style="margin-left: 1rem;"><div class="nav-flow-box" id="nav-4">Write Reflection</div></div>
+                    <div class="nav-flow-item"><span class="nav-flow-arrow">│ └→</span><span class="nav-flow-label">tap Önizle</span></div>
+                    <div class="nav-flow-item" style="margin-left: 2rem;"><div class="nav-flow-box" id="nav-5">Preview & Submit</div></div>
+                    <div class="nav-flow-item"><span class="nav-flow-arrow">└→</span><span class="nav-flow-label">after 23:59</span></div>
+                    <div class="nav-flow-item" style="margin-left: 3rem;"><div class="nav-flow-box" id="nav-6">Locked Next Day</div></div>
+                </div>
+                <div style="margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid var(--purple); font-size: 0.625rem; color: var(--gray-600); line-height: 1.4;">
+                    <strong>Time Rules:</strong><br>
+                    🌅 New day: 08:00 unlock<br>
+                    🌙 Deadline: 23:59 submit
+                </div>
+            </div>
+            <div class="nav-section">
+                <div class="nav-title">US-5.1 & 5.2: Reading</div>
+                <div class="nav-item active" onclick="showScreen(1)">
+                    <span class="nav-icon">📖</span><span>Read Content</span><span class="nav-badge">4 ACs</span>
+                </div>
+                <div class="ac-section">
+                    <div class="ac-title">✓ Acceptance Criteria</div>
+                    <ul class="ac-list">
+                        <li>Day/chapter number, goal, deadline (23:59) visible</li>
+                        <li>Reading progress indicator updates</li>
+                        <li>Offline skeleton + retry shown</li>
+                        <li>Accessibility settings compliance</li>
+                    </ul>
+                </div>
+                <div class="nav-item" onclick="showScreen(2)">
+                    <span class="nav-icon">🔊</span><span>Audio Reading</span><span class="nav-badge">4 ACs</span>
+                </div>
+                <div class="ac-section">
+                    <div class="ac-title">✓ Acceptance Criteria</div>
+                    <ul class="ac-list">
+                        <li>Playback controls (play/pause, speed) visible</li>
+                        <li>Currently read section highlighted</li>
+                        <li>Speed setting (0.75×/1×/1.25×) applies instantly</li>
+                        <li>Background playback follows platform rules</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="nav-section">
+                <div class="nav-title">US-5.3: Annotation</div>
+                <div class="nav-item" onclick="showScreen(3)">
+                    <span class="nav-icon">✍️</span><span>Highlight & Note</span><span class="nav-badge">4 ACs</span>
+                </div>
+                <div class="ac-section">
+                    <div class="ac-title">✓ Acceptance Criteria</div>
+                    <ul class="ac-list">
+                        <li>Text selection shows "Highlight/Note/Save" tools</li>
+                        <li>Notes saved permanently</li>
+                        <li>Can add to favorites</li>
+                        <li>Linked to content source</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="nav-section">
+                <div class="nav-title">US-5.4 & 5.5: Reflection</div>
+                <div class="nav-item" onclick="showScreen(4)">
+                    <span class="nav-icon">💭</span><span>Write Reflection</span><span class="nav-badge">4 ACs</span>
+                </div>
+                <div class="ac-section">
+                    <div class="ac-title">✓ Acceptance Criteria</div>
+                    <ul class="ac-list">
+                        <li>Content-specific guiding questions visible</li>
+                        <li>Draft auto-saved</li>
+                        <li>Word counter visible</li>
+                        <li>Gentle warning after 23:00</li>
+                    </ul>
+                </div>
+                <div class="nav-item" onclick="showScreen(5)">
+                    <span class="nav-icon">👁️</span><span>Preview & Submit</span><span class="nav-badge">4 ACs</span>
+                </div>
+                <div class="ac-section">
+                    <div class="ac-title">✓ Acceptance Criteria</div>
+                    <ul class="ac-list">
+                        <li>Answers shown in summary</li>
+                        <li>"Submit" active before 23:59</li>
+                        <li>Reflection locked after submission</li>
+                        <li>Post-23:59 rule behavior shown</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="nav-section">
+                <div class="nav-title">US-5.6: Progress Lock</div>
+                <div class="nav-item" onclick="showScreen(6)">
+                    <span class="nav-icon">🔒</span><span>Locked Next Day</span><span class="nav-badge">4 ACs</span>
+                </div>
+                <div class="ac-section">
+                    <div class="ac-title">✓ Acceptance Criteria</div>
+                    <ul class="ac-list">
+                        <li>"Today completed" status visible</li>
+                        <li>Tomorrow's content shown locked</li>
+                        <li>"New content at 08:00" message + countdown</li>
+                        <li>Auto-unlocks at 08:00</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="main">
+            <div class="topbar">
+                <h1 class="screen-title" id="screenTitle">Read Content</h1>
+                <div class="screen-meta">
+                    <span class="meta-badge" id="screenUS">US-5.1</span>
+                    <span id="screenMeta">Daily reading • 4/4 ACs • Entry: Ana Sayfa → Devam Et</span>
+                </div>
+            </div>
+            <div class="viewer" id="viewer"></div>
+        </div>
+    </div>
+    <script>
+        const screenData = {
+            1: { title: 'Read Content', us: 'US-5.1', meta: 'Daily reading • 4/4 ACs • Entry: Ana Sayfa → Devam Et' },
+            2: { title: 'Audio Reading', us: 'US-5.2', meta: 'Text-to-speech • 4/4 ACs • From: Reader Menu' },
+            3: { title: 'Highlight & Note', us: 'US-5.3', meta: 'Annotations • 4/4 ACs • From: Text Selection' },
+            4: { title: 'Write Reflection', us: 'US-5.4', meta: 'Guided questions • 4/4 ACs • From: Reader Action' },
+            5: { title: 'Preview & Submit', us: 'US-5.5', meta: 'Review answers • 4/4 ACs • From: Reflection' },
+            6: { title: 'Locked Next Day', us: 'US-5.6', meta: '08:00 unlock rule • 4/4 ACs • From: Library' }
+        };
+        function showScreen(num) {
+            document.getElementById('screenTitle').textContent = screenData[num].title;
+            document.getElementById('screenUS').textContent = screenData[num].us;
+            document.getElementById('screenMeta').textContent = screenData[num].meta;
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            const navMap = {1: 0, 2: 1, 3: 2, 4: 3, 5: 4, 6: 5};
+            document.querySelectorAll('.nav-item')[navMap[num]].classList.add('active');
+            document.querySelectorAll('[id^="nav-"]').forEach(box => box.classList.remove('active'));
+            const navBox = document.getElementById('nav-' + num);
+            if (navBox) navBox.classList.add('active');
+            document.getElementById('viewer').innerHTML = getScreenHTML(num);
+        }
+        function getScreenHTML(num) {
+            const screens = {
+                1: `<div class="iphone fade-in"><div class="island"></div><div class="screen"><div class="content">
+                    <div class="status"><div>9:41</div><div>📶 📡 🔋</div></div>
+                    <div style="background: white; padding: 1rem 1.5rem; border-bottom: 1px solid var(--gray-200); position: sticky; top: 0; z-index: 10;">
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem;">
+                            <button style="background: none; border: none; font-size: 1.5rem; cursor: pointer;">←</button>
+                            <div style="display: flex; gap: 0.5rem;">
+                                <button style="background: var(--gray-100); border: none; width: 36px; height: 36px; border-radius: 9999px; font-size: 1.125rem; cursor: pointer;" onclick="parent.showScreen(2)">🔊</button>
+                                <button style="background: var(--gray-100); border: none; width: 36px; height: 36px; border-radius: 9999px; font-size: 1.125rem; cursor: pointer;">⋮</button>
+                            </div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div><div style="font-size: 0.75rem; color: var(--gray-600); margin-bottom: 0.25rem;">Gün 7 • Sıdk Yolculuğu</div>
+                            <h2 style="font-family: Poppins, sans-serif; font-size: 1rem; font-weight: 700; color: var(--secondary);">İçsel Doğruluk</h2></div>
+                            <div style="text-align: right;"><div style="font-size: 0.75rem; color: var(--gray-600);">Son teslim</div>
+                            <div style="font-weight: 700; font-size: 0.875rem; color: var(--error);">23:59</div></div>
+                        </div>
+                        <div style="margin-top: 0.75rem;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.375rem; font-size: 0.75rem;">
+                                <span style="color: var(--gray-600);">İlerleme</span>
+                                <span style="color: var(--primary); font-weight: 700;">34%</span>
+                            </div>
+                            <div style="height: 6px; background: var(--gray-200); border-radius: 9999px; overflow: hidden;">
+                                <div style="width: 34%; height: 100%; background: linear-gradient(90deg, var(--primary), var(--primary-dark));"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="padding: 2rem 1.5rem;">
+                        <p style="font-size: 1.0625rem; line-height: 1.8; color: var(--gray-900); margin-bottom: 1.5rem;">
+                            <span class="highlight">İçsel doğruluk</span>, kişinin kendi benliğiyle olan ilişkisinde dürüstlüğü ifade eder. Kendimize karşı ne kadar dürüstüz? Gerçek hislerimizi, düşüncelerimizi ve inançlarımızı ne ölçüde kabul ediyoruz?
+                        </p>
+                        <p style="font-size: 1.0625rem; line-height: 1.8; color: var(--gray-900); margin-bottom: 1.5rem;">
+                            Çoğu zaman, toplumsal beklentiler ve çevresel koşullar nedeniyle gerçek benliğimizden uzaklaşırız. İçsel doğruluk, bu mesafeyi kapatma cesaretini gerektirir.
+                        </p>
+                        <p style="font-size: 1.0625rem; line-height: 1.8; color: var(--gray-900); margin-bottom: 1.5rem;">
+                            Kendi duygularımızı tanımak ve kabul etmek, sıdk yolculuğunun en kritik adımlarından biridir. Kendinize sorun: "Bugün gerçekten nasıl hissediyorum?"
+                        </p>
+                        <div class="card" style="margin-bottom: 2rem; background: var(--primary-light); border-left: 4px solid var(--primary);">
+                            <div style="font-size: 0.875rem; color: var(--gray-700); margin-bottom: 0.5rem; font-weight: 600;">💡 Bugünün Düşüncesi</div>
+                            <p style="font-size: 0.9375rem; color: var(--gray-800); font-style: italic; line-height: 1.6;">
+                                "Kendinize karşı dürüst olmadığınız sürece, başkalarına karşı dürüst olamazsınız."
+                            </p>
+                        </div>
+                        <button class="btn btn-primary" style="width: 100%; padding: 1rem; font-size: 1.125rem;" onclick="parent.showScreen(4)">Yorum Yaz</button>
+                    </div>
+                </div></div></div>`,
+                2: `<div class="iphone fade-in"><div class="island"></div><div class="screen"><div class="content">
+                    <div class="status"><div>9:41</div><div>📶 📡 🔋</div></div>
+                    <div style="background: white; padding: 1rem 1.5rem; border-bottom: 1px solid var(--gray-200);">
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <button style="background: none; border: none; font-size: 1.5rem; cursor: pointer;" onclick="parent.showScreen(1)">←</button>
+                            <h2 style="font-family: Poppins, sans-serif; font-size: 1.25rem; font-weight: 800; color: var(--secondary);">Sesli Okuma</h2>
+                        </div>
+                    </div>
+                    <div style="padding: 2rem 1.5rem;">
+                        <div style="text-align: center; margin-bottom: 2rem;">
+                            <div style="width: 140px; height: 140px; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); border-radius: 9999px; margin: 0 auto 1.5rem; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 32px rgba(0,180,216,0.4);">
+                                <div style="font-size: 4rem; color: white;">🔊</div>
+                            </div>
+                            <h3 style="font-family: Poppins, sans-serif; font-size: 1.25rem; font-weight: 700; color: var(--secondary); margin-bottom: 0.5rem;">İçsel Doğruluk</h3>
+                            <p style="font-size: 0.875rem; color: var(--gray-600);">Gün 7 • Sıdk Yolculuğu</p>
+                        </div>
+                        <p style="font-size: 1.0625rem; line-height: 1.8; color: var(--gray-900); margin-bottom: 1.5rem; background: var(--primary-light); padding: 1rem; border-radius: 0.75rem; border-left: 4px solid var(--primary);">
+                            İçsel doğruluk, kişinin kendi benliğiyle olan ilişkisinde dürüstlüğü ifade eder. <strong>Kendimize karşı ne kadar dürüstüz?</strong>
+                        </p>
+                        <p style="font-size: 1.0625rem; line-height: 1.8; color: var(--gray-900); margin-bottom: 1.5rem;">
+                            Gerçek hislerimizi, düşüncelerimizi ve inançlarımızı ne ölçüde kabul ediyoruz?
+                        </p>
+                        <div style="margin-bottom: 2rem;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.75rem; font-size: 0.875rem; color: var(--gray-600);">
+                                <span>0:42</span>
+                                <span>2:18</span>
+                            </div>
+                            <div style="height: 6px; background: var(--gray-200); border-radius: 9999px; position: relative; cursor: pointer;">
+                                <div style="width: 31%; height: 100%; background: var(--primary); border-radius: 9999px;"></div>
+                                <div style="position: absolute; left: 31%; top: 50%; transform: translate(-50%, -50%); width: 18px; height: 18px; background: white; border: 3px solid var(--primary); border-radius: 9999px; box-shadow: 0 2px 8px rgba(0,0,0,0.2);"></div>
+                            </div>
+                        </div>
+                        <div style="display: flex; align-items: center; justify-content: center; gap: 1.5rem; margin-bottom: 2rem;">
+                            <button style="background: var(--gray-100); border: none; width: 56px; height: 56px; border-radius: 9999px; font-size: 1.5rem; cursor: pointer; display: flex; align-items: center; justify-content: center;">⏮️</button>
+                            <button style="background: linear-gradient(135deg, var(--primary), var(--primary-dark)); border: none; width: 72px; height: 72px; border-radius: 9999px; font-size: 2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; color: white; box-shadow: 0 4px 16px rgba(0,180,216,0.4);">⏸️</button>
+                            <button style="background: var(--gray-100); border: none; width: 56px; height: 56px; border-radius: 9999px; font-size: 1.5rem; cursor: pointer; display: flex; align-items: center; justify-content: center;">⏭️</button>
+                        </div>
+                        <div class="card">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <div><div style="font-size: 0.875rem; color: var(--gray-600); margin-bottom: 0.25rem;">Hız</div>
+                                <div style="font-weight: 700; color: var(--gray-900);">1.0×</div></div>
+                                <div style="display: flex; gap: 0.5rem;">
+                                    <button style="padding: 0.5rem 1rem; background: var(--gray-100); border: none; border-radius: 0.5rem; font-weight: 600; font-size: 0.875rem; cursor: pointer;">0.75×</button>
+                                    <button style="padding: 0.5rem 1rem; background: var(--primary); color: white; border: none; border-radius: 0.5rem; font-weight: 600; font-size: 0.875rem; cursor: pointer;">1×</button>
+                                    <button style="padding: 0.5rem 1rem; background: var(--gray-100); border: none; border-radius: 0.5rem; font-weight: 600; font-size: 0.875rem; cursor: pointer;">1.25×</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div></div></div>`,
+                3: `<div class="iphone fade-in"><div class="island"></div><div class="screen"><div class="content">
+                    <div class="status"><div>9:41</div><div>📶 📡 🔋</div></div>
+                    <div style="background: white; padding: 1rem 1.5rem; border-bottom: 1px solid var(--gray-200);">
+                        <div style="display: flex; align-items: center; justify-content: space-between;">
+                            <button style="background: none; border: none; font-size: 1.5rem; cursor: pointer;" onclick="parent.showScreen(1)">←</button>
+                            <h2 style="font-family: Poppins, sans-serif; font-size: 1rem; font-weight: 700; color: var(--secondary);">Not ve Vurgu</h2>
+                            <button style="background: none; border: none; font-size: 1.125rem; color: var(--primary); font-weight: 700; cursor: pointer;">Kaydet</button>
+                        </div>
+                    </div>
+                    <div style="padding: 2rem 1.5rem;">
+                        <div class="card" style="margin-bottom: 1.5rem; background: #FFFBEB; border: 2px solid #FDE68A;">
+                            <div style="font-size: 0.875rem; color: var(--gray-600); margin-bottom: 0.75rem; font-weight: 600;">Seçili Metin</div>
+                            <p style="font-size: 1.0625rem; line-height: 1.8; color: var(--gray-900); background: #FFEB3B; padding: 0.5rem; border-radius: 0.5rem;">
+                                İçsel doğruluk, kişinin kendi benliğiyle olan ilişkisinde dürüstlüğü ifade eder.
+                            </p>
+                        </div>
+                        <div class="card" style="margin-bottom: 1.5rem;">
+                            <label style="display: block; font-weight: 600; color: var(--gray-900); margin-bottom: 0.75rem; font-size: 0.9375rem;">Vurgu Rengi</label>
+                            <div style="display: flex; gap: 0.75rem;">
+                                <button style="width: 48px; height: 48px; background: #FFEB3B; border: 3px solid var(--primary); border-radius: 0.5rem; cursor: pointer;"></button>
+                                <button style="width: 48px; height: 48px; background: #A7F3D0; border: 2px solid var(--gray-300); border-radius: 0.5rem; cursor: pointer;"></button>
+                                <button style="width: 48px; height: 48px; background: #FFDDC1; border: 2px solid var(--gray-300); border-radius: 0.5rem; cursor: pointer;"></button>
+                                <button style="width: 48px; height: 48px; background: #E9D5FF; border: 2px solid var(--gray-300); border-radius: 0.5rem; cursor: pointer;"></button>
+                            </div>
+                        </div>
+                        <div class="card" style="margin-bottom: 1.5rem;">
+                            <label style="display: block; font-weight: 600; color: var(--gray-900); margin-bottom: 0.75rem; font-size: 0.9375rem;">Notunuz (İsteğe Bağlı)</label>
+                            <textarea placeholder="Bu bölümle ilgili düşüncelerinizi yazın..." style="width: 100%; min-height: 120px; padding: 1rem; border: 2px solid var(--gray-200); border-radius: 0.75rem; font-family: Inter, sans-serif; font-size: 0.9375rem; resize: vertical;"></textarea>
+                            <div style="display: flex; justify-content: space-between; margin-top: 0.5rem; font-size: 0.8125rem; color: var(--gray-600);">
+                                <span>Taslak otomatik kaydedildi</span>
+                                <span>0/500</span>
+                            </div>
+                        </div>
+                        <div class="card" style="background: var(--secondary-light);">
+                            <label style="display: flex; align-items: center; gap: 0.75rem; cursor: pointer;">
+                                <input type="checkbox" style="width: 20px; height: 20px; accent-color: var(--primary);">
+                                <span style="font-weight: 600; color: var(--gray-900); font-size: 0.9375rem;">Favorilere Ekle</span>
+                            </label>
+                        </div>
+                    </div>
+                </div></div></div>`,
+                4: `<div class="iphone fade-in"><div class="island"></div><div class="screen"><div class="content">
+                    <div class="status"><div>9:41</div><div>📶 📡 🔋</div></div>
+                    <div style="background: white; padding: 1rem 1.5rem; border-bottom: 1px solid var(--gray-200);">
+                        <div style="display: flex; align-items: center; justify-content: space-between;">
+                            <button style="background: none; border: none; font-size: 1.5rem; cursor: pointer;" onclick="parent.showScreen(1)">←</button>
+                            <div><div style="font-size: 0.75rem; color: var(--gray-600); text-align: center; margin-bottom: 0.25rem;">Gün 7</div>
+                            <h2 style="font-family: Poppins, sans-serif; font-size: 1rem; font-weight: 700; color: var(--secondary);">Yorumlarınız</h2></div>
+                            <button style="background: none; border: none; font-size: 1.125rem; color: var(--primary); font-weight: 700; cursor: pointer;" onclick="parent.showScreen(5)">Önizle</button>
+                        </div>
+                    </div>
+                    <div style="padding: 1.5rem;">
+                        <div class="card" style="margin-bottom: 1rem; background: var(--primary-light); border-left: 4px solid var(--primary);">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <div style="font-size: 0.875rem; color: var(--gray-700);"><strong>Son teslim:</strong> 23:59</div>
+                                <div style="font-weight: 700; color: var(--primary);">5 saat 23 dk</div>
+                            </div>
+                        </div>
+                        <div class="card" style="margin-bottom: 1.5rem;">
+                            <label style="display: block; font-weight: 700; color: var(--secondary); margin-bottom: 0.75rem; font-size: 1rem;">1️⃣ Bugün kendinizle ilgili hangi gerçeği fark ettiniz?</label>
+                            <textarea placeholder="Düşüncelerinizi yazın..." style="width: 100%; min-height: 120px; padding: 1rem; border: 2px solid var(--gray-200); border-radius: 0.75rem; font-family: Inter, sans-serif; font-size: 0.9375rem; resize: vertical;">İçsel doğruluk kavramı üzerine düşündüğümde, kendi duygularımı bastırdığımı fark ettim. Özellikle iş ortamında...</textarea>
+                            <div style="text-align: right; margin-top: 0.5rem; font-size: 0.8125rem; color: var(--gray-600);">127 kelime</div>
+                        </div>
+                        <div class="card" style="margin-bottom: 1.5rem;">
+                            <label style="display: block; font-weight: 700; color: var(--secondary); margin-bottom: 0.75rem; font-size: 1rem;">2️⃣ Kendinize karşı dürüst olmadığınız bir anı hatırlayabiliyor musunuz?</label>
+                            <textarea placeholder="Düşüncelerinizi yazın..." style="width: 100%; min-height: 120px; padding: 1rem; border: 2px solid var(--gray-200); border-radius: 0.75rem; font-family: Inter, sans-serif; font-size: 0.9375rem; resize: vertical;"></textarea>
+                            <div style="text-align: right; margin-top: 0.5rem; font-size: 0.8125rem; color: var(--gray-600);">0 kelime</div>
+                        </div>
+                        <div class="card" style="margin-bottom: 1.5rem;">
+                            <label style="display: block; font-weight: 700; color: var(--secondary); margin-bottom: 0.75rem; font-size: 1rem;">3️⃣ Yarından itibaren ne yapacaksınız?</label>
+                            <textarea placeholder="Düşüncelerinizi yazın..." style="width: 100%; min-height: 120px; padding: 1rem; border: 2px solid var(--gray-200); border-radius: 0.75rem; font-family: Inter, sans-serif; font-size: 0.9375rem; resize: vertical;"></textarea>
+                            <div style="text-align: right; margin-top: 0.5rem; font-size: 0.8125rem; color: var(--gray-600);">0 kelime</div>
+                        </div>
+                        <div class="card" style="background: var(--secondary-light);">
+                            <p style="font-size: 0.8125rem; color: var(--gray-700); line-height: 1.5;">
+                                <strong style="color: var(--secondary);">💡 İpucu:</strong> Taslaklar otomatik kaydedilir. Dilediğiniz zaman geri dönüp düzenleyebilirsiniz.
+                            </p>
+                        </div>
+                    </div>
+                </div></div></div>`,
+                5: `<div class="iphone fade-in"><div class="island"></div><div class="screen"><div class="content">
+                    <div class="status"><div>9:41</div><div>📶 📡 🔋</div></div>
+                    <div style="background: white; padding: 1rem 1.5rem; border-bottom: 1px solid var(--gray-200);">
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <button style="background: none; border: none; font-size: 1.5rem; cursor: pointer;" onclick="parent.showScreen(4)">←</button>
+                            <h2 style="font-family: Poppins, sans-serif; font-size: 1.25rem; font-weight: 800; color: var(--secondary);">Önizleme</h2>
+                        </div>
+                    </div>
+                    <div style="padding: 1.5rem;">
+                        <div class="card" style="margin-bottom: 1.5rem; background: linear-gradient(135deg, var(--success-light), #A7F3D0); border: 2px solid var(--success);">
+                            <div style="text-align: center;">
+                                <div style="font-size: 3rem; margin-bottom: 0.5rem;">✅</div>
+                                <h3 style="font-family: Poppins, sans-serif; font-size: 1.25rem; font-weight: 700; color: var(--secondary); margin-bottom: 0.5rem;">Gün 7 Tamamlandı</h3>
+                                <p style="font-size: 0.875rem; color: var(--gray-700);">İçsel Doğruluk</p>
+                            </div>
+                        </div>
+                        <div class="card" style="margin-bottom: 1rem;">
+                            <div style="font-weight: 700; color: var(--secondary); margin-bottom: 0.75rem; font-size: 0.9375rem;">1️⃣ Bugün kendinizle ilgili hangi gerçeği fark ettiniz?</div>
+                            <p style="font-size: 0.9375rem; color: var(--gray-700); line-height: 1.7; padding: 1rem; background: var(--gray-50); border-radius: 0.5rem;">
+                                İçsel doğruluk kavramı üzerine düşündüğümde, kendi duygularımı bastırdığımı fark ettim. Özellikle iş ortamında...
+                            </p>
+                            <div style="font-size: 0.8125rem; color: var(--gray-600); margin-top: 0.5rem;">127 kelime</div>
+                        </div>
+                        <div class="card" style="margin-bottom: 1rem;">
+                            <div style="font-weight: 700; color: var(--secondary); margin-bottom: 0.75rem; font-size: 0.9375rem;">2️⃣ Kendinize karşı dürüst olmadığınız bir anı hatırlayabiliyor musunuz?</div>
+                            <p style="font-size: 0.875rem; color: var(--gray-500); font-style: italic; padding: 1rem; background: var(--gray-50); border-radius: 0.5rem;">
+                                Yanıtlanmadı
+                            </p>
+                        </div>
+                        <div class="card" style="margin-bottom: 1.5rem;">
+                            <div style="font-weight: 700; color: var(--secondary); margin-bottom: 0.75rem; font-size: 0.9375rem;">3️⃣ Yarından itibaren ne yapacaksınız?</div>
+                            <p style="font-size: 0.875rem; color: var(--gray-500); font-style: italic; padding: 1rem; background: var(--gray-50); border-radius: 0.5rem;">
+                                Yanıtlanmadı
+                            </p>
+                        </div>
+                        <button class="btn btn-primary" style="width: 100%; padding: 1rem; font-size: 1.125rem; margin-bottom: 0.75rem;" onclick="parent.showScreen(6)">Teslim Et</button>
+                        <button style="background: none; border: none; color: var(--gray-600); font-weight: 600; font-size: 0.9375rem; width: 100%; padding: 0.75rem; cursor: pointer;" onclick="parent.showScreen(4)">Düzenle</button>
+                    </div>
+                </div></div></div>`,
+                6: `<div class="iphone fade-in"><div class="island"></div><div class="screen"><div class="content">
+                    <div class="status"><div>9:41</div><div>📶 📡 🔋</div></div>
+                    <div style="padding: 3rem 1.5rem; text-align: center;">
+                        <div style="font-size: 6rem; margin-bottom: 1.5rem;">🔒</div>
+                        <h1 style="font-family: Poppins, sans-serif; font-size: 2rem; font-weight: 800; color: var(--secondary); margin-bottom: 1rem;">Bugün Tamamlandı!</h1>
+                        <p style="font-size: 1rem; color: var(--gray-700); margin-bottom: 2rem; line-height: 1.6;">
+                            Gün 7'yi başarıyla tamamladınız.<br>Bir sonraki gün yarın sabah açılacak.
+                        </p>
+                        <div class="card" style="margin-bottom: 2rem; background: linear-gradient(135deg, var(--success-light), #A7F3D0); border: 2px solid var(--success);">
+                            <div style="margin-bottom: 1rem;">
+                                <div style="font-size: 0.875rem; color: var(--gray-700); margin-bottom: 0.5rem; font-weight: 600;">✅ Tamamlandı</div>
+                                <h3 style="font-family: Poppins, sans-serif; font-size: 1.25rem; font-weight: 700; color: var(--secondary);">Gün 7: İçsel Doğruluk</h3>
+                            </div>
+                        </div>
+                        <div class="card" style="margin-bottom: 2rem; border: 2px dashed var(--gray-300); background: var(--gray-50);">
+                            <div style="margin-bottom: 1rem;">
+                                <div style="font-size: 0.875rem; color: var(--gray-600); margin-bottom: 0.5rem; font-weight: 600;">🔒 Kilitli</div>
+                                <h3 style="font-family: Poppins, sans-serif; font-size: 1.25rem; font-weight: 700; color: var(--gray-500);">Gün 8: Toplumsal Gerçeklik</h3>
+                            </div>
+                            <div style="background: white; padding: 1rem; border-radius: 0.75rem; border: 2px solid var(--primary);">
+                                <div style="font-size: 0.875rem; color: var(--gray-700); margin-bottom: 0.5rem;">Yeni içerik açılıyor:</div>
+                                <div style="font-family: Poppins, sans-serif; font-size: 1.75rem; font-weight: 800; color: var(--primary);">Yarın 08:00</div>
+                                <div style="font-size: 0.8125rem; color: var(--gray-600); margin-top: 0.5rem;">11 saat 19 dakika içinde</div>
+                            </div>
+                        </div>
+                        <div class="card" style="background: var(--secondary-light);">
+                            <p style="font-size: 0.875rem; color: var(--gray-700); line-height: 1.6;">
+                                <strong style="color: var(--secondary);">💡 Hatırlatma:</strong> Her yeni gün sabah 08:00'de açılır. İçeriğiniz 23:59'a kadar teslim edilmelidir.
+                            </p>
+                        </div>
+                    </div>
+                </div></div></div>`
+            };
+            return screens[num] || screens[1];
+        }
+        document.getElementById('viewer').innerHTML = getScreenHTML(1);
+    </script>
+</body>
+</html>

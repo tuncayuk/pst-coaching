@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PST Coaching Mobile - EPIC 1: Authentication</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #00B4D8; 
+            --primary-dark: #0096B8; 
+            --primary-light: #E0F7FA; 
+            --primary-100: #B2EBF2;
+            --secondary: #2B1B5D;
+            --secondary-light: #EDE7F6;
+            --success: #10B981; --success-light: #D1FAE5; --success-dark: #065F46;
+            --warning: #F59E0B; --error: #EF4444;
+            --purple: #8B5CF6; --purple-light: #EDE9FE;
+            --gray-50: #FAFAFA; --gray-100: #F5F5F5; --gray-200: #E5E5E5; --gray-300: #D4D4D4;
+            --gray-400: #A3A3A3; --gray-600: #525252; --gray-700: #404040; --gray-900: #171717;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #f0f0f0, #e0e0e0); overflow: hidden; }
+        
+        /* Layout */
+        .app { display: flex; height: 100vh; }
+        .sidebar { width: 400px; background: white; border-right: 1px solid var(--gray-200); overflow-y: auto; box-shadow: 2px 0 10px rgba(0,0,0,0.05); }
+        .main { flex: 1; display: flex; flex-direction: column; }
+        .topbar { background: white; border-bottom: 1px solid var(--gray-200); padding: 1.75rem 2.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+        .viewer { flex: 1; overflow-y: auto; padding: 3rem; display: flex; justify-content: center; align-items: flex-start; }
+        
+        /* Sidebar */
+        .logo { font-family: 'Poppins', sans-serif; font-size: 2rem; font-weight: 800; color: var(--primary); padding: 2.5rem; border-bottom: 1px solid var(--gray-200); background: linear-gradient(135deg, var(--primary-light), white); }
+        .subtitle { font-size: 0.875rem; color: var(--gray-600); font-weight: 500; margin-top: 0.5rem; letter-spacing: 0.02em; }
+        .epic-header { padding: 1.5rem; background: linear-gradient(135deg, var(--primary-light), var(--primary-100)); border-bottom: 2px solid var(--primary); }
+        .epic-title { font-family: 'Poppins', sans-serif; font-size: 1.25rem; font-weight: 700; color: var(--gray-900); margin-bottom: 0.5rem; }
+        .epic-meta { font-size: 0.8125rem; color: var(--gray-600); }
+        
+        /* Navigation Map */
+        .nav-map { background: var(--purple-light); border-left: 4px solid var(--purple); padding: 1rem; margin: 1rem 1.75rem; border-radius: 0.5rem; }
+        .nav-map-title { font-weight: 700; color: var(--purple); font-size: 0.8125rem; margin-bottom: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; display: flex; align-items: center; gap: 0.5rem; }
+        .nav-flow { display: flex; flex-direction: column; gap: 0.5rem; }
+        .nav-flow-item { display: flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; color: var(--gray-700); }
+        .nav-flow-box { background: white; padding: 0.375rem 0.625rem; border-radius: 0.375rem; border: 2px solid var(--gray-300); font-weight: 600; white-space: nowrap; font-size: 0.6875rem; }
+        .nav-flow-box.active { background: var(--primary); color: white; border-color: var(--primary); }
+        .nav-flow-arrow { color: var(--gray-400); font-weight: 700; }
+        .nav-flow-label { color: var(--gray-600); font-size: 0.625rem; font-style: italic; }
+        
+        .nav-section { padding: 1.25rem 0; border-bottom: 1px solid var(--gray-100); }
+        .nav-title { padding: 0.75rem 1.75rem; font-size: 0.6875rem; font-weight: 700; color: var(--gray-600); text-transform: uppercase; letter-spacing: 0.1em; }
+        .nav-item { padding: 1rem 1.75rem; cursor: pointer; font-size: 0.9375rem; transition: all 0.2s; color: var(--gray-700); display: flex; align-items: center; gap: 0.875rem; border-left: 3px solid transparent; }
+        .nav-item:hover { background: var(--gray-50); }
+        .nav-item.active { background: var(--primary-light); color: var(--primary-dark); font-weight: 600; border-left-color: var(--primary); }
+        .nav-icon { font-size: 1.375rem; }
+        .nav-badge { background: var(--primary); color: white; padding: 0.25rem 0.625rem; border-radius: 9999px; font-size: 0.6875rem; font-weight: 700; margin-left: auto; }
+        
+        /* Acceptance Criteria */
+        .ac-section { background: var(--secondary-light); border-left: 4px solid var(--secondary); padding: 1rem; margin: 0.75rem 1.75rem; border-radius: 0.5rem; }
+        .ac-title { font-weight: 700; color: var(--secondary); font-size: 0.75rem; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.05em; }
+        .ac-list { list-style: none; }
+        .ac-list li { font-size: 0.75rem; color: var(--gray-700); margin-bottom: 0.375rem; padding-left: 1.25rem; position: relative; line-height: 1.4; }
+        .ac-list li:before { content: "✓"; position: absolute; left: 0; color: var(--success); font-weight: 700; }
+        
+        /* Topbar */
+        .screen-title { font-family: 'Poppins', sans-serif; font-size: 2.25rem; font-weight: 700; color: var(--gray-900); }
+        .screen-meta { color: var(--gray-600); font-size: 0.9375rem; margin-top: 0.5rem; display: flex; align-items: center; gap: 1rem; }
+        .meta-badge { background: var(--primary-light); color: var(--primary-dark); padding: 0.375rem 0.875rem; border-radius: 0.5rem; font-size: 0.8125rem; font-weight: 600; }
+        
+        /* iPhone Frame */
+        .iphone { width: 393px; height: 852px; background: #1d1d1f; border-radius: 55px; padding: 12px; box-shadow: 0 60px 120px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.1); position: relative; }
+        .island { position: absolute; top: 20px; left: 50%; transform: translateX(-50%); width: 120px; height: 30px; background: #000; border-radius: 20px; z-index: 11; }
+        .screen { width: 100%; height: 100%; background: white; border-radius: 43px; overflow: hidden; position: relative; }
+        .content { width: 100%; height: 100%; overflow-y: auto; background: var(--gray-50); }
+        .content::-webkit-scrollbar { width: 4px; }
+        .content::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.3); border-radius: 10px; }
+        
+        /* Status Bar */
+        .status { height: 54px; display: flex; align-items: center; justify-content: space-between; padding: 0 1.5rem; font-size: 0.8125rem; font-weight: 600; background: white; }
+        
+        /* Common UI Elements */
+        .btn { padding: 0.875rem 1.5rem; border-radius: 0.75rem; font-weight: 600; font-size: 1rem; border: none; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.2s; display: inline-block; text-align: center; }
+        .btn-primary { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; box-shadow: 0 4px 16px rgba(0,180,216,0.4); }
+        .btn-secondary { background: white; color: var(--gray-700); border: 2px solid var(--gray-300); }
+        
+        .card { background: white; border-radius: 1rem; padding: 1.25rem; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+        
+        /* Animations */
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .fade-in { animation: fadeIn 0.3s ease-out; }
+        @keyframes pulse { 0%, 100% { opacity: 0.4; transform: scale(1); } 50% { opacity: 1; transform: scale(1.1); } }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="logo">
+                PST Coaching
+                <div class="subtitle">Authentication Flow</div>
+            </div>
+            
+            <div class="epic-header">
+                <div class="epic-title">EPIC 1: Kimlik Doğrulama</div>
+                <div class="epic-meta">8 User Stories • 11 Screens • 78 ACs</div>
+            </div>
+            
+            <!-- Navigation Map -->
+            <div class="nav-map">
+                <div class="nav-map-title">
+                    <span>🗺️</span>
+                    <span>Navigation Map</span>
+                </div>
+                <div class="nav-flow">
+                    <div class="nav-flow-item">
+                        <div class="nav-flow-box active" id="nav-1">Splash Screen</div>
+                    </div>
+                    <div class="nav-flow-item">
+                        <span class="nav-flow-arrow">↓</span>
+                        <span class="nav-flow-label">3 sec auto</span>
+                    </div>
+                    <div class="nav-flow-item">
+                        <div class="nav-flow-box" id="nav-2">Onboarding 1-3</div>
+                    </div>
+                    <div class="nav-flow-item">
+                        <span class="nav-flow-arrow">↓</span>
+                        <span class="nav-flow-label">swipe/tap</span>
+                    </div>
+                    <div class="nav-flow-item">
+                        <div class="nav-flow-box" id="nav-3">Login</div>
+                    </div>
+                    <div class="nav-flow-item" style="margin-left: 1.5rem;">
+                        <span class="nav-flow-arrow">↓</span>
+                        <span class="nav-flow-label">Kaydol</span>
+                    </div>
+                    <div class="nav-flow-item" style="margin-left: 1.5rem;">
+                        <div class="nav-flow-box" id="nav-4">Register</div>
+                    </div>
+                    <div class="nav-flow-item" style="margin-left: 1.5rem;">
+                        <span class="nav-flow-arrow">↓</span>
+                        <span class="nav-flow-label">Şifremi Unuttum</span>
+                    </div>
+                    <div class="nav-flow-item" style="margin-left: 1.5rem;">
+                        <div class="nav-flow-box" id="nav-5">Forgot Password</div>
+                    </div>
+                    <div class="nav-flow-item" style="margin-left: 1.5rem;">
+                        <span class="nav-flow-arrow">↓</span>
+                        <span class="nav-flow-label">enter code</span>
+                    </div>
+                    <div class="nav-flow-item" style="margin-left: 1.5rem;">
+                        <div class="nav-flow-box" id="nav-6">Verification</div>
+                    </div>
+                    <div class="nav-flow-item" style="margin-left: 1.5rem;">
+                        <span class="nav-flow-arrow">↓</span>
+                        <span class="nav-flow-label">verified</span>
+                    </div>
+                    <div class="nav-flow-item" style="margin-left: 1.5rem;">
+                        <div class="nav-flow-box" id="nav-7">Reset Password</div>
+                    </div>
+                    <div class="nav-flow-item">
+                        <span class="nav-flow-arrow">↓</span>
+                        <span class="nav-flow-label">authenticated</span>
+                    </div>
+                    <div class="nav-flow-item">
+                        <div class="nav-flow-box" id="nav-8">FaceID Setup</div>
+                        <span style="background: var(--error); color: white; padding: 0.25rem 0.5rem; border-radius: 0.375rem; font-size: 0.625rem; font-weight: 700; margin-left: 0.5rem;">NEW</span>
+                    </div>
+                    <div class="nav-flow-item">
+                        <span class="nav-flow-arrow">↓</span>
+                        <span class="nav-flow-label">optional</span>
+                    </div>
+                    <div class="nav-flow-item">
+                        <div class="nav-flow-box" id="nav-9">Demographics</div>
+                        <span style="background: var(--error); color: white; padding: 0.25rem 0.5rem; border-radius: 0.375rem; font-size: 0.625rem; font-weight: 700; margin-left: 0.5rem;">NEW</span>
+                    </div>
+                    <div class="nav-flow-item">
+                        <span class="nav-flow-arrow">↓</span>
+                        <span class="nav-flow-label">first content start</span>
+                    </div>
+                    <div class="nav-flow-item">
+                        <div class="nav-flow-box" style="border-color: var(--success); color: var(--success-dark);">Ana Sayfa</div>
+                    </div>
+                </div>
+                <div style="margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid var(--purple); font-size: 0.625rem; color: var(--gray-600); line-height: 1.4;">
+                    <strong>Alt. Paths:</strong> Login → <span id="nav-10" class="nav-flow-box" style="display: inline-block; margin: 0 0.25rem;">Guest Mode</span> → Explore (limited)<br>
+                    <strong>NEW:</strong> FaceID + Demographics before first content
+                </div>
+            </div>
+            
+            <div class="nav-section">
+                <div class="nav-title">US-1.1: Splash & Onboarding</div>
+                <div class="nav-item active" onclick="showScreen(1)">
+                    <span class="nav-icon">🎨</span>
+                    <span>Splash Screen</span>
+                    <span class="nav-badge">7 ACs</span>
+                </div>
+                <div class="ac-section">
+                    <div class="ac-title">✓ Acceptance Criteria</div>
+                    <ul class="ac-list">
+                        <li>Display PST logo prominently</li>
+                        <li>Show brand colors and tagline</li>
+                        <li>Display loading indicator</li>
+                        <li>Auto-transition after 2-3 seconds</li>
+                        <li>Check authentication status</li>
+                        <li>Route to onboarding or home</li>
+                        <li>Handle offline state gracefully</li>
+                    </ul>
+                </div>
+                
+                <div class="nav-item" onclick="showScreen(2)">
+                    <span class="nav-icon">👋</span>
+                    <span>Onboarding</span>
+                    <span class="nav-badge">10 ACs</span>
+                </div>
+                <div class="ac-section">
+                    <div class="ac-title">✓ Acceptance Criteria</div>
+                    <ul class="ac-list">
+                        <li>3 screens with swipe gesture</li>
+                        <li>Visual illustrations per screen</li>
+                        <li>Clear title and description</li>
+                        <li>Progress dots indicator (1/3, 2/3, 3/3)</li>
+                        <li>Skip button on all screens</li>
+                        <li>Next/İleri button</li>
+                        <li>Final screen: Başla button</li>
+                        <li>Only show once per install</li>
+                        <li>Smooth animations</li>
+                        <li>Accessibility support</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="nav-section">
+                <div class="nav-title">US-1.2: Login</div>
+                <div class="nav-item" onclick="showScreen(3)">
+                    <span class="nav-icon">🔐</span>
+                    <span>Login</span>
+                    <span class="nav-badge">12 ACs</span>
+                </div>
+                <div class="ac-section">
+                    <div class="ac-title">✓ Acceptance Criteria</div>
+                    <ul class="ac-list">
+                        <li>Email/phone input field</li>
+                        <li>Password with show/hide toggle</li>
+                        <li>Remember me checkbox</li>
+                        <li>Login button (disabled until valid)</li>
+                        <li>Forgot password link</li>
+                        <li>Social login (Google/Apple)</li>
+                        <li>Sign up link</li>
+                        <li>Email/phone validation</li>
+                        <li>Password min 8 chars</li>
+                        <li>Show error messages</li>
+                        <li>Loading state during auth</li>
+                        <li>Redirect to home on success</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="nav-section">
+                <div class="nav-title">US-1.3: Register</div>
+                <div class="nav-item" onclick="showScreen(4)">
+                    <span class="nav-icon">📝</span>
+                    <span>Register</span>
+                    <span class="nav-badge">15 ACs</span>
+                </div>
+                <div class="ac-section">
+                    <div class="ac-title">✓ Acceptance Criteria</div>
+                    <ul class="ac-list">
+                        <li>Full name input field</li>
+                        <li>Email with validation</li>
+                        <li>Phone with country code</li>
+                        <li>Password (min 8 chars)</li>
+                        <li>Confirm password field</li>
+                        <li>Password strength indicator</li>
+                        <li>Terms & conditions checkbox</li>
+                        <li>Privacy policy checkbox</li>
+                        <li>Register button</li>
+                        <li>Social registration options</li>
+                        <li>Validate before submit</li>
+                        <li>Show specific errors</li>
+                        <li>Check password match</li>
+                        <li>Email uniqueness check</li>
+                        <li>Send verification code</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="nav-section">
+                <div class="nav-title">US-1.4: Forgot Password</div>
+                <div class="nav-item" onclick="showScreen(5)">
+                    <span class="nav-icon">🔑</span>
+                    <span>Forgot Password</span>
+                    <span class="nav-badge">8 ACs</span>
+                </div>
+                <div class="ac-section">
+                    <div class="ac-title">✓ Acceptance Criteria</div>
+                    <ul class="ac-list">
+                        <li>Email/phone input</li>
+                        <li>Send code button</li>
+                        <li>Validate email/phone format</li>
+                        <li>Check if account exists</li>
+                        <li>Send verification via email/SMS</li>
+                        <li>Show success message</li>
+                        <li>Route to verification</li>
+                        <li>Back to login option</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="nav-section">
+                <div class="nav-title">US-1.5: Verification & Reset</div>
+                <div class="nav-item" onclick="showScreen(6)">
+                    <span class="nav-icon">📱</span>
+                    <span>Verification</span>
+                    <span class="nav-badge">5 ACs</span>
+                </div>
+                <div class="ac-section">
+                    <div class="ac-title">✓ Acceptance Criteria</div>
+                    <ul class="ac-list">
+                        <li>6-digit code input fields</li>
+                        <li>Auto-focus next field</li>
+                        <li>Verify button</li>
+                        <li>Resend with timer</li>
+                        <li>Navigate to reset on success</li>
+                    </ul>
+                </div>
+                
+                <div class="nav-item" onclick="showScreen(7)">
+                    <span class="nav-icon">🔒</span>
+                    <span>Reset Password</span>
+                    <span class="nav-badge">3 ACs</span>
+                </div>
+                <div class="ac-section">
+                    <div class="ac-title">✓ Acceptance Criteria</div>
+                    <ul class="ac-list">
+                        <li>New password with validation</li>
+                        <li>Confirm new password</li>
+                        <li>Reset routes to login on success</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="nav-section">
+                <div class="nav-title">US-1.8: FaceID Login</div>
+                <div class="nav-item" onclick="showScreen(8)">
+                    <span class="nav-icon">👤</span>
+                    <span>FaceID Setup</span>
+                    <span class="nav-badge">4 ACs</span>
+                    <span style="background: var(--error); color: white; padding: 0.25rem 0.5rem; border-radius: 0.375rem; font-size: 0.625rem; font-weight: 700; margin-left: 0.5rem;">NEW</span>
+                </div>
+                <div class="ac-section">
+                    <div class="ac-title">✓ Acceptance Criteria</div>
+                    <ul class="ac-list">
+                        <li>FaceID destekli cihazlarda biyometrik giriş seçeneği sunulur</li>
+                        <li>İlk girişte açık onay alınır (opt-in)</li>
+                        <li>Biyometrik doğrulama başarısızsa şifre ile girişe düşer</li>
+                        <li>FaceID kapatma/açma ayarı Profil > Ayarlar'da bulunur</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="nav-section">
+                <div class="nav-title">US-1.9 & US-1.10: New Features</div>
+                <div class="nav-item" onclick="showScreen(9)">
+                    <span class="nav-icon">📊</span>
+                    <span>Demographics</span>
+                    <span class="nav-badge">7 ACs</span>
+                    <span style="background: var(--error); color: white; padding: 0.25rem 0.5rem; border-radius: 0.375rem; font-size: 0.625rem; font-weight: 700; margin-left: 0.5rem;">NEW</span>
+                </div>
+                <div class="ac-section">
+                    <div class="ac-title">✓ Acceptance Criteria</div>
+                    <ul class="ac-list">
+                        <li>İlk kez içerik başlatmadan önce yaş/cinsiyet/ülke formu açılır</li>
+                        <li>Bilgiler kaydedilmeden içerik başlatılamaz</li>
+                        <li>Yaş alanı zorunlu ve 13-120 aralığında doğrulanır</li>
+                        <li>Cinsiyet alanı opsiyoneldir: Kadın/Erkek/Belirtmek istemiyorum</li>
+                        <li>Ülke alanı zorunlu ve arama ile seçilebilir</li>
+                        <li>Bilgiler profilimde görüntülenir ve güncellenebilir</li>
+                        <li>Daha önce kaydedilmişse tekrar sorulmaz</li>
+                    </ul>
+                </div>
+                
+                <div class="nav-item" onclick="showScreen(10)">
+                    <span class="nav-icon">👻</span>
+                    <span>Guest Mode</span>
+                    <span class="nav-badge">4 ACs</span>
+                    <span style="background: var(--error); color: white; padding: 0.25rem 0.5rem; border-radius: 0.375rem; font-size: 0.625rem; font-weight: 700; margin-left: 0.5rem;">NEW</span>
+                </div>
+                <div class="ac-section">
+                    <div class="ac-title">✓ Acceptance Criteria</div>
+                    <ul class="ac-list">
+                        <li>Misafir oturumu başlatılır ve profil oluşturulmaz</li>
+                        <li>Keşfet ve detay ekranları erişilebilir olur</li>
+                        <li>İçerik başlatma/okuma aksiyonlarında kayıt zorunlu tutulur</li>
+                        <li>Kayıt sonrası misafir verileri kullanıcıya devredilir</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="main">
+            <div class="topbar">
+                <h1 class="screen-title" id="screenTitle">Splash Screen</h1>
+                <div class="screen-meta">
+                    <span class="meta-badge" id="screenUS">US-1.1</span>
+                    <span id="screenMeta">App entry • 7/7 ACs • Auto → Onboarding</span>
+                </div>
+            </div>
+            
+            <div class="viewer" id="viewer">
+                <!-- Screens rendered here -->
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const LOGO_BASE64 = './pstLogo.png';
+
+        const screenData = {
+            1: { title: 'Splash Screen', us: 'US-1.1', meta: 'App entry • 7/7 ACs • Auto → Onboarding' },
+            2: { title: 'Onboarding', us: 'US-1.1', meta: '3 screens • 10/10 ACs • Swipe → Login' },
+            3: { title: 'Login', us: 'US-1.2', meta: 'Authenticate • 12/12 ACs • From: Onboarding' },
+            4: { title: 'Register', us: 'US-1.3', meta: 'Create account • 15/15 ACs • From: Login' },
+            5: { title: 'Forgot Password', us: 'US-1.4', meta: 'Password recovery • 8/8 ACs • From: Login' },
+            6: { title: 'Verification', us: 'US-1.5', meta: 'Verify identity • 5/5 ACs • From: Register/Forgot' },
+            7: { title: 'Reset Password', us: 'US-1.5', meta: 'Set new password • 3/3 ACs • From: Verification' },
+            8: { title: 'FaceID Setup', us: 'US-1.8', meta: 'Biometric auth (NEW) • 4/4 ACs • After: First Login' },
+            9: { title: 'Demographics', us: 'US-1.9', meta: 'User info (NEW) • 7/7 ACs • Before: First Content' },
+            10: { title: 'Guest Mode', us: 'US-1.10', meta: 'Browse without account (NEW) • 4/4 ACs • From: Login' },
+            11: { title: 'Session End', us: 'US-1.5', meta: 'Logout • 13/13 ACs • From: Anywhere' }
+        };
+        
+        function showScreen(num) {
+            const data = screenData[num];
+            document.getElementById('screenTitle').textContent = data.title;
+            document.getElementById('screenUS').textContent = data.us;
+            document.getElementById('screenMeta').textContent = data.meta;
+            
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            const navItems = document.querySelectorAll('.nav-item');
+            const navMap = {1: 0, 2: 1, 3: 2, 4: 3, 5: 4, 6: 5, 7: 6, 8: 7, 9: 8, 10: 9};
+            if (navMap[num] !== undefined) {
+                navItems[navMap[num]].classList.add('active');
+            }
+            
+            document.querySelectorAll('[id^="nav-"]').forEach(box => box.classList.remove('active'));
+            const navBox = document.getElementById('nav-' + num);
+            if (navBox) navBox.classList.add('active');
+            
+            document.getElementById('viewer').innerHTML = getScreenHTML(num);
+        }
+        
+        function getScreenHTML(num) {
+            const screens = {
+                1: `<div class="iphone fade-in"><div class="island"></div><div class="screen">
+                    <div style="width: 100%; height: 100%; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative;">
+                        <img src="${LOGO_BASE64}" alt="PST Coaching" style="width: 280px; height: auto; margin-bottom: 2rem; filter: brightness(0) invert(1);">
+                        <p style="font-size: 1.125rem; color: rgba(255,255,255,0.95); font-weight: 600; text-align: center; max-width: 280px; line-height: 1.6;">Profesyonel Coaching Yolculuğunuz</p>
+                        <div style="position: absolute; bottom: 4rem; display: flex; gap: 0.5rem;">
+                            <div style="width: 8px; height: 8px; background: rgba(255,255,255,0.5); border-radius: 9999px; animation: pulse 1s ease-in-out infinite;"></div>
+                            <div style="width: 8px; height: 8px; background: rgba(255,255,255,0.5); border-radius: 9999px; animation: pulse 1s ease-in-out infinite 0.2s;"></div>
+                            <div style="width: 8px; height: 8px; background: rgba(255,255,255,0.5); border-radius: 9999px; animation: pulse 1s ease-in-out infinite 0.4s;"></div>
+                        </div>
+                    </div>
+                </div></div>`,
+                
+                2: `<div class="iphone fade-in"><div class="island"></div><div class="screen"><div class="content">
+                    <div class="status"><div>9:41</div><div>📶 📡 🔋</div></div>
+                    <div style="padding: 3rem 2rem; height: calc(100% - 54px); display: flex; flex-direction: column;">
+                        <div style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;">
+                            <div style="font-size: 8rem; margin-bottom: 2rem;">🎯</div>
+                            <h2 style="font-family: Poppins, sans-serif; font-size: 2rem; font-weight: 800; color: var(--secondary); margin-bottom: 1rem;">Hedeflerinize Ulaşın</h2>
+                            <p style="font-size: 1rem; color: var(--gray-600); line-height: 1.7; max-width: 320px;">Profesyonel coaching desteğiyle potansiyelinizi keşfedin ve hayallerinizi gerçekleştirin.</p>
+                        </div>
+                        <div style="display: flex; justify-content: center; gap: 0.5rem; margin-bottom: 2rem;">
+                            <div style="width: 32px; height: 8px; background: var(--primary); border-radius: 9999px;"></div>
+                            <div style="width: 8px; height: 8px; background: var(--gray-300); border-radius: 9999px;"></div>
+                            <div style="width: 8px; height: 8px; background: var(--gray-300); border-radius: 9999px;"></div>
+                        </div>
+                        <div style="display: flex; gap: 1rem;">
+                            <button class="btn btn-secondary" style="flex: 1;" onclick="parent.showScreen(3)">Atla</button>
+                            <button class="btn btn-primary" style="flex: 1;">İleri</button>
+                        </div>
+                    </div>
+                </div></div></div>`,
+                
+                3: `<div class="iphone fade-in"><div class="island"></div><div class="screen"><div class="content">
+                    <div class="status"><div>9:41</div><div>📶 📡 🔋</div></div>
+                    <div style="padding: 2rem 1.5rem;">
+                        <div style="text-align: center; margin-bottom: 2.5rem;">
+                            <img src="${LOGO_BASE64}" alt="PST Coaching" style="width: 200px; height: auto; margin-bottom: 1.5rem;">
+                            <h1 style="font-family: Poppins, sans-serif; font-size: 1.75rem; font-weight: 800; color: var(--secondary); margin-bottom: 0.5rem;">Hoş Geldiniz</h1>
+                            <p style="font-size: 0.9375rem; color: var(--gray-600);">Hesabınıza giriş yapın</p>
+                        </div>
+                        
+                        <div style="margin-bottom: 1.5rem;">
+                            <label style="display: block; font-weight: 600; color: var(--gray-700); margin-bottom: 0.5rem; font-size: 0.875rem;">E-posta veya Telefon</label>
+                            <input type="text" placeholder="ornek@email.com" style="width: 100%; padding: 1rem; border: 2px solid var(--gray-200); border-radius: 0.75rem; font-size: 1rem;">
+                        </div>
+                        
+                        <div style="margin-bottom: 1rem;">
+                            <label style="display: block; font-weight: 600; color: var(--gray-700); margin-bottom: 0.5rem; font-size: 0.875rem;">Şifre</label>
+                            <div style="position: relative;">
+                                <input type="password" placeholder="••••••••" style="width: 100%; padding: 1rem; padding-right: 3rem; border: 2px solid var(--gray-200); border-radius: 0.75rem; font-size: 1rem;">
+                                <button style="position: absolute; right: 1rem; top: 50%; transform: translateY(-50%); background: none; border: none; font-size: 1.25rem; cursor: pointer;">👁️</button>
+                            </div>
+                        </div>
+                        
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                            <label style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.875rem; color: var(--gray-700); cursor: pointer;">
+                                <input type="checkbox" style="width: 18px; height: 18px; accent-color: var(--primary);">
+                                <span>Beni Hatırla</span>
+                            </label>
+                            <a href="#" style="font-size: 0.875rem; color: var(--primary); font-weight: 600; text-decoration: none;" onclick="parent.showScreen(5); return false;">Şifremi Unuttum?</a>
+                        </div>
+                        
+                        <button class="btn btn-primary" style="width: 100%; padding: 1rem; font-size: 1.125rem; margin-bottom: 1.5rem;">Giriş Yap</button>
+                        
+                        <div style="position: relative; text-align: center; margin-bottom: 1.5rem;">
+                            <div style="position: absolute; top: 50%; left: 0; right: 0; height: 1px; background: var(--gray-200);"></div>
+                            <span style="position: relative; background: var(--gray-50); padding: 0 1rem; font-size: 0.875rem; color: var(--gray-600);">veya</span>
+                        </div>
+                        
+                        <div style="display: flex; gap: 1rem; margin-bottom: 2rem;">
+                            <button class="btn btn-secondary" style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+                                <span style="font-size: 1.25rem;">🔵</span>
+                                <span>Google</span>
+                            </button>
+                            <button class="btn btn-secondary" style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+                                <span style="font-size: 1.25rem;">🍎</span>
+                                <span>Apple</span>
+                            </button>
+                        </div>
+                        
+                        <div style="text-align: center;">
+                            <span style="color: var(--gray-600); font-size: 0.9375rem;">Hesabınız yok mu? </span>
+                            <a href="#" style="color: var(--primary); font-weight: 600; text-decoration: none; font-size: 0.9375rem;" onclick="parent.showScreen(4); return false;">Kaydol</a>
+                        </div>
+                        
+                        <div style="text-align: center; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--gray-200);">
+                            <span style="color: var(--gray-600); font-size: 0.9375rem;">veya </span>
+                            <a href="#" style="color: var(--success); font-weight: 600; text-decoration: none; font-size: 0.9375rem;" onclick="parent.showScreen(10); return false;">👻 Misafir Olarak Devam Et</a>
+                        </div>
+                    </div>
+                </div></div></div>`,
+                
+                4: `<div class="iphone fade-in"><div class="island"></div><div class="screen"><div class="content">
+                    <div class="status"><div>9:41</div><div>📶 📡 🔋</div></div>
+                    <div style="padding: 1.5rem; overflow-y: auto; height: calc(100% - 54px);">
+                        <button style="background: none; border: none; font-size: 1.5rem; cursor: pointer; padding: 0.5rem; margin-bottom: 1rem;" onclick="parent.showScreen(3)">←</button>
+                        
+                        <div style="text-align: center; margin-bottom: 2rem;">
+                            <h1 style="font-family: Poppins, sans-serif; font-size: 2rem; font-weight: 800; color: var(--secondary); margin-bottom: 0.5rem;">Hesap Oluştur</h1>
+                            <p style="font-size: 0.9375rem; color: var(--gray-600);">Coaching yolculuğunuza başlayın</p>
+                        </div>
+                        
+                        <div style="margin-bottom: 1rem;">
+                            <label style="display: block; font-weight: 600; color: var(--gray-700); margin-bottom: 0.5rem; font-size: 0.875rem;">Ad Soyad</label>
+                            <input type="text" placeholder="Ahmet Yılmaz" style="width: 100%; padding: 0.875rem; border: 2px solid var(--gray-200); border-radius: 0.75rem; font-size: 1rem;">
+                        </div>
+                        
+                        <div style="margin-bottom: 1rem;">
+                            <label style="display: block; font-weight: 600; color: var(--gray-700); margin-bottom: 0.5rem; font-size: 0.875rem;">E-posta</label>
+                            <input type="email" placeholder="ornek@email.com" style="width: 100%; padding: 0.875rem; border: 2px solid var(--gray-200); border-radius: 0.75rem; font-size: 1rem;">
+                        </div>
+                        
+                        <div style="margin-bottom: 1rem;">
+                            <label style="display: block; font-weight: 600; color: var(--gray-700); margin-bottom: 0.5rem; font-size: 0.875rem;">Telefon</label>
+                            <div style="display: flex; gap: 0.5rem;">
+                                <select style="padding: 0.875rem; border: 2px solid var(--gray-200); border-radius: 0.75rem; font-size: 1rem; width: 100px;">
+                                    <option>🇹🇷 +90</option>
+                                </select>
+                                <input type="tel" placeholder="5XX XXX XX XX" style="flex: 1; padding: 0.875rem; border: 2px solid var(--gray-200); border-radius: 0.75rem; font-size: 1rem;">
+                            </div>
+                        </div>
+                        
+                        <div style="margin-bottom: 1rem;">
+                            <label style="display: block; font-weight: 600; color: var(--gray-700); margin-bottom: 0.5rem; font-size: 0.875rem;">Şifre</label>
+                            <input type="password" placeholder="Min. 8 karakter" style="width: 100%; padding: 0.875rem; border: 2px solid var(--gray-200); border-radius: 0.75rem; font-size: 1rem;">
+                            <div style="margin-top: 0.5rem; display: flex; gap: 0.25rem;">
+                                <div style="flex: 1; height: 4px; background: var(--success); border-radius: 9999px;"></div>
+                                <div style="flex: 1; height: 4px; background: var(--success); border-radius: 9999px;"></div>
+                                <div style="flex: 1; height: 4px; background: var(--gray-200); border-radius: 9999px;"></div>
+                                <div style="flex: 1; height: 4px; background: var(--gray-200); border-radius: 9999px;"></div>
+                            </div>
+                            <p style="font-size: 0.75rem; color: var(--success); margin-top: 0.25rem;">Orta Güçlü</p>
+                        </div>
+                        
+                        <div style="margin-bottom: 1rem;">
+                            <label style="display: block; font-weight: 600; color: var(--gray-700); margin-bottom: 0.5rem; font-size: 0.875rem;">Şifre Tekrar</label>
+                            <input type="password" placeholder="Şifrenizi tekrar girin" style="width: 100%; padding: 0.875rem; border: 2px solid var(--gray-200); border-radius: 0.75rem; font-size: 1rem;">
+                        </div>
+                        
+                        <div style="margin-bottom: 1rem;">
+                            <label style="display: flex; align-items: start; gap: 0.75rem; font-size: 0.8125rem; color: var(--gray-700); cursor: pointer;">
+                                <input type="checkbox" style="width: 18px; height: 18px; margin-top: 2px; accent-color: var(--primary); flex-shrink: 0;">
+                                <span><a href="#" style="color: var(--primary); text-decoration: none;">Kullanım Koşullarını</a> ve <a href="#" style="color: var(--primary); text-decoration: none;">Gizlilik Politikasını</a> okudum, kabul ediyorum</span>
+                            </label>
+                        </div>
+                        
+                        <button class="btn btn-primary" style="width: 100%; padding: 1rem; font-size: 1.125rem; margin-bottom: 1.5rem;" onclick="parent.showScreen(6)">Kaydol</button>
+                        
+                        <div style="text-align: center; margin-bottom: 1rem;">
+                            <span style="color: var(--gray-600); font-size: 0.9375rem;">Zaten hesabınız var mı? </span>
+                            <a href="#" style="color: var(--primary); font-weight: 600; text-decoration: none; font-size: 0.9375rem;" onclick="parent.showScreen(3); return false;">Giriş Yap</a>
+                        </div>
+                    </div>
+                </div></div></div>`,
+                
+                5: `<div class="iphone fade-in"><div class="island"></div><div class="screen"><div class="content">
+                    <div class="status"><div>9:41</div><div>📶 📡 🔋</div></div>
+                    <div style="padding: 2rem 1.5rem;">
+                        <button style="background: none; border: none; font-size: 1.5rem; cursor: pointer; padding: 0.5rem; margin-bottom: 2rem;" onclick="parent.showScreen(3)">←</button>
+                        
+                        <div style="text-align: center; margin-bottom: 3rem;">
+                            <div style="font-size: 4rem; margin-bottom: 1rem;">🔑</div>
+                            <h1 style="font-family: Poppins, sans-serif; font-size: 2rem; font-weight: 800; color: var(--secondary); margin-bottom: 0.5rem;">Şifremi Unuttum</h1>
+                            <p style="font-size: 0.9375rem; color: var(--gray-600); line-height: 1.6;">E-posta adresinizi veya telefon numaranızı girin, size doğrulama kodu gönderelim.</p>
+                        </div>
+                        
+                        <div style="margin-bottom: 2rem;">
+                            <label style="display: block; font-weight: 600; color: var(--gray-700); margin-bottom: 0.5rem; font-size: 0.875rem;">E-posta veya Telefon</label>
+                            <input type="text" placeholder="ornek@email.com veya +90 5XX XXX XX XX" style="width: 100%; padding: 1rem; border: 2px solid var(--gray-200); border-radius: 0.75rem; font-size: 1rem;">
+                        </div>
+                        
+                        <button class="btn btn-primary" style="width: 100%; padding: 1rem; font-size: 1.125rem; margin-bottom: 1.5rem;" onclick="parent.showScreen(6)">Kod Gönder</button>
+                        
+                        <div style="text-align: center;">
+                            <a href="#" style="color: var(--primary); font-weight: 600; text-decoration: none; font-size: 0.9375rem;" onclick="parent.showScreen(3); return false;">← Giriş Sayfasına Dön</a>
+                        </div>
+                    </div>
+                </div></div></div>`,
+                
+                6: `<div class="iphone fade-in"><div class="island"></div><div class="screen"><div class="content">
+                    <div class="status"><div>9:41</div><div>📶 📡 🔋</div></div>
+                    <div style="padding: 2rem 1.5rem;">
+                        <button style="background: none; border: none; font-size: 1.5rem; cursor: pointer; padding: 0.5rem; margin-bottom: 2rem;" onclick="parent.showScreen(5)">←</button>
+                        
+                        <div style="text-align: center; margin-bottom: 3rem;">
+                            <div style="font-size: 4rem; margin-bottom: 1rem;">📱</div>
+                            <h1 style="font-family: Poppins, sans-serif; font-size: 2rem; font-weight: 800; color: var(--secondary); margin-bottom: 0.5rem;">Doğrulama Kodu</h1>
+                            <p style="font-size: 0.9375rem; color: var(--gray-600); line-height: 1.6;">
+                                <strong>ahmet@*****.com</strong> adresine gönderilen 6 haneli kodu girin.
+                            </p>
+                        </div>
+                        
+                        <div style="display: flex; gap: 0.75rem; margin-bottom: 2rem; justify-content: center;">
+                            <input type="text" maxlength="1" style="width: 48px; height: 56px; text-align: center; font-size: 1.5rem; font-weight: 700; border: 2px solid var(--gray-300); border-radius: 0.75rem; font-family: monospace;">
+                            <input type="text" maxlength="1" style="width: 48px; height: 56px; text-align: center; font-size: 1.5rem; font-weight: 700; border: 2px solid var(--gray-300); border-radius: 0.75rem; font-family: monospace;">
+                            <input type="text" maxlength="1" style="width: 48px; height: 56px; text-align: center; font-size: 1.5rem; font-weight: 700; border: 2px solid var(--gray-300); border-radius: 0.75rem; font-family: monospace;">
+                            <input type="text" maxlength="1" style="width: 48px; height: 56px; text-align: center; font-size: 1.5rem; font-weight: 700; border: 2px solid var(--gray-300); border-radius: 0.75rem; font-family: monospace;">
+                            <input type="text" maxlength="1" style="width: 48px; height: 56px; text-align: center; font-size: 1.5rem; font-weight: 700; border: 2px solid var(--gray-300); border-radius: 0.75rem; font-family: monospace;">
+                            <input type="text" maxlength="1" style="width: 48px; height: 56px; text-align: center; font-size: 1.5rem; font-weight: 700; border: 2px solid var(--gray-300); border-radius: 0.75rem; font-family: monospace;">
+                        </div>
+                        
+                        <button class="btn btn-primary" style="width: 100%; padding: 1rem; font-size: 1.125rem; margin-bottom: 1.5rem;" onclick="parent.showScreen(7)">Doğrula</button>
+                        
+                        <div style="text-align: center; font-size: 0.875rem; color: var(--gray-600);">
+                            <p style="margin-bottom: 0.5rem;">Kod gelmedi mi?</p>
+                            <button style="background: none; border: none; color: var(--primary); font-weight: 600; cursor: pointer; font-size: 0.875rem;">Tekrar Gönder (45s)</button>
+                        </div>
+                    </div>
+                </div></div></div>`,
+                
+                7: `<div class="iphone fade-in"><div class="island"></div><div class="screen"><div class="content">
+                    <div class="status"><div>9:41</div><div>📶 📡 🔋</div></div>
+                    <div style="padding: 2rem 1.5rem;">
+                        <button style="background: none; border: none; font-size: 1.5rem; cursor: pointer; padding: 0.5rem; margin-bottom: 2rem;" onclick="parent.showScreen(6)">←</button>
+                        
+                        <div style="text-align: center; margin-bottom: 3rem;">
+                            <div style="font-size: 4rem; margin-bottom: 1rem;">🔒</div>
+                            <h1 style="font-family: Poppins, sans-serif; font-size: 2rem; font-weight: 800; color: var(--secondary); margin-bottom: 0.5rem;">Yeni Şifre Oluştur</h1>
+                            <p style="font-size: 0.9375rem; color: var(--gray-600); line-height: 1.6;">Yeni şifreniz en az 8 karakter olmalıdır.</p>
+                        </div>
+                        
+                        <div style="margin-bottom: 1.5rem;">
+                            <label style="display: block; font-weight: 600; color: var(--gray-700); margin-bottom: 0.5rem; font-size: 0.875rem;">Yeni Şifre</label>
+                            <div style="position: relative;">
+                                <input type="password" placeholder="••••••••" style="width: 100%; padding: 1rem; padding-right: 3rem; border: 2px solid var(--gray-200); border-radius: 0.75rem; font-size: 1rem;">
+                                <button style="position: absolute; right: 1rem; top: 50%; transform: translateY(-50%); background: none; border: none; font-size: 1.25rem; cursor: pointer;">👁️</button>
+                            </div>
+                            <div style="margin-top: 0.5rem; display: flex; gap: 0.25rem;">
+                                <div style="flex: 1; height: 4px; background: var(--success); border-radius: 9999px;"></div>
+                                <div style="flex: 1; height: 4px; background: var(--success); border-radius: 9999px;"></div>
+                                <div style="flex: 1; height: 4px; background: var(--success); border-radius: 9999px;"></div>
+                                <div style="flex: 1; height: 4px; background: var(--success); border-radius: 9999px;"></div>
+                            </div>
+                            <p style="font-size: 0.75rem; color: var(--success); margin-top: 0.25rem;">Güçlü Şifre</p>
+                        </div>
+                        
+                        <div style="margin-bottom: 2rem;">
+                            <label style="display: block; font-weight: 600; color: var(--gray-700); margin-bottom: 0.5rem; font-size: 0.875rem;">Yeni Şifre Tekrar</label>
+                            <div style="position: relative;">
+                                <input type="password" placeholder="••••••••" style="width: 100%; padding: 1rem; padding-right: 3rem; border: 2px solid var(--gray-200); border-radius: 0.75rem; font-size: 1rem;">
+                                <button style="position: absolute; right: 1rem; top: 50%; transform: translateY(-50%); background: none; border: none; font-size: 1.25rem; cursor: pointer;">👁️</button>
+                            </div>
+                        </div>
+                        
+                        <button class="btn btn-primary" style="width: 100%; padding: 1rem; font-size: 1.125rem; margin-bottom: 1.5rem;" onclick="parent.showScreen(3)">Şifremi Sıfırla</button>
+                        
+                        <div class="card" style="background: var(--secondary-light); border-left: 4px solid var(--secondary);">
+                            <p style="font-size: 0.8125rem; color: var(--gray-700); line-height: 1.5;">
+                                <strong style="color: var(--secondary);">💡 İpucu:</strong> Güçlü bir şifre için büyük/küçük harf, rakam ve özel karakter kullanın.
+                            </p>
+                        </div>
+                    </div>
+                </div></div></div>`,
+                
+                8: `<div class="iphone fade-in"><div class="island"></div><div class="screen"><div class="content">
+                    <div class="status"><div>9:41</div><div>📶 📡 🔋</div></div>
+                    <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%; padding: 2rem;">
+                        <div style="width: 120px; height: 120px; background: linear-gradient(135deg, var(--purple), #9333EA); border-radius: 9999px; display: flex; align-items: center; justify-content: center; font-size: 4rem; margin-bottom: 2rem; box-shadow: 0 20px 60px rgba(139,92,246,0.4);">👤</div>
+                        <h1 style="font-family: Poppins, sans-serif; font-size: 1.75rem; font-weight: 800; color: var(--secondary); margin-bottom: 1rem; text-align: center;">FaceID ile Hızlı Giriş</h1>
+                        <p style="font-size: 1rem; color: var(--gray-700); text-align: center; margin-bottom: 3rem; max-width: 300px;">Sonraki girişlerinizde FaceID kullanmak ister misiniz?</p>
+                        <div class="card" style="background: var(--purple-light); border: 2px solid var(--purple); padding: 1.5rem; max-width: 320px; margin-bottom: 2rem;">
+                            <h3 style="font-weight: 700; color: var(--purple); margin-bottom: 0.75rem; font-size: 0.9375rem;">✓ FaceID Avantajları</h3>
+                            <ul style="margin-left: 1.25rem; font-size: 0.875rem; color: var(--gray-800); line-height: 1.7;">
+                                <li>Hızlı ve güvenli giriş</li>
+                                <li>Şifre hatırlama gereksiz</li>
+                                <li>Biyometrik güvenlik</li>
+                                <li>İstediğiniz zaman kapatabilirsiniz</li>
+                            </ul>
+                        </div>
+                        <button class="btn btn-primary" style="width: 100%; max-width: 320px; margin-bottom: 1rem;">FaceID'yi Etkinleştir</button>
+                        <button style="background: none; border: none; color: var(--gray-600); font-weight: 600; font-size: 0.9375rem; cursor: pointer; margin-top: 1rem;">Şimdi Değil</button>
+                        <p style="text-align: center; font-size: 0.75rem; color: var(--gray-600); margin-top: 2rem; max-width: 280px;">FaceID ayarlarını dilediğiniz zaman Profil > Ayarlar > Güvenlik bölümünden değiştirebilirsiniz</p>
+                    </div>
+                </div></div></div>`,
+                
+                9: `<div class="iphone fade-in"><div class="island"></div><div class="screen"><div class="content">
+                    <div class="status"><div>9:41</div><div>📶 📡 🔋</div></div>
+                    <div style="padding: 2rem 1.5rem;">
+                        <div style="text-align: center; margin-bottom: 2rem;">
+                            <div style="font-size: 3rem; margin-bottom: 1rem;">📊</div>
+                            <h1 style="font-family: Poppins, sans-serif; font-size: 1.75rem; font-weight: 800; color: var(--secondary); margin-bottom: 0.5rem;">Demografi Bilgileri</h1>
+                            <p style="font-size: 0.9375rem; color: var(--gray-700);">İçeriğe başlamadan önce lütfen bilgilerinizi tamamlayın</p>
+                        </div>
+                        <div class="card" style="background: var(--primary-light); margin-bottom: 1.5rem; border-left: 4px solid var(--primary);">
+                            <p style="font-size: 0.875rem; color: var(--gray-800); line-height: 1.6;"><strong>💡 Neden soruluyor?</strong><br>Bu bilgiler size daha uygun içerik önerileri sunmamıza yardımcı olur. Verileriniz güvenli şekilde saklanır.</p>
+                        </div>
+                        <div style="margin-bottom: 1.5rem;">
+                            <label style="display: block; font-weight: 600; color: var(--gray-900); margin-bottom: 0.5rem; font-size: 0.875rem;">Yaş <span style="color: var(--error);">*</span></label>
+                            <input type="number" placeholder="Yaşınızı girin" style="width: 100%; padding: 1rem; border: 2px solid var(--gray-300); border-radius: 0.75rem; font-family: Inter, sans-serif; font-size: 1rem;" min="13" max="120" value="32">
+                            <p style="font-size: 0.75rem; color: var(--gray-600); margin-top: 0.5rem;">13-120 yaş arası</p>
+                        </div>
+                        <div style="margin-bottom: 1.5rem;">
+                            <label style="display: block; font-weight: 600; color: var(--gray-900); margin-bottom: 0.5rem; font-size: 0.875rem;">Cinsiyet</label>
+                            <div style="display: flex; gap: 0.75rem;">
+                                <button class="btn btn-primary" style="flex: 1; padding: 1rem;">Kadın</button>
+                                <button class="btn" style="flex: 1; padding: 1rem; background: white; color: var(--gray-900); border: 2px solid var(--gray-300);">Erkek</button>
+                            </div>
+                            <button class="btn" style="width: 100%; margin-top: 0.75rem; background: white; color: var(--gray-700); border: 2px solid var(--gray-300); padding: 0.75rem;">Belirtmek istemiyorum</button>
+                        </div>
+                        <div style="margin-bottom: 2rem;">
+                            <label style="display: block; font-weight: 600; color: var(--gray-900); margin-bottom: 0.5rem; font-size: 0.875rem;">Ülke <span style="color: var(--error);">*</span></label>
+                            <select style="width: 100%; padding: 1rem; border: 2px solid var(--gray-300); border-radius: 0.75rem; font-family: Inter, sans-serif; font-size: 1rem; background: white;">
+                                <option>Türkiye</option>
+                                <option>United States</option>
+                                <option>United Kingdom</option>
+                                <option>Germany</option>
+                                <option>France</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-primary" style="width: 100%;">Kaydet ve Devam Et</button>
+                        <p style="text-align: center; font-size: 0.75rem; color: var(--gray-600); margin-top: 1rem;"><span style="color: var(--error);">*</span> Zorunlu alanlar</p>
+                    </div>
+                </div></div></div>`,
+                
+                10: `<div class="iphone fade-in"><div class="island"></div><div class="screen"><div class="content">
+                    <div class="status"><div>9:41</div><div>📶 📡 🔋</div></div>
+                    <div style="padding: 2rem 1.5rem;">
+                        <div style="text-align: center; margin-bottom: 2rem;">
+                            <div style="font-size: 4rem; margin-bottom: 1rem;">👻</div>
+                            <h1 style="font-family: Poppins, sans-serif; font-size: 1.75rem; font-weight: 800; color: var(--secondary); margin-bottom: 0.5rem;">Misafir Modunda Devam Et</h1>
+                            <p style="font-size: 0.9375rem; color: var(--gray-700);">Kayıt olmadan içerikleri keşfedin</p>
+                        </div>
+                        <div class="card" style="background: linear-gradient(135deg, var(--success-light), #A7F3D0); border-left: 4px solid var(--success); margin-bottom: 1.5rem;">
+                            <h3 style="font-weight: 700; color: var(--success-dark); margin-bottom: 0.75rem; font-size: 0.9375rem;">✓ Misafir Olarak Yapabilecekleriniz</h3>
+                            <ul style="margin-left: 1.25rem; font-size: 0.875rem; color: var(--gray-800); line-height: 1.7;">
+                                <li>Yolculukları keşfedin</li>
+                                <li>Atölyelere göz atın</li>
+                                <li>e-Kitap kataloğunu inceleyin</li>
+                                <li>Modülleri görüntüleyin</li>
+                            </ul>
+                        </div>
+                        <div class="card" style="background: var(--warning); color: white; margin-bottom: 2rem;">
+                            <h3 style="font-weight: 700; margin-bottom: 0.75rem; font-size: 0.9375rem;">⚠️ Sınırlamalar</h3>
+                            <ul style="margin-left: 1.25rem; font-size: 0.875rem; line-height: 1.7;">
+                                <li>İçerik başlatamazsınız</li>
+                                <li>Okuma yapamazsınız</li>
+                                <li>Yorum yazamazsınız</li>
+                                <li>İlerleme kaydedilemez</li>
+                            </ul>
+                        </div>
+                        <button class="btn btn-primary" style="width: 100%; margin-bottom: 1rem;">Misafir Olarak Devam Et</button>
+                        <button class="btn" style="width: 100%; background: white; color: var(--gray-900); border: 2px solid var(--gray-300);" onclick="parent.showScreen(4)">Kayıt Ol</button>
+                        <p style="text-align: center; font-size: 0.75rem; color: var(--gray-600); margin-top: 1.5rem;">💡 Kayıt olduktan sonra misafir oturumunuzdaki favorileriniz hesabınıza aktarılacaktır</p>
+                    </div>
+                </div></div></div>`
+            };
+            
+            return screens[num] || screens[1];
+        }
+        
+        // Initialize
+        document.getElementById('viewer').innerHTML = getScreenHTML(1);
+    </script>
+</body>
+</html>
