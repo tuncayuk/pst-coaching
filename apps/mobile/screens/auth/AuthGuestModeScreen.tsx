@@ -1,14 +1,13 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, ScrollView } from "react-native";
 import {
   ActivityIndicator,
   Button,
   Text,
 } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { OfflineNotice } from "../components/OfflineNotice";
-import { ScreenLayout } from "../components/ScreenLayout";
-import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
@@ -17,21 +16,15 @@ const GuestModeContent = ({ isOffline }: { isOffline?: boolean }) => {
   const navigation = useNavigation<any>();
 
   return (
-    <>
-      <View style={styles.iconContainer}>
-        <Text style={styles.icon}>👻</Text>
-      </View>
-      <SectionCard title="">
-        <Text variant="headlineMedium" style={styles.title}>
-          Misafir Modunda Devam Et
-        </Text>
-        <Text variant="bodyMedium" style={styles.subtitle}>
-          Kayıt olmadan içerikleri keşfedin
-        </Text>
+    <SafeAreaView style={styles.container}>
+      <ScrollView contentContainerStyle={styles.scrollContent}>
+        <View style={styles.iconContainer}>
+          <Text style={styles.icon}>👻</Text>
+        </View>
+        <Text style={styles.title}>Misafir Modunda Devam Et</Text>
+        <Text style={styles.subtitle}>Kayıt olmadan içerikleri keşfedin</Text>
         <View style={styles.infoCard}>
-          <Text variant="titleSmall" style={styles.infoTitle}>
-            ✓ Misafir Olarak Yapabilecekleriniz
-          </Text>
+          <Text style={styles.infoTitle}>✓ Misafir Olarak Yapabilecekleriniz</Text>
           <View style={styles.list}>
             <Text style={styles.listItem}>• Yolculukları keşfedin</Text>
             <Text style={styles.listItem}>• Atölyelere göz atın</Text>
@@ -40,9 +33,7 @@ const GuestModeContent = ({ isOffline }: { isOffline?: boolean }) => {
           </View>
         </View>
         <View style={styles.warningCard}>
-          <Text variant="titleSmall" style={styles.warningTitle}>
-            ⚠️ Sınırlamalar
-          </Text>
+          <Text style={styles.warningTitle}>⚠️ Sınırlamalar</Text>
           <View style={styles.list}>
             <Text style={styles.warningItem}>• İçerik başlatamazsınız</Text>
             <Text style={styles.warningItem}>• Okuma yapamazsınız</Text>
@@ -53,8 +44,12 @@ const GuestModeContent = ({ isOffline }: { isOffline?: boolean }) => {
         <Button
           mode="contained"
           disabled={isOffline}
+          buttonColor="#00B4D8"
+          textColor="#FFFFFF"
           onPress={() => navigation.getParent()?.navigate("MainTabs")}
           style={styles.button}
+          contentStyle={styles.primaryButtonContent}
+          labelStyle={styles.primaryButtonLabel}
         >
           Misafir Olarak Devam Et
         </Button>
@@ -62,15 +57,17 @@ const GuestModeContent = ({ isOffline }: { isOffline?: boolean }) => {
           mode="outlined"
           disabled={isOffline}
           onPress={() => navigation.navigate("AuthRegister")}
-          style={styles.button}
+          style={styles.secondaryButton}
+          contentStyle={styles.secondaryButtonContent}
+          labelStyle={styles.secondaryButtonLabel}
         >
           Kayıt Ol
         </Button>
-        <Text variant="bodySmall" style={styles.hint}>
+        <Text style={styles.hint}>
           💡 Kayıt olduktan sonra misafir oturumunuzdaki favorileriniz hesabınıza aktarılacaktır
         </Text>
-      </SectionCard>
-    </>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
@@ -121,21 +118,26 @@ export const AuthGuestModeScreen = ({
 
   if (state === "offline") {
     return (
-      <ScreenLayout title="Misafir Modu" subtitle="Önbellekteki bilgiler">
+      <>
         <OfflineNotice />
         <GuestModeContent isOffline />
-      </ScreenLayout>
+      </>
     );
   }
 
-  return (
-    <ScreenLayout title="Misafir Modu" subtitle="Kayıt olmadan keşfet">
-      <GuestModeContent />
-    </ScreenLayout>
-  );
+  return <GuestModeContent />;
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#FAFAFA",
+  },
+  scrollContent: {
+    paddingHorizontal: 24,
+    paddingTop: 32,
+    paddingBottom: 32,
+  },
   iconContainer: {
     alignItems: "center",
     marginBottom: 16,
@@ -144,6 +146,7 @@ const styles = StyleSheet.create({
     fontSize: 64,
   },
   title: {
+    fontSize: 28,
     fontWeight: "800",
     color: "#2B1B5D",
     marginBottom: 8,
@@ -153,6 +156,7 @@ const styles = StyleSheet.create({
     color: "#525252",
     marginBottom: 24,
     textAlign: "center",
+    fontSize: 15,
   },
   infoCard: {
     backgroundColor: "#D1FAE5",
@@ -193,11 +197,37 @@ const styles = StyleSheet.create({
   },
   button: {
     marginBottom: 12,
+    borderRadius: 12,
+  },
+  primaryButtonContent: {
+    height: 56,
+    justifyContent: "center",
+  },
+  primaryButtonLabel: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: "#FFFFFF",
+  },
+  secondaryButton: {
+    marginBottom: 12,
+    borderRadius: 12,
+    borderWidth: 2,
+    borderColor: "#E5E5E5",
+  },
+  secondaryButtonContent: {
+    height: 56,
+    justifyContent: "center",
+  },
+  secondaryButtonLabel: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: "#171717",
   },
   hint: {
     textAlign: "center",
     color: "#525252",
     marginTop: 16,
     lineHeight: 20,
+    fontSize: 12,
   },
 });
