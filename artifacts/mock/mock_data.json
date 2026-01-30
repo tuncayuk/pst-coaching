@@ -197,7 +197,8 @@
       "level": "baslangic",
       "duration_days": 14,
       "daily_target": "10 dk okuma",
-      "language": "tr"
+      "language": "tr",
+      "featured": true
     },
     {
       "id": "abababab-0000-0000-0000-000000000001",
@@ -206,7 +207,8 @@
       "level": "baslangic",
       "duration_days": 7,
       "daily_target": "8 dk okuma",
-      "language": "tr"
+      "language": "tr",
+      "featured": true
     },
     {
       "id": "abababab-0000-0000-0000-000000000002",
@@ -215,7 +217,8 @@
       "level": "orta",
       "duration_days": 21,
       "daily_target": "12 dk okuma",
-      "language": "tr"
+      "language": "tr",
+      "featured": true
     },
     {
       "id": "abababab-0000-0000-0000-000000000003",
@@ -565,7 +568,8 @@
       "category": "\u015f\u00fck\u00fcr",
       "total_pages": 184,
       "has_audio": false,
-      "language": "tr"
+      "language": "tr",
+      "featured": true
     },
     {
       "id": "eeeeeeee-5555-6666-7777-888888888888",

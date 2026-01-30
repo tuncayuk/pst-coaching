@@ -33,14 +33,14 @@ const DiscoverReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
   const journeyDays = getJourneyDays();
   const workshops = getWorkshops();
   const ebooks = getEbooks();
-  const featuredJourney = journeys[0];
+  const featuredJourney = journeys.find((journey) => journey.featured) ?? journeys[0];
   const featuredDayCount =
     journeyDays.filter((day) => day.journey_id === featuredJourney?.id).length ||
     featuredJourney?.duration_days ||
     0;
   const featuredWorkshopCount = workshops.length;
   const featuredModuleCount = getModules().length;
-  const featuredEbook = ebooks[0];
+  const featuredEbook = ebooks.find((ebook) => ebook.featured) ?? ebooks[0];
   const ebookCategory = featuredEbook?.category ?? "kategori";
   const ebookPages = featuredEbook?.total_pages ?? 0;
   const ebookHours = ebookPages ? Math.max(1, Math.round(ebookPages / 60)) : 0;
