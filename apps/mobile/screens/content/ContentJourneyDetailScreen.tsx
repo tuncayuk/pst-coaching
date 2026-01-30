@@ -24,70 +24,73 @@ import {
 const ContentJourneyDetailContent = ({ journeyId, isOffline }: { journeyId?: string; isOffline?: boolean }) => {
   const navigation = useNavigation<any>();
   const journey = getJourneyById(journeyId);
-  const modules = getModules().slice(0, 3);
-  const workshops = getWorkshops().slice(0, 2);
-  const ebooks = getEbooks().slice(0, 2);
+  const modules = getModules().slice(0, 2);
+  const workshops = getWorkshops().slice(0, 1);
+  const ebooks = getEbooks().slice(0, 1);
   const duration = journey?.duration_days ?? 40;
-  const dailyGoal = journey?.daily_target ?? "10-20 dk";
+  const level = journey?.level ?? "Başlangıç";
+  const dailyGoal = journey?.daily_target ?? "10-20 dk/gün";
 
   return (
     <View>
-      <View style={styles.headerRow}>
-        <PIconButton icon="arrow-left" onPress={() => navigation.goBack()} />
-        <PText style={styles.headerTitle}>Yolculuk Detay</PText>
+      <View style={styles.hero}>
+        <PText style={styles.heroEmoji}>🎯</PText>
+        <PIconButton icon="arrow-left" style={styles.heroBack} onPress={() => navigation.goBack()} />
+        <PIconButton icon="heart-outline" style={styles.heroFav} />
       </View>
 
-      <PCard style={styles.heroCard}>
-        <PText style={styles.heroTitle}>{journey?.title ?? "Sıdk ve Integrity Yolculuğu"}</PText>
-        <PText style={styles.heroDescription}>
-          Kendine şefkatli bir yaklaşım geliştirirken her gün küçük adımlarla ilerleyebileceğin
-          yapılandırılmış bir program.
-        </PText>
-        <View style={styles.metaRow}>
-          <PChip style={styles.metaChip}>{duration} gün</PChip>
-          <PChip style={styles.metaChip}>{dailyGoal}</PChip>
+      <View style={styles.content}>
+        <PText style={styles.title}>{journey?.title ?? "Sıdk ve Integrity Yolculuğu"}</PText>
+        <View style={styles.tagRow}>
+          <PText style={styles.tagPrimary}>⏱️ {duration} gün</PText>
+          <PText style={styles.tagSuccess}>📊 {level}</PText>
+          <PText style={styles.tagSecondary}>📅 {dailyGoal}</PText>
         </View>
-        <View style={styles.heroActions}>
-          <PButton mode="contained" disabled={isOffline}>
-            Yolculuğu Başlat
-          </PButton>
-          <PButton mode="outlined" disabled={isOffline}>
-            Favorilere Ekle
-          </PButton>
-        </View>
-      </PCard>
 
-      <View style={styles.section}>
-        <PText style={styles.sectionTitle}>Modüller</PText>
-        {modules.map((item) => (
-          <PCard key={item.id} style={styles.listCard}>
-            <PText style={styles.listTitle}>{item.title}</PText>
-            <PText style={styles.listSubtitle}>4 ders • 45 dk</PText>
-          </PCard>
-        ))}
+        <PCard style={styles.sectionCard}>
+          <PText style={styles.sectionTitle}>Yolculuk Hakkında</PText>
+          <PText style={styles.paragraph}>
+            Sıdk ve doğruluk üzerine derinlemesine bir keşif yolculuğu. Kendi gerçekliğinizle yüzleşin, içsel bütünlüğünüzü güçlendirin.
+          </PText>
+        </PCard>
+
+        <PCard style={styles.sectionCard}>
+          <PText style={styles.sectionTitle}>İçerik</PText>
+          <View style={styles.contentList}>
+            {modules.map((item) => (
+              <View key={item.id} style={styles.contentRow}>
+                <PText style={styles.contentEmoji}>📦</PText>
+                <View style={styles.contentInfo}>
+                  <PText style={styles.contentTitle}>{item.title}</PText>
+                  <PText style={styles.contentMeta}>5 paket</PText>
+                </View>
+              </View>
+            ))}
+            {workshops.map((item) => (
+              <View key={item.id} style={styles.contentRow}>
+                <PText style={styles.contentEmoji}>🎨</PText>
+                <View style={styles.contentInfo}>
+                  <PText style={styles.contentTitle}>{item.title}</PText>
+                  <PText style={styles.contentMeta}>8 okuma • 4 uygulama</PText>
+                </View>
+              </View>
+            ))}
+            {ebooks.map((item) => (
+              <View key={item.id} style={styles.contentRow}>
+                <PText style={styles.contentEmoji}>📖</PText>
+                <View style={styles.contentInfo}>
+                  <PText style={styles.contentTitle}>{item.title}</PText>
+                  <PText style={styles.contentMeta}>{item.total_pages ?? 256} sayfa</PText>
+                </View>
+              </View>
+            ))}
+          </View>
+        </PCard>
+
+        <PButton mode="contained" disabled={isOffline}>
+          Yolculuğu Başlat
+        </PButton>
       </View>
-
-      <View style={styles.section}>
-        <PText style={styles.sectionTitle}>Atölyeler</PText>
-        {workshops.map((item) => (
-          <PCard key={item.id} style={styles.listCard}>
-            <PText style={styles.listTitle}>{item.title}</PText>
-            <PText style={styles.listSubtitle}>60 dk • Orta seviye</PText>
-          </PCard>
-        ))}
-      </View>
-
-      <View style={styles.section}>
-        <PText style={styles.sectionTitle}>e-Kitaplar</PText>
-        {ebooks.map((item) => (
-          <PCard key={item.id} style={styles.listCard}>
-            <PText style={styles.listTitle}>{item.title}</PText>
-            <PText style={styles.listSubtitle}>180 sayfa • TR</PText>
-          </PCard>
-        ))}
-      </View>
-
-      <View style={styles.bottomSpacer} />
     </View>
   );
 };
@@ -103,11 +106,10 @@ export const ContentJourneyDetailScreen = ({
   if (state === "loading") {
     return (
       <SafeAreaView style={styles.root}>
-        <ScrollView contentContainerStyle={styles.content}>
+        <ScrollView contentContainerStyle={styles.page}>
           <PActivityIndicator animating />
-          <SkeletonBlock height={20} />
-          <SkeletonBlock height={20} />
-          <SkeletonBlock height={120} />
+          <SkeletonBlock height={18} />
+          <SkeletonBlock height={18} />
           <SkeletonBlock height={120} />
         </ScrollView>
       </SafeAreaView>
@@ -117,7 +119,7 @@ export const ContentJourneyDetailScreen = ({
   if (state === "empty") {
     return (
       <SafeAreaView style={styles.root}>
-        <ScrollView contentContainerStyle={styles.content}>
+        <ScrollView contentContainerStyle={styles.page}>
           <StateMessage
             title="Yolculuk bulunamadı"
             description="Bu yolculuk şu anda erişilebilir değil."
@@ -132,7 +134,7 @@ export const ContentJourneyDetailScreen = ({
   if (state === "error") {
     return (
       <SafeAreaView style={styles.root}>
-        <ScrollView contentContainerStyle={styles.content}>
+        <ScrollView contentContainerStyle={styles.page}>
           <StateMessage
             title="Yolculuk yüklenemedi"
             description="Bağlantını kontrol edip tekrar dene."
@@ -148,7 +150,7 @@ export const ContentJourneyDetailScreen = ({
   if (state === "offline") {
     return (
       <SafeAreaView style={styles.root}>
-        <ScrollView contentContainerStyle={styles.content}>
+        <ScrollView contentContainerStyle={styles.page}>
           <OfflineNotice />
           <ContentJourneyDetailContent journeyId={journeyId} isOffline />
         </ScrollView>
@@ -158,7 +160,7 @@ export const ContentJourneyDetailScreen = ({
 
   return (
     <SafeAreaView style={styles.root}>
-      <ScrollView contentContainerStyle={styles.content}>
+      <ScrollView contentContainerStyle={styles.page}>
         <ContentJourneyDetailContent journeyId={journeyId} />
       </ScrollView>
     </SafeAreaView>
@@ -170,72 +172,113 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#FAFAFA",
   },
+  page: {
+    paddingBottom: 24,
+  },
+  hero: {
+    height: 200,
+    backgroundColor: "#FFDDC1",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  heroEmoji: {
+    fontSize: 64,
+  },
+  heroBack: {
+    position: "absolute",
+    top: 16,
+    left: 16,
+    backgroundColor: "rgba(0,0,0,0.3)",
+  },
+  heroFav: {
+    position: "absolute",
+    top: 16,
+    right: 16,
+    backgroundColor: "rgba(0,0,0,0.3)",
+  },
   content: {
     padding: 16,
   },
-  headerRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8,
-    marginBottom: 16,
-  },
-  headerTitle: {
-    fontSize: 18,
+  title: {
+    fontSize: 24,
     fontWeight: "800",
     color: "#2B1B5D",
-  },
-  heroCard: {
-    padding: 16,
-    borderRadius: 16,
-    marginBottom: 20,
-  },
-  heroTitle: {
-    fontSize: 20,
-    fontWeight: "800",
-    color: "#2B1B5D",
-    marginBottom: 8,
-  },
-  heroDescription: {
-    fontSize: 14,
-    color: "#525252",
     marginBottom: 12,
   },
-  metaRow: {
+  tagRow: {
     flexDirection: "row",
+    flexWrap: "wrap",
     gap: 8,
     marginBottom: 16,
   },
-  metaChip: {
+  tagPrimary: {
     backgroundColor: "#E0F7FA",
+    color: "#0096B8",
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderRadius: 8,
+    fontSize: 12,
+    fontWeight: "600",
   },
-  heroActions: {
-    gap: 8,
+  tagSuccess: {
+    backgroundColor: "#D1FAE5",
+    color: "#065F46",
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderRadius: 8,
+    fontSize: 12,
+    fontWeight: "600",
   },
-  section: {
-    marginBottom: 20,
+  tagSecondary: {
+    backgroundColor: "#EDE7F6",
+    color: "#2B1B5D",
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderRadius: 8,
+    fontSize: 12,
+    fontWeight: "600",
+  },
+  sectionCard: {
+    padding: 16,
+    borderRadius: 16,
+    marginBottom: 16,
   },
   sectionTitle: {
     fontSize: 16,
     fontWeight: "700",
     color: "#171717",
-    marginBottom: 12,
+    marginBottom: 8,
   },
-  listCard: {
+  paragraph: {
+    fontSize: 14,
+    color: "#525252",
+    lineHeight: 20,
+  },
+  contentList: {
+    gap: 12,
+  },
+  contentRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 12,
     padding: 12,
-    borderRadius: 14,
-    marginBottom: 12,
+    borderRadius: 10,
+    backgroundColor: "#FAFAFA",
   },
-  listTitle: {
+  contentEmoji: {
+    fontSize: 20,
+  },
+  contentInfo: {
+    flex: 1,
+  },
+  contentTitle: {
     fontSize: 14,
     fontWeight: "600",
     color: "#171717",
     marginBottom: 4,
   },
-  listSubtitle: {
+  contentMeta: {
     fontSize: 12,
     color: "#525252",
-  },
-  bottomSpacer: {
-    height: 24,
   },
 });

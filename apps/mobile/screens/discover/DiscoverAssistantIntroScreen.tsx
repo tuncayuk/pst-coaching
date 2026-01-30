@@ -1,13 +1,12 @@
 import React from "react";
-import { StyleSheet } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
-import { ScreenLayout } from "../components/ScreenLayout";
-import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
-import { PActivityIndicator, PButton, PCard, PText } from "../../components";
-
+import { PActivityIndicator, PButton, PCard, PIconButton, PText } from "../../components";
 
 const assistantBenefits = [
   "Hedefine uygun içerik önerileri",
@@ -15,35 +14,69 @@ const assistantBenefits = [
   "Kütüphanenden devam önerileri",
 ];
 
+const assistantSteps = [
+  { title: "Hedefini seç", subtitle: "Örn: sınır koyma" },
+  { title: "Süreni belirle", subtitle: "10-20 dk, 30-45 dk" },
+  { title: "Önerilerini al", subtitle: "1 ana + 2 alternatif" },
+];
+
 const DiscoverAssistantIntroContent = ({ isOffline }: { isOffline?: boolean }) => {
+  const navigation = useNavigation<any>();
+
   return (
-    <>
-      <SectionCard title="İçerik Asistanı">
-        <PText variant="bodyMedium" style={styles.paragraph}>
-          Kısa bir testle hedeflerine uygun yolculuk, atölye ve modül önerileri al.
-        </PText>
-        {assistantBenefits.map((benefit) => (
-          <PText key={benefit} variant="bodySmall" style={styles.listItem}>
-            • {benefit}
+    <SafeAreaView style={styles.root}>
+      <View style={styles.header}>
+        <View style={styles.headerRow}>
+          <PIconButton icon="arrow-left" onPress={() => navigation.goBack()} />
+          <PText style={styles.headerTitle}>İçerik Asistanı</PText>
+        </View>
+      </View>
+
+      <ScrollView contentContainerStyle={styles.content}>
+        <View style={styles.hero}>
+          <PText style={styles.heroEmoji}>🤖</PText>
+          <PText style={styles.heroTitle}>Kısa bir testle öneri al</PText>
+          <PText style={styles.heroSubtitle}>
+            Hedeflerine uygun yolculuk, atölye ve modül önerileri hazırlayalım.
           </PText>
-        ))}
-        <PButton mode="contained" style={styles.primaryButton} disabled={isOffline}>
+        </View>
+
+        <PCard style={styles.card}>
+          <PText style={styles.cardLabel}>Neler yapar?</PText>
+          {assistantBenefits.map((benefit) => (
+            <PText key={benefit} style={styles.listItem}>
+              • {benefit}
+            </PText>
+          ))}
+        </PCard>
+
+        <PCard style={styles.card}>
+          <PText style={styles.cardLabel}>Nasıl çalışır?</PText>
+          {assistantSteps.map((step) => (
+            <View key={step.title} style={styles.stepRow}>
+              <PText style={styles.stepTitle}>{step.title}</PText>
+              <PText style={styles.stepSubtitle}>{step.subtitle}</PText>
+            </View>
+          ))}
+        </PCard>
+
+        <PButton
+          mode="contained"
+          disabled={isOffline}
+          onPress={() => navigation.navigate("DiscoverAssistantQuestions")}
+          style={styles.primaryButton}
+        >
           Asistanı Başlat
         </PButton>
-      </SectionCard>
-
-      <SectionCard title="Nasıl Çalışır" actionLabel="Örnekler">
-        <PCard style={styles.card}>
-          <PCard.Title title="Hedefini seç" subtitle="Örn: sınır koyma" />
-        </PCard>
-        <PCard style={styles.card}>
-          <PCard.Title title="Süreni belirle" subtitle="10-20 dk, 30-45 dk" />
-        </PCard>
-        <PCard style={styles.card}>
-          <PCard.Title title="Önerilerini al" subtitle="1 ana + 2 alternatif" />
-        </PCard>
-      </SectionCard>
-    </>
+        <PButton
+          mode="text"
+          disabled={isOffline}
+          onPress={() => navigation.navigate("DiscoverCatalog")}
+        >
+          Kataloğa Dön
+        </PButton>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
@@ -56,75 +89,135 @@ export const DiscoverAssistantIntroScreen = ({
 
   if (state === "loading") {
     return (
-      <ScreenLayout title="İçerik Asistanı" subtitle="Asistan hazırlanıyor">
-        <SectionCard title="Yükleniyor">
+      <SafeAreaView style={styles.root}>
+        <ScrollView contentContainerStyle={styles.content}>
           <PActivityIndicator animating />
           <SkeletonBlock height={18} />
           <SkeletonBlock height={18} />
-        </SectionCard>
-        <SectionCard title="Adımlar">
-          <SkeletonBlock height={60} />
-          <SkeletonBlock height={60} />
-        </SectionCard>
-      </ScreenLayout>
+          <SkeletonBlock height={90} />
+        </ScrollView>
+      </SafeAreaView>
     );
   }
 
   if (state === "empty") {
     return (
-      <ScreenLayout title="İçerik Asistanı" subtitle="Öneri bulunamadı">
-        <StateMessage
-          title="Öneri yok"
-          description="Yeni içerikler için daha sonra tekrar deneyebilirsin."
-          actionLabel="Kataloğa Dön"
-          icon="lightbulb-outline"
-        />
-      </ScreenLayout>
+      <SafeAreaView style={styles.root}>
+        <ScrollView contentContainerStyle={styles.content}>
+          <StateMessage
+            title="Öneri yok"
+            description="Yeni içerikler için daha sonra tekrar deneyebilirsin."
+            actionLabel="Kataloğa Dön"
+            icon="lightbulb-outline"
+          />
+        </ScrollView>
+      </SafeAreaView>
     );
   }
 
   if (state === "error") {
     return (
-      <ScreenLayout title="İçerik Asistanı" subtitle="Bir sorun oluştu">
-        <StateMessage
-          title="Asistan yüklenemedi"
-          description="Bağlantını kontrol edip tekrar dene."
-          actionLabel="Tekrar Dene"
-          icon="alert-circle-outline"
-          tone="error"
-        />
-      </ScreenLayout>
+      <SafeAreaView style={styles.root}>
+        <ScrollView contentContainerStyle={styles.content}>
+          <StateMessage
+            title="Asistan yüklenemedi"
+            description="Bağlantını kontrol edip tekrar dene."
+            actionLabel="Tekrar Dene"
+            icon="alert-circle-outline"
+            tone="error"
+          />
+        </ScrollView>
+      </SafeAreaView>
     );
   }
 
   if (state === "offline") {
     return (
-      <ScreenLayout title="İçerik Asistanı" subtitle="Önbellekteki öneriler">
+      <SafeAreaView style={styles.root}>
         <OfflineNotice />
         <DiscoverAssistantIntroContent isOffline />
-      </ScreenLayout>
+      </SafeAreaView>
     );
   }
 
-  return (
-    <ScreenLayout title="İçerik Asistanı" subtitle="Sana uygun öneriler">
-      <DiscoverAssistantIntroContent />
-    </ScreenLayout>
-  );
+  return <DiscoverAssistantIntroContent />;
 };
 
 const styles = StyleSheet.create({
-  paragraph: {
+  root: {
+    flex: 1,
+    backgroundColor: "#FAFAFA",
+  },
+  header: {
+    backgroundColor: "#FFFFFF",
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: "#E5E5E5",
+  },
+  headerRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+  },
+  headerTitle: {
+    fontSize: 18,
+    fontWeight: "800",
+    color: "#2B1B5D",
+  },
+  content: {
+    padding: 16,
+  },
+  hero: {
+    alignItems: "center",
+    marginBottom: 24,
+  },
+  heroEmoji: {
+    fontSize: 52,
+    marginBottom: 12,
+  },
+  heroTitle: {
+    fontSize: 20,
+    fontWeight: "700",
+    color: "#2B1B5D",
+    textAlign: "center",
+    marginBottom: 6,
+  },
+  heroSubtitle: {
+    fontSize: 15,
+    color: "#525252",
+    textAlign: "center",
+  },
+  card: {
+    padding: 16,
+    borderRadius: 16,
+    marginBottom: 16,
+  },
+  cardLabel: {
+    fontSize: 15,
+    fontWeight: "700",
+    color: "#171717",
     marginBottom: 12,
   },
   listItem: {
-    marginBottom: 4,
+    fontSize: 14,
+    color: "#525252",
+    marginBottom: 6,
+  },
+  stepRow: {
+    marginBottom: 12,
+  },
+  stepTitle: {
+    fontSize: 14,
+    fontWeight: "700",
+    color: "#171717",
+    marginBottom: 2,
+  },
+  stepSubtitle: {
+    fontSize: 13,
+    color: "#737373",
   },
   primaryButton: {
-    marginTop: 12,
-    alignSelf: "flex-start",
-  },
-  card: {
-    marginBottom: 12,
+    marginBottom: 8,
   },
 });

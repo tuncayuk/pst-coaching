@@ -1,63 +1,74 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
-import { ScreenLayout } from "../components/ScreenLayout";
-import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
-import { PActivityIndicator, PButton, PCard, PChip, PProgressBar, PText } from "../../components";
+import { getEbookChaptersForEbook, getEbooks } from "../../data/mockSelectors";
+import {
+  PActivityIndicator,
+  PButton,
+  PCard,
+  PChip,
+  PIconButton,
+  PText,
+} from "../../components";
 
+const ContentEbookDetailContent = ({ ebookId, isOffline }: { ebookId?: string; isOffline?: boolean }) => {
+  const navigation = useNavigation<any>();
+  const ebooks = getEbooks();
+  const ebook = ebooks.find((item) => item.id === ebookId) ?? ebooks[0];
+  const chapters = getEbookChaptersForEbook(ebook.id).slice(0, 5);
 
-const ebookTags = ["Duygu düzenleme", "Farkındalık", "Günlük pratik"];
-
-const ContentEbookDetailContent = ({ isOffline }: { isOffline?: boolean }) => {
   return (
-    <>
-      <SectionCard title="Kitap Özeti">
-        <PText variant="bodyMedium" style={styles.paragraph}>
-          Duygularını düzenlemek için kısa egzersizler, örnekler ve günlük yazım alanları sunan
-          rehber bir okuma.
-        </PText>
-        <View style={styles.chipRow}>
-          {ebookTags.map((tag) => (
-            <PChip key={tag} style={styles.chip} disabled={isOffline}>
-              {tag}
-            </PChip>
-          ))}
+    <View>
+      <View style={styles.hero}>
+        <PText style={styles.heroEmoji}>📖</PText>
+        <PIconButton icon="arrow-left" style={styles.heroBack} onPress={() => navigation.goBack()} />
+        <PIconButton icon="heart-outline" style={styles.heroFav} />
+      </View>
+
+      <View style={styles.content}>
+        <PText style={styles.title}>{ebook?.title ?? "Şükür Şifresi"}</PText>
+        <View style={styles.tagRow}>
+          <PChip style={styles.tagChip}>📚 Şükür</PChip>
+          <PChip style={styles.tagChip}>{ebook?.total_pages ?? 184} sayfa</PChip>
+          <PChip style={styles.tagChip}>~3 saat okuma</PChip>
         </View>
-        <PCard style={styles.card}>
-          <PCard.Title title="İlerleme" subtitle="2/12 bölüm okundu" />
-          <PCard.Content>
-            <PProgressBar progress={0.18} style={styles.progress} />
-          </PCard.Content>
-          <PCard.Actions>
-            <PButton mode="contained" disabled={isOffline}>
-              Okumaya Başla
-            </PButton>
-          </PCard.Actions>
-        </PCard>
-      </SectionCard>
 
-      <SectionCard title="Hızlı Erişim" actionLabel="İçindekiler">
-        <PCard style={styles.secondaryCard}>
-          <PCard.Title title="Son kaldığın yer" subtitle="Bölüm 3 · 4 dk kaldı" />
-          <PCard.Actions>
-            <PButton mode="outlined" disabled={isOffline}>
-              Devam Et
-            </PButton>
-          </PCard.Actions>
+        <PCard style={styles.relatedCard}>
+          <PText style={styles.relatedText}>
+            🎯 Yolculuk: Şükür Yolculuğu'nun parçası
+          </PText>
         </PCard>
-      </SectionCard>
 
-      <SectionCard title="Okuyucu Ayarları">
-        <PText variant="bodySmall">• Satır aralığı ve yazı boyutunu ayarla</PText>
-        <PText variant="bodySmall">• Karanlık modda okumaya geç</PText>
-        <PButton mode="outlined" style={styles.secondaryButton} disabled={isOffline}>
-          Ayarları Aç
+        <PCard style={styles.sectionCard}>
+          <PText style={styles.sectionTitle}>Kitap Hakkında</PText>
+          <PText style={styles.paragraph}>
+            Şükrün dönüştürücü gücünü keşfedin. Günlük hayatta şükrü nasıl yaşayacağınızı öğrenin.
+          </PText>
+          <View style={styles.metaBox}>
+            <PText style={styles.metaText}><PText style={styles.metaLabel}>Yazar:</PText> PST Coaching Ekibi</PText>
+            <PText style={styles.metaText}><PText style={styles.metaLabel}>Kategori:</PText> Kişisel Gelişim, Maneviyat</PText>
+          </View>
+        </PCard>
+
+        <PCard style={styles.sectionCard}>
+          <PText style={styles.sectionTitle}>İçindekiler</PText>
+          {chapters.map((chapter, index) => (
+            <PText key={chapter.id ?? index} style={styles.chapterItem}>
+              {index + 1}. {chapter.title ?? `Bölüm ${index + 1}`}
+            </PText>
+          ))}
+        </PCard>
+
+        <PButton mode="contained" disabled={isOffline}>
+          Okumaya Başla
         </PButton>
-      </SectionCard>
-    </>
+      </View>
+    </View>
   );
 };
 
@@ -67,91 +78,164 @@ export const ContentEbookDetailScreen = ({
   route?: { params?: { state?: ScreenState; id?: string } };
 }) => {
   const state = resolveScreenState(route);
+  const ebookId = route?.params?.id;
 
   if (state === "loading") {
     return (
-      <ScreenLayout title="e-Kitap Detay" subtitle="e-Kitap yükleniyor">
-        <SectionCard title="Yükleniyor">
+      <SafeAreaView style={styles.root}>
+        <ScrollView contentContainerStyle={styles.page}>
           <PActivityIndicator animating />
           <SkeletonBlock height={18} />
           <SkeletonBlock height={18} />
-        </SectionCard>
-        <SectionCard title="Bölümler">
-          <SkeletonBlock height={60} />
-          <SkeletonBlock height={60} />
-        </SectionCard>
-      </ScreenLayout>
+          <SkeletonBlock height={120} />
+        </ScrollView>
+      </SafeAreaView>
     );
   }
 
   if (state === "empty") {
     return (
-      <ScreenLayout title="e-Kitap Detay" subtitle="İçerik bulunamadı">
-        <StateMessage
-          title="e-Kitap bulunamadı"
-          description="Bu e-Kitap şu anda erişilebilir değil."
-          actionLabel="Keşfe Dön"
-          icon="book-open-page-variant"
-        />
-      </ScreenLayout>
+      <SafeAreaView style={styles.root}>
+        <ScrollView contentContainerStyle={styles.page}>
+          <StateMessage
+            title="e-Kitap bulunamadı"
+            description="Bu e-Kitap şu anda erişilebilir değil."
+            actionLabel="Keşfe Dön"
+            icon="book-open-page-variant"
+          />
+        </ScrollView>
+      </SafeAreaView>
     );
   }
 
   if (state === "error") {
     return (
-      <ScreenLayout title="e-Kitap Detay" subtitle="Bir sorun oluştu">
-        <StateMessage
-          title="e-Kitap yüklenemedi"
-          description="Bağlantını kontrol edip tekrar dene."
-          actionLabel="Tekrar Dene"
-          icon="alert-circle-outline"
-          tone="error"
-        />
-      </ScreenLayout>
+      <SafeAreaView style={styles.root}>
+        <ScrollView contentContainerStyle={styles.page}>
+          <StateMessage
+            title="e-Kitap yüklenemedi"
+            description="Bağlantını kontrol edip tekrar dene."
+            actionLabel="Tekrar Dene"
+            icon="alert-circle-outline"
+            tone="error"
+          />
+        </ScrollView>
+      </SafeAreaView>
     );
   }
 
   if (state === "offline") {
     return (
-      <ScreenLayout title="e-Kitap Detay" subtitle="Önbellekteki içerik">
-        <OfflineNotice />
-        <ContentEbookDetailContent isOffline />
-      </ScreenLayout>
+      <SafeAreaView style={styles.root}>
+        <ScrollView contentContainerStyle={styles.page}>
+          <OfflineNotice />
+          <ContentEbookDetailContent ebookId={ebookId} isOffline />
+        </ScrollView>
+      </SafeAreaView>
     );
   }
 
   return (
-    <ScreenLayout title="e-Kitap Detay" subtitle="e-Kitap hakkında">
-      <ContentEbookDetailContent />
-    </ScreenLayout>
+    <SafeAreaView style={styles.root}>
+      <ScrollView contentContainerStyle={styles.page}>
+        <ContentEbookDetailContent ebookId={ebookId} />
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  paragraph: {
+  root: {
+    flex: 1,
+    backgroundColor: "#FAFAFA",
+  },
+  page: {
+    paddingBottom: 24,
+  },
+  hero: {
+    height: 280,
+    backgroundColor: "#D1FAE5",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  heroEmoji: {
+    fontSize: 80,
+  },
+  heroBack: {
+    position: "absolute",
+    top: 16,
+    left: 16,
+    backgroundColor: "rgba(0,0,0,0.3)",
+  },
+  heroFav: {
+    position: "absolute",
+    top: 16,
+    right: 16,
+    backgroundColor: "rgba(0,0,0,0.3)",
+  },
+  content: {
+    padding: 16,
+  },
+  title: {
+    fontSize: 28,
+    fontWeight: "800",
+    color: "#2B1B5D",
     marginBottom: 12,
   },
-  chipRow: {
+  tagRow: {
     flexDirection: "row",
     flexWrap: "wrap",
+    gap: 8,
+    marginBottom: 16,
+  },
+  tagChip: {
+    backgroundColor: "#E0F7FA",
+  },
+  relatedCard: {
+    padding: 12,
+    borderRadius: 12,
+    backgroundColor: "#E0F7FA",
+    borderLeftWidth: 4,
+    borderLeftColor: "#00B4D8",
     marginBottom: 12,
   },
-  chip: {
-    marginRight: 8,
+  relatedText: {
+    fontSize: 13,
+    color: "#404040",
+  },
+  sectionCard: {
+    padding: 16,
+    borderRadius: 16,
+    marginBottom: 16,
+  },
+  sectionTitle: {
+    fontSize: 16,
+    fontWeight: "700",
+    color: "#171717",
     marginBottom: 8,
   },
-  card: {
-    marginTop: 4,
-  },
-  secondaryCard: {
-    marginTop: 4,
-  },
-  progress: {
-    marginTop: 8,
+  paragraph: {
+    fontSize: 14,
+    color: "#525252",
+    lineHeight: 20,
     marginBottom: 12,
   },
-  secondaryButton: {
-    marginTop: 12,
-    alignSelf: "flex-start",
+  metaBox: {
+    backgroundColor: "#FAFAFA",
+    borderRadius: 10,
+    padding: 12,
+  },
+  metaText: {
+    fontSize: 12,
+    color: "#525252",
+    marginBottom: 4,
+  },
+  metaLabel: {
+    fontWeight: "700",
+  },
+  chapterItem: {
+    fontSize: 13,
+    color: "#404040",
+    marginBottom: 6,
   },
 });

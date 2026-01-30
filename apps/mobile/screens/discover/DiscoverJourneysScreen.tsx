@@ -47,12 +47,12 @@ const DiscoverJourneysContent = ({ isOffline }: { isOffline?: boolean }) => {
         ))}
       </View>
 
-      {journeys.map((item) => {
+      {journeys.map((item, index) => {
         const duration = item.duration_days ?? 40;
         const level = item.level ?? "Başlangıç";
-        const modules = 3;
-        const workshops = 2;
-        const ebooks = 1;
+        const modules = 3 + (index % 2);
+        const workshops = 2 + (index % 2);
+        const ebooks = 1 + (index % 2);
 
         return (
           <PCard key={item.id} style={styles.card}>
@@ -62,10 +62,15 @@ const DiscoverJourneysContent = ({ isOffline }: { isOffline?: boolean }) => {
               </View>
               <View style={styles.cardInfo}>
                 <PText style={styles.cardTitle}>{item.title}</PText>
-                <PText style={styles.cardMeta}>{duration} gün • {level}</PText>
-                <PText style={styles.cardSubMeta}>
-                  📦 {modules} Modül • 🎨 {workshops} Atölye • 📖 {ebooks} e-Kitap
-                </PText>
+                <View style={styles.cardMetaRow}>
+                  <PText style={styles.cardMeta}>⏱️ {duration} gün</PText>
+                  <PText style={styles.cardMeta}>📊 {level}</PText>
+                </View>
+                <View style={styles.cardChipRow}>
+                  <PText style={styles.cardChipPrimary}>📦 {modules} Modül</PText>
+                  <PText style={styles.cardChipSuccess}>🎨 {workshops} Atölye</PText>
+                  <PText style={styles.cardChipSecondary}>📖 {ebooks} Kitap</PText>
+                </View>
               </View>
             </View>
             <PButton
@@ -216,6 +221,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFDDC1",
     alignItems: "center",
     justifyContent: "center",
+    flexShrink: 0,
   },
   cardEmoji: {
     fontSize: 26,
@@ -227,16 +233,48 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: "700",
     color: "#171717",
-    marginBottom: 4,
+    marginBottom: 6,
+  },
+  cardMetaRow: {
+    flexDirection: "row",
+    gap: 12,
+    marginBottom: 6,
   },
   cardMeta: {
     fontSize: 13,
     color: "#525252",
-    marginBottom: 6,
   },
-  cardSubMeta: {
+  cardChipRow: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 6,
+  },
+  cardChipPrimary: {
+    backgroundColor: "#E0F7FA",
+    color: "#0096B8",
     fontSize: 12,
-    color: "#525252",
+    fontWeight: "600",
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 6,
+  },
+  cardChipSuccess: {
+    backgroundColor: "#D1FAE5",
+    color: "#065F46",
+    fontSize: 12,
+    fontWeight: "600",
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 6,
+  },
+  cardChipSecondary: {
+    backgroundColor: "#EDE7F6",
+    color: "#2B1B5D",
+    fontSize: 12,
+    fontWeight: "600",
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 6,
   },
   bottomSpacer: {
     height: 24,
