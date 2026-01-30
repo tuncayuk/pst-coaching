@@ -23,7 +23,7 @@ describe("subscription gate navigation", () => {
   it("routes to paywall when entitlement is missing", async () => {
     const Screen = () => null;
     const Gated = withSubscriptionGate(Screen);
-    const replace = jest.fn();
+    const replace = vi.fn();
 
     render(
       <Gated

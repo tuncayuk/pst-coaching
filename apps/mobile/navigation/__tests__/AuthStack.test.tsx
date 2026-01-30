@@ -3,11 +3,11 @@ import { NavigationContainer } from "@react-navigation/native";
 import { render } from "@testing-library/react-native";
 import { AuthStack, AuthStackParamList } from "../AuthStack";
 
-jest.mock("react-native-safe-area-context", () => ({
+vi.mock("react-native-safe-area-context", () => ({
   SafeAreaView: ({ children }: { children: React.ReactNode }) => children,
 }));
 
-const cases: Array<{ name: keyof AuthStackParamList; text: string }> = [
+const cases: { name: keyof AuthStackParamList; text: string }[] = [
   {
     name: "OnboardingLanguageSelect",
     text: "Dilini seç",

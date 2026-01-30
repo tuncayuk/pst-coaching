@@ -3,11 +3,11 @@ import { NavigationContainer } from "@react-navigation/native";
 import { render } from "@testing-library/react-native";
 import { DiscoverStack, DiscoverStackParamList } from "../DiscoverStack";
 
-jest.mock("react-native-safe-area-context", () => ({
+vi.mock("react-native-safe-area-context", () => ({
   SafeAreaView: ({ children }: { children: React.ReactNode }) => children,
 }));
 
-const cases: Array<{ name: keyof DiscoverStackParamList; text: string }> = [
+const cases: { name: keyof DiscoverStackParamList; text: string }[] = [
   {
     name: "DiscoverCatalog",
     text: "Yeni içerikleri keşfet",

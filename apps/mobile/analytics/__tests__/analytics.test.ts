@@ -7,7 +7,7 @@ afterEach(() => {
 
 describe("analytics payloads", () => {
   it("scrubs pii keys and values", () => {
-    const sink = jest.fn();
+    const sink = vi.fn();
     setAnalyticsSink(sink);
 
     const event = trackEvent("home_dashboard_viewed", {
@@ -33,7 +33,7 @@ describe("analytics payloads", () => {
   });
 
   it("blocks events when opt-in is false", () => {
-    const sink = jest.fn();
+    const sink = vi.fn();
     setAnalyticsSink(sink);
     setAnalyticsOptIn(false);
 
