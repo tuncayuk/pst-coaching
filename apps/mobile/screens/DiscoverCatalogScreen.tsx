@@ -100,6 +100,8 @@ const DiscoverReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
             onPress={() => handleDiscoverRoute(tab.screen)}
             disabled={isOffline}
             style={styles.tabButton}
+            labelStyle={styles.tabLabel}
+            contentStyle={styles.tabContent}
           >
             {tab.label}
           </PButton>
@@ -300,6 +302,14 @@ const styles = StyleSheet.create({
   },
   tabButton: {
     borderRadius: 10,
+  },
+  tabLabel: {
+    fontSize: 12,
+    fontWeight: "600",
+  },
+  tabContent: {
+    height: 42,
+    paddingHorizontal: 12,
   },
   section: {
     marginBottom: 24,
