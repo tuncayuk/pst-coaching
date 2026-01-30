@@ -8,9 +8,9 @@ import { StateMessage } from "./components/StateMessage";
 import { resolveScreenState, ScreenState } from "./components/ScreenState";
 import {
   getEbooks,
-  getJourneyById,
   getJourneyDays,
   getJourneys,
+  getModules,
   getPrimaryUser,
   getSubscriptionForUser,
   getWorkshops,
@@ -34,10 +34,16 @@ const DiscoverReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
   const workshops = getWorkshops();
   const ebooks = getEbooks();
   const featuredJourney = journeys[0];
-  const featuredDayCount = journeyDays.filter((day) => day.journey_id === featuredJourney?.id).length || 40;
-  const featuredWorkshopCount = workshops.slice(0, 2).length || 2;
-  const featuredModuleCount = 3;
+  const featuredDayCount =
+    journeyDays.filter((day) => day.journey_id === featuredJourney?.id).length ||
+    featuredJourney?.duration_days ||
+    0;
+  const featuredWorkshopCount = workshops.length;
+  const featuredModuleCount = getModules().length;
   const featuredEbook = ebooks[0];
+  const ebookCategory = featuredEbook?.category ?? "kategori";
+  const ebookPages = featuredEbook?.total_pages ?? 0;
+  const ebookHours = ebookPages ? Math.max(1, Math.round(ebookPages / 60)) : 0;
 
   const handlePaywall = () => navigation.navigate("Content", { screen: "ContentPaywall" });
 
@@ -61,7 +67,10 @@ const DiscoverReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
     <View>
       <PText style={styles.title}>Keşfet</PText>
 
-      <PCard style={styles.assistantCard}>
+      <PCard
+        style={styles.assistantCard}
+        onPress={() => handleDiscoverRoute("DiscoverAssistantQuestions")}
+      >
         <View style={styles.assistantRow}>
           <PText style={styles.assistantEmoji}>🤖</PText>
           <View style={styles.assistantInfo}>
@@ -70,38 +79,21 @@ const DiscoverReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
           </View>
           <PText style={styles.assistantArrow}>→</PText>
         </View>
-        <PButton
-          mode="contained"
-          disabled={isOffline}
-          onPress={() => handleDiscoverRoute("DiscoverAssistantQuestions")}
-        >
-          Asistana Başla
-        </PButton>
       </PCard>
-
-      {requiresSubscription ? (
-        <PCard style={styles.paywallCard}>
-          <PText style={styles.paywallTitle}>Premium içeriklere erişim</PText>
-          <PText style={styles.paywallSubtitle}>
-            Yolculuklar ve e-kitaplar için aboneliğini etkinleştir.
-          </PText>
-          <PButton mode="contained" onPress={handlePaywall} disabled={isOffline}>
-            Aboneliği Gör
-          </PButton>
-        </PCard>
-      ) : null}
 
       <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.tabsRow}>
         {contentTabs.map((tab, index) => (
           <PButton
             key={tab.key}
-            mode={index === 0 ? "contained" : "outlined"}
+            mode="contained"
             compact
             onPress={() => handleDiscoverRoute(tab.screen)}
             disabled={isOffline}
             style={styles.tabButton}
             labelStyle={styles.tabLabel}
             contentStyle={styles.tabContent}
+            buttonColor={index === 0 ? "#00B4D8" : "#F5F5F5"}
+            textColor={index === 0 ? "#FFFFFF" : "#525252"}
           >
             {tab.label}
           </PButton>
@@ -111,7 +103,10 @@ const DiscoverReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
       <View style={styles.section}>
         <PText style={styles.sectionTitle}>Öne Çıkanlar</PText>
 
-        <PCard style={styles.featureCard}>
+        <PCard
+          style={styles.featureCard}
+          onPress={() => handleDetailRoute("ContentJourneyDetail", featuredJourney?.id)}
+        >
           <View style={styles.featureRow}>
             <View style={styles.featureIcon}>
               <PText style={styles.featureEmoji}>🎯</PText>
@@ -121,40 +116,31 @@ const DiscoverReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
                 {featuredJourney?.title ?? "Sıdk ve Integrity Yolculuğu"}
               </PText>
               <PText style={styles.featureMeta}>
-                {featuredDayCount} gün • Başlangıç
+                {featuredDayCount} gün • {featuredJourney?.level ?? "Başlangıç"}
               </PText>
               <PText style={styles.featureSubMeta}>
                 📦 {featuredModuleCount} Modül • 🎨 {featuredWorkshopCount} Atölye
               </PText>
             </View>
           </View>
-          <PButton
-            mode="outlined"
-            disabled={isOffline}
-            onPress={() => handleDetailRoute("ContentJourneyDetail", featuredJourney?.id)}
-          >
-            Yolculuğa Git
-          </PButton>
         </PCard>
 
-        <PCard style={styles.featureCard}>
+        <PCard
+          style={styles.featureCard}
+          onPress={() => handleDetailRoute("ContentEbookDetail", featuredEbook?.id)}
+        >
           <View style={styles.featureRow}>
             <View style={styles.ebookCover}>
               <PText style={styles.featureEmoji}>📖</PText>
             </View>
             <View style={styles.featureInfo}>
               <PText style={styles.featureTitle}>{featuredEbook?.title ?? "Şükür Şifresi"}</PText>
-              <PText style={styles.featureMeta}>PST Coaching • Şükür</PText>
-              <PText style={styles.featureSubMeta}>184 sayfa • ~3 saat okuma</PText>
+              <PText style={styles.featureMeta}>PST Coaching • {ebookCategory}</PText>
+              <PText style={styles.featureSubMeta}>
+                {ebookPages} sayfa • ~{ebookHours} saat okuma
+              </PText>
             </View>
           </View>
-          <PButton
-            mode="outlined"
-            disabled={isOffline}
-            onPress={() => handleDetailRoute("ContentEbookDetail", featuredEbook?.id)}
-          >
-            Kitabı İncele
-          </PButton>
         </PCard>
       </View>
 
@@ -278,22 +264,6 @@ const styles = StyleSheet.create({
   assistantArrow: {
     fontSize: 20,
     color: "#00B4D8",
-  },
-  paywallCard: {
-    padding: 16,
-    borderRadius: 16,
-    marginBottom: 20,
-  },
-  paywallTitle: {
-    fontSize: 16,
-    fontWeight: "700",
-    color: "#2B1B5D",
-    marginBottom: 6,
-  },
-  paywallSubtitle: {
-    fontSize: 13,
-    color: "#525252",
-    marginBottom: 12,
   },
   tabsRow: {
     gap: 8,
