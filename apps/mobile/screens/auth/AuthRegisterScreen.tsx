@@ -194,12 +194,8 @@ const RegisterContent = ({ isOffline }: { isOffline?: boolean }) => {
         <PButton
           mode="contained"
           disabled={isOffline || !isFormValid}
-          buttonColor="#00B4D8"
-          textColor="#FFFFFF"
           onPress={() => navigation.navigate("AuthOtpVerify", { source: "register" })}
           style={styles.button}
-          contentStyle={styles.primaryButtonContent}
-          labelStyle={styles.primaryButtonLabel}
         >
           Kaydol
         </PButton>
@@ -429,15 +425,6 @@ const styles = StyleSheet.create({
   button: {
     marginBottom: 16,
     borderRadius: 12,
-  },
-  primaryButtonContent: {
-    height: 56,
-    justifyContent: "center",
-  },
-  primaryButtonLabel: {
-    fontSize: 16,
-    fontWeight: "600",
-    color: "#FFFFFF",
   },
   signupRow: {
     flexDirection: "row",

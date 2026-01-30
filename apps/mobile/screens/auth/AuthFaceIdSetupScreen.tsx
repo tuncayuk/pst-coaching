@@ -38,14 +38,10 @@ const FaceIdSetupContent = ({ isOffline }: { isOffline?: boolean }) => {
         <PButton
           mode="contained"
           disabled={isOffline}
-          buttonColor="#00B4D8"
-          textColor="#FFFFFF"
           onPress={() => {
             navigation.navigate("AuthDemographics");
           }}
           style={styles.button}
-          contentStyle={styles.primaryButtonContent}
-          labelStyle={styles.primaryButtonLabel}
         >
           FaceID'yi Etkinleştir
         </PButton>
@@ -146,7 +142,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     shadowColor: "#8B5CF6",
-    shadowOffset: { width: 0, height: 10 },
     shadowOpacity: 0.4,
     shadowRadius: 30,
     elevation: 10,
@@ -198,15 +193,6 @@ const styles = StyleSheet.create({
     maxWidth: 320,
     alignSelf: "center",
     borderRadius: 12,
-  },
-  primaryButtonContent: {
-    height: 56,
-    justifyContent: "center",
-  },
-  primaryButtonLabel: {
-    fontSize: 16,
-    fontWeight: "600",
-    color: "#FFFFFF",
   },
   skipButton: {
     alignItems: "center",

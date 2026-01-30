@@ -43,12 +43,8 @@ const GuestModeContent = ({ isOffline }: { isOffline?: boolean }) => {
         <PButton
           mode="contained"
           disabled={isOffline}
-          buttonColor="#00B4D8"
-          textColor="#FFFFFF"
           onPress={() => navigation.getParent()?.navigate("MainTabs")}
           style={styles.button}
-          contentStyle={styles.primaryButtonContent}
-          labelStyle={styles.primaryButtonLabel}
         >
           Misafir Olarak Devam Et
         </PButton>
@@ -197,15 +193,6 @@ const styles = StyleSheet.create({
   button: {
     marginBottom: 12,
     borderRadius: 12,
-  },
-  primaryButtonContent: {
-    height: 56,
-    justifyContent: "center",
-  },
-  primaryButtonLabel: {
-    fontSize: 16,
-    fontWeight: "600",
-    color: "#FFFFFF",
   },
   secondaryButton: {
     marginBottom: 12,

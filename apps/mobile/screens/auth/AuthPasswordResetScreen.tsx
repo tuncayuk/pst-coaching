@@ -118,14 +118,10 @@ const PasswordResetContent = ({ isOffline }: { isOffline?: boolean }) => {
         <PButton
           mode="contained"
           disabled={isOffline || !isFormValid}
-          buttonColor="#00B4D8"
-          textColor="#FFFFFF"
           onPress={() => {
             navigation.navigate("AuthLogin");
           }}
           style={styles.button}
-          contentStyle={styles.primaryButtonContent}
-          labelStyle={styles.primaryButtonLabel}
         >
           Şifremi Sıfırla
         </PButton>
@@ -296,15 +292,6 @@ const styles = StyleSheet.create({
   button: {
     marginBottom: 16,
     borderRadius: 12,
-  },
-  primaryButtonContent: {
-    height: 56,
-    justifyContent: "center",
-  },
-  primaryButtonLabel: {
-    fontSize: 16,
-    fontWeight: "600",
-    color: "#FFFFFF",
   },
   hintCard: {
     backgroundColor: "#EDE7F6",

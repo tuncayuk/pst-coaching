@@ -56,8 +56,6 @@ const ForgotPasswordContent = ({ isOffline }: { isOffline?: boolean }) => {
         <PButton
           mode="contained"
           disabled={isOffline || !isValid}
-          buttonColor="#00B4D8"
-          textColor="#FFFFFF"
           onPress={() => {
             setHasSent(true);
             setTimeout(() => {
@@ -65,8 +63,6 @@ const ForgotPasswordContent = ({ isOffline }: { isOffline?: boolean }) => {
             }, 300);
           }}
           style={styles.button}
-          contentStyle={styles.primaryButtonContent}
-          labelStyle={styles.primaryButtonLabel}
         >
           Kod Gönder
         </PButton>
@@ -205,15 +201,6 @@ const styles = StyleSheet.create({
   button: {
     marginBottom: 16,
     borderRadius: 12,
-  },
-  primaryButtonContent: {
-    height: 56,
-    justifyContent: "center",
-  },
-  primaryButtonLabel: {
-    fontSize: 16,
-    fontWeight: "600",
-    color: "#FFFFFF",
   },
   successText: {
     textAlign: "center",

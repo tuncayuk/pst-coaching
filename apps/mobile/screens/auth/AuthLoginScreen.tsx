@@ -94,16 +94,12 @@ const LoginContent = ({ isOffline }: { isOffline?: boolean }) => {
           <PButton
             mode="contained"
             disabled={isOffline || !isFormValid}
-            buttonColor="#00B4D8"
-            textColor="#FFFFFF"
             onPress={() => {
               // After successful login, check if FaceID setup is needed
               // TODO: Check if user has completed FaceID setup
               navigation.navigate("AuthFaceIdSetup");
             }}
             style={styles.loginButton}
-            contentStyle={styles.loginButtonContent}
-            labelStyle={styles.loginButtonLabel}
           >
             Giriş Yap
           </PButton>
@@ -120,8 +116,6 @@ const LoginContent = ({ isOffline }: { isOffline?: boolean }) => {
               style={styles.socialButton}
               disabled={isOffline}
               onPress={() => {}}
-              contentStyle={styles.socialButtonContent}
-              labelStyle={styles.socialButtonLabel}
             >
               <PText style={styles.socialIcon}>🔵</PText>
               <PText style={styles.socialText}>Google</PText>
@@ -131,8 +125,6 @@ const LoginContent = ({ isOffline }: { isOffline?: boolean }) => {
               style={styles.socialButton}
               disabled={isOffline}
               onPress={() => {}}
-              contentStyle={styles.socialButtonContent}
-              labelStyle={styles.socialButtonLabel}
             >
               <PText style={styles.socialIcon}>🍎</PText>
               <PText style={styles.socialText}>Apple</PText>
@@ -311,15 +303,6 @@ const styles = StyleSheet.create({
   loginButton: {
     marginBottom: 24,
     borderRadius: 12,
-  },
-  loginButtonContent: {
-    height: 56,
-    justifyContent: "center",
-  },
-  loginButtonLabel: {
-    fontSize: 16,
-    fontWeight: "600",
-    color: "#FFFFFF",
   },
   checkboxBox: {
     width: 18,
