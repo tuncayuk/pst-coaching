@@ -45,9 +45,9 @@ const ContentReadingContent = ({ isOffline }: { isOffline?: boolean }) => {
 
         <PCard style={styles.calloutCard}>
           <PText style={styles.calloutTitle}>💡 Ornek Otomatik Dusunceler</PText>
-          <PText style={styles.calloutItem}>• \"Basaramayacagim.\"</PText>
-          <PText style={styles.calloutItem}>• \"Herkes beni yargiliyor.\"</PText>
-          <PText style={styles.calloutItem}>• \"Ben yeterince iyi degilim.\"</PText>
+          <PText style={styles.calloutItem}>• "Basaramayacagim."</PText>
+          <PText style={styles.calloutItem}>• "Herkes beni yargiliyor."</PText>
+          <PText style={styles.calloutItem}>• "Ben yeterince iyi degilim."</PText>
         </PCard>
 
         <PText style={styles.bodyParagraph}>
