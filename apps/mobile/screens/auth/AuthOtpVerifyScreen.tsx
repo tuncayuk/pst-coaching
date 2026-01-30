@@ -240,7 +240,6 @@ const styles = StyleSheet.create({
     height: 56,
     fontSize: 24,
     fontWeight: "700",
-    fontFamily: "monospace",
     backgroundColor: "#FFFFFF",
   },
   codeInputOutline: {

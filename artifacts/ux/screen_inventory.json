@@ -70,6 +70,13 @@
       "states": ["loading", "ready", "empty", "error", "offline"]
     },
     {
+      "id": "auth.forgot_password",
+      "route": "/auth/forgot-password",
+      "title": "Şifremi Unuttum",
+      "type": "stack",
+      "states": ["loading", "ready", "empty", "error", "offline"]
+    },
+    {
       "id": "auth.otp_verify",
       "route": "/auth/otp",
       "title": "OTP Doğrulama",

@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View, TouchableOpacity } from "react-native";
+import { StyleSheet, View, TouchableOpacity, ScrollView } from "react-native";
 import {
   ActivityIndicator,
   Button,
@@ -7,6 +7,7 @@ import {
   TextInput,
 } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
@@ -16,47 +17,73 @@ import { resolveScreenState, ScreenState } from "../components/ScreenState";
 
 const ForgotPasswordContent = ({ isOffline }: { isOffline?: boolean }) => {
   const [email, setEmail] = React.useState("");
+  const [hasSent, setHasSent] = React.useState(false);
   const navigation = useNavigation<any>();
+  const isValid = email.length > 3;
 
   return (
-    <>
-      <View style={styles.iconContainer}>
-        <Text style={styles.icon}>🔑</Text>
-      </View>
-      <SectionCard title="">
-        <Text variant="headlineMedium" style={styles.title}>
-          Şifremi Unuttum
-        </Text>
-        <Text variant="bodyMedium" style={styles.description}>
+    <SafeAreaView style={styles.container}>
+      <ScrollView contentContainerStyle={styles.scrollContent}>
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={styles.backButton}
+          disabled={isOffline}
+        >
+          <Text style={styles.backButtonText}>←</Text>
+        </TouchableOpacity>
+
+        <View style={styles.iconContainer}>
+          <Text style={styles.icon}>🔑</Text>
+        </View>
+        <Text style={styles.title}>Şifremi Unuttum</Text>
+        <Text style={styles.description}>
           E-posta adresinizi veya telefon numaranızı girin, size doğrulama kodu gönderelim.
         </Text>
-        <TextInput
-          label="E-posta veya Telefon"
-          mode="outlined"
-          autoCapitalize="none"
-          keyboardType="email-address"
-          value={email}
-          onChangeText={setEmail}
-          style={styles.input}
-          editable={!isOffline}
-          placeholder="ornek@email.com veya +90 5XX XXX XX XX"
-        />
+        <View style={styles.inputGroup}>
+          <Text style={styles.label}>E-posta veya Telefon</Text>
+          <TextInput
+            mode="outlined"
+            autoCapitalize="none"
+            keyboardType="email-address"
+            value={email}
+            onChangeText={(value) => {
+              setEmail(value);
+              if (hasSent) setHasSent(false);
+            }}
+            style={styles.input}
+            contentStyle={styles.inputContent}
+            outlineStyle={styles.inputOutline}
+            editable={!isOffline}
+            placeholder="ornek@email.com veya +90 5XX XXX XX XX"
+          />
+        </View>
         <Button
           mode="contained"
-          disabled={isOffline || !email}
-          onPress={() => navigation.navigate("AuthOtpVerify", { source: "forgot-password" })}
+          disabled={isOffline || !isValid}
+          buttonColor="#00B4D8"
+          textColor="#FFFFFF"
+          onPress={() => {
+            setHasSent(true);
+            setTimeout(() => {
+              navigation.navigate("AuthOtpVerify", { source: "forgot-password" });
+            }, 300);
+          }}
           style={styles.button}
+          contentStyle={styles.primaryButtonContent}
+          labelStyle={styles.primaryButtonLabel}
         >
           Kod Gönder
         </Button>
-        <TouchableOpacity
-          onPress={() => navigation.goBack()}
-          style={styles.backLink}
-        >
+        {hasSent ? (
+          <Text style={styles.successText}>
+            Doğrulama kodu gönderildi. Yönlendiriliyorsunuz...
+          </Text>
+        ) : null}
+        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backLink}>
           <Text style={styles.backLinkText}>← Giriş Sayfasına Dön</Text>
         </TouchableOpacity>
-      </SectionCard>
-    </>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
@@ -108,21 +135,37 @@ export const AuthForgotPasswordScreen = ({
 
   if (state === "offline") {
     return (
-      <ScreenLayout title="Şifremi Unuttum" subtitle="Önbellekteki bilgiler">
+      <>
         <OfflineNotice />
         <ForgotPasswordContent isOffline />
-      </ScreenLayout>
+      </>
     );
   }
 
-  return (
-    <ScreenLayout title="Şifremi Unuttum" subtitle="Şifre sıfırlama">
-      <ForgotPasswordContent />
-    </ScreenLayout>
-  );
+  return <ForgotPasswordContent />;
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#FAFAFA",
+  },
+  scrollContent: {
+    paddingHorizontal: 24,
+    paddingTop: 24,
+    paddingBottom: 32,
+  },
+  backButton: {
+    width: 40,
+    height: 40,
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 16,
+  },
+  backButtonText: {
+    fontSize: 24,
+    color: "#171717",
+  },
   iconContainer: {
     alignItems: "center",
     marginBottom: 16,
@@ -131,6 +174,7 @@ const styles = StyleSheet.create({
     fontSize: 64,
   },
   title: {
+    fontSize: 32,
     fontWeight: "800",
     color: "#2B1B5D",
     marginBottom: 8,
@@ -138,15 +182,48 @@ const styles = StyleSheet.create({
   },
   description: {
     color: "#525252",
-    marginBottom: 24,
+    marginBottom: 32,
     textAlign: "center",
     lineHeight: 24,
   },
+  inputGroup: {
+    marginBottom: 24,
+  },
+  label: {
+    fontSize: 14,
+    fontWeight: "600",
+    color: "#404040",
+    marginBottom: 8,
+  },
   input: {
-    marginBottom: 16,
+    backgroundColor: "#FFFFFF",
+  },
+  inputContent: {
+    paddingVertical: 16,
+  },
+  inputOutline: {
+    borderWidth: 2,
+    borderRadius: 12,
+    borderColor: "#E5E5E5",
   },
   button: {
     marginBottom: 16,
+    borderRadius: 12,
+  },
+  primaryButtonContent: {
+    height: 56,
+    justifyContent: "center",
+  },
+  primaryButtonLabel: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: "#FFFFFF",
+  },
+  successText: {
+    textAlign: "center",
+    color: "#10B981",
+    fontSize: 13,
+    marginBottom: 12,
   },
   backLink: {
     alignItems: "center",
