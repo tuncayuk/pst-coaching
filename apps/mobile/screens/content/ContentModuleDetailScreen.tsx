@@ -1,13 +1,21 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
-import { ScreenLayout } from "../components/ScreenLayout";
-import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
-import { PActivityIndicator, PButton, PCard, PDivider, PProgressBar, PText } from "../../components";
-
+import { getModules, getPackages } from "../../data/mockSelectors";
+import {
+  PActivityIndicator,
+  PButton,
+  PCard,
+  PDivider,
+  PIconButton,
+  PProgressBar,
+  PText,
+} from "../../components";
 
 const moduleSections = [
   { title: "Giriş ve Tanımlar", duration: "8 dk" },
@@ -15,47 +23,72 @@ const moduleSections = [
   { title: "Günlük Alıştırma", duration: "10 dk" },
 ];
 
-const ContentModuleDetailContent = ({ isOffline }: { isOffline?: boolean }) => {
+const ContentModuleDetailContent = ({
+  moduleId,
+  isOffline,
+}: {
+  moduleId?: string;
+  isOffline?: boolean;
+}) => {
+  const navigation = useNavigation<any>();
+  const modules = getModules();
+  const packages = getPackages();
+  const module = modules.find((item) => item.id === moduleId) ?? modules[0];
+  const packageCount = packages.filter((pkg) => pkg.module_id === module?.id).length || 5;
+
   return (
-    <>
-      <SectionCard title="Modül Özeti">
-        <PText variant="bodyMedium" style={styles.paragraph}>
-          Modül, kısa egzersizlerle ilerleyerek günlük yaşamda uygulanabilir pratikler sunar.
-        </PText>
-        <PCard style={styles.card}>
-          <PCard.Title title="İlerleme" subtitle="1/5 bölüm tamamlandı" />
-          <PCard.Content>
-            <PProgressBar progress={0.2} style={styles.progress} />
-          </PCard.Content>
-          <PCard.Actions>
-            <PButton mode="contained" disabled={isOffline}>
-              Modüle Başla
-            </PButton>
-          </PCard.Actions>
+    <View>
+      <View style={styles.hero}>
+        <PText style={styles.heroEmoji}>📦</PText>
+        <PIconButton icon="arrow-left" style={styles.heroBack} onPress={() => navigation.goBack()} />
+        <PIconButton icon="heart-outline" style={styles.heroFav} />
+      </View>
+
+      <View style={styles.content}>
+        <PText style={styles.title}>{module?.title ?? "Stres Yonetimi Modulu"}</PText>
+        <View style={styles.tagRow}>
+          <PText style={styles.tagChip}>📦 {packageCount} paket</PText>
+          <PText style={styles.tagChip}>⏱️ 20 dk</PText>
+          <PText style={styles.tagChip}>📊 Başlangıç</PText>
+        </View>
+
+        <PCard style={styles.sectionCard}>
+          <PText style={styles.sectionTitle}>Modül Özeti</PText>
+          <PText style={styles.paragraph}>
+            {module?.description ??
+              "Modül, kısa egzersizlerle ilerleyerek günlük yaşamda uygulanabilir pratikler sunar."}
+          </PText>
+          <PText style={styles.metaText}>1/{packageCount} bölüm tamamlandı</PText>
+          <PProgressBar progress={1 / Math.max(1, packageCount)} style={styles.progress} />
+          <PButton mode="contained" disabled={isOffline}>
+            Modüle Başla
+          </PButton>
         </PCard>
-      </SectionCard>
 
-      <SectionCard title="Bölümler" actionLabel="Tümünü Gör">
-        {moduleSections.map((section, index) => (
-          <View key={section.title} style={styles.rowItem}>
-            <View style={styles.rowHeader}>
-              <PText variant="titleSmall">{section.title}</PText>
-              <PText variant="labelMedium">{section.duration}</PText>
+        <PCard style={styles.sectionCard}>
+          <PText style={styles.sectionTitle}>Bölümler</PText>
+          {moduleSections.map((section, index) => (
+            <View key={section.title} style={styles.rowItem}>
+              <View style={styles.rowHeader}>
+                <PText style={styles.rowTitle}>{section.title}</PText>
+                <PText style={styles.rowMeta}>{section.duration}</PText>
+              </View>
+              {index < moduleSections.length - 1 ? <PDivider style={styles.divider} /> : null}
             </View>
-            {index < moduleSections.length - 1 ? <PDivider style={styles.divider} /> : null}
-          </View>
-        ))}
-      </SectionCard>
+          ))}
+        </PCard>
 
-      <SectionCard title="Önerilen Adımlar">
-        <PText variant="bodySmall">• Her gün aynı saatte pratik yap</PText>
-        <PText variant="bodySmall">• Kısa notlar al</PText>
-        <PText variant="bodySmall">• Haftalık özetini kaydet</PText>
-        <PButton mode="outlined" style={styles.secondaryButton} disabled={isOffline}>
-          Hatırlatıcı Kur
-        </PButton>
-      </SectionCard>
-    </>
+        <PCard style={styles.sectionCard}>
+          <PText style={styles.sectionTitle}>Önerilen Adımlar</PText>
+          <PText style={styles.bullet}>• Her gün aynı saatte pratik yap</PText>
+          <PText style={styles.bullet}>• Kısa notlar al</PText>
+          <PText style={styles.bullet}>• Haftalık özetini kaydet</PText>
+          <PButton mode="outlined" style={styles.secondaryButton} disabled={isOffline}>
+            Hatırlatıcı Kur
+          </PButton>
+        </PCard>
+      </View>
+    </View>
   );
 };
 
@@ -65,75 +98,146 @@ export const ContentModuleDetailScreen = ({
   route?: { params?: { state?: ScreenState; id?: string } };
 }) => {
   const state = resolveScreenState(route);
+  const moduleId = route?.params?.id;
 
   if (state === "loading") {
     return (
-      <ScreenLayout title="Modül Detay" subtitle="Modül yükleniyor">
-        <SectionCard title="Yükleniyor">
+      <SafeAreaView style={styles.root}>
+        <ScrollView contentContainerStyle={styles.page}>
           <PActivityIndicator animating />
           <SkeletonBlock height={18} />
           <SkeletonBlock height={18} />
-        </SectionCard>
-        <SectionCard title="Bölümler">
-          <SkeletonBlock height={60} />
-          <SkeletonBlock height={60} />
-        </SectionCard>
-      </ScreenLayout>
+          <SkeletonBlock height={120} />
+        </ScrollView>
+      </SafeAreaView>
     );
   }
 
   if (state === "empty") {
     return (
-      <ScreenLayout title="Modül Detay" subtitle="İçerik bulunamadı">
-        <StateMessage
-          title="Modül bulunamadı"
-          description="Bu modül şu anda erişilebilir değil."
-          actionLabel="Keşfe Dön"
-          icon="cube-outline"
-        />
-      </ScreenLayout>
+      <SafeAreaView style={styles.root}>
+        <ScrollView contentContainerStyle={styles.page}>
+          <StateMessage
+            title="Modül bulunamadı"
+            description="Bu modül şu anda erişilebilir değil."
+            actionLabel="Keşfe Dön"
+            icon="cube-outline"
+          />
+        </ScrollView>
+      </SafeAreaView>
     );
   }
 
   if (state === "error") {
     return (
-      <ScreenLayout title="Modül Detay" subtitle="Bir sorun oluştu">
-        <StateMessage
-          title="Modül yüklenemedi"
-          description="Bağlantını kontrol edip tekrar dene."
-          actionLabel="Tekrar Dene"
-          icon="alert-circle-outline"
-          tone="error"
-        />
-      </ScreenLayout>
+      <SafeAreaView style={styles.root}>
+        <ScrollView contentContainerStyle={styles.page}>
+          <StateMessage
+            title="Modül yüklenemedi"
+            description="Bağlantını kontrol edip tekrar dene."
+            actionLabel="Tekrar Dene"
+            icon="alert-circle-outline"
+            tone="error"
+          />
+        </ScrollView>
+      </SafeAreaView>
     );
   }
 
   if (state === "offline") {
     return (
-      <ScreenLayout title="Modül Detay" subtitle="Önbellekteki içerik">
+      <SafeAreaView style={styles.root}>
         <OfflineNotice />
-        <ContentModuleDetailContent isOffline />
-      </ScreenLayout>
+        <ScrollView contentContainerStyle={styles.page}>
+          <ContentModuleDetailContent moduleId={moduleId} isOffline />
+        </ScrollView>
+      </SafeAreaView>
     );
   }
 
   return (
-    <ScreenLayout title="Modül Detay" subtitle="Modül özet ve bölümler">
-      <ContentModuleDetailContent />
-    </ScreenLayout>
+    <SafeAreaView style={styles.root}>
+      <ScrollView contentContainerStyle={styles.page}>
+        <ContentModuleDetailContent moduleId={moduleId} />
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  paragraph: {
+  root: {
+    flex: 1,
+    backgroundColor: "#FAFAFA",
+  },
+  page: {
+    paddingBottom: 32,
+  },
+  hero: {
+    height: 220,
+    backgroundColor: "#E0F7FA",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  heroEmoji: {
+    fontSize: 72,
+  },
+  heroBack: {
+    position: "absolute",
+    top: 12,
+    left: 12,
+  },
+  heroFav: {
+    position: "absolute",
+    top: 12,
+    right: 12,
+  },
+  content: {
+    paddingHorizontal: 24,
+    paddingTop: 24,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: "800",
+    color: "#2B1B5D",
     marginBottom: 12,
   },
-  card: {
-    marginTop: 4,
+  tagRow: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 8,
+    marginBottom: 16,
+  },
+  tagChip: {
+    backgroundColor: "#F5F5F5",
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderRadius: 10,
+    fontSize: 12,
+    color: "#525252",
+  },
+  sectionCard: {
+    padding: 16,
+    borderRadius: 16,
+    marginBottom: 16,
+  },
+  sectionTitle: {
+    fontSize: 16,
+    fontWeight: "700",
+    color: "#171717",
+    marginBottom: 8,
+  },
+  paragraph: {
+    fontSize: 14,
+    color: "#525252",
+    marginBottom: 8,
+  },
+  metaText: {
+    fontSize: 13,
+    color: "#737373",
+    marginBottom: 8,
   },
   progress: {
-    marginTop: 8,
+    marginTop: 4,
     marginBottom: 12,
   },
   rowItem: {
@@ -143,11 +247,25 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
   },
+  rowTitle: {
+    fontSize: 14,
+    fontWeight: "600",
+    color: "#171717",
+  },
+  rowMeta: {
+    fontSize: 12,
+    color: "#737373",
+  },
   divider: {
     marginTop: 8,
   },
   secondaryButton: {
     marginTop: 12,
     alignSelf: "flex-start",
+  },
+  bullet: {
+    fontSize: 13,
+    color: "#525252",
+    marginBottom: 6,
   },
 });
