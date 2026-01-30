@@ -84,6 +84,20 @@
       "states": ["loading", "ready", "empty", "error", "offline"]
     },
     {
+      "id": "auth.face_id_setup",
+      "route": "/auth/face-id",
+      "title": "FaceID Kurulumu",
+      "type": "stack",
+      "states": ["loading", "ready", "empty", "error", "offline"]
+    },
+    {
+      "id": "auth.demographics",
+      "route": "/auth/demographics",
+      "title": "Demografi Bilgileri",
+      "type": "stack",
+      "states": ["loading", "ready", "empty", "error", "offline"]
+    },
+    {
       "id": "auth.password_reset",
       "route": "/auth/password-reset",
       "title": "Şifre Sıfırlama",

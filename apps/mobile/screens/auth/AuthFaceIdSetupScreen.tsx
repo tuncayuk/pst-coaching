@@ -1,14 +1,13 @@
 import React from "react";
-import { StyleSheet, View, TouchableOpacity } from "react-native";
+import { StyleSheet, View, TouchableOpacity, ScrollView } from "react-native";
 import {
   ActivityIndicator,
   Button,
   Text,
 } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { OfflineNotice } from "../components/OfflineNotice";
-import { ScreenLayout } from "../components/ScreenLayout";
-import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
@@ -17,23 +16,19 @@ const FaceIdSetupContent = ({ isOffline }: { isOffline?: boolean }) => {
   const navigation = useNavigation<any>();
 
   return (
-    <>
-      <View style={styles.iconContainer}>
-        <View style={styles.iconCircle}>
-          <Text style={styles.icon}>👤</Text>
+    <SafeAreaView style={styles.container}>
+      <ScrollView contentContainerStyle={styles.scrollContent}>
+        <View style={styles.iconContainer}>
+          <View style={styles.iconCircle}>
+            <Text style={styles.icon}>👤</Text>
+          </View>
         </View>
-      </View>
-      <SectionCard title="">
-        <Text variant="headlineMedium" style={styles.title}>
-          FaceID ile Hızlı Giriş
-        </Text>
-        <Text variant="bodyMedium" style={styles.description}>
+        <Text style={styles.title}>FaceID ile Hızlı Giriş</Text>
+        <Text style={styles.description}>
           Sonraki girişlerinizde FaceID kullanmak ister misiniz?
         </Text>
         <View style={styles.infoCard}>
-          <Text variant="titleSmall" style={styles.infoTitle}>
-            ✓ FaceID Avantajları
-          </Text>
+          <Text style={styles.infoTitle}>✓ FaceID Avantajları</Text>
           <View style={styles.list}>
             <Text style={styles.listItem}>• Hızlı ve güvenli giriş</Text>
             <Text style={styles.listItem}>• Şifre hatırlama gereksiz</Text>
@@ -44,29 +39,31 @@ const FaceIdSetupContent = ({ isOffline }: { isOffline?: boolean }) => {
         <Button
           mode="contained"
           disabled={isOffline}
+          buttonColor="#00B4D8"
+          textColor="#FFFFFF"
           onPress={() => {
-            // Enable FaceID and navigate to Demographics
-            // TODO: Save FaceID preference
             navigation.navigate("AuthDemographics");
           }}
           style={styles.button}
+          contentStyle={styles.primaryButtonContent}
+          labelStyle={styles.primaryButtonLabel}
         >
           FaceID'yi Etkinleştir
         </Button>
         <TouchableOpacity
           onPress={() => {
-            // Skip FaceID, go to Demographics
             navigation.navigate("AuthDemographics");
           }}
           style={styles.skipButton}
+          disabled={isOffline}
         >
           <Text style={styles.skipText}>Şimdi Değil</Text>
         </TouchableOpacity>
-        <Text variant="bodySmall" style={styles.hint}>
+        <Text style={styles.hint}>
           FaceID ayarlarını dilediğiniz zaman Profil &gt; Ayarlar &gt; Güvenlik bölümünden değiştirebilirsiniz
         </Text>
-      </SectionCard>
-    </>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
@@ -117,21 +114,27 @@ export const AuthFaceIdSetupScreen = ({
 
   if (state === "offline") {
     return (
-      <ScreenLayout title="FaceID Kurulumu" subtitle="Önbellekteki bilgiler">
+      <>
         <OfflineNotice />
         <FaceIdSetupContent isOffline />
-      </ScreenLayout>
+      </>
     );
   }
 
-  return (
-    <ScreenLayout title="FaceID Kurulumu" subtitle="Biyometrik giriş">
-      <FaceIdSetupContent />
-    </ScreenLayout>
-  );
+  return <FaceIdSetupContent />;
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#FAFAFA",
+  },
+  scrollContent: {
+    paddingHorizontal: 24,
+    paddingTop: 32,
+    paddingBottom: 32,
+    alignItems: "center",
+  },
   iconContainer: {
     alignItems: "center",
     marginBottom: 24,
@@ -153,14 +156,16 @@ const styles = StyleSheet.create({
     fontSize: 64,
   },
   title: {
+    fontSize: 28,
     fontWeight: "800",
     color: "#2B1B5D",
     marginBottom: 12,
     textAlign: "center",
   },
   description: {
+    fontSize: 16,
     color: "#404040",
-    marginBottom: 24,
+    marginBottom: 32,
     textAlign: "center",
     maxWidth: 300,
     alignSelf: "center",
@@ -193,6 +198,16 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     maxWidth: 320,
     alignSelf: "center",
+    borderRadius: 12,
+  },
+  primaryButtonContent: {
+    height: 56,
+    justifyContent: "center",
+  },
+  primaryButtonLabel: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: "#FFFFFF",
   },
   skipButton: {
     alignItems: "center",
@@ -210,5 +225,6 @@ const styles = StyleSheet.create({
     maxWidth: 280,
     alignSelf: "center",
     lineHeight: 18,
+    fontSize: 12,
   },
 });

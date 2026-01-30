@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, ScrollView } from "react-native";
 import {
   ActivityIndicator,
   Button,
@@ -7,9 +7,8 @@ import {
   TextInput,
 } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { OfflineNotice } from "../components/OfflineNotice";
-import { ScreenLayout } from "../components/ScreenLayout";
-import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
@@ -17,45 +16,42 @@ import { resolveScreenState, ScreenState } from "../components/ScreenState";
 const DemographicsContent = ({ isOffline }: { isOffline?: boolean }) => {
   const [age, setAge] = React.useState("");
   const [gender, setGender] = React.useState<string | null>(null);
-  const [country, setCountry] = React.useState("Türkiye");
   const navigation = useNavigation<any>();
 
-  const isFormValid = age.length > 0 && parseInt(age) >= 13 && parseInt(age) <= 120 && country.length > 0;
+  const isFormValid = age.length > 0 && parseInt(age) >= 13 && parseInt(age) <= 120;
 
   return (
-    <>
-      <View style={styles.iconContainer}>
-        <Text style={styles.icon}>📊</Text>
-      </View>
-      <SectionCard title="">
-        <Text variant="headlineMedium" style={styles.title}>
-          Demografi Bilgileri
-        </Text>
-        <Text variant="bodyMedium" style={styles.subtitle}>
+    <SafeAreaView style={styles.container}>
+      <ScrollView contentContainerStyle={styles.scrollContent}>
+        <View style={styles.iconContainer}>
+          <Text style={styles.icon}>📊</Text>
+        </View>
+        <Text style={styles.title}>Demografi Bilgileri</Text>
+        <Text style={styles.subtitle}>
           İçeriğe başlamadan önce lütfen bilgilerinizi tamamlayın
         </Text>
         <View style={styles.infoCard}>
-          <Text variant="bodySmall" style={styles.infoText}>
+          <Text style={styles.infoText}>
             <Text style={styles.infoBold}>💡 Neden soruluyor?</Text>
             {"\n"}Bu bilgiler size daha uygun içerik önerileri sunmamıza yardımcı olur. Verileriniz güvenli şekilde saklanır.
           </Text>
         </View>
-        <TextInput
-          label="Yaş *"
-          mode="outlined"
-          keyboardType="number-pad"
-          value={age}
-          onChangeText={setAge}
-          style={styles.input}
-          editable={!isOffline}
-          placeholder="Yaşınızı girin"
-        />
-        <Text variant="bodySmall" style={styles.helperText}>
-          13-120 yaş arası
-        </Text>
-        <Text variant="titleSmall" style={styles.label}>
-          Cinsiyet
-        </Text>
+        <View style={styles.inputGroup}>
+          <Text style={styles.label}>Yaş *</Text>
+          <TextInput
+            mode="outlined"
+            keyboardType="number-pad"
+            value={age}
+            onChangeText={setAge}
+            style={styles.input}
+            contentStyle={styles.inputContent}
+            outlineStyle={styles.inputOutline}
+            editable={!isOffline}
+            placeholder="Yaşınızı girin"
+          />
+          <Text style={styles.helperText}>13-120 yaş arası</Text>
+        </View>
+        <Text style={styles.label}>Cinsiyet</Text>
         <View style={styles.genderRow}>
           <Button
             mode={gender === "Kadın" ? "contained" : "outlined"}
@@ -82,29 +78,27 @@ const DemographicsContent = ({ isOffline }: { isOffline?: boolean }) => {
         >
           Belirtmek istemiyorum
         </Button>
-        <Text variant="titleSmall" style={styles.label}>
-          Ülke *
-        </Text>
+        <Text style={styles.label}>Ülke *</Text>
         <View style={styles.countryContainer}>
-          <Text style={styles.countryText}>{country}</Text>
+          <Text style={styles.countryText}>Türkiye</Text>
         </View>
         <Button
           mode="contained"
           disabled={isOffline || !isFormValid}
+          buttonColor="#00B4D8"
+          textColor="#FFFFFF"
           onPress={() => {
-            // Save demographics and navigate to MainTabs (first content start)
-            // TODO: Save demographics data
             navigation.getParent()?.navigate("MainTabs");
           }}
           style={styles.button}
+          contentStyle={styles.primaryButtonContent}
+          labelStyle={styles.primaryButtonLabel}
         >
           Kaydet ve Devam Et
         </Button>
-        <Text variant="bodySmall" style={styles.requiredText}>
-          * Zorunlu alanlar
-        </Text>
-      </SectionCard>
-    </>
+        <Text style={styles.requiredText}>* Zorunlu alanlar</Text>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
@@ -155,29 +149,35 @@ export const AuthDemographicsScreen = ({
 
   if (state === "offline") {
     return (
-      <ScreenLayout title="Demografi Bilgileri" subtitle="Önbellekteki bilgiler">
+      <>
         <OfflineNotice />
         <DemographicsContent isOffline />
-      </ScreenLayout>
+      </>
     );
   }
 
-  return (
-    <ScreenLayout title="Demografi Bilgileri" subtitle="Kişisel bilgilerinizi tamamlayın">
-      <DemographicsContent />
-    </ScreenLayout>
-  );
+  return <DemographicsContent />;
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#FAFAFA",
+  },
+  scrollContent: {
+    paddingHorizontal: 24,
+    paddingTop: 32,
+    paddingBottom: 32,
+  },
   iconContainer: {
     alignItems: "center",
     marginBottom: 16,
   },
   icon: {
-    fontSize: 48,
+    fontSize: 56,
   },
   title: {
+    fontSize: 28,
     fontWeight: "800",
     color: "#2B1B5D",
     marginBottom: 8,
@@ -203,12 +203,23 @@ const styles = StyleSheet.create({
   infoBold: {
     fontWeight: "700",
   },
+  inputGroup: {
+    marginBottom: 16,
+  },
   input: {
-    marginBottom: 8,
+    backgroundColor: "#FFFFFF",
+  },
+  inputContent: {
+    paddingVertical: 16,
+  },
+  inputOutline: {
+    borderWidth: 2,
+    borderRadius: 12,
+    borderColor: "#D4D4D4",
   },
   helperText: {
     color: "#525252",
-    marginBottom: 16,
+    marginTop: 6,
     fontSize: 12,
   },
   label: {
@@ -242,10 +253,21 @@ const styles = StyleSheet.create({
   },
   button: {
     marginBottom: 12,
+    borderRadius: 12,
+  },
+  primaryButtonContent: {
+    height: 56,
+    justifyContent: "center",
+  },
+  primaryButtonLabel: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: "#FFFFFF",
   },
   requiredText: {
     textAlign: "center",
     color: "#525252",
     marginTop: 8,
+    fontSize: 12,
   },
 });

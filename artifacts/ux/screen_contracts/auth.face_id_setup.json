@@ -1,0 +1,54 @@
+{
+  "id": "auth.face_id_setup",
+  "title": "FaceID Kurulumu",
+  "route": "/auth/face-id",
+  "purpose": "Kullanıcının FaceID kurulumu tercihini alarak güvenli giriş deneyimi sunmak.",
+  "entryPoints": [
+    "auth.otp_verify"
+  ],
+  "inputs": [
+    {
+      "name": "locale",
+      "type": "LanguageCode",
+      "required": true,
+      "source": "app_state"
+    }
+  ],
+  "dataDependencies": [
+    "User",
+    "UserSession",
+    "DeviceBiometrics"
+  ],
+  "uiStates": {
+    "loading": {
+      "description": "FaceID kurulumu yüklenirken iskelet ve temel CTA'lar gösterilir."
+    },
+    "ready": {
+      "description": "FaceID kurulumu içeriği ve tercihler hazır."
+    },
+    "empty": {
+      "description": "İçerik yoksa açıklayıcı boş durum ve birincil aksiyon sunulur."
+    },
+    "error": {
+      "description": "Hata mesajı ve tekrar dene aksiyonu gösterilir."
+    },
+    "offline": {
+      "description": "Çevrimdışı modda yazma aksiyonları devre dışı, önbellek içerik gösterilir."
+    }
+  },
+  "acceptanceCriteria": [
+    "FaceID avantajları listelenir.",
+    "FaceID etkinleştir butonu sunulur.",
+    "Kullanıcı FaceID'yi atlayabilir.",
+    "Tercih, Demografi ekranına yönlendirilmeden önce kaydedilir."
+  ],
+  "analytics": {
+    "screenView": "auth_face_id_setup_viewed",
+    "events": [
+      "auth_face_id_setup_viewed",
+      "auth_face_id_setup_enabled",
+      "auth_face_id_setup_skipped"
+    ]
+  },
+  "gates": []
+}
