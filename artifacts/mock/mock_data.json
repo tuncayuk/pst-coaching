@@ -348,6 +348,146 @@
       "title": "Paket 4: Degisim Yolculugu",
       "description": "Degisim adimlarini planla.",
       "order_index": 4
+    },
+    {
+      "id": "pkg-0001-01",
+      "module_id": "cccccccc-0000-0000-0000-000000000001",
+      "title": "Paket 1: Duygular Evreni Temel 1",
+      "description": "Duygular Evreni icin paket 1 icerigi.",
+      "order_index": 1
+    },
+    {
+      "id": "pkg-0001-02",
+      "module_id": "cccccccc-0000-0000-0000-000000000001",
+      "title": "Paket 2: Duygular Evreni Temel 2",
+      "description": "Duygular Evreni icin paket 2 icerigi.",
+      "order_index": 2
+    },
+    {
+      "id": "pkg-0002-01",
+      "module_id": "cccccccc-0000-0000-0000-000000000002",
+      "title": "Paket 1: Sukrun Gucu Temel 1",
+      "description": "Sukrun Gucu icin paket 1 icerigi.",
+      "order_index": 1
+    },
+    {
+      "id": "pkg-0002-02",
+      "module_id": "cccccccc-0000-0000-0000-000000000002",
+      "title": "Paket 2: Sukrun Gucu Temel 2",
+      "description": "Sukrun Gucu icin paket 2 icerigi.",
+      "order_index": 2
+    },
+    {
+      "id": "pkg-0003-01",
+      "module_id": "cccccccc-0000-0000-0000-000000000003",
+      "title": "Paket 1: Iletisim ve Empati Temel 1",
+      "description": "Iletisim ve Empati icin paket 1 icerigi.",
+      "order_index": 1
+    },
+    {
+      "id": "pkg-0003-02",
+      "module_id": "cccccccc-0000-0000-0000-000000000003",
+      "title": "Paket 2: Iletisim ve Empati Temel 2",
+      "description": "Iletisim ve Empati icin paket 2 icerigi.",
+      "order_index": 2
+    },
+    {
+      "id": "pkg-0004-01",
+      "module_id": "cccccccc-0000-0000-0000-000000000004",
+      "title": "Paket 1: Odak ve Disiplin Temel 1",
+      "description": "Odak ve Disiplin icin paket 1 icerigi.",
+      "order_index": 1
+    },
+    {
+      "id": "pkg-0004-02",
+      "module_id": "cccccccc-0000-0000-0000-000000000004",
+      "title": "Paket 2: Odak ve Disiplin Temel 2",
+      "description": "Odak ve Disiplin icin paket 2 icerigi.",
+      "order_index": 2
+    },
+    {
+      "id": "pkg-0005-01",
+      "module_id": "cccccccc-0000-0000-0000-000000000005",
+      "title": "Paket 1: Saglikli Sinirlar Temel 1",
+      "description": "Saglikli Sinirlar icin paket 1 icerigi.",
+      "order_index": 1
+    },
+    {
+      "id": "pkg-0005-02",
+      "module_id": "cccccccc-0000-0000-0000-000000000005",
+      "title": "Paket 2: Saglikli Sinirlar Temel 2",
+      "description": "Saglikli Sinirlar icin paket 2 icerigi.",
+      "order_index": 2
+    },
+    {
+      "id": "pkg-0006-01",
+      "module_id": "cccccccc-0000-0000-0000-000000000006",
+      "title": "Paket 1: Mindfulness Baslangic Temel 1",
+      "description": "Mindfulness Baslangic icin paket 1 icerigi.",
+      "order_index": 1
+    },
+    {
+      "id": "pkg-0006-02",
+      "module_id": "cccccccc-0000-0000-0000-000000000006",
+      "title": "Paket 2: Mindfulness Baslangic Temel 2",
+      "description": "Mindfulness Baslangic icin paket 2 icerigi.",
+      "order_index": 2
+    },
+    {
+      "id": "pkg-0007-01",
+      "module_id": "cccccccc-0000-0000-0000-000000000007",
+      "title": "Paket 1: Motivasyon ve Hedef Temel 1",
+      "description": "Motivasyon ve Hedef icin paket 1 icerigi.",
+      "order_index": 1
+    },
+    {
+      "id": "pkg-0007-02",
+      "module_id": "cccccccc-0000-0000-0000-000000000007",
+      "title": "Paket 2: Motivasyon ve Hedef Temel 2",
+      "description": "Motivasyon ve Hedef icin paket 2 icerigi.",
+      "order_index": 2
+    },
+    {
+      "id": "pkg-0008-01",
+      "module_id": "cccccccc-0000-0000-0000-000000000008",
+      "title": "Paket 1: Duygusal Dayaniklilik Temel 1",
+      "description": "Duygusal Dayaniklilik icin paket 1 icerigi.",
+      "order_index": 1
+    },
+    {
+      "id": "pkg-0008-02",
+      "module_id": "cccccccc-0000-0000-0000-000000000008",
+      "title": "Paket 2: Duygusal Dayaniklilik Temel 2",
+      "description": "Duygusal Dayaniklilik icin paket 2 icerigi.",
+      "order_index": 2
+    },
+    {
+      "id": "pkg-0009-01",
+      "module_id": "cccccccc-0000-0000-0000-000000000009",
+      "title": "Paket 1: Sakinlik ve Denge Temel 1",
+      "description": "Sakinlik ve Denge icin paket 1 icerigi.",
+      "order_index": 1
+    },
+    {
+      "id": "pkg-0009-02",
+      "module_id": "cccccccc-0000-0000-0000-000000000009",
+      "title": "Paket 2: Sakinlik ve Denge Temel 2",
+      "description": "Sakinlik ve Denge icin paket 2 icerigi.",
+      "order_index": 2
+    },
+    {
+      "id": "pkg-0010-01",
+      "module_id": "cccccccc-0000-0000-0000-000000000010",
+      "title": "Paket 1: Oz Sefkat Temel 1",
+      "description": "Oz Sefkat icin paket 1 icerigi.",
+      "order_index": 1
+    },
+    {
+      "id": "pkg-0010-02",
+      "module_id": "cccccccc-0000-0000-0000-000000000010",
+      "title": "Paket 2: Oz Sefkat Temel 2",
+      "description": "Oz Sefkat icin paket 2 icerigi.",
+      "order_index": 2
     }
   ],
   "workshops": [
@@ -1030,7 +1170,7 @@
       "body": "Uygulama aciklamasi 50.",
       "order_index": 50,
       "has_audio": false
-    }    ,
+    },
     {
       "id": "c1c1c1c1-0000-0000-0000-000000000101",
       "parent_type": "package",
@@ -1061,7 +1201,6 @@
       "order_index": 3,
       "has_audio": false
     }
-
   ],
   "exercise_steps": [
     {
