@@ -258,6 +258,66 @@
       "title": "Stres Yonetimi Modulu",
       "description": "Stresle bas etme teknikleri.",
       "language": "tr"
+    },
+    {
+      "id": "cccccccc-0000-0000-0000-000000000001",
+      "title": "Duygular Evreni Modulu",
+      "description": "Duygusal farkindalik ve ifade becerileri.",
+      "language": "tr"
+    },
+    {
+      "id": "cccccccc-0000-0000-0000-000000000002",
+      "title": "Sukrun Gucu Modulu",
+      "description": "Sukur pratikleriyle guc kazanma.",
+      "language": "tr"
+    },
+    {
+      "id": "cccccccc-0000-0000-0000-000000000003",
+      "title": "Iletisim ve Empati Modulu",
+      "description": "Empati temelli iletisim stratejileri.",
+      "language": "tr"
+    },
+    {
+      "id": "cccccccc-0000-0000-0000-000000000004",
+      "title": "Odak ve Disiplin Modulu",
+      "description": "Gunu planlama ve odaklanma aliskanliklari.",
+      "language": "tr"
+    },
+    {
+      "id": "cccccccc-0000-0000-0000-000000000005",
+      "title": "Saglikli Sinirlar Modulu",
+      "description": "Hayir diyebilme ve sinir belirleme.",
+      "language": "tr"
+    },
+    {
+      "id": "cccccccc-0000-0000-0000-000000000006",
+      "title": "Mindfulness Baslangic Modulu",
+      "description": "Nefes ve anda kalma uygulamalari.",
+      "language": "tr"
+    },
+    {
+      "id": "cccccccc-0000-0000-0000-000000000007",
+      "title": "Motivasyon ve Hedef Modulu",
+      "description": "Hedef netlestirme ve motivasyon artirma.",
+      "language": "tr"
+    },
+    {
+      "id": "cccccccc-0000-0000-0000-000000000008",
+      "title": "Duygusal Dayaniklilik Modulu",
+      "description": "Zorluklara karsi guclu kalma teknikleri.",
+      "language": "tr"
+    },
+    {
+      "id": "cccccccc-0000-0000-0000-000000000009",
+      "title": "Sakinlik ve Denge Modulu",
+      "description": "Stresi azaltan gunluk rutinler.",
+      "language": "tr"
+    },
+    {
+      "id": "cccccccc-0000-0000-0000-000000000010",
+      "title": "Oz Sefkat Modulu",
+      "description": "Kendine nazik yaklasim ve kabul pratikleri.",
+      "language": "tr"
     }
   ],
   "packages": [
