@@ -1,22 +1,14 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import {
-  ActivityIndicator,
-  Button,
-  Card,
-  Chip,
-  Divider,
-  ProgressBar,
-  Text,
-  useTheme,
-} from "react-native-paper";
+import { ActivityIndicator, Chip, Divider, ProgressBar, useTheme } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "./components/OfflineNotice";
 import { ScreenLayout } from "./components/ScreenLayout";
 import { SectionCard } from "./components/SectionCard";
 import { SkeletonBlock } from "./components/SkeletonBlock";
 import { StateMessage } from "./components/StateMessage";
-import { resolveScreenState } from "./components/ScreenState";
+import { resolveScreenState, ScreenState } from "./components/ScreenState";
+import { PButton, PCard, PText } from "../components";
 import {
   getAddOnsForSubscription,
   getContentProgressForUser,
@@ -150,29 +142,29 @@ const HomeReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
       <SectionCard title="Bugün" actionLabel="Tümü">
         <View style={styles.rowItem}>
           <View style={styles.rowHeader}>
-            <Text variant="titleSmall">{nextJourney?.title ?? "Günlük Odak"}</Text>
+            <PText variant="titleSmall">{nextJourney?.title ?? "Günlük Odak"}</PText>
             <Chip compact>{subscription?.status ?? "aktif"}</Chip>
           </View>
-          <Text variant="bodySmall" style={{ color: theme.colors.onSurfaceVariant }}>
+          <PText variant="bodySmall" style={{ color: theme.colors.onSurfaceVariant }}>
             {nextJourneyDay
               ? `Gün ${nextJourneyDay.day_number} · ${nextJourney?.daily_target ?? "10 dk"}`
               : "Bugünkü içeriklerini tamamla"}
-          </Text>
+          </PText>
           <ProgressBar progress={0.4} style={styles.progress} />
         </View>
-        <Button mode="contained" style={styles.primaryButton} disabled={isOffline} onPress={handleContinue}>
+        <PButton mode="contained" style={styles.primaryButton} disabled={isOffline} onPress={handleContinue}>
           Devam Et
-        </Button>
+        </PButton>
       </SectionCard>
 
       <SectionCard title="Abonelik Durumu" actionLabel="Planlar">
         <View style={styles.rowHeader}>
-          <Text variant="titleSmall">{plan?.name ?? "Plan"}</Text>
+          <PText variant="titleSmall">{plan?.name ?? "Plan"}</PText>
           <Chip compact>{subscription?.status ?? "aktif"}</Chip>
         </View>
-        <Text variant="bodySmall" style={{ color: theme.colors.onSurfaceVariant }}>
+        <PText variant="bodySmall" style={{ color: theme.colors.onSurfaceVariant }}>
           {addOns.length > 0 ? "Aktif eklentiler:" : "Aktif eklenti yok"}
-        </Text>
+        </PText>
         <View style={styles.chipRow}>
           {addOns.map((addon) => (
             <Chip key={addon.id} style={styles.chip} disabled={isOffline}>
@@ -180,118 +172,118 @@ const HomeReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
             </Chip>
           ))}
         </View>
-        <Button
+        <PButton
           mode="outlined"
           disabled={isOffline}
           onPress={() => navigation.navigate("Profile", { screen: "ProfileSubscription" })}
         >
           Planı Yönet
-        </Button>
+        </PButton>
       </SectionCard>
 
       <SectionCard title="Hızlı Arama" actionLabel="">
-        <Text variant="bodySmall" style={{ color: theme.colors.onSurfaceVariant }}>
+        <PText variant="bodySmall" style={{ color: theme.colors.onSurfaceVariant }}>
           Tüm içeriklerde hızlı arama yap.
-        </Text>
-        <Button
+        </PText>
+        <PButton
           mode="contained-tonal"
           style={styles.actionButton}
           disabled={isOffline}
           onPress={() => navigation.navigate("HomeSearch")}
         >
           Aramaya Başla
-        </Button>
+        </PButton>
       </SectionCard>
 
       <SectionCard title="İçerik Alanları" actionLabel="">
         <View style={styles.entryRow}>
-          <Button
+          <PButton
             mode="outlined"
             style={styles.entryButton}
             disabled={isOffline}
             onPress={() => handleEntryNavigation("DiscoverJourneys")}
           >
             Yolculuklar
-          </Button>
-          <Button
+          </PButton>
+          <PButton
             mode="outlined"
             style={styles.entryButton}
             disabled={isOffline}
             onPress={() => handleEntryNavigation("DiscoverWorkshops")}
           >
             Atölyeler
-          </Button>
+          </PButton>
         </View>
         <View style={styles.entryRow}>
-          <Button
+          <PButton
             mode="outlined"
             style={styles.entryButton}
             disabled={isOffline}
             onPress={() => handleEntryNavigation("DiscoverModules")}
           >
             Modüller
-          </Button>
-          <Button
+          </PButton>
+          <PButton
             mode="outlined"
             style={styles.entryButton}
             disabled={isOffline}
             onPress={() => handleEntryNavigation("DiscoverEbooks")}
           >
             e-Kitaplar
-          </Button>
+          </PButton>
         </View>
-        <Button
+        <PButton
           mode="text"
           disabled={isOffline}
           onPress={() => navigation.navigate("Discover", { screen: "DiscoverCatalog" })}
         >
           Koçluk Okulu (yakında)
-        </Button>
+        </PButton>
       </SectionCard>
 
       <SectionCard title="Vicdandan Karaktere" actionLabel="Detay">
-        <Text variant="bodySmall" style={{ color: theme.colors.onSurfaceVariant }}>
+        <PText variant="bodySmall" style={{ color: theme.colors.onSurfaceVariant }}>
           Değer temelli gelişim yaklaşımımızın kısa bir özeti.
-        </Text>
-        <Button
+        </PText>
+        <PButton
           mode="outlined"
           style={styles.actionButton}
           disabled={isOffline}
           onPress={() => navigation.navigate("HomeVicdandanKaraktereDetail")}
         >
           Detayları Gör
-        </Button>
+        </PButton>
       </SectionCard>
 
       <SectionCard title="Aktif İçeriklerim" actionLabel="Tümünü Gör">
         {activeItems.map((item, index) => (
           <View key={item.title} style={styles.rowItem}>
             <View style={styles.rowHeader}>
-              <Text variant="titleSmall">{item.title}</Text>
+              <PText variant="titleSmall">{item.title}</PText>
               <Chip compact>{Math.round(item.progress * 100)}%</Chip>
             </View>
             {item.progress < 0.2 ? <Chip compact>Kilitli</Chip> : null}
-            <Text variant="bodySmall" style={{ color: theme.colors.onSurfaceVariant }}>
+            <PText variant="bodySmall" style={{ color: theme.colors.onSurfaceVariant }}>
               {item.subtitle}
-            </Text>
+            </PText>
             <ProgressBar progress={item.progress} style={styles.progress} />
-            <Button mode="text" disabled={isOffline} onPress={item.action}>
+            <PButton mode="text" disabled={isOffline} onPress={item.action}>
               Devam Et
-            </Button>
+            </PButton>
             {index < activeItems.length - 1 ? <Divider style={styles.divider} /> : null}
           </View>
         ))}
-        <Button mode="outlined" disabled={isOffline} onPress={() => navigation.navigate("HomeActiveContentList")}>
+        <PButton mode="outlined" disabled={isOffline} onPress={() => navigation.navigate("HomeActiveContentList")}>
           Tümünü Gör
-        </Button>
+        </PButton>
       </SectionCard>
 
       <SectionCard title="Önerilenler" actionLabel="Keşfet">
         {recommendations.map((item) => (
-          <Card key={item.title} style={styles.card}>
-            <Card.Title title={item.title} subtitle={item.subtitle} />
-            <Card.Actions>
-              <Button
+          <PCard key={item.title} style={styles.card}>
+            <PCard.Title title={item.title} subtitle={item.subtitle} />
+            <PCard.Actions>
+              <PButton
                 mode="outlined"
                 disabled={isOffline}
                 onPress={() =>
@@ -302,9 +294,9 @@ const HomeReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
                 }
               >
                 İncele
-              </Button>
-            </Card.Actions>
-          </Card>
+              </PButton>
+            </PCard.Actions>
+          </PCard>
         ))}
       </SectionCard>
 
@@ -325,7 +317,7 @@ const HomeReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
   );
 };
 
-export const HomeDashboardScreen = ({ route }: { route?: { params?: { state?: string } } }) => {
+export const HomeDashboardScreen = ({ route }: { route?: { params?: { state?: ScreenState } } }) => {
   const state = resolveScreenState(route);
 
   if (state === "loading") {

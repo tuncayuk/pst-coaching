@@ -1,14 +1,6 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import {
-  ActivityIndicator,
-  Button,
-  Card,
-  Chip,
-  Divider,
-  ProgressBar,
-  Text,
-} from "react-native-paper";
+import { ActivityIndicator, Chip, Divider, ProgressBar } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
@@ -16,6 +8,7 @@ import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
+import { PButton, PCard, PText } from "../../components";
 import {
   getContentProgressForUser,
   getJourneyById,
@@ -48,10 +41,10 @@ const ContentJourneyHomeContent = ({
   return (
     <>
       <SectionCard title="Yolculuk Özeti" actionLabel="Paylaş">
-        <Text variant="titleMedium">{journey?.title ?? "Yolculuk"}</Text>
-        <Text variant="bodySmall" style={styles.subtleText}>
+        <PText variant="titleMedium">{journey?.title ?? "Yolculuk"}</PText>
+        <PText variant="bodySmall" style={styles.subtleText}>
           {journey?.description ?? "Yolculuğun kısa açıklaması burada yer alır."}
-        </Text>
+        </PText>
         <View style={styles.chipRow}>
           <Chip style={styles.chip} disabled={isOffline}>
             {journey?.level ?? "başlangıç"}
@@ -64,10 +57,10 @@ const ContentJourneyHomeContent = ({
           </Chip>
         </View>
         <ProgressBar progress={progress} style={styles.progress} />
-        <Text variant="bodySmall" style={styles.subtleText}>
+        <PText variant="bodySmall" style={styles.subtleText}>
           {completedCount}/{days.length} gün tamamlandı
-        </Text>
-        <Button
+        </PText>
+        <PButton
           mode="contained"
           style={styles.primaryButton}
           disabled={isOffline || days.length === 0}
@@ -81,20 +74,20 @@ const ContentJourneyHomeContent = ({
           }}
         >
           Devam Et
-        </Button>
+        </PButton>
       </SectionCard>
 
       <SectionCard title="Günler" actionLabel="Takvim">
         {days.map((day, index) => (
-          <Card key={day.id} style={styles.card}>
-            <Card.Title title={`Gün ${day.day_number}`} subtitle={day.title} />
-            <Card.Content>
-              <Text variant="bodySmall" style={styles.subtleText}>
+          <PCard key={day.id} style={styles.card}>
+            <PCard.Title title={`Gün ${day.day_number}`} subtitle={day.title} />
+            <PCard.Content>
+              <PText variant="bodySmall" style={styles.subtleText}>
                 Açılış: {day.unlock_time_local}
-              </Text>
-            </Card.Content>
-            <Card.Actions>
-              <Button
+              </PText>
+            </PCard.Content>
+            <PCard.Actions>
+              <PButton
                 mode="outlined"
                 disabled={isOffline}
                 onPress={() =>
@@ -105,10 +98,10 @@ const ContentJourneyHomeContent = ({
                 }
               >
                 Gün İçeriği
-              </Button>
-            </Card.Actions>
+              </PButton>
+            </PCard.Actions>
             {index < days.length - 1 ? <Divider style={styles.divider} /> : null}
-          </Card>
+          </PCard>
         ))}
       </SectionCard>
     </>

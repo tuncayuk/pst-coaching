@@ -1,16 +1,15 @@
 import React from "react";
 import { StyleSheet, View, ScrollView } from "react-native";
-import {
-  ActivityIndicator,
-  Button,
-  Text,
-} from "react-native-paper";
+import { ActivityIndicator } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { OfflineNotice } from "../components/OfflineNotice";
+import { ScreenLayout } from "../components/ScreenLayout";
+import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
+import { PButton, PText } from "../../components";
 
 const GuestModeContent = ({ isOffline }: { isOffline?: boolean }) => {
   const navigation = useNavigation<any>();
@@ -19,29 +18,29 @@ const GuestModeContent = ({ isOffline }: { isOffline?: boolean }) => {
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <View style={styles.iconContainer}>
-          <Text style={styles.icon}>👻</Text>
+          <PText style={styles.icon}>👻</PText>
         </View>
-        <Text style={styles.title}>Misafir Modunda Devam Et</Text>
-        <Text style={styles.subtitle}>Kayıt olmadan içerikleri keşfedin</Text>
+        <PText style={styles.title}>Misafir Modunda Devam Et</PText>
+        <PText style={styles.subtitle}>Kayıt olmadan içerikleri keşfedin</PText>
         <View style={styles.infoCard}>
-          <Text style={styles.infoTitle}>✓ Misafir Olarak Yapabilecekleriniz</Text>
+          <PText style={styles.infoTitle}>✓ Misafir Olarak Yapabilecekleriniz</PText>
           <View style={styles.list}>
-            <Text style={styles.listItem}>• Yolculukları keşfedin</Text>
-            <Text style={styles.listItem}>• Atölyelere göz atın</Text>
-            <Text style={styles.listItem}>• e-Kitap kataloğunu inceleyin</Text>
-            <Text style={styles.listItem}>• Modülleri görüntüleyin</Text>
+            <PText style={styles.listItem}>• Yolculukları keşfedin</PText>
+            <PText style={styles.listItem}>• Atölyelere göz atın</PText>
+            <PText style={styles.listItem}>• e-Kitap kataloğunu inceleyin</PText>
+            <PText style={styles.listItem}>• Modülleri görüntüleyin</PText>
           </View>
         </View>
         <View style={styles.warningCard}>
-          <Text style={styles.warningTitle}>⚠️ Sınırlamalar</Text>
+          <PText style={styles.warningTitle}>⚠️ Sınırlamalar</PText>
           <View style={styles.list}>
-            <Text style={styles.warningItem}>• İçerik başlatamazsınız</Text>
-            <Text style={styles.warningItem}>• Okuma yapamazsınız</Text>
-            <Text style={styles.warningItem}>• Yorum yazamazsınız</Text>
-            <Text style={styles.warningItem}>• İlerleme kaydedilemez</Text>
+            <PText style={styles.warningItem}>• İçerik başlatamazsınız</PText>
+            <PText style={styles.warningItem}>• Okuma yapamazsınız</PText>
+            <PText style={styles.warningItem}>• Yorum yazamazsınız</PText>
+            <PText style={styles.warningItem}>• İlerleme kaydedilemez</PText>
           </View>
         </View>
-        <Button
+        <PButton
           mode="contained"
           disabled={isOffline}
           buttonColor="#00B4D8"
@@ -52,8 +51,8 @@ const GuestModeContent = ({ isOffline }: { isOffline?: boolean }) => {
           labelStyle={styles.primaryButtonLabel}
         >
           Misafir Olarak Devam Et
-        </Button>
-        <Button
+        </PButton>
+        <PButton
           mode="outlined"
           disabled={isOffline}
           onPress={() => navigation.navigate("AuthRegister")}
@@ -62,10 +61,10 @@ const GuestModeContent = ({ isOffline }: { isOffline?: boolean }) => {
           labelStyle={styles.secondaryButtonLabel}
         >
           Kayıt Ol
-        </Button>
-        <Text style={styles.hint}>
+        </PButton>
+        <PText style={styles.hint}>
           💡 Kayıt olduktan sonra misafir oturumunuzdaki favorileriniz hesabınıza aktarılacaktır
-        </Text>
+        </PText>
       </ScrollView>
     </SafeAreaView>
   );

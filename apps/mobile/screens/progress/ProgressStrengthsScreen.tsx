@@ -1,18 +1,13 @@
 import React from "react";
 import { StyleSheet } from "react-native";
-import {
-  ActivityIndicator,
-  Button,
-  Card,
-  ProgressBar,
-  Text,
-} from "react-native-paper";
+import { ActivityIndicator, ProgressBar } from "react-native-paper";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
-import { resolveScreenState } from "../components/ScreenState";
+import { resolveScreenState, ScreenState } from "../components/ScreenState";
+import { PButton, PCard, PText } from "../../components";
 
 const strengths = [
   {
@@ -34,16 +29,16 @@ const ProgressStrengthsContent = ({ isOffline }: { isOffline?: boolean }) => {
     <>
       <SectionCard title="Güçlü Alanlar" actionLabel="Detay">
         {strengths.map((item) => (
-          <Card key={item.title} style={styles.card}>
-            <Card.Title title={item.title} subtitle={`${Math.round(item.score * 100)}%`} />
-            <Card.Content>
+          <PCard key={item.title} style={styles.card}>
+            <PCard.Title title={item.title} subtitle={`${Math.round(item.score * 100)}%`} />
+            <PCard.Content>
               <ProgressBar progress={item.score} />
-            </Card.Content>
-          </Card>
+            </PCard.Content>
+          </PCard>
         ))}
-        <Button mode="outlined" disabled={isOffline}>
+        <PButton mode="outlined" disabled={isOffline}>
           Kişisel Plan Oluştur
-        </Button>
+        </PButton>
       </SectionCard>
     </>
   );
@@ -52,7 +47,7 @@ const ProgressStrengthsContent = ({ isOffline }: { isOffline?: boolean }) => {
 export const ProgressStrengthsScreen = ({
   route,
 }: {
-  route?: { params?: { state?: string } };
+  route?: { params?: { state?: ScreenState } };
 }) => {
   const state = resolveScreenState(route);
 

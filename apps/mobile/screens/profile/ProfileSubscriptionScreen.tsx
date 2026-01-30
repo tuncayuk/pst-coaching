@@ -1,21 +1,14 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import {
-  ActivityIndicator,
-  Button,
-  Card,
-  Chip,
-  Divider,
-  List,
-  Text,
-} from "react-native-paper";
+import { ActivityIndicator, Chip, Divider, List } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
-import { resolveScreenState } from "../components/ScreenState";
+import { resolveScreenState, ScreenState } from "../components/ScreenState";
+import { PButton, PCard, PText } from "../../components";
 import {
   getAddOnsForSubscription,
   getPlanForSubscription,
@@ -37,37 +30,37 @@ const ProfileSubscriptionContent = ({ isOffline }: { isOffline?: boolean }) => {
   return (
     <>
       <SectionCard title="Plan" actionLabel="Karşılaştır">
-        <Card style={styles.card}>
-          <Card.Title
+        <PCard style={styles.card}>
+          <PCard.Title
             title={plan?.name ?? "Plan"}
             subtitle={`Sonraki yenileme ${subscription?.renewal_at?.slice(0, 10) ?? "-"}`}
           />
-          <Card.Content>
+          <PCard.Content>
             <View style={styles.row}>
               <Chip compact>{subscription?.status ?? "aktif"}</Chip>
-              <Text variant="bodySmall">{plan?.seat_limit ?? 1} kişilik</Text>
+              <PText variant="bodySmall">{plan?.seat_limit ?? 1} kişilik</PText>
             </View>
             <View style={styles.benefitList}>
               {benefits.map((benefit) => (
-                <Text key={benefit} variant="bodySmall">
+                <PText key={benefit} variant="bodySmall">
                   • {benefit}
-                </Text>
+                </PText>
               ))}
             </View>
-          </Card.Content>
-          <Card.Actions>
-            <Button mode="contained" disabled={isOffline}>
+          </PCard.Content>
+          <PCard.Actions>
+            <PButton mode="contained" disabled={isOffline}>
               Planı Yönet
-            </Button>
-          </Card.Actions>
-        </Card>
-        <Button
+            </PButton>
+          </PCard.Actions>
+        </PCard>
+        <PButton
           mode="outlined"
           disabled={isOffline}
           onPress={() => navigation.navigate("ProfilePlanComparison")}
         >
           Fatura Bilgileri
-        </Button>
+        </PButton>
       </SectionCard>
 
       <SectionCard title="Ek Özellikler" actionLabel="">
@@ -94,24 +87,24 @@ const ProfileSubscriptionContent = ({ isOffline }: { isOffline?: boolean }) => {
       </SectionCard>
 
       <SectionCard title="Satın Alma" actionLabel="">
-        <Button
+        <PButton
           mode="contained-tonal"
           disabled={isOffline}
           onPress={() => navigation.navigate("ProfileCheckout")}
         >
           Yeni Plan Satın Al
-        </Button>
-        <Button
+        </PButton>
+        <PButton
           mode="outlined"
           style={styles.secondaryButton}
           disabled={isOffline}
           onPress={() => navigation.navigate("ProfileRestorePurchases")}
         >
           Satın Alımları Geri Yükle
-        </Button>
-        <Button mode="text" disabled={isOffline} onPress={() => navigation.navigate("ProfilePaymentHistory")}>
+        </PButton>
+        <PButton mode="text" disabled={isOffline} onPress={() => navigation.navigate("ProfilePaymentHistory")}>
           Ödeme Geçmişi
-        </Button>
+        </PButton>
       </SectionCard>
     </>
   );
@@ -120,7 +113,7 @@ const ProfileSubscriptionContent = ({ isOffline }: { isOffline?: boolean }) => {
 export const ProfileSubscriptionScreen = ({
   route,
 }: {
-  route?: { params?: { state?: string } };
+  route?: { params?: { state?: ScreenState } };
 }) => {
   const state = resolveScreenState(route);
 

@@ -1,19 +1,14 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import {
-  ActivityIndicator,
-  Button,
-  Card,
-  Chip,
-  TextInput,
-} from "react-native-paper";
+import { ActivityIndicator, Chip } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
-import { resolveScreenState } from "../components/ScreenState";
+import { resolveScreenState, ScreenState } from "../components/ScreenState";
+import { PButton, PCard, PTextInput } from "../../components";
 
 const quickFilters = ["Yolculuk", "Atölye", "Modül", "e-Kitap"];
 const recentSearches = ["Öz şefkat", "Sınır koyma", "Nefes egzersizi"];
@@ -34,7 +29,7 @@ const HomeSearchContent = ({ isOffline }: { isOffline?: boolean }) => {
   return (
     <>
       <SectionCard title="Arama" actionLabel="Filtrele">
-        <TextInput
+        <PTextInput
           label="İçerik, konu veya yazar ara"
           mode="outlined"
           placeholder="Örn: öz şefkat, stres yönetimi"
@@ -48,13 +43,13 @@ const HomeSearchContent = ({ isOffline }: { isOffline?: boolean }) => {
             </Chip>
           ))}
         </View>
-        <Button
+        <PButton
           mode="contained"
           disabled={isOffline}
           onPress={() => navigation.navigate("HomeSearchResults")}
         >
           Ara
-        </Button>
+        </PButton>
       </SectionCard>
 
       <SectionCard title="Son Aramalar" actionLabel="Temizle">
@@ -69,21 +64,21 @@ const HomeSearchContent = ({ isOffline }: { isOffline?: boolean }) => {
 
       <SectionCard title="Popüler Konular" actionLabel="Tümü">
         {popularTopics.map((topic) => (
-          <Card key={topic.title} style={styles.card}>
-            <Card.Title title={topic.title} subtitle={topic.subtitle} />
-            <Card.Actions>
-              <Button mode="outlined" disabled={isOffline}>
+          <PCard key={topic.title} style={styles.card}>
+            <PCard.Title title={topic.title} subtitle={topic.subtitle} />
+            <PCard.Actions>
+              <PButton mode="outlined" disabled={isOffline}>
                 İncele
-              </Button>
-            </Card.Actions>
-          </Card>
+              </PButton>
+            </PCard.Actions>
+          </PCard>
         ))}
       </SectionCard>
     </>
   );
 };
 
-export const HomeSearchScreen = ({ route }: { route?: { params?: { state?: string } } }) => {
+export const HomeSearchScreen = ({ route }: { route?: { params?: { state?: ScreenState } } }) => {
   const state = resolveScreenState(route);
 
   if (state === "loading") {

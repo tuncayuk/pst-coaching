@@ -1,4 +1,4 @@
-import { combineReducers, configureStore, type PreloadedState } from "@reduxjs/toolkit";
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { connectivityReducer } from "./slices/connectivitySlice";
 
 const rootReducer = combineReducers({
@@ -7,7 +7,7 @@ const rootReducer = combineReducers({
 
 export type RootState = ReturnType<typeof rootReducer>;
 
-export const createAppStore = (preloadedState?: PreloadedState<RootState>) =>
+export const createAppStore = (preloadedState?: Partial<RootState>) =>
   configureStore({
     reducer: rootReducer,
     preloadedState,

@@ -1,17 +1,15 @@
 import React from "react";
 import { StyleSheet, View, ScrollView } from "react-native";
-import {
-  ActivityIndicator,
-  Button,
-  Text,
-  TextInput,
-} from "react-native-paper";
+import { ActivityIndicator } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { OfflineNotice } from "../components/OfflineNotice";
+import { ScreenLayout } from "../components/ScreenLayout";
+import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
+import { PButton, PText, PTextInput } from "../../components";
 
 const DemographicsContent = ({ isOffline }: { isOffline?: boolean }) => {
   const [age, setAge] = React.useState("");
@@ -24,21 +22,21 @@ const DemographicsContent = ({ isOffline }: { isOffline?: boolean }) => {
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <View style={styles.iconContainer}>
-          <Text style={styles.icon}>📊</Text>
+          <PText style={styles.icon}>📊</PText>
         </View>
-        <Text style={styles.title}>Demografi Bilgileri</Text>
-        <Text style={styles.subtitle}>
+        <PText style={styles.title}>Demografi Bilgileri</PText>
+        <PText style={styles.subtitle}>
           İçeriğe başlamadan önce lütfen bilgilerinizi tamamlayın
-        </Text>
+        </PText>
         <View style={styles.infoCard}>
-          <Text style={styles.infoText}>
-            <Text style={styles.infoBold}>💡 Neden soruluyor?</Text>
+          <PText style={styles.infoText}>
+            <PText style={styles.infoBold}>💡 Neden soruluyor?</PText>
             {"\n"}Bu bilgiler size daha uygun içerik önerileri sunmamıza yardımcı olur. Verileriniz güvenli şekilde saklanır.
-          </Text>
+          </PText>
         </View>
         <View style={styles.inputGroup}>
-          <Text style={styles.label}>Yaş *</Text>
-          <TextInput
+          <PText style={styles.label}>Yaş *</PText>
+          <PTextInput
             mode="outlined"
             keyboardType="number-pad"
             value={age}
@@ -49,40 +47,40 @@ const DemographicsContent = ({ isOffline }: { isOffline?: boolean }) => {
             editable={!isOffline}
             placeholder="Yaşınızı girin"
           />
-          <Text style={styles.helperText}>13-120 yaş arası</Text>
+          <PText style={styles.helperText}>13-120 yaş arası</PText>
         </View>
-        <Text style={styles.label}>Cinsiyet</Text>
+        <PText style={styles.label}>Cinsiyet</PText>
         <View style={styles.genderRow}>
-          <Button
+          <PButton
             mode={gender === "Kadın" ? "contained" : "outlined"}
             onPress={() => setGender("Kadın")}
             style={styles.genderButton}
             disabled={isOffline}
           >
             Kadın
-          </Button>
-          <Button
+          </PButton>
+          <PButton
             mode={gender === "Erkek" ? "contained" : "outlined"}
             onPress={() => setGender("Erkek")}
             style={styles.genderButton}
             disabled={isOffline}
           >
             Erkek
-          </Button>
+          </PButton>
         </View>
-        <Button
+        <PButton
           mode="outlined"
           onPress={() => setGender("Belirtmek istemiyorum")}
           style={styles.genderButtonFull}
           disabled={isOffline}
         >
           Belirtmek istemiyorum
-        </Button>
-        <Text style={styles.label}>Ülke *</Text>
+        </PButton>
+        <PText style={styles.label}>Ülke *</PText>
         <View style={styles.countryContainer}>
-          <Text style={styles.countryText}>Türkiye</Text>
+          <PText style={styles.countryText}>Türkiye</PText>
         </View>
-        <Button
+        <PButton
           mode="contained"
           disabled={isOffline || !isFormValid}
           buttonColor="#00B4D8"
@@ -95,8 +93,8 @@ const DemographicsContent = ({ isOffline }: { isOffline?: boolean }) => {
           labelStyle={styles.primaryButtonLabel}
         >
           Kaydet ve Devam Et
-        </Button>
-        <Text style={styles.requiredText}>* Zorunlu alanlar</Text>
+        </PButton>
+        <PText style={styles.requiredText}>* Zorunlu alanlar</PText>
       </ScrollView>
     </SafeAreaView>
   );

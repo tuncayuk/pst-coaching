@@ -1,21 +1,15 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import {
-  ActivityIndicator,
-  Avatar,
-  Button,
-  Divider,
-  List,
-  Text,
-} from "react-native-paper";
+import { ActivityIndicator, Avatar, Divider, List } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
-import { resolveScreenState } from "../components/ScreenState";
+import { resolveScreenState, ScreenState } from "../components/ScreenState";
 import { getPrimaryUser } from "../../data/mockSelectors";
+import { PButton, PText } from "../../components";
 
 const ProfileAccountContent = ({ isOffline }: { isOffline?: boolean }) => {
   const navigation = useNavigation<any>();
@@ -27,14 +21,14 @@ const ProfileAccountContent = ({ isOffline }: { isOffline?: boolean }) => {
         <View style={styles.profileHeader}>
           <Avatar.Text size={64} label={(user?.email ?? "EA").slice(0, 2).toUpperCase()} />
           <View style={styles.profileInfo}>
-            <Text variant="titleMedium">{user?.email ?? "Kullanıcı"}</Text>
-            <Text variant="bodySmall">{user?.email ?? "demo@pstcoaching.app"}</Text>
-            <Text variant="bodySmall">{user?.phone ?? "+90 555 123 45 67"}</Text>
+            <PText variant="titleMedium">{user?.email ?? "Kullanıcı"}</PText>
+            <PText variant="bodySmall">{user?.email ?? "demo@pstcoaching.app"}</PText>
+            <PText variant="bodySmall">{user?.phone ?? "+90 555 123 45 67"}</PText>
           </View>
         </View>
-        <Button mode="outlined" style={styles.actionButton} disabled={isOffline}>
+        <PButton mode="outlined" style={styles.actionButton} disabled={isOffline}>
           Hesap Bilgilerini Güncelle
-        </Button>
+        </PButton>
       </SectionCard>
 
       <SectionCard title="Güvenlik" actionLabel="">
@@ -50,9 +44,9 @@ const ProfileAccountContent = ({ isOffline }: { isOffline?: boolean }) => {
           description="2 aktif oturum"
           left={(props) => <List.Icon {...props} icon="cellphone" />}
         />
-        <Button mode="contained-tonal" style={styles.actionButton} disabled={isOffline}>
+        <PButton mode="contained-tonal" style={styles.actionButton} disabled={isOffline}>
           Güvenlik Ayarları
-        </Button>
+        </PButton>
       </SectionCard>
 
       <SectionCard title="Hesap" actionLabel="">
@@ -76,7 +70,7 @@ const ProfileAccountContent = ({ isOffline }: { isOffline?: boolean }) => {
 export const ProfileAccountScreen = ({
   route,
 }: {
-  route?: { params?: { state?: string } };
+  route?: { params?: { state?: ScreenState } };
 }) => {
   const state = resolveScreenState(route);
 

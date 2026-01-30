@@ -1,4 +1,5 @@
 import "@testing-library/jest-native/extend-expect";
+import { View } from "react-native";
 import { vi } from "vitest";
 
 vi.mock("react-native-reanimated", () => require("react-native-reanimated/mock"));
@@ -9,7 +10,7 @@ vi.mock("react-native-gesture-handler", async () => {
   );
   return {
     ...actual,
-    GestureHandlerRootView: actual.View
+    GestureHandlerRootView: View,
   };
 });
 

@@ -1,18 +1,13 @@
 import React from "react";
 import { StyleSheet } from "react-native";
-import {
-  ActivityIndicator,
-  Button,
-  Divider,
-  List,
-  Text,
-} from "react-native-paper";
+import { ActivityIndicator, Divider, List } from "react-native-paper";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
+import { PButton, PText } from "../../components";
 
 const chapters = [
   { title: "Giriş: Niyet", subtitle: "6 dk" },
@@ -34,12 +29,12 @@ const ContentEbookTocContent = ({ isOffline }: { isOffline?: boolean }) => {
       </SectionCard>
 
       <SectionCard title="Okuma Planı">
-        <Text variant="bodySmall">
+        <PText variant="bodySmall">
           Bölümleri haftaya yayarak okuma hedefi oluşturabilir ve hatırlatıcı kurabilirsin.
-        </Text>
-        <Button mode="outlined" style={styles.secondaryButton} disabled={isOffline}>
+        </PText>
+        <PButton mode="outlined" style={styles.secondaryButton} disabled={isOffline}>
           Okuma Planı Oluştur
-        </Button>
+        </PButton>
       </SectionCard>
     </>
   );

@@ -1,21 +1,15 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import {
-  ActivityIndicator,
-  Button,
-  Card,
-  Chip,
-  ProgressBar,
-  Text,
-} from "react-native-paper";
+import { ActivityIndicator, Chip, ProgressBar } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
-import { resolveScreenState } from "../components/ScreenState";
+import { resolveScreenState, ScreenState } from "../components/ScreenState";
 import { getEbooks, getJourneys, getWorkshops } from "../../data/mockSelectors";
+import { PButton, PCard, PText } from "../../components";
 
 const HomeActiveContentListContent = ({ isOffline }: { isOffline?: boolean }) => {
   const navigation = useNavigation<any>();
@@ -50,17 +44,17 @@ const HomeActiveContentListContent = ({ isOffline }: { isOffline?: boolean }) =>
     <>
       <SectionCard title="Aktif İçeriklerin">
         {activeItems.map((item) => (
-          <Card key={item.title} style={styles.card}>
-            <Card.Title title={item.title} subtitle={item.subtitle} />
-            <Card.Content>
+          <PCard key={item.title} style={styles.card}>
+            <PCard.Title title={item.title} subtitle={item.subtitle} />
+            <PCard.Content>
               {item.progress < 0.2 ? <Chip compact>Kilitli</Chip> : null}
               <View style={styles.progressRow}>
                 <ProgressBar progress={item.progress} style={styles.progress} />
-                <Text variant="labelSmall">{Math.round(item.progress * 100)}%</Text>
+                <PText variant="labelSmall">{Math.round(item.progress * 100)}%</PText>
               </View>
-            </Card.Content>
-            <Card.Actions>
-              <Button
+            </PCard.Content>
+            <PCard.Actions>
+              <PButton
                 mode="contained"
                 disabled={isOffline}
                 onPress={() =>
@@ -71,19 +65,19 @@ const HomeActiveContentListContent = ({ isOffline }: { isOffline?: boolean }) =>
                 }
               >
                 Devam Et
-              </Button>
-            </Card.Actions>
-          </Card>
+              </PButton>
+            </PCard.Actions>
+          </PCard>
         ))}
       </SectionCard>
 
       <SectionCard title="Planlama" actionLabel="Hatırlat">
-        <Text variant="bodySmall">
+        <PText variant="bodySmall">
           Haftalık hedefini belirle ve içeriklerini düzenli takip et.
-        </Text>
-        <Button mode="outlined" style={styles.secondaryButton} disabled={isOffline}>
+        </PText>
+        <PButton mode="outlined" style={styles.secondaryButton} disabled={isOffline}>
           Hedef Belirle
-        </Button>
+        </PButton>
       </SectionCard>
     </>
   );
@@ -92,7 +86,7 @@ const HomeActiveContentListContent = ({ isOffline }: { isOffline?: boolean }) =>
 export const HomeActiveContentListScreen = ({
   route,
 }: {
-  route?: { params?: { state?: string } };
+  route?: { params?: { state?: ScreenState } };
 }) => {
   const state = resolveScreenState(route);
 

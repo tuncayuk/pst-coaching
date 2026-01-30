@@ -1,13 +1,14 @@
 import React from "react";
 import { StyleSheet } from "react-native";
-import { ActivityIndicator, Button, Card, Chip, Text } from "react-native-paper";
+import { ActivityIndicator, Chip } from "react-native-paper";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
-import { resolveScreenState } from "../components/ScreenState";
+import { resolveScreenState, ScreenState } from "../components/ScreenState";
 import { getSubscriptionPlans } from "../../data/mockSelectors";
+import { PButton, PCard, PText } from "../../components";
 
 const ProfilePlanComparisonContent = ({ isOffline }: { isOffline?: boolean }) => {
   const plans = getSubscriptionPlans();
@@ -15,26 +16,26 @@ const ProfilePlanComparisonContent = ({ isOffline }: { isOffline?: boolean }) =>
   return (
     <SectionCard title="Plan Karşılaştırma">
       {plans.map((plan) => (
-        <Card key={plan.id} style={styles.card}>
-          <Card.Title title={plan.name} subtitle={`Kişi limiti: ${plan.seat_limit}`} />
-          <Card.Content>
+        <PCard key={plan.id} style={styles.card}>
+          <PCard.Title title={plan.name} subtitle={`Kişi limiti: ${plan.seat_limit}`} />
+          <PCard.Content>
             <Chip style={styles.chip} disabled={isOffline}>
               {plan.plan_type}
             </Chip>
-            <Text variant="bodySmall" style={styles.subtleText}>
+            <PText variant="bodySmall" style={styles.subtleText}>
               Tüm içerik türlerine erişim ve çevrimdışı kullanım dahil.
-            </Text>
-          </Card.Content>
-          <Card.Actions>
-            <Button mode="outlined" disabled={isOffline}>
+            </PText>
+          </PCard.Content>
+          <PCard.Actions>
+            <PButton mode="outlined" disabled={isOffline}>
               Bu Planı Seç
-            </Button>
-          </Card.Actions>
-        </Card>
+            </PButton>
+          </PCard.Actions>
+        </PCard>
       ))}
-      <Button mode="contained" disabled={isOffline}>
+      <PButton mode="contained" disabled={isOffline}>
         Devam Et
-      </Button>
+      </PButton>
     </SectionCard>
   );
 };
@@ -42,7 +43,7 @@ const ProfilePlanComparisonContent = ({ isOffline }: { isOffline?: boolean }) =>
 export const ProfilePlanComparisonScreen = ({
   route,
 }: {
-  route?: { params?: { state?: string } };
+  route?: { params?: { state?: ScreenState } };
 }) => {
   const state = resolveScreenState(route);
 

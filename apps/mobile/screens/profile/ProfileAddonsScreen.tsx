@@ -1,18 +1,13 @@
 import React from "react";
 import { StyleSheet } from "react-native";
-import {
-  ActivityIndicator,
-  Button,
-  Card,
-  Chip,
-  Text,
-} from "react-native-paper";
+import { ActivityIndicator, Chip } from "react-native-paper";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
-import { resolveScreenState } from "../components/ScreenState";
+import { resolveScreenState, ScreenState } from "../components/ScreenState";
+import { PButton, PCard, PText } from "../../components";
 import {
   getAddOns,
   getAddOnsForSubscription,
@@ -35,30 +30,30 @@ const ProfileAddonsContent = ({ isOffline }: { isOffline?: boolean }) => {
     <>
       <SectionCard title="Add-on Paketleri" actionLabel="">
         {addons.map((addon) => (
-          <Card key={addon.id} style={styles.card}>
-            <Card.Title title={addon.name} subtitle={addon.description} />
-            <Card.Content>
+          <PCard key={addon.id} style={styles.card}>
+            <PCard.Title title={addon.name} subtitle={addon.description} />
+            <PCard.Content>
               <Chip compact>{addon.status}</Chip>
-            </Card.Content>
-            <Card.Actions>
-              <Button mode="contained" disabled={isOffline}>
+            </PCard.Content>
+            <PCard.Actions>
+              <PButton mode="contained" disabled={isOffline}>
                 {addon.status === "Pasif" ? "Satın Al" : "Yönet"}
-              </Button>
-              <Button mode="text" disabled={isOffline}>
+              </PButton>
+              <PButton mode="text" disabled={isOffline}>
                 Detay
-              </Button>
-            </Card.Actions>
-          </Card>
+              </PButton>
+            </PCard.Actions>
+          </PCard>
         ))}
       </SectionCard>
 
       <SectionCard title="Paket Avantajları" actionLabel="">
-        <Text variant="bodySmall">• Özel içerik paketlerine eriş</Text>
-        <Text variant="bodySmall">• Takım üyeleri için ekstra içerik</Text>
-        <Text variant="bodySmall">• Aylık bildirim raporları</Text>
-        <Button mode="outlined" style={styles.actionButton} disabled={isOffline}>
+        <PText variant="bodySmall">• Özel içerik paketlerine eriş</PText>
+        <PText variant="bodySmall">• Takım üyeleri için ekstra içerik</PText>
+        <PText variant="bodySmall">• Aylık bildirim raporları</PText>
+        <PButton mode="outlined" style={styles.actionButton} disabled={isOffline}>
           Yeni Paketleri İncele
-        </Button>
+        </PButton>
       </SectionCard>
     </>
   );
@@ -67,7 +62,7 @@ const ProfileAddonsContent = ({ isOffline }: { isOffline?: boolean }) => {
 export const ProfileAddonsScreen = ({
   route,
 }: {
-  route?: { params?: { state?: string } };
+  route?: { params?: { state?: ScreenState } };
 }) => {
   const state = resolveScreenState(route);
 

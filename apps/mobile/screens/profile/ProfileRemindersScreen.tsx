@@ -1,13 +1,14 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import { ActivityIndicator, Button, Card, Switch, Text } from "react-native-paper";
+import { ActivityIndicator, Switch } from "react-native-paper";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
-import { resolveScreenState } from "../components/ScreenState";
+import { resolveScreenState, ScreenState } from "../components/ScreenState";
 import { getPrimaryUser, getReminderSettings } from "../../data/mockSelectors";
+import { PButton, PCard, PText } from "../../components";
 
 const ProfileRemindersContent = ({ isOffline }: { isOffline?: boolean }) => {
   const user = getPrimaryUser();
@@ -16,27 +17,27 @@ const ProfileRemindersContent = ({ isOffline }: { isOffline?: boolean }) => {
   return (
     <>
       <SectionCard title="Günlük Hatırlatıcı">
-        <Card style={styles.card}>
-          <Card.Content style={styles.row}>
+        <PCard style={styles.card}>
+          <PCard.Content style={styles.row}>
             <View style={styles.rowText}>
-              <Text variant="bodyMedium">Hatırlatıcıyı Aç</Text>
-              <Text variant="bodySmall" style={styles.subtleText}>
+              <PText variant="bodyMedium">Hatırlatıcıyı Aç</PText>
+              <PText variant="bodySmall" style={styles.subtleText}>
                 Varsayılan saat: {reminder?.time_local ?? "20:00"}
-              </Text>
+              </PText>
             </View>
             <Switch value={reminder?.enabled ?? false} disabled={isOffline} />
-          </Card.Content>
-        </Card>
-        <Button mode="outlined" disabled={isOffline}>
+          </PCard.Content>
+        </PCard>
+        <PButton mode="outlined" disabled={isOffline}>
           Saat Seç
-        </Button>
+        </PButton>
       </SectionCard>
 
       <SectionCard title="Bildirim Politikası">
-        <Text variant="bodySmall" style={styles.subtleText}>
+        <PText variant="bodySmall" style={styles.subtleText}>
           Bildirim izni alınmadan önce açıklama gösterilir. Yorum gönderildiğinde tekrar
           hatırlatma yapılmaz.
-        </Text>
+        </PText>
       </SectionCard>
     </>
   );
@@ -45,7 +46,7 @@ const ProfileRemindersContent = ({ isOffline }: { isOffline?: boolean }) => {
 export const ProfileRemindersScreen = ({
   route,
 }: {
-  route?: { params?: { state?: string } };
+  route?: { params?: { state?: ScreenState } };
 }) => {
   const state = resolveScreenState(route);
 

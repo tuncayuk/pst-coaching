@@ -1,17 +1,13 @@
 import React from "react";
 import { StyleSheet } from "react-native";
-import {
-  ActivityIndicator,
-  Button,
-  Card,
-  Text,
-} from "react-native-paper";
+import { ActivityIndicator } from "react-native-paper";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
-import { resolveScreenState } from "../components/ScreenState";
+import { resolveScreenState, ScreenState } from "../components/ScreenState";
+import { PButton, PCard, PText } from "../../components";
 
 const primaryRecommendation = {
   title: "Öz Şefkat Yolculuğu",
@@ -34,42 +30,42 @@ const DiscoverAssistantResultsContent = ({ isOffline }: { isOffline?: boolean })
   return (
     <>
       <SectionCard title="Önerilen Yolculuk">
-        <Card style={styles.card}>
-          <Card.Title title={primaryRecommendation.title} subtitle={primaryRecommendation.subtitle} />
-          <Card.Content>
-            <Text variant="bodySmall">{primaryRecommendation.detail}</Text>
-          </Card.Content>
-          <Card.Actions>
-            <Button mode="contained" disabled={isOffline}>
+        <PCard style={styles.card}>
+          <PCard.Title title={primaryRecommendation.title} subtitle={primaryRecommendation.subtitle} />
+          <PCard.Content>
+            <PText variant="bodySmall">{primaryRecommendation.detail}</PText>
+          </PCard.Content>
+          <PCard.Actions>
+            <PButton mode="contained" disabled={isOffline}>
               Hemen Başla
-            </Button>
-            <Button mode="outlined" disabled={isOffline}>
+            </PButton>
+            <PButton mode="outlined" disabled={isOffline}>
               Detayları Gör
-            </Button>
-          </Card.Actions>
-        </Card>
+            </PButton>
+          </PCard.Actions>
+        </PCard>
       </SectionCard>
 
       <SectionCard title="Alternatifler" actionLabel="Tümü">
         {alternativeRecommendations.map((item) => (
-          <Card key={item.title} style={styles.card}>
-            <Card.Title title={item.title} subtitle={item.subtitle} />
-            <Card.Actions>
-              <Button mode="outlined" disabled={isOffline}>
+          <PCard key={item.title} style={styles.card}>
+            <PCard.Title title={item.title} subtitle={item.subtitle} />
+            <PCard.Actions>
+              <PButton mode="outlined" disabled={isOffline}>
                 İncele
-              </Button>
-            </Card.Actions>
-          </Card>
+              </PButton>
+            </PCard.Actions>
+          </PCard>
         ))}
       </SectionCard>
 
       <SectionCard title="Kataloğa Dön">
-        <Text variant="bodySmall">
+        <PText variant="bodySmall">
           Daha fazla öneri görmek için keşfet sayfasına dönebilirsin.
-        </Text>
-        <Button mode="contained" style={styles.primaryButton} disabled={isOffline}>
+        </PText>
+        <PButton mode="contained" style={styles.primaryButton} disabled={isOffline}>
           Kataloğa Git
-        </Button>
+        </PButton>
       </SectionCard>
     </>
   );
@@ -78,7 +74,7 @@ const DiscoverAssistantResultsContent = ({ isOffline }: { isOffline?: boolean })
 export const DiscoverAssistantResultsScreen = ({
   route,
 }: {
-  route?: { params?: { state?: string } };
+  route?: { params?: { state?: ScreenState } };
 }) => {
   const state = resolveScreenState(route);
 

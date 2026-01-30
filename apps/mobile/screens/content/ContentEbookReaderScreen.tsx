@@ -1,17 +1,13 @@
 import React from "react";
 import { StyleSheet } from "react-native";
-import {
-  ActivityIndicator,
-  Button,
-  ProgressBar,
-  Text,
-} from "react-native-paper";
+import { ActivityIndicator, ProgressBar } from "react-native-paper";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
+import { PButton, PText } from "../../components";
 
 const readerParagraphs = [
   "Kendine karşı nazik olmak, zorlayıcı anlarda iç sesini yumuşatmanın ilk adımıdır. Bu bölümde küçük nefes molalarıyla bedenini sakinleştirmeyi deneyeceğiz.",
@@ -23,28 +19,28 @@ const ContentEbookReaderContent = ({ isOffline }: { isOffline?: boolean }) => {
   return (
     <>
       <SectionCard title="Okuma İlerlemesi">
-        <Text variant="bodySmall">Bölüm 4 · %32 tamamlandı</Text>
+        <PText variant="bodySmall">Bölüm 4 · %32 tamamlandı</PText>
         <ProgressBar progress={0.32} style={styles.progress} />
-        <Button mode="contained" disabled={isOffline}>
+        <PButton mode="contained" disabled={isOffline}>
           Sonraki Bölüm
-        </Button>
+        </PButton>
       </SectionCard>
 
       <SectionCard title="Bölüm 4: İçsel Diyalog">
         {readerParagraphs.map((paragraph) => (
-          <Text key={paragraph} variant="bodyLarge" style={styles.paragraph}>
+          <PText key={paragraph} variant="bodyLarge" style={styles.paragraph}>
             {paragraph}
-          </Text>
+          </PText>
         ))}
       </SectionCard>
 
       <SectionCard title="Okuma Araçları">
-        <Text variant="bodySmall">• Yazı boyutunu artır</Text>
-        <Text variant="bodySmall">• Satır aralığını ayarla</Text>
-        <Text variant="bodySmall">• Vurgu ekle</Text>
-        <Button mode="outlined" style={styles.secondaryButton} disabled={isOffline}>
+        <PText variant="bodySmall">• Yazı boyutunu artır</PText>
+        <PText variant="bodySmall">• Satır aralığını ayarla</PText>
+        <PText variant="bodySmall">• Vurgu ekle</PText>
+        <PButton mode="outlined" style={styles.secondaryButton} disabled={isOffline}>
           Okuma Ayarları
-        </Button>
+        </PButton>
       </SectionCard>
     </>
   );

@@ -1,18 +1,14 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import {
-  ActivityIndicator,
-  Avatar,
-  Button,
-  Text,
-} from "react-native-paper";
+import { ActivityIndicator, Avatar } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
-import { resolveScreenState } from "../components/ScreenState";
+import { resolveScreenState, ScreenState } from "../components/ScreenState";
+import { PButton, PText } from "../../components";
 
 const SessionTimeoutContent = ({ isOffline }: { isOffline?: boolean }) => {
   const navigation = useNavigation<any>();
@@ -22,21 +18,21 @@ const SessionTimeoutContent = ({ isOffline }: { isOffline?: boolean }) => {
       <View style={styles.iconWrap}>
         <Avatar.Icon size={56} icon="timer-off-outline" />
       </View>
-      <Text variant="bodyMedium" style={styles.bodyText}>
+      <PText variant="bodyMedium" style={styles.bodyText}>
         Güvenliğin için oturumun sonlandırıldı. Tekrar giriş yaparak kaldığın yerden devam
         edebilirsin.
-      </Text>
-      <Button
+      </PText>
+      <PButton
         mode="contained"
         disabled={isOffline}
         style={styles.primaryButton}
         onPress={() => navigation.navigate("AuthReauth")}
       >
         Tekrar Giriş Yap
-      </Button>
-      <Button mode="text" disabled={isOffline} onPress={() => navigation.navigate("AuthLogin")}>
+      </PButton>
+      <PButton mode="text" disabled={isOffline} onPress={() => navigation.navigate("AuthLogin")}>
         Daha Sonra
-      </Button>
+      </PButton>
     </SectionCard>
   );
 };
@@ -44,7 +40,7 @@ const SessionTimeoutContent = ({ isOffline }: { isOffline?: boolean }) => {
 export const AuthSessionTimeoutScreen = ({
   route,
 }: {
-  route?: { params?: { state?: string } };
+  route?: { params?: { state?: ScreenState } };
 }) => {
   const state = resolveScreenState(route);
 

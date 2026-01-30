@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet } from "react-native";
-import { Surface, Text, useTheme } from "react-native-paper";
+import { useTheme } from "react-native-paper";
+import { PSurface, PText } from "./index";
 import { useAppSelector } from "../state/hooks";
 import { selectIsOnline } from "../state/selectors";
 
@@ -13,14 +14,14 @@ export const OfflineBanner = () => {
   }
 
   return (
-    <Surface style={[styles.banner, { backgroundColor: theme.colors.errorContainer }]}>
-      <Text variant="labelLarge" style={{ color: theme.colors.onErrorContainer }}>
+    <PSurface style={[styles.banner, { backgroundColor: theme.colors.errorContainer }]}>
+      <PText variant="labelLarge" style={{ color: theme.colors.onErrorContainer }}>
         Çevrimdışısınız
-      </Text>
-      <Text variant="bodySmall" style={{ color: theme.colors.onErrorContainer }}>
+      </PText>
+      <PText variant="bodySmall" style={{ color: theme.colors.onErrorContainer }}>
         İnternet bağlantısı yok. Önbellekteki içerikler gösteriliyor.
-      </Text>
-    </Surface>
+      </PText>
+    </PSurface>
   );
 };
 

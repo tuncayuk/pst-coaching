@@ -1,11 +1,6 @@
 import React from "react";
 import { StyleSheet, View, TouchableOpacity, ScrollView } from "react-native";
-import {
-  ActivityIndicator,
-  Button,
-  Text,
-  TextInput,
-} from "react-native-paper";
+import { ActivityIndicator } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { OfflineNotice } from "../components/OfflineNotice";
@@ -14,6 +9,7 @@ import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
+import { PButton, PText, PTextInput } from "../../components";
 
 const ForgotPasswordContent = ({ isOffline }: { isOffline?: boolean }) => {
   const [email, setEmail] = React.useState("");
@@ -29,19 +25,19 @@ const ForgotPasswordContent = ({ isOffline }: { isOffline?: boolean }) => {
           style={styles.backButton}
           disabled={isOffline}
         >
-          <Text style={styles.backButtonText}>←</Text>
+          <PText style={styles.backButtonText}>←</PText>
         </TouchableOpacity>
 
         <View style={styles.iconContainer}>
-          <Text style={styles.icon}>🔑</Text>
+          <PText style={styles.icon}>🔑</PText>
         </View>
-        <Text style={styles.title}>Şifremi Unuttum</Text>
-        <Text style={styles.description}>
+        <PText style={styles.title}>Şifremi Unuttum</PText>
+        <PText style={styles.description}>
           E-posta adresinizi veya telefon numaranızı girin, size doğrulama kodu gönderelim.
-        </Text>
+        </PText>
         <View style={styles.inputGroup}>
-          <Text style={styles.label}>E-posta veya Telefon</Text>
-          <TextInput
+          <PText style={styles.label}>E-posta veya Telefon</PText>
+          <PTextInput
             mode="outlined"
             autoCapitalize="none"
             keyboardType="email-address"
@@ -57,7 +53,7 @@ const ForgotPasswordContent = ({ isOffline }: { isOffline?: boolean }) => {
             placeholder="ornek@email.com veya +90 5XX XXX XX XX"
           />
         </View>
-        <Button
+        <PButton
           mode="contained"
           disabled={isOffline || !isValid}
           buttonColor="#00B4D8"
@@ -73,14 +69,14 @@ const ForgotPasswordContent = ({ isOffline }: { isOffline?: boolean }) => {
           labelStyle={styles.primaryButtonLabel}
         >
           Kod Gönder
-        </Button>
+        </PButton>
         {hasSent ? (
-          <Text style={styles.successText}>
+          <PText style={styles.successText}>
             Doğrulama kodu gönderildi. Yönlendiriliyorsunuz...
-          </Text>
+          </PText>
         ) : null}
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backLink}>
-          <Text style={styles.backLinkText}>← Giriş Sayfasına Dön</Text>
+          <PText style={styles.backLinkText}>← Giriş Sayfasına Dön</PText>
         </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>

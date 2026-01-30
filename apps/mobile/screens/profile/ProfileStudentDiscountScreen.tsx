@@ -1,18 +1,13 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import {
-  ActivityIndicator,
-  Button,
-  Card,
-  Chip,
-  Text,
-} from "react-native-paper";
+import { ActivityIndicator, Chip } from "react-native-paper";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
-import { resolveScreenState } from "../components/ScreenState";
+import { resolveScreenState, ScreenState } from "../components/ScreenState";
+import { PButton, PCard, PText } from "../../components";
 
 const steps = [
   "Okul e-postanı doğrula",
@@ -24,28 +19,28 @@ const ProfileStudentDiscountContent = ({ isOffline }: { isOffline?: boolean }) =
   return (
     <>
       <SectionCard title="Doğrulama Durumu" actionLabel="">
-        <Card style={styles.card}>
-          <Card.Content style={styles.cardRow}>
+        <PCard style={styles.card}>
+          <PCard.Content style={styles.cardRow}>
             <View>
-              <Text variant="bodyMedium">Öğrenci indirimi</Text>
-              <Text variant="bodySmall">Durum: İncelemede</Text>
+              <PText variant="bodyMedium">Öğrenci indirimi</PText>
+              <PText variant="bodySmall">Durum: İncelemede</PText>
             </View>
             <Chip compact>İşleniyor</Chip>
-          </Card.Content>
-        </Card>
-        <Button mode="contained" disabled={isOffline}>
+          </PCard.Content>
+        </PCard>
+        <PButton mode="contained" disabled={isOffline}>
           Doğrulamayı Başlat
-        </Button>
-        <Button mode="text" style={styles.secondaryButton} disabled={isOffline}>
+        </PButton>
+        <PButton mode="text" style={styles.secondaryButton} disabled={isOffline}>
           Durumu Kontrol Et
-        </Button>
+        </PButton>
       </SectionCard>
 
       <SectionCard title="Nasıl Çalışır?" actionLabel="">
         {steps.map((step) => (
-          <Text key={step} variant="bodySmall" style={styles.stepText}>
+          <PText key={step} variant="bodySmall" style={styles.stepText}>
             • {step}
-          </Text>
+          </PText>
         ))}
       </SectionCard>
     </>
@@ -55,7 +50,7 @@ const ProfileStudentDiscountContent = ({ isOffline }: { isOffline?: boolean }) =
 export const ProfileStudentDiscountScreen = ({
   route,
 }: {
-  route?: { params?: { state?: string } };
+  route?: { params?: { state?: ScreenState } };
 }) => {
   const state = resolveScreenState(route);
 

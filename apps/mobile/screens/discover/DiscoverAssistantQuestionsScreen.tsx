@@ -1,18 +1,13 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import {
-  ActivityIndicator,
-  Button,
-  Chip,
-  Text,
-  TextInput,
-} from "react-native-paper";
+import { ActivityIndicator, Chip } from "react-native-paper";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
-import { resolveScreenState } from "../components/ScreenState";
+import { resolveScreenState, ScreenState } from "../components/ScreenState";
+import { PButton, PText, PTextInput } from "../../components";
 
 const goalOptions = ["Sınır koyma", "Öz şefkat", "Stres yönetimi", "İletişim"];
 const durationOptions = ["10-20 dk", "30-45 dk", "60+ dk"];
@@ -52,15 +47,15 @@ const DiscoverAssistantQuestionsContent = ({ isOffline }: { isOffline?: boolean 
       </SectionCard>
 
       <SectionCard title="Notun">
-        <TextInput
+        <PTextInput
           label="Özel bir ihtiyaç var mı?"
           mode="outlined"
           placeholder="Örn: yoğun bir haftam var"
           editable={!isOffline}
         />
-        <Button mode="contained" style={styles.primaryButton} disabled={isOffline}>
+        <PButton mode="contained" style={styles.primaryButton} disabled={isOffline}>
           Önerileri Gör
-        </Button>
+        </PButton>
       </SectionCard>
     </>
   );
@@ -69,7 +64,7 @@ const DiscoverAssistantQuestionsContent = ({ isOffline }: { isOffline?: boolean 
 export const DiscoverAssistantQuestionsScreen = ({
   route,
 }: {
-  route?: { params?: { state?: string } };
+  route?: { params?: { state?: ScreenState } };
 }) => {
   const state = resolveScreenState(route);
 

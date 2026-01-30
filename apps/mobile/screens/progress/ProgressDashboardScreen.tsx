@@ -1,23 +1,15 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import {
-  ActivityIndicator,
-  Button,
-  Card,
-  Chip,
-  List,
-  ProgressBar,
-  Text,
-  useTheme,
-} from "react-native-paper";
+import { ActivityIndicator, Chip, List, ProgressBar, useTheme } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
-import { resolveScreenState } from "../components/ScreenState";
+import { resolveScreenState, ScreenState } from "../components/ScreenState";
 import { getAchievements, getContentProgressForUser, getPrimaryUser } from "../../data/mockSelectors";
+import { PButton, PCard, PText } from "../../components";
 
 const ProgressReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
   const theme = useTheme();
@@ -36,32 +28,32 @@ const ProgressReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
       <SectionCard title="Haftalık Özet" actionLabel="Rapor">
         {weeklySummary.map((item) => (
           <View key={item.label} style={styles.summaryRow}>
-            <Text variant="bodyMedium">{item.label}</Text>
+            <PText variant="bodyMedium">{item.label}</PText>
             <Chip compact>{item.value} seans</Chip>
           </View>
         ))}
-        <Button
+        <PButton
           mode="contained"
           style={styles.primaryButton}
           disabled={isOffline}
           onPress={() => navigation.navigate("ProgressWeeklySummary")}
         >
           Haftayı İncele
-        </Button>
+        </PButton>
       </SectionCard>
 
       <SectionCard title="İlerleme Haritası" actionLabel="Detay">
-        <Text variant="bodyMedium" style={{ color: theme.colors.onSurfaceVariant }}>
+        <PText variant="bodyMedium" style={{ color: theme.colors.onSurfaceVariant }}>
           Bu ay içeriklerin %68'ini tamamladın. Odak alanın “Kendine Şefkat”.
-        </Text>
+        </PText>
         <ProgressBar progress={0.68} style={styles.progress} />
         <View style={styles.metricRow}>
-          <Card style={styles.metricCard}>
-            <Card.Title title="Toplam Süre" subtitle="5s 20d" />
-          </Card>
-          <Card style={styles.metricCard}>
-            <Card.Title title="Tamamlanan" subtitle="12 içerik" />
-          </Card>
+          <PCard style={styles.metricCard}>
+            <PCard.Title title="Toplam Süre" subtitle="5s 20d" />
+          </PCard>
+          <PCard style={styles.metricCard}>
+            <PCard.Title title="Tamamlanan" subtitle="12 içerik" />
+          </PCard>
         </View>
       </SectionCard>
 
@@ -83,10 +75,10 @@ const ProgressReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
       </SectionCard>
 
       <SectionCard title="Geri Bildirim" actionLabel="Yaz">
-        <Text variant="bodyMedium" style={{ color: theme.colors.onSurfaceVariant }}>
+        <PText variant="bodyMedium" style={{ color: theme.colors.onSurfaceVariant }}>
           Son atölyeni değerlendirerek önerilerimizi güçlendirebilirsin.
-        </Text>
-        <Button
+        </PText>
+        <PButton
           mode="outlined"
           style={styles.actionButton}
           disabled={isOffline}
@@ -98,13 +90,13 @@ const ProgressReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
           }
         >
           Değerlendirme Yap
-        </Button>
+        </PButton>
       </SectionCard>
     </>
   );
 };
 
-export const ProgressDashboardScreen = ({ route }: { route?: { params?: { state?: string } } }) => {
+export const ProgressDashboardScreen = ({ route }: { route?: { params?: { state?: ScreenState } } }) => {
   const state = resolveScreenState(route);
 
   if (state === "loading") {

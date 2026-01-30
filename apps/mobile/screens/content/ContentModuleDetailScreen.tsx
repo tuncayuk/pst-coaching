@@ -1,19 +1,13 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import {
-  ActivityIndicator,
-  Button,
-  Card,
-  Divider,
-  ProgressBar,
-  Text,
-} from "react-native-paper";
+import { ActivityIndicator, Divider, ProgressBar } from "react-native-paper";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
+import { PButton, PCard, PText } from "../../components";
 
 const moduleSections = [
   { title: "Giriş ve Tanımlar", duration: "8 dk" },
@@ -25,28 +19,28 @@ const ContentModuleDetailContent = ({ isOffline }: { isOffline?: boolean }) => {
   return (
     <>
       <SectionCard title="Modül Özeti">
-        <Text variant="bodyMedium" style={styles.paragraph}>
+        <PText variant="bodyMedium" style={styles.paragraph}>
           Modül, kısa egzersizlerle ilerleyerek günlük yaşamda uygulanabilir pratikler sunar.
-        </Text>
-        <Card style={styles.card}>
-          <Card.Title title="İlerleme" subtitle="1/5 bölüm tamamlandı" />
-          <Card.Content>
+        </PText>
+        <PCard style={styles.card}>
+          <PCard.Title title="İlerleme" subtitle="1/5 bölüm tamamlandı" />
+          <PCard.Content>
             <ProgressBar progress={0.2} style={styles.progress} />
-          </Card.Content>
-          <Card.Actions>
-            <Button mode="contained" disabled={isOffline}>
+          </PCard.Content>
+          <PCard.Actions>
+            <PButton mode="contained" disabled={isOffline}>
               Modüle Başla
-            </Button>
-          </Card.Actions>
-        </Card>
+            </PButton>
+          </PCard.Actions>
+        </PCard>
       </SectionCard>
 
       <SectionCard title="Bölümler" actionLabel="Tümünü Gör">
         {moduleSections.map((section, index) => (
           <View key={section.title} style={styles.rowItem}>
             <View style={styles.rowHeader}>
-              <Text variant="titleSmall">{section.title}</Text>
-              <Text variant="labelMedium">{section.duration}</Text>
+              <PText variant="titleSmall">{section.title}</PText>
+              <PText variant="labelMedium">{section.duration}</PText>
             </View>
             {index < moduleSections.length - 1 ? <Divider style={styles.divider} /> : null}
           </View>
@@ -54,12 +48,12 @@ const ContentModuleDetailContent = ({ isOffline }: { isOffline?: boolean }) => {
       </SectionCard>
 
       <SectionCard title="Önerilen Adımlar">
-        <Text variant="bodySmall">• Her gün aynı saatte pratik yap</Text>
-        <Text variant="bodySmall">• Kısa notlar al</Text>
-        <Text variant="bodySmall">• Haftalık özetini kaydet</Text>
-        <Button mode="outlined" style={styles.secondaryButton} disabled={isOffline}>
+        <PText variant="bodySmall">• Her gün aynı saatte pratik yap</PText>
+        <PText variant="bodySmall">• Kısa notlar al</PText>
+        <PText variant="bodySmall">• Haftalık özetini kaydet</PText>
+        <PButton mode="outlined" style={styles.secondaryButton} disabled={isOffline}>
           Hatırlatıcı Kur
-        </Button>
+        </PButton>
       </SectionCard>
     </>
   );

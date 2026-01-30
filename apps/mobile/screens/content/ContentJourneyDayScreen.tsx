@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import { ActivityIndicator, Button, Card, Chip, Text } from "react-native-paper";
+import { ActivityIndicator, Chip } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
@@ -8,6 +8,7 @@ import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
+import { PButton, PCard, PText } from "../../components";
 import {
   getContentItemsForParent,
   getJourneyDaysForJourney,
@@ -37,10 +38,10 @@ const ContentJourneyDayContent = ({
   return (
     <>
       <SectionCard title="Günün Planı" actionLabel="Takvim">
-        <Text variant="titleMedium">{journey?.title ?? "Yolculuk"}</Text>
-        <Text variant="bodySmall" style={styles.subtleText}>
+        <PText variant="titleMedium">{journey?.title ?? "Yolculuk"}</PText>
+        <PText variant="bodySmall" style={styles.subtleText}>
           {day ? `Gün ${day.day_number} · ${day.title}` : "Gün içeriği"}
-        </Text>
+        </PText>
         <View style={styles.chipRow}>
           <Chip style={styles.chip} disabled={isOffline}>
             08:00 kuralı
@@ -53,15 +54,15 @@ const ContentJourneyDayContent = ({
 
       <SectionCard title="İçerikler" actionLabel="Sırala">
         {contentItems.map((item) => (
-          <Card key={item.id} style={styles.card}>
-            <Card.Title title={item.title} subtitle={item.content_type} />
-            <Card.Content>
-              <Text variant="bodySmall" style={styles.subtleText}>
+          <PCard key={item.id} style={styles.card}>
+            <PCard.Title title={item.title} subtitle={item.content_type} />
+            <PCard.Content>
+              <PText variant="bodySmall" style={styles.subtleText}>
                 {item.body}
-              </Text>
-            </Card.Content>
-            <Card.Actions>
-              <Button
+              </PText>
+            </PCard.Content>
+            <PCard.Actions>
+              <PButton
                 mode="outlined"
                 disabled={isOffline}
                 onPress={() => {
@@ -86,9 +87,9 @@ const ContentJourneyDayContent = ({
                 }}
               >
                 Başla
-              </Button>
-            </Card.Actions>
-          </Card>
+              </PButton>
+            </PCard.Actions>
+          </PCard>
         ))}
       </SectionCard>
     </>

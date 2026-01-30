@@ -1,21 +1,15 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import {
-  ActivityIndicator,
-  Button,
-  Card,
-  Chip,
-  ProgressBar,
-  Text,
-} from "react-native-paper";
+import { ActivityIndicator, Chip, ProgressBar } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
-import { resolveScreenState } from "../components/ScreenState";
+import { resolveScreenState, ScreenState } from "../components/ScreenState";
 import { getEbookProgressForUser, getEbooks, getPrimaryUser } from "../../data/mockSelectors";
+import { PButton, PCard, PText } from "../../components";
 
 const filters = ["Yeni", "Devam Eden", "Tamamlanan", "İndirilen"];
 
@@ -46,16 +40,16 @@ const LibraryEbooksContent = ({ isOffline }: { isOffline?: boolean }) => {
 
       <SectionCard title="e-Kitaplar" actionLabel="Tümü">
         {ebooksWithProgress.map((book) => (
-          <Card key={book.id} style={styles.card}>
-            <Card.Title title={book.title} subtitle={`${book.total_pages ?? 0} sayfa`} />
-            <Card.Content>
-              <Text variant="bodySmall" style={styles.progressLabel}>
+          <PCard key={book.id} style={styles.card}>
+            <PCard.Title title={book.title} subtitle={`${book.total_pages ?? 0} sayfa`} />
+            <PCard.Content>
+              <PText variant="bodySmall" style={styles.progressLabel}>
                 {Math.round(book.progress * 100)}% tamamlandı
-              </Text>
+              </PText>
               <ProgressBar progress={book.progress} />
-            </Card.Content>
-            <Card.Actions>
-              <Button
+            </PCard.Content>
+            <PCard.Actions>
+              <PButton
                 mode="outlined"
                 disabled={isOffline}
                 onPress={() =>
@@ -66,16 +60,16 @@ const LibraryEbooksContent = ({ isOffline }: { isOffline?: boolean }) => {
                 }
               >
                 Oku
-              </Button>
-            </Card.Actions>
-          </Card>
+              </PButton>
+            </PCard.Actions>
+          </PCard>
         ))}
       </SectionCard>
     </>
   );
 };
 
-export const LibraryEbooksScreen = ({ route }: { route?: { params?: { state?: string } } }) => {
+export const LibraryEbooksScreen = ({ route }: { route?: { params?: { state?: ScreenState } } }) => {
   const state = resolveScreenState(route);
 
   if (state === "loading") {

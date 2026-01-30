@@ -1,21 +1,15 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import {
-  ActivityIndicator,
-  Button,
-  Divider,
-  List,
-  Switch,
-  Text,
-} from "react-native-paper";
+import { ActivityIndicator, Divider, List, Switch } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
-import { resolveScreenState } from "../components/ScreenState";
+import { resolveScreenState, ScreenState } from "../components/ScreenState";
 import { getAccessibilitySettings, getPrimaryUser, getReminderSettings } from "../../data/mockSelectors";
+import { PButton, PText } from "../../components";
 
 const ProfileSettingsContent = ({ isOffline }: { isOffline?: boolean }) => {
   const navigation = useNavigation<any>();
@@ -57,8 +51,8 @@ const ProfileSettingsContent = ({ isOffline }: { isOffline?: boolean }) => {
         <Divider />
         <View style={styles.switchRow}>
           <View>
-            <Text variant="bodyMedium">Sesli Okuma</Text>
-            <Text variant="bodySmall">Yeni bölümlerde otomatik başlat</Text>
+            <PText variant="bodyMedium">Sesli Okuma</PText>
+            <PText variant="bodySmall">Yeni bölümlerde otomatik başlat</PText>
           </View>
           <Switch value disabled={isOffline} />
         </View>
@@ -67,22 +61,22 @@ const ProfileSettingsContent = ({ isOffline }: { isOffline?: boolean }) => {
       <SectionCard title="Bildirimler" actionLabel="">
         <View style={styles.switchRow}>
           <View>
-            <Text variant="bodyMedium">Günlük Hatırlatmalar</Text>
-            <Text variant="bodySmall">08:30'da gönder</Text>
+            <PText variant="bodyMedium">Günlük Hatırlatmalar</PText>
+            <PText variant="bodySmall">08:30'da gönder</PText>
           </View>
           <Switch value disabled={isOffline} />
         </View>
         <Divider />
         <View style={styles.switchRow}>
           <View>
-            <Text variant="bodyMedium">Yeni İçerik</Text>
-            <Text variant="bodySmall">Haftalık özet</Text>
+            <PText variant="bodyMedium">Yeni İçerik</PText>
+            <PText variant="bodySmall">Haftalık özet</PText>
           </View>
           <Switch value={false} disabled={isOffline} />
         </View>
-        <Button mode="outlined" style={styles.actionButton} disabled={isOffline}>
+        <PButton mode="outlined" style={styles.actionButton} disabled={isOffline}>
           Bildirim Zamanını Düzenle
-        </Button>
+        </PButton>
       </SectionCard>
     </>
   );
@@ -91,7 +85,7 @@ const ProfileSettingsContent = ({ isOffline }: { isOffline?: boolean }) => {
 export const ProfileSettingsScreen = ({
   route,
 }: {
-  route?: { params?: { state?: string } };
+  route?: { params?: { state?: ScreenState } };
 }) => {
   const state = resolveScreenState(route);
 

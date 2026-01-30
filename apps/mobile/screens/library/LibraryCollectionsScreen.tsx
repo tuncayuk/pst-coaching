@@ -1,17 +1,14 @@
 import React from "react";
 import { StyleSheet } from "react-native";
-import {
-  ActivityIndicator,
-  Button,
-  Card,
-} from "react-native-paper";
+import { ActivityIndicator } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
-import { resolveScreenState } from "../components/ScreenState";
+import { resolveScreenState, ScreenState } from "../components/ScreenState";
+import { PButton, PCard } from "../../components";
 import {
   getCollectionItems,
   getCollectionsForUser,
@@ -27,31 +24,31 @@ const LibraryCollectionsContent = ({ isOffline }: { isOffline?: boolean }) => {
     <>
       <SectionCard title="Koleksiyonlar" actionLabel="Yeni">
         {collections.map((collection) => (
-          <Card key={collection.id} style={styles.card}>
-            <Card.Title
+          <PCard key={collection.id} style={styles.card}>
+            <PCard.Title
               title={collection.name}
               subtitle={`${getCollectionItems().filter((item) => item.collection_id === collection.id).length} içerik`}
             />
-            <Card.Actions>
-              <Button
+            <PCard.Actions>
+              <PButton
                 mode="outlined"
                 disabled={isOffline}
                 onPress={() => navigation.navigate("LibraryCollectionDetail", { id: collection.id })}
               >
                 Aç
-              </Button>
-            </Card.Actions>
-          </Card>
+              </PButton>
+            </PCard.Actions>
+          </PCard>
         ))}
-        <Button mode="contained" disabled={isOffline}>
+        <PButton mode="contained" disabled={isOffline}>
           Koleksiyon Oluştur
-        </Button>
+        </PButton>
       </SectionCard>
     </>
   );
 };
 
-export const LibraryCollectionsScreen = ({ route }: { route?: { params?: { state?: string } } }) => {
+export const LibraryCollectionsScreen = ({ route }: { route?: { params?: { state?: ScreenState } } }) => {
   const state = resolveScreenState(route);
 
   if (state === "loading") {

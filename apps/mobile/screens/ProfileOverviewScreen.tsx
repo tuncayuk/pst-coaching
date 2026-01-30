@@ -1,23 +1,14 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import {
-  ActivityIndicator,
-  Avatar,
-  Button,
-  Card,
-  Chip,
-  Divider,
-  List,
-  Text,
-  useTheme,
-} from "react-native-paper";
+import { ActivityIndicator, Avatar, Chip, Divider, List, useTheme } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "./components/OfflineNotice";
 import { ScreenLayout } from "./components/ScreenLayout";
 import { SectionCard } from "./components/SectionCard";
 import { SkeletonBlock } from "./components/SkeletonBlock";
 import { StateMessage } from "./components/StateMessage";
-import { resolveScreenState } from "./components/ScreenState";
+import { resolveScreenState, ScreenState } from "./components/ScreenState";
+import { PButton, PCard, PText } from "../components";
 import {
   getPaymentTransactions,
   getPrimaryUser,
@@ -41,41 +32,41 @@ const ProfileReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
         <View style={styles.profileHeader}>
           <Avatar.Text size={56} label={(user?.email ?? "EA").slice(0, 2).toUpperCase()} />
           <View style={styles.profileInfo}>
-            <Text variant="titleMedium">{user?.email ?? "Kullanıcı"}</Text>
-            <Text variant="bodySmall" style={{ color: theme.colors.onSurfaceVariant }}>
+            <PText variant="titleMedium">{user?.email ?? "Kullanıcı"}</PText>
+            <PText variant="bodySmall" style={{ color: theme.colors.onSurfaceVariant }}>
               {user?.email ?? "demo@pstcoaching.app"}
-            </Text>
+            </PText>
           </View>
           <Chip compact>{subscription?.status ?? "aktif"}</Chip>
         </View>
-        <Button
+        <PButton
           mode="outlined"
           style={styles.actionButton}
           disabled={isOffline}
           onPress={() => navigation.navigate("ProfileAccount")}
         >
           Hesap Bilgileri
-        </Button>
+        </PButton>
       </SectionCard>
 
       <SectionCard title="Abonelik" actionLabel="Planlar">
-        <Card style={styles.card}>
-          <Card.Title title={plan?.name ?? "Plan"} subtitle={subscription?.renewal_at?.slice(0, 10)} />
-          <Card.Content>
-            <Text variant="bodySmall" style={{ color: theme.colors.onSurfaceVariant }}>
+        <PCard style={styles.card}>
+          <PCard.Title title={plan?.name ?? "Plan"} subtitle={subscription?.renewal_at?.slice(0, 10)} />
+          <PCard.Content>
+            <PText variant="bodySmall" style={{ color: theme.colors.onSurfaceVariant }}>
               {plan?.seat_limit ?? 1} koltuk · Premium içerikler açık
-            </Text>
-          </Card.Content>
-          <Card.Actions>
-            <Button
+            </PText>
+          </PCard.Content>
+          <PCard.Actions>
+            <PButton
               mode="contained"
               disabled={isOffline}
               onPress={() => navigation.navigate("ProfileSubscription")}
             >
               Planı Yönet
-            </Button>
-          </Card.Actions>
-        </Card>
+            </PButton>
+          </PCard.Actions>
+        </PCard>
       </SectionCard>
 
       <SectionCard title="Hızlı Ayarlar" actionLabel="">
@@ -104,21 +95,21 @@ const ProfileReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
       <SectionCard title="Ödeme Geçmişi" actionLabel="Tümü">
         {payments.map((payment) => (
           <View key={payment.id} style={styles.paymentRow}>
-            <Text variant="bodyMedium">{payment.purchased_at.slice(0, 10)}</Text>
-            <Text variant="bodyMedium" style={{ color: theme.colors.onSurfaceVariant }}>
+            <PText variant="bodyMedium">{payment.purchased_at.slice(0, 10)}</PText>
+            <PText variant="bodyMedium" style={{ color: theme.colors.onSurfaceVariant }}>
               {payment.amount} {payment.currency}
-            </Text>
+            </PText>
           </View>
         ))}
-        <Button mode="text" disabled={isOffline} onPress={() => navigation.navigate("ProfilePaymentHistory")}>
+        <PButton mode="text" disabled={isOffline} onPress={() => navigation.navigate("ProfilePaymentHistory")}>
           Tümünü Gör
-        </Button>
+        </PButton>
       </SectionCard>
     </>
   );
 };
 
-export const ProfileOverviewScreen = ({ route }: { route?: { params?: { state?: string } } }) => {
+export const ProfileOverviewScreen = ({ route }: { route?: { params?: { state?: ScreenState } } }) => {
   const state = resolveScreenState(route);
 
   if (state === "loading") {

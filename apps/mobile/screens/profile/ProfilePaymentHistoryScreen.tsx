@@ -1,18 +1,13 @@
 import React from "react";
 import { StyleSheet } from "react-native";
-import {
-  ActivityIndicator,
-  Button,
-  Card,
-  Chip,
-  Text,
-} from "react-native-paper";
+import { ActivityIndicator, Chip } from "react-native-paper";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
-import { resolveScreenState } from "../components/ScreenState";
+import { resolveScreenState, ScreenState } from "../components/ScreenState";
+import { PButton, PCard, PText } from "../../components";
 import {
   getPaymentTransactions,
   getPrimaryUser,
@@ -30,28 +25,28 @@ const ProfilePaymentHistoryContent = ({ isOffline }: { isOffline?: boolean }) =>
     <>
       <SectionCard title="Ödemeler" actionLabel="">
         {transactions.map((transaction) => (
-          <Card key={transaction.id} style={styles.card}>
-            <Card.Content style={styles.cardRow}>
-              <Text variant="bodyMedium">{transaction.purchased_at.slice(0, 10)}</Text>
-              <Text variant="bodyMedium">
+          <PCard key={transaction.id} style={styles.card}>
+            <PCard.Content style={styles.cardRow}>
+              <PText variant="bodyMedium">{transaction.purchased_at.slice(0, 10)}</PText>
+              <PText variant="bodyMedium">
                 {transaction.amount} {transaction.currency}
-              </Text>
+              </PText>
               <Chip compact>Başarılı</Chip>
-            </Card.Content>
-            <Card.Actions>
-              <Button mode="text" disabled={isOffline}>
+            </PCard.Content>
+            <PCard.Actions>
+              <PButton mode="text" disabled={isOffline}>
                 Makbuz
-              </Button>
-            </Card.Actions>
-          </Card>
+              </PButton>
+            </PCard.Actions>
+          </PCard>
         ))}
       </SectionCard>
 
       <SectionCard title="Fatura" actionLabel="">
-        <Text variant="bodySmall">Fatura bilgileri kişisel olarak kayıtlı.</Text>
-        <Button mode="outlined" style={styles.actionButton} disabled={isOffline}>
+        <PText variant="bodySmall">Fatura bilgileri kişisel olarak kayıtlı.</PText>
+        <PButton mode="outlined" style={styles.actionButton} disabled={isOffline}>
           Fatura Bilgilerini Güncelle
-        </Button>
+        </PButton>
       </SectionCard>
     </>
   );
@@ -60,7 +55,7 @@ const ProfilePaymentHistoryContent = ({ isOffline }: { isOffline?: boolean }) =>
 export const ProfilePaymentHistoryScreen = ({
   route,
 }: {
-  route?: { params?: { state?: string } };
+  route?: { params?: { state?: ScreenState } };
 }) => {
   const state = resolveScreenState(route);
 

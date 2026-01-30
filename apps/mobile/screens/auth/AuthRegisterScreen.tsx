@@ -1,13 +1,6 @@
 import React from "react";
 import { StyleSheet, View, TouchableOpacity, ScrollView } from "react-native";
-import {
-  ActivityIndicator,
-  Button,
-  Checkbox,
-  Text,
-  TextInput,
-  IconButton,
-} from "react-native-paper";
+import { ActivityIndicator } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { OfflineNotice } from "../components/OfflineNotice";
@@ -16,6 +9,7 @@ import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
+import { PButton, PIconButton, PText, PTextInput } from "../../components";
 
 const RegisterContent = ({ isOffline }: { isOffline?: boolean }) => {
   const [accepted, setAccepted] = React.useState(false);
@@ -49,17 +43,17 @@ const RegisterContent = ({ isOffline }: { isOffline?: boolean }) => {
           style={styles.backButton}
           disabled={isOffline}
         >
-          <Text style={styles.backButtonText}>←</Text>
+          <PText style={styles.backButtonText}>←</PText>
         </TouchableOpacity>
 
         <View style={styles.header}>
-          <Text style={styles.title}>Hesap Oluştur</Text>
-          <Text style={styles.subtitle}>Coaching yolculuğunuza başlayın</Text>
+          <PText style={styles.title}>Hesap Oluştur</PText>
+          <PText style={styles.subtitle}>Coaching yolculuğunuza başlayın</PText>
         </View>
 
         <View style={styles.inputGroup}>
-          <Text style={styles.label}>Ad Soyad</Text>
-          <TextInput
+          <PText style={styles.label}>Ad Soyad</PText>
+          <PTextInput
             mode="outlined"
             value={fullName}
             onChangeText={setFullName}
@@ -72,8 +66,8 @@ const RegisterContent = ({ isOffline }: { isOffline?: boolean }) => {
         </View>
 
         <View style={styles.inputGroup}>
-          <Text style={styles.label}>E-posta</Text>
-          <TextInput
+          <PText style={styles.label}>E-posta</PText>
+          <PTextInput
             mode="outlined"
             autoCapitalize="none"
             keyboardType="email-address"
@@ -88,13 +82,13 @@ const RegisterContent = ({ isOffline }: { isOffline?: boolean }) => {
         </View>
 
         <View style={styles.inputGroup}>
-          <Text style={styles.label}>Telefon</Text>
+          <PText style={styles.label}>Telefon</PText>
           <View style={styles.phoneRow}>
             <View style={styles.countryCode}>
-              <Text style={styles.countryCodeText}>🇹🇷 +90</Text>
-              <Text style={styles.countryCodeChevron}>▾</Text>
+              <PText style={styles.countryCodeText}>🇹🇷 +90</PText>
+              <PText style={styles.countryCodeChevron}>▾</PText>
             </View>
-            <TextInput
+            <PTextInput
               mode="outlined"
               keyboardType="phone-pad"
               value={phone}
@@ -109,9 +103,9 @@ const RegisterContent = ({ isOffline }: { isOffline?: boolean }) => {
         </View>
 
         <View style={styles.inputGroup}>
-          <Text style={styles.label}>Şifre</Text>
+          <PText style={styles.label}>Şifre</PText>
           <View style={styles.passwordContainer}>
-            <TextInput
+            <PTextInput
               mode="outlined"
               secureTextEntry={!showPassword}
               value={password}
@@ -122,7 +116,7 @@ const RegisterContent = ({ isOffline }: { isOffline?: boolean }) => {
               editable={!isOffline}
               placeholder="Min. 8 karakter"
             />
-            <IconButton
+            <PIconButton
               icon={showPassword ? "eye-off" : "eye"}
               size={20}
               onPress={() => setShowPassword(!showPassword)}
@@ -143,18 +137,18 @@ const RegisterContent = ({ isOffline }: { isOffline?: boolean }) => {
                 ))}
               </View>
               {passwordStrength.label && (
-                <Text style={[styles.strengthLabel, { color: passwordStrength.color }]}>
+                <PText style={[styles.strengthLabel, { color: passwordStrength.color }]}>
                   {passwordStrength.label}
-                </Text>
+                </PText>
               )}
             </View>
           )}
         </View>
 
         <View style={styles.inputGroup}>
-          <Text style={styles.label}>Şifre Tekrar</Text>
+          <PText style={styles.label}>Şifre Tekrar</PText>
           <View style={styles.passwordContainer}>
-            <TextInput
+            <PTextInput
               mode="outlined"
               secureTextEntry={!showConfirmPassword}
               value={confirmPassword}
@@ -165,7 +159,7 @@ const RegisterContent = ({ isOffline }: { isOffline?: boolean }) => {
               editable={!isOffline}
               placeholder="Şifrenizi tekrar girin"
             />
-            <IconButton
+            <PIconButton
               icon={showConfirmPassword ? "eye-off" : "eye"}
               size={20}
               onPress={() => setShowConfirmPassword(!showConfirmPassword)}
@@ -173,7 +167,7 @@ const RegisterContent = ({ isOffline }: { isOffline?: boolean }) => {
             />
           </View>
           {confirmPassword.length > 0 && !passwordsMatch && (
-            <Text style={styles.errorText}>Şifreler eşleşmiyor</Text>
+            <PText style={styles.errorText}>Şifreler eşleşmiyor</PText>
           )}
         </View>
 
@@ -183,21 +177,21 @@ const RegisterContent = ({ isOffline }: { isOffline?: boolean }) => {
           disabled={isOffline}
         >
           <View style={[styles.checkboxBox, accepted && styles.checkboxBoxChecked]}>
-            {accepted ? <Text style={styles.checkboxCheck}>✓</Text> : null}
+            {accepted ? <PText style={styles.checkboxCheck}>✓</PText> : null}
           </View>
-          <Text style={styles.checkboxText}>
-            <Text style={styles.linkText} onPress={() => {}}>
+          <PText style={styles.checkboxText}>
+            <PText style={styles.linkText} onPress={() => {}}>
               Kullanım Koşullarını
-            </Text>
-            <Text> ve </Text>
-            <Text style={styles.linkText} onPress={() => {}}>
+            </PText>
+            <PText> ve </PText>
+            <PText style={styles.linkText} onPress={() => {}}>
               Gizlilik Politikasını
-            </Text>
-            <Text> okudum, kabul ediyorum</Text>
-          </Text>
+            </PText>
+            <PText> okudum, kabul ediyorum</PText>
+          </PText>
         </TouchableOpacity>
 
-        <Button
+        <PButton
           mode="contained"
           disabled={isOffline || !isFormValid}
           buttonColor="#00B4D8"
@@ -208,12 +202,12 @@ const RegisterContent = ({ isOffline }: { isOffline?: boolean }) => {
           labelStyle={styles.primaryButtonLabel}
         >
           Kaydol
-        </Button>
+        </PButton>
 
         <View style={styles.signupRow}>
-          <Text style={styles.signupText}>Zaten hesabınız var mı? </Text>
+          <PText style={styles.signupText}>Zaten hesabınız var mı? </PText>
           <TouchableOpacity onPress={() => navigation.navigate("AuthLogin")} disabled={isOffline}>
-            <Text style={styles.signupLink}>Giriş Yap</Text>
+            <PText style={styles.signupLink}>Giriş Yap</PText>
           </TouchableOpacity>
         </View>
       </ScrollView>

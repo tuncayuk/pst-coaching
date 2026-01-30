@@ -1,18 +1,14 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import {
-  ActivityIndicator,
-  Button,
-  Card,
-  Chip,
-} from "react-native-paper";
+import { ActivityIndicator, Chip } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
-import { resolveScreenState } from "../components/ScreenState";
+import { resolveScreenState, ScreenState } from "../components/ScreenState";
+import { PButton, PCard } from "../../components";
 import {
   getEbooks,
   getFavoritesForUser,
@@ -62,25 +58,25 @@ const LibraryFavoritesContent = ({ isOffline }: { isOffline?: boolean }) => {
 
       <SectionCard title="Favoriler" actionLabel="Tümü">
         {favoriteItems.map((item) => (
-          <Card key={item.id} style={styles.card}>
-            <Card.Title title={item.title} subtitle={item.subtitle} />
-            <Card.Actions>
-              <Button
+          <PCard key={item.id} style={styles.card}>
+            <PCard.Title title={item.title} subtitle={item.subtitle} />
+            <PCard.Actions>
+              <PButton
                 mode="outlined"
                 disabled={isOffline}
                 onPress={() => navigation.navigate("LibraryFavoriteDetail", { id: item.id })}
               >
                 Aç
-              </Button>
-            </Card.Actions>
-          </Card>
+              </PButton>
+            </PCard.Actions>
+          </PCard>
         ))}
       </SectionCard>
     </>
   );
 };
 
-export const LibraryFavoritesScreen = ({ route }: { route?: { params?: { state?: string } } }) => {
+export const LibraryFavoritesScreen = ({ route }: { route?: { params?: { state?: ScreenState } } }) => {
   const state = resolveScreenState(route);
 
   if (state === "loading") {

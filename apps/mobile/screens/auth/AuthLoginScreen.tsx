@@ -1,12 +1,6 @@
 import React from "react";
 import { StyleSheet, View, TouchableOpacity, ScrollView, Image } from "react-native";
-import {
-  ActivityIndicator,
-  Button,
-  Text,
-  TextInput,
-  IconButton,
-} from "react-native-paper";
+import { ActivityIndicator } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { OfflineNotice } from "../components/OfflineNotice";
@@ -15,6 +9,7 @@ import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
+import { PButton, PIconButton, PText, PTextInput } from "../../components";
 
 const LoginContent = ({ isOffline }: { isOffline?: boolean }) => {
   const [rememberMe, setRememberMe] = React.useState(true);
@@ -32,13 +27,13 @@ const LoginContent = ({ isOffline }: { isOffline?: boolean }) => {
           <View style={styles.logoContainer}>
             <Image source={require("../../assets/logo/pst_logo_128w.png")} style={styles.logoImage} />
           </View>
-          <Text style={styles.title}>Hoş Geldiniz</Text>
-          <Text style={styles.subtitle}>Hesabınıza giriş yapın</Text>
+          <PText style={styles.title}>Hoş Geldiniz</PText>
+          <PText style={styles.subtitle}>Hesabınıza giriş yapın</PText>
         </View>
         <View style={styles.form}>
           <View style={styles.inputGroup}>
-            <Text style={styles.label}>E-posta veya Telefon</Text>
-            <TextInput
+            <PText style={styles.label}>E-posta veya Telefon</PText>
+            <PTextInput
               mode="outlined"
               autoCapitalize="none"
               keyboardType="email-address"
@@ -53,9 +48,9 @@ const LoginContent = ({ isOffline }: { isOffline?: boolean }) => {
           </View>
 
           <View style={styles.inputGroup}>
-            <Text style={styles.label}>Şifre</Text>
+            <PText style={styles.label}>Şifre</PText>
             <View style={styles.passwordContainer}>
-              <TextInput
+              <PTextInput
                 mode="outlined"
                 secureTextEntry={!showPassword}
                 value={password}
@@ -66,7 +61,7 @@ const LoginContent = ({ isOffline }: { isOffline?: boolean }) => {
                 editable={!isOffline}
                 placeholder="••••••••"
               />
-              <IconButton
+              <PIconButton
                 icon={showPassword ? "eye-off" : "eye"}
                 size={20}
                 onPress={() => setShowPassword(!showPassword)}
@@ -84,19 +79,19 @@ const LoginContent = ({ isOffline }: { isOffline?: boolean }) => {
               disabled={isOffline}
             >
               <View style={[styles.checkboxBox, rememberMe && styles.checkboxBoxChecked]}>
-                {rememberMe ? <Text style={styles.checkboxCheck}>✓</Text> : null}
+                {rememberMe ? <PText style={styles.checkboxCheck}>✓</PText> : null}
               </View>
-              <Text style={styles.checkboxLabel}>Beni Hatırla</Text>
+              <PText style={styles.checkboxLabel}>Beni Hatırla</PText>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => navigation.navigate("AuthForgotPassword")}
               disabled={isOffline}
             >
-              <Text style={styles.forgotLink}>Şifremi Unuttum?</Text>
+              <PText style={styles.forgotLink}>Şifremi Unuttum?</PText>
             </TouchableOpacity>
           </View>
 
-          <Button
+          <PButton
             mode="contained"
             disabled={isOffline || !isFormValid}
             buttonColor="#00B4D8"
@@ -111,16 +106,16 @@ const LoginContent = ({ isOffline }: { isOffline?: boolean }) => {
             labelStyle={styles.loginButtonLabel}
           >
             Giriş Yap
-          </Button>
+          </PButton>
 
           <View style={styles.divider}>
             <View style={styles.dividerLine} />
-            <Text style={styles.dividerText}>veya</Text>
+            <PText style={styles.dividerText}>veya</PText>
             <View style={styles.dividerLine} />
           </View>
 
           <View style={styles.socialButtons}>
-            <Button
+            <PButton
               mode="outlined"
               style={styles.socialButton}
               disabled={isOffline}
@@ -128,10 +123,10 @@ const LoginContent = ({ isOffline }: { isOffline?: boolean }) => {
               contentStyle={styles.socialButtonContent}
               labelStyle={styles.socialButtonLabel}
             >
-              <Text style={styles.socialIcon}>🔵</Text>
-              <Text style={styles.socialText}>Google</Text>
-            </Button>
-            <Button
+              <PText style={styles.socialIcon}>🔵</PText>
+              <PText style={styles.socialText}>Google</PText>
+            </PButton>
+            <PButton
               mode="outlined"
               style={styles.socialButton}
               disabled={isOffline}
@@ -139,28 +134,28 @@ const LoginContent = ({ isOffline }: { isOffline?: boolean }) => {
               contentStyle={styles.socialButtonContent}
               labelStyle={styles.socialButtonLabel}
             >
-              <Text style={styles.socialIcon}>🍎</Text>
-              <Text style={styles.socialText}>Apple</Text>
-            </Button>
+              <PText style={styles.socialIcon}>🍎</PText>
+              <PText style={styles.socialText}>Apple</PText>
+            </PButton>
           </View>
 
           <View style={styles.signupRow}>
-            <Text style={styles.signupText}>Hesabınız yok mu? </Text>
+            <PText style={styles.signupText}>Hesabınız yok mu? </PText>
             <TouchableOpacity
               onPress={() => navigation.navigate("AuthRegister")}
               disabled={isOffline}
             >
-              <Text style={styles.signupLink}>Kaydol</Text>
+              <PText style={styles.signupLink}>Kaydol</PText>
             </TouchableOpacity>
           </View>
 
           <View style={styles.guestRow}>
-            <Text style={styles.guestText}>veya </Text>
+            <PText style={styles.guestText}>veya </PText>
             <TouchableOpacity
               onPress={() => navigation.navigate("AuthGuestMode")}
               disabled={isOffline}
             >
-              <Text style={styles.guestLink}>👻 Misafir Olarak Devam Et</Text>
+              <PText style={styles.guestLink}>👻 Misafir Olarak Devam Et</PText>
             </TouchableOpacity>
           </View>
         </View>

@@ -1,22 +1,14 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import {
-  ActivityIndicator,
-  Button,
-  Card,
-  Chip,
-  List,
-  ProgressBar,
-  Text,
-  useTheme,
-} from "react-native-paper";
+import { ActivityIndicator, Chip, List, ProgressBar, useTheme } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
-import { resolveScreenState } from "../components/ScreenState";
+import { resolveScreenState, ScreenState } from "../components/ScreenState";
+import { PButton, PCard, PText } from "../../components";
 import {
   getCollectionsForUser,
   getDownloadsForUser,
@@ -56,16 +48,16 @@ const LibraryReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
           left={(props) => <List.Icon {...props} icon="folder-outline" />}
           onPress={() => navigation.navigate("LibraryCollections")}
         />
-        <Button mode="outlined" style={styles.actionButton} disabled={isOffline}>
+        <PButton mode="outlined" style={styles.actionButton} disabled={isOffline}>
           Koleksiyon Oluştur
-        </Button>
+        </PButton>
       </SectionCard>
 
       <SectionCard title="Devam Edenler" actionLabel="Tümü">
         {readingProgress.map((item) => (
           <View key={item.title} style={styles.progressRow}>
             <View style={styles.progressHeader}>
-              <Text variant="titleSmall">{item.title}</Text>
+              <PText variant="titleSmall">{item.title}</PText>
               <Chip compact>{Math.round(item.progress * 100)}%</Chip>
             </View>
             <ProgressBar progress={item.progress} />
@@ -75,35 +67,35 @@ const LibraryReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
 
       <SectionCard title="İndirilenler" actionLabel="Yönet">
         {downloads.slice(0, 2).map((download) => (
-          <Card key={download.id} style={styles.card}>
-            <Card.Title
+          <PCard key={download.id} style={styles.card}>
+            <PCard.Title
               title={`İndirilen ${download.content_type}`}
               subtitle={`${download.status} · ${(download.size_bytes / 1048576).toFixed(1)} MB`}
             />
-            <Card.Actions>
-              <Button mode="outlined" disabled={isOffline}>
+            <PCard.Actions>
+              <PButton mode="outlined" disabled={isOffline}>
                 Aç
-              </Button>
-            </Card.Actions>
-          </Card>
+              </PButton>
+            </PCard.Actions>
+          </PCard>
         ))}
       </SectionCard>
 
       <SectionCard title="Vurgular & Notlar" actionLabel="Tümü">
         <View style={styles.noteBox}>
-          <Text variant="bodyMedium" style={{ color: theme.colors.onSurfaceVariant }}>
+          <PText variant="bodyMedium" style={{ color: theme.colors.onSurfaceVariant }}>
             “{highlights[0]?.quote ?? "Kendine karşı nazik olmak, dönüşümün ilk adımıdır."}”
-          </Text>
-          <Text variant="labelSmall" style={{ color: theme.colors.primary }}>
+          </PText>
+          <PText variant="labelSmall" style={{ color: theme.colors.primary }}>
             {getEbookById(highlights[0]?.source_id)?.title ?? "Kişisel Notlar"}
-          </Text>
+          </PText>
         </View>
       </SectionCard>
     </>
   );
 };
 
-export const LibraryOverviewScreen = ({ route }: { route?: { params?: { state?: string } } }) => {
+export const LibraryOverviewScreen = ({ route }: { route?: { params?: { state?: ScreenState } } }) => {
   const state = resolveScreenState(route);
 
   if (state === "loading") {

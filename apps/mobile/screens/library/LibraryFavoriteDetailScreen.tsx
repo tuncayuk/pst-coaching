@@ -1,19 +1,13 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import {
-  ActivityIndicator,
-  Button,
-  Card,
-  Chip,
-  Divider,
-  Text,
-} from "react-native-paper";
+import { ActivityIndicator, Chip, Divider } from "react-native-paper";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
-import { resolveScreenState } from "../components/ScreenState";
+import { resolveScreenState, ScreenState } from "../components/ScreenState";
+import { PButton, PCard, PText } from "../../components";
 import {
   getEbooks,
   getFavoritesForUser,
@@ -41,17 +35,20 @@ const LibraryFavoriteDetailContent = ({
     getModules().find((item) => item.id === favorite?.item_id) ??
     getEbooks().find((item) => item.id === favorite?.item_id);
   const noteItem = getNotes().find((item) => item.id === favorite?.item_id);
+  const description =
+    contentItem && "description" in contentItem
+      ? contentItem.description
+      : noteItem?.text ?? "Bu içerik, kişisel gelişim yolculuğunda sana rehberlik etmek için hazırlandı.";
 
   return (
     <>
       <SectionCard title="Favori Detay">
-        <Text variant="titleMedium" style={styles.title}>
+        <PText variant="titleMedium" style={styles.title}>
           {contentItem?.title ?? noteItem?.text ?? "Favori İçerik"}
-        </Text>
-        <Text variant="bodyMedium" style={styles.paragraph}>
-          {contentItem?.description ??
-            "Bu içerik, kişisel gelişim yolculuğunda sana rehberlik etmek için hazırlandı."}
-        </Text>
+        </PText>
+        <PText variant="bodyMedium" style={styles.paragraph}>
+          {description}
+        </PText>
         <View style={styles.tagRow}>
           {focusTags.map((tag) => (
             <Chip key={tag} style={styles.chip} disabled={isOffline}>
@@ -62,31 +59,31 @@ const LibraryFavoriteDetailContent = ({
       </SectionCard>
 
       <SectionCard title="Durum">
-        <Card style={styles.card}>
-          <Card.Title title="İlerleme" subtitle="3/5 bölüm" />
-          <Card.Content>
-            <Text variant="bodySmall">Son erişim: 2 gün önce</Text>
-          </Card.Content>
-          <Card.Actions>
-            <Button mode="contained" disabled={isOffline}>
+        <PCard style={styles.card}>
+          <PCard.Title title="İlerleme" subtitle="3/5 bölüm" />
+          <PCard.Content>
+            <PText variant="bodySmall">Son erişim: 2 gün önce</PText>
+          </PCard.Content>
+          <PCard.Actions>
+            <PButton mode="contained" disabled={isOffline}>
               Devam Et
-            </Button>
-            <Button mode="outlined" disabled={isOffline}>
+            </PButton>
+            <PButton mode="outlined" disabled={isOffline}>
               Kaldır
-            </Button>
-          </Card.Actions>
-        </Card>
+            </PButton>
+          </PCard.Actions>
+        </PCard>
       </SectionCard>
 
       <Divider style={styles.divider} />
 
       <SectionCard title="Notlar">
-        <Text variant="bodySmall" style={styles.paragraph}>
+        <PText variant="bodySmall" style={styles.paragraph}>
           En sevdiğin alıntıları ve notları burada tutabilirsin.
-        </Text>
-        <Button mode="outlined" disabled={isOffline}>
+        </PText>
+        <PButton mode="outlined" disabled={isOffline}>
           Not Ekle
-        </Button>
+        </PButton>
       </SectionCard>
     </>
   );
@@ -95,7 +92,7 @@ const LibraryFavoriteDetailContent = ({
 export const LibraryFavoriteDetailScreen = ({
   route,
 }: {
-  route?: { params?: { state?: string; id?: string } };
+  route?: { params?: { state?: ScreenState; id?: string } };
 }) => {
   const state = resolveScreenState(route);
   const favoriteId = route?.params?.id;

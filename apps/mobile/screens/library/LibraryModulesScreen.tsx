@@ -1,14 +1,15 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import { ActivityIndicator, Button, Card, Chip, ProgressBar } from "react-native-paper";
+import { ActivityIndicator, Chip, ProgressBar } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
-import { resolveScreenState } from "../components/ScreenState";
+import { resolveScreenState, ScreenState } from "../components/ScreenState";
 import { getModules } from "../../data/mockSelectors";
+import { PButton, PCard } from "../../components";
 
 const focusAreas = ["Sınırlar", "Kendine Şefkat", "Kaygı", "İletişim"];
 
@@ -36,13 +37,13 @@ const LibraryModulesContent = ({ isOffline }: { isOffline?: boolean }) => {
 
       <SectionCard title="Modül İlerlemesi" actionLabel="Tümü">
         {moduleProgress.map((module) => (
-          <Card key={module.title} style={styles.card}>
-            <Card.Title title={module.title} subtitle={module.subtitle} />
-            <Card.Content>
+          <PCard key={module.title} style={styles.card}>
+            <PCard.Title title={module.title} subtitle={module.subtitle} />
+            <PCard.Content>
               <ProgressBar progress={module.progress} />
-            </Card.Content>
-            <Card.Actions>
-              <Button
+            </PCard.Content>
+            <PCard.Actions>
+              <PButton
                 mode="outlined"
                 disabled={isOffline}
                 onPress={() =>
@@ -53,16 +54,16 @@ const LibraryModulesContent = ({ isOffline }: { isOffline?: boolean }) => {
                 }
               >
                 Devam Et
-              </Button>
-            </Card.Actions>
-          </Card>
+              </PButton>
+            </PCard.Actions>
+          </PCard>
         ))}
       </SectionCard>
     </>
   );
 };
 
-export const LibraryModulesScreen = ({ route }: { route?: { params?: { state?: string } } }) => {
+export const LibraryModulesScreen = ({ route }: { route?: { params?: { state?: ScreenState } } }) => {
   const state = resolveScreenState(route);
 
   if (state === "loading") {

@@ -1,19 +1,13 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import {
-  ActivityIndicator,
-  Button,
-  Card,
-  Divider,
-  ProgressBar,
-  Text,
-} from "react-native-paper";
+import { ActivityIndicator, Divider, ProgressBar } from "react-native-paper";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
-import { resolveScreenState } from "../components/ScreenState";
+import { resolveScreenState, ScreenState } from "../components/ScreenState";
+import { PButton, PCard, PText } from "../../components";
 
 const outlineSteps = [
   { title: "Vicdanı Tanımak", duration: "12 dk" },
@@ -25,29 +19,29 @@ const HomeVicdandanKaraktereContent = ({ isOffline }: { isOffline?: boolean }) =
   return (
     <>
       <SectionCard title="Program Özeti">
-        <Text variant="bodyMedium" style={styles.paragraph}>
+        <PText variant="bodyMedium" style={styles.paragraph}>
           Vicdandan Karaktere programı, iç sesini güçlendirerek değerlerinle uyumlu kararlar
           almanı destekler.
-        </Text>
-        <Card style={styles.card}>
-          <Card.Title title="İlerlemen" subtitle="3/8 bölüm tamamlandı" />
-          <Card.Content>
+        </PText>
+        <PCard style={styles.card}>
+          <PCard.Title title="İlerlemen" subtitle="3/8 bölüm tamamlandı" />
+          <PCard.Content>
             <ProgressBar progress={0.38} style={styles.progress} />
-          </Card.Content>
-          <Card.Actions>
-            <Button mode="contained" disabled={isOffline}>
+          </PCard.Content>
+          <PCard.Actions>
+            <PButton mode="contained" disabled={isOffline}>
               Kaldığın Yerden Devam Et
-            </Button>
-          </Card.Actions>
-        </Card>
+            </PButton>
+          </PCard.Actions>
+        </PCard>
       </SectionCard>
 
       <SectionCard title="Program Akışı" actionLabel="Tümünü Gör">
         {outlineSteps.map((step, index) => (
           <View key={step.title} style={styles.rowItem}>
             <View style={styles.rowHeader}>
-              <Text variant="titleSmall">{step.title}</Text>
-              <Text variant="labelMedium">{step.duration}</Text>
+              <PText variant="titleSmall">{step.title}</PText>
+              <PText variant="labelMedium">{step.duration}</PText>
             </View>
             {index < outlineSteps.length - 1 ? <Divider style={styles.divider} /> : null}
           </View>
@@ -55,12 +49,12 @@ const HomeVicdandanKaraktereContent = ({ isOffline }: { isOffline?: boolean }) =
       </SectionCard>
 
       <SectionCard title="Kazandırdıkları" actionLabel="Paylaş">
-        <Text variant="bodySmall">• Günlük kararlarında tutarlılık</Text>
-        <Text variant="bodySmall">• Öz şefkatle sınır koyma</Text>
-        <Text variant="bodySmall">• Değer odaklı eylem planı</Text>
-        <Button mode="outlined" style={styles.secondaryButton} disabled={isOffline}>
+        <PText variant="bodySmall">• Günlük kararlarında tutarlılık</PText>
+        <PText variant="bodySmall">• Öz şefkatle sınır koyma</PText>
+        <PText variant="bodySmall">• Değer odaklı eylem planı</PText>
+        <PButton mode="outlined" style={styles.secondaryButton} disabled={isOffline}>
           Programı Kaydet
-        </Button>
+        </PButton>
       </SectionCard>
     </>
   );
@@ -69,7 +63,7 @@ const HomeVicdandanKaraktereContent = ({ isOffline }: { isOffline?: boolean }) =
 export const HomeVicdandanKaraktereDetailScreen = ({
   route,
 }: {
-  route?: { params?: { state?: string } };
+  route?: { params?: { state?: ScreenState } };
 }) => {
   const state = resolveScreenState(route);
 

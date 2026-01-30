@@ -1,13 +1,14 @@
 import React from "react";
 import { StyleSheet } from "react-native";
-import { ActivityIndicator, Button, Text } from "react-native-paper";
+import { ActivityIndicator } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
-import { resolveScreenState } from "../components/ScreenState";
+import { resolveScreenState, ScreenState } from "../components/ScreenState";
+import { PButton, PText } from "../../components";
 
 const AuthLockoutContent = ({ isOffline }: { isOffline?: boolean }) => {
   const navigation = useNavigation<any>();
@@ -15,24 +16,24 @@ const AuthLockoutContent = ({ isOffline }: { isOffline?: boolean }) => {
   return (
     <>
       <SectionCard title="Geçici Kilit">
-        <Text variant="titleMedium" style={styles.title}>
+        <PText variant="titleMedium" style={styles.title}>
           Güvenlik nedeniyle hesabın geçici olarak kilitlendi.
-        </Text>
-        <Text variant="bodySmall" style={styles.body}>
+        </PText>
+        <PText variant="bodySmall" style={styles.body}>
           Kalan süre: 10 dakika. Bu süre sonunda tekrar giriş yapabilirsin.
-        </Text>
-        <Button mode="contained" disabled={isOffline} onPress={() => navigation.navigate("AuthLogin")}>
+        </PText>
+        <PButton mode="contained" disabled={isOffline} onPress={() => navigation.navigate("AuthLogin")}>
           Giriş Sayfasına Dön
-        </Button>
-        <Button mode="text" disabled={isOffline} onPress={() => navigation.navigate("AuthPasswordReset")}>
+        </PButton>
+        <PButton mode="text" disabled={isOffline} onPress={() => navigation.navigate("AuthPasswordReset")}>
           Şifre Sıfırla
-        </Button>
+        </PButton>
       </SectionCard>
     </>
   );
 };
 
-export const AuthLockoutScreen = ({ route }: { route?: { params?: { state?: string } } }) => {
+export const AuthLockoutScreen = ({ route }: { route?: { params?: { state?: ScreenState } } }) => {
   const state = resolveScreenState(route);
 
   if (state === "loading") {

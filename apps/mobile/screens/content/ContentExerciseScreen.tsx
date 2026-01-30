@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import { ActivityIndicator, Button, Card, Checkbox, Text } from "react-native-paper";
+import { ActivityIndicator } from "react-native-paper";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
@@ -8,6 +8,7 @@ import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
 import { getContentItems, getExerciseSteps } from "../../data/mockSelectors";
+import { PButton, PCard, PCheckbox, PText } from "../../components";
 
 type RouteParams = { state?: ScreenState; id?: string };
 
@@ -18,29 +19,29 @@ const ContentExerciseContent = ({ contentId, isOffline }: { contentId?: string; 
   return (
     <>
       <SectionCard title="Uygulama">
-        <Text variant="titleMedium">{contentItem?.title ?? "Uygulama"}</Text>
-        <Text variant="bodySmall" style={styles.subtleText}>
+        <PText variant="titleMedium">{contentItem?.title ?? "Uygulama"}</PText>
+        <PText variant="bodySmall" style={styles.subtleText}>
           {contentItem?.body ?? "Bu bölümde pratik egzersiz adımlarını tamamlayacaksın."}
-        </Text>
+        </PText>
       </SectionCard>
 
       <SectionCard title="Adımlar" actionLabel={`${steps.length} adım`}>
         {steps.map((step) => (
-          <Card key={step.id} style={styles.card}>
-            <Card.Content style={styles.stepRow}>
-              <Checkbox status="unchecked" disabled={isOffline} />
+          <PCard key={step.id} style={styles.card}>
+            <PCard.Content style={styles.stepRow}>
+              <PCheckbox status="unchecked" disabled={isOffline} />
               <View style={styles.stepText}>
-                <Text variant="bodyMedium">Adım {step.step_number}</Text>
-                <Text variant="bodySmall" style={styles.subtleText}>
+                <PText variant="bodyMedium">Adım {step.step_number}</PText>
+                <PText variant="bodySmall" style={styles.subtleText}>
                   {step.text}
-                </Text>
+                </PText>
               </View>
-            </Card.Content>
-          </Card>
+            </PCard.Content>
+          </PCard>
         ))}
-        <Button mode="contained" disabled={isOffline}>
+        <PButton mode="contained" disabled={isOffline}>
           Tamamlandı
-        </Button>
+        </PButton>
       </SectionCard>
     </>
   );

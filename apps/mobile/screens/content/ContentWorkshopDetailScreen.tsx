@@ -1,19 +1,13 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import {
-  ActivityIndicator,
-  Button,
-  Card,
-  Chip,
-  Divider,
-  Text,
-} from "react-native-paper";
+import { ActivityIndicator, Chip, Divider } from "react-native-paper";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
+import { PButton, PCard, PText } from "../../components";
 
 const sessionItems = [
   { title: "Nefes ve Regülasyon", time: "20 dk" },
@@ -35,25 +29,25 @@ const ContentWorkshopDetailContent = ({ isOffline }: { isOffline?: boolean }) =>
             24 Ocak · 20:00
           </Chip>
         </View>
-        <Card style={styles.card}>
-          <Card.Title title="Eğitmen" subtitle="Uzm. Psk. Aylin K." />
-          <Card.Content>
-            <Text variant="bodySmall">Zoom bağlantısı etkinlikten 15 dk önce paylaşılır.</Text>
-          </Card.Content>
-          <Card.Actions>
-            <Button mode="contained" disabled={isOffline}>
+        <PCard style={styles.card}>
+          <PCard.Title title="Eğitmen" subtitle="Uzm. Psk. Aylin K." />
+          <PCard.Content>
+            <PText variant="bodySmall">Zoom bağlantısı etkinlikten 15 dk önce paylaşılır.</PText>
+          </PCard.Content>
+          <PCard.Actions>
+            <PButton mode="contained" disabled={isOffline}>
               Yerini Ayırt
-            </Button>
-          </Card.Actions>
-        </Card>
+            </PButton>
+          </PCard.Actions>
+        </PCard>
       </SectionCard>
 
       <SectionCard title="Oturum Akışı" actionLabel="Takvime Ekle">
         {sessionItems.map((session, index) => (
           <View key={session.title} style={styles.rowItem}>
             <View style={styles.rowHeader}>
-              <Text variant="titleSmall">{session.title}</Text>
-              <Text variant="labelMedium">{session.time}</Text>
+              <PText variant="titleSmall">{session.title}</PText>
+              <PText variant="labelMedium">{session.time}</PText>
             </View>
             {index < sessionItems.length - 1 ? <Divider style={styles.divider} /> : null}
           </View>
@@ -62,13 +56,13 @@ const ContentWorkshopDetailContent = ({ isOffline }: { isOffline?: boolean }) =>
 
       <SectionCard title="Hazırlık Listesi">
         {prepChecklist.map((item) => (
-          <Text key={item} variant="bodySmall" style={styles.bullet}>
+          <PText key={item} variant="bodySmall" style={styles.bullet}>
             • {item}
-          </Text>
+          </PText>
         ))}
-        <Button mode="outlined" style={styles.secondaryButton} disabled={isOffline}>
+        <PButton mode="outlined" style={styles.secondaryButton} disabled={isOffline}>
           Not Al
-        </Button>
+        </PButton>
       </SectionCard>
     </>
   );

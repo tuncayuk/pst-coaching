@@ -1,20 +1,14 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import {
-  ActivityIndicator,
-  Button,
-  Card,
-  Chip,
-  Switch,
-  Text,
-} from "react-native-paper";
+import { ActivityIndicator, Chip, Switch } from "react-native-paper";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
-import { resolveScreenState } from "../components/ScreenState";
+import { resolveScreenState, ScreenState } from "../components/ScreenState";
 import { getAccessibilitySettings, getPrimaryUser } from "../../data/mockSelectors";
+import { PButton, PCard, PText } from "../../components";
 
 const ProfileAccessibilityContent = ({ isOffline }: { isOffline?: boolean }) => {
   const user = getPrimaryUser();
@@ -23,34 +17,34 @@ const ProfileAccessibilityContent = ({ isOffline }: { isOffline?: boolean }) => 
   return (
     <>
       <SectionCard title="Erişilebilirlik">
-        <Card style={styles.card}>
-          <Card.Content style={styles.row}>
+        <PCard style={styles.card}>
+          <PCard.Content style={styles.row}>
             <View style={styles.rowText}>
-              <Text variant="bodyMedium">Yüksek Kontrast</Text>
-              <Text variant="bodySmall" style={styles.subtleText}>
+              <PText variant="bodyMedium">Yüksek Kontrast</PText>
+              <PText variant="bodySmall" style={styles.subtleText}>
                 Daha net metin ve arka plan
-              </Text>
+              </PText>
             </View>
             <Switch value={settings?.high_contrast ?? false} disabled={isOffline} />
-          </Card.Content>
-        </Card>
-        <Card style={styles.card}>
-          <Card.Content style={styles.row}>
+          </PCard.Content>
+        </PCard>
+        <PCard style={styles.card}>
+          <PCard.Content style={styles.row}>
             <View style={styles.rowText}>
-              <Text variant="bodyMedium">Hareketi Azalt</Text>
-              <Text variant="bodySmall" style={styles.subtleText}>
+              <PText variant="bodyMedium">Hareketi Azalt</PText>
+              <PText variant="bodySmall" style={styles.subtleText}>
                 Animasyonları minimize et
-              </Text>
+              </PText>
             </View>
             <Switch value={settings?.reduce_motion ?? false} disabled={isOffline} />
-          </Card.Content>
-        </Card>
+          </PCard.Content>
+        </PCard>
       </SectionCard>
 
       <SectionCard title="Metin Boyutu">
-        <Text variant="bodySmall" style={styles.subtleText}>
+        <PText variant="bodySmall" style={styles.subtleText}>
           Şu anki boyut: {settings?.text_size ?? "medium"}
-        </Text>
+        </PText>
         <View style={styles.chipRow}>
           {["small", "medium", "large"].map((size) => (
             <Chip key={size} style={styles.chip} disabled={isOffline}>
@@ -58,9 +52,9 @@ const ProfileAccessibilityContent = ({ isOffline }: { isOffline?: boolean }) => 
             </Chip>
           ))}
         </View>
-        <Button mode="contained" disabled={isOffline}>
+        <PButton mode="contained" disabled={isOffline}>
           Kaydet
-        </Button>
+        </PButton>
       </SectionCard>
     </>
   );
@@ -69,7 +63,7 @@ const ProfileAccessibilityContent = ({ isOffline }: { isOffline?: boolean }) => 
 export const ProfileAccessibilityScreen = ({
   route,
 }: {
-  route?: { params?: { state?: string } };
+  route?: { params?: { state?: ScreenState } };
 }) => {
   const state = resolveScreenState(route);
 

@@ -1,13 +1,14 @@
 import React from "react";
 import { StyleSheet } from "react-native";
-import { ActivityIndicator, Button, TextInput, Text } from "react-native-paper";
+import { ActivityIndicator } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
-import { resolveScreenState } from "../components/ScreenState";
+import { resolveScreenState, ScreenState } from "../components/ScreenState";
+import { PButton, PText, PTextInput } from "../../components";
 
 const AuthReauthContent = ({ isOffline }: { isOffline?: boolean }) => {
   const navigation = useNavigation<any>();
@@ -15,10 +16,10 @@ const AuthReauthContent = ({ isOffline }: { isOffline?: boolean }) => {
   return (
     <>
       <SectionCard title="Yeniden Doğrulama">
-        <Text variant="bodySmall" style={styles.body}>
+        <PText variant="bodySmall" style={styles.body}>
           Güvenliğin için bu işlemi tamamlamadan önce tekrar doğrulama istiyoruz.
-        </Text>
-        <TextInput
+        </PText>
+        <PTextInput
           label="E-posta veya telefon"
           mode="outlined"
           autoCapitalize="none"
@@ -26,25 +27,25 @@ const AuthReauthContent = ({ isOffline }: { isOffline?: boolean }) => {
           style={styles.input}
           editable={!isOffline}
         />
-        <TextInput
+        <PTextInput
           label="Şifre"
           mode="outlined"
           secureTextEntry
           style={styles.input}
           editable={!isOffline}
         />
-        <Button mode="contained" disabled={isOffline} onPress={() => navigation.getParent()?.navigate("MainTabs")}>
+        <PButton mode="contained" disabled={isOffline} onPress={() => navigation.getParent()?.navigate("MainTabs")}>
           Doğrula ve Devam Et
-        </Button>
-        <Button mode="text" disabled={isOffline} onPress={() => navigation.navigate("AuthPasswordReset")}>
+        </PButton>
+        <PButton mode="text" disabled={isOffline} onPress={() => navigation.navigate("AuthPasswordReset")}>
           Şifremi Unuttum
-        </Button>
+        </PButton>
       </SectionCard>
     </>
   );
 };
 
-export const AuthReauthScreen = ({ route }: { route?: { params?: { state?: string } } }) => {
+export const AuthReauthScreen = ({ route }: { route?: { params?: { state?: ScreenState } } }) => {
   const state = resolveScreenState(route);
 
   if (state === "loading") {

@@ -1,16 +1,15 @@
 import React from "react";
 import { StyleSheet, View, TouchableOpacity, ScrollView } from "react-native";
-import {
-  ActivityIndicator,
-  Button,
-  Text,
-} from "react-native-paper";
+import { ActivityIndicator } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { OfflineNotice } from "../components/OfflineNotice";
+import { ScreenLayout } from "../components/ScreenLayout";
+import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
+import { PButton, PText } from "../../components";
 
 const FaceIdSetupContent = ({ isOffline }: { isOffline?: boolean }) => {
   const navigation = useNavigation<any>();
@@ -20,23 +19,23 @@ const FaceIdSetupContent = ({ isOffline }: { isOffline?: boolean }) => {
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <View style={styles.iconContainer}>
           <View style={styles.iconCircle}>
-            <Text style={styles.icon}>👤</Text>
+            <PText style={styles.icon}>👤</PText>
           </View>
         </View>
-        <Text style={styles.title}>FaceID ile Hızlı Giriş</Text>
-        <Text style={styles.description}>
+        <PText style={styles.title}>FaceID ile Hızlı Giriş</PText>
+        <PText style={styles.description}>
           Sonraki girişlerinizde FaceID kullanmak ister misiniz?
-        </Text>
+        </PText>
         <View style={styles.infoCard}>
-          <Text style={styles.infoTitle}>✓ FaceID Avantajları</Text>
+          <PText style={styles.infoTitle}>✓ FaceID Avantajları</PText>
           <View style={styles.list}>
-            <Text style={styles.listItem}>• Hızlı ve güvenli giriş</Text>
-            <Text style={styles.listItem}>• Şifre hatırlama gereksiz</Text>
-            <Text style={styles.listItem}>• Biyometrik güvenlik</Text>
-            <Text style={styles.listItem}>• İstediğiniz zaman kapatabilirsiniz</Text>
+            <PText style={styles.listItem}>• Hızlı ve güvenli giriş</PText>
+            <PText style={styles.listItem}>• Şifre hatırlama gereksiz</PText>
+            <PText style={styles.listItem}>• Biyometrik güvenlik</PText>
+            <PText style={styles.listItem}>• İstediğiniz zaman kapatabilirsiniz</PText>
           </View>
         </View>
-        <Button
+        <PButton
           mode="contained"
           disabled={isOffline}
           buttonColor="#00B4D8"
@@ -49,7 +48,7 @@ const FaceIdSetupContent = ({ isOffline }: { isOffline?: boolean }) => {
           labelStyle={styles.primaryButtonLabel}
         >
           FaceID'yi Etkinleştir
-        </Button>
+        </PButton>
         <TouchableOpacity
           onPress={() => {
             navigation.navigate("AuthDemographics");
@@ -57,11 +56,11 @@ const FaceIdSetupContent = ({ isOffline }: { isOffline?: boolean }) => {
           style={styles.skipButton}
           disabled={isOffline}
         >
-          <Text style={styles.skipText}>Şimdi Değil</Text>
+          <PText style={styles.skipText}>Şimdi Değil</PText>
         </TouchableOpacity>
-        <Text style={styles.hint}>
+        <PText style={styles.hint}>
           FaceID ayarlarını dilediğiniz zaman Profil &gt; Ayarlar &gt; Güvenlik bölümünden değiştirebilirsiniz
-        </Text>
+        </PText>
       </ScrollView>
     </SafeAreaView>
   );

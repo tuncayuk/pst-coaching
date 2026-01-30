@@ -1,6 +1,7 @@
 import React from "react";
 import { SafeAreaView, ScrollView, StyleSheet, View } from "react-native";
-import { Surface, Text, useTheme } from "react-native-paper";
+import { useTheme } from "react-native-paper";
+import { PSurface, PText } from "../../components";
 
 type ScreenLayoutProps = {
   title: string;
@@ -14,16 +15,16 @@ export const ScreenLayout = ({ title, subtitle, children }: ScreenLayoutProps) =
   return (
     <SafeAreaView style={[styles.root, { backgroundColor: theme.colors.background }]}>
       <ScrollView contentContainerStyle={styles.content}>
-        <Surface style={[styles.header, { backgroundColor: theme.colors.elevation.level1 }]}>
-          <Text variant="headlineSmall" accessibilityRole="header">
+        <PSurface style={[styles.header, { backgroundColor: theme.colors.elevation.level1 }]}>
+          <PText variant="headlineSmall" accessibilityRole="header">
             {title}
-          </Text>
+          </PText>
           {subtitle ? (
-            <Text variant="bodyMedium" style={{ color: theme.colors.onSurfaceVariant }}>
+            <PText variant="bodyMedium" style={{ color: theme.colors.onSurfaceVariant }}>
               {subtitle}
-            </Text>
+            </PText>
           ) : null}
-        </Surface>
+        </PSurface>
         <View style={styles.body}>{children}</View>
       </ScrollView>
     </SafeAreaView>

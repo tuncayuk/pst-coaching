@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { StyleSheet, View, Animated, Image } from "react-native";
-import { Text } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
+import { PText } from "../../components";
 
 export const AuthSplashScreen = () => {
   const navigation = useNavigation<any>();
@@ -59,7 +59,7 @@ export const AuthSplashScreen = () => {
         <View style={styles.logoContainer}>
           <Image source={require("../../assets/logo/pst_logo_384w.png")} style={styles.logoImage} />
         </View>
-        <Text style={styles.tagline}>Profesyonel Coaching Yolculuğunuz</Text>
+        <PText style={styles.tagline}>Profesyonel Coaching Yolculuğunuz</PText>
         <View style={styles.loadingContainer}>
           <Animated.View style={[styles.dot, { opacity: pulseAnim1 }]} />
           <Animated.View style={[styles.dot, { opacity: pulseAnim2 }]} />

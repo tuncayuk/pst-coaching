@@ -1,12 +1,6 @@
 import React from "react";
 import { StyleSheet, View, TouchableOpacity, ScrollView } from "react-native";
-import {
-  ActivityIndicator,
-  Button,
-  Text,
-  TextInput,
-  IconButton,
-} from "react-native-paper";
+import { ActivityIndicator } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { OfflineNotice } from "../components/OfflineNotice";
@@ -14,7 +8,8 @@ import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
-import { resolveScreenState } from "../components/ScreenState";
+import { resolveScreenState, ScreenState } from "../components/ScreenState";
+import { PButton, PIconButton, PText, PTextInput } from "../../components";
 
 const PasswordResetContent = ({ isOffline }: { isOffline?: boolean }) => {
   const [newPassword, setNewPassword] = React.useState("");
@@ -42,19 +37,19 @@ const PasswordResetContent = ({ isOffline }: { isOffline?: boolean }) => {
           style={styles.backButton}
           disabled={isOffline}
         >
-          <Text style={styles.backButtonText}>←</Text>
+          <PText style={styles.backButtonText}>←</PText>
         </TouchableOpacity>
 
         <View style={styles.iconContainer}>
-          <Text style={styles.icon}>🔒</Text>
+          <PText style={styles.icon}>🔒</PText>
         </View>
-        <Text style={styles.title}>Yeni Şifre Oluştur</Text>
-        <Text style={styles.description}>Yeni şifreniz en az 8 karakter olmalıdır.</Text>
+        <PText style={styles.title}>Yeni Şifre Oluştur</PText>
+        <PText style={styles.description}>Yeni şifreniz en az 8 karakter olmalıdır.</PText>
 
         <View style={styles.inputGroup}>
-          <Text style={styles.label}>Yeni Şifre</Text>
+          <PText style={styles.label}>Yeni Şifre</PText>
           <View style={styles.passwordContainer}>
-            <TextInput
+            <PTextInput
               mode="outlined"
               secureTextEntry={!showPassword}
               value={newPassword}
@@ -65,7 +60,7 @@ const PasswordResetContent = ({ isOffline }: { isOffline?: boolean }) => {
               editable={!isOffline}
               placeholder="••••••••"
             />
-            <IconButton
+            <PIconButton
               icon={showPassword ? "eye-off" : "eye"}
               size={20}
               onPress={() => setShowPassword(!showPassword)}
@@ -86,18 +81,18 @@ const PasswordResetContent = ({ isOffline }: { isOffline?: boolean }) => {
                 ))}
               </View>
               {passwordStrength.label && (
-                <Text style={[styles.strengthLabel, { color: passwordStrength.color }]}>
+                <PText style={[styles.strengthLabel, { color: passwordStrength.color }]}>
                   {passwordStrength.label}
-                </Text>
+                </PText>
               )}
             </View>
           )}
         </View>
 
         <View style={styles.inputGroup}>
-          <Text style={styles.label}>Yeni Şifre Tekrar</Text>
+          <PText style={styles.label}>Yeni Şifre Tekrar</PText>
           <View style={styles.passwordContainer}>
-            <TextInput
+            <PTextInput
               mode="outlined"
               secureTextEntry={!showConfirmPassword}
               value={confirmPassword}
@@ -108,7 +103,7 @@ const PasswordResetContent = ({ isOffline }: { isOffline?: boolean }) => {
               editable={!isOffline}
               placeholder="••••••••"
             />
-            <IconButton
+            <PIconButton
               icon={showConfirmPassword ? "eye-off" : "eye"}
               size={20}
               onPress={() => setShowConfirmPassword(!showConfirmPassword)}
@@ -116,11 +111,11 @@ const PasswordResetContent = ({ isOffline }: { isOffline?: boolean }) => {
             />
           </View>
           {confirmPassword.length > 0 && !passwordsMatch && (
-            <Text style={styles.errorText}>Şifreler eşleşmiyor</Text>
+            <PText style={styles.errorText}>Şifreler eşleşmiyor</PText>
           )}
         </View>
 
-        <Button
+        <PButton
           mode="contained"
           disabled={isOffline || !isFormValid}
           buttonColor="#00B4D8"
@@ -133,11 +128,11 @@ const PasswordResetContent = ({ isOffline }: { isOffline?: boolean }) => {
           labelStyle={styles.primaryButtonLabel}
         >
           Şifremi Sıfırla
-        </Button>
+        </PButton>
         <View style={styles.hintCard}>
-          <Text style={styles.hintText}>
-            <Text style={styles.hintBold}>💡 İpucu:</Text> Güçlü bir şifre için büyük/küçük harf, rakam ve özel karakter kullanın.
-          </Text>
+          <PText style={styles.hintText}>
+            <PText style={styles.hintBold}>💡 İpucu:</PText> Güçlü bir şifre için büyük/küçük harf, rakam ve özel karakter kullanın.
+          </PText>
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -147,7 +142,7 @@ const PasswordResetContent = ({ isOffline }: { isOffline?: boolean }) => {
 export const AuthPasswordResetScreen = ({
   route,
 }: {
-  route?: { params?: { state?: string } };
+  route?: { params?: { state?: ScreenState } };
 }) => {
   const state = resolveScreenState(route);
 

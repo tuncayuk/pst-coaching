@@ -1,33 +1,34 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import { ActivityIndicator, Button, Card, Text } from "react-native-paper";
+import { ActivityIndicator } from "react-native-paper";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
-import { resolveScreenState } from "../components/ScreenState";
+import { resolveScreenState, ScreenState } from "../components/ScreenState";
+import { PButton, PCard, PText } from "../../components";
 
 const ProfileLogoutConfirmContent = ({ isOffline }: { isOffline?: boolean }) => {
   return (
     <>
       <SectionCard title="Çıkış Yap" actionLabel="">
-        <Card style={styles.card}>
-          <Card.Content>
-            <Text variant="titleMedium">Çıkış yapmak üzeresin</Text>
-            <Text variant="bodySmall">
+        <PCard style={styles.card}>
+          <PCard.Content>
+            <PText variant="titleMedium">Çıkış yapmak üzeresin</PText>
+            <PText variant="bodySmall">
               Hesabından çıkış yaptığında içerik indirmeleri durdurulur ve tekrar giriş
               yapman gerekir.
-            </Text>
-          </Card.Content>
-        </Card>
+            </PText>
+          </PCard.Content>
+        </PCard>
         <View style={styles.buttonRow}>
-          <Button mode="contained" style={styles.primaryButton} disabled={isOffline}>
+          <PButton mode="contained" style={styles.primaryButton} disabled={isOffline}>
             Çıkış Yap
-          </Button>
-          <Button mode="outlined" disabled={isOffline}>
+          </PButton>
+          <PButton mode="outlined" disabled={isOffline}>
             Vazgeç
-          </Button>
+          </PButton>
         </View>
       </SectionCard>
     </>
@@ -37,7 +38,7 @@ const ProfileLogoutConfirmContent = ({ isOffline }: { isOffline?: boolean }) => 
 export const ProfileLogoutConfirmScreen = ({
   route,
 }: {
-  route?: { params?: { state?: string } };
+  route?: { params?: { state?: ScreenState } };
 }) => {
   const state = resolveScreenState(route);
 

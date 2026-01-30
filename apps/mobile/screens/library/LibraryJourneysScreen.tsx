@@ -1,21 +1,15 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import {
-  ActivityIndicator,
-  Button,
-  Card,
-  Chip,
-  ProgressBar,
-  Text,
-} from "react-native-paper";
+import { ActivityIndicator, Chip, ProgressBar } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
-import { resolveScreenState } from "../components/ScreenState";
+import { resolveScreenState, ScreenState } from "../components/ScreenState";
 import { getJourneys } from "../../data/mockSelectors";
+import { PButton, PCard, PText } from "../../components";
 
 const LibraryJourneysContent = ({ isOffline }: { isOffline?: boolean }) => {
   const navigation = useNavigation<any>();
@@ -38,16 +32,16 @@ const LibraryJourneysContent = ({ isOffline }: { isOffline?: boolean }) => {
         {activeJourneys.map((journey) => (
           <View key={journey.title} style={styles.progressBlock}>
             <View style={styles.progressHeader}>
-              <Text variant="titleSmall">{journey.title}</Text>
+              <PText variant="titleSmall">{journey.title}</PText>
               <Chip compact>{Math.round(journey.progress * 100)}%</Chip>
             </View>
-            <Text variant="bodySmall" style={styles.subtitle}>
+            <PText variant="bodySmall" style={styles.subtitle}>
               {journey.next}
-            </Text>
+            </PText>
             <ProgressBar progress={journey.progress} />
           </View>
         ))}
-        <Button
+        <PButton
           mode="contained"
           disabled={isOffline}
           style={styles.primaryButton}
@@ -59,15 +53,15 @@ const LibraryJourneysContent = ({ isOffline }: { isOffline?: boolean }) => {
           }
         >
           Bugünkü Adımı Aç
-        </Button>
+        </PButton>
       </SectionCard>
 
       <SectionCard title="Önerilen Yolculuklar" actionLabel="Keşfet">
         {suggestedJourneys.map((journey) => (
-          <Card key={journey.title} style={styles.card}>
-            <Card.Title title={journey.title} subtitle={journey.subtitle} />
-            <Card.Actions>
-              <Button
+          <PCard key={journey.title} style={styles.card}>
+            <PCard.Title title={journey.title} subtitle={journey.subtitle} />
+            <PCard.Actions>
+              <PButton
                 mode="outlined"
                 disabled={isOffline}
                 onPress={() =>
@@ -78,16 +72,16 @@ const LibraryJourneysContent = ({ isOffline }: { isOffline?: boolean }) => {
                 }
               >
                 İncele
-              </Button>
-            </Card.Actions>
-          </Card>
+              </PButton>
+            </PCard.Actions>
+          </PCard>
         ))}
       </SectionCard>
     </>
   );
 };
 
-export const LibraryJourneysScreen = ({ route }: { route?: { params?: { state?: string } } }) => {
+export const LibraryJourneysScreen = ({ route }: { route?: { params?: { state?: ScreenState } } }) => {
   const state = resolveScreenState(route);
 
   if (state === "loading") {

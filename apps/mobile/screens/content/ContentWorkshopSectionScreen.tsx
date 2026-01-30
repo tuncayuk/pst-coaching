@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet } from "react-native";
-import { ActivityIndicator, Button, Card, Text } from "react-native-paper";
+import { ActivityIndicator } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
@@ -9,6 +9,7 @@ import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
 import { getContentItems, getWorkshopById } from "../../data/mockSelectors";
+import { PButton, PCard, PText } from "../../components";
 
 type RouteParams = { state?: ScreenState; id?: string; sectionId?: string };
 
@@ -28,21 +29,21 @@ const ContentWorkshopSectionContent = ({
   return (
     <>
       <SectionCard title="Atölye Bölümü">
-        <Text variant="titleMedium">{section?.title ?? "Bölüm"}</Text>
-        <Text variant="bodySmall" style={styles.subtleText}>
+        <PText variant="titleMedium">{section?.title ?? "Bölüm"}</PText>
+        <PText variant="bodySmall" style={styles.subtleText}>
           {workshop?.title ?? "Atölye"}
-        </Text>
-        <Text variant="bodyMedium" style={styles.paragraph}>
+        </PText>
+        <PText variant="bodyMedium" style={styles.paragraph}>
           {section?.body ??
             "Bu bölümde okuma ve uygulama adımlarını tamamlayarak ilerleyebilirsin."}
-        </Text>
+        </PText>
       </SectionCard>
 
       <SectionCard title="Eylemler">
-        <Card style={styles.card}>
-          <Card.Title title="Okuma" subtitle="Bölüm içeriğini oku" />
-          <Card.Actions>
-            <Button
+        <PCard style={styles.card}>
+          <PCard.Title title="Okuma" subtitle="Bölüm içeriğini oku" />
+          <PCard.Actions>
+            <PButton
               mode="outlined"
               disabled={isOffline}
               onPress={() =>
@@ -53,13 +54,13 @@ const ContentWorkshopSectionContent = ({
               }
             >
               Okumaya Git
-            </Button>
-          </Card.Actions>
-        </Card>
-        <Card style={styles.card}>
-          <Card.Title title="Uygulama" subtitle="Egzersizleri tamamla" />
-          <Card.Actions>
-            <Button
+            </PButton>
+          </PCard.Actions>
+        </PCard>
+        <PCard style={styles.card}>
+          <PCard.Title title="Uygulama" subtitle="Egzersizleri tamamla" />
+          <PCard.Actions>
+            <PButton
               mode="outlined"
               disabled={isOffline}
               onPress={() =>
@@ -70,12 +71,12 @@ const ContentWorkshopSectionContent = ({
               }
             >
               Uygulamaya Git
-            </Button>
-          </Card.Actions>
-        </Card>
-        <Button mode="contained" disabled={isOffline}>
+            </PButton>
+          </PCard.Actions>
+        </PCard>
+        <PButton mode="contained" disabled={isOffline}>
           Bölümü Tamamla
-        </Button>
+        </PButton>
       </SectionCard>
     </>
   );

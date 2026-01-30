@@ -1,18 +1,13 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import {
-  ActivityIndicator,
-  Button,
-  Chip,
-  Text,
-  TextInput,
-} from "react-native-paper";
+import { ActivityIndicator, Chip } from "react-native-paper";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
+import { PButton, PText, PTextInput } from "../../components";
 
 const emotionTags = ["Sakin", "Meraklı", "Huzurlu", "Zorlanmış"];
 
@@ -20,15 +15,15 @@ const ContentCommentContent = ({ isOffline }: { isOffline?: boolean }) => {
   return (
     <>
       <SectionCard title="Yansıtma Soruları">
-        <Text variant="bodySmall">Bu bölüm seni nasıl etkiledi?</Text>
-        <TextInput
+        <PText variant="bodySmall">Bu bölüm seni nasıl etkiledi?</PText>
+        <PTextInput
           mode="outlined"
           placeholder="Düşüncelerini yaz"
           style={styles.input}
           editable={!isOffline}
         />
-        <Text variant="bodySmall">Günlük hayatına nasıl taşıyabilirsin?</Text>
-        <TextInput
+        <PText variant="bodySmall">Günlük hayatına nasıl taşıyabilirsin?</PText>
+        <PTextInput
           mode="outlined"
           placeholder="Örnekler paylaş"
           style={styles.input}
@@ -44,9 +39,9 @@ const ContentCommentContent = ({ isOffline }: { isOffline?: boolean }) => {
             </Chip>
           ))}
         </View>
-        <Button mode="contained" disabled={isOffline}>
+        <PButton mode="contained" disabled={isOffline}>
           Önizlemeye Geç
-        </Button>
+        </PButton>
       </SectionCard>
     </>
   );

@@ -7,9 +7,9 @@ import {
   NativeScrollEvent,
   NativeSyntheticEvent,
 } from "react-native";
-import { Button, Text } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { PButton, PText } from "../../components";
 
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
 
@@ -72,9 +72,9 @@ export const OnboardingCarouselScreen = () => {
         {onboardingScreens.map((screen, index) => (
           <View key={index} style={styles.screen}>
             <View style={styles.content}>
-              <Text style={styles.emoji}>{screen.emoji}</Text>
-              <Text style={styles.title}>{screen.title}</Text>
-              <Text style={styles.description}>{screen.description}</Text>
+              <PText style={styles.emoji}>{screen.emoji}</PText>
+              <PText style={styles.title}>{screen.title}</PText>
+              <PText style={styles.description}>{screen.description}</PText>
             </View>
             <View style={styles.footer}>
               <View style={styles.progressContainer}>
@@ -89,20 +89,20 @@ export const OnboardingCarouselScreen = () => {
                 ))}
               </View>
               <View style={styles.buttonContainer}>
-                <Button
+                <PButton
                   mode="outlined"
                   onPress={handleSkip}
                   style={styles.skipButton}
                 >
                   Atla
-                </Button>
-                <Button
+                </PButton>
+                <PButton
                   mode="contained"
                   onPress={handleNext}
                   style={styles.nextButton}
                 >
                   {index === onboardingScreens.length - 1 ? "Başla" : "İleri"}
-                </Button>
+                </PButton>
               </View>
             </View>
           </View>

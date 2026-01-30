@@ -1,17 +1,13 @@
 import React from "react";
 import { StyleSheet } from "react-native";
-import {
-  ActivityIndicator,
-  Button,
-  Card,
-  Text,
-} from "react-native-paper";
+import { ActivityIndicator } from "react-native-paper";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
-import { resolveScreenState } from "../components/ScreenState";
+import { resolveScreenState, ScreenState } from "../components/ScreenState";
+import { PButton, PCard, PText } from "../../components";
 
 const assistantBenefits = [
   "Hedefine uygun içerik önerileri",
@@ -23,29 +19,29 @@ const DiscoverAssistantIntroContent = ({ isOffline }: { isOffline?: boolean }) =
   return (
     <>
       <SectionCard title="İçerik Asistanı">
-        <Text variant="bodyMedium" style={styles.paragraph}>
+        <PText variant="bodyMedium" style={styles.paragraph}>
           Kısa bir testle hedeflerine uygun yolculuk, atölye ve modül önerileri al.
-        </Text>
+        </PText>
         {assistantBenefits.map((benefit) => (
-          <Text key={benefit} variant="bodySmall" style={styles.listItem}>
+          <PText key={benefit} variant="bodySmall" style={styles.listItem}>
             • {benefit}
-          </Text>
+          </PText>
         ))}
-        <Button mode="contained" style={styles.primaryButton} disabled={isOffline}>
+        <PButton mode="contained" style={styles.primaryButton} disabled={isOffline}>
           Asistanı Başlat
-        </Button>
+        </PButton>
       </SectionCard>
 
       <SectionCard title="Nasıl Çalışır" actionLabel="Örnekler">
-        <Card style={styles.card}>
-          <Card.Title title="Hedefini seç" subtitle="Örn: sınır koyma" />
-        </Card>
-        <Card style={styles.card}>
-          <Card.Title title="Süreni belirle" subtitle="10-20 dk, 30-45 dk" />
-        </Card>
-        <Card style={styles.card}>
-          <Card.Title title="Önerilerini al" subtitle="1 ana + 2 alternatif" />
-        </Card>
+        <PCard style={styles.card}>
+          <PCard.Title title="Hedefini seç" subtitle="Örn: sınır koyma" />
+        </PCard>
+        <PCard style={styles.card}>
+          <PCard.Title title="Süreni belirle" subtitle="10-20 dk, 30-45 dk" />
+        </PCard>
+        <PCard style={styles.card}>
+          <PCard.Title title="Önerilerini al" subtitle="1 ana + 2 alternatif" />
+        </PCard>
       </SectionCard>
     </>
   );
@@ -54,7 +50,7 @@ const DiscoverAssistantIntroContent = ({ isOffline }: { isOffline?: boolean }) =
 export const DiscoverAssistantIntroScreen = ({
   route,
 }: {
-  route?: { params?: { state?: string } };
+  route?: { params?: { state?: ScreenState } };
 }) => {
   const state = resolveScreenState(route);
 

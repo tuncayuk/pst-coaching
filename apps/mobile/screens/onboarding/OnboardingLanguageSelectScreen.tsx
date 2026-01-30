@@ -1,19 +1,15 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import {
-  ActivityIndicator,
-  Button,
-  RadioButton,
-  Text,
-} from "react-native-paper";
+import { ActivityIndicator, RadioButton } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
-import { resolveScreenState } from "../components/ScreenState";
+import { resolveScreenState, ScreenState } from "../components/ScreenState";
 import { getPrimaryUser } from "../../data/mockSelectors";
+import { PButton, PText } from "../../components";
 
 const LanguageSelectContent = ({ isOffline }: { isOffline?: boolean }) => {
   const navigation = useNavigation<any>();
@@ -23,9 +19,9 @@ const LanguageSelectContent = ({ isOffline }: { isOffline?: boolean }) => {
   return (
     <>
       <SectionCard title="Dilini seç">
-        <Text variant="bodyMedium" style={styles.helperText}>
+        <PText variant="bodyMedium" style={styles.helperText}>
           Uygulamayı kullanacağın dili seçerek başlayalım.
-        </Text>
+        </PText>
         <RadioButton.Group
           onValueChange={(value) => setSelectedLanguage(value)}
           value={selectedLanguage}
@@ -46,19 +42,19 @@ const LanguageSelectContent = ({ isOffline }: { isOffline?: boolean }) => {
             disabled={isOffline}
           />
         </RadioButton.Group>
-        <Button
+        <PButton
           mode="contained"
           style={styles.primaryButton}
           disabled={isOffline}
           onPress={() => navigation.navigate("AuthRegister")}
         >
           Devam Et
-        </Button>
+        </PButton>
       </SectionCard>
       <SectionCard title="Dil tercihi">
-        <Text variant="bodySmall" style={styles.bodyText}>
+        <PText variant="bodySmall" style={styles.bodyText}>
           Tercihini daha sonra Profil &gt; Dil bölümünden güncelleyebilirsin.
-        </Text>
+        </PText>
       </SectionCard>
     </>
   );
@@ -67,7 +63,7 @@ const LanguageSelectContent = ({ isOffline }: { isOffline?: boolean }) => {
 export const OnboardingLanguageSelectScreen = ({
   route,
 }: {
-  route?: { params?: { state?: string } };
+  route?: { params?: { state?: ScreenState } };
 }) => {
   const state = resolveScreenState(route);
 

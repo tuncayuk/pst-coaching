@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet } from "react-native";
-import { ActivityIndicator, Button, Card, Chip, Text } from "react-native-paper";
+import { ActivityIndicator, Chip } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
@@ -9,6 +9,7 @@ import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
 import { getModuleById, getModules, getPackagesForModule } from "../../data/mockSelectors";
+import { PButton, PCard, PText } from "../../components";
 
 type RouteParams = { state?: ScreenState; id?: string };
 
@@ -26,14 +27,14 @@ const ContentModuleHomeContent = ({
   return (
     <>
       <SectionCard title="Modül Özeti" actionLabel="Paylaş">
-        <Text variant="titleMedium">{module?.title ?? "Modül"}</Text>
-        <Text variant="bodySmall" style={styles.subtleText}>
+        <PText variant="titleMedium">{module?.title ?? "Modül"}</PText>
+        <PText variant="bodySmall" style={styles.subtleText}>
           {module?.description ?? "Modül içeriğini paketlere bölünmüş olarak tamamla."}
-        </Text>
+        </PText>
         <Chip style={styles.chip} disabled={isOffline}>
           {packages.length} paket
         </Chip>
-        <Button
+        <PButton
           mode="contained"
           style={styles.primaryButton}
           disabled={isOffline || packages.length === 0}
@@ -47,15 +48,15 @@ const ContentModuleHomeContent = ({
           }}
         >
           Devam Et
-        </Button>
+        </PButton>
       </SectionCard>
 
       <SectionCard title="Paketler" actionLabel="Sırala">
         {packages.map((pkg) => (
-          <Card key={pkg.id} style={styles.card}>
-            <Card.Title title={pkg.title} subtitle={pkg.description} />
-            <Card.Actions>
-              <Button
+          <PCard key={pkg.id} style={styles.card}>
+            <PCard.Title title={pkg.title} subtitle={pkg.description} />
+            <PCard.Actions>
+              <PButton
                 mode="outlined"
                 disabled={isOffline}
                 onPress={() =>
@@ -66,9 +67,9 @@ const ContentModuleHomeContent = ({
                 }
               >
                 Paketi Aç
-              </Button>
-            </Card.Actions>
-          </Card>
+              </PButton>
+            </PCard.Actions>
+          </PCard>
         ))}
       </SectionCard>
     </>

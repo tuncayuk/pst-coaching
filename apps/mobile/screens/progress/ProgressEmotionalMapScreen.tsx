@@ -1,19 +1,13 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import {
-  ActivityIndicator,
-  Button,
-  Card,
-  Chip,
-  ProgressBar,
-  Text,
-} from "react-native-paper";
+import { ActivityIndicator, Chip, ProgressBar } from "react-native-paper";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
-import { resolveScreenState } from "../components/ScreenState";
+import { resolveScreenState, ScreenState } from "../components/ScreenState";
+import { PButton, PCard, PText } from "../../components";
 
 const moodTags = ["Sakin", "Odaklı", "Meraklı", "Düşük enerji"];
 
@@ -34,14 +28,14 @@ const ProgressEmotionalMapContent = ({ isOffline }: { isOffline?: boolean }) => 
       <SectionCard title="14 Günlük Özet" actionLabel="30 Gün">
         <View style={styles.row}>
           {moodSummary.map((item) => (
-            <Card key={item.title} style={styles.metricCard}>
-              <Card.Title title={item.title} subtitle={item.value} />
-            </Card>
+            <PCard key={item.title} style={styles.metricCard}>
+              <PCard.Title title={item.title} subtitle={item.value} />
+            </PCard>
           ))}
         </View>
-        <Text variant="bodySmall" style={styles.paragraph}>
+        <PText variant="bodySmall" style={styles.paragraph}>
           Son iki haftada duygusal denge puanın %68.
-        </Text>
+        </PText>
         <ProgressBar progress={0.68} />
       </SectionCard>
 
@@ -53,9 +47,9 @@ const ProgressEmotionalMapContent = ({ isOffline }: { isOffline?: boolean }) => 
             </Chip>
           ))}
         </View>
-        <Button mode="outlined" disabled={isOffline}>
+        <PButton mode="outlined" disabled={isOffline}>
           Haritayı Güncelle
-        </Button>
+        </PButton>
       </SectionCard>
     </>
   );
@@ -64,7 +58,7 @@ const ProgressEmotionalMapContent = ({ isOffline }: { isOffline?: boolean }) => 
 export const ProgressEmotionalMapScreen = ({
   route,
 }: {
-  route?: { params?: { state?: string } };
+  route?: { params?: { state?: ScreenState } };
 }) => {
   const state = resolveScreenState(route);
 

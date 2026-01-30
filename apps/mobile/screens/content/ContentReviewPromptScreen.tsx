@@ -1,18 +1,13 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import {
-  ActivityIndicator,
-  Button,
-  Chip,
-  Text,
-  TextInput,
-} from "react-native-paper";
+import { ActivityIndicator, Chip } from "react-native-paper";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
+import { PButton, PText, PTextInput } from "../../components";
 
 const ratingLabels = ["Harika", "Faydalı", "Geliştirilebilir", "Zorlayıcı"];
 
@@ -20,7 +15,7 @@ const ContentReviewPromptContent = ({ isOffline }: { isOffline?: boolean }) => {
   return (
     <>
       <SectionCard title="Değerlendirme">
-        <Text variant="bodySmall">Deneyimini seçerek değerlendir.</Text>
+        <PText variant="bodySmall">Deneyimini seçerek değerlendir.</PText>
         <View style={styles.chipRow}>
           {ratingLabels.map((label) => (
             <Chip key={label} style={styles.chip} disabled={isOffline}>
@@ -28,7 +23,7 @@ const ContentReviewPromptContent = ({ isOffline }: { isOffline?: boolean }) => {
             </Chip>
           ))}
         </View>
-        <TextInput
+        <PTextInput
           mode="outlined"
           label="Geri bildirim"
           placeholder="Neleri sevdin, neler geliştirilebilir?"
@@ -37,15 +32,15 @@ const ContentReviewPromptContent = ({ isOffline }: { isOffline?: boolean }) => {
           editable={!isOffline}
           style={styles.input}
         />
-        <Button mode="contained" disabled={isOffline}>
+        <PButton mode="contained" disabled={isOffline}>
           Değerlendirmeyi Gönder
-        </Button>
+        </PButton>
       </SectionCard>
 
       <SectionCard title="Gizlilik">
-        <Text variant="bodySmall">
+        <PText variant="bodySmall">
           Geri bildirimin kimliğin paylaşılmadan ürün geliştirme için kullanılır.
-        </Text>
+        </PText>
       </SectionCard>
     </>
   );

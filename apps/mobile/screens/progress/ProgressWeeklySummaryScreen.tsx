@@ -1,18 +1,13 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import {
-  ActivityIndicator,
-  Button,
-  Card,
-  Chip,
-  Text,
-} from "react-native-paper";
+import { ActivityIndicator, Chip } from "react-native-paper";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
-import { resolveScreenState } from "../components/ScreenState";
+import { resolveScreenState, ScreenState } from "../components/ScreenState";
+import { PButton, PCard, PText } from "../../components";
 
 const dailyStats = [
   { label: "Pzt", value: 2 },
@@ -34,26 +29,26 @@ const ProgressWeeklySummaryContent = ({ isOffline }: { isOffline?: boolean }) =>
         <View style={styles.row}>
           {dailyStats.map((day) => (
             <View key={day.label} style={styles.dayCard}>
-              <Text variant="labelLarge">{day.label}</Text>
+              <PText variant="labelLarge">{day.label}</PText>
               <Chip compact>{day.value}</Chip>
             </View>
           ))}
         </View>
-        <Button mode="contained" disabled={isOffline}>
+        <PButton mode="contained" disabled={isOffline}>
           Haftayı İncele
-        </Button>
+        </PButton>
       </SectionCard>
 
       <SectionCard title="Öne Çıkan Alanlar" actionLabel="Detay">
         {highlights.map((item) => (
-          <Card key={item.title} style={styles.card}>
-            <Card.Title title={item.title} subtitle={item.subtitle} />
-            <Card.Actions>
-              <Button mode="outlined" disabled={isOffline}>
+          <PCard key={item.title} style={styles.card}>
+            <PCard.Title title={item.title} subtitle={item.subtitle} />
+            <PCard.Actions>
+              <PButton mode="outlined" disabled={isOffline}>
                 Gör
-              </Button>
-            </Card.Actions>
-          </Card>
+              </PButton>
+            </PCard.Actions>
+          </PCard>
         ))}
       </SectionCard>
     </>
@@ -63,7 +58,7 @@ const ProgressWeeklySummaryContent = ({ isOffline }: { isOffline?: boolean }) =>
 export const ProgressWeeklySummaryScreen = ({
   route,
 }: {
-  route?: { params?: { state?: string } };
+  route?: { params?: { state?: ScreenState } };
 }) => {
   const state = resolveScreenState(route);
 

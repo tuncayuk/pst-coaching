@@ -1,19 +1,13 @@
 import React from "react";
 import { StyleSheet } from "react-native";
-import {
-  ActivityIndicator,
-  Button,
-  Card,
-  Divider,
-  List,
-  Text,
-} from "react-native-paper";
+import { ActivityIndicator, Divider, List } from "react-native-paper";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
+import { PButton, PCard, PText } from "../../components";
 
 const packageItems = [
   { title: "Öz Şefkat Yolculuğu", subtitle: "7 gün" },
@@ -41,31 +35,31 @@ const ContentPackageDetailContent = ({ isOffline }: { isOffline?: boolean }) => 
       </SectionCard>
 
       <SectionCard title="Plan ve Fiyat">
-        <Card style={styles.card}>
-          <Card.Title title="12 Aylık Paket" subtitle="Aylık 119 ₺" />
-          <Card.Content>
+        <PCard style={styles.card}>
+          <PCard.Title title="12 Aylık Paket" subtitle="Aylık 119 ₺" />
+          <PCard.Content>
             {packageBenefits.map((benefit) => (
-              <Text key={benefit} variant="bodySmall" style={styles.bullet}>
+              <PText key={benefit} variant="bodySmall" style={styles.bullet}>
                 • {benefit}
-              </Text>
+              </PText>
             ))}
-          </Card.Content>
-          <Card.Actions>
-            <Button mode="contained" disabled={isOffline}>
+          </PCard.Content>
+          <PCard.Actions>
+            <PButton mode="contained" disabled={isOffline}>
               Paketi Başlat
-            </Button>
-          </Card.Actions>
-        </Card>
+            </PButton>
+          </PCard.Actions>
+        </PCard>
       </SectionCard>
 
       <SectionCard title="Bilgilendirme">
-        <Text variant="bodySmall">
+        <PText variant="bodySmall">
           Pakete dahil tüm içerikler tek planla aktif olur ve ilerleme cihazlar arasında
           senkronize edilir.
-        </Text>
-        <Button mode="outlined" style={styles.secondaryButton} disabled={isOffline}>
+        </PText>
+        <PButton mode="outlined" style={styles.secondaryButton} disabled={isOffline}>
           Destek ile İletişim
-        </Button>
+        </PButton>
       </SectionCard>
     </>
   );

@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet } from "react-native";
-import { ActivityIndicator, Button, Card, Chip, Text } from "react-native-paper";
+import { ActivityIndicator, Chip } from "react-native-paper";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
@@ -8,6 +8,7 @@ import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
 import { getAchievements, getPrimaryUser } from "../../data/mockSelectors";
+import { PButton, PCard, PText } from "../../components";
 
 type RouteParams = { state?: ScreenState; id?: string };
 
@@ -26,29 +27,29 @@ const ContentAchievementContent = ({
   return (
     <>
       <SectionCard title="Başarım">
-        <Text variant="titleMedium">
+        <PText variant="titleMedium">
           {achievement?.type === "certificate" ? "Sertifika" : "Rozet"}
-        </Text>
-        <Text variant="bodySmall" style={styles.subtleText}>
+        </PText>
+        <PText variant="bodySmall" style={styles.subtleText}>
           {achievement?.source_type ?? "İçerik"} tamamlandığında verildi.
-        </Text>
+        </PText>
         <Chip style={styles.chip} disabled={isOffline}>
           {achievement?.issued_at?.slice(0, 10) ?? "2026-01-10"}
         </Chip>
       </SectionCard>
 
       <SectionCard title="Paylaş">
-        <Card style={styles.card}>
-          <Card.Title title="Başarımını paylaş" subtitle="PDF veya görsel olarak gönder" />
-          <Card.Actions>
-            <Button mode="contained" disabled={isOffline}>
+        <PCard style={styles.card}>
+          <PCard.Title title="Başarımını paylaş" subtitle="PDF veya görsel olarak gönder" />
+          <PCard.Actions>
+            <PButton mode="contained" disabled={isOffline}>
               Paylaş
-            </Button>
-            <Button mode="outlined" disabled={isOffline}>
+            </PButton>
+            <PButton mode="outlined" disabled={isOffline}>
               İndir
-            </Button>
-          </Card.Actions>
-        </Card>
+            </PButton>
+          </PCard.Actions>
+        </PCard>
       </SectionCard>
     </>
   );

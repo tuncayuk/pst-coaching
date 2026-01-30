@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import { Surface, Text, useTheme } from "react-native-paper";
+import { useTheme } from "react-native-paper";
+import { PSurface, PText } from "../../components";
 
 type SectionCardProps = {
   title: string;
@@ -12,17 +13,17 @@ export const SectionCard = ({ title, actionLabel, children }: SectionCardProps) 
   const theme = useTheme();
 
   return (
-    <Surface style={[styles.card, { backgroundColor: theme.colors.elevation.level1 }]}>
+    <PSurface style={[styles.card, { backgroundColor: theme.colors.elevation.level1 }]}>
       <View style={styles.headerRow}>
-        <Text variant="titleMedium">{title}</Text>
+        <PText variant="titleMedium">{title}</PText>
         {actionLabel ? (
-          <Text variant="labelLarge" style={{ color: theme.colors.primary }}>
+          <PText variant="labelLarge" style={{ color: theme.colors.primary }}>
             {actionLabel}
-          </Text>
+          </PText>
         ) : null}
       </View>
       {children}
-    </Surface>
+    </PSurface>
   );
 };
 

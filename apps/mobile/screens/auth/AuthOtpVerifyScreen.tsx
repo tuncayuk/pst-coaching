@@ -1,11 +1,6 @@
 import React from "react";
 import { StyleSheet, View, TouchableOpacity, ScrollView } from "react-native";
-import {
-  ActivityIndicator,
-  Button,
-  Text,
-  TextInput,
-} from "react-native-paper";
+import { ActivityIndicator } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { OfflineNotice } from "../components/OfflineNotice";
@@ -14,6 +9,7 @@ import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
+import { PButton, PText, PTextInput } from "../../components";
 
 const OtpVerifyContent = ({ 
   isOffline,
@@ -69,19 +65,19 @@ const OtpVerifyContent = ({
           style={styles.backButton}
           disabled={isOffline}
         >
-          <Text style={styles.backButtonText}>←</Text>
+          <PText style={styles.backButtonText}>←</PText>
         </TouchableOpacity>
 
         <View style={styles.iconContainer}>
-          <Text style={styles.icon}>📱</Text>
+          <PText style={styles.icon}>📱</PText>
         </View>
-        <Text style={styles.title}>Doğrulama Kodu</Text>
-        <Text style={styles.description}>
-          <Text style={styles.emailText}>ahmet@*****.com</Text> adresine gönderilen 6 haneli kodu girin.
-        </Text>
+        <PText style={styles.title}>Doğrulama Kodu</PText>
+        <PText style={styles.description}>
+          <PText style={styles.emailText}>ahmet@*****.com</PText> adresine gönderilen 6 haneli kodu girin.
+        </PText>
         <View style={styles.codeContainer}>
           {codes.map((code, index) => (
-            <TextInput
+            <PTextInput
               key={index}
               ref={(ref: any) => (inputRefs.current[index] = ref)}
               value={code}
@@ -98,7 +94,7 @@ const OtpVerifyContent = ({
             />
           ))}
         </View>
-        <Button
+        <PButton
           mode="contained"
           disabled={isOffline || !isCodeComplete}
           buttonColor="#00B4D8"
@@ -115,12 +111,12 @@ const OtpVerifyContent = ({
           labelStyle={styles.primaryButtonLabel}
         >
           Doğrula
-        </Button>
+        </PButton>
         <View style={styles.resendContainer}>
-          <Text style={styles.resendText}>Kod gelmedi mi?</Text>
-          <Button mode="text" disabled={isOffline} style={styles.resendButton}>
+          <PText style={styles.resendText}>Kod gelmedi mi?</PText>
+          <PButton mode="text" disabled={isOffline} style={styles.resendButton}>
             Tekrar Gönder (45s)
-          </Button>
+          </PButton>
         </View>
       </ScrollView>
     </SafeAreaView>

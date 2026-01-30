@@ -1,18 +1,14 @@
 import React from "react";
 import { StyleSheet } from "react-native";
-import {
-  ActivityIndicator,
-  Button,
-  Card,
-  Text,
-} from "react-native-paper";
+import { ActivityIndicator } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
-import { resolveScreenState } from "../components/ScreenState";
+import { resolveScreenState, ScreenState } from "../components/ScreenState";
+import { PButton, PCard, PText } from "../../components";
 import {
   getCollectionItems,
   getCollectionsForUser,
@@ -53,31 +49,31 @@ const LibraryCollectionDetailContent = ({
   return (
     <>
       <SectionCard title="Koleksiyon Bilgisi">
-        <Text variant="titleMedium" style={styles.title}>
+        <PText variant="titleMedium" style={styles.title}>
           {collection?.name ?? "Koleksiyon"}
-        </Text>
-        <Text variant="bodySmall" style={styles.paragraph}>
+        </PText>
+        <PText variant="bodySmall" style={styles.paragraph}>
           Kişisel koleksiyon içeriğini burada yönetebilirsin.
-        </Text>
-        <Button mode="outlined" disabled={isOffline}>
+        </PText>
+        <PButton mode="outlined" disabled={isOffline}>
           Koleksiyonu Düzenle
-        </Button>
+        </PButton>
       </SectionCard>
 
       <SectionCard title="İçerikler" actionLabel="Tümü">
         {collectionItems.map((item) => (
-          <Card key={item.title} style={styles.card}>
-            <Card.Title title={item.title} subtitle={item.subtitle} />
-            <Card.Actions>
-              <Button
+          <PCard key={item.title} style={styles.card}>
+            <PCard.Title title={item.title} subtitle={item.subtitle} />
+            <PCard.Actions>
+              <PButton
                 mode="outlined"
                 disabled={isOffline}
                 onPress={() => navigation.navigate("LibraryFavoriteDetail", { id: item.id })}
               >
                 Aç
-              </Button>
-            </Card.Actions>
-          </Card>
+              </PButton>
+            </PCard.Actions>
+          </PCard>
         ))}
       </SectionCard>
     </>
@@ -87,7 +83,7 @@ const LibraryCollectionDetailContent = ({
 export const LibraryCollectionDetailScreen = ({
   route,
 }: {
-  route?: { params?: { state?: string; id?: string } };
+  route?: { params?: { state?: ScreenState; id?: string } };
 }) => {
   const state = resolveScreenState(route);
   const collectionId = route?.params?.id;

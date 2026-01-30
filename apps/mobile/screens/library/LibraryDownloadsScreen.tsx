@@ -1,18 +1,14 @@
 import React from "react";
 import { StyleSheet } from "react-native";
-import {
-  ActivityIndicator,
-  Button,
-  Card,
-  Text,
-} from "react-native-paper";
+import { ActivityIndicator } from "react-native-paper";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
-import { resolveScreenState } from "../components/ScreenState";
+import { resolveScreenState, ScreenState } from "../components/ScreenState";
 import { getDownloadsForUser, getPrimaryUser } from "../../data/mockSelectors";
+import { PButton, PCard, PText } from "../../components";
 
 const LibraryDownloadsContent = ({ isOffline }: { isOffline?: boolean }) => {
   const user = getPrimaryUser();
@@ -22,30 +18,30 @@ const LibraryDownloadsContent = ({ isOffline }: { isOffline?: boolean }) => {
     <>
       <SectionCard title="İndirilenler" actionLabel="Temizle">
         {downloads.map((item) => (
-          <Card key={item.id} style={styles.card}>
-            <Card.Title
+          <PCard key={item.id} style={styles.card}>
+            <PCard.Title
               title={`İndirilen ${item.content_type}`}
               subtitle={`${(item.size_bytes / 1048576).toFixed(1)} MB`}
             />
-            <Card.Content>
-              <Text variant="bodySmall">Durum: {item.status}</Text>
-            </Card.Content>
-            <Card.Actions>
-              <Button mode="outlined" disabled={isOffline}>
+            <PCard.Content>
+              <PText variant="bodySmall">Durum: {item.status}</PText>
+            </PCard.Content>
+            <PCard.Actions>
+              <PButton mode="outlined" disabled={isOffline}>
                 Aç
-              </Button>
-              <Button mode="text" disabled={isOffline}>
+              </PButton>
+              <PButton mode="text" disabled={isOffline}>
                 Sil
-              </Button>
-            </Card.Actions>
-          </Card>
+              </PButton>
+            </PCard.Actions>
+          </PCard>
         ))}
       </SectionCard>
     </>
   );
 };
 
-export const LibraryDownloadsScreen = ({ route }: { route?: { params?: { state?: string } } }) => {
+export const LibraryDownloadsScreen = ({ route }: { route?: { params?: { state?: ScreenState } } }) => {
   const state = resolveScreenState(route);
 
   if (state === "loading") {

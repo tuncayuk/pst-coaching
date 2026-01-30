@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import { Button, Chip, Text } from "react-native-paper";
+import { Chip } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
@@ -8,6 +8,7 @@ import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
+import { PButton, PText } from "../../components";
 
 const WelcomeContent = ({ isOffline }: { isOffline?: boolean }) => {
   const navigation = useNavigation<any>();
@@ -15,13 +16,13 @@ const WelcomeContent = ({ isOffline }: { isOffline?: boolean }) => {
   return (
     <>
       <SectionCard title="Hoş geldin">
-        <Text variant="titleMedium" style={styles.headline}>
+        <PText variant="titleMedium" style={styles.headline}>
           Yeni bir yolculuğa hoş geldin
-        </Text>
-        <Text variant="bodyMedium" style={styles.bodyText}>
+        </PText>
+        <PText variant="bodyMedium" style={styles.bodyText}>
           PST Coaching ile kişisel gelişim yolculuğunu planla, günlük içeriklerle ilerle ve
           ilerlemeni takip et.
-        </Text>
+        </PText>
         <View style={styles.chipRow}>
           {["Kişisel plan", "Günlük içerik", "İlerleme takibi"].map((label) => (
             <Chip key={label} style={styles.chip} disabled={isOffline}>
@@ -29,31 +30,31 @@ const WelcomeContent = ({ isOffline }: { isOffline?: boolean }) => {
             </Chip>
           ))}
         </View>
-        <Button
+        <PButton
           mode="contained"
           style={styles.primaryButton}
           disabled={isOffline}
           onPress={() => navigation.navigate("AuthLogin")}
         >
           Başla
-        </Button>
+        </PButton>
       </SectionCard>
       <SectionCard title="Hesabın var mı?">
-        <Text variant="bodySmall" style={styles.bodyText}>
+        <PText variant="bodySmall" style={styles.bodyText}>
           Daha önce kayıt olduysan giriş yaparak kaldığın yerden devam edebilirsin.
-        </Text>
+        </PText>
         <View style={styles.buttonRow}>
-          <Button
+          <PButton
             mode="outlined"
             style={styles.secondaryButton}
             disabled={isOffline}
             onPress={() => navigation.navigate("AuthLogin")}
           >
             Giriş Yap
-          </Button>
-          <Button mode="text" disabled={isOffline} onPress={() => navigation.navigate("AuthRegister")}>
+          </PButton>
+          <PButton mode="text" disabled={isOffline} onPress={() => navigation.navigate("AuthRegister")}>
             Kayıt Ol
-          </Button>
+          </PButton>
         </View>
       </SectionCard>
     </>

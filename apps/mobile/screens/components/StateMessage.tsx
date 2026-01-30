@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import { Avatar, Button, Text, useTheme } from "react-native-paper";
+import { Avatar, useTheme } from "react-native-paper";
+import { PButton, PText } from "../../components";
 
 type StateMessageProps = {
   title: string;
@@ -24,16 +25,16 @@ export const StateMessage = ({
   return (
     <View style={[styles.container, { backgroundColor: background }]}> 
       <Avatar.Icon size={56} icon={icon} style={styles.avatar} />
-      <Text variant="titleLarge" style={{ color: onBackground, marginBottom: 4 }}>
+      <PText variant="titleLarge" style={{ color: onBackground, marginBottom: 4 }}>
         {title}
-      </Text>
-      <Text variant="bodyMedium" style={{ color: onBackground, textAlign: "center" }}>
+      </PText>
+      <PText variant="bodyMedium" style={{ color: onBackground, textAlign: "center" }}>
         {description}
-      </Text>
+      </PText>
       {actionLabel ? (
-        <Button mode="contained" style={styles.button} onPress={() => {}}>
+        <PButton mode="contained" style={styles.button} onPress={() => {}}>
           {actionLabel}
-        </Button>
+        </PButton>
       ) : null}
     </View>
   );

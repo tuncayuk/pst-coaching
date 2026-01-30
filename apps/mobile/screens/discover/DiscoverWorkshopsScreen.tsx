@@ -1,20 +1,15 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import {
-  ActivityIndicator,
-  Button,
-  Card,
-  Chip,
-  Text,
-} from "react-native-paper";
+import { ActivityIndicator, Chip } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
-import { resolveScreenState } from "../components/ScreenState";
+import { resolveScreenState, ScreenState } from "../components/ScreenState";
 import { getWorkshops } from "../../data/mockSelectors";
+import { PButton, PCard, PText } from "../../components";
 
 const DiscoverWorkshopsContent = ({ isOffline }: { isOffline?: boolean }) => {
   const navigation = useNavigation<any>();
@@ -30,15 +25,15 @@ const DiscoverWorkshopsContent = ({ isOffline }: { isOffline?: boolean }) => {
             </Chip>
           ))}
         </View>
-        <Text variant="bodySmall">{workshops.length} atölye bulundu</Text>
+        <PText variant="bodySmall">{workshops.length} atölye bulundu</PText>
       </SectionCard>
 
       <SectionCard title="Atölyeler" actionLabel="Sırala">
         {workshops.map((item) => (
-          <Card key={item.id} style={styles.card}>
-            <Card.Title title={item.title} subtitle={item.description} />
-            <Card.Actions>
-              <Button
+          <PCard key={item.id} style={styles.card}>
+            <PCard.Title title={item.title} subtitle={item.description} />
+            <PCard.Actions>
+              <PButton
                 mode="outlined"
                 disabled={isOffline}
                 onPress={() =>
@@ -49,9 +44,9 @@ const DiscoverWorkshopsContent = ({ isOffline }: { isOffline?: boolean }) => {
                 }
               >
                 İncele
-              </Button>
-            </Card.Actions>
-          </Card>
+              </PButton>
+            </PCard.Actions>
+          </PCard>
         ))}
       </SectionCard>
     </>
@@ -61,7 +56,7 @@ const DiscoverWorkshopsContent = ({ isOffline }: { isOffline?: boolean }) => {
 export const DiscoverWorkshopsScreen = ({
   route,
 }: {
-  route?: { params?: { state?: string } };
+  route?: { params?: { state?: ScreenState } };
 }) => {
   const state = resolveScreenState(route);
 

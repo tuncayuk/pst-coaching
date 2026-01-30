@@ -1,48 +1,42 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import {
-  ActivityIndicator,
-  Button,
-  Card,
-  Divider,
-  List,
-  Text,
-} from "react-native-paper";
+import { ActivityIndicator, Divider, List } from "react-native-paper";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
-import { resolveScreenState } from "../components/ScreenState";
+import { resolveScreenState, ScreenState } from "../components/ScreenState";
+import { PButton, PCard, PText } from "../../components";
 
 const ProfileCheckoutContent = ({ isOffline }: { isOffline?: boolean }) => {
   return (
     <>
       <SectionCard title="Sipariş Özeti" actionLabel="">
-        <Card style={styles.card}>
-          <Card.Title title="Premium Yıllık Plan" subtitle="12 ay" />
-          <Card.Content>
+        <PCard style={styles.card}>
+          <PCard.Title title="Premium Yıllık Plan" subtitle="12 ay" />
+          <PCard.Content>
             <View style={styles.priceRow}>
-              <Text variant="bodyMedium">Plan Bedeli</Text>
-              <Text variant="bodyMedium">₺899,00</Text>
+              <PText variant="bodyMedium">Plan Bedeli</PText>
+              <PText variant="bodyMedium">₺899,00</PText>
             </View>
             <View style={styles.priceRow}>
-              <Text variant="bodyMedium">Vergi</Text>
-              <Text variant="bodyMedium">₺0,00</Text>
+              <PText variant="bodyMedium">Vergi</PText>
+              <PText variant="bodyMedium">₺0,00</PText>
             </View>
             <Divider style={styles.divider} />
             <View style={styles.priceRow}>
-              <Text variant="titleMedium">Toplam</Text>
-              <Text variant="titleMedium">₺899,00</Text>
+              <PText variant="titleMedium">Toplam</PText>
+              <PText variant="titleMedium">₺899,00</PText>
             </View>
-          </Card.Content>
-        </Card>
-        <Button mode="contained" disabled={isOffline}>
+          </PCard.Content>
+        </PCard>
+        <PButton mode="contained" disabled={isOffline}>
           Satın Almayı Tamamla
-        </Button>
-        <Button mode="text" style={styles.secondaryButton} disabled={isOffline}>
+        </PButton>
+        <PButton mode="text" style={styles.secondaryButton} disabled={isOffline}>
           Kupon Kodu Gir
-        </Button>
+        </PButton>
       </SectionCard>
 
       <SectionCard title="Ödeme Yöntemi" actionLabel="Değiştir">
@@ -65,7 +59,7 @@ const ProfileCheckoutContent = ({ isOffline }: { isOffline?: boolean }) => {
 export const ProfileCheckoutScreen = ({
   route,
 }: {
-  route?: { params?: { state?: string } };
+  route?: { params?: { state?: ScreenState } };
 }) => {
   const state = resolveScreenState(route);
 

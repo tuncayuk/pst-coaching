@@ -1,19 +1,13 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import {
-  ActivityIndicator,
-  Button,
-  Card,
-  Divider,
-  ProgressBar,
-  Text,
-} from "react-native-paper";
+import { ActivityIndicator, Divider, ProgressBar } from "react-native-paper";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
+import { PButton, PCard, PText } from "../../components";
 
 const journeyDays = [
   { title: "1. Gün: Niyet", duration: "12 dk" },
@@ -31,29 +25,29 @@ const ContentJourneyDetailContent = ({ isOffline }: { isOffline?: boolean }) => 
   return (
     <>
       <SectionCard title="Yolculuk Özeti">
-        <Text variant="bodyMedium" style={styles.paragraph}>
+        <PText variant="bodyMedium" style={styles.paragraph}>
           Kendine şefkatli bir yaklaşım geliştirirken her gün küçük adımlarla ilerleyebileceğin
           yapılandırılmış bir program.
-        </Text>
-        <Card style={styles.card}>
-          <Card.Title title="İlerleme" subtitle="3/10 gün tamamlandı" />
-          <Card.Content>
+        </PText>
+        <PCard style={styles.card}>
+          <PCard.Title title="İlerleme" subtitle="3/10 gün tamamlandı" />
+          <PCard.Content>
             <ProgressBar progress={0.3} style={styles.progress} />
-          </Card.Content>
-          <Card.Actions>
-            <Button mode="contained" disabled={isOffline}>
+          </PCard.Content>
+          <PCard.Actions>
+            <PButton mode="contained" disabled={isOffline}>
               Yolculuğa Devam Et
-            </Button>
-          </Card.Actions>
-        </Card>
+            </PButton>
+          </PCard.Actions>
+        </PCard>
       </SectionCard>
 
       <SectionCard title="Gün Akışı" actionLabel="Tüm Günler">
         {journeyDays.map((day, index) => (
           <View key={day.title} style={styles.rowItem}>
             <View style={styles.rowHeader}>
-              <Text variant="titleSmall">{day.title}</Text>
-              <Text variant="labelMedium">{day.duration}</Text>
+              <PText variant="titleSmall">{day.title}</PText>
+              <PText variant="labelMedium">{day.duration}</PText>
             </View>
             {index < journeyDays.length - 1 ? <Divider style={styles.divider} /> : null}
           </View>
@@ -62,13 +56,13 @@ const ContentJourneyDetailContent = ({ isOffline }: { isOffline?: boolean }) => 
 
       <SectionCard title="Kazanımlar" actionLabel="Paylaş">
         {journeyBenefits.map((benefit) => (
-          <Text key={benefit} variant="bodySmall" style={styles.bullet}>
+          <PText key={benefit} variant="bodySmall" style={styles.bullet}>
             • {benefit}
-          </Text>
+          </PText>
         ))}
-        <Button mode="outlined" style={styles.secondaryButton} disabled={isOffline}>
+        <PButton mode="outlined" style={styles.secondaryButton} disabled={isOffline}>
           Hatırlatıcı Kur
-        </Button>
+        </PButton>
       </SectionCard>
     </>
   );

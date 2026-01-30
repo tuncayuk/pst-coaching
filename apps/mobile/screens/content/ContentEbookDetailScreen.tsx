@@ -1,19 +1,13 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import {
-  ActivityIndicator,
-  Button,
-  Card,
-  Chip,
-  ProgressBar,
-  Text,
-} from "react-native-paper";
+import { ActivityIndicator, Chip, ProgressBar } from "react-native-paper";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
+import { PButton, PCard, PText } from "../../components";
 
 const ebookTags = ["Duygu düzenleme", "Farkındalık", "Günlük pratik"];
 
@@ -21,10 +15,10 @@ const ContentEbookDetailContent = ({ isOffline }: { isOffline?: boolean }) => {
   return (
     <>
       <SectionCard title="Kitap Özeti">
-        <Text variant="bodyMedium" style={styles.paragraph}>
+        <PText variant="bodyMedium" style={styles.paragraph}>
           Duygularını düzenlemek için kısa egzersizler, örnekler ve günlük yazım alanları sunan
           rehber bir okuma.
-        </Text>
+        </PText>
         <View style={styles.chipRow}>
           {ebookTags.map((tag) => (
             <Chip key={tag} style={styles.chip} disabled={isOffline}>
@@ -32,36 +26,36 @@ const ContentEbookDetailContent = ({ isOffline }: { isOffline?: boolean }) => {
             </Chip>
           ))}
         </View>
-        <Card style={styles.card}>
-          <Card.Title title="İlerleme" subtitle="2/12 bölüm okundu" />
-          <Card.Content>
+        <PCard style={styles.card}>
+          <PCard.Title title="İlerleme" subtitle="2/12 bölüm okundu" />
+          <PCard.Content>
             <ProgressBar progress={0.18} style={styles.progress} />
-          </Card.Content>
-          <Card.Actions>
-            <Button mode="contained" disabled={isOffline}>
+          </PCard.Content>
+          <PCard.Actions>
+            <PButton mode="contained" disabled={isOffline}>
               Okumaya Başla
-            </Button>
-          </Card.Actions>
-        </Card>
+            </PButton>
+          </PCard.Actions>
+        </PCard>
       </SectionCard>
 
       <SectionCard title="Hızlı Erişim" actionLabel="İçindekiler">
-        <Card style={styles.secondaryCard}>
-          <Card.Title title="Son kaldığın yer" subtitle="Bölüm 3 · 4 dk kaldı" />
-          <Card.Actions>
-            <Button mode="outlined" disabled={isOffline}>
+        <PCard style={styles.secondaryCard}>
+          <PCard.Title title="Son kaldığın yer" subtitle="Bölüm 3 · 4 dk kaldı" />
+          <PCard.Actions>
+            <PButton mode="outlined" disabled={isOffline}>
               Devam Et
-            </Button>
-          </Card.Actions>
-        </Card>
+            </PButton>
+          </PCard.Actions>
+        </PCard>
       </SectionCard>
 
       <SectionCard title="Okuyucu Ayarları">
-        <Text variant="bodySmall">• Satır aralığı ve yazı boyutunu ayarla</Text>
-        <Text variant="bodySmall">• Karanlık modda okumaya geç</Text>
-        <Button mode="outlined" style={styles.secondaryButton} disabled={isOffline}>
+        <PText variant="bodySmall">• Satır aralığı ve yazı boyutunu ayarla</PText>
+        <PText variant="bodySmall">• Karanlık modda okumaya geç</PText>
+        <PButton mode="outlined" style={styles.secondaryButton} disabled={isOffline}>
           Ayarları Aç
-        </Button>
+        </PButton>
       </SectionCard>
     </>
   );

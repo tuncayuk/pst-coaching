@@ -1,21 +1,15 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import {
-  ActivityIndicator,
-  Button,
-  Card,
-  Chip,
-  Text,
-  useTheme,
-} from "react-native-paper";
+import { ActivityIndicator, Chip, useTheme } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "./components/OfflineNotice";
 import { ScreenLayout } from "./components/ScreenLayout";
 import { SectionCard } from "./components/SectionCard";
 import { SkeletonBlock } from "./components/SkeletonBlock";
 import { StateMessage } from "./components/StateMessage";
-import { resolveScreenState } from "./components/ScreenState";
+import { resolveScreenState, ScreenState } from "./components/ScreenState";
 import { getEbooks, getJourneys, getModules, getWorkshops } from "../data/mockSelectors";
+import { PButton, PCard, PText } from "../components";
 
 const DiscoverReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
   const theme = useTheme();
@@ -58,10 +52,10 @@ const DiscoverReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
       {discoverSections.map((section) => (
         <SectionCard key={section.title} title={section.title} actionLabel="Tümü">
           {section.items.map((item) => (
-            <Card key={item.id} style={styles.card}>
-              <Card.Title title={item.title} subtitle="30-60 dk · 4 bölüm" />
-              <Card.Actions>
-                <Button
+            <PCard key={item.id} style={styles.card}>
+              <PCard.Title title={item.title} subtitle="30-60 dk · 4 bölüm" />
+              <PCard.Actions>
+                <PButton
                   mode="outlined"
                   disabled={isOffline}
                   onPress={() =>
@@ -72,32 +66,32 @@ const DiscoverReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
                   }
                 >
                   İncele
-                </Button>
-              </Card.Actions>
-            </Card>
+                </PButton>
+              </PCard.Actions>
+            </PCard>
           ))}
         </SectionCard>
       ))}
 
       <SectionCard title="Haftanın Teması" actionLabel="Paylaş">
-        <Text variant="bodyMedium" style={{ color: theme.colors.onSurfaceVariant }}>
+        <PText variant="bodyMedium" style={{ color: theme.colors.onSurfaceVariant }}>
           Bu hafta sınır koyma ve öz saygı odağında seçkiler hazırladık. Kendine uygun bir
           yolculukla başlayabilirsin.
-        </Text>
-        <Button
+        </PText>
+        <PButton
           mode="contained"
           style={styles.primaryButton}
           disabled={isOffline}
           onPress={() => navigation.navigate("DiscoverJourneys")}
         >
           Temayı Keşfet
-        </Button>
+        </PButton>
       </SectionCard>
     </>
   );
 };
 
-export const DiscoverCatalogScreen = ({ route }: { route?: { params?: { state?: string } } }) => {
+export const DiscoverCatalogScreen = ({ route }: { route?: { params?: { state?: ScreenState } } }) => {
   const state = resolveScreenState(route);
 
   if (state === "loading") {

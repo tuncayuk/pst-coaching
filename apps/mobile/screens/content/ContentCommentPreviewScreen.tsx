@@ -1,47 +1,43 @@
 import React from "react";
 import { StyleSheet } from "react-native";
-import {
-  ActivityIndicator,
-  Button,
-  Card,
-  Text,
-} from "react-native-paper";
+import { ActivityIndicator } from "react-native-paper";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
+import { PButton, PCard, PText } from "../../components";
 
 const ContentCommentPreviewContent = ({ isOffline }: { isOffline?: boolean }) => {
   return (
     <>
       <SectionCard title="Önizleme">
-        <Card style={styles.card}>
-          <Card.Title title="Seçilen Duygu" subtitle="Huzurlu" />
-          <Card.Content>
-            <Text variant="bodyMedium" style={styles.paragraph}>
+        <PCard style={styles.card}>
+          <PCard.Title title="Seçilen Duygu" subtitle="Huzurlu" />
+          <PCard.Content>
+            <PText variant="bodyMedium" style={styles.paragraph}>
               Bu bölüm, gün içinde kendime daha nazik yaklaşmam gerektiğini hatırlattı. Küçük
               bir nefes molası bile fark yaratıyor.
-            </Text>
-            <Text variant="bodySmall">Günlük hayatımda bunu akşam rutinime ekleyeceğim.</Text>
-          </Card.Content>
-          <Card.Actions>
-            <Button mode="outlined" disabled={isOffline}>
+            </PText>
+            <PText variant="bodySmall">Günlük hayatımda bunu akşam rutinime ekleyeceğim.</PText>
+          </PCard.Content>
+          <PCard.Actions>
+            <PButton mode="outlined" disabled={isOffline}>
               Düzenle
-            </Button>
-            <Button mode="contained" disabled={isOffline}>
+            </PButton>
+            <PButton mode="contained" disabled={isOffline}>
               Gönder
-            </Button>
-          </Card.Actions>
-        </Card>
+            </PButton>
+          </PCard.Actions>
+        </PCard>
       </SectionCard>
 
       <SectionCard title="Gönderim Bilgisi">
-        <Text variant="bodySmall">
+        <PText variant="bodySmall">
           Yorumun topluluk rehberine uygun şekilde paylaşılır. Dilersen daha sonra düzenleyebilir
           veya silebilirsin.
-        </Text>
+        </PText>
       </SectionCard>
     </>
   );

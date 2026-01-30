@@ -1,47 +1,43 @@
 import React from "react";
 import { StyleSheet } from "react-native";
-import {
-  ActivityIndicator,
-  Button,
-  Card,
-  Text,
-} from "react-native-paper";
+import { ActivityIndicator } from "react-native-paper";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
-import { resolveScreenState } from "../components/ScreenState";
+import { resolveScreenState, ScreenState } from "../components/ScreenState";
+import { PButton, PCard, PText } from "../../components";
 
 const ProfileRestorePurchasesContent = ({ isOffline }: { isOffline?: boolean }) => {
   return (
     <>
       <SectionCard title="Satın Alımları Geri Yükle" actionLabel="">
-        <Text variant="bodySmall">
+        <PText variant="bodySmall">
           Daha önce satın aldığın planları geri yükleyebiliriz. Bu işlem mağaza
           doğrulaması gerektirir.
-        </Text>
-        <Button mode="contained" style={styles.actionButton} disabled={isOffline}>
+        </PText>
+        <PButton mode="contained" style={styles.actionButton} disabled={isOffline}>
           Satın Alımları Geri Yükle
-        </Button>
-        <Button mode="outlined" disabled={isOffline}>
+        </PButton>
+        <PButton mode="outlined" disabled={isOffline}>
           Destekle İletişime Geç
-        </Button>
+        </PButton>
       </SectionCard>
 
       <SectionCard title="Son İşlemler" actionLabel="">
-        <Card style={styles.card}>
-          <Card.Title title="12 Ocak 2025" subtitle="Premium Yıllık Plan" />
-          <Card.Content>
-            <Text variant="bodySmall">Doğrulandı</Text>
-          </Card.Content>
-        </Card>
-        <Card style={styles.card}>
-          <Card.Title title="12 Ocak 2024" subtitle="Premium Yıllık Plan" />
-          <Card.Content>
-            <Text variant="bodySmall">Doğrulandı</Text>
-          </Card.Content>
-        </Card>
+        <PCard style={styles.card}>
+          <PCard.Title title="12 Ocak 2025" subtitle="Premium Yıllık Plan" />
+          <PCard.Content>
+            <PText variant="bodySmall">Doğrulandı</PText>
+          </PCard.Content>
+        </PCard>
+        <PCard style={styles.card}>
+          <PCard.Title title="12 Ocak 2024" subtitle="Premium Yıllık Plan" />
+          <PCard.Content>
+            <PText variant="bodySmall">Doğrulandı</PText>
+          </PCard.Content>
+        </PCard>
       </SectionCard>
     </>
   );
@@ -50,7 +46,7 @@ const ProfileRestorePurchasesContent = ({ isOffline }: { isOffline?: boolean }) 
 export const ProfileRestorePurchasesScreen = ({
   route,
 }: {
-  route?: { params?: { state?: string } };
+  route?: { params?: { state?: ScreenState } };
 }) => {
   const state = resolveScreenState(route);
 

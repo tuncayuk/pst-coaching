@@ -1,20 +1,15 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import {
-  ActivityIndicator,
-  Button,
-  Card,
-  Chip,
-  Text,
-} from "react-native-paper";
+import { ActivityIndicator, Chip } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
-import { resolveScreenState } from "../components/ScreenState";
+import { resolveScreenState, ScreenState } from "../components/ScreenState";
 import { getEbooks } from "../../data/mockSelectors";
+import { PButton, PCard, PText } from "../../components";
 
 const DiscoverEbooksContent = ({ isOffline }: { isOffline?: boolean }) => {
   const navigation = useNavigation<any>();
@@ -30,18 +25,18 @@ const DiscoverEbooksContent = ({ isOffline }: { isOffline?: boolean }) => {
             </Chip>
           ))}
         </View>
-        <Text variant="bodySmall">{ebooks.length} e-Kitap bulundu</Text>
+        <PText variant="bodySmall">{ebooks.length} e-Kitap bulundu</PText>
       </SectionCard>
 
       <SectionCard title="e-Kitaplar" actionLabel="Sırala">
         {ebooks.map((item) => (
-          <Card key={item.id} style={styles.card}>
-            <Card.Title
+          <PCard key={item.id} style={styles.card}>
+            <PCard.Title
               title={item.title}
               subtitle={`${item.total_pages ?? 0} sayfa · ${item.category ?? ""}`}
             />
-            <Card.Actions>
-              <Button
+            <PCard.Actions>
+              <PButton
                 mode="outlined"
                 disabled={isOffline}
                 onPress={() =>
@@ -52,9 +47,9 @@ const DiscoverEbooksContent = ({ isOffline }: { isOffline?: boolean }) => {
                 }
               >
                 İncele
-              </Button>
-            </Card.Actions>
-          </Card>
+              </PButton>
+            </PCard.Actions>
+          </PCard>
         ))}
       </SectionCard>
     </>
@@ -64,7 +59,7 @@ const DiscoverEbooksContent = ({ isOffline }: { isOffline?: boolean }) => {
 export const DiscoverEbooksScreen = ({
   route,
 }: {
-  route?: { params?: { state?: string } };
+  route?: { params?: { state?: ScreenState } };
 }) => {
   const state = resolveScreenState(route);
 

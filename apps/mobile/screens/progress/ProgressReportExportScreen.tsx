@@ -1,19 +1,13 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import {
-  ActivityIndicator,
-  Button,
-  Card,
-  Chip,
-  Divider,
-  Text,
-} from "react-native-paper";
+import { ActivityIndicator, Chip, Divider } from "react-native-paper";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
-import { resolveScreenState } from "../components/ScreenState";
+import { resolveScreenState, ScreenState } from "../components/ScreenState";
+import { PButton, PCard, PText } from "../../components";
 
 const formats = ["PDF", "CSV", "Paylaş"];
 
@@ -21,9 +15,9 @@ const ProgressReportExportContent = ({ isOffline }: { isOffline?: boolean }) => 
   return (
     <>
       <SectionCard title="Rapor Dışa Aktar">
-        <Text variant="bodyMedium" style={styles.paragraph}>
+        <PText variant="bodyMedium" style={styles.paragraph}>
           Haftalık ve aylık raporlarını dışa aktarabilir veya paylaşabilirsin.
-        </Text>
+        </PText>
         <View style={styles.chipRow}>
           {formats.map((label) => (
             <Chip key={label} style={styles.chip} disabled={isOffline}>
@@ -34,28 +28,28 @@ const ProgressReportExportContent = ({ isOffline }: { isOffline?: boolean }) => 
       </SectionCard>
 
       <SectionCard title="Özet">
-        <Card style={styles.card}>
-          <Card.Title title="Son 4 Hafta" subtitle="12 seans · 6 içerik" />
-          <Card.Content>
-            <Text variant="bodySmall">Rapor hazır, indirilebilir.</Text>
-          </Card.Content>
-          <Card.Actions>
-            <Button mode="contained" disabled={isOffline}>
+        <PCard style={styles.card}>
+          <PCard.Title title="Son 4 Hafta" subtitle="12 seans · 6 içerik" />
+          <PCard.Content>
+            <PText variant="bodySmall">Rapor hazır, indirilebilir.</PText>
+          </PCard.Content>
+          <PCard.Actions>
+            <PButton mode="contained" disabled={isOffline}>
               Raporu İndir
-            </Button>
-            <Button mode="outlined" disabled={isOffline}>
+            </PButton>
+            <PButton mode="outlined" disabled={isOffline}>
               Paylaş
-            </Button>
-          </Card.Actions>
-        </Card>
+            </PButton>
+          </PCard.Actions>
+        </PCard>
       </SectionCard>
 
       <Divider style={styles.divider} />
 
       <SectionCard title="Dışa Aktarma Notu">
-        <Text variant="bodySmall">
+        <PText variant="bodySmall">
           Raporlar kişisel veriler içerir. Paylaşmadan önce kontrol etmeni öneririz.
-        </Text>
+        </PText>
       </SectionCard>
     </>
   );
@@ -64,7 +58,7 @@ const ProgressReportExportContent = ({ isOffline }: { isOffline?: boolean }) => 
 export const ProgressReportExportScreen = ({
   route,
 }: {
-  route?: { params?: { state?: string } };
+  route?: { params?: { state?: ScreenState } };
 }) => {
   const state = resolveScreenState(route);
 

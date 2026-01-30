@@ -1,18 +1,13 @@
 import React from "react";
 import { StyleSheet } from "react-native";
-import {
-  ActivityIndicator,
-  Button,
-  Card,
-  Divider,
-  Text,
-} from "react-native-paper";
+import { ActivityIndicator, Divider } from "react-native-paper";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
+import { PButton, PCard, PText } from "../../components";
 
 const planBenefits = [
   "Sınırsız içerik erişimi",
@@ -24,40 +19,40 @@ const ContentPaywallContent = ({ isOffline }: { isOffline?: boolean }) => {
   return (
     <>
       <SectionCard title="Abonelik Gerekli">
-        <Text variant="bodyMedium" style={styles.paragraph}>
+        <PText variant="bodyMedium" style={styles.paragraph}>
           Bu içeriği görüntülemek için aktif bir abonelik gerekiyor. Sana uygun planı seçerek
           hemen devam edebilirsin.
-        </Text>
+        </PText>
       </SectionCard>
 
       <SectionCard title="Planlar">
-        <Card style={styles.card}>
-          <Card.Title title="Aylık Plan" subtitle="149 ₺ / ay" />
-          <Card.Content>
+        <PCard style={styles.card}>
+          <PCard.Title title="Aylık Plan" subtitle="149 ₺ / ay" />
+          <PCard.Content>
             {planBenefits.map((benefit) => (
-              <Text key={benefit} variant="bodySmall" style={styles.bullet}>
+              <PText key={benefit} variant="bodySmall" style={styles.bullet}>
                 • {benefit}
-              </Text>
+              </PText>
             ))}
-          </Card.Content>
-          <Card.Actions>
-            <Button mode="contained" disabled={isOffline}>
+          </PCard.Content>
+          <PCard.Actions>
+            <PButton mode="contained" disabled={isOffline}>
               Aboneliği Başlat
-            </Button>
-          </Card.Actions>
-        </Card>
+            </PButton>
+          </PCard.Actions>
+        </PCard>
         <Divider style={styles.divider} />
-        <Card style={styles.card}>
-          <Card.Title title="Yıllık Plan" subtitle="99 ₺ / ay" />
-          <Card.Content>
-            <Text variant="bodySmall">12 ay peşin ödeme ile daha avantajlı.</Text>
-          </Card.Content>
-          <Card.Actions>
-            <Button mode="outlined" disabled={isOffline}>
+        <PCard style={styles.card}>
+          <PCard.Title title="Yıllık Plan" subtitle="99 ₺ / ay" />
+          <PCard.Content>
+            <PText variant="bodySmall">12 ay peşin ödeme ile daha avantajlı.</PText>
+          </PCard.Content>
+          <PCard.Actions>
+            <PButton mode="outlined" disabled={isOffline}>
               Yıllık Planı Seç
-            </Button>
-          </Card.Actions>
-        </Card>
+            </PButton>
+          </PCard.Actions>
+        </PCard>
       </SectionCard>
     </>
   );

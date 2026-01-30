@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet } from "react-native";
-import { ActivityIndicator, Button, Card, Chip, Text } from "react-native-paper";
+import { ActivityIndicator, Chip } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
@@ -8,6 +8,7 @@ import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
+import { PButton, PCard, PText } from "../../components";
 import {
   getContentItemsForParent,
   getWorkshopById,
@@ -30,14 +31,14 @@ const ContentWorkshopHomeContent = ({
   return (
     <>
       <SectionCard title="Atölye Özeti" actionLabel="Paylaş">
-        <Text variant="titleMedium">{workshop?.title ?? "Atölye"}</Text>
-        <Text variant="bodySmall" style={styles.subtleText}>
+        <PText variant="titleMedium">{workshop?.title ?? "Atölye"}</PText>
+        <PText variant="bodySmall" style={styles.subtleText}>
           {workshop?.description ?? "Atölye içeriği ve uygulamalarına buradan erişebilirsin."}
-        </Text>
+        </PText>
         <Chip style={styles.chip} disabled={isOffline}>
           {sections.length} bölüm
         </Chip>
-        <Button
+        <PButton
           mode="contained"
           style={styles.primaryButton}
           disabled={isOffline || sections.length === 0}
@@ -51,15 +52,15 @@ const ContentWorkshopHomeContent = ({
           }}
         >
           Devam Et
-        </Button>
+        </PButton>
       </SectionCard>
 
       <SectionCard title="Bölümler" actionLabel="Sırala">
         {sections.map((section) => (
-          <Card key={section.id} style={styles.card}>
-            <Card.Title title={section.title} subtitle={section.content_type} />
-            <Card.Actions>
-              <Button
+          <PCard key={section.id} style={styles.card}>
+            <PCard.Title title={section.title} subtitle={section.content_type} />
+            <PCard.Actions>
+              <PButton
                 mode="outlined"
                 disabled={isOffline}
                 onPress={() =>
@@ -70,9 +71,9 @@ const ContentWorkshopHomeContent = ({
                 }
               >
                 Bölümü Aç
-              </Button>
-            </Card.Actions>
-          </Card>
+              </PButton>
+            </PCard.Actions>
+          </PCard>
         ))}
       </SectionCard>
     </>

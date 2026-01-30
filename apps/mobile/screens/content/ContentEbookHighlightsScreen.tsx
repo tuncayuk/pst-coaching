@@ -1,18 +1,13 @@
 import React from "react";
 import { StyleSheet } from "react-native";
-import {
-  ActivityIndicator,
-  Button,
-  Card,
-  Text,
-  useTheme,
-} from "react-native-paper";
+import { ActivityIndicator, useTheme } from "react-native-paper";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
+import { PButton, PCard, PText } from "../../components";
 
 const highlights = [
   {
@@ -32,29 +27,29 @@ const ContentEbookHighlightsContent = ({ isOffline }: { isOffline?: boolean }) =
     <>
       <SectionCard title="Vurgular">
         {highlights.map((item) => (
-          <Card key={item.quote} style={styles.card}>
-            <Card.Content>
-              <Text variant="bodyMedium" style={styles.quote}>
+          <PCard key={item.quote} style={styles.card}>
+            <PCard.Content>
+              <PText variant="bodyMedium" style={styles.quote}>
                 “{item.quote}”
-              </Text>
-              <Text
+              </PText>
+              <PText
                 variant="bodySmall"
                 style={[styles.note, { color: theme.colors.onSurfaceVariant }]}
               >
                 {item.note}
-              </Text>
-            </Card.Content>
-          </Card>
+              </PText>
+            </PCard.Content>
+          </PCard>
         ))}
       </SectionCard>
 
       <SectionCard title="Notlarım" actionLabel="Düzenle">
-        <Text variant="bodySmall">
+        <PText variant="bodySmall">
           Notlarını farklı cihazlarda görebilmek için senkronizasyonu açık tut.
-        </Text>
-        <Button mode="contained" style={styles.primaryButton} disabled={isOffline}>
+        </PText>
+        <PButton mode="contained" style={styles.primaryButton} disabled={isOffline}>
           Yeni Not Ekle
-        </Button>
+        </PButton>
       </SectionCard>
     </>
   );

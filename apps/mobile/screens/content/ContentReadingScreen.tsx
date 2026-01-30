@@ -1,12 +1,13 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import { ActivityIndicator, Button, Card, Text } from "react-native-paper";
+import { ActivityIndicator } from "react-native-paper";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
+import { PButton, PCard, PText } from "../../components";
 import {
   getContentItems,
   getHighlightsForUser,
@@ -25,33 +26,33 @@ const ContentReadingContent = ({ contentId, isOffline }: { contentId?: string; i
   return (
     <>
       <SectionCard title="Okuma">
-        <Text variant="titleMedium">{contentItem?.title ?? "Okuma İçeriği"}</Text>
-        <Text variant="bodyMedium" style={styles.paragraph}>
+        <PText variant="titleMedium">{contentItem?.title ?? "Okuma İçeriği"}</PText>
+        <PText variant="bodyMedium" style={styles.paragraph}>
           {contentItem?.body ??
             "Bu bölümde gündelik pratiklere dair okuma içeriği sunulur. Metni tamamladıktan sonra ilerleme kaydedilir."}
-        </Text>
-        <Button mode="contained" disabled={isOffline}>
+        </PText>
+        <PButton mode="contained" disabled={isOffline}>
           Okumayı Tamamla
-        </Button>
+        </PButton>
       </SectionCard>
 
       <SectionCard title="Vurgularım">
         {highlights.map((highlight) => (
-          <Card key={highlight.id} style={styles.card}>
-            <Card.Title title={highlight.quote} subtitle={`Renk: ${highlight.color}`} />
-          </Card>
+          <PCard key={highlight.id} style={styles.card}>
+            <PCard.Title title={highlight.quote} subtitle={`Renk: ${highlight.color}`} />
+          </PCard>
         ))}
       </SectionCard>
 
       <SectionCard title="Notlarım">
         {notes.map((note) => (
-          <Card key={note.id} style={styles.card}>
-            <Card.Title title={note.text} subtitle="Düzenle" />
-          </Card>
+          <PCard key={note.id} style={styles.card}>
+            <PCard.Title title={note.text} subtitle="Düzenle" />
+          </PCard>
         ))}
-        <Button mode="outlined" disabled={isOffline}>
+        <PButton mode="outlined" disabled={isOffline}>
           Not Ekle
-        </Button>
+        </PButton>
       </SectionCard>
     </>
   );
