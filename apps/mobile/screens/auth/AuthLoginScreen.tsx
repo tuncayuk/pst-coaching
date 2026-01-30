@@ -30,7 +30,7 @@ const LoginContent = ({ isOffline }: { isOffline?: boolean }) => {
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <View style={styles.header}>
           <View style={styles.logoContainer}>
-            <Image source={require("../../assets/logo/pst_logo_256w.png")} style={styles.logoImage} />
+            <Image source={require("../../assets/logo/pst_logo_128w.png")} style={styles.logoImage} />
           </View>
           <Text style={styles.title}>Hoş Geldiniz</Text>
           <Text style={styles.subtitle}>Hesabınıza giriş yapın</Text>

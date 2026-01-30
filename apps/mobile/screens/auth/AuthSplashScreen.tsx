@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { StyleSheet, View, Animated } from "react-native";
+import { StyleSheet, View, Animated, Image } from "react-native";
 import { Text } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 
@@ -56,10 +56,8 @@ export const AuthSplashScreen = () => {
   return (
     <View style={styles.container}>
       <View style={styles.content}>
-        {/* Logo - using text for now, can be replaced with Image component */}
         <View style={styles.logoContainer}>
-          <Text style={styles.logoText}>PST</Text>
-          <Text style={styles.logoSubtext}>Coaching</Text>
+          <Image source={require("../../assets/logo/pst_logo_384w.png")} style={styles.logoImage} />
         </View>
         <Text style={styles.tagline}>Profesyonel Coaching Yolculuğunuz</Text>
         <View style={styles.loadingContainer}>
@@ -89,17 +87,10 @@ const styles = StyleSheet.create({
     marginBottom: 32,
     alignItems: "center",
   },
-  logoText: {
-    fontSize: 64,
-    fontWeight: "800",
-    letterSpacing: 2,
-    color: "#FFFFFF",
-  },
-  logoSubtext: {
-    fontSize: 24,
-    fontWeight: "600",
-    marginTop: 8,
-    color: "rgba(255,255,255,0.95)",
+  logoImage: {
+    width: 128,
+    height: 75,
+    resizeMode: "contain",
   },
   tagline: {
     fontSize: 18,
