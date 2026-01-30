@@ -193,12 +193,15 @@ const styles = StyleSheet.create({
     elevation: 0,
   },
   filterButtonContent: {
-    height: 32,
+    height: 36,
     paddingHorizontal: 12,
+    alignItems: "center",
+    justifyContent: "center",
   },
   filterButtonLabel: {
     fontSize: 13,
     fontWeight: "600",
+    lineHeight: 16,
   },
   sortRow: {
     gap: 8,
