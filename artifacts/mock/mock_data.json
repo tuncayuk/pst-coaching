@@ -335,6 +335,66 @@
       "title": "Duygusal Dayaniklilik Atolyesi",
       "description": "Canli uygulamalar ve okuma.",
       "language": "tr"
+    },
+    {
+      "id": "eeeeeeee-0000-0000-0000-000000000001",
+      "title": "Sukrun Gucu Atolyesi",
+      "description": "Sukur pratikleri ve paylasimlar.",
+      "language": "tr"
+    },
+    {
+      "id": "eeeeeeee-0000-0000-0000-000000000002",
+      "title": "Empati ve Iletisim Atolyesi",
+      "description": "Iliskilerde empati kurma becerileri.",
+      "language": "tr"
+    },
+    {
+      "id": "eeeeeeee-0000-0000-0000-000000000003",
+      "title": "Stresle Bas Etme Atolyesi",
+      "description": "Zihinsel yukun azaltilmasi.",
+      "language": "tr"
+    },
+    {
+      "id": "eeeeeeee-0000-0000-0000-000000000004",
+      "title": "Mindfulness Nefes Atolyesi",
+      "description": "Nefesle sakinlesme uygulamalari.",
+      "language": "tr"
+    },
+    {
+      "id": "eeeeeeee-0000-0000-0000-000000000005",
+      "title": "Odak ve Dikkat Atolyesi",
+      "description": "Odaklanma ve dikkat guclendirme.",
+      "language": "tr"
+    },
+    {
+      "id": "eeeeeeee-0000-0000-0000-000000000006",
+      "title": "Oz Sefkat Atolyesi",
+      "description": "Kendine iyi davranma pratikleri.",
+      "language": "tr"
+    },
+    {
+      "id": "eeeeeeee-0000-0000-0000-000000000007",
+      "title": "Sinir Koyma Atolyesi",
+      "description": "Saglikli sinirlar belirleme.",
+      "language": "tr"
+    },
+    {
+      "id": "eeeeeeee-0000-0000-0000-000000000008",
+      "title": "Motivasyon ve Hedef Atolyesi",
+      "description": "Hedef netlestirme ve ilerleme.",
+      "language": "tr"
+    },
+    {
+      "id": "eeeeeeee-0000-0000-0000-000000000009",
+      "title": "Rutin ve Aliskanlik Atolyesi",
+      "description": "Gunluk rutin olusturma adimlari.",
+      "language": "tr"
+    },
+    {
+      "id": "eeeeeeee-0000-0000-0000-000000000010",
+      "title": "Duygusal Denge Atolyesi",
+      "description": "Duygulari dengeleme teknikleri.",
+      "language": "tr"
     }
   ],
   "ebooks": [
