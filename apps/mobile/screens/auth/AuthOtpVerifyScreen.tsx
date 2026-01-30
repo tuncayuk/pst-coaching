@@ -1,13 +1,13 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, TouchableOpacity, ScrollView } from "react-native";
 import {
   ActivityIndicator,
   Button,
-  Chip,
   Text,
   TextInput,
 } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
@@ -62,15 +62,21 @@ const OtpVerifyContent = ({
   const isCodeComplete = codes.every((code) => code.length === 1);
 
   return (
-    <>
-      <View style={styles.iconContainer}>
-        <Text style={styles.icon}>📱</Text>
-      </View>
-      <SectionCard title="">
-        <Text variant="headlineMedium" style={styles.title}>
-          Doğrulama Kodu
-        </Text>
-        <Text variant="bodyMedium" style={styles.description}>
+    <SafeAreaView style={styles.container}>
+      <ScrollView contentContainerStyle={styles.scrollContent}>
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={styles.backButton}
+          disabled={isOffline}
+        >
+          <Text style={styles.backButtonText}>←</Text>
+        </TouchableOpacity>
+
+        <View style={styles.iconContainer}>
+          <Text style={styles.icon}>📱</Text>
+        </View>
+        <Text style={styles.title}>Doğrulama Kodu</Text>
+        <Text style={styles.description}>
           <Text style={styles.emailText}>ahmet@*****.com</Text> adresine gönderilen 6 haneli kodu girin.
         </Text>
         <View style={styles.codeContainer}>
@@ -85,6 +91,7 @@ const OtpVerifyContent = ({
               maxLength={1}
               mode="outlined"
               style={styles.codeInput}
+              outlineStyle={styles.codeInputOutline}
               editable={!isOffline}
               textAlign="center"
               selectTextOnFocus
@@ -95,29 +102,26 @@ const OtpVerifyContent = ({
           mode="contained"
           disabled={isOffline || !isCodeComplete}
           onPress={() => {
-            // After verification, route based on source
             if (source === "register") {
-              // From Register: go to FaceID Setup (user is now authenticated)
               navigation.navigate("AuthFaceIdSetup");
             } else {
-              // From Forgot Password: go to Reset Password
               navigation.navigate("AuthPasswordReset");
             }
           }}
           style={styles.button}
+          contentStyle={styles.primaryButtonContent}
+          labelStyle={styles.primaryButtonLabel}
         >
           Doğrula
         </Button>
         <View style={styles.resendContainer}>
-          <Text variant="bodySmall" style={styles.resendText}>
-            Kod gelmedi mi?
-          </Text>
+          <Text style={styles.resendText}>Kod gelmedi mi?</Text>
           <Button mode="text" disabled={isOffline} style={styles.resendButton}>
             Tekrar Gönder (45s)
           </Button>
         </View>
-      </SectionCard>
-    </>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
@@ -170,21 +174,37 @@ export const AuthOtpVerifyScreen = ({
 
   if (state === "offline") {
     return (
-      <ScreenLayout title="OTP Doğrulama" subtitle="Önbellekteki bilgiler">
+      <>
         <OfflineNotice />
         <OtpVerifyContent isOffline source={source} />
-      </ScreenLayout>
+      </>
     );
   }
 
-  return (
-    <ScreenLayout title="OTP Doğrulama" subtitle="Doğrulama kodunu gir">
-      <OtpVerifyContent isOffline={false} source={source} />
-    </ScreenLayout>
-  );
+  return <OtpVerifyContent isOffline={false} source={source} />;
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#FAFAFA",
+  },
+  scrollContent: {
+    paddingHorizontal: 24,
+    paddingTop: 16,
+    paddingBottom: 32,
+  },
+  backButton: {
+    width: 40,
+    height: 40,
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 16,
+  },
+  backButtonText: {
+    fontSize: 24,
+    color: "#171717",
+  },
   iconContainer: {
     alignItems: "center",
     marginBottom: 16,
@@ -193,12 +213,14 @@ const styles = StyleSheet.create({
     fontSize: 64,
   },
   title: {
+    fontSize: 32,
     fontWeight: "800",
     color: "#2B1B5D",
     marginBottom: 8,
     textAlign: "center",
   },
   description: {
+    fontSize: 15,
     color: "#525252",
     marginBottom: 32,
     textAlign: "center",
@@ -219,9 +241,22 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "700",
     fontFamily: "monospace",
+    backgroundColor: "#FFFFFF",
+  },
+  codeInputOutline: {
+    borderWidth: 2,
+    borderRadius: 12,
+    borderColor: "#D4D4D4",
   },
   button: {
     marginBottom: 16,
+  },
+  primaryButtonContent: {
+    paddingVertical: 16,
+  },
+  primaryButtonLabel: {
+    fontSize: 18,
+    fontWeight: "600",
   },
   resendContainer: {
     alignItems: "center",

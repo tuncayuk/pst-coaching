@@ -1,9 +1,8 @@
 import React from "react";
-import { StyleSheet, View, TouchableOpacity, ScrollView } from "react-native";
+import { StyleSheet, View, TouchableOpacity, ScrollView, Image } from "react-native";
 import {
   ActivityIndicator,
   Button,
-  Checkbox,
   Text,
   TextInput,
   IconButton,
@@ -30,9 +29,8 @@ const LoginContent = ({ isOffline }: { isOffline?: boolean }) => {
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <View style={styles.header}>
-          {/* Logo - using text for now, can be replaced with Image component */}
           <View style={styles.logoContainer}>
-            <Text style={styles.logoText}>PST Coaching</Text>
+            <Image source={require("../../assets/logo/pst_logo_256w.png")} style={styles.logoImage} />
           </View>
           <Text style={styles.title}>Hoş Geldiniz</Text>
           <Text style={styles.subtitle}>Hesabınıza giriş yapın</Text>
@@ -47,6 +45,8 @@ const LoginContent = ({ isOffline }: { isOffline?: boolean }) => {
               value={email}
               onChangeText={setEmail}
               style={styles.input}
+              contentStyle={styles.inputContent}
+              outlineStyle={styles.inputOutline}
               editable={!isOffline}
               placeholder="ornek@email.com"
             />
@@ -61,6 +61,8 @@ const LoginContent = ({ isOffline }: { isOffline?: boolean }) => {
                 value={password}
                 onChangeText={setPassword}
                 style={[styles.input, styles.passwordInput]}
+                contentStyle={styles.inputContent}
+                outlineStyle={styles.inputOutline}
                 editable={!isOffline}
                 placeholder="••••••••"
               />
@@ -69,21 +71,23 @@ const LoginContent = ({ isOffline }: { isOffline?: boolean }) => {
                 size={20}
                 onPress={() => setShowPassword(!showPassword)}
                 style={styles.eyeIcon}
+                containerColor="transparent"
+                iconColor="#404040"
               />
             </View>
           </View>
 
           <View style={styles.rememberRow}>
-            <View style={styles.checkboxContainer}>
-              <Checkbox.Item
-                label="Beni Hatırla"
-                status={rememberMe ? "checked" : "unchecked"}
-                onPress={() => setRememberMe((prev) => !prev)}
-                disabled={isOffline}
-                position="leading"
-                style={styles.checkbox}
-              />
-            </View>
+            <TouchableOpacity
+              style={styles.rememberCheckbox}
+              onPress={() => setRememberMe((prev) => !prev)}
+              disabled={isOffline}
+            >
+              <View style={[styles.checkboxBox, rememberMe && styles.checkboxBoxChecked]}>
+                {rememberMe ? <Text style={styles.checkboxCheck}>✓</Text> : null}
+              </View>
+              <Text style={styles.checkboxLabel}>Beni Hatırla</Text>
+            </TouchableOpacity>
             <TouchableOpacity
               onPress={() => navigation.navigate("AuthForgotPassword")}
               disabled={isOffline}
@@ -95,6 +99,8 @@ const LoginContent = ({ isOffline }: { isOffline?: boolean }) => {
           <Button
             mode="contained"
             disabled={isOffline || !isFormValid}
+            buttonColor="#00B4D8"
+            textColor="#FFFFFF"
             onPress={() => {
               // After successful login, check if FaceID setup is needed
               // TODO: Check if user has completed FaceID setup
@@ -102,6 +108,7 @@ const LoginContent = ({ isOffline }: { isOffline?: boolean }) => {
             }}
             style={styles.loginButton}
             contentStyle={styles.loginButtonContent}
+            labelStyle={styles.loginButtonLabel}
           >
             Giriş Yap
           </Button>
@@ -119,6 +126,7 @@ const LoginContent = ({ isOffline }: { isOffline?: boolean }) => {
               disabled={isOffline}
               onPress={() => {}}
               contentStyle={styles.socialButtonContent}
+              labelStyle={styles.socialButtonLabel}
             >
               <Text style={styles.socialIcon}>🔵</Text>
               <Text style={styles.socialText}>Google</Text>
@@ -129,6 +137,7 @@ const LoginContent = ({ isOffline }: { isOffline?: boolean }) => {
               disabled={isOffline}
               onPress={() => {}}
               contentStyle={styles.socialButtonContent}
+              labelStyle={styles.socialButtonLabel}
             >
               <Text style={styles.socialIcon}>🍎</Text>
               <Text style={styles.socialText}>Apple</Text>
@@ -232,10 +241,10 @@ const styles = StyleSheet.create({
     marginBottom: 24,
     alignItems: "center",
   },
-  logoText: {
-    fontSize: 28,
-    fontWeight: "800",
-    color: "#2B1B5D",
+  logoImage: {
+    width: 200,
+    height: 60,
+    resizeMode: "contain",
   },
   title: {
     fontSize: 28,
@@ -264,6 +273,14 @@ const styles = StyleSheet.create({
   input: {
     backgroundColor: "#FFFFFF",
   },
+  inputContent: {
+    paddingVertical: 16,
+  },
+  inputOutline: {
+    borderWidth: 2,
+    borderRadius: 12,
+    borderColor: "#E5E5E5",
+  },
   passwordContainer: {
     position: "relative",
   },
@@ -282,12 +299,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 24,
   },
-  checkboxContainer: {
-    flex: 1,
+  rememberCheckbox: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
   },
-  checkbox: {
-    paddingHorizontal: 0,
-    margin: 0,
+  checkboxLabel: {
+    fontSize: 14,
+    color: "#404040",
   },
   forgotLink: {
     color: "#00B4D8",
@@ -296,9 +315,36 @@ const styles = StyleSheet.create({
   },
   loginButton: {
     marginBottom: 24,
+    borderRadius: 12,
   },
   loginButtonContent: {
-    paddingVertical: 12,
+    height: 56,
+    justifyContent: "center",
+  },
+  loginButtonLabel: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: "#FFFFFF",
+  },
+  checkboxBox: {
+    width: 18,
+    height: 18,
+    borderRadius: 4,
+    borderWidth: 2,
+    borderColor: "#E5E5E5",
+    backgroundColor: "#FFFFFF",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  checkboxBoxChecked: {
+    borderColor: "#00B4D8",
+    backgroundColor: "#00B4D8",
+  },
+  checkboxCheck: {
+    color: "#FFFFFF",
+    fontSize: 12,
+    fontWeight: "700",
+    lineHeight: 12,
   },
   divider: {
     flexDirection: "row",
@@ -324,12 +370,17 @@ const styles = StyleSheet.create({
   },
   socialButton: {
     flex: 1,
+    borderWidth: 2,
+    borderColor: "#E5E5E5",
   },
   socialButtonContent: {
     flexDirection: "row",
     alignItems: "center",
     gap: 8,
     paddingVertical: 12,
+  },
+  socialButtonLabel: {
+    fontSize: 16,
   },
   socialIcon: {
     fontSize: 20,

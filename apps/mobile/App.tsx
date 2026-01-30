@@ -38,11 +38,15 @@ const theme = {
   ...DefaultTheme,
   colors: {
     ...DefaultTheme.colors,
-    primary: "#0E6B5B",
-    secondary: "#5D5F7C",
-    tertiary: "#D17D2F",
-    background: "#F6F4F0",
+    primary: "#00B4D8",
+    secondary: "#2B1B5D",
+    tertiary: "#10B981",
+    background: "#FAFAFA",
     surface: "#FFFFFF",
+    surfaceVariant: "#FAFAFA",
+    outline: "#D4D4D4",
+    outlineVariant: "#E5E5E5",
+    onSurfaceVariant: "#525252",
   },
 };
 

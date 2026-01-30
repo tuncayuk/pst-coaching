@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View, TouchableOpacity } from "react-native";
+import { StyleSheet, View, TouchableOpacity, ScrollView } from "react-native";
 import {
   ActivityIndicator,
   Button,
@@ -9,6 +9,7 @@ import {
   IconButton,
 } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
@@ -41,146 +42,182 @@ const RegisterContent = ({ isOffline }: { isOffline?: boolean }) => {
                       password.length >= 8 && passwordsMatch && accepted;
 
   return (
-    <>
-      <SectionCard title="">
-        <Text variant="headlineMedium" style={styles.title}>
-          Hesap Oluştur
-        </Text>
-        <Text variant="bodyMedium" style={styles.subtitle}>
-          Coaching yolculuğunuza başlayın
-        </Text>
-        <TextInput
-          label="Ad Soyad"
-          mode="outlined"
-          value={fullName}
-          onChangeText={setFullName}
-          style={styles.input}
-          editable={!isOffline}
-          placeholder="Ahmet Yılmaz"
-        />
-        <TextInput
-          label="E-posta"
-          mode="outlined"
-          autoCapitalize="none"
-          keyboardType="email-address"
-          value={email}
-          onChangeText={setEmail}
-          style={styles.input}
-          editable={!isOffline}
-          placeholder="ornek@email.com"
-        />
-        <View style={styles.phoneRow}>
-          <View style={styles.countryCode}>
-            <Text>🇹🇷 +90</Text>
-          </View>
+    <SafeAreaView style={styles.container}>
+      <ScrollView contentContainerStyle={styles.scrollContent}>
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={styles.backButton}
+          disabled={isOffline}
+        >
+          <Text style={styles.backButtonText}>←</Text>
+        </TouchableOpacity>
+
+        <View style={styles.header}>
+          <Text style={styles.title}>Hesap Oluştur</Text>
+          <Text style={styles.subtitle}>Coaching yolculuğunuza başlayın</Text>
+        </View>
+
+        <View style={styles.inputGroup}>
+          <Text style={styles.label}>Ad Soyad</Text>
           <TextInput
-            label="Telefon"
             mode="outlined"
-            keyboardType="phone-pad"
-            value={phone}
-            onChangeText={setPhone}
-            style={[styles.input, styles.phoneInput]}
+            value={fullName}
+            onChangeText={setFullName}
+            style={styles.input}
+            contentStyle={styles.inputContent}
+            outlineStyle={styles.inputOutline}
             editable={!isOffline}
-            placeholder="5XX XXX XX XX"
+            placeholder="Ahmet Yılmaz"
           />
         </View>
-        <View style={styles.passwordContainer}>
+
+        <View style={styles.inputGroup}>
+          <Text style={styles.label}>E-posta</Text>
           <TextInput
-            label="Şifre"
             mode="outlined"
-            secureTextEntry={!showPassword}
-            value={password}
-            onChangeText={setPassword}
-            style={[styles.input, styles.passwordInput]}
+            autoCapitalize="none"
+            keyboardType="email-address"
+            value={email}
+            onChangeText={setEmail}
+            style={styles.input}
+            contentStyle={styles.inputContent}
+            outlineStyle={styles.inputOutline}
             editable={!isOffline}
-            placeholder="Min. 8 karakter"
-          />
-          <IconButton
-            icon={showPassword ? "eye-off" : "eye"}
-            size={20}
-            onPress={() => setShowPassword(!showPassword)}
-            style={styles.eyeIcon}
+            placeholder="ornek@email.com"
           />
         </View>
-        {password.length > 0 && (
-          <View style={styles.strengthContainer}>
-            <View style={styles.strengthBars}>
-              {[1, 2, 3, 4].map((i) => (
-                <View
-                  key={i}
-                  style={[
-                    styles.strengthBar,
-                    i <= passwordStrength.strength && { backgroundColor: passwordStrength.color },
-                  ]}
-                />
-              ))}
+
+        <View style={styles.inputGroup}>
+          <Text style={styles.label}>Telefon</Text>
+          <View style={styles.phoneRow}>
+            <View style={styles.countryCode}>
+              <Text style={styles.countryCodeText}>🇹🇷 +90</Text>
+              <Text style={styles.countryCodeChevron}>▾</Text>
             </View>
-            {passwordStrength.label && (
-              <Text style={[styles.strengthLabel, { color: passwordStrength.color }]}>
-                {passwordStrength.label}
-              </Text>
-            )}
+            <TextInput
+              mode="outlined"
+              keyboardType="phone-pad"
+              value={phone}
+              onChangeText={setPhone}
+              style={[styles.input, styles.phoneInput]}
+              contentStyle={styles.inputContent}
+              outlineStyle={styles.inputOutline}
+              editable={!isOffline}
+              placeholder="5XX XXX XX XX"
+            />
           </View>
-        )}
-        <View style={styles.passwordContainer}>
-          <TextInput
-            label="Şifre Tekrar"
-            mode="outlined"
-            secureTextEntry={!showConfirmPassword}
-            value={confirmPassword}
-            onChangeText={setConfirmPassword}
-            style={[styles.input, styles.passwordInput]}
-            editable={!isOffline}
-            placeholder="Şifrenizi tekrar girin"
-          />
-          <IconButton
-            icon={showConfirmPassword ? "eye-off" : "eye"}
-            size={20}
-            onPress={() => setShowConfirmPassword(!showConfirmPassword)}
-            style={styles.eyeIcon}
-          />
         </View>
-        {confirmPassword.length > 0 && !passwordsMatch && (
-          <Text style={styles.errorText}>Şifreler eşleşmiyor</Text>
-        )}
-        <View style={styles.checkboxContainer}>
-          <Checkbox.Item
-            label="Kullanım Koşullarını ve Gizlilik Politikasını okudum, kabul ediyorum"
-            status={accepted ? "checked" : "unchecked"}
-            onPress={() => setAccepted((prev) => !prev)}
-            disabled={isOffline}
-            position="leading"
-            style={styles.checkbox}
-          />
-          <TouchableOpacity onPress={() => {}} style={styles.termsLink}>
-            <Text style={styles.linkText}>Kullanım Koşulları</Text>
-          </TouchableOpacity>
-          <Text style={styles.linkText}> ve </Text>
-          <TouchableOpacity onPress={() => {}} style={styles.termsLink}>
-            <Text style={styles.linkText}>Gizlilik Politikası</Text>
-          </TouchableOpacity>
+
+        <View style={styles.inputGroup}>
+          <Text style={styles.label}>Şifre</Text>
+          <View style={styles.passwordContainer}>
+            <TextInput
+              mode="outlined"
+              secureTextEntry={!showPassword}
+              value={password}
+              onChangeText={setPassword}
+              style={[styles.input, styles.passwordInput]}
+              contentStyle={styles.inputContent}
+              outlineStyle={styles.inputOutline}
+              editable={!isOffline}
+              placeholder="Min. 8 karakter"
+            />
+            <IconButton
+              icon={showPassword ? "eye-off" : "eye"}
+              size={20}
+              onPress={() => setShowPassword(!showPassword)}
+              style={styles.eyeIcon}
+            />
+          </View>
+          {password.length > 0 && (
+            <View style={styles.strengthContainer}>
+              <View style={styles.strengthBars}>
+                {[1, 2, 3, 4].map((i) => (
+                  <View
+                    key={i}
+                    style={[
+                      styles.strengthBar,
+                      i <= passwordStrength.strength && { backgroundColor: passwordStrength.color },
+                    ]}
+                  />
+                ))}
+              </View>
+              {passwordStrength.label && (
+                <Text style={[styles.strengthLabel, { color: passwordStrength.color }]}>
+                  {passwordStrength.label}
+                </Text>
+              )}
+            </View>
+          )}
         </View>
+
+        <View style={styles.inputGroup}>
+          <Text style={styles.label}>Şifre Tekrar</Text>
+          <View style={styles.passwordContainer}>
+            <TextInput
+              mode="outlined"
+              secureTextEntry={!showConfirmPassword}
+              value={confirmPassword}
+              onChangeText={setConfirmPassword}
+              style={[styles.input, styles.passwordInput]}
+              contentStyle={styles.inputContent}
+              outlineStyle={styles.inputOutline}
+              editable={!isOffline}
+              placeholder="Şifrenizi tekrar girin"
+            />
+            <IconButton
+              icon={showConfirmPassword ? "eye-off" : "eye"}
+              size={20}
+              onPress={() => setShowConfirmPassword(!showConfirmPassword)}
+              style={styles.eyeIcon}
+            />
+          </View>
+          {confirmPassword.length > 0 && !passwordsMatch && (
+            <Text style={styles.errorText}>Şifreler eşleşmiyor</Text>
+          )}
+        </View>
+
+        <TouchableOpacity
+          style={styles.checkboxRow}
+          onPress={() => setAccepted((prev) => !prev)}
+          disabled={isOffline}
+        >
+          <View style={[styles.checkboxBox, accepted && styles.checkboxBoxChecked]}>
+            {accepted ? <Text style={styles.checkboxCheck}>✓</Text> : null}
+          </View>
+          <Text style={styles.checkboxText}>
+            <Text style={styles.linkText} onPress={() => {}}>
+              Kullanım Koşullarını
+            </Text>
+            <Text> ve </Text>
+            <Text style={styles.linkText} onPress={() => {}}>
+              Gizlilik Politikasını
+            </Text>
+            <Text> okudum, kabul ediyorum</Text>
+          </Text>
+        </TouchableOpacity>
+
         <Button
           mode="contained"
           disabled={isOffline || !isFormValid}
+          buttonColor="#00B4D8"
+          textColor="#FFFFFF"
           onPress={() => navigation.navigate("AuthOtpVerify", { source: "register" })}
           style={styles.button}
+          contentStyle={styles.primaryButtonContent}
+          labelStyle={styles.primaryButtonLabel}
         >
           Kaydol
         </Button>
+
         <View style={styles.signupRow}>
-          <Text variant="bodyMedium" style={styles.signupText}>
-            Zaten hesabınız var mı?{" "}
-          </Text>
-          <TouchableOpacity
-            onPress={() => navigation.navigate("AuthLogin")}
-            disabled={isOffline}
-          >
+          <Text style={styles.signupText}>Zaten hesabınız var mı? </Text>
+          <TouchableOpacity onPress={() => navigation.navigate("AuthLogin")} disabled={isOffline}>
             <Text style={styles.signupLink}>Giriş Yap</Text>
           </TouchableOpacity>
         </View>
-      </SectionCard>
-    </>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
@@ -228,55 +265,104 @@ export const AuthRegisterScreen = ({ route }: { route?: { params?: { state?: Scr
 
   if (state === "offline") {
     return (
-      <ScreenLayout title="Kayıt Ol" subtitle="Önbellekteki kayıt bilgileri">
+      <>
         <OfflineNotice />
         <RegisterContent isOffline />
-      </ScreenLayout>
+      </>
     );
   }
 
-  return (
-    <ScreenLayout title="Kayıt Ol" subtitle="Yeni hesap oluştur">
-      <RegisterContent />
-    </ScreenLayout>
-  );
+  return <RegisterContent />;
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#FAFAFA",
+  },
+  scrollContent: {
+    paddingHorizontal: 24,
+    paddingTop: 24,
+    paddingBottom: 32,
+  },
+  backButton: {
+    width: 40,
+    height: 40,
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 8,
+  },
+  backButtonText: {
+    fontSize: 24,
+    color: "#171717",
+  },
+  header: {
+    alignItems: "center",
+    marginBottom: 24,
+  },
   title: {
+    fontSize: 32,
     fontWeight: "800",
     color: "#2B1B5D",
     marginBottom: 8,
     textAlign: "center",
   },
   subtitle: {
+    fontSize: 15,
     color: "#525252",
     marginBottom: 24,
     textAlign: "center",
   },
-  input: {
+  inputGroup: {
     marginBottom: 16,
+  },
+  label: {
+    fontSize: 14,
+    fontWeight: "600",
+    color: "#404040",
+    marginBottom: 8,
+  },
+  input: {
+    backgroundColor: "#FFFFFF",
+  },
+  inputContent: {
+    paddingVertical: 14,
+  },
+  inputOutline: {
+    borderWidth: 2,
+    borderRadius: 12,
+    borderColor: "#E5E5E5",
   },
   phoneRow: {
     flexDirection: "row",
     gap: 8,
-    marginBottom: 16,
   },
   countryCode: {
     width: 100,
     justifyContent: "center",
     alignItems: "center",
+    flexDirection: "row",
+    gap: 4,
     borderWidth: 2,
     borderColor: "#E5E5E5",
     borderRadius: 12,
-    padding: 16,
+    paddingVertical: 14,
+    paddingHorizontal: 12,
+    backgroundColor: "#FFFFFF",
+  },
+  countryCodeText: {
+    fontSize: 14,
+    color: "#404040",
+  },
+  countryCodeChevron: {
+    fontSize: 12,
+    color: "#525252",
   },
   phoneInput: {
     flex: 1,
   },
   passwordContainer: {
     position: "relative",
-    marginBottom: 8,
   },
   passwordInput: {
     paddingRight: 48,
@@ -287,7 +373,7 @@ const styles = StyleSheet.create({
     top: 8,
   },
   strengthContainer: {
-    marginBottom: 16,
+    marginTop: 8,
   },
   strengthBars: {
     flexDirection: "row",
@@ -307,29 +393,57 @@ const styles = StyleSheet.create({
   errorText: {
     color: "#EF4444",
     fontSize: 12,
-    marginBottom: 8,
+    marginTop: 8,
   },
-  checkboxContainer: {
+  checkboxRow: {
     flexDirection: "row",
-    flexWrap: "wrap",
-    alignItems: "center",
+    alignItems: "flex-start",
+    gap: 8,
     marginBottom: 16,
   },
-  checkbox: {
-    paddingHorizontal: 0,
-    margin: 0,
+  checkboxText: {
     flex: 1,
-    minWidth: "100%",
-  },
-  termsLink: {
-    marginLeft: 4,
+    fontSize: 13,
+    color: "#404040",
+    lineHeight: 18,
   },
   linkText: {
     color: "#00B4D8",
     fontSize: 13,
   },
+  checkboxBox: {
+    width: 18,
+    height: 18,
+    borderRadius: 4,
+    borderWidth: 2,
+    borderColor: "#E5E5E5",
+    backgroundColor: "#FFFFFF",
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 2,
+  },
+  checkboxBoxChecked: {
+    borderColor: "#00B4D8",
+    backgroundColor: "#00B4D8",
+  },
+  checkboxCheck: {
+    color: "#FFFFFF",
+    fontSize: 12,
+    fontWeight: "700",
+    lineHeight: 12,
+  },
   button: {
     marginBottom: 16,
+    borderRadius: 12,
+  },
+  primaryButtonContent: {
+    height: 56,
+    justifyContent: "center",
+  },
+  primaryButtonLabel: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: "#FFFFFF",
   },
   signupRow: {
     flexDirection: "row",
@@ -339,9 +453,11 @@ const styles = StyleSheet.create({
   },
   signupText: {
     color: "#525252",
+    fontSize: 15,
   },
   signupLink: {
     color: "#00B4D8",
     fontWeight: "600",
+    fontSize: 15,
   },
 });

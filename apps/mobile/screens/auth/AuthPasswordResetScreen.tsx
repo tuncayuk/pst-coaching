@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, TouchableOpacity, ScrollView } from "react-native";
 import {
   ActivityIndicator,
   Button,
@@ -8,6 +8,7 @@ import {
   IconButton,
 } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
@@ -34,95 +35,110 @@ const PasswordResetContent = ({ isOffline }: { isOffline?: boolean }) => {
   const isFormValid = newPassword.length >= 8 && passwordsMatch;
 
   return (
-    <>
-      <View style={styles.iconContainer}>
-        <Text style={styles.icon}>🔒</Text>
-      </View>
-      <SectionCard title="">
-        <Text variant="headlineMedium" style={styles.title}>
-          Yeni Şifre Oluştur
-        </Text>
-        <Text variant="bodyMedium" style={styles.description}>
-          Yeni şifreniz en az 8 karakter olmalıdır.
-        </Text>
-        <View style={styles.passwordContainer}>
-          <TextInput
-            label="Yeni Şifre"
-            mode="outlined"
-            secureTextEntry={!showPassword}
-            value={newPassword}
-            onChangeText={setNewPassword}
-            style={[styles.input, styles.passwordInput]}
-            editable={!isOffline}
-            placeholder="••••••••"
-          />
-          <IconButton
-            icon={showPassword ? "eye-off" : "eye"}
-            size={20}
-            onPress={() => setShowPassword(!showPassword)}
-            style={styles.eyeIcon}
-          />
+    <SafeAreaView style={styles.container}>
+      <ScrollView contentContainerStyle={styles.scrollContent}>
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={styles.backButton}
+          disabled={isOffline}
+        >
+          <Text style={styles.backButtonText}>←</Text>
+        </TouchableOpacity>
+
+        <View style={styles.iconContainer}>
+          <Text style={styles.icon}>🔒</Text>
         </View>
-        {newPassword.length > 0 && (
-          <View style={styles.strengthContainer}>
-            <View style={styles.strengthBars}>
-              {[1, 2, 3, 4].map((i) => (
-                <View
-                  key={i}
-                  style={[
-                    styles.strengthBar,
-                    i <= passwordStrength.strength && { backgroundColor: passwordStrength.color },
-                  ]}
-                />
-              ))}
-            </View>
-            {passwordStrength.label && (
-              <Text style={[styles.strengthLabel, { color: passwordStrength.color }]}>
-                {passwordStrength.label}
-              </Text>
-            )}
+        <Text style={styles.title}>Yeni Şifre Oluştur</Text>
+        <Text style={styles.description}>Yeni şifreniz en az 8 karakter olmalıdır.</Text>
+
+        <View style={styles.inputGroup}>
+          <Text style={styles.label}>Yeni Şifre</Text>
+          <View style={styles.passwordContainer}>
+            <TextInput
+              mode="outlined"
+              secureTextEntry={!showPassword}
+              value={newPassword}
+              onChangeText={setNewPassword}
+              style={[styles.input, styles.passwordInput]}
+              contentStyle={styles.inputContent}
+              outlineStyle={styles.inputOutline}
+              editable={!isOffline}
+              placeholder="••••••••"
+            />
+            <IconButton
+              icon={showPassword ? "eye-off" : "eye"}
+              size={20}
+              onPress={() => setShowPassword(!showPassword)}
+              style={styles.eyeIcon}
+            />
           </View>
-        )}
-        <View style={styles.passwordContainer}>
-          <TextInput
-            label="Yeni Şifre Tekrar"
-            mode="outlined"
-            secureTextEntry={!showConfirmPassword}
-            value={confirmPassword}
-            onChangeText={setConfirmPassword}
-            style={[styles.input, styles.passwordInput]}
-            editable={!isOffline}
-            placeholder="••••••••"
-          />
-          <IconButton
-            icon={showConfirmPassword ? "eye-off" : "eye"}
-            size={20}
-            onPress={() => setShowConfirmPassword(!showConfirmPassword)}
-            style={styles.eyeIcon}
-          />
+          {newPassword.length > 0 && (
+            <View style={styles.strengthContainer}>
+              <View style={styles.strengthBars}>
+                {[1, 2, 3, 4].map((i) => (
+                  <View
+                    key={i}
+                    style={[
+                      styles.strengthBar,
+                      i <= passwordStrength.strength && { backgroundColor: passwordStrength.color },
+                    ]}
+                  />
+                ))}
+              </View>
+              {passwordStrength.label && (
+                <Text style={[styles.strengthLabel, { color: passwordStrength.color }]}>
+                  {passwordStrength.label}
+                </Text>
+              )}
+            </View>
+          )}
         </View>
-        {confirmPassword.length > 0 && !passwordsMatch && (
-          <Text style={styles.errorText}>Şifreler eşleşmiyor</Text>
-        )}
+
+        <View style={styles.inputGroup}>
+          <Text style={styles.label}>Yeni Şifre Tekrar</Text>
+          <View style={styles.passwordContainer}>
+            <TextInput
+              mode="outlined"
+              secureTextEntry={!showConfirmPassword}
+              value={confirmPassword}
+              onChangeText={setConfirmPassword}
+              style={[styles.input, styles.passwordInput]}
+              contentStyle={styles.inputContent}
+              outlineStyle={styles.inputOutline}
+              editable={!isOffline}
+              placeholder="••••••••"
+            />
+            <IconButton
+              icon={showConfirmPassword ? "eye-off" : "eye"}
+              size={20}
+              onPress={() => setShowConfirmPassword(!showConfirmPassword)}
+              style={styles.eyeIcon}
+            />
+          </View>
+          {confirmPassword.length > 0 && !passwordsMatch && (
+            <Text style={styles.errorText}>Şifreler eşleşmiyor</Text>
+          )}
+        </View>
+
         <Button
           mode="contained"
           disabled={isOffline || !isFormValid}
           onPress={() => {
-            // After password reset, go back to Login
-            // TODO: Save new password
             navigation.navigate("AuthLogin");
           }}
           style={styles.button}
+          contentStyle={styles.primaryButtonContent}
+          labelStyle={styles.primaryButtonLabel}
         >
           Şifremi Sıfırla
         </Button>
         <View style={styles.hintCard}>
-          <Text variant="bodySmall" style={styles.hintText}>
+          <Text style={styles.hintText}>
             <Text style={styles.hintBold}>💡 İpucu:</Text> Güçlü bir şifre için büyük/küçük harf, rakam ve özel karakter kullanın.
           </Text>
         </View>
-      </SectionCard>
-    </>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
@@ -174,21 +190,37 @@ export const AuthPasswordResetScreen = ({
 
   if (state === "offline") {
     return (
-      <ScreenLayout title="Şifre Sıfırlama" subtitle="Önbellekteki bilgiler">
+      <>
         <OfflineNotice />
         <PasswordResetContent isOffline />
-      </ScreenLayout>
+      </>
     );
   }
 
-  return (
-    <ScreenLayout title="Şifre Sıfırlama" subtitle="Şifre sıfırlama bağlantısı gönder">
-      <PasswordResetContent />
-    </ScreenLayout>
-  );
+  return <PasswordResetContent />;
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#FAFAFA",
+  },
+  scrollContent: {
+    paddingHorizontal: 24,
+    paddingTop: 16,
+    paddingBottom: 32,
+  },
+  backButton: {
+    width: 40,
+    height: 40,
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 16,
+  },
+  backButtonText: {
+    fontSize: 24,
+    color: "#171717",
+  },
   iconContainer: {
     alignItems: "center",
     marginBottom: 16,
@@ -197,23 +229,41 @@ const styles = StyleSheet.create({
     fontSize: 64,
   },
   title: {
+    fontSize: 32,
     fontWeight: "800",
     color: "#2B1B5D",
     marginBottom: 8,
     textAlign: "center",
   },
   description: {
+    fontSize: 15,
     color: "#525252",
     marginBottom: 24,
     textAlign: "center",
     lineHeight: 24,
   },
-  passwordContainer: {
-    position: "relative",
+  inputGroup: {
+    marginBottom: 16,
+  },
+  label: {
+    fontSize: 14,
+    fontWeight: "600",
+    color: "#404040",
     marginBottom: 8,
   },
+  passwordContainer: {
+    position: "relative",
+  },
   input: {
-    marginBottom: 16,
+    backgroundColor: "#FFFFFF",
+  },
+  inputContent: {
+    paddingVertical: 14,
+  },
+  inputOutline: {
+    borderWidth: 2,
+    borderRadius: 12,
+    borderColor: "#E5E5E5",
   },
   passwordInput: {
     paddingRight: 48,
@@ -224,7 +274,7 @@ const styles = StyleSheet.create({
     top: 8,
   },
   strengthContainer: {
-    marginBottom: 16,
+    marginTop: 8,
   },
   strengthBars: {
     flexDirection: "row",
@@ -244,10 +294,17 @@ const styles = StyleSheet.create({
   errorText: {
     color: "#EF4444",
     fontSize: 12,
-    marginBottom: 16,
+    marginTop: 8,
   },
   button: {
     marginBottom: 16,
+  },
+  primaryButtonContent: {
+    paddingVertical: 16,
+  },
+  primaryButtonLabel: {
+    fontSize: 18,
+    fontWeight: "600",
   },
   hintCard: {
     backgroundColor: "#EDE7F6",
