@@ -63,7 +63,7 @@ const DiscoverModulesContent = ({ isOffline }: { isOffline?: boolean }) => {
             style={styles.card}
             onPress={() =>
               navigation.navigate("Content", {
-                screen: "ContentModuleDetail",
+                screen: "ContentModuleHome",
                 params: { id: item.id },
               })
             }

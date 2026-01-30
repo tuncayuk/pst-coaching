@@ -57,7 +57,14 @@ const ContentReadingContent = ({ isOffline }: { isOffline?: boolean }) => {
       </View>
 
       <View style={styles.footer}>
-        <PButton mode="contained" disabled={isOffline} style={styles.footerButton}>
+        <PButton
+          mode="contained"
+          disabled={isOffline}
+          style={styles.footerButton}
+          onPress={() =>
+            navigation.navigate("ContentExercise", { id: "c1c1c1c1-0000-0000-0000-000000000102" })
+          }
+        >
           Uygulamaya Geç
         </PButton>
       </View>

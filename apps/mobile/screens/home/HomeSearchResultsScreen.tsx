@@ -24,7 +24,7 @@ const HomeSearchResultsContent = ({ isOffline }: { isOffline?: boolean }) => {
     },
     {
       title: "Modüller",
-      items: getModules().map((item) => ({ id: item.id, title: item.title, route: "ContentModuleDetail" })),
+      items: getModules().map((item) => ({ id: item.id, title: item.title, route: "ContentModuleHome" })),
     },
     {
       title: "e-Kitaplar",

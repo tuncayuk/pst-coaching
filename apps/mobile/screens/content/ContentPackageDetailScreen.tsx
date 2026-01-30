@@ -36,6 +36,7 @@ const ContentPackageDetailContent = ({
         { title: "Bilissel Carpitmalar", content_type: "reading" },
       ];
   const durations = ["12 dk", "15 dk", "10 dk"];
+  const firstReading = items.find((item) => item.content_type === "reading");
 
   return (
     <View>
@@ -91,7 +92,16 @@ const ContentPackageDetailContent = ({
           </View>
         </PCard>
 
-        <PButton mode="contained" disabled={isOffline} style={styles.primaryButton}>
+        <PButton
+          mode="contained"
+          disabled={isOffline}
+          style={styles.primaryButton}
+          onPress={() =>
+            navigation.navigate("ContentReading", {
+              id: firstReading?.id ?? "c1c1c1c1-0000-0000-0000-000000000101",
+            })
+          }
+        >
           Paketi Başlat
         </PButton>
       </View>

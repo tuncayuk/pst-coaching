@@ -127,7 +127,7 @@ const DiscoverAssistantResultsContent = ({ isOffline }: { isOffline?: boolean })
                 }
                 if (item.type === "module") {
                   navigation.navigate("Content", {
-                    screen: "ContentModuleDetail",
+                    screen: "ContentModuleHome",
                     params: { id: item.id },
                   });
                 }
