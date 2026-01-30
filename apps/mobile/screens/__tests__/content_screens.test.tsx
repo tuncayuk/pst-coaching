@@ -6,7 +6,6 @@ import { ContentJourneyDayScreen } from "../content/ContentJourneyDayScreen";
 import { ContentWorkshopDetailScreen } from "../content/ContentWorkshopDetailScreen";
 import { ContentWorkshopHomeScreen } from "../content/ContentWorkshopHomeScreen";
 import { ContentWorkshopSectionScreen } from "../content/ContentWorkshopSectionScreen";
-import { ContentModuleDetailScreen } from "../content/ContentModuleDetailScreen";
 import { ContentModuleHomeScreen } from "../content/ContentModuleHomeScreen";
 import { ContentPackageDetailScreen } from "../content/ContentPackageDetailScreen";
 import { ContentEbookDetailScreen } from "../content/ContentEbookDetailScreen";
@@ -94,17 +93,6 @@ const cases = [
     expectations: {
       loading: "Modül yükleniyor",
       ready: "Modül akışı",
-      empty: "Modül bulunamadı",
-      error: "Modül yüklenemedi",
-      offline: "Çevrimdışısınız",
-    },
-  },
-  {
-    name: "content.module_detail",
-    Screen: ContentModuleDetailScreen,
-    expectations: {
-      loading: "Modül yükleniyor",
-      ready: "Modül özet ve bölümler",
       empty: "Modül bulunamadı",
       error: "Modül yüklenemedi",
       offline: "Çevrimdışısınız",
@@ -246,7 +234,7 @@ const cases = [
 
 describe("Content screens render contract states", () => {
   cases.forEach(({ name, Screen, expectations }) => {
-    (Object.keys(expectations) as Array<keyof typeof expectations>).forEach((state) => {
+    (Object.keys(expectations) as (keyof typeof expectations)[]).forEach((state) => {
       it(`${name} renders ${state} state`, () => {
         const { getByText } = render(<Screen route={{ params: { state } }} />);
         expect(getByText(expectations[state])).toBeTruthy();

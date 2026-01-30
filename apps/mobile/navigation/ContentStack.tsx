@@ -7,7 +7,6 @@ import { ContentJourneyDayScreen } from "../screens/content/ContentJourneyDayScr
 import { ContentWorkshopDetailScreen } from "../screens/content/ContentWorkshopDetailScreen";
 import { ContentWorkshopHomeScreen } from "../screens/content/ContentWorkshopHomeScreen";
 import { ContentWorkshopSectionScreen } from "../screens/content/ContentWorkshopSectionScreen";
-import { ContentModuleDetailScreen } from "../screens/content/ContentModuleDetailScreen";
 import { ContentModuleHomeScreen } from "../screens/content/ContentModuleHomeScreen";
 import { ContentPackageDetailScreen } from "../screens/content/ContentPackageDetailScreen";
 import { ContentEbookDetailScreen } from "../screens/content/ContentEbookDetailScreen";
@@ -38,7 +37,6 @@ export type ContentStackParamList = {
   ContentWorkshopSection: { id: string; sectionId: string; state?: ScreenState };
   ContentWorkshopDetail: ContentIdParam;
   ContentModuleHome: ContentIdParam;
-  ContentModuleDetail: ContentIdParam;
   ContentPackageDetail: ContentIdParam;
   ContentEbookDetail: ContentIdParam;
   ContentEbookReader: ContentIdParam;
@@ -76,7 +74,6 @@ export const contentStackScreens: ContentStackScreen[] = [
   { name: "ContentWorkshopSection", component: ContentWorkshopSectionScreen },
   { name: "ContentWorkshopDetail", component: ContentWorkshopDetailScreen },
   { name: "ContentModuleHome", component: ContentModuleHomeScreen },
-  { name: "ContentModuleDetail", component: ContentModuleDetailScreen },
   { name: "ContentPackageDetail", component: ContentPackageDetailScreen },
   { name: "ContentEbookDetail", component: ContentEbookDetailScreen },
   { name: "ContentEbookReader", component: ContentEbookReaderScreen },

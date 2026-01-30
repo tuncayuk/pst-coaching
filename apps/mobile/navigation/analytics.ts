@@ -69,7 +69,6 @@ const routeNameToScreenId: Record<string, string> = {
   ContentWorkshopDetail: "content.workshop_detail",
   ContentWorkshopHome: "content.workshop_home",
   ContentWorkshopSection: "content.workshop_section",
-  ContentModuleDetail: "content.module_detail",
   ContentModuleHome: "content.module_home",
   ContentPackageDetail: "content.package_detail",
   ContentEbookDetail: "content.ebook_detail",
