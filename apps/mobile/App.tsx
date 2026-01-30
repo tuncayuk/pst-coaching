@@ -2,6 +2,7 @@ import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { MD3LightTheme as DefaultTheme, PaperProvider } from "react-native-paper";
 import { Provider as StoreProvider } from "react-redux";
 import { OfflineBanner } from "./components/OfflineBanner";
@@ -51,20 +52,35 @@ const theme = {
   },
 };
 
+const tabIcons: Record<keyof RootTabParamList, keyof typeof MaterialCommunityIcons.glyphMap> = {
+  Home: "home-variant",
+  Discover: "magnify",
+  Library: "book-open-page-variant",
+  Progress: "chart-line",
+  Profile: "account-circle",
+};
+
 const MainTabs = () => (
   <Tab.Navigator
-    screenOptions={{
+    screenOptions={({ route }) => ({
       headerShown: false,
       tabBarActiveTintColor: theme.colors.primary,
       tabBarInactiveTintColor: theme.colors.onSurfaceVariant,
       tabBarStyle: {
         borderTopColor: theme.colors.outlineVariant,
         backgroundColor: theme.colors.surface,
-        paddingBottom: 6,
-        paddingTop: 6,
-        height: 60,
+        paddingBottom: 20,
+        paddingTop: 10,
+        height: 84,
       },
-    }}
+      tabBarLabelStyle: {
+        fontSize: 10,
+        fontWeight: "600",
+      },
+      tabBarIcon: ({ color }) => (
+        <MaterialCommunityIcons name={tabIcons[route.name]} size={22} color={color} />
+      ),
+    })}
   >
     <Tab.Screen name="Home" component={HomeStack} options={{ tabBarLabel: "Ana Sayfa" }} />
     <Tab.Screen name="Discover" component={DiscoverStack} options={{ tabBarLabel: "Keşfet" }} />
