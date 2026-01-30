@@ -159,12 +159,14 @@ const HomeReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.recommendationsRow}>
           {recommendations.map((item) => (
             <PCard key={item.title} style={styles.recommendationCard}>
-              <View style={styles.recommendationHero}>
-                <PText style={styles.recommendationEmoji}>{item.emoji}</PText>
-              </View>
-              <View style={styles.recommendationBody}>
-                <PText style={styles.recommendationTitle}>{item.title}</PText>
-                <PText style={styles.recommendationSubtitle}>{item.subtitle}</PText>
+              <View style={styles.recommendationContent}>
+                <View style={styles.recommendationHero}>
+                  <PText style={styles.recommendationEmoji}>{item.emoji}</PText>
+                </View>
+                <View style={styles.recommendationBody}>
+                  <PText style={styles.recommendationTitle}>{item.title}</PText>
+                  <PText style={styles.recommendationSubtitle}>{item.subtitle}</PText>
+                </View>
               </View>
             </PCard>
           ))}
@@ -436,6 +438,8 @@ const styles = StyleSheet.create({
   },
   recommendationCard: {
     width: 160,
+  },
+  recommendationContent: {
     borderRadius: 16,
     overflow: "hidden",
   },
