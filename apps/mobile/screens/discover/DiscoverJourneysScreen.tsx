@@ -7,10 +7,11 @@ import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
 import { getJourneys } from "../../data/mockSelectors";
-import { PActivityIndicator, PButton, PCard, PChip, PText } from "../../components";
+import { PActivityIndicator, PButton, PCard, PText } from "../../components";
 
 const sortOptions = ["Önerilen", "Popüler", "Yeni"];
-const filterOptions = ["Hedef", "Süre", "Seviye"];
+const cardEmojis = ["🎯", "🙏", "🌿", "🧘‍♀️"];
+const cardColors = ["#FFDDC1", "#D1FAE5", "#E9D5FF", "#FDE68A"];
 
 const DiscoverJourneysContent = ({ isOffline }: { isOffline?: boolean }) => {
   const navigation = useNavigation<any>();
@@ -20,7 +21,15 @@ const DiscoverJourneysContent = ({ isOffline }: { isOffline?: boolean }) => {
     <View>
       <View style={styles.headerRow}>
         <PText style={styles.title}>Yolculuklar</PText>
-        <PButton mode="outlined" compact disabled={isOffline} style={styles.filterButton}>
+        <PButton
+          mode="contained"
+          disabled={isOffline}
+          buttonColor="#F5F5F5"
+          textColor="#525252"
+          style={styles.filterButton}
+          contentStyle={styles.filterButtonContent}
+          labelStyle={styles.filterButtonLabel}
+        >
           🔍 Filtrele
         </PButton>
       </View>
@@ -29,23 +38,17 @@ const DiscoverJourneysContent = ({ isOffline }: { isOffline?: boolean }) => {
         {sortOptions.map((label, index) => (
           <PButton
             key={label}
-            mode={index === 0 ? "contained" : "outlined"}
-            compact
+            mode="contained"
             disabled={isOffline}
             style={styles.sortButton}
+            contentStyle={styles.sortButtonContent}
+            buttonColor={index === 0 ? "#00B4D8" : "#F5F5F5"}
+            textColor={index === 0 ? "#FFFFFF" : "#525252"}
           >
             {label}
           </PButton>
         ))}
       </ScrollView>
-
-      <View style={styles.filterRow}>
-        {filterOptions.map((label) => (
-          <PChip key={label} style={styles.filterChip} disabled={isOffline}>
-            {label}
-          </PChip>
-        ))}
-      </View>
 
       {journeys.map((item, index) => {
         const duration = item.duration_days ?? 40;
@@ -55,10 +58,19 @@ const DiscoverJourneysContent = ({ isOffline }: { isOffline?: boolean }) => {
         const ebooks = 1 + (index % 2);
 
         return (
-          <PCard key={item.id} style={styles.card}>
+          <PCard
+            key={item.id}
+            style={styles.card}
+            onPress={() =>
+              navigation.navigate("Content", {
+                screen: "ContentJourneyDetail",
+                params: { id: item.id },
+              })
+            }
+          >
             <View style={styles.cardRow}>
-              <View style={styles.cardIcon}>
-                <PText style={styles.cardEmoji}>🎯</PText>
+              <View style={[styles.cardIcon, { backgroundColor: cardColors[index % cardColors.length] }]}>
+                <PText style={styles.cardEmoji}>{cardEmojis[index % cardEmojis.length]}</PText>
               </View>
               <View style={styles.cardInfo}>
                 <PText style={styles.cardTitle}>{item.title}</PText>
@@ -73,18 +85,6 @@ const DiscoverJourneysContent = ({ isOffline }: { isOffline?: boolean }) => {
                 </View>
               </View>
             </View>
-            <PButton
-              mode="outlined"
-              disabled={isOffline}
-              onPress={() =>
-                navigation.navigate("Content", {
-                  screen: "ContentJourneyDetail",
-                  params: { id: item.id },
-                })
-              }
-            >
-              İncele
-            </PButton>
           </PCard>
         );
       })}
@@ -172,7 +172,9 @@ const styles = StyleSheet.create({
     backgroundColor: "#FAFAFA",
   },
   content: {
-    padding: 16,
+    paddingHorizontal: 24,
+    paddingTop: 24,
+    paddingBottom: 96,
   },
   headerRow: {
     flexDirection: "row",
@@ -187,22 +189,27 @@ const styles = StyleSheet.create({
   },
   filterButton: {
     borderRadius: 8,
+    elevation: 0,
+  },
+  filterButtonContent: {
+    height: 32,
+    paddingHorizontal: 12,
+  },
+  filterButtonLabel: {
+    fontSize: 13,
+    fontWeight: "600",
   },
   sortRow: {
     gap: 8,
     paddingBottom: 8,
-    marginBottom: 12,
-  },
-  sortButton: {
-    borderRadius: 10,
-  },
-  filterRow: {
-    flexDirection: "row",
-    gap: 8,
     marginBottom: 16,
   },
-  filterChip: {
-    backgroundColor: "#F5F5F5",
+  sortButton: {
+    borderRadius: 8,
+  },
+  sortButtonContent: {
+    height: 32,
+    // paddingHorizontal: 12,
   },
   card: {
     padding: 16,
@@ -218,19 +225,18 @@ const styles = StyleSheet.create({
     width: 80,
     height: 80,
     borderRadius: 12,
-    backgroundColor: "#FFDDC1",
     alignItems: "center",
     justifyContent: "center",
     flexShrink: 0,
   },
   cardEmoji: {
-    fontSize: 26,
+    fontSize: 32,
   },
   cardInfo: {
     flex: 1,
   },
   cardTitle: {
-    fontSize: 15,
+    fontSize: 16,
     fontWeight: "700",
     color: "#171717",
     marginBottom: 6,
@@ -242,7 +248,7 @@ const styles = StyleSheet.create({
   },
   cardMeta: {
     fontSize: 13,
-    color: "#525252",
+    color: "#737373",
   },
   cardChipRow: {
     flexDirection: "row",
@@ -251,7 +257,7 @@ const styles = StyleSheet.create({
   },
   cardChipPrimary: {
     backgroundColor: "#E0F7FA",
-    color: "#0096B8",
+    color: "#00758C",
     fontSize: 12,
     fontWeight: "600",
     paddingHorizontal: 8,
