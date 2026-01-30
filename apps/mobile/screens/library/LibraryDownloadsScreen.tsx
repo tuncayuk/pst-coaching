@@ -1,6 +1,5 @@
 import React from "react";
 import { StyleSheet } from "react-native";
-import { ActivityIndicator } from "react-native-paper";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
@@ -8,7 +7,8 @@ import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
 import { getDownloadsForUser, getPrimaryUser } from "../../data/mockSelectors";
-import { PButton, PCard, PText } from "../../components";
+import { PActivityIndicator, PButton, PCard, PText } from "../../components";
+
 
 const LibraryDownloadsContent = ({ isOffline }: { isOffline?: boolean }) => {
   const user = getPrimaryUser();
@@ -48,7 +48,7 @@ export const LibraryDownloadsScreen = ({ route }: { route?: { params?: { state?:
     return (
       <ScreenLayout title="İndirilenler" subtitle="İndirilenler hazırlanıyor">
         <SectionCard title="Yükleniyor">
-          <ActivityIndicator animating />
+          <PActivityIndicator animating />
           <SkeletonBlock height={18} />
           <SkeletonBlock height={18} />
         </SectionCard>

@@ -1,6 +1,5 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import { ActivityIndicator, Chip, ProgressBar } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
@@ -9,7 +8,8 @@ import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
 import { getModules } from "../../data/mockSelectors";
-import { PButton, PCard } from "../../components";
+import { PActivityIndicator, PButton, PCard, PChip, PProgressBar } from "../../components";
+
 
 const focusAreas = ["Sınırlar", "Kendine Şefkat", "Kaygı", "İletişim"];
 
@@ -28,9 +28,9 @@ const LibraryModulesContent = ({ isOffline }: { isOffline?: boolean }) => {
       <SectionCard title="Odak Alanları" actionLabel="Filtrele">
         <View style={styles.chipRow}>
           {focusAreas.map((label) => (
-            <Chip key={label} style={styles.chip} disabled={isOffline}>
+            <PChip key={label} style={styles.chip} disabled={isOffline}>
               {label}
-            </Chip>
+            </PChip>
           ))}
         </View>
       </SectionCard>
@@ -40,7 +40,7 @@ const LibraryModulesContent = ({ isOffline }: { isOffline?: boolean }) => {
           <PCard key={module.title} style={styles.card}>
             <PCard.Title title={module.title} subtitle={module.subtitle} />
             <PCard.Content>
-              <ProgressBar progress={module.progress} />
+              <PProgressBar progress={module.progress} />
             </PCard.Content>
             <PCard.Actions>
               <PButton
@@ -70,7 +70,7 @@ export const LibraryModulesScreen = ({ route }: { route?: { params?: { state?: S
     return (
       <ScreenLayout title="Modüller" subtitle="Modüller hazırlanıyor">
         <SectionCard title="Yükleniyor">
-          <ActivityIndicator animating />
+          <PActivityIndicator animating />
           <SkeletonBlock height={18} />
           <SkeletonBlock height={18} />
         </SectionCard>

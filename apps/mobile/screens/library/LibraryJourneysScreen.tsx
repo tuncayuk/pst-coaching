@@ -1,6 +1,5 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import { ActivityIndicator, Chip, ProgressBar } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
@@ -9,7 +8,8 @@ import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
 import { getJourneys } from "../../data/mockSelectors";
-import { PButton, PCard, PText } from "../../components";
+import { PActivityIndicator, PButton, PCard, PChip, PProgressBar, PText } from "../../components";
+
 
 const LibraryJourneysContent = ({ isOffline }: { isOffline?: boolean }) => {
   const navigation = useNavigation<any>();
@@ -33,12 +33,12 @@ const LibraryJourneysContent = ({ isOffline }: { isOffline?: boolean }) => {
           <View key={journey.title} style={styles.progressBlock}>
             <View style={styles.progressHeader}>
               <PText variant="titleSmall">{journey.title}</PText>
-              <Chip compact>{Math.round(journey.progress * 100)}%</Chip>
+              <PChip compact>{Math.round(journey.progress * 100)}%</PChip>
             </View>
             <PText variant="bodySmall" style={styles.subtitle}>
               {journey.next}
             </PText>
-            <ProgressBar progress={journey.progress} />
+            <PProgressBar progress={journey.progress} />
           </View>
         ))}
         <PButton
@@ -88,7 +88,7 @@ export const LibraryJourneysScreen = ({ route }: { route?: { params?: { state?: 
     return (
       <ScreenLayout title="Yolculuklar" subtitle="Yolculuklar hazırlanıyor">
         <SectionCard title="Yükleniyor">
-          <ActivityIndicator animating />
+          <PActivityIndicator animating />
           <SkeletonBlock height={20} />
           <SkeletonBlock height={20} />
         </SectionCard>

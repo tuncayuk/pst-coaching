@@ -1,6 +1,5 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import { Chip } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
@@ -8,7 +7,8 @@ import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
-import { PButton, PText } from "../../components";
+import { PButton, PChip, PText } from "../../components";
+
 
 const WelcomeContent = ({ isOffline }: { isOffline?: boolean }) => {
   const navigation = useNavigation<any>();
@@ -25,9 +25,9 @@ const WelcomeContent = ({ isOffline }: { isOffline?: boolean }) => {
         </PText>
         <View style={styles.chipRow}>
           {["Kişisel plan", "Günlük içerik", "İlerleme takibi"].map((label) => (
-            <Chip key={label} style={styles.chip} disabled={isOffline}>
+            <PChip key={label} style={styles.chip} disabled={isOffline}>
               {label}
-            </Chip>
+            </PChip>
           ))}
         </View>
         <PButton

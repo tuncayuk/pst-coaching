@@ -1,6 +1,5 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import { ActivityIndicator, Chip } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
@@ -8,7 +7,8 @@ import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
-import { PButton, PCard, PTextInput } from "../../components";
+import { PActivityIndicator, PButton, PCard, PChip, PTextInput } from "../../components";
+
 
 const quickFilters = ["Yolculuk", "Atölye", "Modül", "e-Kitap"];
 const recentSearches = ["Öz şefkat", "Sınır koyma", "Nefes egzersizi"];
@@ -38,9 +38,9 @@ const HomeSearchContent = ({ isOffline }: { isOffline?: boolean }) => {
         />
         <View style={styles.chipRow}>
           {quickFilters.map((label) => (
-            <Chip key={label} style={styles.chip} disabled={isOffline}>
+            <PChip key={label} style={styles.chip} disabled={isOffline}>
               {label}
-            </Chip>
+            </PChip>
           ))}
         </View>
         <PButton
@@ -55,9 +55,9 @@ const HomeSearchContent = ({ isOffline }: { isOffline?: boolean }) => {
       <SectionCard title="Son Aramalar" actionLabel="Temizle">
         <View style={styles.chipRow}>
           {recentSearches.map((term) => (
-            <Chip key={term} style={styles.chip} disabled={isOffline}>
+            <PChip key={term} style={styles.chip} disabled={isOffline}>
               {term}
-            </Chip>
+            </PChip>
           ))}
         </View>
       </SectionCard>
@@ -85,7 +85,7 @@ export const HomeSearchScreen = ({ route }: { route?: { params?: { state?: Scree
     return (
       <ScreenLayout title="Arama" subtitle="Arama yükleniyor">
         <SectionCard title="Yükleniyor">
-          <ActivityIndicator animating />
+          <PActivityIndicator animating />
           <SkeletonBlock height={18} />
           <SkeletonBlock height={18} />
         </SectionCard>

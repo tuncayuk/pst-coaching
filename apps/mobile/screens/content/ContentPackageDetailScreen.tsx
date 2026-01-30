@@ -1,13 +1,13 @@
 import React from "react";
 import { StyleSheet } from "react-native";
-import { ActivityIndicator, Divider, List } from "react-native-paper";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
-import { PButton, PCard, PText } from "../../components";
+import { PActivityIndicator, PButton, PCard, PDivider, PListItem, PText } from "../../components";
+
 
 const packageItems = [
   { title: "Öz Şefkat Yolculuğu", subtitle: "7 gün" },
@@ -28,8 +28,8 @@ const ContentPackageDetailContent = ({ isOffline }: { isOffline?: boolean }) => 
       <SectionCard title="Paket İçeriği" actionLabel="Tümü">
         {packageItems.map((item, index) => (
           <React.Fragment key={item.title}>
-            <List.Item title={item.title} description={item.subtitle} />
-            {index < packageItems.length - 1 ? <Divider /> : null}
+            <PListItem title={item.title} description={item.subtitle} />
+            {index < packageItems.length - 1 ? <PDivider /> : null}
           </React.Fragment>
         ))}
       </SectionCard>
@@ -76,7 +76,7 @@ export const ContentPackageDetailScreen = ({
     return (
       <ScreenLayout title="Paket Detay" subtitle="Paket yükleniyor">
         <SectionCard title="Yükleniyor">
-          <ActivityIndicator animating />
+          <PActivityIndicator animating />
           <SkeletonBlock height={18} />
           <SkeletonBlock height={18} />
         </SectionCard>

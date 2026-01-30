@@ -1,6 +1,5 @@
 import React from "react";
 import { StyleSheet } from "react-native";
-import { ActivityIndicator, Chip } from "react-native-paper";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
@@ -8,7 +7,8 @@ import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
 import { getSubscriptionPlans } from "../../data/mockSelectors";
-import { PButton, PCard, PText } from "../../components";
+import { PActivityIndicator, PButton, PCard, PChip, PText } from "../../components";
+
 
 const ProfilePlanComparisonContent = ({ isOffline }: { isOffline?: boolean }) => {
   const plans = getSubscriptionPlans();
@@ -19,9 +19,9 @@ const ProfilePlanComparisonContent = ({ isOffline }: { isOffline?: boolean }) =>
         <PCard key={plan.id} style={styles.card}>
           <PCard.Title title={plan.name} subtitle={`Kişi limiti: ${plan.seat_limit}`} />
           <PCard.Content>
-            <Chip style={styles.chip} disabled={isOffline}>
+            <PChip style={styles.chip} disabled={isOffline}>
               {plan.plan_type}
-            </Chip>
+            </PChip>
             <PText variant="bodySmall" style={styles.subtleText}>
               Tüm içerik türlerine erişim ve çevrimdışı kullanım dahil.
             </PText>
@@ -51,7 +51,7 @@ export const ProfilePlanComparisonScreen = ({
     return (
       <ScreenLayout title="Plan Karşılaştırma" subtitle="Planlar hazırlanıyor">
         <SectionCard title="Yükleniyor">
-          <ActivityIndicator animating />
+          <PActivityIndicator animating />
           <SkeletonBlock height={20} />
           <SkeletonBlock height={20} />
         </SectionCard>

@@ -1,6 +1,5 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import { ActivityIndicator, Chip } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
@@ -9,7 +8,8 @@ import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
 import { getEbooks, getJourneys, getModules, getWorkshops } from "../../data/mockSelectors";
-import { PButton, PCard, PText } from "../../components";
+import { PActivityIndicator, PButton, PCard, PChip, PText } from "../../components";
+
 
 const HomeSearchResultsContent = ({ isOffline }: { isOffline?: boolean }) => {
   const navigation = useNavigation<any>();
@@ -38,9 +38,9 @@ const HomeSearchResultsContent = ({ isOffline }: { isOffline?: boolean }) => {
       <SectionCard title="Filtreler" actionLabel="Sıfırla">
         <View style={styles.filterRow}>
           {["Tümü", "Yeni", "Kısa", "Sesli"].map((label) => (
-            <Chip key={label} style={styles.chip} disabled={isOffline}>
+            <PChip key={label} style={styles.chip} disabled={isOffline}>
               {label}
-            </Chip>
+            </PChip>
           ))}
         </View>
         <PText variant="bodySmall">{totalCount} sonuç bulundu</PText>
@@ -84,7 +84,7 @@ export const HomeSearchResultsScreen = ({
     return (
       <ScreenLayout title="Arama Sonuçları" subtitle="Sonuçlar hazırlanıyor">
         <SectionCard title="Yükleniyor">
-          <ActivityIndicator animating />
+          <PActivityIndicator animating />
           <SkeletonBlock height={18} />
           <SkeletonBlock height={18} />
         </SectionCard>

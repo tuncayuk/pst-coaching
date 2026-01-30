@@ -1,13 +1,13 @@
 import React from "react";
 import { StyleSheet } from "react-native";
-import { ActivityIndicator, Divider, List } from "react-native-paper";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
-import { PButton, PText } from "../../components";
+import { PActivityIndicator, PButton, PDivider, PListItem, PText } from "../../components";
+
 
 const chapters = [
   { title: "Giriş: Niyet", subtitle: "6 dk" },
@@ -22,8 +22,8 @@ const ContentEbookTocContent = ({ isOffline }: { isOffline?: boolean }) => {
       <SectionCard title="Bölümler" actionLabel="Sırala">
         {chapters.map((chapter, index) => (
           <React.Fragment key={chapter.title}>
-            <List.Item title={chapter.title} description={chapter.subtitle} />
-            {index < chapters.length - 1 ? <Divider /> : null}
+            <PListItem title={chapter.title} description={chapter.subtitle} />
+            {index < chapters.length - 1 ? <PDivider /> : null}
           </React.Fragment>
         ))}
       </SectionCard>
@@ -51,7 +51,7 @@ export const ContentEbookTocScreen = ({
     return (
       <ScreenLayout title="e-Kitap İçindekiler" subtitle="İçindekiler hazırlanıyor">
         <SectionCard title="Yükleniyor">
-          <ActivityIndicator animating />
+          <PActivityIndicator animating />
           <SkeletonBlock height={18} />
           <SkeletonBlock height={18} />
         </SectionCard>

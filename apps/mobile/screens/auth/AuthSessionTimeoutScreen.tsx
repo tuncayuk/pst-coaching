@@ -1,6 +1,5 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import { ActivityIndicator, Avatar } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
@@ -8,7 +7,8 @@ import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
-import { PButton, PText } from "../../components";
+import { PActivityIndicator, PAvatar, PButton, PText } from "../../components";
+
 
 const SessionTimeoutContent = ({ isOffline }: { isOffline?: boolean }) => {
   const navigation = useNavigation<any>();
@@ -16,7 +16,7 @@ const SessionTimeoutContent = ({ isOffline }: { isOffline?: boolean }) => {
   return (
     <SectionCard title="Oturum süren doldu">
       <View style={styles.iconWrap}>
-        <Avatar.Icon size={56} icon="timer-off-outline" />
+        <PAvatar.Icon size={56} icon="timer-off-outline" />
       </View>
       <PText variant="bodyMedium" style={styles.bodyText}>
         Güvenliğin için oturumun sonlandırıldı. Tekrar giriş yaparak kaldığın yerden devam
@@ -48,7 +48,7 @@ export const AuthSessionTimeoutScreen = ({
     return (
       <ScreenLayout title="Oturum Süresi Doldu" subtitle="Oturum kontrol ediliyor">
         <SectionCard title="Yükleniyor">
-          <ActivityIndicator animating />
+          <PActivityIndicator animating />
           <SkeletonBlock height={18} />
           <SkeletonBlock height={18} />
         </SectionCard>

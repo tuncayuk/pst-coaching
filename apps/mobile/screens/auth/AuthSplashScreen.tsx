@@ -3,6 +3,7 @@ import { StyleSheet, View, Animated, Image } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { PText } from "../../components";
 
+
 export const AuthSplashScreen = () => {
   const navigation = useNavigation<any>();
   const pulseAnim1 = React.useRef(new Animated.Value(0.4)).current;

@@ -1,13 +1,13 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import { ActivityIndicator, Chip } from "react-native-paper";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
-import { PButton, PText, PTextInput } from "../../components";
+import { PActivityIndicator, PButton, PChip, PTextInput } from "../../components";
+
 
 const goalOptions = ["Sınır koyma", "Öz şefkat", "Stres yönetimi", "İletişim"];
 const durationOptions = ["10-20 dk", "30-45 dk", "60+ dk"];
@@ -19,9 +19,9 @@ const DiscoverAssistantQuestionsContent = ({ isOffline }: { isOffline?: boolean 
       <SectionCard title="Hedefini Seç">
         <View style={styles.chipRow}>
           {goalOptions.map((option) => (
-            <Chip key={option} style={styles.chip} disabled={isOffline}>
+            <PChip key={option} style={styles.chip} disabled={isOffline}>
               {option}
-            </Chip>
+            </PChip>
           ))}
         </View>
       </SectionCard>
@@ -29,9 +29,9 @@ const DiscoverAssistantQuestionsContent = ({ isOffline }: { isOffline?: boolean 
       <SectionCard title="Süre Tercihin">
         <View style={styles.chipRow}>
           {durationOptions.map((option) => (
-            <Chip key={option} style={styles.chip} disabled={isOffline}>
+            <PChip key={option} style={styles.chip} disabled={isOffline}>
               {option}
-            </Chip>
+            </PChip>
           ))}
         </View>
       </SectionCard>
@@ -39,9 +39,9 @@ const DiscoverAssistantQuestionsContent = ({ isOffline }: { isOffline?: boolean 
       <SectionCard title="Format Tercihi" actionLabel="Opsiyonel">
         <View style={styles.chipRow}>
           {formatOptions.map((option) => (
-            <Chip key={option} style={styles.chip} disabled={isOffline}>
+            <PChip key={option} style={styles.chip} disabled={isOffline}>
               {option}
-            </Chip>
+            </PChip>
           ))}
         </View>
       </SectionCard>
@@ -72,7 +72,7 @@ export const DiscoverAssistantQuestionsScreen = ({
     return (
       <ScreenLayout title="İçerik Asistanı Soruları" subtitle="Sorular hazırlanıyor">
         <SectionCard title="Yükleniyor">
-          <ActivityIndicator animating />
+          <PActivityIndicator animating />
           <SkeletonBlock height={18} />
           <SkeletonBlock height={18} />
         </SectionCard>

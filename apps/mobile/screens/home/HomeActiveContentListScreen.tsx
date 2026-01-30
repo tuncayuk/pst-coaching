@@ -1,6 +1,5 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import { ActivityIndicator, Chip, ProgressBar } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
@@ -9,7 +8,8 @@ import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
 import { getEbooks, getJourneys, getWorkshops } from "../../data/mockSelectors";
-import { PButton, PCard, PText } from "../../components";
+import { PActivityIndicator, PButton, PCard, PChip, PProgressBar, PText } from "../../components";
+
 
 const HomeActiveContentListContent = ({ isOffline }: { isOffline?: boolean }) => {
   const navigation = useNavigation<any>();
@@ -47,9 +47,9 @@ const HomeActiveContentListContent = ({ isOffline }: { isOffline?: boolean }) =>
           <PCard key={item.title} style={styles.card}>
             <PCard.Title title={item.title} subtitle={item.subtitle} />
             <PCard.Content>
-              {item.progress < 0.2 ? <Chip compact>Kilitli</Chip> : null}
+              {item.progress < 0.2 ? <PChip compact>Kilitli</PChip> : null}
               <View style={styles.progressRow}>
-                <ProgressBar progress={item.progress} style={styles.progress} />
+                <PProgressBar progress={item.progress} style={styles.progress} />
                 <PText variant="labelSmall">{Math.round(item.progress * 100)}%</PText>
               </View>
             </PCard.Content>
@@ -94,7 +94,7 @@ export const HomeActiveContentListScreen = ({
     return (
       <ScreenLayout title="Aktif İçerikler" subtitle="İçerikler hazırlanıyor">
         <SectionCard title="Yükleniyor">
-          <ActivityIndicator animating />
+          <PActivityIndicator animating />
           <SkeletonBlock height={18} />
           <SkeletonBlock height={18} />
         </SectionCard>

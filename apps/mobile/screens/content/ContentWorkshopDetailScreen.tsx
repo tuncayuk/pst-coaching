@@ -1,13 +1,13 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import { ActivityIndicator, Chip, Divider } from "react-native-paper";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
-import { PButton, PCard, PText } from "../../components";
+import { PActivityIndicator, PButton, PCard, PChip, PDivider, PText } from "../../components";
+
 
 const sessionItems = [
   { title: "Nefes ve Regülasyon", time: "20 dk" },
@@ -22,12 +22,12 @@ const ContentWorkshopDetailContent = ({ isOffline }: { isOffline?: boolean }) =>
     <>
       <SectionCard title="Atölye Bilgileri">
         <View style={styles.chipRow}>
-          <Chip style={styles.chip} disabled={isOffline}>
+          <PChip style={styles.chip} disabled={isOffline}>
             Canlı
-          </Chip>
-          <Chip style={styles.chip} disabled={isOffline}>
+          </PChip>
+          <PChip style={styles.chip} disabled={isOffline}>
             24 Ocak · 20:00
-          </Chip>
+          </PChip>
         </View>
         <PCard style={styles.card}>
           <PCard.Title title="Eğitmen" subtitle="Uzm. Psk. Aylin K." />
@@ -49,7 +49,7 @@ const ContentWorkshopDetailContent = ({ isOffline }: { isOffline?: boolean }) =>
               <PText variant="titleSmall">{session.title}</PText>
               <PText variant="labelMedium">{session.time}</PText>
             </View>
-            {index < sessionItems.length - 1 ? <Divider style={styles.divider} /> : null}
+            {index < sessionItems.length - 1 ? <PDivider style={styles.divider} /> : null}
           </View>
         ))}
       </SectionCard>
@@ -79,7 +79,7 @@ export const ContentWorkshopDetailScreen = ({
     return (
       <ScreenLayout title="Atölye Detay" subtitle="Atölye yükleniyor">
         <SectionCard title="Yükleniyor">
-          <ActivityIndicator animating />
+          <PActivityIndicator animating />
           <SkeletonBlock height={18} />
           <SkeletonBlock height={18} />
         </SectionCard>

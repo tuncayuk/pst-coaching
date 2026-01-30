@@ -1,13 +1,13 @@
 import React from "react";
 import { StyleSheet } from "react-native";
-import { ActivityIndicator, Divider } from "react-native-paper";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
-import { PButton, PCard, PText } from "../../components";
+import { PActivityIndicator, PButton, PCard, PDivider, PText } from "../../components";
+
 
 const planBenefits = [
   "Sınırsız içerik erişimi",
@@ -41,7 +41,7 @@ const ContentPaywallContent = ({ isOffline }: { isOffline?: boolean }) => {
             </PButton>
           </PCard.Actions>
         </PCard>
-        <Divider style={styles.divider} />
+        <PDivider style={styles.divider} />
         <PCard style={styles.card}>
           <PCard.Title title="Yıllık Plan" subtitle="99 ₺ / ay" />
           <PCard.Content>
@@ -69,7 +69,7 @@ export const ContentPaywallScreen = ({
     return (
       <ScreenLayout title="Abonelik Gerekli" subtitle="Abonelik seçenekleri hazırlanıyor">
         <SectionCard title="Yükleniyor">
-          <ActivityIndicator animating />
+          <PActivityIndicator animating />
           <SkeletonBlock height={18} />
           <SkeletonBlock height={18} />
         </SectionCard>

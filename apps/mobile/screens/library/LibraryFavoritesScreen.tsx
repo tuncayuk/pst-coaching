@@ -1,6 +1,5 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import { ActivityIndicator, Chip } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
@@ -8,7 +7,8 @@ import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
-import { PButton, PCard } from "../../components";
+
+import { PActivityIndicator, PButton, PCard, PChip } from "../../components";
 import {
   getEbooks,
   getFavoritesForUser,
@@ -18,6 +18,7 @@ import {
   getPrimaryUser,
   getWorkshops,
 } from "../../data/mockSelectors";
+
 
 const filters = ["Tümü", "Yolculuk", "Atölye", "Modül", "e-Kitap"];
 
@@ -49,9 +50,9 @@ const LibraryFavoritesContent = ({ isOffline }: { isOffline?: boolean }) => {
       <SectionCard title="Filtre" actionLabel="Sırala">
         <View style={styles.chipRow}>
           {filters.map((label) => (
-            <Chip key={label} style={styles.chip} disabled={isOffline}>
+            <PChip key={label} style={styles.chip} disabled={isOffline}>
               {label}
-            </Chip>
+            </PChip>
           ))}
         </View>
       </SectionCard>
@@ -83,7 +84,7 @@ export const LibraryFavoritesScreen = ({ route }: { route?: { params?: { state?:
     return (
       <ScreenLayout title="Favoriler" subtitle="Favoriler hazırlanıyor">
         <SectionCard title="Yükleniyor">
-          <ActivityIndicator animating />
+          <PActivityIndicator animating />
           <SkeletonBlock height={18} />
           <SkeletonBlock height={18} />
         </SectionCard>

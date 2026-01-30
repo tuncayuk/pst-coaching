@@ -1,6 +1,5 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import { ActivityIndicator } from "react-native-paper";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
@@ -8,7 +7,8 @@ import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
 import { getContentItems, getExerciseSteps } from "../../data/mockSelectors";
-import { PButton, PCard, PCheckbox, PText } from "../../components";
+import { PActivityIndicator, PButton, PCard, PCheckbox, PText } from "../../components";
+
 
 type RouteParams = { state?: ScreenState; id?: string };
 
@@ -55,7 +55,7 @@ export const ContentExerciseScreen = ({ route }: { route?: { params?: RouteParam
     return (
       <ScreenLayout title="Uygulama" subtitle="Uygulama hazırlanıyor">
         <SectionCard title="Yükleniyor">
-          <ActivityIndicator animating />
+          <PActivityIndicator animating />
           <SkeletonBlock height={20} />
           <SkeletonBlock height={20} />
         </SectionCard>

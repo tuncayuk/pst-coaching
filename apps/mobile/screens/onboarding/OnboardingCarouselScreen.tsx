@@ -11,6 +11,7 @@ import { useNavigation } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { PButton, PText } from "../../components";
 
+
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
 
 const onboardingScreens = [

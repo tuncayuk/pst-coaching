@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import { ActivityIndicator, Chip, List, ProgressBar, useTheme } from "react-native-paper";
+import { useTheme } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
@@ -9,7 +9,8 @@ import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
 import { getAchievements, getContentProgressForUser, getPrimaryUser } from "../../data/mockSelectors";
-import { PButton, PCard, PText } from "../../components";
+import { PActivityIndicator, PButton, PCard, PChip, PListIcon, PListItem, PProgressBar, PText } from "../../components";
+
 
 const ProgressReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
   const theme = useTheme();
@@ -29,7 +30,7 @@ const ProgressReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
         {weeklySummary.map((item) => (
           <View key={item.label} style={styles.summaryRow}>
             <PText variant="bodyMedium">{item.label}</PText>
-            <Chip compact>{item.value} seans</Chip>
+            <PChip compact>{item.value} seans</PChip>
           </View>
         ))}
         <PButton
@@ -46,7 +47,7 @@ const ProgressReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
         <PText variant="bodyMedium" style={{ color: theme.colors.onSurfaceVariant }}>
           Bu ay içeriklerin %68'ini tamamladın. Odak alanın “Kendine Şefkat”.
         </PText>
-        <ProgressBar progress={0.68} style={styles.progress} />
+        <PProgressBar progress={0.68} style={styles.progress} />
         <View style={styles.metricRow}>
           <PCard style={styles.metricCard}>
             <PCard.Title title="Toplam Süre" subtitle="5s 20d" />
@@ -59,11 +60,11 @@ const ProgressReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
 
       <SectionCard title="Başarılar" actionLabel="Tümü">
         {achievements.map((item) => (
-          <List.Item
+          <PListItem
             key={item.id}
             title={item.type === "certificate" ? "Sertifika" : "Rozet"}
             description={item.source_type}
-            left={(props) => <List.Icon {...props} icon="trophy-outline" />}
+            left={(props) => <PListIcon {...props} icon="trophy-outline" />}
             onPress={() =>
               navigation.navigate("Content", {
                 screen: "ContentAchievement",
@@ -103,7 +104,7 @@ export const ProgressDashboardScreen = ({ route }: { route?: { params?: { state?
     return (
       <ScreenLayout title="Gelişim" subtitle="Veriler hazırlanıyor">
         <SectionCard title="Yükleniyor">
-          <ActivityIndicator animating />
+          <PActivityIndicator animating />
           <SkeletonBlock height={20} />
           <SkeletonBlock height={20} />
           <SkeletonBlock height={20} />

@@ -1,13 +1,13 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import { ActivityIndicator, Divider, ProgressBar } from "react-native-paper";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
-import { PButton, PCard, PText } from "../../components";
+import { PActivityIndicator, PButton, PCard, PDivider, PProgressBar, PText } from "../../components";
+
 
 const journeyDays = [
   { title: "1. Gün: Niyet", duration: "12 dk" },
@@ -32,7 +32,7 @@ const ContentJourneyDetailContent = ({ isOffline }: { isOffline?: boolean }) => 
         <PCard style={styles.card}>
           <PCard.Title title="İlerleme" subtitle="3/10 gün tamamlandı" />
           <PCard.Content>
-            <ProgressBar progress={0.3} style={styles.progress} />
+            <PProgressBar progress={0.3} style={styles.progress} />
           </PCard.Content>
           <PCard.Actions>
             <PButton mode="contained" disabled={isOffline}>
@@ -49,7 +49,7 @@ const ContentJourneyDetailContent = ({ isOffline }: { isOffline?: boolean }) => 
               <PText variant="titleSmall">{day.title}</PText>
               <PText variant="labelMedium">{day.duration}</PText>
             </View>
-            {index < journeyDays.length - 1 ? <Divider style={styles.divider} /> : null}
+            {index < journeyDays.length - 1 ? <PDivider style={styles.divider} /> : null}
           </View>
         ))}
       </SectionCard>
@@ -79,7 +79,7 @@ export const ContentJourneyDetailScreen = ({
     return (
       <ScreenLayout title="Yolculuk Detay" subtitle="Yolculuk yükleniyor">
         <SectionCard title="Yükleniyor">
-          <ActivityIndicator animating />
+          <PActivityIndicator animating />
           <SkeletonBlock height={18} />
           <SkeletonBlock height={18} />
         </SectionCard>

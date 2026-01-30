@@ -1,6 +1,5 @@
 import React from "react";
 import { StyleSheet } from "react-native";
-import { ActivityIndicator, Chip } from "react-native-paper";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
@@ -8,7 +7,8 @@ import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
 import { getAchievements, getPrimaryUser } from "../../data/mockSelectors";
-import { PButton, PCard, PText } from "../../components";
+import { PActivityIndicator, PButton, PCard, PChip, PText } from "../../components";
+
 
 type RouteParams = { state?: ScreenState; id?: string };
 
@@ -33,9 +33,9 @@ const ContentAchievementContent = ({
         <PText variant="bodySmall" style={styles.subtleText}>
           {achievement?.source_type ?? "İçerik"} tamamlandığında verildi.
         </PText>
-        <Chip style={styles.chip} disabled={isOffline}>
+        <PChip style={styles.chip} disabled={isOffline}>
           {achievement?.issued_at?.slice(0, 10) ?? "2026-01-10"}
-        </Chip>
+        </PChip>
       </SectionCard>
 
       <SectionCard title="Paylaş">
@@ -63,7 +63,7 @@ export const ContentAchievementScreen = ({ route }: { route?: { params?: RoutePa
     return (
       <ScreenLayout title="Sertifika/Rozet" subtitle="Başarım hazırlanıyor">
         <SectionCard title="Yükleniyor">
-          <ActivityIndicator animating />
+          <PActivityIndicator animating />
           <SkeletonBlock height={20} />
           <SkeletonBlock height={14} />
         </SectionCard>

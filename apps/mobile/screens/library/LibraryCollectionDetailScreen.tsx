@@ -1,6 +1,5 @@
 import React from "react";
 import { StyleSheet } from "react-native";
-import { ActivityIndicator } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
@@ -8,7 +7,8 @@ import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
-import { PButton, PCard, PText } from "../../components";
+
+import { PActivityIndicator, PButton, PCard, PText } from "../../components";
 import {
   getCollectionItems,
   getCollectionsForUser,
@@ -18,6 +18,7 @@ import {
   getPrimaryUser,
   getWorkshops,
 } from "../../data/mockSelectors";
+
 
 const LibraryCollectionDetailContent = ({
   collectionId,
@@ -92,7 +93,7 @@ export const LibraryCollectionDetailScreen = ({
     return (
       <ScreenLayout title="Koleksiyon Detay" subtitle="Detaylar hazırlanıyor">
         <SectionCard title="Yükleniyor">
-          <ActivityIndicator animating />
+          <PActivityIndicator animating />
           <SkeletonBlock height={20} />
           <SkeletonBlock height={20} />
         </SectionCard>

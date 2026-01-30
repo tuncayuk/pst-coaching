@@ -1,6 +1,5 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import { ActivityIndicator, Divider, List, Switch } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
@@ -9,7 +8,8 @@ import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
 import { getAccessibilitySettings, getPrimaryUser, getReminderSettings } from "../../data/mockSelectors";
-import { PButton, PText } from "../../components";
+import { PActivityIndicator, PButton, PDivider, PListIcon, PListItem, PSwitch, PText } from "../../components";
+
 
 const ProfileSettingsContent = ({ isOffline }: { isOffline?: boolean }) => {
   const navigation = useNavigation<any>();
@@ -20,41 +20,41 @@ const ProfileSettingsContent = ({ isOffline }: { isOffline?: boolean }) => {
   return (
     <>
       <SectionCard title="Genel Ayarlar" actionLabel="">
-        <List.Item
+        <PListItem
           title="Dil"
           description={user?.language?.toUpperCase() ?? "TR"}
-          left={(props) => <List.Icon {...props} icon="translate" />}
+          left={(props) => <PListIcon {...props} icon="translate" />}
           onPress={() => navigation.navigate("ProfileLanguage")}
         />
-        <Divider />
-        <List.Item
+        <PDivider />
+        <PListItem
           title="Hatırlatmalar"
           description={reminders?.enabled ? "Açık" : "Kapalı"}
-          left={(props) => <List.Icon {...props} icon="bell-outline" />}
+          left={(props) => <PListIcon {...props} icon="bell-outline" />}
           onPress={() => navigation.navigate("ProfileReminders")}
         />
-        <Divider />
-        <List.Item
+        <PDivider />
+        <PListItem
           title="Erişilebilirlik"
           description={accessibility?.text_size ?? "medium"}
-          left={(props) => <List.Icon {...props} icon="human-handsup" />}
+          left={(props) => <PListIcon {...props} icon="human-handsup" />}
           onPress={() => navigation.navigate("ProfileAccessibility")}
         />
       </SectionCard>
 
       <SectionCard title="Okuma Deneyimi" actionLabel="">
-        <List.Item
+        <PListItem
           title="Okuma Modu"
           description="Gündüz"
-          left={(props) => <List.Icon {...props} icon="book-open-page-variant" />}
+          left={(props) => <PListIcon {...props} icon="book-open-page-variant" />}
         />
-        <Divider />
+        <PDivider />
         <View style={styles.switchRow}>
           <View>
             <PText variant="bodyMedium">Sesli Okuma</PText>
             <PText variant="bodySmall">Yeni bölümlerde otomatik başlat</PText>
           </View>
-          <Switch value disabled={isOffline} />
+          <PSwitch value disabled={isOffline} />
         </View>
       </SectionCard>
 
@@ -64,15 +64,15 @@ const ProfileSettingsContent = ({ isOffline }: { isOffline?: boolean }) => {
             <PText variant="bodyMedium">Günlük Hatırlatmalar</PText>
             <PText variant="bodySmall">08:30'da gönder</PText>
           </View>
-          <Switch value disabled={isOffline} />
+          <PSwitch value disabled={isOffline} />
         </View>
-        <Divider />
+        <PDivider />
         <View style={styles.switchRow}>
           <View>
             <PText variant="bodyMedium">Yeni İçerik</PText>
             <PText variant="bodySmall">Haftalık özet</PText>
           </View>
-          <Switch value={false} disabled={isOffline} />
+          <PSwitch value={false} disabled={isOffline} />
         </View>
         <PButton mode="outlined" style={styles.actionButton} disabled={isOffline}>
           Bildirim Zamanını Düzenle
@@ -93,7 +93,7 @@ export const ProfileSettingsScreen = ({
     return (
       <ScreenLayout title="Ayarlar" subtitle="Ayarlar hazırlanıyor">
         <SectionCard title="Yükleniyor">
-          <ActivityIndicator animating />
+          <PActivityIndicator animating />
           <SkeletonBlock height={18} />
           <SkeletonBlock height={18} />
         </SectionCard>

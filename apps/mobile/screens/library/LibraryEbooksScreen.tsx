@@ -1,6 +1,5 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import { ActivityIndicator, Chip, ProgressBar } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
@@ -9,7 +8,8 @@ import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
 import { getEbookProgressForUser, getEbooks, getPrimaryUser } from "../../data/mockSelectors";
-import { PButton, PCard, PText } from "../../components";
+import { PActivityIndicator, PButton, PCard, PChip, PProgressBar, PText } from "../../components";
+
 
 const filters = ["Yeni", "Devam Eden", "Tamamlanan", "İndirilen"];
 
@@ -31,9 +31,9 @@ const LibraryEbooksContent = ({ isOffline }: { isOffline?: boolean }) => {
       <SectionCard title="Filtre" actionLabel="Sırala">
         <View style={styles.chipRow}>
           {filters.map((label) => (
-            <Chip key={label} style={styles.chip} disabled={isOffline}>
+            <PChip key={label} style={styles.chip} disabled={isOffline}>
               {label}
-            </Chip>
+            </PChip>
           ))}
         </View>
       </SectionCard>
@@ -46,7 +46,7 @@ const LibraryEbooksContent = ({ isOffline }: { isOffline?: boolean }) => {
               <PText variant="bodySmall" style={styles.progressLabel}>
                 {Math.round(book.progress * 100)}% tamamlandı
               </PText>
-              <ProgressBar progress={book.progress} />
+              <PProgressBar progress={book.progress} />
             </PCard.Content>
             <PCard.Actions>
               <PButton
@@ -76,7 +76,7 @@ export const LibraryEbooksScreen = ({ route }: { route?: { params?: { state?: Sc
     return (
       <ScreenLayout title="e-Kitaplar" subtitle="e-Kitaplar hazırlanıyor">
         <SectionCard title="Yükleniyor">
-          <ActivityIndicator animating />
+          <PActivityIndicator animating />
           <SkeletonBlock height={18} />
           <SkeletonBlock height={18} />
         </SectionCard>

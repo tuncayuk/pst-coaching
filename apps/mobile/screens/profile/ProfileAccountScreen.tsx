@@ -1,6 +1,5 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import { ActivityIndicator, Avatar, Divider, List } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
@@ -9,7 +8,8 @@ import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
 import { getPrimaryUser } from "../../data/mockSelectors";
-import { PButton, PText } from "../../components";
+import { PActivityIndicator, PAvatar, PButton, PDivider, PListIcon, PListItem, PText } from "../../components";
+
 
 const ProfileAccountContent = ({ isOffline }: { isOffline?: boolean }) => {
   const navigation = useNavigation<any>();
@@ -19,7 +19,7 @@ const ProfileAccountContent = ({ isOffline }: { isOffline?: boolean }) => {
     <>
       <SectionCard title="Profil Bilgileri" actionLabel="Düzenle">
         <View style={styles.profileHeader}>
-          <Avatar.Text size={64} label={(user?.email ?? "EA").slice(0, 2).toUpperCase()} />
+          <PAvatar.Text size={64} label={(user?.email ?? "EA").slice(0, 2).toUpperCase()} />
           <View style={styles.profileInfo}>
             <PText variant="titleMedium">{user?.email ?? "Kullanıcı"}</PText>
             <PText variant="bodySmall">{user?.email ?? "demo@pstcoaching.app"}</PText>
@@ -32,17 +32,17 @@ const ProfileAccountContent = ({ isOffline }: { isOffline?: boolean }) => {
       </SectionCard>
 
       <SectionCard title="Güvenlik" actionLabel="">
-        <List.Item
+        <PListItem
           title="Şifre Değiştir"
           description="Son güncelleme 2 ay önce"
-          left={(props) => <List.Icon {...props} icon="lock-outline" />}
+          left={(props) => <PListIcon {...props} icon="lock-outline" />}
           onPress={() => navigation.navigate("ProfileChangePassword")}
         />
-        <Divider />
-        <List.Item
+        <PDivider />
+        <PListItem
           title="Giriş Yapılan Cihazlar"
           description="2 aktif oturum"
-          left={(props) => <List.Icon {...props} icon="cellphone" />}
+          left={(props) => <PListIcon {...props} icon="cellphone" />}
         />
         <PButton mode="contained-tonal" style={styles.actionButton} disabled={isOffline}>
           Güvenlik Ayarları
@@ -50,16 +50,16 @@ const ProfileAccountContent = ({ isOffline }: { isOffline?: boolean }) => {
       </SectionCard>
 
       <SectionCard title="Hesap" actionLabel="">
-        <List.Item
+        <PListItem
           title="Verilerimi İndir"
           description="CSV ve PDF"
-          left={(props) => <List.Icon {...props} icon="download" />}
+          left={(props) => <PListIcon {...props} icon="download" />}
         />
-        <Divider />
-        <List.Item
+        <PDivider />
+        <PListItem
           title="Çıkış Yap"
           description="Hesabından güvenli çıkış"
-          left={(props) => <List.Icon {...props} icon="logout" />}
+          left={(props) => <PListIcon {...props} icon="logout" />}
           onPress={() => navigation.navigate("ProfileLogoutConfirm")}
         />
       </SectionCard>
@@ -78,7 +78,7 @@ export const ProfileAccountScreen = ({
     return (
       <ScreenLayout title="Hesap" subtitle="Hesap hazırlanıyor">
         <SectionCard title="Yükleniyor">
-          <ActivityIndicator animating />
+          <PActivityIndicator animating />
           <SkeletonBlock height={20} />
           <SkeletonBlock height={20} />
         </SectionCard>

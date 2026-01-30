@@ -1,6 +1,5 @@
 import React from "react";
 import { StyleSheet, View, TouchableOpacity, ScrollView, Image } from "react-native";
-import { ActivityIndicator } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { OfflineNotice } from "../components/OfflineNotice";
@@ -9,7 +8,8 @@ import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
-import { PButton, PIconButton, PText, PTextInput } from "../../components";
+import { PActivityIndicator, PButton, PIconButton, PText, PTextInput } from "../../components";
+
 
 const LoginContent = ({ isOffline }: { isOffline?: boolean }) => {
   const [rememberMe, setRememberMe] = React.useState(true);
@@ -163,7 +163,7 @@ export const AuthLoginScreen = ({ route }: { route?: { params?: { state?: Screen
     return (
       <ScreenLayout title="Giriş" subtitle="Giriş formu hazırlanıyor">
         <SectionCard title="Yükleniyor">
-          <ActivityIndicator animating />
+          <PActivityIndicator animating />
           <SkeletonBlock height={18} />
           <SkeletonBlock height={18} />
         </SectionCard>

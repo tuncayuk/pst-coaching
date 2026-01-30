@@ -1,6 +1,5 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import { ActivityIndicator, Switch } from "react-native-paper";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
@@ -8,7 +7,8 @@ import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
 import { getPrimaryUser, getReminderSettings } from "../../data/mockSelectors";
-import { PButton, PCard, PText } from "../../components";
+import { PActivityIndicator, PButton, PCard, PSwitch, PText } from "../../components";
+
 
 const ProfileRemindersContent = ({ isOffline }: { isOffline?: boolean }) => {
   const user = getPrimaryUser();
@@ -25,7 +25,7 @@ const ProfileRemindersContent = ({ isOffline }: { isOffline?: boolean }) => {
                 Varsayılan saat: {reminder?.time_local ?? "20:00"}
               </PText>
             </View>
-            <Switch value={reminder?.enabled ?? false} disabled={isOffline} />
+            <PSwitch value={reminder?.enabled ?? false} disabled={isOffline} />
           </PCard.Content>
         </PCard>
         <PButton mode="outlined" disabled={isOffline}>
@@ -54,7 +54,7 @@ export const ProfileRemindersScreen = ({
     return (
       <ScreenLayout title="Hatırlatmalar" subtitle="Ayarlar hazırlanıyor">
         <SectionCard title="Yükleniyor">
-          <ActivityIndicator animating />
+          <PActivityIndicator animating />
           <SkeletonBlock height={20} />
           <SkeletonBlock height={20} />
         </SectionCard>

@@ -1,6 +1,5 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import { ActivityIndicator, Chip, Divider, ProgressBar } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
@@ -8,7 +7,8 @@ import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
-import { PButton, PCard, PText } from "../../components";
+
+import { PActivityIndicator, PButton, PCard, PChip, PDivider, PProgressBar, PText } from "../../components";
 import {
   getContentProgressForUser,
   getJourneyById,
@@ -16,6 +16,7 @@ import {
   getPrimaryUser,
   getJourneys,
 } from "../../data/mockSelectors";
+
 
 type RouteParams = { state?: ScreenState; id?: string };
 
@@ -46,17 +47,17 @@ const ContentJourneyHomeContent = ({
           {journey?.description ?? "Yolculuğun kısa açıklaması burada yer alır."}
         </PText>
         <View style={styles.chipRow}>
-          <Chip style={styles.chip} disabled={isOffline}>
+          <PChip style={styles.chip} disabled={isOffline}>
             {journey?.level ?? "başlangıç"}
-          </Chip>
-          <Chip style={styles.chip} disabled={isOffline}>
+          </PChip>
+          <PChip style={styles.chip} disabled={isOffline}>
             {journey?.duration_days ?? 0} gün
-          </Chip>
-          <Chip style={styles.chip} disabled={isOffline}>
+          </PChip>
+          <PChip style={styles.chip} disabled={isOffline}>
             {journey?.daily_target ?? "10 dk"}
-          </Chip>
+          </PChip>
         </View>
-        <ProgressBar progress={progress} style={styles.progress} />
+        <PProgressBar progress={progress} style={styles.progress} />
         <PText variant="bodySmall" style={styles.subtleText}>
           {completedCount}/{days.length} gün tamamlandı
         </PText>
@@ -100,7 +101,7 @@ const ContentJourneyHomeContent = ({
                 Gün İçeriği
               </PButton>
             </PCard.Actions>
-            {index < days.length - 1 ? <Divider style={styles.divider} /> : null}
+            {index < days.length - 1 ? <PDivider style={styles.divider} /> : null}
           </PCard>
         ))}
       </SectionCard>
@@ -120,7 +121,7 @@ export const ContentJourneyHomeScreen = ({
     return (
       <ScreenLayout title="Yolculuk" subtitle="Yolculuk yükleniyor">
         <SectionCard title="Yükleniyor">
-          <ActivityIndicator animating />
+          <PActivityIndicator animating />
           <SkeletonBlock height={20} />
           <SkeletonBlock height={14} />
         </SectionCard>

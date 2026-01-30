@@ -1,13 +1,13 @@
 import React from "react";
 import { StyleSheet } from "react-native";
-import { ActivityIndicator } from "react-native-paper";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
-import { PButton, PCard, PText } from "../../components";
+import { PActivityIndicator, PButton, PCard, PText } from "../../components";
+
 
 const primaryRecommendation = {
   title: "Öz Şefkat Yolculuğu",
@@ -82,7 +82,7 @@ export const DiscoverAssistantResultsScreen = ({
     return (
       <ScreenLayout title="İçerik Asistanı Sonuçları" subtitle="Öneriler hazırlanıyor">
         <SectionCard title="Yükleniyor">
-          <ActivityIndicator animating />
+          <PActivityIndicator animating />
           <SkeletonBlock height={18} />
           <SkeletonBlock height={18} />
         </SectionCard>

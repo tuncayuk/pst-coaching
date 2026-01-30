@@ -3,6 +3,7 @@ import { StyleSheet, View } from "react-native";
 import { useTheme } from "react-native-paper";
 import { PSurface, PText } from "../../components";
 
+
 type SectionCardProps = {
   title: string;
   actionLabel?: string;

@@ -1,6 +1,5 @@
 import React from "react";
 import { StyleSheet } from "react-native";
-import { ActivityIndicator, Chip } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
@@ -9,7 +8,8 @@ import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
 import { getModuleById, getModules, getPackagesForModule } from "../../data/mockSelectors";
-import { PButton, PCard, PText } from "../../components";
+import { PActivityIndicator, PButton, PCard, PChip, PText } from "../../components";
+
 
 type RouteParams = { state?: ScreenState; id?: string };
 
@@ -31,9 +31,9 @@ const ContentModuleHomeContent = ({
         <PText variant="bodySmall" style={styles.subtleText}>
           {module?.description ?? "Modül içeriğini paketlere bölünmüş olarak tamamla."}
         </PText>
-        <Chip style={styles.chip} disabled={isOffline}>
+        <PChip style={styles.chip} disabled={isOffline}>
           {packages.length} paket
-        </Chip>
+        </PChip>
         <PButton
           mode="contained"
           style={styles.primaryButton}
@@ -84,7 +84,7 @@ export const ContentModuleHomeScreen = ({ route }: { route?: { params?: RoutePar
     return (
       <ScreenLayout title="Modül" subtitle="Modül yükleniyor">
         <SectionCard title="Yükleniyor">
-          <ActivityIndicator animating />
+          <PActivityIndicator animating />
           <SkeletonBlock height={20} />
           <SkeletonBlock height={14} />
         </SectionCard>

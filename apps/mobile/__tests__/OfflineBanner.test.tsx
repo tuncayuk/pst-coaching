@@ -1,9 +1,10 @@
 import React from "react";
 import { render } from "@testing-library/react-native";
-import { Provider as StoreProvider } from "react-redux";
 import { PaperProvider } from "react-native-paper";
+import { Provider as StoreProvider } from "react-redux";
 import { OfflineBanner } from "../components/OfflineBanner";
 import { createAppStore } from "../state/store";
+
 
 describe("OfflineBanner", () => {
   it("shows when offline", () => {

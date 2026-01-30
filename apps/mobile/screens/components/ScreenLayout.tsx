@@ -3,6 +3,7 @@ import { SafeAreaView, ScrollView, StyleSheet, View } from "react-native";
 import { useTheme } from "react-native-paper";
 import { PSurface, PText } from "../../components";
 
+
 type ScreenLayoutProps = {
   title: string;
   subtitle?: string;

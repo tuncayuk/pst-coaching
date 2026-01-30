@@ -1,13 +1,13 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import { ActivityIndicator, Chip } from "react-native-paper";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
-import { PButton, PText, PTextInput } from "../../components";
+import { PActivityIndicator, PButton, PChip, PText, PTextInput } from "../../components";
+
 
 const ratingLabels = ["Harika", "Faydalı", "Geliştirilebilir", "Zorlayıcı"];
 
@@ -18,9 +18,9 @@ const ContentReviewPromptContent = ({ isOffline }: { isOffline?: boolean }) => {
         <PText variant="bodySmall">Deneyimini seçerek değerlendir.</PText>
         <View style={styles.chipRow}>
           {ratingLabels.map((label) => (
-            <Chip key={label} style={styles.chip} disabled={isOffline}>
+            <PChip key={label} style={styles.chip} disabled={isOffline}>
               {label}
-            </Chip>
+            </PChip>
           ))}
         </View>
         <PTextInput
@@ -57,7 +57,7 @@ export const ContentReviewPromptScreen = ({
     return (
       <ScreenLayout title="Değerlendirme" subtitle="Değerlendirme hazırlanıyor">
         <SectionCard title="Yükleniyor">
-          <ActivityIndicator animating />
+          <PActivityIndicator animating />
           <SkeletonBlock height={18} />
           <SkeletonBlock height={18} />
         </SectionCard>

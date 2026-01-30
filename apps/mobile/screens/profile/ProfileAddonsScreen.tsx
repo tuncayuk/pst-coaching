@@ -1,19 +1,20 @@
 import React from "react";
 import { StyleSheet } from "react-native";
-import { ActivityIndicator, Chip } from "react-native-paper";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
-import { PButton, PCard, PText } from "../../components";
+
+import { PActivityIndicator, PButton, PCard, PChip, PText } from "../../components";
 import {
   getAddOns,
   getAddOnsForSubscription,
   getPrimaryUser,
   getSubscriptionForUser,
 } from "../../data/mockSelectors";
+
 
 const ProfileAddonsContent = ({ isOffline }: { isOffline?: boolean }) => {
   const user = getPrimaryUser();
@@ -33,7 +34,7 @@ const ProfileAddonsContent = ({ isOffline }: { isOffline?: boolean }) => {
           <PCard key={addon.id} style={styles.card}>
             <PCard.Title title={addon.name} subtitle={addon.description} />
             <PCard.Content>
-              <Chip compact>{addon.status}</Chip>
+              <PChip compact>{addon.status}</PChip>
             </PCard.Content>
             <PCard.Actions>
               <PButton mode="contained" disabled={isOffline}>
@@ -70,7 +71,7 @@ export const ProfileAddonsScreen = ({
     return (
       <ScreenLayout title="Add-on Yönetimi" subtitle="Add-on'lar hazırlanıyor">
         <SectionCard title="Yükleniyor">
-          <ActivityIndicator animating />
+          <PActivityIndicator animating />
           <SkeletonBlock height={18} />
           <SkeletonBlock height={18} />
         </SectionCard>

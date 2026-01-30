@@ -1,6 +1,5 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import { ActivityIndicator, Chip } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
@@ -8,13 +7,15 @@ import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
-import { PButton, PCard, PText } from "../../components";
+
+import { PActivityIndicator, PButton, PCard, PChip, PText } from "../../components";
 import {
   getContentItemsForParent,
   getJourneyDaysForJourney,
   getJourneyById,
   getJourneys,
 } from "../../data/mockSelectors";
+
 
 type RouteParams = { state?: ScreenState; id?: string; day?: string };
 
@@ -43,12 +44,12 @@ const ContentJourneyDayContent = ({
           {day ? `Gün ${day.day_number} · ${day.title}` : "Gün içeriği"}
         </PText>
         <View style={styles.chipRow}>
-          <Chip style={styles.chip} disabled={isOffline}>
+          <PChip style={styles.chip} disabled={isOffline}>
             08:00 kuralı
-          </Chip>
-          <Chip style={styles.chip} disabled={isOffline}>
+          </PChip>
+          <PChip style={styles.chip} disabled={isOffline}>
             Yorum teslimi 23:59
-          </Chip>
+          </PChip>
         </View>
       </SectionCard>
 
@@ -109,7 +110,7 @@ export const ContentJourneyDayScreen = ({
     return (
       <ScreenLayout title="Gün İçeriği" subtitle="Gün İçeriği yükleniyor">
         <SectionCard title="Yükleniyor">
-          <ActivityIndicator animating />
+          <PActivityIndicator animating />
           <SkeletonBlock height={20} />
           <SkeletonBlock height={16} />
         </SectionCard>

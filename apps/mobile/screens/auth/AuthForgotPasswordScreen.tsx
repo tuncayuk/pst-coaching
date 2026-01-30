@@ -1,6 +1,5 @@
 import React from "react";
 import { StyleSheet, View, TouchableOpacity, ScrollView } from "react-native";
-import { ActivityIndicator } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { OfflineNotice } from "../components/OfflineNotice";
@@ -9,7 +8,8 @@ import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
-import { PButton, PText, PTextInput } from "../../components";
+import { PActivityIndicator, PButton, PText, PTextInput } from "../../components";
+
 
 const ForgotPasswordContent = ({ isOffline }: { isOffline?: boolean }) => {
   const [email, setEmail] = React.useState("");
@@ -90,7 +90,7 @@ export const AuthForgotPasswordScreen = ({
     return (
       <ScreenLayout title="Şifremi Unuttum" subtitle="Yükleniyor">
         <SectionCard title="Yükleniyor">
-          <ActivityIndicator animating />
+          <PActivityIndicator animating />
           <SkeletonBlock height={18} />
           <SkeletonBlock height={18} />
         </SectionCard>

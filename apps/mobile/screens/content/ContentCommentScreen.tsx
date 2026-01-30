@@ -1,13 +1,13 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import { ActivityIndicator, Chip } from "react-native-paper";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
-import { PButton, PText, PTextInput } from "../../components";
+import { PActivityIndicator, PButton, PChip, PText, PTextInput } from "../../components";
+
 
 const emotionTags = ["Sakin", "Meraklı", "Huzurlu", "Zorlanmış"];
 
@@ -34,9 +34,9 @@ const ContentCommentContent = ({ isOffline }: { isOffline?: boolean }) => {
       <SectionCard title="Duygu Seç">
         <View style={styles.chipRow}>
           {emotionTags.map((tag) => (
-            <Chip key={tag} style={styles.chip} disabled={isOffline}>
+            <PChip key={tag} style={styles.chip} disabled={isOffline}>
               {tag}
-            </Chip>
+            </PChip>
           ))}
         </View>
         <PButton mode="contained" disabled={isOffline}>
@@ -58,7 +58,7 @@ export const ContentCommentScreen = ({
     return (
       <ScreenLayout title="Yorum" subtitle="Yorum hazırlanıyor">
         <SectionCard title="Yükleniyor">
-          <ActivityIndicator animating />
+          <PActivityIndicator animating />
           <SkeletonBlock height={18} />
           <SkeletonBlock height={18} />
         </SectionCard>

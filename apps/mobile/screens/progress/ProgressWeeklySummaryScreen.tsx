@@ -1,13 +1,13 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import { ActivityIndicator, Chip } from "react-native-paper";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
-import { PButton, PCard, PText } from "../../components";
+import { PActivityIndicator, PButton, PCard, PChip, PText } from "../../components";
+
 
 const dailyStats = [
   { label: "Pzt", value: 2 },
@@ -30,7 +30,7 @@ const ProgressWeeklySummaryContent = ({ isOffline }: { isOffline?: boolean }) =>
           {dailyStats.map((day) => (
             <View key={day.label} style={styles.dayCard}>
               <PText variant="labelLarge">{day.label}</PText>
-              <Chip compact>{day.value}</Chip>
+              <PChip compact>{day.value}</PChip>
             </View>
           ))}
         </View>
@@ -66,7 +66,7 @@ export const ProgressWeeklySummaryScreen = ({
     return (
       <ScreenLayout title="Haftalık Özet" subtitle="Özet hazırlanıyor">
         <SectionCard title="Yükleniyor">
-          <ActivityIndicator animating />
+          <PActivityIndicator animating />
           <SkeletonBlock height={18} />
           <SkeletonBlock height={18} />
         </SectionCard>

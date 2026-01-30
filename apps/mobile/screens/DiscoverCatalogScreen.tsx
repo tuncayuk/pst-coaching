@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import { ActivityIndicator, Chip, useTheme } from "react-native-paper";
+import { useTheme } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "./components/OfflineNotice";
 import { ScreenLayout } from "./components/ScreenLayout";
@@ -9,7 +9,8 @@ import { SkeletonBlock } from "./components/SkeletonBlock";
 import { StateMessage } from "./components/StateMessage";
 import { resolveScreenState, ScreenState } from "./components/ScreenState";
 import { getEbooks, getJourneys, getModules, getWorkshops } from "../data/mockSelectors";
-import { PButton, PCard, PText } from "../components";
+import { PActivityIndicator, PButton, PCard, PChip, PText } from "../components";
+
 
 const DiscoverReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
   const theme = useTheme();
@@ -42,9 +43,9 @@ const DiscoverReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
       <SectionCard title="Senin İçin" actionLabel="Filtrele">
         <View style={styles.chipRow}>
           {["Önerilen", "Yeni", "Kısa", "Sesli"].map((label) => (
-            <Chip key={label} style={styles.chip} disabled={isOffline}>
+            <PChip key={label} style={styles.chip} disabled={isOffline}>
               {label}
-            </Chip>
+            </PChip>
           ))}
         </View>
       </SectionCard>
@@ -98,7 +99,7 @@ export const DiscoverCatalogScreen = ({ route }: { route?: { params?: { state?: 
     return (
       <ScreenLayout title="Keşfet" subtitle="İçerikler hazırlanıyor">
         <SectionCard title="Yükleniyor">
-          <ActivityIndicator animating />
+          <PActivityIndicator animating />
           <SkeletonBlock height={18} />
           <SkeletonBlock height={18} />
           <SkeletonBlock height={18} />

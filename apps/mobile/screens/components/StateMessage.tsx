@@ -1,7 +1,8 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import { Avatar, useTheme } from "react-native-paper";
-import { PButton, PText } from "../../components";
+import { useTheme } from "react-native-paper";
+import { PAvatar, PButton, PText } from "../../components";
+
 
 type StateMessageProps = {
   title: string;
@@ -24,7 +25,7 @@ export const StateMessage = ({
 
   return (
     <View style={[styles.container, { backgroundColor: background }]}> 
-      <Avatar.Icon size={56} icon={icon} style={styles.avatar} />
+      <PAvatar.Icon size={56} icon={icon} style={styles.avatar} />
       <PText variant="titleLarge" style={{ color: onBackground, marginBottom: 4 }}>
         {title}
       </PText>

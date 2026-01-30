@@ -1,6 +1,5 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import { ActivityIndicator, Chip, Switch } from "react-native-paper";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
@@ -8,7 +7,8 @@ import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
 import { getAccessibilitySettings, getPrimaryUser } from "../../data/mockSelectors";
-import { PButton, PCard, PText } from "../../components";
+import { PActivityIndicator, PButton, PCard, PChip, PSwitch, PText } from "../../components";
+
 
 const ProfileAccessibilityContent = ({ isOffline }: { isOffline?: boolean }) => {
   const user = getPrimaryUser();
@@ -25,7 +25,7 @@ const ProfileAccessibilityContent = ({ isOffline }: { isOffline?: boolean }) => 
                 Daha net metin ve arka plan
               </PText>
             </View>
-            <Switch value={settings?.high_contrast ?? false} disabled={isOffline} />
+            <PSwitch value={settings?.high_contrast ?? false} disabled={isOffline} />
           </PCard.Content>
         </PCard>
         <PCard style={styles.card}>
@@ -36,7 +36,7 @@ const ProfileAccessibilityContent = ({ isOffline }: { isOffline?: boolean }) => 
                 Animasyonları minimize et
               </PText>
             </View>
-            <Switch value={settings?.reduce_motion ?? false} disabled={isOffline} />
+            <PSwitch value={settings?.reduce_motion ?? false} disabled={isOffline} />
           </PCard.Content>
         </PCard>
       </SectionCard>
@@ -47,9 +47,9 @@ const ProfileAccessibilityContent = ({ isOffline }: { isOffline?: boolean }) => 
         </PText>
         <View style={styles.chipRow}>
           {["small", "medium", "large"].map((size) => (
-            <Chip key={size} style={styles.chip} disabled={isOffline}>
+            <PChip key={size} style={styles.chip} disabled={isOffline}>
               {size}
-            </Chip>
+            </PChip>
           ))}
         </View>
         <PButton mode="contained" disabled={isOffline}>
@@ -71,7 +71,7 @@ export const ProfileAccessibilityScreen = ({
     return (
       <ScreenLayout title="Erişilebilirlik" subtitle="Ayarlar hazırlanıyor">
         <SectionCard title="Yükleniyor">
-          <ActivityIndicator animating />
+          <PActivityIndicator animating />
           <SkeletonBlock height={20} />
           <SkeletonBlock height={20} />
         </SectionCard>

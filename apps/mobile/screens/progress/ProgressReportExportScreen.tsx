@@ -1,13 +1,13 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import { ActivityIndicator, Chip, Divider } from "react-native-paper";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
-import { PButton, PCard, PText } from "../../components";
+import { PActivityIndicator, PButton, PCard, PChip, PDivider, PText } from "../../components";
+
 
 const formats = ["PDF", "CSV", "Paylaş"];
 
@@ -20,9 +20,9 @@ const ProgressReportExportContent = ({ isOffline }: { isOffline?: boolean }) => 
         </PText>
         <View style={styles.chipRow}>
           {formats.map((label) => (
-            <Chip key={label} style={styles.chip} disabled={isOffline}>
+            <PChip key={label} style={styles.chip} disabled={isOffline}>
               {label}
-            </Chip>
+            </PChip>
           ))}
         </View>
       </SectionCard>
@@ -44,7 +44,7 @@ const ProgressReportExportContent = ({ isOffline }: { isOffline?: boolean }) => 
         </PCard>
       </SectionCard>
 
-      <Divider style={styles.divider} />
+      <PDivider style={styles.divider} />
 
       <SectionCard title="Dışa Aktarma Notu">
         <PText variant="bodySmall">
@@ -66,7 +66,7 @@ export const ProgressReportExportScreen = ({
     return (
       <ScreenLayout title="Rapor Dışa Aktar" subtitle="Rapor hazırlanıyor">
         <SectionCard title="Yükleniyor">
-          <ActivityIndicator animating />
+          <PActivityIndicator animating />
           <SkeletonBlock height={18} />
           <SkeletonBlock height={18} />
         </SectionCard>

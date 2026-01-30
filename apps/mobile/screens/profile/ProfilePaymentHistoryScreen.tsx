@@ -1,18 +1,19 @@
 import React from "react";
 import { StyleSheet } from "react-native";
-import { ActivityIndicator, Chip } from "react-native-paper";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
-import { PButton, PCard, PText } from "../../components";
+
+import { PActivityIndicator, PButton, PCard, PChip, PText } from "../../components";
 import {
   getPaymentTransactions,
   getPrimaryUser,
   getSubscriptionForUser,
 } from "../../data/mockSelectors";
+
 
 const ProfilePaymentHistoryContent = ({ isOffline }: { isOffline?: boolean }) => {
   const user = getPrimaryUser();
@@ -31,7 +32,7 @@ const ProfilePaymentHistoryContent = ({ isOffline }: { isOffline?: boolean }) =>
               <PText variant="bodyMedium">
                 {transaction.amount} {transaction.currency}
               </PText>
-              <Chip compact>Başarılı</Chip>
+              <PChip compact>Başarılı</PChip>
             </PCard.Content>
             <PCard.Actions>
               <PButton mode="text" disabled={isOffline}>
@@ -63,7 +64,7 @@ export const ProfilePaymentHistoryScreen = ({
     return (
       <ScreenLayout title="Ödeme Geçmişi" subtitle="Ödeme geçmişi hazırlanıyor">
         <SectionCard title="Yükleniyor">
-          <ActivityIndicator animating />
+          <PActivityIndicator animating />
           <SkeletonBlock height={18} />
           <SkeletonBlock height={18} />
         </SectionCard>

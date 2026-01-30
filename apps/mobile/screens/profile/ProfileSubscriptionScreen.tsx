@@ -1,6 +1,5 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import { ActivityIndicator, Chip, Divider, List } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
@@ -8,7 +7,8 @@ import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
-import { PButton, PCard, PText } from "../../components";
+
+import { PActivityIndicator, PButton, PCard, PChip, PDivider, PListIcon, PListItem, PText } from "../../components";
 import {
   getAddOnsForSubscription,
   getPlanForSubscription,
@@ -16,6 +16,7 @@ import {
   getSeatsForSubscription,
   getSubscriptionForUser,
 } from "../../data/mockSelectors";
+
 
 const benefits = ["Sınırsız içerik", "Offline indirme", "Aile paylaşımı"];
 
@@ -37,7 +38,7 @@ const ProfileSubscriptionContent = ({ isOffline }: { isOffline?: boolean }) => {
           />
           <PCard.Content>
             <View style={styles.row}>
-              <Chip compact>{subscription?.status ?? "aktif"}</Chip>
+              <PChip compact>{subscription?.status ?? "aktif"}</PChip>
               <PText variant="bodySmall">{plan?.seat_limit ?? 1} kişilik</PText>
             </View>
             <View style={styles.benefitList}>
@@ -64,24 +65,24 @@ const ProfileSubscriptionContent = ({ isOffline }: { isOffline?: boolean }) => {
       </SectionCard>
 
       <SectionCard title="Ek Özellikler" actionLabel="">
-        <List.Item
+        <PListItem
           title="Add-on Yönetimi"
           description={`${addOns.length} aktif eklenti`}
-          left={(props) => <List.Icon {...props} icon="puzzle" />}
+          left={(props) => <PListIcon {...props} icon="puzzle" />}
           onPress={() => navigation.navigate("ProfileAddons")}
         />
-        <Divider />
-        <List.Item
+        <PDivider />
+        <PListItem
           title="Kişi Yönetimi"
           description={`${seats.filter((seat) => seat.status === "active").length}/${seats.length} koltuk`}
-          left={(props) => <List.Icon {...props} icon="account-multiple" />}
+          left={(props) => <PListIcon {...props} icon="account-multiple" />}
           onPress={() => navigation.navigate("ProfileSeatManagement")}
         />
-        <Divider />
-        <List.Item
+        <PDivider />
+        <PListItem
           title="Öğrenci İndirimi"
           description="Uygunluk kontrolü"
-          left={(props) => <List.Icon {...props} icon="school-outline" />}
+          left={(props) => <PListIcon {...props} icon="school-outline" />}
           onPress={() => navigation.navigate("ProfileStudentDiscount")}
         />
       </SectionCard>
@@ -121,7 +122,7 @@ export const ProfileSubscriptionScreen = ({
     return (
       <ScreenLayout title="Abonelik" subtitle="Abonelik hazırlanıyor">
         <SectionCard title="Yükleniyor">
-          <ActivityIndicator animating />
+          <PActivityIndicator animating />
           <SkeletonBlock height={20} />
           <SkeletonBlock height={20} />
         </SectionCard>

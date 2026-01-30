@@ -1,13 +1,13 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import { ActivityIndicator, Chip, ProgressBar } from "react-native-paper";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
-import { PButton, PCard, PText } from "../../components";
+import { PActivityIndicator, PButton, PCard, PChip, PProgressBar, PText } from "../../components";
+
 
 const moodTags = ["Sakin", "Odaklı", "Meraklı", "Düşük enerji"];
 
@@ -36,15 +36,15 @@ const ProgressEmotionalMapContent = ({ isOffline }: { isOffline?: boolean }) => 
         <PText variant="bodySmall" style={styles.paragraph}>
           Son iki haftada duygusal denge puanın %68.
         </PText>
-        <ProgressBar progress={0.68} />
+        <PProgressBar progress={0.68} />
       </SectionCard>
 
       <SectionCard title="Duygu Etiketleri" actionLabel="Filtre">
         <View style={styles.chipRow}>
           {moodTags.map((label) => (
-            <Chip key={label} style={styles.chip} disabled={isOffline}>
+            <PChip key={label} style={styles.chip} disabled={isOffline}>
               {label}
-            </Chip>
+            </PChip>
           ))}
         </View>
         <PButton mode="outlined" disabled={isOffline}>
@@ -66,7 +66,7 @@ export const ProgressEmotionalMapScreen = ({
     return (
       <ScreenLayout title="Duygusal Harita" subtitle="Harita hazırlanıyor">
         <SectionCard title="Yükleniyor">
-          <ActivityIndicator animating />
+          <PActivityIndicator animating />
           <SkeletonBlock height={18} />
           <SkeletonBlock height={18} />
         </SectionCard>

@@ -1,6 +1,5 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import { ActivityIndicator, RadioButton } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
@@ -9,7 +8,8 @@ import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
 import { getPrimaryUser } from "../../data/mockSelectors";
-import { PButton, PText } from "../../components";
+import { PActivityIndicator, PButton, PRadioButtonGroup, PRadioButtonItem, PText } from "../../components";
+
 
 const LanguageSelectContent = ({ isOffline }: { isOffline?: boolean }) => {
   const navigation = useNavigation<any>();
@@ -22,26 +22,26 @@ const LanguageSelectContent = ({ isOffline }: { isOffline?: boolean }) => {
         <PText variant="bodyMedium" style={styles.helperText}>
           Uygulamayı kullanacağın dili seçerek başlayalım.
         </PText>
-        <RadioButton.Group
+        <PRadioButtonGroup
           onValueChange={(value) => setSelectedLanguage(value)}
           value={selectedLanguage}
         >
-          <RadioButton.Item
+          <PRadioButtonItem
             label="Türkçe"
             value="tr"
             disabled={isOffline}
           />
-          <RadioButton.Item
+          <PRadioButtonItem
             label="English"
             value="en"
             disabled={isOffline}
           />
-          <RadioButton.Item
+          <PRadioButtonItem
             label="Español"
             value="es"
             disabled={isOffline}
           />
-        </RadioButton.Group>
+        </PRadioButtonGroup>
         <PButton
           mode="contained"
           style={styles.primaryButton}
@@ -71,7 +71,7 @@ export const OnboardingLanguageSelectScreen = ({
     return (
       <ScreenLayout title="Dil Seçimi" subtitle="Dil seçenekleri hazırlanıyor">
         <SectionCard title="Yükleniyor">
-          <ActivityIndicator animating />
+          <PActivityIndicator animating />
           <SkeletonBlock height={18} />
           <SkeletonBlock height={18} />
         </SectionCard>

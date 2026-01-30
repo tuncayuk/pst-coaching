@@ -1,6 +1,5 @@
 import React from "react";
 import { StyleSheet, View, ScrollView } from "react-native";
-import { ActivityIndicator } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { OfflineNotice } from "../components/OfflineNotice";
@@ -9,7 +8,8 @@ import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
-import { PButton, PText } from "../../components";
+import { PActivityIndicator, PButton, PText } from "../../components";
+
 
 const GuestModeContent = ({ isOffline }: { isOffline?: boolean }) => {
   const navigation = useNavigation<any>();
@@ -77,7 +77,7 @@ export const AuthGuestModeScreen = ({
     return (
       <ScreenLayout title="Misafir Modu" subtitle="Yükleniyor">
         <SectionCard title="Yükleniyor">
-          <ActivityIndicator animating />
+          <PActivityIndicator animating />
           <SkeletonBlock height={18} />
         </SectionCard>
       </ScreenLayout>

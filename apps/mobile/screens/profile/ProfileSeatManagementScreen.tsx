@@ -1,13 +1,13 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import { ActivityIndicator, Chip } from "react-native-paper";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
-import { PButton, PCard, PText } from "../../components";
+
+import { PActivityIndicator, PButton, PCard, PChip, PText } from "../../components";
 import {
   getInvitesForSubscription,
   getPrimaryUser,
@@ -15,6 +15,7 @@ import {
   getSubscriptionForUser,
   getUsers,
 } from "../../data/mockSelectors";
+
 
 const ProfileSeatManagementContent = ({ isOffline }: { isOffline?: boolean }) => {
   const user = getPrimaryUser();
@@ -42,7 +43,7 @@ const ProfileSeatManagementContent = ({ isOffline }: { isOffline?: boolean }) =>
                 <PText variant="bodyMedium">{seat.name}</PText>
                 <PText variant="bodySmall">{seat.role}</PText>
               </View>
-              <Chip compact>{seat.status}</Chip>
+              <PChip compact>{seat.status}</PChip>
             </PCard.Content>
             <PCard.Actions>
               <PButton mode="outlined" disabled={isOffline}>
@@ -83,7 +84,7 @@ export const ProfileSeatManagementScreen = ({
     return (
       <ScreenLayout title="Kişi Yönetimi" subtitle="Kişiler hazırlanıyor">
         <SectionCard title="Yükleniyor">
-          <ActivityIndicator animating />
+          <PActivityIndicator animating />
           <SkeletonBlock height={18} />
           <SkeletonBlock height={18} />
         </SectionCard>

@@ -1,6 +1,5 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import { ActivityIndicator, RadioButton } from "react-native-paper";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
@@ -8,7 +7,8 @@ import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
 import { getPrimaryUser } from "../../data/mockSelectors";
-import { PButton, PCard, PText } from "../../components";
+import { PActivityIndicator, PButton, PCard, PRadioButton, PRadioButtonGroup, PText } from "../../components";
+
 
 const languages = [
   { code: "tr", label: "Türkçe" },
@@ -26,11 +26,11 @@ const ProfileLanguageContent = ({ isOffline }: { isOffline?: boolean }) => {
         <PText variant="bodySmall" style={styles.subtleText}>
           Seçimin cihazında çevrimdışı da saklanır.
         </PText>
-        <RadioButton.Group value={currentLanguage} onValueChange={() => undefined}>
+        <PRadioButtonGroup value={currentLanguage} onValueChange={() => undefined}>
           {languages.map((lang) => (
             <PCard key={lang.code} style={styles.card}>
               <PCard.Content style={styles.row}>
-                <RadioButton value={lang.code} disabled={isOffline} />
+                <PRadioButton value={lang.code} disabled={isOffline} />
                 <View>
                   <PText variant="bodyMedium">{lang.label}</PText>
                   <PText variant="bodySmall" style={styles.subtleText}>
@@ -40,7 +40,7 @@ const ProfileLanguageContent = ({ isOffline }: { isOffline?: boolean }) => {
               </PCard.Content>
             </PCard>
           ))}
-        </RadioButton.Group>
+        </PRadioButtonGroup>
         <PButton mode="contained" disabled={isOffline}>
           Kaydet
         </PButton>
@@ -56,7 +56,7 @@ export const ProfileLanguageScreen = ({ route }: { route?: { params?: { state?: 
     return (
       <ScreenLayout title="Dil" subtitle="Dil hazırlanıyor">
         <SectionCard title="Yükleniyor">
-          <ActivityIndicator animating />
+          <PActivityIndicator animating />
           <SkeletonBlock height={20} />
           <SkeletonBlock height={20} />
         </SectionCard>

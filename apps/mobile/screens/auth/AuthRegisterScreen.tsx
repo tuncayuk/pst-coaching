@@ -1,6 +1,5 @@
 import React from "react";
 import { StyleSheet, View, TouchableOpacity, ScrollView } from "react-native";
-import { ActivityIndicator } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { OfflineNotice } from "../components/OfflineNotice";
@@ -9,7 +8,8 @@ import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
-import { PButton, PIconButton, PText, PTextInput } from "../../components";
+import { PActivityIndicator, PButton, PIconButton, PText, PTextInput } from "../../components";
+
 
 const RegisterContent = ({ isOffline }: { isOffline?: boolean }) => {
   const [accepted, setAccepted] = React.useState(false);
@@ -218,7 +218,7 @@ export const AuthRegisterScreen = ({ route }: { route?: { params?: { state?: Scr
     return (
       <ScreenLayout title="Kayıt Ol" subtitle="Kayıt formu hazırlanıyor">
         <SectionCard title="Yükleniyor">
-          <ActivityIndicator animating />
+          <PActivityIndicator animating />
           <SkeletonBlock height={18} />
           <SkeletonBlock height={18} />
         </SectionCard>

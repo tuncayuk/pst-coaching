@@ -1,19 +1,20 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import { ActivityIndicator } from "react-native-paper";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
-import { PButton, PCard, PText } from "../../components";
+
+import { PActivityIndicator, PButton, PCard, PText } from "../../components";
 import {
   getContentItems,
   getHighlightsForUser,
   getNotesForUser,
   getPrimaryUser,
 } from "../../data/mockSelectors";
+
 
 type RouteParams = { state?: ScreenState; id?: string };
 
@@ -66,7 +67,7 @@ export const ContentReadingScreen = ({ route }: { route?: { params?: RouteParams
     return (
       <ScreenLayout title="Okuma" subtitle="Okuma hazırlanıyor">
         <SectionCard title="Yükleniyor">
-          <ActivityIndicator animating />
+          <PActivityIndicator animating />
           <SkeletonBlock height={20} />
           <SkeletonBlock height={20} />
         </SectionCard>

@@ -1,6 +1,5 @@
 import React from "react";
 import { StyleSheet } from "react-native";
-import { ActivityIndicator, Chip } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
@@ -8,12 +7,13 @@ import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
-import { PButton, PCard, PText } from "../../components";
+import { PActivityIndicator, PButton, PCard, PChip, PText } from "../../components";
 import {
   getContentItemsForParent,
   getWorkshopById,
   getWorkshops,
 } from "../../data/mockSelectors";
+
 
 type RouteParams = { state?: ScreenState; id?: string };
 
@@ -35,9 +35,9 @@ const ContentWorkshopHomeContent = ({
         <PText variant="bodySmall" style={styles.subtleText}>
           {workshop?.description ?? "Atölye içeriği ve uygulamalarına buradan erişebilirsin."}
         </PText>
-        <Chip style={styles.chip} disabled={isOffline}>
+        <PChip style={styles.chip} disabled={isOffline}>
           {sections.length} bölüm
-        </Chip>
+        </PChip>
         <PButton
           mode="contained"
           style={styles.primaryButton}
@@ -92,7 +92,7 @@ export const ContentWorkshopHomeScreen = ({
     return (
       <ScreenLayout title="Atölye" subtitle="Atölye yükleniyor">
         <SectionCard title="Yükleniyor">
-          <ActivityIndicator animating />
+          <PActivityIndicator animating />
           <SkeletonBlock height={20} />
           <SkeletonBlock height={14} />
         </SectionCard>

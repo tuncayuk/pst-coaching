@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import { ActivityIndicator, Chip, Divider, ProgressBar, useTheme } from "react-native-paper";
+import { useTheme } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "./components/OfflineNotice";
 import { ScreenLayout } from "./components/ScreenLayout";
@@ -8,7 +8,8 @@ import { SectionCard } from "./components/SectionCard";
 import { SkeletonBlock } from "./components/SkeletonBlock";
 import { StateMessage } from "./components/StateMessage";
 import { resolveScreenState, ScreenState } from "./components/ScreenState";
-import { PButton, PCard, PText } from "../components";
+
+import { PActivityIndicator, PButton, PCard, PChip, PDivider, PProgressBar, PText } from "../components";
 import {
   getAddOnsForSubscription,
   getContentProgressForUser,
@@ -22,6 +23,7 @@ import {
   getSubscriptionForUser,
   getWorkshops,
 } from "../data/mockSelectors";
+
 
 const HomeReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
   const theme = useTheme();
@@ -143,14 +145,14 @@ const HomeReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
         <View style={styles.rowItem}>
           <View style={styles.rowHeader}>
             <PText variant="titleSmall">{nextJourney?.title ?? "Günlük Odak"}</PText>
-            <Chip compact>{subscription?.status ?? "aktif"}</Chip>
+            <PChip compact>{subscription?.status ?? "aktif"}</PChip>
           </View>
           <PText variant="bodySmall" style={{ color: theme.colors.onSurfaceVariant }}>
             {nextJourneyDay
               ? `Gün ${nextJourneyDay.day_number} · ${nextJourney?.daily_target ?? "10 dk"}`
               : "Bugünkü içeriklerini tamamla"}
           </PText>
-          <ProgressBar progress={0.4} style={styles.progress} />
+          <PProgressBar progress={0.4} style={styles.progress} />
         </View>
         <PButton mode="contained" style={styles.primaryButton} disabled={isOffline} onPress={handleContinue}>
           Devam Et
@@ -160,16 +162,16 @@ const HomeReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
       <SectionCard title="Abonelik Durumu" actionLabel="Planlar">
         <View style={styles.rowHeader}>
           <PText variant="titleSmall">{plan?.name ?? "Plan"}</PText>
-          <Chip compact>{subscription?.status ?? "aktif"}</Chip>
+          <PChip compact>{subscription?.status ?? "aktif"}</PChip>
         </View>
         <PText variant="bodySmall" style={{ color: theme.colors.onSurfaceVariant }}>
           {addOns.length > 0 ? "Aktif eklentiler:" : "Aktif eklenti yok"}
         </PText>
         <View style={styles.chipRow}>
           {addOns.map((addon) => (
-            <Chip key={addon.id} style={styles.chip} disabled={isOffline}>
+            <PChip key={addon.id} style={styles.chip} disabled={isOffline}>
               {addon.name}
-            </Chip>
+            </PChip>
           ))}
         </View>
         <PButton
@@ -260,17 +262,17 @@ const HomeReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
           <View key={item.title} style={styles.rowItem}>
             <View style={styles.rowHeader}>
               <PText variant="titleSmall">{item.title}</PText>
-              <Chip compact>{Math.round(item.progress * 100)}%</Chip>
+              <PChip compact>{Math.round(item.progress * 100)}%</PChip>
             </View>
-            {item.progress < 0.2 ? <Chip compact>Kilitli</Chip> : null}
+            {item.progress < 0.2 ? <PChip compact>Kilitli</PChip> : null}
             <PText variant="bodySmall" style={{ color: theme.colors.onSurfaceVariant }}>
               {item.subtitle}
             </PText>
-            <ProgressBar progress={item.progress} style={styles.progress} />
+            <PProgressBar progress={item.progress} style={styles.progress} />
             <PButton mode="text" disabled={isOffline} onPress={item.action}>
               Devam Et
             </PButton>
-            {index < activeItems.length - 1 ? <Divider style={styles.divider} /> : null}
+            {index < activeItems.length - 1 ? <PDivider style={styles.divider} /> : null}
           </View>
         ))}
         <PButton mode="outlined" disabled={isOffline} onPress={() => navigation.navigate("HomeActiveContentList")}>
@@ -307,9 +309,9 @@ const HomeReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
             "Günlük Hedef",
             "Kısa Okuma",
           ].map((label) => (
-            <Chip key={label} style={styles.chip} disabled={isOffline}>
+            <PChip key={label} style={styles.chip} disabled={isOffline}>
               {label}
-            </Chip>
+            </PChip>
           ))}
         </View>
       </SectionCard>
@@ -324,7 +326,7 @@ export const HomeDashboardScreen = ({ route }: { route?: { params?: { state?: Sc
     return (
       <ScreenLayout title="Ana Sayfa" subtitle="İçerikler hazırlanıyor">
         <SectionCard title="Yükleniyor">
-          <ActivityIndicator animating />
+          <PActivityIndicator animating />
           <SkeletonBlock height={20} />
           <SkeletonBlock height={14} />
           <SkeletonBlock height={14} />

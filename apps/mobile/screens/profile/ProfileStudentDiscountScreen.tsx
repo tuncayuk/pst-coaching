@@ -1,13 +1,13 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import { ActivityIndicator, Chip } from "react-native-paper";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
-import { PButton, PCard, PText } from "../../components";
+import { PActivityIndicator, PButton, PCard, PChip, PText } from "../../components";
+
 
 const steps = [
   "Okul e-postanı doğrula",
@@ -25,7 +25,7 @@ const ProfileStudentDiscountContent = ({ isOffline }: { isOffline?: boolean }) =
               <PText variant="bodyMedium">Öğrenci indirimi</PText>
               <PText variant="bodySmall">Durum: İncelemede</PText>
             </View>
-            <Chip compact>İşleniyor</Chip>
+            <PChip compact>İşleniyor</PChip>
           </PCard.Content>
         </PCard>
         <PButton mode="contained" disabled={isOffline}>
@@ -58,7 +58,7 @@ export const ProfileStudentDiscountScreen = ({
     return (
       <ScreenLayout title="Öğrenci İndirimi" subtitle="Doğrulama hazırlanıyor">
         <SectionCard title="Yükleniyor">
-          <ActivityIndicator animating />
+          <PActivityIndicator animating />
           <SkeletonBlock height={18} />
           <SkeletonBlock height={18} />
         </SectionCard>

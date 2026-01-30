@@ -1,13 +1,13 @@
 import React from "react";
 import { StyleSheet } from "react-native";
-import { ActivityIndicator, ProgressBar } from "react-native-paper";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
-import { PButton, PText } from "../../components";
+import { PActivityIndicator, PButton, PProgressBar, PText } from "../../components";
+
 
 const readerParagraphs = [
   "Kendine karşı nazik olmak, zorlayıcı anlarda iç sesini yumuşatmanın ilk adımıdır. Bu bölümde küçük nefes molalarıyla bedenini sakinleştirmeyi deneyeceğiz.",
@@ -20,7 +20,7 @@ const ContentEbookReaderContent = ({ isOffline }: { isOffline?: boolean }) => {
     <>
       <SectionCard title="Okuma İlerlemesi">
         <PText variant="bodySmall">Bölüm 4 · %32 tamamlandı</PText>
-        <ProgressBar progress={0.32} style={styles.progress} />
+        <PProgressBar progress={0.32} style={styles.progress} />
         <PButton mode="contained" disabled={isOffline}>
           Sonraki Bölüm
         </PButton>
@@ -57,7 +57,7 @@ export const ContentEbookReaderScreen = ({
     return (
       <ScreenLayout title="e-Kitap Okuyucu" subtitle="Okuyucu hazırlanıyor">
         <SectionCard title="Yükleniyor">
-          <ActivityIndicator animating />
+          <PActivityIndicator animating />
           <SkeletonBlock height={18} />
           <SkeletonBlock height={18} />
         </SectionCard>

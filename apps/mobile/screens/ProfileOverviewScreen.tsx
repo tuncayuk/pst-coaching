@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import { ActivityIndicator, Avatar, Chip, Divider, List, useTheme } from "react-native-paper";
+import { useTheme } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "./components/OfflineNotice";
 import { ScreenLayout } from "./components/ScreenLayout";
@@ -8,13 +8,15 @@ import { SectionCard } from "./components/SectionCard";
 import { SkeletonBlock } from "./components/SkeletonBlock";
 import { StateMessage } from "./components/StateMessage";
 import { resolveScreenState, ScreenState } from "./components/ScreenState";
-import { PButton, PCard, PText } from "../components";
+
+import { PActivityIndicator, PAvatar, PButton, PCard, PChip, PDivider, PListIcon, PListItem, PText } from "../components";
 import {
   getPaymentTransactions,
   getPrimaryUser,
   getSubscriptionForUser,
   getPlanForSubscription,
 } from "../data/mockSelectors";
+
 
 const ProfileReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
   const theme = useTheme();
@@ -30,14 +32,14 @@ const ProfileReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
     <>
       <SectionCard title="Hesap" actionLabel="Düzenle">
         <View style={styles.profileHeader}>
-          <Avatar.Text size={56} label={(user?.email ?? "EA").slice(0, 2).toUpperCase()} />
+          <PAvatar.Text size={56} label={(user?.email ?? "EA").slice(0, 2).toUpperCase()} />
           <View style={styles.profileInfo}>
             <PText variant="titleMedium">{user?.email ?? "Kullanıcı"}</PText>
             <PText variant="bodySmall" style={{ color: theme.colors.onSurfaceVariant }}>
               {user?.email ?? "demo@pstcoaching.app"}
             </PText>
           </View>
-          <Chip compact>{subscription?.status ?? "aktif"}</Chip>
+          <PChip compact>{subscription?.status ?? "aktif"}</PChip>
         </View>
         <PButton
           mode="outlined"
@@ -70,24 +72,24 @@ const ProfileReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
       </SectionCard>
 
       <SectionCard title="Hızlı Ayarlar" actionLabel="">
-        <List.Item
+        <PListItem
           title="Dil"
           description={user?.language?.toUpperCase() ?? "TR"}
-          left={(props) => <List.Icon {...props} icon="translate" />}
+          left={(props) => <PListIcon {...props} icon="translate" />}
           onPress={() => navigation.navigate("ProfileLanguage")}
         />
-        <Divider />
-        <List.Item
+        <PDivider />
+        <PListItem
           title="Hatırlatmalar"
           description="Haftada 3 gün"
-          left={(props) => <List.Icon {...props} icon="bell-outline" />}
+          left={(props) => <PListIcon {...props} icon="bell-outline" />}
           onPress={() => navigation.navigate("ProfileReminders")}
         />
-        <Divider />
-        <List.Item
+        <PDivider />
+        <PListItem
           title="Erişilebilirlik"
           description="Dinamik yazı tipi"
-          left={(props) => <List.Icon {...props} icon="human-handsup" />}
+          left={(props) => <PListIcon {...props} icon="human-handsup" />}
           onPress={() => navigation.navigate("ProfileAccessibility")}
         />
       </SectionCard>
@@ -116,7 +118,7 @@ export const ProfileOverviewScreen = ({ route }: { route?: { params?: { state?: 
     return (
       <ScreenLayout title="Profil" subtitle="Bilgiler hazırlanıyor">
         <SectionCard title="Yükleniyor">
-          <ActivityIndicator animating />
+          <PActivityIndicator animating />
           <SkeletonBlock height={20} />
           <SkeletonBlock height={20} />
           <SkeletonBlock height={20} />

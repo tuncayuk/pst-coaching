@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import { ActivityIndicator, Chip, List, ProgressBar, useTheme } from "react-native-paper";
+import { useTheme } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
@@ -8,7 +8,8 @@ import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
-import { PButton, PCard, PText } from "../../components";
+
+import { PActivityIndicator, PButton, PCard, PChip, PListIcon, PListItem, PProgressBar, PText } from "../../components";
 import {
   getCollectionsForUser,
   getDownloadsForUser,
@@ -18,6 +19,7 @@ import {
   getHighlightsForUser,
   getPrimaryUser,
 } from "../../data/mockSelectors";
+
 
 const LibraryReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
   const theme = useTheme();
@@ -36,16 +38,16 @@ const LibraryReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
   return (
     <>
       <SectionCard title="Kütüphane Özeti" actionLabel="Yönet">
-        <List.Item
+        <PListItem
           title="Favoriler"
           description={`${favorites.length} içerik`}
-          left={(props) => <List.Icon {...props} icon="bookmark-outline" />}
+          left={(props) => <PListIcon {...props} icon="bookmark-outline" />}
           onPress={() => navigation.navigate("LibraryFavorites")}
         />
-        <List.Item
+        <PListItem
           title="Koleksiyonlar"
           description={`${collections.length} koleksiyon`}
-          left={(props) => <List.Icon {...props} icon="folder-outline" />}
+          left={(props) => <PListIcon {...props} icon="folder-outline" />}
           onPress={() => navigation.navigate("LibraryCollections")}
         />
         <PButton mode="outlined" style={styles.actionButton} disabled={isOffline}>
@@ -58,9 +60,9 @@ const LibraryReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
           <View key={item.title} style={styles.progressRow}>
             <View style={styles.progressHeader}>
               <PText variant="titleSmall">{item.title}</PText>
-              <Chip compact>{Math.round(item.progress * 100)}%</Chip>
+              <PChip compact>{Math.round(item.progress * 100)}%</PChip>
             </View>
-            <ProgressBar progress={item.progress} />
+            <PProgressBar progress={item.progress} />
           </View>
         ))}
       </SectionCard>
@@ -102,7 +104,7 @@ export const LibraryOverviewScreen = ({ route }: { route?: { params?: { state?: 
     return (
       <ScreenLayout title="Kütüphane" subtitle="İçerikler hazırlanıyor">
         <SectionCard title="Yükleniyor">
-          <ActivityIndicator animating />
+          <PActivityIndicator animating />
           <SkeletonBlock height={20} />
           <SkeletonBlock height={20} />
           <SkeletonBlock height={20} />

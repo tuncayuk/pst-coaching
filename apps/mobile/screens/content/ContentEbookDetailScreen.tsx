@@ -1,13 +1,13 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import { ActivityIndicator, Chip, ProgressBar } from "react-native-paper";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
-import { PButton, PCard, PText } from "../../components";
+import { PActivityIndicator, PButton, PCard, PChip, PProgressBar, PText } from "../../components";
+
 
 const ebookTags = ["Duygu düzenleme", "Farkındalık", "Günlük pratik"];
 
@@ -21,15 +21,15 @@ const ContentEbookDetailContent = ({ isOffline }: { isOffline?: boolean }) => {
         </PText>
         <View style={styles.chipRow}>
           {ebookTags.map((tag) => (
-            <Chip key={tag} style={styles.chip} disabled={isOffline}>
+            <PChip key={tag} style={styles.chip} disabled={isOffline}>
               {tag}
-            </Chip>
+            </PChip>
           ))}
         </View>
         <PCard style={styles.card}>
           <PCard.Title title="İlerleme" subtitle="2/12 bölüm okundu" />
           <PCard.Content>
-            <ProgressBar progress={0.18} style={styles.progress} />
+            <PProgressBar progress={0.18} style={styles.progress} />
           </PCard.Content>
           <PCard.Actions>
             <PButton mode="contained" disabled={isOffline}>
@@ -72,7 +72,7 @@ export const ContentEbookDetailScreen = ({
     return (
       <ScreenLayout title="e-Kitap Detay" subtitle="e-Kitap yükleniyor">
         <SectionCard title="Yükleniyor">
-          <ActivityIndicator animating />
+          <PActivityIndicator animating />
           <SkeletonBlock height={18} />
           <SkeletonBlock height={18} />
         </SectionCard>

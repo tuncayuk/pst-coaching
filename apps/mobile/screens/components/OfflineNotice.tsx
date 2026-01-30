@@ -3,6 +3,7 @@ import { StyleSheet } from "react-native";
 import { useTheme } from "react-native-paper";
 import { PSurface, PText } from "../../components";
 
+
 export const OfflineNotice = () => {
   const theme = useTheme();
 
