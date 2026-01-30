@@ -33,17 +33,14 @@ const DiscoverReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
   const journeyDays = getJourneyDays();
   const workshops = getWorkshops();
   const ebooks = getEbooks();
-  const featuredJourney = journeys.find((journey) => journey.featured) ?? journeys[0];
-  const featuredDayCount =
-    journeyDays.filter((day) => day.journey_id === featuredJourney?.id).length ||
-    featuredJourney?.duration_days ||
-    0;
-  const featuredWorkshopCount = workshops.length;
-  const featuredModuleCount = getModules().length;
-  const featuredEbook = ebooks.find((ebook) => ebook.featured) ?? ebooks[0];
-  const ebookCategory = featuredEbook?.category ?? "kategori";
-  const ebookPages = featuredEbook?.total_pages ?? 0;
-  const ebookHours = ebookPages ? Math.max(1, Math.round(ebookPages / 60)) : 0;
+  const featuredJourneys = journeys.filter((journey) => journey.featured);
+  const featuredEbooks = ebooks.filter((ebook) => ebook.featured);
+  const journeyItems = featuredJourneys.length ? featuredJourneys : journeys;
+  const ebookItems = featuredEbooks.length ? featuredEbooks : ebooks;
+  const featuredItems = [
+    ...journeyItems,
+    ...ebookItems.filter((ebook) => !journeyItems.some((journey) => journey.id === ebook.id)),
+  ].slice(0, 10);
 
   const handlePaywall = () => navigation.navigate("Content", { screen: "ContentPaywall" });
 
@@ -103,45 +100,65 @@ const DiscoverReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
       <View style={styles.section}>
         <PText style={styles.sectionTitle}>Öne Çıkanlar</PText>
 
-        <PCard
-          style={styles.featureCard}
-          onPress={() => handleDetailRoute("ContentJourneyDetail", featuredJourney?.id)}
-        >
-          <View style={styles.featureRow}>
-            <View style={styles.featureIcon}>
-              <PText style={styles.featureEmoji}>🎯</PText>
-            </View>
-            <View style={styles.featureInfo}>
-              <PText style={styles.featureTitle}>
-                {featuredJourney?.title ?? "Sıdk ve Integrity Yolculuğu"}
-              </PText>
-              <PText style={styles.featureMeta}>
-                {featuredDayCount} gün • {featuredJourney?.level ?? "Başlangıç"}
-              </PText>
-              <PText style={styles.featureSubMeta}>
-                📦 {featuredModuleCount} Modül • 🎨 {featuredWorkshopCount} Atölye
-              </PText>
-            </View>
-          </View>
-        </PCard>
+        {featuredItems.map((item) => {
+            const isJourney = "duration_days" in item;
+            if (isJourney) {
+              const journey = item as typeof journeys[number];
+              const dayCount =
+                journeyDays.filter((day) => day.journey_id === journey?.id).length ||
+                journey?.duration_days ||
+                0;
+              const moduleCount = journey?.featured_modules?.length ?? getModules().length;
+              const workshopCount = journey?.featured_workshops?.length ?? workshops.length;
+              return (
+                <PCard
+                  key={`journey-${journey.id}`}
+                  style={styles.featureCard}
+                  onPress={() => handleDetailRoute("ContentJourneyDetail", journey?.id)}
+                >
+                  <View style={styles.featureRow}>
+                    <View style={styles.featureIcon}>
+                      <PText style={styles.featureEmoji}>🎯</PText>
+                    </View>
+                    <View style={styles.featureInfo}>
+                      <PText style={styles.featureTitle}>{journey?.title}</PText>
+                      <PText style={styles.featureMeta}>
+                        {dayCount} gün • {journey?.level ?? "Başlangıç"}
+                      </PText>
+                      <PText style={styles.featureSubMeta}>
+                        📦 {moduleCount} Modül • 🎨 {workshopCount} Atölye
+                      </PText>
+                    </View>
+                  </View>
+                </PCard>
+              );
+            }
 
-        <PCard
-          style={styles.featureCard}
-          onPress={() => handleDetailRoute("ContentEbookDetail", featuredEbook?.id)}
-        >
-          <View style={styles.featureRow}>
-            <View style={styles.ebookCover}>
-              <PText style={styles.featureEmoji}>📖</PText>
-            </View>
-            <View style={styles.featureInfo}>
-              <PText style={styles.featureTitle}>{featuredEbook?.title ?? "Şükür Şifresi"}</PText>
-              <PText style={styles.featureMeta}>PST Coaching • {ebookCategory}</PText>
-              <PText style={styles.featureSubMeta}>
-                {ebookPages} sayfa • ~{ebookHours} saat okuma
-              </PText>
-            </View>
-          </View>
-        </PCard>
+            const ebook = item as typeof ebooks[number];
+            const category = ebook?.category ?? "kategori";
+            const pages = ebook?.total_pages ?? 0;
+            const hours = pages ? Math.max(1, Math.round(pages / 60)) : 0;
+            return (
+              <PCard
+                key={`ebook-${ebook.id}`}
+                style={styles.featureCard}
+                onPress={() => handleDetailRoute("ContentEbookDetail", ebook?.id)}
+              >
+                <View style={styles.featureRow}>
+                  <View style={styles.ebookCover}>
+                    <PText style={styles.featureEmoji}>📖</PText>
+                  </View>
+                  <View style={styles.featureInfo}>
+                    <PText style={styles.featureTitle}>{ebook?.title}</PText>
+                    <PText style={styles.featureMeta}>PST Coaching • {category}</PText>
+                    <PText style={styles.featureSubMeta}>
+                      {pages} sayfa • ~{hours} saat okuma
+                    </PText>
+                  </View>
+                </View>
+              </PCard>
+            );
+          })}
       </View>
 
       <View style={styles.bottomSpacer} />

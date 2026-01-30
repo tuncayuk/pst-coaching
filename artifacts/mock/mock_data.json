@@ -198,7 +198,19 @@
       "duration_days": 14,
       "daily_target": "10 dk okuma",
       "language": "tr",
-      "featured": true
+      "featured": true,
+      "featured_modules": [
+        "cccccccc-cccc-cccc-cccc-cccccccccccc",
+        "cccccccc-0000-0000-0000-000000000001",
+        "cccccccc-0000-0000-0000-000000000002"
+      ],
+      "featured_workshops": [
+        "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee",
+        "eeeeeeee-0000-0000-0000-000000000001"
+      ],
+      "featured_ebooks": [
+        "eeeeeeee-1111-2222-3333-444444444444"
+      ]
     },
     {
       "id": "abababab-0000-0000-0000-000000000001",
@@ -208,7 +220,19 @@
       "duration_days": 7,
       "daily_target": "8 dk okuma",
       "language": "tr",
-      "featured": true
+      "featured": true,
+      "featured_modules": [
+        "cccccccc-0000-0000-0000-000000000002",
+        "cccccccc-0000-0000-0000-000000000003",
+        "cccccccc-0000-0000-0000-000000000004"
+      ],
+      "featured_workshops": [
+        "eeeeeeee-0000-0000-0000-000000000002",
+        "eeeeeeee-0000-0000-0000-000000000003"
+      ],
+      "featured_ebooks": [
+        "eeeeeeee-5555-6666-7777-888888888888"
+      ]
     },
     {
       "id": "abababab-0000-0000-0000-000000000002",
@@ -218,7 +242,19 @@
       "duration_days": 21,
       "daily_target": "12 dk okuma",
       "language": "tr",
-      "featured": true
+      "featured": true,
+      "featured_modules": [
+        "cccccccc-0000-0000-0000-000000000004",
+        "cccccccc-0000-0000-0000-000000000005",
+        "cccccccc-0000-0000-0000-000000000006"
+      ],
+      "featured_workshops": [
+        "eeeeeeee-0000-0000-0000-000000000004",
+        "eeeeeeee-0000-0000-0000-000000000005"
+      ],
+      "featured_ebooks": [
+        "eeeeeeee-9999-aaaa-bbbb-cccccccccccc"
+      ]
     },
     {
       "id": "abababab-0000-0000-0000-000000000003",
@@ -227,7 +263,20 @@
       "level": "beginner",
       "duration_days": 5,
       "daily_target": "6 min reading",
-      "language": "en"
+      "language": "en",
+      "featured": true,
+      "featured_modules": [
+        "cccccccc-0000-0000-0000-000000000006",
+        "cccccccc-0000-0000-0000-000000000007",
+        "cccccccc-0000-0000-0000-000000000008"
+      ],
+      "featured_workshops": [
+        "eeeeeeee-0000-0000-0000-000000000006",
+        "eeeeeeee-0000-0000-0000-000000000007"
+      ],
+      "featured_ebooks": [
+        "eeeeeeee-dddd-eeee-ffff-000000000000"
+      ]
     },
     {
       "id": "abababab-0000-0000-0000-000000000004",
@@ -236,7 +285,20 @@
       "level": "basico",
       "duration_days": 7,
       "daily_target": "7 min lectura",
-      "language": "es"
+      "language": "es",
+      "featured": true,
+      "featured_modules": [
+        "cccccccc-0000-0000-0000-000000000008",
+        "cccccccc-0000-0000-0000-000000000009",
+        "cccccccc-0000-0000-0000-000000000010"
+      ],
+      "featured_workshops": [
+        "eeeeeeee-0000-0000-0000-000000000008",
+        "eeeeeeee-0000-0000-0000-000000000009"
+      ],
+      "featured_ebooks": [
+        "ffffffff-ffff-ffff-ffff-ffffffffffff"
+      ]
     }
   ],
   "journey_days": [
@@ -577,7 +639,8 @@
       "category": "ki\u015fisel geli\u015fim",
       "total_pages": 256,
       "has_audio": false,
-      "language": "tr"
+      "language": "tr",
+      "featured": true
     },
     {
       "id": "eeeeeeee-9999-aaaa-bbbb-cccccccccccc",
@@ -585,7 +648,8 @@
       "category": "ki\u015fisel geli\u015fim",
       "total_pages": 312,
       "has_audio": false,
-      "language": "tr"
+      "language": "tr",
+      "featured": true
     },
     {
       "id": "eeeeeeee-dddd-eeee-ffff-000000000000",
@@ -593,7 +657,8 @@
       "category": "fark\u0131ndal\u0131k",
       "total_pages": 198,
       "has_audio": false,
-      "language": "tr"
+      "language": "tr",
+      "featured": true
     },
     {
       "id": "ffffffff-ffff-ffff-ffff-ffffffffffff",
