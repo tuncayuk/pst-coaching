@@ -7,7 +7,7 @@ import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
 import { getJourneys } from "../../data/mockSelectors";
-import { PActivityIndicator, PButton, PCard, PText } from "../../components";
+import { PActivityIndicator, PButton, PCard, PIconButton, PText } from "../../components";
 
 const sortOptions = ["Önerilen", "Popüler", "Yeni"];
 const cardEmojis = ["🎯", "🙏", "🌿", "🧘‍♀️"];
@@ -20,7 +20,10 @@ const DiscoverJourneysContent = ({ isOffline }: { isOffline?: boolean }) => {
   return (
     <View>
       <View style={styles.headerRow}>
-        <PText style={styles.title}>Yolculuklar</PText>
+        <View style={styles.headerLeft}>
+          <PIconButton icon="arrow-left" onPress={() => navigation.goBack()} />
+          <PText style={styles.title}>Yolculuklar</PText>
+        </View>
         <PButton
           mode="contained"
           disabled={isOffline}
@@ -182,6 +185,11 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     marginBottom: 16,
+  },
+  headerLeft: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
   },
   title: {
     fontSize: 28,
