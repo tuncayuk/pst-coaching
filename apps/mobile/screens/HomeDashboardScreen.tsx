@@ -1,115 +1,63 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
-import { useTheme } from "react-native-paper";
+import { ScrollView, StyleSheet, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "./components/OfflineNotice";
-import { ScreenLayout } from "./components/ScreenLayout";
-import { SectionCard } from "./components/SectionCard";
 import { SkeletonBlock } from "./components/SkeletonBlock";
 import { StateMessage } from "./components/StateMessage";
 import { resolveScreenState, ScreenState } from "./components/ScreenState";
-
-import { PActivityIndicator, PButton, PCard, PChip, PDivider, PProgressBar, PText } from "../components";
 import {
-  getAddOnsForSubscription,
+  PActivityIndicator,
+  PButton,
+  PCard,
+  PIconButton,
+  PProgressBar,
+  PText,
+  PTextInput,
+  PTextInputIcon,
+} from "../components";
+import {
   getContentProgressForUser,
-  getEbooks,
   getJourneyById,
   getJourneyDays,
-  getJourneys,
-  getPackages,
-  getPlanForSubscription,
   getPrimaryUser,
-  getSubscriptionForUser,
-  getWorkshops,
 } from "../data/mockSelectors";
 
-
 const HomeReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
-  const theme = useTheme();
   const navigation = useNavigation<any>();
   const user = getPrimaryUser();
-  const subscription = getSubscriptionForUser(user?.id);
-  const plan = getPlanForSubscription(subscription?.plan_id);
-  const addOns = getAddOnsForSubscription(subscription?.id);
-  const journeys = getJourneys();
+  const displayName = user?.email ? user.email.split("@")[0] : "Ahmet Yılmaz";
   const journeyDays = getJourneyDays();
-  const workshops = getWorkshops();
-  const packages = getPackages();
-  const ebooks = getEbooks();
   const progressItems = getContentProgressForUser(user?.id);
   const nextStep = progressItems.find((item) => item.status === "in_progress") ?? progressItems[0];
   const nextJourneyDay = journeyDays.find((day) => day.id === nextStep?.content_id);
   const nextJourney = getJourneyById(nextJourneyDay?.journey_id);
 
+  const stats = [
+    { label: "Gün Streak", value: 12, emoji: "🔥", tone: "primary" },
+    { label: "Tamamlanan", value: 28, emoji: "✅", tone: "success" },
+    { label: "Rozetler", value: 8, emoji: "🏆", tone: "warning" },
+  ];
+
   const recommendations = [
     {
-      title: workshops[0]?.title ?? "Sınır Koyma Atölyesi",
-      subtitle: "45 dk · 4 bölüm",
-      target: "ContentWorkshopDetail",
-      id: workshops[0]?.id,
+      title: "Liderlik",
+      subtitle: "8 modül",
+      emoji: "💼",
+      target: "DiscoverModules",
     },
     {
-      title: ebooks[0]?.title ?? "Kendine Şefkat e-Kitap",
-      subtitle: `${ebooks[0]?.total_pages ?? 120} sayfa`,
-      target: "ContentEbookDetail",
-      id: ebooks[0]?.id,
+      title: "Mindfulness",
+      subtitle: "12 aşama",
+      emoji: "🧘",
+      target: "DiscoverJourneys",
     },
   ];
 
-  const activeItems = progressItems.slice(0, 3).map((item, index) => {
-    if (item.content_type === "journey_day") {
-      const day = journeyDays.find((entry) => entry.id === item.content_id);
-      const journey = getJourneyById(day?.journey_id);
-      return {
-        title: journey?.title ?? "Yolculuk",
-        subtitle: `Gün ${day?.day_number ?? 1} · ${journey?.daily_target ?? "10 dk"}`,
-        progress: 0.2 + index * 0.2,
-        action: () =>
-          navigation.navigate("Content", {
-            screen: "ContentJourneyDay",
-            params: {
-              id: journey?.id,
-              day: String(day?.day_number ?? 1),
-            },
-          }),
-      };
-    }
-    if (item.content_type === "package") {
-      const pkg = packages.find((entry) => entry.id === item.content_id);
-      return {
-        title: pkg?.title ?? "Paket",
-        subtitle: "Paket · Uygulama",
-        progress: 0.3 + index * 0.2,
-        action: () =>
-          navigation.navigate("Content", {
-            screen: "ContentPackageDetail",
-            params: { id: pkg?.id },
-          }),
-      };
-    }
-    const workshop = workshops.find((entry) => entry.id === item.content_id);
-    return {
-      title: workshop?.title ?? "Atölye",
-      subtitle: "Atölye · Okuma",
-      progress: 0.4 + index * 0.2,
-      action: () =>
-        navigation.navigate("Content", {
-          screen: "ContentWorkshopHome",
-          params: { id: workshop?.id },
-        }),
-    };
-  });
-
-  const requiresSubscription = subscription?.status !== "active" && subscription?.status !== "trial";
-
-  const handleEntryNavigation = (screen: string) => {
-    if (requiresSubscription) {
-      navigation.navigate("Content", { screen: "ContentPaywall" });
-      return;
-    }
-    navigation.navigate("Discover", { screen });
-  };
+  const activities = [
+    { title: "Modül 3 tamamlandı", time: "2 saat önce", emoji: "✅" },
+    { title: "Yeni rozet kazandınız!", time: "1 gün önce", emoji: "🏆" },
+  ];
 
   const handleContinue = () => {
     if (!nextStep) {
@@ -126,13 +74,6 @@ const HomeReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
       });
       return;
     }
-    if (nextStep.content_type === "package") {
-      navigation.navigate("Content", {
-        screen: "ContentPackageDetail",
-        params: { id: nextStep.content_id },
-      });
-      return;
-    }
     navigation.navigate("Content", {
       screen: "ContentWorkshopHome",
       params: { id: nextStep.content_id },
@@ -140,182 +81,113 @@ const HomeReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
   };
 
   return (
-    <>
-      <SectionCard title="Bugün" actionLabel="Tümü">
-        <View style={styles.rowItem}>
-          <View style={styles.rowHeader}>
-            <PText variant="titleSmall">{nextJourney?.title ?? "Günlük Odak"}</PText>
-            <PChip compact>{subscription?.status ?? "aktif"}</PChip>
-          </View>
-          <PText variant="bodySmall" style={{ color: theme.colors.onSurfaceVariant }}>
-            {nextJourneyDay
-              ? `Gün ${nextJourneyDay.day_number} · ${nextJourney?.daily_target ?? "10 dk"}`
-              : "Bugünkü içeriklerini tamamla"}
-          </PText>
-          <PProgressBar progress={0.4} style={styles.progress} />
+    <View>
+      <View style={styles.headerRow}>
+        <View>
+          <PText style={styles.greeting}>Merhaba,</PText>
+          <PText style={styles.nameText}>{displayName}</PText>
         </View>
-        <PButton mode="contained" style={styles.primaryButton} disabled={isOffline} onPress={handleContinue}>
-          Devam Et
-        </PButton>
-      </SectionCard>
+        <View style={styles.notificationWrapper}>
+          <PIconButton icon="bell" size={20} style={styles.notificationButton} />
+          <View style={styles.notificationDot} />
+        </View>
+      </View>
 
-      <SectionCard title="Abonelik Durumu" actionLabel="Planlar">
-        <View style={styles.rowHeader}>
-          <PText variant="titleSmall">{plan?.name ?? "Plan"}</PText>
-          <PChip compact>{subscription?.status ?? "aktif"}</PChip>
-        </View>
-        <PText variant="bodySmall" style={{ color: theme.colors.onSurfaceVariant }}>
-          {addOns.length > 0 ? "Aktif eklentiler:" : "Aktif eklenti yok"}
-        </PText>
-        <View style={styles.chipRow}>
-          {addOns.map((addon) => (
-            <PChip key={addon.id} style={styles.chip} disabled={isOffline}>
-              {addon.name}
-            </PChip>
-          ))}
-        </View>
-        <PButton
+      <View style={styles.searchWrapper}>
+        <PTextInput
           mode="outlined"
-          disabled={isOffline}
-          onPress={() => navigation.navigate("Profile", { screen: "ProfileSubscription" })}
-        >
-          Planı Yönet
-        </PButton>
-      </SectionCard>
+          placeholder="Ne aramak istersiniz?"
+          left={<PTextInputIcon icon="magnify" />}
+          style={styles.searchInput}
+          outlineStyle={styles.searchOutline}
+          contentStyle={styles.searchContent}
+        />
+      </View>
 
-      <SectionCard title="Hızlı Arama" actionLabel="">
-        <PText variant="bodySmall" style={{ color: theme.colors.onSurfaceVariant }}>
-          Tüm içeriklerde hızlı arama yap.
-        </PText>
-        <PButton
-          mode="contained-tonal"
-          style={styles.actionButton}
-          disabled={isOffline}
-          onPress={() => navigation.navigate("HomeSearch")}
-        >
-          Aramaya Başla
-        </PButton>
-      </SectionCard>
-
-      <SectionCard title="İçerik Alanları" actionLabel="">
-        <View style={styles.entryRow}>
-          <PButton
-            mode="outlined"
-            style={styles.entryButton}
-            disabled={isOffline}
-            onPress={() => handleEntryNavigation("DiscoverJourneys")}
+      <View style={styles.statsRow}>
+        {stats.map((stat) => (
+          <View
+            key={stat.label}
+            style={[
+              styles.statCard,
+              stat.tone === "primary" && styles.statPrimary,
+              stat.tone === "success" && styles.statSuccess,
+              stat.tone === "warning" && styles.statWarning,
+            ]}
           >
-            Yolculuklar
-          </PButton>
-          <PButton
-            mode="outlined"
-            style={styles.entryButton}
-            disabled={isOffline}
-            onPress={() => handleEntryNavigation("DiscoverWorkshops")}
-          >
-            Atölyeler
-          </PButton>
-        </View>
-        <View style={styles.entryRow}>
-          <PButton
-            mode="outlined"
-            style={styles.entryButton}
-            disabled={isOffline}
-            onPress={() => handleEntryNavigation("DiscoverModules")}
-          >
-            Modüller
-          </PButton>
-          <PButton
-            mode="outlined"
-            style={styles.entryButton}
-            disabled={isOffline}
-            onPress={() => handleEntryNavigation("DiscoverEbooks")}
-          >
-            e-Kitaplar
-          </PButton>
-        </View>
-        <PButton
-          mode="text"
-          disabled={isOffline}
-          onPress={() => navigation.navigate("Discover", { screen: "DiscoverCatalog" })}
-        >
-          Koçluk Okulu (yakında)
-        </PButton>
-      </SectionCard>
-
-      <SectionCard title="Vicdandan Karaktere" actionLabel="Detay">
-        <PText variant="bodySmall" style={{ color: theme.colors.onSurfaceVariant }}>
-          Değer temelli gelişim yaklaşımımızın kısa bir özeti.
-        </PText>
-        <PButton
-          mode="outlined"
-          style={styles.actionButton}
-          disabled={isOffline}
-          onPress={() => navigation.navigate("HomeVicdandanKaraktereDetail")}
-        >
-          Detayları Gör
-        </PButton>
-      </SectionCard>
-
-      <SectionCard title="Aktif İçeriklerim" actionLabel="Tümünü Gör">
-        {activeItems.map((item, index) => (
-          <View key={item.title} style={styles.rowItem}>
-            <View style={styles.rowHeader}>
-              <PText variant="titleSmall">{item.title}</PText>
-              <PChip compact>{Math.round(item.progress * 100)}%</PChip>
-            </View>
-            {item.progress < 0.2 ? <PChip compact>Kilitli</PChip> : null}
-            <PText variant="bodySmall" style={{ color: theme.colors.onSurfaceVariant }}>
-              {item.subtitle}
+            <PText style={styles.statEmoji}>{stat.emoji}</PText>
+            <PText style={[styles.statValue, stat.tone === "warning" && styles.statValueWarning]}>
+              {stat.value}
             </PText>
-            <PProgressBar progress={item.progress} style={styles.progress} />
-            <PButton mode="text" disabled={isOffline} onPress={item.action}>
-              Devam Et
-            </PButton>
-            {index < activeItems.length - 1 ? <PDivider style={styles.divider} /> : null}
+            <PText style={styles.statLabel}>{stat.label}</PText>
           </View>
         ))}
-        <PButton mode="outlined" disabled={isOffline} onPress={() => navigation.navigate("HomeActiveContentList")}>
-          Tümünü Gör
-        </PButton>
-      </SectionCard>
+      </View>
 
-      <SectionCard title="Önerilenler" actionLabel="Keşfet">
-        {recommendations.map((item) => (
-          <PCard key={item.title} style={styles.card}>
-            <PCard.Title title={item.title} subtitle={item.subtitle} />
-            <PCard.Actions>
-              <PButton
-                mode="outlined"
-                disabled={isOffline}
-                onPress={() =>
-                  navigation.navigate("Content", {
-                    screen: item.target,
-                    params: { id: item.id },
-                  })
-                }
-              >
-                İncele
-              </PButton>
-            </PCard.Actions>
+      <View style={styles.section}>
+        <PText style={styles.sectionTitle}>Öğrenmeye Devam Et</PText>
+        <PCard style={styles.continueCard}>
+          <View style={styles.continueRow}>
+            <View style={styles.continueIcon}>
+              <PText style={styles.continueEmoji}>🎯</PText>
+            </View>
+            <View style={styles.continueInfo}>
+              <PText style={styles.continueTitle}>{nextJourney?.title ?? "Hedef Belirleme"}</PText>
+              <PText style={styles.continueSubtitle}>Coaching Programı • Modül 3/8</PText>
+            </View>
+          </View>
+          <View style={styles.progressRow}>
+            <View style={styles.progressHeader}>
+              <PText style={styles.progressLabel}>İlerleme</PText>
+              <PText style={styles.progressValue}>37%</PText>
+            </View>
+            <PProgressBar progress={0.37} style={styles.progressBar} />
+          </View>
+          <PButton mode="contained" disabled={isOffline} onPress={handleContinue}>
+            Devam Et
+          </PButton>
+        </PCard>
+      </View>
+
+      <View style={styles.section}>
+        <View style={styles.sectionHeaderRow}>
+          <PText style={styles.sectionTitle}>Sizin İçin Önerilen</PText>
+          <PButton mode="text" onPress={() => navigation.navigate("Discover")}>
+            Tümü →
+          </PButton>
+        </View>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.recommendationsRow}>
+          {recommendations.map((item) => (
+            <PCard key={item.title} style={styles.recommendationCard}>
+              <View style={styles.recommendationHero}>
+                <PText style={styles.recommendationEmoji}>{item.emoji}</PText>
+              </View>
+              <View style={styles.recommendationBody}>
+                <PText style={styles.recommendationTitle}>{item.title}</PText>
+                <PText style={styles.recommendationSubtitle}>{item.subtitle}</PText>
+              </View>
+            </PCard>
+          ))}
+        </ScrollView>
+      </View>
+
+      <View style={styles.section}>
+        <PText style={styles.sectionTitle}>Son Aktiviteler</PText>
+        {activities.map((activity) => (
+          <PCard key={activity.title} style={styles.activityCard}>
+            <View style={styles.activityRow}>
+              <PText style={styles.activityEmoji}>{activity.emoji}</PText>
+              <View style={styles.activityInfo}>
+                <PText style={styles.activityTitle}>{activity.title}</PText>
+                <PText style={styles.activityTime}>{activity.time}</PText>
+              </View>
+            </View>
           </PCard>
         ))}
-      </SectionCard>
+      </View>
 
-      <SectionCard title="Hızlı Başla" actionLabel="Rehber">
-        <View style={styles.chipRow}>
-          {[
-            "Nefes Egzersizi",
-            "Günlük Hedef",
-            "Kısa Okuma",
-          ].map((label) => (
-            <PChip key={label} style={styles.chip} disabled={isOffline}>
-              {label}
-            </PChip>
-          ))}
-        </View>
-      </SectionCard>
-    </>
+      <View style={styles.bottomSpacer} />
+    </View>
   );
 };
 
@@ -324,105 +196,297 @@ export const HomeDashboardScreen = ({ route }: { route?: { params?: { state?: Sc
 
   if (state === "loading") {
     return (
-      <ScreenLayout title="Ana Sayfa" subtitle="İçerikler hazırlanıyor">
-        <SectionCard title="Yükleniyor">
-          <PActivityIndicator animating />
-          <SkeletonBlock height={20} />
-          <SkeletonBlock height={14} />
-          <SkeletonBlock height={14} />
-        </SectionCard>
-        <SectionCard title="Yakında">
-          <SkeletonBlock height={72} />
-          <SkeletonBlock height={72} />
-        </SectionCard>
-      </ScreenLayout>
+      <SafeAreaView style={styles.root}>
+        <ScrollView contentContainerStyle={styles.content}>
+          <View style={styles.section}>
+            <PActivityIndicator animating />
+            <SkeletonBlock height={20} />
+            <SkeletonBlock height={20} />
+          </View>
+          <View style={styles.section}>
+            <SkeletonBlock height={120} />
+          </View>
+          <View style={styles.section}>
+            <SkeletonBlock height={120} />
+          </View>
+        </ScrollView>
+      </SafeAreaView>
     );
   }
 
   if (state === "empty") {
     return (
-      <ScreenLayout title="Ana Sayfa" subtitle="Yeni bir başlangıç yapalım">
-        <StateMessage
-          title="Henüz içerik yok"
-          description="İlk yolculuğunu seçerek kişisel gelişim planını oluşturabilirsin."
-          actionLabel="Keşfe Çık"
-          icon="compass-outline"
-        />
-      </ScreenLayout>
+      <SafeAreaView style={styles.root}>
+        <ScrollView contentContainerStyle={styles.content}>
+          <StateMessage
+            title="Henüz içerik yok"
+            description="İlk yolculuğunu seçerek kişisel gelişim planını oluşturabilirsin."
+            actionLabel="Keşfe Çık"
+            icon="compass-outline"
+          />
+        </ScrollView>
+      </SafeAreaView>
     );
   }
 
   if (state === "error") {
     return (
-      <ScreenLayout title="Ana Sayfa" subtitle="Bir sorun oluştu">
-        <StateMessage
-          title="Ana sayfa yüklenemedi"
-          description="Bağlantını kontrol edip tekrar dene."
-          actionLabel="Tekrar Dene"
-          icon="alert-circle-outline"
-          tone="error"
-        />
-      </ScreenLayout>
+      <SafeAreaView style={styles.root}>
+        <ScrollView contentContainerStyle={styles.content}>
+          <StateMessage
+            title="Ana sayfa yüklenemedi"
+            description="Bağlantını kontrol edip tekrar dene."
+            actionLabel="Tekrar Dene"
+            icon="alert-circle-outline"
+            tone="error"
+          />
+        </ScrollView>
+      </SafeAreaView>
     );
   }
 
   if (state === "offline") {
     return (
-      <ScreenLayout title="Ana Sayfa" subtitle="Önbellekteki içerikler">
-        <OfflineNotice />
-        <HomeReadyContent isOffline />
-      </ScreenLayout>
+      <SafeAreaView style={styles.root}>
+        <ScrollView contentContainerStyle={styles.content}>
+          <OfflineNotice />
+          <HomeReadyContent isOffline />
+        </ScrollView>
+      </SafeAreaView>
     );
   }
 
   return (
-    <ScreenLayout title="Ana Sayfa" subtitle="Bugün için öneriler">
-      <HomeReadyContent />
-    </ScreenLayout>
+    <SafeAreaView style={styles.root}>
+      <ScrollView contentContainerStyle={styles.content}>
+        <HomeReadyContent />
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  rowItem: {
-    marginBottom: 12,
+  root: {
+    flex: 1,
+    backgroundColor: "#FAFAFA",
   },
-  rowHeader: {
+  content: {
+    padding: 16,
+  },
+  headerRow: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+    marginBottom: 20,
   },
-  progress: {
-    marginTop: 8,
+  greeting: {
+    fontSize: 14,
+    color: "#525252",
+    marginBottom: 4,
   },
-  divider: {
-    marginTop: 12,
+  nameText: {
+    fontSize: 28,
+    fontWeight: "800",
+    color: "#2B1B5D",
   },
-  primaryButton: {
-    marginTop: 12,
-    alignSelf: "flex-start",
+  notificationWrapper: {
+    position: "relative",
   },
-  actionButton: {
-    marginTop: 8,
-    alignSelf: "flex-start",
+  notificationButton: {
+    backgroundColor: "#F5F5F5",
   },
-  card: {
+  notificationDot: {
+    position: "absolute",
+    top: 6,
+    right: 6,
+    width: 10,
+    height: 10,
+    borderRadius: 999,
+    borderWidth: 2,
+    borderColor: "#FFFFFF",
+    backgroundColor: "#EF4444",
+  },
+  searchWrapper: {
+    marginBottom: 20,
+  },
+  searchInput: {
+    backgroundColor: "#FFFFFF",
+  },
+  searchOutline: {
+    borderWidth: 2,
+    borderRadius: 16,
+    borderColor: "#E5E5E5",
+  },
+  searchContent: {
+    paddingVertical: 10,
+  },
+  statsRow: {
+    flexDirection: "row",
+    gap: 12,
+    marginBottom: 24,
+  },
+  statCard: {
+    flex: 1,
+    borderRadius: 16,
+    padding: 14,
+    alignItems: "center",
+  },
+  statPrimary: {
+    backgroundColor: "#E0F7FA",
+  },
+  statSuccess: {
+    backgroundColor: "#D1FAE5",
+  },
+  statWarning: {
+    backgroundColor: "#FEF3C7",
+  },
+  statEmoji: {
+    fontSize: 24,
+    marginBottom: 6,
+  },
+  statValue: {
+    fontSize: 22,
+    fontWeight: "800",
+    color: "#00B4D8",
+    marginBottom: 4,
+  },
+  statValueWarning: {
+    color: "#F59E0B",
+  },
+  statLabel: {
+    fontSize: 12,
+    fontWeight: "600",
+    color: "#525252",
+    textAlign: "center",
+  },
+  section: {
+    marginBottom: 24,
+  },
+  sectionHeaderRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     marginBottom: 12,
   },
-  chipRow: {
+  sectionTitle: {
+    fontSize: 16,
+    fontWeight: "700",
+    color: "#171717",
+    marginBottom: 12,
+  },
+  continueCard: {
+    borderLeftWidth: 4,
+    borderLeftColor: "#00B4D8",
+    padding: 16,
+  },
+  continueRow: {
     flexDirection: "row",
-    flexWrap: "wrap",
+    gap: 12,
+    marginBottom: 12,
   },
-  chip: {
-    marginRight: 8,
-    marginBottom: 8,
+  continueIcon: {
+    width: 60,
+    height: 60,
+    borderRadius: 12,
+    backgroundColor: "#E0F7FA",
+    alignItems: "center",
+    justifyContent: "center",
   },
-  entryRow: {
+  continueEmoji: {
+    fontSize: 28,
+  },
+  continueInfo: {
+    flex: 1,
+  },
+  continueTitle: {
+    fontSize: 15,
+    fontWeight: "700",
+    color: "#171717",
+    marginBottom: 4,
+  },
+  continueSubtitle: {
+    fontSize: 12,
+    color: "#525252",
+  },
+  progressRow: {
+    marginBottom: 12,
+  },
+  progressHeader: {
     flexDirection: "row",
-    flexWrap: "wrap",
-    marginBottom: 8,
+    justifyContent: "space-between",
+    marginBottom: 6,
   },
-  entryButton: {
-    marginRight: 8,
-    marginBottom: 8,
+  progressLabel: {
+    fontSize: 14,
+    fontWeight: "600",
+    color: "#404040",
+  },
+  progressValue: {
+    fontSize: 14,
+    fontWeight: "700",
+    color: "#00B4D8",
+  },
+  progressBar: {
+    height: 8,
+    borderRadius: 999,
+  },
+  recommendationsRow: {
+    gap: 16,
+    paddingBottom: 8,
+  },
+  recommendationCard: {
+    width: 160,
+    borderRadius: 16,
+    overflow: "hidden",
+  },
+  recommendationHero: {
+    height: 100,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#EDE7F6",
+  },
+  recommendationEmoji: {
+    fontSize: 32,
+  },
+  recommendationBody: {
+    padding: 12,
+  },
+  recommendationTitle: {
+    fontSize: 14,
+    fontWeight: "700",
+    color: "#171717",
+    marginBottom: 4,
+  },
+  recommendationSubtitle: {
+    fontSize: 12,
+    color: "#525252",
+  },
+  activityCard: {
+    marginBottom: 12,
+    padding: 12,
+  },
+  activityRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 12,
+  },
+  activityEmoji: {
+    fontSize: 20,
+  },
+  activityInfo: {
+    flex: 1,
+  },
+  activityTitle: {
+    fontSize: 14,
+    fontWeight: "600",
+    color: "#171717",
+    marginBottom: 4,
+  },
+  activityTime: {
+    fontSize: 12,
+    color: "#525252",
+  },
+  bottomSpacer: {
+    height: 24,
   },
 });

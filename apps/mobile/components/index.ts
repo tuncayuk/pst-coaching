@@ -21,3 +21,4 @@ export { PSurface } from "./PSurface";
 export { PSwitch } from "./PSwitch";
 export { PText } from "./PText";
 export { PTextInput } from "./PTextInput";
+export { PTextInputIcon } from "./PTextInputIcon";
