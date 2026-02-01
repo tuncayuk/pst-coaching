@@ -97,6 +97,7 @@ const DiscoverReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
         ))}
       </ScrollView>
 
+
       <View style={styles.section}>
         <PText style={styles.sectionTitle}>Öne Çıkanlar</PText>
 
@@ -286,6 +287,7 @@ const styles = StyleSheet.create({
     gap: 8,
     paddingBottom: 8,
     marginBottom: 16,
+    
   },
   tabButton: {
     borderRadius: 10,
@@ -295,7 +297,8 @@ const styles = StyleSheet.create({
     fontWeight: "600",
   },
   tabContent: {
-    height: 42,
+    
+    height: 82,
     paddingHorizontal: 12,
   },
   section: {

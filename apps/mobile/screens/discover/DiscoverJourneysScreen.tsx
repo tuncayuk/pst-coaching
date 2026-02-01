@@ -9,7 +9,7 @@ import { resolveScreenState, ScreenState } from "../components/ScreenState";
 import { getJourneys } from "../../data/mockSelectors";
 import { PActivityIndicator, PButton, PCard, PIconButton, PText } from "../../components";
 
-const sortOptions = ["Önerilen", "Popüler", "Yeni"];
+const sortOptions = ["Tumu", "Önerilen", "Popüler", "Yeni"];
 const cardEmojis = ["🎯", "🙏", "🌿", "🧘‍♀️"];
 const cardColors = ["#FFDDC1", "#D1FAE5", "#E9D5FF", "#FDE68A"];
 
