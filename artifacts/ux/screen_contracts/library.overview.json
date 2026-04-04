@@ -1,43 +1,45 @@
 {
   "id": "library.overview",
-  "title": "Kütüphane",
+  "title": "Kutuphane",
   "route": "/library",
-  "purpose": "Kütüphane deneyimini sunmak.",
+  "purpose": "Tab root screen for Kutuphane.",
   "entryPoints": [
-    "library.overview"
+    "app.launch"
   ],
   "inputs": [
     {
       "name": "locale",
       "type": "LanguageCode",
       "required": true,
-      "source": "app_state"
+      "source": "profile"
+    },
+    {
+      "name": "subscriptionStatus",
+      "type": "SubscriptionStatus",
+      "required": true,
+      "source": "entitlement_cache"
     }
   ],
   "dataDependencies": [
-    "ContentProgress",
-    "Favorite",
-    "Collection",
-    "Download",
-    "EbookProgress",
-    "Highlight",
-    "Note"
+    "User",
+    "Subscription",
+    "ContentProgress"
   ],
   "uiStates": {
     "loading": {
-      "description": "Kütüphane yüklenirken iskelet ve temel CTA'lar gösterilir."
+      "description": "Tab shows skeleton cards while initial data is loading."
     },
     "ready": {
-      "description": "Kütüphane içeriği ve etkileşimler hazır."
+      "description": "Tab content is visible and interactive."
     },
     "empty": {
-      "description": "İçerik yoksa açıklayıcı boş durum ve birincil aksiyon sunulur."
+      "description": "Tab-specific empty state with CTA is displayed."
     },
     "error": {
-      "description": "Hata mesajı ve tekrar dene aksiyonu gösterilir."
+      "description": "Tab-level error UI appears with retry action."
     },
     "offline": {
-      "description": "Çevrimdışı modda önbellek içerik gösterilir, senkron bekler."
+      "description": "Last cache is shown with offline indicator."
     }
   },
   "analytics": {
@@ -46,11 +48,8 @@
       "library_overview_viewed"
     ]
   },
-  "acceptanceCriteriaRefs": [
-    "RQ-12",
-    "RQ-11"
-  ],
+  "acceptanceCriteriaRefs": [],
   "gates": [
-    "subscription:trial_or_active"
+    "subscription"
   ]
 }

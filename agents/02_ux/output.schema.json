@@ -9,7 +9,12 @@
       "type": "object",
       "required": ["tabs"],
       "properties": {
-        "tabs": {"type": "array", "items": {"type": "string"}}
+        "tabs": {
+          "type": "array",
+          "minItems": 5,
+          "uniqueItems": true,
+          "items": {"type": "string"}
+        }
       },
       "additionalProperties": true
     },
@@ -19,12 +24,57 @@
         "type": "object",
         "required": ["id", "route", "title", "type", "states"],
         "properties": {
-          "id": {"type": "string"},
-          "route": {"type": "string"},
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+\\.[a-z0-9_]+$"
+          },
+          "route": {
+            "type": "string",
+            "pattern": "^/[a-z0-9\\-/:]*$"
+          },
           "title": {"type": "string"},
           "type": {"type": "string", "enum": ["tab", "stack", "modal", "sheet"]},
-          "states": {"type": "array", "items": {"type": "string"}},
-          "gates": {"type": "array", "items": {"type": "string"}}
+          "states": {
+            "type": "array",
+            "minItems": 5,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "enum": [
+                "loading",
+                "ready",
+                "empty",
+                "error",
+                "offline",
+                "skeleton",
+                "disabled"
+              ]
+            },
+            "allOf": [
+              {"contains": {"const": "loading"}},
+              {"contains": {"const": "ready"}},
+              {"contains": {"const": "empty"}},
+              {"contains": {"const": "error"}},
+              {"contains": {"const": "offline"}}
+            ]
+          },
+          "gates": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "enum": [
+                "auth",
+                "subscription",
+                "add_on",
+                "demography",
+                "ddl_test",
+                "owner_role",
+                "member_role",
+                "coach_role"
+              ]
+            }
+          }
         },
         "additionalProperties": true
       }

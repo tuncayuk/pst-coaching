@@ -1,0 +1,68 @@
+{
+  "id": "assistant.fr_e16_03",
+  "title": "Kaynak referansi ve izlenebilirlik",
+  "route": "/epic-16/fr-e16-03",
+  "purpose": "Implements FR-E16-03: Kaynak referansi ve izlenebilirlik.",
+  "entryPoints": [
+    "content.reader"
+  ],
+  "inputs": [
+    {
+      "name": "answerId",
+      "type": "uuid",
+      "required": true,
+      "source": "navigation"
+    },
+    {
+      "name": "sourceId",
+      "type": "uuid",
+      "required": false,
+      "source": "navigation"
+    },
+    {
+      "name": "locale",
+      "type": "LanguageCode",
+      "required": true,
+      "source": "profile"
+    }
+  ],
+  "dataDependencies": [
+    "AiSourceRef",
+    "Journey",
+    "Workshop",
+    "Ebook"
+  ],
+  "uiStates": {
+    "loading": {
+      "description": "Skeleton placeholders are shown while loading FR-E16-03 data."
+    },
+    "ready": {
+      "description": "FR-E16-03 flows are fully interactive with primary CTA available when prerequisites are met."
+    },
+    "empty": {
+      "description": "Empty state explains why no data is available and points to next best action."
+    },
+    "error": {
+      "description": "Error state is recoverable with user-safe messaging and a retry action."
+    },
+    "offline": {
+      "description": "Offline state shows last synchronized data and queues write actions for later sync."
+    }
+  },
+  "analytics": {
+    "screenView": "assistant_fr_e16_03_viewed",
+    "events": [
+      "assistant_fr_e16_03_viewed"
+    ]
+  },
+  "acceptanceCriteriaRefs": [
+    "AC-FR-E16-03-01",
+    "AC-FR-E16-03-02",
+    "AC-FR-E16-03-03",
+    "AC-FR-E16-03-04"
+  ],
+  "gates": [
+    "auth",
+    "subscription"
+  ]
+}

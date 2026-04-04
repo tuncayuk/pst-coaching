@@ -3,583 +3,1312 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PST Coaching Mobile - EPIC 6: Gelişim ve Raporlama</title>
+    <title>PST Coaching Mobile - EPIC 6: Gelisim ve Raporlama</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #00B4D8; --primary-dark: #0096B8; --primary-light: #E0F7FA; --primary-100: #B2EBF2;
-            --secondary: #2B1B5D; --secondary-light: #EDE7F6;
-            --success: #10B981; --success-light: #D1FAE5; --success-dark: #065F46;
-            --warning: #F59E0B; --error: #EF4444; --purple: #8B5CF6; --purple-light: #EDE9FE;
-            --gray-50: #FAFAFA; --gray-100: #F5F5F5; --gray-200: #E5E5E5; --gray-300: #D4D4D4;
-            --gray-400: #A3A3A3; --gray-600: #525252; --gray-700: #404040; --gray-900: #171717;
+            --primary: #0ea5e9;
+            --primary-dark: #0369a1;
+            --primary-light: #e0f2fe;
+            --secondary: #1e293b;
+            --success: #10b981;
+            --success-light: #dcfce7;
+            --warning: #f59e0b;
+            --warning-light: #fef3c7;
+            --error: #ef4444;
+            --error-light: #fee2e2;
+            --indigo: #4f46e5;
+            --indigo-light: #e0e7ff;
+            --gray-50: #fafafa;
+            --gray-100: #f5f5f5;
+            --gray-200: #e5e5e5;
+            --gray-300: #d4d4d4;
+            --gray-400: #a3a3a3;
+            --gray-600: #525252;
+            --gray-700: #404040;
+            --gray-900: #171717;
         }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #f0f0f0, #e0e0e0); overflow: hidden; }
-        .app { display: flex; height: 100vh; }
-        .sidebar { width: 400px; background: white; border-right: 1px solid var(--gray-200); overflow-y: auto; box-shadow: 2px 0 10px rgba(0,0,0,0.05); }
-        .main { flex: 1; display: flex; flex-direction: column; }
-        .topbar { background: white; border-bottom: 1px solid var(--gray-200); padding: 1.75rem 2.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
-        .viewer { flex: 1; overflow-y: auto; padding: 3rem; display: flex; justify-content: center; align-items: flex-start; }
-        .logo { font-family: 'Poppins', sans-serif; font-size: 2rem; font-weight: 800; color: var(--primary); padding: 2.5rem; border-bottom: 1px solid var(--gray-200); background: linear-gradient(135deg, var(--primary-light), white); }
-        .subtitle { font-size: 0.875rem; color: var(--gray-600); font-weight: 500; margin-top: 0.5rem; }
-        .epic-header { padding: 1.5rem; background: linear-gradient(135deg, var(--success-light), #A7F3D0); border-bottom: 2px solid var(--success); }
-        .epic-title { font-family: 'Poppins', sans-serif; font-size: 1.25rem; font-weight: 700; color: var(--gray-900); margin-bottom: 0.5rem; }
-        .epic-meta { font-size: 0.8125rem; color: var(--gray-600); }
-        .nav-map { background: var(--purple-light); border-left: 4px solid var(--purple); padding: 1rem; margin: 1rem 1.75rem; border-radius: 0.5rem; }
-        .nav-map-title { font-weight: 700; color: var(--purple); font-size: 0.8125rem; margin-bottom: 0.75rem; text-transform: uppercase; display: flex; align-items: center; gap: 0.5rem; }
-        .nav-flow { display: flex; flex-direction: column; gap: 0.5rem; }
-        .nav-flow-item { display: flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; color: var(--gray-700); }
-        .nav-flow-box { background: white; padding: 0.375rem 0.625rem; border-radius: 0.375rem; border: 2px solid var(--gray-300); font-weight: 600; white-space: nowrap; font-size: 0.6875rem; }
-        .nav-flow-box.active { background: var(--primary); color: white; border-color: var(--primary); }
-        .nav-flow-arrow { color: var(--gray-400); font-weight: 700; }
-        .nav-flow-label { color: var(--gray-600); font-size: 0.625rem; font-style: italic; }
-        .nav-section { padding: 1.25rem 0; border-bottom: 1px solid var(--gray-100); }
-        .nav-title { padding: 0.75rem 1.75rem; font-size: 0.6875rem; font-weight: 700; color: var(--gray-600); text-transform: uppercase; }
-        .nav-item { padding: 1rem 1.75rem; cursor: pointer; font-size: 0.9375rem; transition: all 0.2s; color: var(--gray-700); display: flex; align-items: center; gap: 0.875rem; border-left: 3px solid transparent; }
-        .nav-item:hover { background: var(--gray-50); }
-        .nav-item.active { background: var(--primary-light); color: var(--primary-dark); font-weight: 600; border-left-color: var(--primary); }
-        .nav-icon { font-size: 1.375rem; }
-        .nav-badge { background: var(--primary); color: white; padding: 0.25rem 0.625rem; border-radius: 9999px; font-size: 0.6875rem; font-weight: 700; margin-left: auto; }
-        .ac-section { background: var(--secondary-light); border-left: 4px solid var(--secondary); padding: 1rem; margin: 0.75rem 1.75rem; border-radius: 0.5rem; }
-        .ac-title { font-weight: 700; color: var(--secondary); font-size: 0.75rem; margin-bottom: 0.5rem; text-transform: uppercase; }
-        .ac-list { list-style: none; }
-        .ac-list li { font-size: 0.75rem; color: var(--gray-700); margin-bottom: 0.375rem; padding-left: 1.25rem; position: relative; line-height: 1.4; }
-        .ac-list li:before { content: "✓"; position: absolute; left: 0; color: var(--success); font-weight: 700; }
-        .screen-title { font-family: 'Poppins', sans-serif; font-size: 2.25rem; font-weight: 700; color: var(--gray-900); }
-        .screen-meta { color: var(--gray-600); font-size: 0.9375rem; margin-top: 0.5rem; display: flex; align-items: center; gap: 1rem; }
-        .meta-badge { background: var(--success-light); color: var(--success-dark); padding: 0.375rem 0.875rem; border-radius: 0.5rem; font-size: 0.8125rem; font-weight: 600; }
-        .iphone { width: 393px; height: 852px; background: #1d1d1f; border-radius: 55px; padding: 12px; box-shadow: 0 60px 120px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.1); position: relative; }
-        .island { position: absolute; top: 20px; left: 50%; transform: translateX(-50%); width: 120px; height: 30px; background: #000; border-radius: 20px; z-index: 11; }
-        .screen { width: 100%; height: 100%; background: white; border-radius: 43px; overflow: hidden; position: relative; }
-        .content { width: 100%; height: 100%; overflow-y: auto; background: var(--gray-50); }
-        .content::-webkit-scrollbar { width: 4px; }
-        .content::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.3); border-radius: 10px; }
-        .status { height: 54px; display: flex; align-items: center; justify-content: space-between; padding: 0 1.5rem; font-size: 0.8125rem; font-weight: 600; background: white; }
-        .tabs { position: absolute; bottom: 0; left: 0; right: 0; height: 84px; background: white; border-top: 1px solid var(--gray-200); display: flex; justify-content: space-around; align-items: flex-start; padding: 0.75rem 0.5rem 1.5rem; z-index: 10; }
-        .tab { display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 0.625rem; font-weight: 600; color: var(--gray-600); min-width: 60px; text-align: center; cursor: pointer; }
-        .tab.active { color: var(--primary); }
-        .tab-icon { font-size: 1.5rem; }
-        .btn { padding: 0.875rem 1.5rem; border-radius: 0.75rem; font-weight: 600; font-size: 1rem; border: none; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.2s; }
-        .btn-primary { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; box-shadow: 0 4px 16px rgba(0,180,216,0.4); }
-        .card { background: white; border-radius: 1rem; padding: 1.25rem; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .fade-in { animation: fadeIn 0.3s ease-out; }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: radial-gradient(circle at 18% 0%, #e0f2fe 0%, #edf2f7 46%, #dbe4ef 100%);
+            color: var(--gray-900);
+            overflow: hidden;
+        }
+
+        .app {
+            height: 100vh;
+            display: flex;
+        }
+
+        .sidebar {
+            width: 420px;
+            background: #fff;
+            border-right: 1px solid var(--gray-200);
+            overflow-y: auto;
+            box-shadow: 2px 0 16px rgba(0, 0, 0, 0.06);
+        }
+
+        .main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .topbar {
+            background: #fff;
+            border-bottom: 1px solid var(--gray-200);
+            padding: 1.45rem 2rem;
+        }
+
+        .viewer {
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 2rem;
+        }
+
+        .logo {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.85rem;
+            font-weight: 800;
+            color: var(--primary-dark);
+            padding: 1.85rem;
+            border-bottom: 1px solid var(--gray-200);
+            background: linear-gradient(140deg, var(--primary-light), #fff);
+        }
+
+        .subtitle {
+            margin-top: 0.35rem;
+            font-size: 0.82rem;
+            color: var(--gray-600);
+            font-weight: 600;
+        }
+
+        .epic-header {
+            margin: 1rem 1.2rem;
+            border: 1px solid #86efac;
+            background: linear-gradient(140deg, #ecfdf5, #f0fdf4);
+            border-radius: 0.85rem;
+            padding: 1rem;
+        }
+
+        .epic-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.04rem;
+            font-weight: 700;
+            margin-bottom: 0.34rem;
+        }
+
+        .epic-meta {
+            font-size: 0.76rem;
+            color: var(--gray-700);
+            line-height: 1.45;
+        }
+
+        .flow-map {
+            margin: 0 1.2rem 1rem;
+            border-radius: 0.85rem;
+            border: 1px solid #e2e8f0;
+            background: #f8fafc;
+            padding: 0.75rem;
+        }
+
+        .flow-title {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: var(--gray-600);
+            font-weight: 700;
+            margin-bottom: 0.48rem;
+        }
+
+        .flow-list {
+            display: grid;
+            gap: 0.34rem;
+        }
+
+        .flow-step {
+            border: 1px solid var(--gray-300);
+            border-radius: 0.5rem;
+            background: #fff;
+            padding: 0.33rem 0.5rem;
+            font-size: 0.69rem;
+            font-weight: 600;
+            color: var(--gray-700);
+        }
+
+        .flow-step.active {
+            border-color: var(--primary);
+            background: var(--primary-light);
+            color: var(--primary-dark);
+        }
+
+        .nav-group {
+            border-bottom: 1px solid var(--gray-100);
+            padding: 0.28rem 0 0.72rem;
+        }
+
+        .nav-group-title {
+            padding: 0.66rem 1.2rem;
+            font-size: 0.68rem;
+            color: var(--gray-600);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            font-weight: 700;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.62rem;
+            padding: 0.7rem 1.2rem;
+            border-left: 3px solid transparent;
+            color: var(--gray-700);
+            cursor: pointer;
+            transition: background 0.18s ease;
+        }
+
+        .nav-item:hover {
+            background: var(--gray-50);
+        }
+
+        .nav-item.active {
+            border-left-color: var(--primary);
+            background: var(--primary-light);
+            color: var(--primary-dark);
+        }
+
+        .nav-icon {
+            font-size: 1rem;
+        }
+
+        .nav-text {
+            flex: 1;
+            font-size: 0.83rem;
+            font-weight: 600;
+        }
+
+        .nav-badge {
+            font-size: 0.66rem;
+            font-weight: 700;
+            border-radius: 999px;
+            padding: 0.14rem 0.45rem;
+            background: #e2e8f0;
+            color: var(--gray-700);
+        }
+
+        .screen-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--secondary);
+        }
+
+        .screen-meta {
+            margin-top: 0.4rem;
+            display: flex;
+            align-items: center;
+            gap: 0.78rem;
+            color: var(--gray-600);
+            font-size: 0.9rem;
+        }
+
+        .fr-badge {
+            border: 1px solid #93c5fd;
+            background: #eff6ff;
+            color: #1d4ed8;
+            border-radius: 0.52rem;
+            padding: 0.2rem 0.58rem;
+            font-size: 0.78rem;
+            font-weight: 700;
+        }
+
+        .iphone {
+            width: 393px;
+            height: 852px;
+            background: #1d1d1f;
+            border-radius: 54px;
+            padding: 12px;
+            box-shadow: 0 44px 94px rgba(0, 0, 0, 0.45);
+            position: relative;
+        }
+
+        .island {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 30px;
+            border-radius: 20px;
+            background: #000;
+            z-index: 4;
+        }
+
+        .screen {
+            width: 100%;
+            height: 100%;
+            border-radius: 42px;
+            overflow: hidden;
+            background: #fff;
+        }
+
+        .content {
+            width: 100%;
+            height: 100%;
+            overflow-y: auto;
+            background: var(--gray-50);
+        }
+
+        .status {
+            height: 54px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #fff;
+            padding: 0 1.2rem;
+            font-size: 0.82rem;
+            font-weight: 600;
+        }
+
+        .mobile-header {
+            display: flex;
+            align-items: center;
+            gap: 0.72rem;
+            background: #fff;
+            border-bottom: 1px solid var(--gray-200);
+            padding: 0.9rem 1.2rem;
+            position: sticky;
+            top: 0;
+            z-index: 2;
+        }
+
+        .mobile-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--secondary);
+        }
+
+        .icon-btn {
+            border: 1px solid var(--gray-300);
+            background: #fff;
+            color: var(--gray-700);
+            border-radius: 0.55rem;
+            padding: 0.3rem 0.5rem;
+            font-size: 0.84rem;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .mobile-body {
+            padding: 1rem 1.15rem 1.35rem;
+            display: grid;
+            gap: 0.78rem;
+        }
+
+        .card {
+            border: 1px solid var(--gray-200);
+            border-radius: 0.9rem;
+            background: #fff;
+            padding: 0.82rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .card-title {
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: 0.38rem;
+        }
+
+        .muted {
+            color: var(--gray-600);
+            font-size: 0.78rem;
+            line-height: 1.45;
+        }
+
+        .row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
+        }
+
+        .chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.42rem;
+        }
+
+        .chip {
+            border: 1px solid var(--gray-300);
+            border-radius: 999px;
+            background: #fff;
+            color: var(--gray-700);
+            font-size: 0.68rem;
+            font-weight: 700;
+            padding: 0.16rem 0.54rem;
+        }
+
+        .chip.success {
+            border-color: #86efac;
+            background: var(--success-light);
+            color: #166534;
+        }
+
+        .chip.warn {
+            border-color: #fcd34d;
+            background: var(--warning-light);
+            color: #92400e;
+        }
+
+        .chip.error {
+            border-color: #fca5a5;
+            background: var(--error-light);
+            color: #991b1b;
+        }
+
+        .chip.indigo {
+            border-color: #c7d2fe;
+            background: var(--indigo-light);
+            color: #3730a3;
+        }
+
+        .btn {
+            border: none;
+            border-radius: 0.72rem;
+            padding: 0.73rem 0.92rem;
+            font-size: 0.84rem;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .btn:disabled {
+            opacity: 0.55;
+            cursor: not-allowed;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: #fff;
+        }
+
+        .btn-outline {
+            background: #fff;
+            border: 1px solid var(--gray-300);
+            color: var(--gray-700);
+        }
+
+        .btn-success {
+            background: #fff;
+            border: 1px solid var(--success);
+            color: #166534;
+        }
+
+        .state-switcher {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.42rem;
+        }
+
+        .state-btn {
+            border: 1px solid var(--gray-300);
+            background: #fff;
+            border-radius: 999px;
+            padding: 0.2rem 0.56rem;
+            font-size: 0.66rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            font-weight: 700;
+            color: var(--gray-700);
+            cursor: pointer;
+        }
+
+        .state-btn.active {
+            border-color: var(--primary);
+            color: var(--primary-dark);
+            background: var(--primary-light);
+        }
+
+        .state-panel {
+            border: 1px solid var(--gray-200);
+            border-radius: 0.8rem;
+            background: #fff;
+            padding: 0.72rem;
+            display: grid;
+            gap: 0.38rem;
+            font-size: 0.79rem;
+            line-height: 1.45;
+        }
+
+        .state-panel.loading {
+            border-color: #bfdbfe;
+            background: #eff6ff;
+        }
+
+        .state-panel.empty {
+            border-color: #cbd5e1;
+            background: #f8fafc;
+        }
+
+        .state-panel.error {
+            border-color: #fecaca;
+            background: var(--error-light);
+        }
+
+        .state-panel.offline {
+            border-color: #fcd34d;
+            background: #fffbeb;
+        }
+
+        .list {
+            display: grid;
+            gap: 0.5rem;
+        }
+
+        .list-item {
+            border: 1px solid var(--gray-200);
+            border-radius: 0.72rem;
+            background: #fff;
+            padding: 0.62rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
+        }
+
+        .item-title {
+            font-size: 0.84rem;
+            font-weight: 700;
+            color: var(--gray-900);
+        }
+
+        .item-meta {
+            font-size: 0.74rem;
+            color: var(--gray-600);
+            margin-top: 0.2rem;
+            line-height: 1.4;
+        }
+
+        .field {
+            width: 100%;
+            border: 1px solid var(--gray-300);
+            border-radius: 0.65rem;
+            background: #fff;
+            padding: 0.45rem 0.52rem;
+            font-size: 0.78rem;
+            color: var(--gray-700);
+            font-family: 'Inter', sans-serif;
+        }
+
+        .metric-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.5rem;
+        }
+
+        .metric-box {
+            border: 1px solid var(--gray-200);
+            border-radius: 0.7rem;
+            background: #fff;
+            padding: 0.55rem;
+            text-align: center;
+        }
+
+        .metric-value {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 800;
+            margin-bottom: 0.15rem;
+            color: var(--secondary);
+        }
+
+        .metric-label {
+            font-size: 0.68rem;
+            color: var(--gray-600);
+            font-weight: 600;
+        }
+
+        .heat-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 0.32rem;
+        }
+
+        .heat-cell {
+            aspect-ratio: 1;
+            border-radius: 0.35rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+        }
+
+        .emotion-calm {
+            background: #bbf7d0;
+        }
+
+        .emotion-clarity {
+            background: #bfdbfe;
+        }
+
+        .emotion-tense {
+            background: #fed7aa;
+        }
+
+        .emotion-neutral {
+            background: var(--gray-100);
+            color: var(--gray-400);
+        }
+
+        .pattern {
+            width: 24px;
+            height: 24px;
+            border-radius: 0.3rem;
+            border: 1px solid rgba(0,0,0,0.12);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pattern.calm {
+            background: #bbf7d0;
+        }
+
+        .pattern.clarity {
+            background: #bfdbfe;
+        }
+
+        .pattern.tense {
+            background: #fed7aa;
+        }
+
+        .pattern.calm::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: radial-gradient(circle, rgba(0,0,0,0.2) 10%, transparent 11%);
+            background-size: 6px 6px;
+        }
+
+        .pattern.clarity::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: linear-gradient(45deg, rgba(0,0,0,0.2) 25%, transparent 25%, transparent 50%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.2) 75%, transparent 75%, transparent);
+            background-size: 8px 8px;
+        }
+
+        .pattern.tense::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: repeating-linear-gradient(90deg, rgba(0,0,0,0.2) 0 2px, transparent 2px 5px);
+        }
+
+        .progress-line {
+            height: 7px;
+            border-radius: 999px;
+            overflow: hidden;
+            background: var(--gray-100);
+            margin-top: 0.24rem;
+        }
+
+        .progress-line > div {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+        }
+
+        .toast {
+            position: fixed;
+            right: 1.2rem;
+            bottom: 1.2rem;
+            background: #111827;
+            color: #fff;
+            border-radius: 0.7rem;
+            padding: 0.62rem 0.92rem;
+            font-size: 0.8rem;
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22);
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(8px);
+            transition: opacity 0.2s ease, transform 0.2s ease;
+            z-index: 20;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .toast.success {
+            background: #065f46;
+        }
+
+        .toast.error {
+            background: #7f1d1d;
+        }
+
+        .nav-item:focus-visible,
+        button:focus-visible,
+        select:focus-visible,
+        textarea:focus-visible,
+        input:focus-visible {
+            outline: 3px solid #60a5fa;
+            outline-offset: 2px;
+        }
+
+        @media (max-width: 1200px) {
+            body {
+                overflow: auto;
+            }
+
+            .app {
+                flex-direction: column;
+                height: auto;
+                min-height: 100vh;
+            }
+
+            .sidebar {
+                width: 100%;
+                max-height: 52vh;
+            }
+
+            .viewer {
+                padding: 1.2rem;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation: none !important;
+                transition: none !important;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="app">
-        <div class="sidebar">
-            <div class="logo">PST Coaching<div class="subtitle">Gelişim & Raporlama</div></div>
+        <aside class="sidebar">
+            <div class="logo">
+                PST Coaching
+                <div class="subtitle">EPIC 6 - Gelisim ve Raporlama</div>
+            </div>
+
             <div class="epic-header">
-                <div class="epic-title">EPIC 6: Gelişim ve Raporlama</div>
-                <div class="epic-meta">6 User Stories • 6 Screens • 24 ACs</div>
+                <div class="epic-title">EPIC-6 Sync Pack</div>
+                <div class="epic-meta">6 FR Screen • 19 AC • Requirements + UX artifacts + mockup senkron</div>
             </div>
-            <div class="nav-map">
-                <div class="nav-map-title"><span>🗺️</span><span>Navigation Map</span></div>
-                <div class="nav-flow">
-                    <div class="nav-flow-item"><div class="nav-flow-box active" id="nav-1">Progress Dashboard</div></div>
-                    <div class="nav-flow-item"><span class="nav-flow-arrow">├→</span><span class="nav-flow-label">tap Duygusal Harita</span></div>
-                    <div class="nav-flow-item" style="margin-left: 1rem;"><div class="nav-flow-box" id="nav-2">Emotional Map</div></div>
-                    <div class="nav-flow-item"><span class="nav-flow-arrow">├→</span><span class="nav-flow-label">tap Alanlarım</span></div>
-                    <div class="nav-flow-item" style="margin-left: 1rem;"><div class="nav-flow-box" id="nav-3">Strengths & Growth</div></div>
-                    <div class="nav-flow-item"><span class="nav-flow-arrow">├→</span><span class="nav-flow-label">tap Haftalık Özet</span></div>
-                    <div class="nav-flow-item" style="margin-left: 1rem;"><div class="nav-flow-box" id="nav-4">Weekly Summary</div></div>
-                    <div class="nav-flow-item"><span class="nav-flow-arrow">├→</span><span class="nav-flow-label">finish content</span></div>
-                    <div class="nav-flow-item" style="margin-left: 1rem;"><div class="nav-flow-box" id="nav-5">Content Review</div></div>
-                    <div class="nav-flow-item"><span class="nav-flow-arrow">└→</span><span class="nav-flow-label">tap Rapor</span></div>
-                    <div class="nav-flow-item" style="margin-left: 1rem;"><div class="nav-flow-box" id="nav-6">Download Report</div></div>
-                </div>
-                <div style="margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid var(--purple); font-size: 0.625rem; color: var(--gray-600); line-height: 1.4;">
-                    <strong>Entry:</strong> Tab Bar → Gelişim<br>
-                    <strong>Analytics:</strong> Charts, Maps, Insights
+
+            <div class="flow-map">
+                <div class="flow-title">Gelisim Akis Haritasi</div>
+                <div class="flow-list">
+                    <div class="flow-step active" id="flow-1">FR-E6-01 Gelisim Paneli</div>
+                    <div class="flow-step" id="flow-2">FR-E6-02 Duygusal Harita</div>
+                    <div class="flow-step" id="flow-3">FR-E6-03 Guclu Gelisim Alanlari</div>
+                    <div class="flow-step" id="flow-4">FR-E6-04 Haftalik Ozet</div>
+                    <div class="flow-step" id="flow-5">FR-E6-05 Icerik Bitis Degerlendirmesi</div>
+                    <div class="flow-step" id="flow-6">FR-E6-06 Gelisim Raporu Indir Paylas</div>
                 </div>
             </div>
-            <div class="nav-section">
-                <div class="nav-title">US-6.1 & 6.2: Analytics</div>
-                <div class="nav-item active" onclick="showScreen(1)">
-                    <span class="nav-icon">📊</span><span>Progress Dashboard</span><span class="nav-badge">3 ACs</span>
-                </div>
-                <div class="ac-section">
-                    <div class="ac-title">✓ Acceptance Criteria</div>
-                    <ul class="ac-list">
-                        <li>Content type progress (journey/workshop/module/ebook)</li>
-                        <li>Submission rate and habit streak visible</li>
-                        <li>Chart summary text for screen readers</li>
-                    </ul>
-                </div>
-                <div class="nav-item" onclick="showScreen(2)">
-                    <span class="nav-icon">🎭</span><span>Emotional Map</span><span class="nav-badge">4 ACs</span>
-                </div>
-                <div class="ac-section">
-                    <div class="ac-title">✓ Acceptance Criteria</div>
-                    <ul class="ac-list">
-                        <li>Last 14/30 days view selectable</li>
-                        <li>Legend explanation (Calm/Clarity/Tense) shown</li>
-                        <li>"Not a diagnosis" disclaimer visible</li>
-                        <li>Icon/pattern support for color blindness</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="nav-section">
-                <div class="nav-title">US-6.3 & 6.4: Insights</div>
-                <div class="nav-item" onclick="showScreen(3)">
-                    <span class="nav-icon">💪</span><span>Strengths & Growth</span><span class="nav-badge">3 ACs</span>
-                </div>
-                <div class="ac-section">
-                    <div class="ac-title">✓ Acceptance Criteria</div>
-                    <ul class="ac-list">
-                        <li>Strengths and growth areas in separate cards</li>
-                        <li>Concrete recommendations (related content)</li>
-                        <li>"Apply Recommendations" action available</li>
-                    </ul>
-                </div>
-                <div class="nav-item" onclick="showScreen(4)">
-                    <span class="nav-icon">📅</span><span>Weekly Summary</span><span class="nav-badge">3 ACs</span>
-                </div>
-                <div class="ac-section">
-                    <div class="ac-title">✓ Acceptance Criteria</div>
-                    <ul class="ac-list">
-                        <li>Positive trend, challenge area, recommendation visible</li>
-                        <li>Completed content listed</li>
-                        <li>Explanation shown if no data</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="nav-section">
-                <div class="nav-title">US-6.5 & 6.6: Feedback</div>
-                <div class="nav-item" onclick="showScreen(5)">
-                    <span class="nav-icon">⭐</span><span>Content Review</span><span class="nav-badge">4 ACs</span>
-                </div>
-                <div class="ac-section">
-                    <div class="ac-title">✓ Acceptance Criteria</div>
-                    <ul class="ac-list">
-                        <li>Review prompted at content completion</li>
-                        <li>"Later" option to postpone</li>
-                        <li>Responses saved</li>
-                        <li>Next content recommendation shown</li>
-                    </ul>
-                </div>
-                <div class="nav-item" onclick="showScreen(6)">
-                    <span class="nav-icon">📄</span><span>Download Report</span><span class="nav-badge">3 ACs</span>
-                </div>
-                <div class="ac-section">
-                    <div class="ac-title">✓ Acceptance Criteria</div>
-                    <ul class="ac-list">
-                        <li>Summary metrics, themes, recommendations visible</li>
-                        <li>Downloadable as PDF</li>
-                        <li>Privacy consent shown before sharing</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div class="main">
+
+            <section class="nav-group">
+                <div class="nav-group-title">Analitik ve Harita</div>
+                <div class="nav-item active" data-screen="1"><span class="nav-icon">📊</span><span class="nav-text">Gelisim Paneli</span><span class="nav-badge">3 AC</span></div>
+                <div class="nav-item" data-screen="2"><span class="nav-icon">🎭</span><span class="nav-text">Duygusal Harita</span><span class="nav-badge">4 AC</span></div>
+            </section>
+
+            <section class="nav-group">
+                <div class="nav-group-title">Icgoru ve Ozet</div>
+                <div class="nav-item" data-screen="3"><span class="nav-icon">💪</span><span class="nav-text">Guclu Gelisim Alanlari</span><span class="nav-badge">3 AC</span></div>
+                <div class="nav-item" data-screen="4"><span class="nav-icon">📅</span><span class="nav-text">Haftalik Ozet</span><span class="nav-badge">3 AC</span></div>
+            </section>
+
+            <section class="nav-group">
+                <div class="nav-group-title">Geri Bildirim ve Rapor</div>
+                <div class="nav-item" data-screen="5"><span class="nav-icon">⭐</span><span class="nav-text">Icerik Bitis Degerlendirmesi</span><span class="nav-badge">3 AC</span></div>
+                <div class="nav-item" data-screen="6"><span class="nav-icon">📄</span><span class="nav-text">Gelisim Raporu</span><span class="nav-badge">3 AC</span></div>
+            </section>
+        </aside>
+
+        <main class="main">
             <div class="topbar">
-                <h1 class="screen-title" id="screenTitle">Progress Dashboard</h1>
+                <h1 class="screen-title" id="screenTitle">Gelisim Paneli</h1>
                 <div class="screen-meta">
-                    <span class="meta-badge" id="screenUS">US-6.1</span>
-                    <span id="screenMeta">Analytics overview • 3/3 ACs • Entry: Tab Bar → Gelişim</span>
+                    <span class="fr-badge" id="screenFr">FR-E6-01</span>
+                    <span id="screenMeta">Icerik turu bazli ilerleme teslim orani streak ve erisilebilir ozet</span>
                 </div>
             </div>
             <div class="viewer" id="viewer"></div>
-        </div>
+        </main>
     </div>
+
+    <div class="toast" id="toast"></div>
+
     <script>
         const screenData = {
-            1: { title: 'Progress Dashboard', us: 'US-6.1', meta: 'Analytics overview • 3/3 ACs • Entry: Tab Bar → Gelişim' },
-            2: { title: 'Emotional Map', us: 'US-6.2', meta: 'Sentiment analysis • 4/4 ACs • From: Dashboard' },
-            3: { title: 'Strengths & Growth', us: 'US-6.3', meta: 'Personal insights • 3/3 ACs • From: Dashboard' },
-            4: { title: 'Weekly Summary', us: 'US-6.4', meta: 'Week recap • 3/3 ACs • From: Dashboard' },
-            5: { title: 'Content Review', us: 'US-6.5', meta: 'Rate experience • 4/4 ACs • From: Completion' },
-            6: { title: 'Download Report', us: 'US-6.6', meta: 'Export progress • 3/3 ACs • From: Dashboard' }
+            1: { title: 'Gelisim Paneli', fr: 'FR-E6-01', meta: 'Icerik turu bazli ilerleme teslim orani streak ve erisilebilir ozet' },
+            2: { title: 'Duygusal Harita', fr: 'FR-E6-02', meta: '14 30 gun secimi legend tani uyarisi ve renk korlugu deseni' },
+            3: { title: 'Guclu ve Gelisim Alanlari', fr: 'FR-E6-03', meta: 'Ayrik kartlar somut oneriler ve oneriyi uygula aksiyonu' },
+            4: { title: 'Haftalik Ozet', fr: 'FR-E6-04', meta: 'Pozitif trend zorlayan alan oneriler ve yeterli veri yok aciklamasi' },
+            5: { title: 'Icerik Bitis Degerlendirmesi', fr: 'FR-E6-05', meta: 'Tamamlanan icerikte degerlendirme daha sonra erteleme kayit ve sonraki onerisi' },
+            6: { title: 'Gelisim Raporu Indir Paylas', fr: 'FR-E6-06', meta: 'Ozet metrikler temalar oneriler pdf indirme ve gizlilik onayi' }
         };
-        function showScreen(num) {
-            document.getElementById('screenTitle').textContent = screenData[num].title;
-            document.getElementById('screenUS').textContent = screenData[num].us;
-            document.getElementById('screenMeta').textContent = screenData[num].meta;
-            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
-            const navMap = {1: 0, 2: 1, 3: 2, 4: 3, 5: 4, 6: 5};
-            document.querySelectorAll('.nav-item')[navMap[num]].classList.add('active');
-            document.querySelectorAll('[id^="nav-"]').forEach(box => box.classList.remove('active'));
-            const navBox = document.getElementById('nav-' + num);
-            if (navBox) navBox.classList.add('active');
-            document.getElementById('viewer').innerHTML = getScreenHTML(num);
+
+        const emotionValues = [
+            'calm', 'clarity', 'calm', 'tense', 'clarity', 'calm', 'neutral',
+            'clarity', 'calm', 'tense', 'calm', 'calm', 'clarity', 'neutral',
+            'calm', 'tense', 'clarity', 'calm', 'clarity', 'calm', 'tense',
+            'clarity', 'calm', 'calm', 'clarity', 'tense', 'calm', 'clarity',
+            'neutral', 'calm'
+        ];
+
+        const ui = {
+            currentScreen: 1,
+            screenStates: {
+                1: 'ready',
+                2: 'ready',
+                3: 'ready',
+                4: 'ready',
+                5: 'ready',
+                6: 'ready'
+            },
+            dashboard: {
+                journeyPct: 42,
+                workshopPct: 67,
+                modulePct: 58,
+                ebookPct: 33,
+                submissionRate: 87,
+                streak: 12,
+                chartSummary: 'Yolculukta yuzde 42, atolye yuzde 67, modul yuzde 58, e-kitap yuzde 33 ilerleme var. Teslim orani yuzde 87, streak 12 gun.'
+            },
+            emotionMap: {
+                rangeDays: 30,
+                colorBlindAssist: true
+            },
+            strengthsGrowth: {
+                strengths: [
+                    { title: 'Ozfarkindalik', detail: 'Duygu fark etme ve yansitma puaniniz yuksek.' },
+                    { title: 'Tutarlilik', detail: 'Haftalik tamamlamada istikrarli bir ritim kuruldu.' }
+                ],
+                growth: [
+                    { title: 'Eyleme Donusturme', detail: 'Icgoruyu somut adima cevirme ritmini artirmak gerekiyor.', rec: 'Hedef Belirleme Atolyesi', ref: 'discover.fr_e4_04' },
+                    { title: 'Derin Yansima', detail: 'Yorum alaninda daha kapsamli anlatim gelistirilebilir.', rec: 'Derin Yansima Modul Paketi', ref: 'discover.fr_e4_05' }
+                ],
+                appliedRef: '-'
+            },
+            weekly: {
+                hasEnoughData: true,
+                positive: 'Teslim tutarliliginda artis',
+                challenge: 'Derin yansima duzeyi dalgali',
+                recommendation: 'Bu hafta bir atolyeyi tum oturumlari ile tamamla',
+                completed: [
+                    'Gun 5-7 Sidk Yolculugu',
+                    'Vicdan Atolyesi Kamp 1',
+                    'Niyet ve Rutin Modul Paketi'
+                ]
+            },
+            review: {
+                contentType: 'yolculuk',
+                contentName: 'Sidk Yolculugu',
+                rating: 0,
+                feedback: '',
+                saved: false,
+                postponed: false,
+                savedAt: '-',
+                nextSuggestion: 'Sukur Yolculugu (30 gun)'
+            },
+            report: {
+                pdfGeneratedAt: '-',
+                privacyConsent: false,
+                shareStatus: '-'
+            }
+        };
+
+        let toastTimer = null;
+
+        function showToast(message, tone) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = 'toast show' + (tone ? ' ' + tone : '');
+            if (toastTimer) {
+                clearTimeout(toastTimer);
+            }
+            toastTimer = setTimeout(() => {
+                toast.className = 'toast';
+            }, 2200);
         }
-        function getScreenHTML(num) {
-            const screens = {
-                1: `<div class="iphone fade-in"><div class="island"></div><div class="screen"><div class="content">
-                    <div class="status"><div>9:41</div><div>📶 📡 🔋</div></div>
-                    <div style="padding: 1.5rem 1.5rem 6rem;">
-                        <h1 style="font-family: Poppins, sans-serif; font-size: 2rem; font-weight: 800; color: var(--secondary); margin-bottom: 1.5rem;">Gelişim</h1>
-                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin-bottom: 1.5rem;">
-                            <div class="card" style="text-align: center; padding: 1rem; background: linear-gradient(135deg, var(--primary-light), var(--primary-100));">
-                                <div style="font-family: Poppins, sans-serif; font-size: 1.75rem; font-weight: 800; color: var(--primary); margin-bottom: 0.25rem;">42</div>
-                                <div style="font-size: 0.75rem; color: var(--gray-600); font-weight: 600;">Gün Aktif</div>
+
+        function stamp() {
+            return new Date().toLocaleString('tr-TR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
+        }
+
+        function phoneShell(title, body, backScreen) {
+            const back = backScreen
+                ? `<button class="icon-btn" onclick="showScreen(${backScreen})" aria-label="Geri">←</button>`
+                : '<span style="width:34px;"></span>';
+
+            return `
+                <div class="iphone">
+                    <div class="island"></div>
+                    <div class="screen">
+                        <div class="content">
+                            <div class="status"><span>9:41</span><span>📶 📡 🔋</span></div>
+                            <div class="mobile-header">
+                                ${back}
+                                <div class="mobile-title">${title}</div>
                             </div>
-                            <div class="card" style="text-align: center; padding: 1rem; background: linear-gradient(135deg, var(--success-light), #A7F3D0);">
-                                <div style="font-family: Poppins, sans-serif; font-size: 1.75rem; font-weight: 800; color: var(--success-dark); margin-bottom: 0.25rem;">87%</div>
-                                <div style="font-size: 0.75rem; color: var(--gray-600); font-weight: 600;">Teslim Oranı</div>
-                            </div>
-                            <div class="card" style="text-align: center; padding: 1rem; background: linear-gradient(135deg, #FEF3C7, #FDE68A);">
-                                <div style="font-family: Poppins, sans-serif; font-size: 1.75rem; font-weight: 800; color: var(--warning); margin-bottom: 0.25rem;">12</div>
-                                <div style="font-size: 0.75rem; color: var(--gray-600); font-weight: 600;">Streak</div>
-                            </div>
-                        </div>
-                        <div class="card" style="margin-bottom: 1.5rem;">
-                            <h3 style="font-weight: 700; color: var(--gray-900); margin-bottom: 1rem; font-size: 1rem;">İçerik Türüne Göre İlerleme</h3>
-                            <div style="margin-bottom: 1rem;">
-                                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 0.875rem;">
-                                    <span style="color: var(--gray-700);">🎯 Yolculuklar</span>
-                                    <span style="font-weight: 700; color: var(--primary);">7/40 gün</span>
-                                </div>
-                                <div style="height: 8px; background: var(--gray-200); border-radius: 9999px; overflow: hidden;">
-                                    <div style="width: 17%; height: 100%; background: linear-gradient(90deg, var(--primary), var(--primary-dark));"></div>
-                                </div>
-                            </div>
-                            <div style="margin-bottom: 1rem;">
-                                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 0.875rem;">
-                                    <span style="color: var(--gray-700);">🎨 Atölyeler</span>
-                                    <span style="font-weight: 700; color: var(--success-dark);">2/3 tamamlandı</span>
-                                </div>
-                                <div style="height: 8px; background: var(--gray-200); border-radius: 9999px; overflow: hidden;">
-                                    <div style="width: 67%; height: 100%; background: linear-gradient(90deg, var(--success), var(--success-dark));"></div>
-                                </div>
-                            </div>
-                            <div style="margin-bottom: 1rem;">
-                                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 0.875rem;">
-                                    <span style="color: var(--gray-700);">📦 Modüller</span>
-                                    <span style="font-weight: 700; color: var(--warning);">5/8 paket</span>
-                                </div>
-                                <div style="height: 8px; background: var(--gray-200); border-radius: 9999px; overflow: hidden;">
-                                    <div style="width: 62%; height: 100%; background: linear-gradient(90deg, var(--warning), #D97706);"></div>
-                                </div>
-                            </div>
-                            <div>
-                                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 0.875rem;">
-                                    <span style="color: var(--gray-700);">📖 e-Kitaplar</span>
-                                    <span style="font-weight: 700; color: var(--secondary);">1/3 okundu</span>
-                                </div>
-                                <div style="height: 8px; background: var(--gray-200); border-radius: 9999px; overflow: hidden;">
-                                    <div style="width: 33%; height: 100%; background: linear-gradient(90deg, var(--secondary), #1E1548);"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-bottom: 1.5rem;">
-                            <div class="card" style="cursor: pointer;" onclick="parent.showScreen(2)">
-                                <div style="font-size: 2rem; margin-bottom: 0.5rem;">🎭</div>
-                                <h4 style="font-weight: 700; font-size: 0.875rem; color: var(--gray-900); margin-bottom: 0.25rem;">Duygusal Harita</h4>
-                                <p style="font-size: 0.75rem; color: var(--gray-600);">Son 30 gün</p>
-                            </div>
-                            <div class="card" style="cursor: pointer;" onclick="parent.showScreen(3)">
-                                <div style="font-size: 2rem; margin-bottom: 0.5rem;">💪</div>
-                                <h4 style="font-weight: 700; font-size: 0.875rem; color: var(--gray-900); margin-bottom: 0.25rem;">Alanlarım</h4>
-                                <p style="font-size: 0.75rem; color: var(--gray-600);">Güçlü & Gelişim</p>
-                            </div>
-                        </div>
-                        <div class="card" style="cursor: pointer;" onclick="parent.showScreen(4)">
-                            <div style="display: flex; align-items: center; gap: 1rem;">
-                                <div style="font-size: 2.5rem;">📅</div>
-                                <div style="flex: 1;">
-                                    <h4 style="font-weight: 700; font-size: 0.9375rem; color: var(--gray-900); margin-bottom: 0.25rem;">Haftalık Özet</h4>
-                                    <p style="font-size: 0.8125rem; color: var(--gray-600);">Son 7 günün özeti</p>
-                                </div>
-                                <div style="color: var(--gray-400);">›</div>
-                            </div>
+                            <div class="mobile-body">${body}</div>
                         </div>
                     </div>
-                    <div class="tabs">
-                        <div class="tab"><div class="tab-icon">🏠</div><div>Ana Sayfa</div></div>
-                        <div class="tab"><div class="tab-icon">🔍</div><div>Keşfet</div></div>
-                        <div class="tab"><div class="tab-icon">📚</div><div>Kütüphane</div></div>
-                        <div class="tab active"><div class="tab-icon">📈</div><div>Gelişim</div></div>
-                        <div class="tab"><div class="tab-icon">👤</div><div>Profil</div></div>
+                </div>
+            `;
+        }
+
+        function stateControls(screenNo) {
+            const states = ['ready', 'loading', 'empty', 'error', 'offline'];
+            return `
+                <div class="state-switcher">
+                    ${states.map((s) => `<button class="state-btn ${ui.screenStates[screenNo] === s ? 'active' : ''}" onclick="setScreenState(${screenNo}, '${s}')">${s}</button>`).join('')}
+                </div>
+            `;
+        }
+
+        function statePanel(screenNo) {
+            const state = ui.screenStates[screenNo];
+            if (state === 'ready') {
+                return '';
+            }
+            if (state === 'loading') {
+                return '<div class="state-panel loading"><strong>Loading</strong><span>Veriler yukleniyor. Skeleton ve gecici ozet gosteriliyor.</span></div>';
+            }
+            if (state === 'empty') {
+                return '<div class="state-panel empty"><strong>Empty</strong><span>Bu gorunumde veri yok. Sonraki en iyi aksiyon oneriliyor.</span><button class="btn btn-outline" onclick="showToast(\'Kesif onerisine gidildi.\')">Kesfet</button></div>';
+            }
+            if (state === 'error') {
+                return '<div class="state-panel error"><strong>Error</strong><span>Geri alinabilir hata mesaji ve tekrar dene aksiyonu sunulur.</span><button class="btn btn-primary" onclick="setScreenState(' + screenNo + ', \'ready\')">Tekrar Dene</button></div>';
+            }
+            return '<div class="state-panel offline"><strong>Offline</strong><span>Son senkronize veri gosteriliyor. Yazma islemleri kuyruga alinacak.</span></div>';
+        }
+
+        function setScreenState(screenNo, state) {
+            ui.screenStates[screenNo] = state;
+            render();
+        }
+
+        function simulateDashboardShift() {
+            ui.dashboard.journeyPct = Math.min(100, ui.dashboard.journeyPct + 4);
+            ui.dashboard.modulePct = Math.min(100, ui.dashboard.modulePct + 3);
+            ui.dashboard.submissionRate = Math.min(100, ui.dashboard.submissionRate + 1);
+            ui.dashboard.streak += 1;
+            ui.dashboard.chartSummary = 'Yolculuk yuzde ' + ui.dashboard.journeyPct + ', atolye yuzde ' + ui.dashboard.workshopPct + ', modul yuzde ' + ui.dashboard.modulePct + ', e-kitap yuzde ' + ui.dashboard.ebookPct + '. Teslim orani yuzde ' + ui.dashboard.submissionRate + ', streak ' + ui.dashboard.streak + ' gun.';
+            showToast('Panel metrikleri guncellendi.', 'success');
+            render();
+        }
+
+        function dashboardRow(label, value) {
+            return `
+                <div>
+                    <div class="row"><span class="muted">${label}</span><strong>%${value}</strong></div>
+                    <div class="progress-line"><div style="width:${value}%"></div></div>
+                </div>
+            `;
+        }
+
+        function screenOne() {
+            const body = `
+                ${stateControls(1)}
+                ${statePanel(1)}
+                ${ui.screenStates[1] !== 'ready' ? '' : `
+                    <div class="metric-grid">
+                        <div class="metric-box"><div class="metric-value">${ui.dashboard.submissionRate}%</div><div class="metric-label">Teslim Orani</div></div>
+                        <div class="metric-box"><div class="metric-value">${ui.dashboard.streak}</div><div class="metric-label">Streak Gun</div></div>
+                        <div class="metric-box"><div class="metric-value">42</div><div class="metric-label">Aktif Gun</div></div>
                     </div>
-                </div></div></div>`,
-                2: `<div class="iphone fade-in"><div class="island"></div><div class="screen"><div class="content">
-                    <div class="status"><div>9:41</div><div>📶 📡 🔋</div></div>
-                    <div style="background: white; padding: 1rem 1.5rem; border-bottom: 1px solid var(--gray-200);">
-                        <div style="display: flex; align-items: center; gap: 1rem;">
-                            <button style="background: none; border: none; font-size: 1.5rem; cursor: pointer;" onclick="parent.showScreen(1)">←</button>
-                            <h2 style="font-family: Poppins, sans-serif; font-size: 1.25rem; font-weight: 800; color: var(--secondary);">Duygusal Harita</h2>
-                        </div>
-                    </div>
-                    <div style="padding: 1.5rem;">
-                        <div style="display: flex; gap: 0.5rem; margin-bottom: 1.5rem;">
-                            <button style="padding: 0.5rem 1rem; background: var(--gray-100); color: var(--gray-700); border: none; border-radius: 0.5rem; font-weight: 600; font-size: 0.8125rem;">Son 14 Gün</button>
-                            <button style="padding: 0.5rem 1rem; background: var(--primary); color: white; border: none; border-radius: 0.5rem; font-weight: 600; font-size: 0.8125rem;">Son 30 Gün</button>
-                        </div>
-                        <div class="card" style="margin-bottom: 1.5rem;">
-                            <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 0.5rem; margin-bottom: 1rem;">
-                                <div style="text-align: center; font-size: 0.625rem; color: var(--gray-600); font-weight: 600;">Pt</div>
-                                <div style="text-align: center; font-size: 0.625rem; color: var(--gray-600); font-weight: 600;">Sl</div>
-                                <div style="text-align: center; font-size: 0.625rem; color: var(--gray-600); font-weight: 600;">Ça</div>
-                                <div style="text-align: center; font-size: 0.625rem; color: var(--gray-600); font-weight: 600;">Pe</div>
-                                <div style="text-align: center; font-size: 0.625rem; color: var(--gray-600); font-weight: 600;">Cu</div>
-                                <div style="text-align: center; font-size: 0.625rem; color: var(--gray-600); font-weight: 600;">Ct</div>
-                                <div style="text-align: center; font-size: 0.625rem; color: var(--gray-600); font-weight: 600;">Pz</div>
-                            </div>
-                            <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 0.5rem; margin-bottom: 0.5rem;">
-                                <div style="aspect-ratio: 1; background: #D1FAE5; border-radius: 0.375rem; display: flex; align-items: center; justify-content: center; font-size: 1rem;">😌</div>
-                                <div style="aspect-ratio: 1; background: #A7F3D0; border-radius: 0.375rem; display: flex; align-items: center; justify-content: center; font-size: 1rem;">😊</div>
-                                <div style="aspect-ratio: 1; background: #D1FAE5; border-radius: 0.375rem; display: flex; align-items: center; justify-content: center; font-size: 1rem;">😌</div>
-                                <div style="aspect-ratio: 1; background: #E0F7FA; border-radius: 0.375rem; display: flex; align-items: center; justify-content: center; font-size: 1rem;">✨</div>
-                                <div style="aspect-ratio: 1; background: #B2EBF2; border-radius: 0.375rem; display: flex; align-items: center; justify-content: center; font-size: 1rem;">💎</div>
-                                <div style="aspect-ratio: 1; background: #FFDDC1; border-radius: 0.375rem; display: flex; align-items: center; justify-content: center; font-size: 1rem;">🤔</div>
-                                <div style="aspect-ratio: 1; background: #D1FAE5; border-radius: 0.375rem; display: flex; align-items: center; justify-content: center; font-size: 1rem;">😌</div>
-                            </div>
-                            <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 0.5rem; margin-bottom: 0.5rem;">
-                                <div style="aspect-ratio: 1; background: #E0F7FA; border-radius: 0.375rem; display: flex; align-items: center; justify-content: center; font-size: 1rem;">✨</div>
-                                <div style="aspect-ratio: 1; background: #A7F3D0; border-radius: 0.375rem; display: flex; align-items: center; justify-content: center; font-size: 1rem;">😊</div>
-                                <div style="aspect-ratio: 1; background: #FFDDC1; border-radius: 0.375rem; display: flex; align-items: center; justify-content: center; font-size: 1rem;">🤔</div>
-                                <div style="aspect-ratio: 1; background: #D1FAE5; border-radius: 0.375rem; display: flex; align-items: center; justify-content: center; font-size: 1rem;">😌</div>
-                                <div style="aspect-ratio: 1; background: #D1FAE5; border-radius: 0.375rem; display: flex; align-items: center; justify-content: center; font-size: 1rem;">😌</div>
-                                <div style="aspect-ratio: 1; background: #B2EBF2; border-radius: 0.375rem; display: flex; align-items: center; justify-content: center; font-size: 1rem;">💎</div>
-                                <div style="aspect-ratio: 1; background: #E0F7FA; border-radius: 0.375rem; display: flex; align-items: center; justify-content: center; font-size: 1rem;">✨</div>
-                            </div>
-                            <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 0.5rem; margin-bottom: 0.5rem;">
-                                <div style="aspect-ratio: 1; background: #A7F3D0; border-radius: 0.375rem; display: flex; align-items: center; justify-content: center; font-size: 1rem;">😊</div>
-                                <div style="aspect-ratio: 1; background: #D1FAE5; border-radius: 0.375rem; display: flex; align-items: center; justify-content: center; font-size: 1rem;">😌</div>
-                                <div style="aspect-ratio: 1; background: #B2EBF2; border-radius: 0.375rem; display: flex; align-items: center; justify-content: center; font-size: 1rem;">💎</div>
-                                <div style="aspect-ratio: 1; background: #E0F7FA; border-radius: 0.375rem; display: flex; align-items: center; justify-content: center; font-size: 1rem;">✨</div>
-                                <div style="aspect-ratio: 1; background: #FFDDC1; border-radius: 0.375rem; display: flex; align-items: center; justify-content: center; font-size: 1rem;">🤔</div>
-                                <div style="aspect-ratio: 1; background: #D1FAE5; border-radius: 0.375rem; display: flex; align-items: center; justify-content: center; font-size: 1rem;">😌</div>
-                                <div style="aspect-ratio: 1; background: #A7F3D0; border-radius: 0.375rem; display: flex; align-items: center; justify-content: center; font-size: 1rem;">😊</div>
-                            </div>
-                            <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 0.5rem;">
-                                <div style="aspect-ratio: 1; background: #E0F7FA; border-radius: 0.375rem; display: flex; align-items: center; justify-content: center; font-size: 1rem;">✨</div>
-                                <div style="aspect-ratio: 1; background: #D1FAE5; border-radius: 0.375rem; display: flex; align-items: center; justify-content: center; font-size: 1rem;">😌</div>
-                                <div style="aspect-ratio: 1; background: var(--gray-200); border-radius: 0.375rem;"></div>
-                                <div style="aspect-ratio: 1; background: var(--gray-200); border-radius: 0.375rem;"></div>
-                                <div style="aspect-ratio: 1; background: var(--gray-200); border-radius: 0.375rem;"></div>
-                                <div style="aspect-ratio: 1; background: var(--gray-200); border-radius: 0.375rem;"></div>
-                                <div style="aspect-ratio: 1; background: var(--gray-200); border-radius: 0.375rem;"></div>
-                            </div>
-                        </div>
-                        <div class="card" style="margin-bottom: 1.5rem; background: var(--gray-50);">
-                            <h4 style="font-weight: 700; color: var(--gray-900); margin-bottom: 0.75rem; font-size: 0.875rem;">Legend</h4>
-                            <div style="display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.8125rem;">
-                                <div style="display: flex; align-items: center; gap: 0.75rem;">
-                                    <div style="width: 28px; height: 28px; background: #A7F3D0; border-radius: 0.375rem; display: flex; align-items: center; justify-content: center;">😊</div>
-                                    <span style="color: var(--gray-700);"><strong>Sakin:</strong> Huzurlu ve dengeli</span>
-                                </div>
-                                <div style="display: flex; align-items: center; gap: 0.75rem;">
-                                    <div style="width: 28px; height: 28px; background: #B2EBF2; border-radius: 0.375rem; display: flex; align-items: center; justify-content: center;">💎</div>
-                                    <span style="color: var(--gray-700);"><strong>Netlik:</strong> Açık ve odaklanmış</span>
-                                </div>
-                                <div style="display: flex; align-items: center; gap: 0.75rem;">
-                                    <div style="width: 28px; height: 28px; background: #FFDDC1; border-radius: 0.375rem; display: flex; align-items: center; justify-content: center;">🤔</div>
-                                    <span style="color: var(--gray-700);"><strong>Gergin:</strong> Düşünceli veya zorlanma</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card" style="background: var(--error); background: linear-gradient(135deg, #FEE2E2, #FECACA); border-left: 4px solid var(--error);">
-                            <p style="font-size: 0.8125rem; color: var(--gray-800); line-height: 1.5;">
-                                <strong style="color: var(--error);">⚠️ Önemli:</strong> Bu harita bir teşhis değildir. Sadece yansımalarınızdan türetilen duygusal eğilimleri gösterir.
-                            </p>
+
+                    <div class="card">
+                        <div class="card-title">Icerik Turu Bazli Ilerleme</div>
+                        <div class="list">
+                            ${dashboardRow('Yolculuk', ui.dashboard.journeyPct)}
+                            ${dashboardRow('Atolye', ui.dashboard.workshopPct)}
+                            ${dashboardRow('Modul', ui.dashboard.modulePct)}
+                            ${dashboardRow('e-Kitap', ui.dashboard.ebookPct)}
                         </div>
                     </div>
-                </div></div></div>`,
-                3: `<div class="iphone fade-in"><div class="island"></div><div class="screen"><div class="content">
-                    <div class="status"><div>9:41</div><div>📶 📡 🔋</div></div>
-                    <div style="background: white; padding: 1rem 1.5rem; border-bottom: 1px solid var(--gray-200);">
-                        <div style="display: flex; align-items: center; gap: 1rem;">
-                            <button style="background: none; border: none; font-size: 1.5rem; cursor: pointer;" onclick="parent.showScreen(1)">←</button>
-                            <h2 style="font-family: Poppins, sans-serif; font-size: 1.25rem; font-weight: 800; color: var(--secondary);">Alanlarım</h2>
-                        </div>
+
+                    <div class="card" role="img" aria-label="${ui.dashboard.chartSummary}">
+                        <div class="card-title">Ekran Okuyucu Grafik Ozeti</div>
+                        <div class="muted">${ui.dashboard.chartSummary}</div>
                     </div>
-                    <div style="padding: 1.5rem;">
-                        <div class="card" style="margin-bottom: 1.5rem; background: linear-gradient(135deg, var(--success-light), #A7F3D0); border: 2px solid var(--success);">
-                            <h3 style="font-weight: 700; color: var(--success-dark); margin-bottom: 1rem; font-size: 1rem; display: flex; align-items: center; gap: 0.5rem;"><span>💪</span><span>Güçlü Alanlarınız</span></h3>
-                            <div style="display: flex; flex-direction: column; gap: 0.75rem;">
-                                <div style="background: white; padding: 1rem; border-radius: 0.75rem;">
-                                    <h4 style="font-weight: 700; font-size: 0.9375rem; color: var(--gray-900); margin-bottom: 0.5rem;">Özfarkındalık</h4>
-                                    <p style="font-size: 0.8125rem; color: var(--gray-700); line-height: 1.5;">Kendi duygularınızı tanımada ve ifade etmede güçlüsünüz. Yansımalarınız derin ve içgörülü.</p>
-                                </div>
-                                <div style="background: white; padding: 1rem; border-radius: 0.75rem;">
-                                    <h4 style="font-weight: 700; font-size: 0.9375rem; color: var(--gray-900); margin-bottom: 0.5rem;">Tutarlılık</h4>
-                                    <p style="font-size: 0.8125rem; color: var(--gray-700); line-height: 1.5;">%87 teslim oranı ve 12 günlük streak ile disiplinli bir yaklaşım gösteriyorsunuz.</p>
-                                </div>
+
+                    <div class="chips">
+                        <button class="btn btn-outline" onclick="simulateDashboardShift()">Metrik Yenile</button>
+                        <button class="btn btn-primary" onclick="showScreen(2)">Duygusal Haritaya Git</button>
+                    </div>
+                `}
+            `;
+            return phoneShell('Gelisim Paneli', body, null);
+        }
+
+        function setEmotionRange(days) {
+            ui.emotionMap.rangeDays = days;
+            render();
+        }
+
+        function toggleColorAssist() {
+            ui.emotionMap.colorBlindAssist = !ui.emotionMap.colorBlindAssist;
+            render();
+        }
+
+        function emotionCell(value) {
+            if (value === 'calm') {
+                return '<div class="heat-cell emotion-calm">😌</div>';
+            }
+            if (value === 'clarity') {
+                return '<div class="heat-cell emotion-clarity">✨</div>';
+            }
+            if (value === 'tense') {
+                return '<div class="heat-cell emotion-tense">⚡</div>';
+            }
+            return '<div class="heat-cell emotion-neutral">·</div>';
+        }
+
+        function screenTwo() {
+            const sliceCount = ui.emotionMap.rangeDays;
+            const values = emotionValues.slice(0, sliceCount);
+            const body = `
+                ${stateControls(2)}
+                ${statePanel(2)}
+                ${ui.screenStates[2] !== 'ready' ? '' : `
+                    <div class="card">
+                        <div class="row" style="margin-bottom: 0.45rem;">
+                            <div class="card-title" style="margin-bottom:0;">Gorunum Araligi</div>
+                            <div class="chips">
+                                <button class="btn ${ui.emotionMap.rangeDays === 14 ? 'btn-primary' : 'btn-outline'}" onclick="setEmotionRange(14)">Son 14</button>
+                                <button class="btn ${ui.emotionMap.rangeDays === 30 ? 'btn-primary' : 'btn-outline'}" onclick="setEmotionRange(30)">Son 30</button>
                             </div>
                         </div>
-                        <div class="card" style="margin-bottom: 1.5rem; background: linear-gradient(135deg, #FEF3C7, #FDE68A); border: 2px solid var(--warning);">
-                            <h3 style="font-weight: 700; color: var(--warning); margin-bottom: 1rem; font-size: 1rem; display: flex; align-items: center; gap: 0.5rem;"><span>🌱</span><span>Gelişim Alanlarınız</span></h3>
-                            <div style="display: flex; flex-direction: column; gap: 0.75rem;">
-                                <div style="background: white; padding: 1rem; border-radius: 0.75rem;">
-                                    <h4 style="font-weight: 700; font-size: 0.9375rem; color: var(--gray-900); margin-bottom: 0.5rem;">Eylem Alma</h4>
-                                    <p style="font-size: 0.8125rem; color: var(--gray-700); line-height: 1.5; margin-bottom: 0.75rem;">Fikir ve içgörüleri somut adımlara dönüştürmede gelişim alanı var.</p>
-                                    <div class="card" style="background: var(--primary-light); padding: 0.75rem; margin: 0;">
-                                        <div style="font-size: 0.75rem; color: var(--gray-700); margin-bottom: 0.375rem; font-weight: 600;">💡 Öneri</div>
-                                        <div style="font-size: 0.8125rem; color: var(--primary-dark); font-weight: 600;">→ Hedef Belirleme Atölyesi</div>
+                        <div class="heat-grid">${values.map((v) => emotionCell(v)).join('')}</div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">Legend</div>
+                        <div class="list">
+                            <div class="list-item"><div class="row" style="width:100%;"><div class="chips"><span class="chip success">😌 Sakin</span></div><span class="muted">Denge</span></div></div>
+                            <div class="list-item"><div class="row" style="width:100%;"><div class="chips"><span class="chip indigo">✨ Netlik</span></div><span class="muted">Odak</span></div></div>
+                            <div class="list-item"><div class="row" style="width:100%;"><div class="chips"><span class="chip warn">⚡ Gergin</span></div><span class="muted">Yuksek gerilim</span></div></div>
+                        </div>
+                        <div class="chips" style="margin-top:0.45rem;">
+                            <button class="btn ${ui.emotionMap.colorBlindAssist ? 'btn-primary' : 'btn-outline'}" onclick="toggleColorAssist()">Renk Korlugu Destegi</button>
+                        </div>
+                        ${ui.emotionMap.colorBlindAssist ? `
+                            <div class="list" style="margin-top:0.5rem;">
+                                <div class="list-item"><div class="row" style="width:100%;"><div class="chips"><span class="pattern calm"></span><span class="muted">Nokta deseni - Sakin</span></div></div></div>
+                                <div class="list-item"><div class="row" style="width:100%;"><div class="chips"><span class="pattern clarity"></span><span class="muted">Capraz deseni - Netlik</span></div></div></div>
+                                <div class="list-item"><div class="row" style="width:100%;"><div class="chips"><span class="pattern tense"></span><span class="muted">Dikey deseni - Gergin</span></div></div></div>
+                            </div>
+                        ` : ''}
+                    </div>
+
+                    <div class="state-panel error">
+                        <strong>Bu bir teshis degildir</strong>
+                        <span>Duygusal harita yansimalarinizdan uretilen egilim bilgisidir, klinik teshis amacli degildir.</span>
+                    </div>
+                `}
+            `;
+            return phoneShell('Duygusal Harita', body, 1);
+        }
+
+        function applyRecommendation(ref, recTitle) {
+            ui.strengthsGrowth.appliedRef = ref;
+            showToast('Oneri uygulandi: ' + recTitle + ' -> ' + ref, 'success');
+            render();
+        }
+
+        function screenThree() {
+            const body = `
+                ${stateControls(3)}
+                ${statePanel(3)}
+                ${ui.screenStates[3] !== 'ready' ? '' : `
+                    <div class="card">
+                        <div class="card-title">Guclu Alanlar</div>
+                        <div class="list">
+                            ${ui.strengthsGrowth.strengths.map((item) => `<div class="list-item"><div><div class="item-title">${item.title}</div><div class="item-meta">${item.detail}</div></div><span class="chip success">Guclu</span></div>`).join('')}
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">Gelisim Alanlari ve Somut Oneriler</div>
+                        <div class="list">
+                            ${ui.strengthsGrowth.growth.map((item) => `
+                                <div class="list-item">
+                                    <div>
+                                        <div class="item-title">${item.title}</div>
+                                        <div class="item-meta">${item.detail}</div>
+                                        <div class="item-meta">Oneri: ${item.rec} • Referans: ${item.ref}</div>
                                     </div>
+                                    <button class="btn btn-primary" onclick="applyRecommendation('${item.ref}', '${item.rec}')">Oneriyi Uygula</button>
                                 </div>
-                                <div style="background: white; padding: 1rem; border-radius: 0.75rem;">
-                                    <h4 style="font-weight: 700; font-size: 0.9375rem; color: var(--gray-900); margin-bottom: 0.5rem;">Sabır</h4>
-                                    <p style="font-size: 0.8125rem; color: var(--gray-700); line-height: 1.5; margin-bottom: 0.75rem;">Zor durumlarda sabırlı kalmak için pratik yapabilirsiniz.</p>
-                                    <div class="card" style="background: var(--primary-light); padding: 0.75rem; margin: 0;">
-                                        <div style="font-size: 0.75rem; color: var(--gray-700); margin-bottom: 0.375rem; font-weight: 600;">💡 Öneri</div>
-                                        <div style="font-size: 0.8125rem; color: var(--primary-dark); font-weight: 600;">→ Sabır Yolculuğu (60 gün)</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <button class="btn btn-primary" style="width: 100%; padding: 1rem; font-size: 1.125rem;">Önerileri Keşfet</button>
-                    </div>
-                </div></div></div>`,
-                4: `<div class="iphone fade-in"><div class="island"></div><div class="screen"><div class="content">
-                    <div class="status"><div>9:41</div><div>📶 📡 🔋</div></div>
-                    <div style="background: white; padding: 1rem 1.5rem; border-bottom: 1px solid var(--gray-200);">
-                        <div style="display: flex; align-items: center; gap: 1rem;">
-                            <button style="background: none; border: none; font-size: 1.5rem; cursor: pointer;" onclick="parent.showScreen(1)">←</button>
-                            <h2 style="font-family: Poppins, sans-serif; font-size: 1.25rem; font-weight: 800; color: var(--secondary);">Haftalık Özet</h2>
+                            `).join('')}
                         </div>
                     </div>
-                    <div style="padding: 1.5rem;">
-                        <div style="text-align: center; margin-bottom: 1.5rem;">
-                            <div style="font-size: 0.875rem; color: var(--gray-600); margin-bottom: 0.5rem;">17-23 Ocak 2026</div>
-                            <h3 style="font-family: Poppins, sans-serif; font-size: 1.75rem; font-weight: 800; color: var(--secondary);">Bu Hafta</h3>
+
+                    <div class="chips"><span class="chip ${ui.strengthsGrowth.appliedRef === '-' ? '' : 'success'}">Son yonlendirme: ${ui.strengthsGrowth.appliedRef}</span></div>
+                `}
+            `;
+            return phoneShell('Guclu ve Gelisim Alanlari', body, 1);
+        }
+
+        function toggleWeeklyData() {
+            ui.weekly.hasEnoughData = !ui.weekly.hasEnoughData;
+            render();
+        }
+
+        function screenFour() {
+            const body = `
+                ${stateControls(4)}
+                ${statePanel(4)}
+                ${ui.screenStates[4] !== 'ready' ? '' : `
+                    <div class="card">
+                        <div class="row">
+                            <div class="card-title" style="margin-bottom:0;">Haftalik Ozet</div>
+                            <button class="btn btn-outline" onclick="toggleWeeklyData()">${ui.weekly.hasEnoughData ? 'Yetersiz Veri Simule Et' : 'Veriyi Geri Yukle'}</button>
                         </div>
-                        <div class="card" style="margin-bottom: 1rem; background: linear-gradient(135deg, var(--success-light), #A7F3D0); border-left: 4px solid var(--success);">
-                            <div style="margin-bottom: 0.75rem;">
-                                <div style="font-size: 0.75rem; color: var(--gray-700); margin-bottom: 0.375rem; font-weight: 600; text-transform: uppercase;">📈 Pozitif Trend</div>
-                                <h4 style="font-weight: 700; font-size: 1rem; color: var(--secondary); margin-bottom: 0.5rem;">Tutarlılık Arttı</h4>
-                                <p style="font-size: 0.875rem; color: var(--gray-800); line-height: 1.6;">Bu hafta 7/7 gün içerik tamamladınız. Alışkanlığınız güçleniyor!</p>
-                            </div>
+                    </div>
+
+                    ${ui.weekly.hasEnoughData ? `
+                        <div class="state-panel loading">
+                            <strong>Pozitif Trend</strong>
+                            <span>${ui.weekly.positive}</span>
                         </div>
-                        <div class="card" style="margin-bottom: 1rem; background: linear-gradient(135deg, #FEF3C7, #FDE68A); border-left: 4px solid var(--warning);">
-                            <div style="margin-bottom: 0.75rem;">
-                                <div style="font-size: 0.75rem; color: var(--gray-700); margin-bottom: 0.375rem; font-weight: 600; text-transform: uppercase;">⚡ Zorlayan Alan</div>
-                                <h4 style="font-weight: 700; font-size: 1rem; color: var(--secondary); margin-bottom: 0.5rem;">Derin Yansıma</h4>
-                                <p style="font-size: 0.875rem; color: var(--gray-800); line-height: 1.6;">Yorum sorularına daha detaylı cevaplar vermeyi deneyebilirsiniz.</p>
-                            </div>
+                        <div class="state-panel offline">
+                            <strong>Zorlayan Alan</strong>
+                            <span>${ui.weekly.challenge}</span>
                         </div>
-                        <div class="card" style="margin-bottom: 1.5rem; background: linear-gradient(135deg, var(--primary-light), var(--primary-100)); border-left: 4px solid var(--primary);">
-                            <div style="margin-bottom: 0.75rem;">
-                                <div style="font-size: 0.75rem; color: var(--gray-700); margin-bottom: 0.375rem; font-weight: 600; text-transform: uppercase;">💡 Öneri</div>
-                                <h4 style="font-weight: 700; font-size: 1rem; color: var(--secondary); margin-bottom: 0.5rem;">Sonraki Adım</h4>
-                                <p style="font-size: 0.875rem; color: var(--gray-800); line-height: 1.6;">Şükür Atölyesi'ne başlamak için harika bir zaman. Tutarlılığınızla mükemmel uyum sağlar.</p>
-                            </div>
+                        <div class="state-panel empty">
+                            <strong>Oneri</strong>
+                            <span>${ui.weekly.recommendation}</span>
                         </div>
                         <div class="card">
-                            <h4 style="font-weight: 700; color: var(--gray-900); margin-bottom: 0.75rem; font-size: 0.9375rem;">Tamamlanan İçerikler</h4>
-                            <div style="display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.875rem;">
-                                <div style="display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem; background: var(--gray-50); border-radius: 0.5rem;">
-                                    <span style="font-size: 1.25rem;">📖</span>
-                                    <div style="flex: 1;">
-                                        <div style="font-weight: 600; color: var(--gray-900);">Gün 5-7: Sıdk Yolculuğu</div>
-                                        <div style="font-size: 0.75rem; color: var(--gray-600);">3 gün</div>
-                                    </div>
-                                </div>
-                                <div style="display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem; background: var(--gray-50); border-radius: 0.5rem;">
-                                    <span style="font-size: 1.25rem;">🎨</span>
-                                    <div style="flex: 1;">
-                                        <div style="font-weight: 600; color: var(--gray-900);">Vicdan Atölyesi</div>
-                                        <div style="font-size: 0.75rem; color: var(--gray-600);">Tamamlandı</div>
-                                    </div>
-                                </div>
+                            <div class="card-title">Tamamlanan Icerikler</div>
+                            <div class="list">
+                                ${ui.weekly.completed.map((item) => `<div class="list-item"><div><div class="item-title">${item}</div></div><span class="chip success">Tamamlandi</span></div>`).join('')}
                             </div>
                         </div>
-                    </div>
-                </div></div></div>`,
-                5: `<div class="iphone fade-in"><div class="island"></div><div class="screen"><div class="content">
-                    <div class="status"><div>9:41</div><div>📶 📡 🔋</div></div>
-                    <div style="padding: 2rem 1.5rem; text-align: center;">
-                        <div style="font-size: 5rem; margin-bottom: 1.5rem;">🎉</div>
-                        <h1 style="font-family: Poppins, sans-serif; font-size: 2rem; font-weight: 800; color: var(--secondary); margin-bottom: 1rem;">Tebrikler!</h1>
-                        <p style="font-size: 1rem; color: var(--gray-700); margin-bottom: 2rem; line-height: 1.6;">
-                            <strong>Sıdk Yolculuğu</strong>'nu başarıyla tamamladınız.
-                        </p>
-                        <div class="card" style="margin-bottom: 2rem; text-align: left;">
-                            <h3 style="font-weight: 700; color: var(--secondary); margin-bottom: 1rem; font-size: 1rem;">Deneyiminizi Değerlendirin</h3>
-                            <div style="margin-bottom: 1.5rem;">
-                                <label style="display: block; font-weight: 600; color: var(--gray-900); margin-bottom: 0.75rem; font-size: 0.9375rem;">Bu yolculuk size ne kazandırdı?</label>
-                                <div style="display: flex; justify-content: center; gap: 1rem; margin-bottom: 0.75rem;">
-                                    <button style="width: 56px; height: 56px; background: white; border: 3px solid var(--primary); border-radius: 9999px; font-size: 2rem; cursor: pointer; display: flex; align-items: center; justify-content: center;">⭐</button>
-                                    <button style="width: 56px; height: 56px; background: white; border: 2px solid var(--gray-300); border-radius: 9999px; font-size: 2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; opacity: 0.5;">⭐</button>
-                                    <button style="width: 56px; height: 56px; background: white; border: 2px solid var(--gray-300); border-radius: 9999px; font-size: 2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; opacity: 0.5;">⭐</button>
-                                    <button style="width: 56px; height: 56px; background: white; border: 2px solid var(--gray-300); border-radius: 9999px; font-size: 2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; opacity: 0.5;">⭐</button>
-                                    <button style="width: 56px; height: 56px; background: white; border: 2px solid var(--gray-300); border-radius: 9999px; font-size: 2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; opacity: 0.5;">⭐</button>
-                                </div>
-                                <div style="text-align: center; font-size: 0.8125rem; color: var(--gray-600);">Çok Faydalı</div>
-                            </div>
-                            <div style="margin-bottom: 1.5rem;">
-                                <label style="display: block; font-weight: 600; color: var(--gray-900); margin-bottom: 0.75rem; font-size: 0.9375rem;">Ek görüşleriniz (İsteğe Bağlı)</label>
-                                <textarea placeholder="Deneyiminizi paylaşın..." style="width: 100%; min-height: 100px; padding: 1rem; border: 2px solid var(--gray-200); border-radius: 0.75rem; font-family: Inter, sans-serif; font-size: 0.9375rem; resize: vertical;"></textarea>
-                            </div>
+                    ` : `
+                        <div class="state-panel empty">
+                            <strong>Yeterli Veri Yok</strong>
+                            <span>Haftalik ozet olusmasi icin daha fazla tamamlanan icerik ve yansima verisine ihtiyac var.</span>
                         </div>
-                        <div class="card" style="margin-bottom: 1.5rem; background: var(--primary-light); border-left: 4px solid var(--primary); text-align: left;">
-                            <h4 style="font-weight: 700; color: var(--primary-dark); margin-bottom: 0.75rem; font-size: 0.9375rem;">💡 Sonraki Önerimiz</h4>
-                            <p style="font-size: 0.875rem; color: var(--gray-800); line-height: 1.6; margin-bottom: 0.75rem;">
-                                <strong>Şükür Yolculuğu</strong> sıdk temelini pekiştirecek ve derinleştirecek.
-                            </p>
-                            <button style="background: none; border: none; color: var(--primary); font-weight: 700; font-size: 0.875rem; padding: 0; cursor: pointer;">Keşfet →</button>
-                        </div>
-                        <button class="btn btn-primary" style="width: 100%; padding: 1rem; font-size: 1.125rem; margin-bottom: 0.75rem;">Değerlendirmeyi Gönder</button>
-                        <button style="background: none; border: none; color: var(--gray-600); font-weight: 600; font-size: 0.9375rem; width: 100%; padding: 0.75rem; cursor: pointer;">Daha Sonra</button>
-                    </div>
-                </div></div></div>`,
-                6: `<div class="iphone fade-in"><div class="island"></div><div class="screen"><div class="content">
-                    <div class="status"><div>9:41</div><div>📶 📡 🔋</div></div>
-                    <div style="background: white; padding: 1rem 1.5rem; border-bottom: 1px solid var(--gray-200);">
-                        <div style="display: flex; align-items: center; gap: 1rem;">
-                            <button style="background: none; border: none; font-size: 1.5rem; cursor: pointer;" onclick="parent.showScreen(1)">←</button>
-                            <h2 style="font-family: Poppins, sans-serif; font-size: 1.25rem; font-weight: 800; color: var(--secondary);">Gelişim Raporu</h2>
-                        </div>
-                    </div>
-                    <div style="padding: 1.5rem;">
-                        <div style="text-align: center; margin-bottom: 2rem;">
-                            <div style="font-size: 4rem; margin-bottom: 1rem;">📊</div>
-                            <h3 style="font-family: Poppins, sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--secondary); margin-bottom: 0.5rem;">42 Günlük Yolculuğunuz</h3>
-                            <p style="font-size: 0.875rem; color: var(--gray-600);">Ocak 2026 Raporu</p>
-                        </div>
-                        <div class="card" style="margin-bottom: 1rem;">
-                            <h4 style="font-weight: 700; color: var(--gray-900); margin-bottom: 1rem; font-size: 0.9375rem;">📈 Özet Metrikler</h4>
-                            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;">
-                                <div style="text-align: center; padding: 1rem; background: var(--gray-50); border-radius: 0.75rem;">
-                                    <div style="font-family: Poppins, sans-serif; font-size: 1.5rem; font-weight: 800; color: var(--primary); margin-bottom: 0.25rem;">42</div>
-                                    <div style="font-size: 0.75rem; color: var(--gray-600);">Aktif Gün</div>
-                                </div>
-                                <div style="text-align: center; padding: 1rem; background: var(--gray-50); border-radius: 0.75rem;">
-                                    <div style="font-family: Poppins, sans-serif; font-size: 1.5rem; font-weight: 800; color: var(--success); margin-bottom: 0.25rem;">87%</div>
-                                    <div style="font-size: 0.75rem; color: var(--gray-600);">Teslim Oranı</div>
-                                </div>
-                                <div style="text-align: center; padding: 1rem; background: var(--gray-50); border-radius: 0.75rem;">
-                                    <div style="font-family: Poppins, sans-serif; font-size: 1.5rem; font-weight: 800; color: var(--warning); margin-bottom: 0.25rem;">12</div>
-                                    <div style="font-size: 0.75rem; color: var(--gray-600);">Gün Streak</div>
-                                </div>
-                                <div style="text-align: center; padding: 1rem; background: var(--gray-50); border-radius: 0.75rem;">
-                                    <div style="font-family: Poppins, sans-serif; font-size: 1.5rem; font-weight: 800; color: var(--secondary); margin-bottom: 0.25rem;">3</div>
-                                    <div style="font-size: 0.75rem; color: var(--gray-600);">İçerik Tamamlandı</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card" style="margin-bottom: 1rem;">
-                            <h4 style="font-weight: 700; color: var(--gray-900); margin-bottom: 0.75rem; font-size: 0.9375rem;">🎯 Ana Temalar</h4>
-                            <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
-                                <span style="background: var(--success-light); color: var(--success-dark); padding: 0.5rem 0.875rem; border-radius: 9999px; font-size: 0.8125rem; font-weight: 600;">Özfarkındalık</span>
-                                <span style="background: var(--primary-light); color: var(--primary-dark); padding: 0.5rem 0.875rem; border-radius: 9999px; font-size: 0.8125rem; font-weight: 600;">Tutarlılık</span>
-                                <span style="background: var(--secondary-light); color: var(--secondary); padding: 0.5rem 0.875rem; border-radius: 9999px; font-size: 0.8125rem; font-weight: 600;">Dürüstlük</span>
-                                <span style="background: #FEF3C7; color: var(--warning); padding: 0.5rem 0.875rem; border-radius: 9999px; font-size: 0.8125rem; font-weight: 600;">Sabır</span>
-                            </div>
-                        </div>
-                        <div class="card" style="margin-bottom: 1.5rem; background: var(--primary-light); border-left: 4px solid var(--primary);">
-                            <h4 style="font-weight: 700; color: var(--primary-dark); margin-bottom: 0.75rem; font-size: 0.9375rem;">💡 Öneriler</h4>
-                            <p style="font-size: 0.875rem; color: var(--gray-800); line-height: 1.6;">
-                                Tutarlılığınızı koruyarak daha derin yansımalar için Şükür Yolculuğu'na devam edebilirsiniz.
-                            </p>
-                        </div>
-                        <div class="card" style="margin-bottom: 1.5rem; background: linear-gradient(135deg, #FEE2E2, #FECACA); border-left: 4px solid var(--error);">
-                            <p style="font-size: 0.8125rem; color: var(--gray-800); line-height: 1.5;">
-                                <strong style="color: var(--error);">🔒 Gizlilik:</strong> Raporunuz kişisel verilerinizi içerir. Paylaşmadan önce içeriği gözden geçirin.
-                            </p>
-                        </div>
-                        <button class="btn btn-primary" style="width: 100%; padding: 1rem; font-size: 1.125rem; margin-bottom: 0.75rem;">📥 PDF İndir</button>
-                        <button style="background: white; border: 2px solid var(--primary); color: var(--primary); border-radius: 0.75rem; font-weight: 600; font-size: 1rem; width: 100%; padding: 1rem; cursor: pointer;">📤 Paylaş</button>
-                    </div>
-                </div></div></div>`
-            };
-            return screens[num] || screens[1];
+                    `}
+                `}
+            `;
+            return phoneShell('Haftalik Ozet', body, 1);
         }
-        document.getElementById('viewer').innerHTML = getScreenHTML(1);
+
+        function setReviewRating(value) {
+            ui.review.rating = value;
+            render();
+        }
+
+        function setReviewFeedback(value) {
+            ui.review.feedback = value;
+            render();
+        }
+
+        function postponeReview() {
+            ui.review.postponed = true;
+            ui.review.saved = false;
+            showToast('Degerlendirme ertelendi (Daha Sonra).');
+            render();
+        }
+
+        function saveReview() {
+            ui.review.saved = true;
+            ui.review.postponed = false;
+            ui.review.savedAt = stamp();
+            showToast('Yan itlar kaydedildi. Sonraki icerik onerildi.', 'success');
+            render();
+        }
+
+        function starsRow() {
+            return Array.from({ length: 5 }).map((_, idx) => {
+                const value = idx + 1;
+                const active = ui.review.rating >= value;
+                return `<button class="btn ${active ? 'btn-primary' : 'btn-outline'}" onclick="setReviewRating(${value})" aria-label="${value} yildiz">${active ? '★' : '☆'}</button>`;
+            }).join('');
+        }
+
+        function screenFive() {
+            const body = `
+                ${stateControls(5)}
+                ${statePanel(5)}
+                ${ui.screenStates[5] !== 'ready' ? '' : `
+                    <div class="state-panel loading">
+                        <strong>Icerik Tamamlandi</strong>
+                        <span>${ui.review.contentName} tamamlandigi icin degerlendirme formu oneriliyor.</span>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">Degerlendirme Formu</div>
+                        <div class="muted" style="margin-bottom:0.45rem;">Deneyiminizi puanlayin ve kisa geri bildirim birakin.</div>
+                        <div class="chips" style="margin-bottom:0.5rem;">${starsRow()}</div>
+                        <textarea class="field" style="min-height:85px; resize:vertical;" placeholder="Istege bagli gorus" oninput="setReviewFeedback(this.value)">${ui.review.feedback}</textarea>
+                        <div class="chips" style="margin-top:0.5rem;">
+                            <button class="btn btn-primary" onclick="saveReview()">Kaydet</button>
+                            <button class="btn btn-outline" onclick="postponeReview()">Daha Sonra</button>
+                        </div>
+                    </div>
+
+                    ${ui.review.saved ? `<div class="state-panel offline"><strong>Yan itlar Kaydedildi</strong><span>Kayit zamani: ${ui.review.savedAt}</span><span>Sonraki icerik onerisi: ${ui.review.nextSuggestion}</span></div>` : ''}
+                    ${ui.review.postponed ? '<div class="state-panel empty"><strong>Ertelendi</strong><span>Form daha sonra tekrar acilabilir.</span></div>' : ''}
+                `}
+            `;
+            return phoneShell('Icerik Bitis Degerlendirmesi', body, 1);
+        }
+
+        function generatePdf() {
+            ui.report.pdfGeneratedAt = stamp();
+            showToast('PDF rapor olusturuldu.', 'success');
+            render();
+        }
+
+        function togglePrivacyConsent() {
+            ui.report.privacyConsent = !ui.report.privacyConsent;
+            render();
+        }
+
+        function shareReport() {
+            if (!ui.report.privacyConsent) {
+                showToast('Paylasim oncesi gizlilik onayi zorunlu.', 'error');
+                return;
+            }
+            ui.report.shareStatus = 'Paylasildi - ' + stamp();
+            showToast('Rapor paylasildi.', 'success');
+            render();
+        }
+
+        function screenSix() {
+            const body = `
+                ${stateControls(6)}
+                ${statePanel(6)}
+                ${ui.screenStates[6] !== 'ready' ? '' : `
+                    <div class="card">
+                        <div class="card-title">Rapor Ozet Icerigi</div>
+                        <div class="list">
+                            <div class="list-item"><div><div class="item-title">Ozet Metrikler</div><div class="item-meta">Teslim orani, streak, tur bazli ilerleme</div></div><span class="chip success">Var</span></div>
+                            <div class="list-item"><div><div class="item-title">Ana Temalar</div><div class="item-meta">Ozfarkindalik, tutarlilik, denge</div></div><span class="chip indigo">Var</span></div>
+                            <div class="list-item"><div><div class="item-title">Oneriler</div><div class="item-meta">Atolye ve modul yonlendirmesi</div></div><span class="chip warn">Var</span></div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">Indir ve Paylas</div>
+                        <div class="chips" style="margin-bottom:0.5rem;">
+                            <button class="btn btn-primary" onclick="generatePdf()">PDF Indir</button>
+                            <button class="btn btn-outline" onclick="shareReport()">Paylas</button>
+                        </div>
+                        <div class="muted">Son PDF: ${ui.report.pdfGeneratedAt}</div>
+                    </div>
+
+                    <div class="state-panel error">
+                        <strong>Gizlilik Onayi (BR-09)</strong>
+                        <span>Paylasim oncesi kullanici gizlilik onayi acikca alinmalidir.</span>
+                        <label class="chips" style="align-items:center;">
+                            <input type="checkbox" ${ui.report.privacyConsent ? 'checked' : ''} onchange="togglePrivacyConsent()">
+                            <span>Raporu paylasmadan once gizlilik onayini kabul ediyorum.</span>
+                        </label>
+                    </div>
+
+                    <div class="chips"><span class="chip ${ui.report.shareStatus === '-' ? '' : 'success'}">Paylasim Durumu: ${ui.report.shareStatus}</span></div>
+                `}
+            `;
+            return phoneShell('Gelisim Raporu', body, 1);
+        }
+
+        function renderScreen(screenNo) {
+            if (screenNo === 1) {
+                return screenOne();
+            }
+            if (screenNo === 2) {
+                return screenTwo();
+            }
+            if (screenNo === 3) {
+                return screenThree();
+            }
+            if (screenNo === 4) {
+                return screenFour();
+            }
+            if (screenNo === 5) {
+                return screenFive();
+            }
+            return screenSix();
+        }
+
+        function updateTopbar() {
+            const data = screenData[ui.currentScreen];
+            document.getElementById('screenTitle').textContent = data.title;
+            document.getElementById('screenFr').textContent = data.fr;
+            document.getElementById('screenMeta').textContent = data.meta;
+        }
+
+        function updateNav() {
+            const navItems = Array.from(document.querySelectorAll('.nav-item'));
+            navItems.forEach((item) => {
+                const active = Number(item.dataset.screen) === ui.currentScreen;
+                item.classList.toggle('active', active);
+                item.setAttribute('aria-current', active ? 'page' : 'false');
+            });
+            for (let i = 1; i <= 6; i += 1) {
+                const flow = document.getElementById('flow-' + i);
+                if (flow) {
+                    flow.classList.toggle('active', i === ui.currentScreen);
+                }
+            }
+        }
+
+        function showScreen(screenNo) {
+            ui.currentScreen = screenNo;
+            render();
+        }
+
+        function wireNav() {
+            const navItems = Array.from(document.querySelectorAll('.nav-item'));
+            navItems.forEach((item) => {
+                item.setAttribute('role', 'button');
+                item.setAttribute('tabindex', '0');
+                item.addEventListener('click', () => {
+                    showScreen(Number(item.dataset.screen));
+                });
+                item.addEventListener('keydown', (event) => {
+                    if (event.key === 'Enter' || event.key === ' ') {
+                        event.preventDefault();
+                        showScreen(Number(item.dataset.screen));
+                    }
+                });
+            });
+        }
+
+        function render() {
+            updateTopbar();
+            updateNav();
+            document.getElementById('viewer').innerHTML = renderScreen(ui.currentScreen);
+        }
+
+        wireNav();
+        render();
     </script>
 </body>
 </html>

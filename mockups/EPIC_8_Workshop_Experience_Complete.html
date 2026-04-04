@@ -3,546 +3,1647 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PST Coaching Mobile - EPIC 8: Atölye Deneyimi</title>
+    <title>PST Coaching Mobile - EPIC 8: Atolye Deneyimi</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #00B4D8; --primary-dark: #0096B8; --primary-light: #E0F7FA; --primary-100: #B2EBF2;
-            --secondary: #2B1B5D; --secondary-light: #EDE7F6;
-            --success: #10B981; --success-light: #D1FAE5; --success-dark: #065F46;
-            --warning: #F59E0B; --error: #EF4444; --purple: #8B5CF6; --purple-light: #EDE9FE;
-            --orange: #F97316; --orange-light: #FFEDD5;
-            --gray-50: #FAFAFA; --gray-100: #F5F5F5; --gray-200: #E5E5E5; --gray-300: #D4D4D4;
-            --gray-400: #A3A3A3; --gray-600: #525252; --gray-700: #404040; --gray-900: #171717;
+            --primary: #c2410c;
+            --primary-dark: #9a3412;
+            --primary-light: #ffedd5;
+            --secondary: #1f2937;
+            --ink: #111827;
+            --success: #16a34a;
+            --success-light: #dcfce7;
+            --warning: #d97706;
+            --warning-light: #fef3c7;
+            --error: #dc2626;
+            --error-light: #fee2e2;
+            --indigo: #4338ca;
+            --indigo-light: #e0e7ff;
+            --gray-50: #fafafa;
+            --gray-100: #f5f5f5;
+            --gray-200: #e5e5e5;
+            --gray-300: #d4d4d4;
+            --gray-400: #a3a3a3;
+            --gray-600: #525252;
+            --gray-700: #404040;
+            --gray-900: #171717;
         }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #f0f0f0, #e0e0e0); overflow: hidden; }
-        .app { display: flex; height: 100vh; }
-        .sidebar { width: 400px; background: white; border-right: 1px solid var(--gray-200); overflow-y: auto; box-shadow: 2px 0 10px rgba(0,0,0,0.05); }
-        .main { flex: 1; display: flex; flex-direction: column; }
-        .topbar { background: white; border-bottom: 1px solid var(--gray-200); padding: 1.75rem 2.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
-        .viewer { flex: 1; overflow-y: auto; padding: 3rem; display: flex; justify-content: center; align-items: flex-start; }
-        .logo { font-family: 'Poppins', sans-serif; font-size: 2rem; font-weight: 800; color: var(--primary); padding: 2.5rem; border-bottom: 1px solid var(--gray-200); background: linear-gradient(135deg, var(--primary-light), white); }
-        .subtitle { font-size: 0.875rem; color: var(--gray-600); font-weight: 500; margin-top: 0.5rem; }
-        .epic-header { padding: 1.5rem; background: linear-gradient(135deg, var(--orange-light), #FED7AA); border-bottom: 2px solid var(--orange); }
-        .epic-title { font-family: 'Poppins', sans-serif; font-size: 1.25rem; font-weight: 700; color: var(--gray-900); margin-bottom: 0.5rem; }
-        .epic-meta { font-size: 0.8125rem; color: var(--gray-600); }
-        .nav-map { background: var(--purple-light); border-left: 4px solid var(--purple); padding: 1rem; margin: 1rem 1.75rem; border-radius: 0.5rem; }
-        .nav-map-title { font-weight: 700; color: var(--purple); font-size: 0.8125rem; margin-bottom: 0.75rem; text-transform: uppercase; display: flex; align-items: center; gap: 0.5rem; }
-        .nav-flow { display: flex; flex-direction: column; gap: 0.5rem; }
-        .nav-flow-item { display: flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; color: var(--gray-700); }
-        .nav-flow-box { background: white; padding: 0.375rem 0.625rem; border-radius: 0.375rem; border: 2px solid var(--gray-300); font-weight: 600; white-space: nowrap; font-size: 0.6875rem; }
-        .nav-flow-box.active { background: var(--primary); color: white; border-color: var(--primary); }
-        .nav-flow-arrow { color: var(--gray-400); font-weight: 700; }
-        .nav-flow-label { color: var(--gray-600); font-size: 0.625rem; font-style: italic; }
-        .nav-section { padding: 1.25rem 0; border-bottom: 1px solid var(--gray-100); }
-        .nav-title { padding: 0.75rem 1.75rem; font-size: 0.6875rem; font-weight: 700; color: var(--gray-600); text-transform: uppercase; }
-        .nav-item { padding: 1rem 1.75rem; cursor: pointer; font-size: 0.9375rem; transition: all 0.2s; color: var(--gray-700); display: flex; align-items: center; gap: 0.875rem; border-left: 3px solid transparent; }
-        .nav-item:hover { background: var(--gray-50); }
-        .nav-item.active { background: var(--primary-light); color: var(--primary-dark); font-weight: 600; border-left-color: var(--primary); }
-        .nav-icon { font-size: 1.375rem; }
-        .nav-badge { background: var(--primary); color: white; padding: 0.25rem 0.625rem; border-radius: 9999px; font-size: 0.6875rem; font-weight: 700; margin-left: auto; }
-        .ac-section { background: var(--secondary-light); border-left: 4px solid var(--secondary); padding: 1rem; margin: 0.75rem 1.75rem; border-radius: 0.5rem; }
-        .ac-title { font-weight: 700; color: var(--secondary); font-size: 0.75rem; margin-bottom: 0.5rem; text-transform: uppercase; }
-        .ac-list { list-style: none; }
-        .ac-list li { font-size: 0.75rem; color: var(--gray-700); margin-bottom: 0.375rem; padding-left: 1.25rem; position: relative; line-height: 1.4; }
-        .ac-list li:before { content: "✓"; position: absolute; left: 0; color: var(--success); font-weight: 700; }
-        .screen-title { font-family: 'Poppins', sans-serif; font-size: 2.25rem; font-weight: 700; color: var(--gray-900); }
-        .screen-meta { color: var(--gray-600); font-size: 0.9375rem; margin-top: 0.5rem; display: flex; align-items: center; gap: 1rem; }
-        .meta-badge { background: var(--orange-light); color: var(--orange); padding: 0.375rem 0.875rem; border-radius: 0.5rem; font-size: 0.8125rem; font-weight: 600; }
-        .iphone { width: 393px; height: 852px; background: #1d1d1f; border-radius: 55px; padding: 12px; box-shadow: 0 60px 120px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.1); position: relative; }
-        .island { position: absolute; top: 20px; left: 50%; transform: translateX(-50%); width: 120px; height: 30px; background: #000; border-radius: 20px; z-index: 11; }
-        .screen { width: 100%; height: 100%; background: white; border-radius: 43px; overflow: hidden; position: relative; }
-        .content { width: 100%; height: 100%; overflow-y: auto; background: var(--gray-50); }
-        .content::-webkit-scrollbar { width: 4px; }
-        .content::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.3); border-radius: 10px; }
-        .status { height: 54px; display: flex; align-items: center; justify-content: space-between; padding: 0 1.5rem; font-size: 0.8125rem; font-weight: 600; background: white; }
-        .btn { padding: 0.875rem 1.5rem; border-radius: 0.75rem; font-weight: 600; font-size: 1rem; border: none; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.2s; }
-        .btn-primary { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; box-shadow: 0 4px 16px rgba(0,180,216,0.4); }
-        .card { background: white; border-radius: 1rem; padding: 1.25rem; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .fade-in { animation: fadeIn 0.3s ease-out; }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--gray-900);
+            background: radial-gradient(circle at 18% 0%, #ffedd5 0%, #ede9fe 42%, #e2e8f0 100%);
+            overflow: hidden;
+        }
+
+        .app {
+            height: 100vh;
+            display: flex;
+        }
+
+        .sidebar {
+            width: 430px;
+            background: #fff;
+            border-right: 1px solid var(--gray-200);
+            overflow-y: auto;
+            box-shadow: 2px 0 16px rgba(0, 0, 0, 0.07);
+        }
+
+        .main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .topbar {
+            background: #fff;
+            border-bottom: 1px solid var(--gray-200);
+            padding: 1.45rem 2rem;
+        }
+
+        .viewer {
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 2rem;
+        }
+
+        .logo {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.85rem;
+            font-weight: 800;
+            color: var(--primary-dark);
+            padding: 1.85rem;
+            border-bottom: 1px solid var(--gray-200);
+            background: linear-gradient(140deg, var(--primary-light), #fff);
+        }
+
+        .subtitle {
+            margin-top: 0.35rem;
+            font-size: 0.82rem;
+            color: var(--gray-600);
+            font-weight: 600;
+        }
+
+        .epic-header {
+            margin: 1rem 1.2rem;
+            border: 1px solid #fdba74;
+            background: linear-gradient(140deg, #fff7ed, #f8fafc);
+            border-radius: 0.85rem;
+            padding: 1rem;
+        }
+
+        .epic-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.03rem;
+            font-weight: 700;
+            margin-bottom: 0.35rem;
+        }
+
+        .epic-meta {
+            font-size: 0.76rem;
+            color: var(--gray-700);
+            line-height: 1.45;
+        }
+
+        .flow-map {
+            margin: 0 1.2rem 1rem;
+            border-radius: 0.85rem;
+            border: 1px solid #ddd6fe;
+            background: #f8f9ff;
+            padding: 0.75rem;
+        }
+
+        .flow-title {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: var(--gray-600);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .flow-list {
+            display: grid;
+            gap: 0.35rem;
+        }
+
+        .flow-step {
+            border: 1px solid var(--gray-300);
+            border-radius: 0.5rem;
+            background: #fff;
+            padding: 0.34rem 0.52rem;
+            font-size: 0.69rem;
+            font-weight: 600;
+            color: var(--gray-700);
+        }
+
+        .flow-step.active {
+            border-color: var(--indigo);
+            background: var(--indigo-light);
+            color: #312e81;
+        }
+
+        .gate-note {
+            margin-top: 0.55rem;
+            border-top: 1px solid #ddd6fe;
+            padding-top: 0.5rem;
+            font-size: 0.68rem;
+            color: var(--gray-600);
+            line-height: 1.45;
+        }
+
+        .nav-group {
+            border-bottom: 1px solid var(--gray-100);
+            padding: 0.28rem 0 0.72rem;
+        }
+
+        .nav-group-title {
+            padding: 0.66rem 1.2rem;
+            font-size: 0.68rem;
+            color: var(--gray-600);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            font-weight: 700;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.62rem;
+            padding: 0.7rem 1.2rem;
+            border-left: 3px solid transparent;
+            color: var(--gray-700);
+            cursor: pointer;
+            transition: background 0.18s ease;
+        }
+
+        .nav-item:hover {
+            background: var(--gray-50);
+        }
+
+        .nav-item.active {
+            border-left-color: var(--primary);
+            background: #fff7ed;
+            color: var(--primary-dark);
+        }
+
+        .nav-icon {
+            font-size: 1rem;
+        }
+
+        .nav-text {
+            flex: 1;
+            font-size: 0.83rem;
+            font-weight: 600;
+        }
+
+        .nav-badge {
+            font-size: 0.66rem;
+            font-weight: 700;
+            border-radius: 999px;
+            padding: 0.14rem 0.45rem;
+            background: #e2e8f0;
+            color: var(--gray-700);
+        }
+
+        .screen-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--secondary);
+        }
+
+        .screen-meta {
+            margin-top: 0.4rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--gray-600);
+            font-size: 0.9rem;
+            flex-wrap: wrap;
+        }
+
+        .fr-badge {
+            border: 1px solid #93c5fd;
+            background: #eff6ff;
+            color: #1d4ed8;
+            border-radius: 0.52rem;
+            padding: 0.2rem 0.58rem;
+            font-size: 0.78rem;
+            font-weight: 700;
+        }
+
+        .route-badge {
+            border: 1px solid #c4b5fd;
+            background: #f5f3ff;
+            color: #5b21b6;
+            border-radius: 0.52rem;
+            padding: 0.2rem 0.58rem;
+            font-size: 0.74rem;
+            font-weight: 700;
+        }
+
+        .iphone {
+            width: 393px;
+            height: 852px;
+            background: #1d1d1f;
+            border-radius: 54px;
+            padding: 12px;
+            box-shadow: 0 44px 94px rgba(0, 0, 0, 0.45);
+            position: relative;
+        }
+
+        .island {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 30px;
+            border-radius: 20px;
+            background: #000;
+            z-index: 4;
+        }
+
+        .screen {
+            width: 100%;
+            height: 100%;
+            border-radius: 42px;
+            overflow: hidden;
+            background: #fff;
+        }
+
+        .content {
+            width: 100%;
+            height: 100%;
+            overflow-y: auto;
+            background: var(--gray-50);
+        }
+
+        .status {
+            height: 54px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #fff;
+            padding: 0 1.2rem;
+            font-size: 0.82rem;
+            font-weight: 600;
+        }
+
+        .mobile-header {
+            display: flex;
+            align-items: center;
+            gap: 0.72rem;
+            background: #fff;
+            border-bottom: 1px solid var(--gray-200);
+            padding: 0.9rem 1.2rem;
+            position: sticky;
+            top: 0;
+            z-index: 2;
+        }
+
+        .mobile-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--secondary);
+        }
+
+        .icon-btn {
+            border: 1px solid var(--gray-300);
+            background: #fff;
+            color: var(--gray-700);
+            border-radius: 0.55rem;
+            padding: 0.3rem 0.5rem;
+            font-size: 0.84rem;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .mobile-body {
+            padding: 1rem 1.15rem 1.35rem;
+            display: grid;
+            gap: 0.78rem;
+        }
+
+        .card {
+            border: 1px solid var(--gray-200);
+            border-radius: 0.9rem;
+            background: #fff;
+            padding: 0.82rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .card-title {
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: 0.4rem;
+        }
+
+        .muted {
+            color: var(--gray-600);
+            font-size: 0.78rem;
+            line-height: 1.45;
+        }
+
+        .row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
+        }
+
+        .chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.42rem;
+        }
+
+        .chip {
+            border: 1px solid var(--gray-300);
+            border-radius: 999px;
+            background: #fff;
+            color: var(--gray-700);
+            font-size: 0.68rem;
+            font-weight: 700;
+            padding: 0.16rem 0.54rem;
+        }
+
+        .chip.success {
+            border-color: #86efac;
+            background: var(--success-light);
+            color: #166534;
+        }
+
+        .chip.warn {
+            border-color: #fcd34d;
+            background: var(--warning-light);
+            color: #92400e;
+        }
+
+        .chip.error {
+            border-color: #fca5a5;
+            background: var(--error-light);
+            color: #991b1b;
+        }
+
+        .chip.indigo {
+            border-color: #c4b5fd;
+            background: #f5f3ff;
+            color: #6d28d9;
+        }
+
+        .btn {
+            border: none;
+            border-radius: 0.72rem;
+            padding: 0.73rem 0.92rem;
+            font-size: 0.84rem;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .btn:disabled {
+            opacity: 0.55;
+            cursor: not-allowed;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: #fff;
+        }
+
+        .btn-outline {
+            background: #fff;
+            border: 1px solid var(--gray-300);
+            color: var(--gray-700);
+        }
+
+        .btn-success {
+            background: #fff;
+            border: 1px solid var(--success);
+            color: #166534;
+        }
+
+        .state-switcher {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.42rem;
+        }
+
+        .state-btn {
+            border: 1px solid var(--gray-300);
+            background: #fff;
+            border-radius: 999px;
+            padding: 0.2rem 0.56rem;
+            font-size: 0.66rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            font-weight: 700;
+            color: var(--gray-700);
+            cursor: pointer;
+        }
+
+        .state-btn.active {
+            border-color: var(--primary);
+            color: var(--primary-dark);
+            background: var(--primary-light);
+        }
+
+        .state-panel {
+            border: 1px solid var(--gray-200);
+            border-radius: 0.8rem;
+            background: #fff;
+            padding: 0.72rem;
+            display: grid;
+            gap: 0.38rem;
+            font-size: 0.79rem;
+            line-height: 1.45;
+        }
+
+        .state-panel.loading {
+            border-color: #bfdbfe;
+            background: #eff6ff;
+        }
+
+        .state-panel.empty {
+            border-color: #cbd5e1;
+            background: #f8fafc;
+        }
+
+        .state-panel.error {
+            border-color: #fecaca;
+            background: var(--error-light);
+        }
+
+        .state-panel.offline {
+            border-color: #fcd34d;
+            background: #fffbeb;
+        }
+
+        .list {
+            display: grid;
+            gap: 0.5rem;
+        }
+
+        .list-item {
+            border: 1px solid var(--gray-200);
+            border-radius: 0.72rem;
+            background: #fff;
+            padding: 0.62rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
+        }
+
+        .item-title {
+            font-size: 0.84rem;
+            font-weight: 700;
+            color: var(--gray-900);
+        }
+
+        .item-meta {
+            font-size: 0.74rem;
+            color: var(--gray-600);
+            margin-top: 0.2rem;
+            line-height: 1.4;
+        }
+
+        .field {
+            width: 100%;
+            border: 1px solid var(--gray-300);
+            border-radius: 0.65rem;
+            background: #fff;
+            padding: 0.45rem 0.52rem;
+            font-size: 0.78rem;
+            color: var(--gray-700);
+            font-family: 'Inter', sans-serif;
+        }
+
+        .badge-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.42rem;
+        }
+
+        .badge-card {
+            border: 1px solid var(--gray-200);
+            border-radius: 0.7rem;
+            background: #fff;
+            padding: 0.52rem;
+            text-align: center;
+        }
+
+        .badge-value {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            font-weight: 800;
+            color: var(--secondary);
+            margin-bottom: 0.12rem;
+        }
+
+        .badge-label {
+            font-size: 0.66rem;
+            color: var(--gray-600);
+            font-weight: 600;
+        }
+
+        .timeline {
+            border-left: 2px dashed #c4b5fd;
+            margin-left: 0.4rem;
+            padding-left: 0.6rem;
+            display: grid;
+            gap: 0.5rem;
+        }
+
+        .timeline-item {
+            position: relative;
+            border: 1px solid var(--gray-200);
+            border-radius: 0.62rem;
+            background: #fff;
+            padding: 0.55rem;
+        }
+
+        .timeline-item::before {
+            content: "";
+            position: absolute;
+            left: -1.03rem;
+            top: 0.75rem;
+            width: 0.55rem;
+            height: 0.55rem;
+            border-radius: 999px;
+            background: #c4b5fd;
+            border: 1px solid #7c3aed;
+        }
+
+        .quote {
+            border-left: 3px solid #f59e0b;
+            background: #fff7ed;
+            border-radius: 0.6rem;
+            padding: 0.55rem 0.62rem;
+            font-size: 0.76rem;
+            color: #7c2d12;
+            line-height: 1.45;
+        }
+
+        .callout {
+            border: 1px dashed #60a5fa;
+            background: #eff6ff;
+            border-radius: 0.62rem;
+            padding: 0.55rem;
+        }
+
+        .large-guide {
+            font-size: 1.02rem;
+            line-height: 1.7;
+        }
+
+        .toast {
+            position: fixed;
+            right: 1.2rem;
+            bottom: 1.2rem;
+            background: #111827;
+            color: #fff;
+            border-radius: 0.7rem;
+            padding: 0.62rem 0.92rem;
+            font-size: 0.8rem;
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22);
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(8px);
+            transition: opacity 0.2s ease, transform 0.2s ease;
+            z-index: 20;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .toast.success {
+            background: #065f46;
+        }
+
+        .toast.error {
+            background: #7f1d1d;
+        }
+
+        .nav-item:focus-visible,
+        button:focus-visible,
+        select:focus-visible,
+        textarea:focus-visible,
+        input:focus-visible {
+            outline: 3px solid #60a5fa;
+            outline-offset: 2px;
+        }
+
+        @media (max-width: 1200px) {
+            body {
+                overflow: auto;
+            }
+
+            .app {
+                flex-direction: column;
+                height: auto;
+                min-height: 100vh;
+            }
+
+            .sidebar {
+                width: 100%;
+                max-height: 52vh;
+            }
+
+            .viewer {
+                padding: 1.2rem;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation: none !important;
+                transition: none !important;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="app">
-        <div class="sidebar">
-            <div class="logo">PST Coaching<div class="subtitle">Atölye Deneyimi</div></div>
+        <aside class="sidebar">
+            <div class="logo">
+                PST Coaching
+                <div class="subtitle">EPIC 8 - Atolye Deneyimi</div>
+            </div>
+
             <div class="epic-header">
-                <div class="epic-title">EPIC 8: Atölye Deneyimi</div>
-                <div class="epic-meta">6 User Stories • 6 Screens • 24 ACs</div>
+                <div class="epic-title">EPIC-8 Sync Pack</div>
+                <div class="epic-meta">8 FR Screen • 32 AC • Requirements + UX artifacts + mockup senkron</div>
             </div>
-            <div class="nav-map">
-                <div class="nav-map-title"><span>🗺️</span><span>Navigation Map</span></div>
-                <div class="nav-flow">
-                    <div class="nav-flow-item"><div class="nav-flow-box active" id="nav-1">Workshop Home</div></div>
-                    <div class="nav-flow-item"><span class="nav-flow-arrow">├→</span><span class="nav-flow-label">tap Devam Et</span></div>
-                    <div class="nav-flow-item" style="margin-left: 1rem;"><div class="nav-flow-box" id="nav-2">Reading Section</div></div>
-                    <div class="nav-flow-item"><span class="nav-flow-arrow">├→</span><span class="nav-flow-label">complete reading</span></div>
-                    <div class="nav-flow-item" style="margin-left: 1rem;"><div class="nav-flow-box" id="nav-3">Exercise Section</div></div>
-                    <div class="nav-flow-item"><span class="nav-flow-arrow">│ └→</span><span class="nav-flow-label">tap Yorum Yaz</span></div>
-                    <div class="nav-flow-item" style="margin-left: 2rem;"><div class="nav-flow-box" id="nav-4">Reflection</div></div>
-                    <div class="nav-flow-item"><span class="nav-flow-arrow">├→</span><span class="nav-flow-label">tap İlerleme</span></div>
-                    <div class="nav-flow-item" style="margin-left: 1rem;"><div class="nav-flow-box" id="nav-5">Progress View</div></div>
-                    <div class="nav-flow-item"><span class="nav-flow-arrow">└→</span><span class="nav-flow-label">finish workshop</span></div>
-                    <div class="nav-flow-item" style="margin-left: 1rem;"><div class="nav-flow-box" id="nav-6">Completion</div></div>
+
+            <div class="flow-map">
+                <div class="flow-title">Atolye akis haritasi</div>
+                <div class="flow-list">
+                    <div class="flow-step active" id="flow-1">FR-E8-01 Atolye landing ve yapi ozeti</div>
+                    <div class="flow-step" id="flow-2">FR-E8-02 Asama navigasyonu ve ilerleme modeli</div>
+                    <div class="flow-step" id="flow-3">FR-E8-03 Asama icerik ekrani</div>
+                    <div class="flow-step" id="flow-4">FR-E8-04 3 gunluk kamp ve oturum plani</div>
+                    <div class="flow-step" id="flow-5">FR-E8-05 Egitmen rehberi ve facilitator mode</div>
+                    <div class="flow-step" id="flow-6">FR-E8-06 Katilimci defteri ve calisma kagitlari</div>
+                    <div class="flow-step" id="flow-7">FR-E8-07 Takip plani ve davranis surekliligi</div>
+                    <div class="flow-step" id="flow-8">FR-E8-08 Atolye tamamlama ve arsivleme</div>
                 </div>
-                <div style="margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid var(--purple); font-size: 0.625rem; color: var(--gray-600); line-height: 1.4;">
-                    <strong>Entry:</strong> Kütüphane → Atölyelerim<br>
-                    <strong>Structure:</strong> Read → Exercise → Reflect
+                <div class="gate-note">
+                    Gate: auth • FR-E8-04 ve FR-E8-07 ek olarak subscription kapisina tabidir. Tum ekranlar loading, ready, empty, error, offline durumlarini destekler.
                 </div>
             </div>
-            <div class="nav-section">
-                <div class="nav-title">US-8.1 & 8.2: Overview & Reading</div>
-                <div class="nav-item active" onclick="showScreen(1)">
-                    <span class="nav-icon">🎨</span><span>Workshop Home</span><span class="nav-badge">4 ACs</span>
-                </div>
-                <div class="ac-section">
-                    <div class="ac-title">✓ Acceptance Criteria</div>
-                    <ul class="ac-list">
-                        <li>Workshop name and progress % visible</li>
-                        <li>Completed/remaining sections listed</li>
-                        <li>"Continue" CTA goes to next step</li>
-                        <li>Locked sections marked</li>
-                    </ul>
-                </div>
-                <div class="nav-item" onclick="showScreen(2)">
-                    <span class="nav-icon">📖</span><span>Reading Section</span><span class="nav-badge">4 ACs</span>
-                </div>
-                <div class="ac-section">
-                    <div class="ac-title">✓ Acceptance Criteria</div>
-                    <ul class="ac-list">
-                        <li>Reading text shown fullscreen</li>
-                        <li>Highlighting and notes supported</li>
-                        <li>Audio reading option available</li>
-                        <li>Next section offered on completion</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="nav-section">
-                <div class="nav-title">US-8.3 & 8.4: Exercise & Reflection</div>
-                <div class="nav-item" onclick="showScreen(3)">
-                    <span class="nav-icon">✍️</span><span>Exercise Section</span><span class="nav-badge">4 ACs</span>
-                </div>
-                <div class="ac-section">
-                    <div class="ac-title">✓ Acceptance Criteria</div>
-                    <ul class="ac-list">
-                        <li>Exercise instructions clearly visible</li>
-                        <li>Steps listed sequentially</li>
-                        <li>Each step checked when completed</li>
-                        <li>Comment/answer fields interactive</li>
-                    </ul>
-                </div>
-                <div class="nav-item" onclick="showScreen(4)">
-                    <span class="nav-icon">💭</span><span>Reflection</span><span class="nav-badge">4 ACs</span>
-                </div>
-                <div class="ac-section">
-                    <div class="ac-title">✓ Acceptance Criteria</div>
-                    <ul class="ac-list">
-                        <li>Section-specific guiding questions visible</li>
-                        <li>Draft auto-saved</li>
-                        <li>Submit completes section</li>
-                        <li>23:59 rule applies</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="nav-section">
-                <div class="nav-title">US-8.5 & 8.6: Progress & Completion</div>
-                <div class="nav-item" onclick="showScreen(5)">
-                    <span class="nav-icon">📊</span><span>Progress View</span><span class="nav-badge">3 ACs</span>
-                </div>
-                <div class="ac-section">
-                    <div class="ac-title">✓ Acceptance Criteria</div>
-                    <ul class="ac-list">
-                        <li>Completed/remaining sections visible</li>
-                        <li>Each section status shown (complete/active/locked)</li>
-                        <li>Estimated completion time calculated</li>
-                    </ul>
-                </div>
-                <div class="nav-item" onclick="showScreen(6)">
-                    <span class="nav-icon">🎉</span><span>Completion</span><span class="nav-badge">4 ACs</span>
-                </div>
-                <div class="ac-section">
-                    <div class="ac-title">✓ Acceptance Criteria</div>
-                    <ul class="ac-list">
-                        <li>Completion message shown</li>
-                        <li>Summary statistics presented</li>
-                        <li>Certificate/badge awarded</li>
-                        <li>Next content recommended</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div class="main">
+
+            <section class="nav-group">
+                <div class="nav-group-title">Giris ve Harita</div>
+                <div class="nav-item active" data-screen="1" role="button" tabindex="0"><span class="nav-icon">🧩</span><span class="nav-text">Landing Ozeti</span><span class="nav-badge">4 AC</span></div>
+                <div class="nav-item" data-screen="2" role="button" tabindex="0"><span class="nav-icon">🗺️</span><span class="nav-text">Asama Navigasyonu</span><span class="nav-badge">4 AC</span></div>
+            </section>
+
+            <section class="nav-group">
+                <div class="nav-group-title">Icerik ve Kamp</div>
+                <div class="nav-item" data-screen="3" role="button" tabindex="0"><span class="nav-icon">📚</span><span class="nav-text">Asama Icerigi</span><span class="nav-badge">4 AC</span></div>
+                <div class="nav-item" data-screen="4" role="button" tabindex="0"><span class="nav-icon">🏕️</span><span class="nav-text">3 Gunluk Kamp</span><span class="nav-badge">4 AC</span></div>
+            </section>
+
+            <section class="nav-group">
+                <div class="nav-group-title">Rehber ve Workbook</div>
+                <div class="nav-item" data-screen="5" role="button" tabindex="0"><span class="nav-icon">🎤</span><span class="nav-text">Facilitator Mode</span><span class="nav-badge">4 AC</span></div>
+                <div class="nav-item" data-screen="6" role="button" tabindex="0"><span class="nav-icon">📝</span><span class="nav-text">Calisma Kagitlari</span><span class="nav-badge">4 AC</span></div>
+            </section>
+
+            <section class="nav-group">
+                <div class="nav-group-title">Takip ve Arsiv</div>
+                <div class="nav-item" data-screen="7" role="button" tabindex="0"><span class="nav-icon">📅</span><span class="nav-text">Takip Plani</span><span class="nav-badge">4 AC</span></div>
+                <div class="nav-item" data-screen="8" role="button" tabindex="0"><span class="nav-icon">🏆</span><span class="nav-text">Tamamlama ve Arsiv</span><span class="nav-badge">4 AC</span></div>
+            </section>
+        </aside>
+
+        <main class="main">
             <div class="topbar">
-                <h1 class="screen-title" id="screenTitle">Workshop Home</h1>
+                <h1 class="screen-title" id="screenTitle">Atolye landing ve yapi ozeti</h1>
                 <div class="screen-meta">
-                    <span class="meta-badge" id="screenUS">US-8.1</span>
-                    <span id="screenMeta">Overview & progress • 4/4 ACs • Entry: Kütüphane → Atölyelerim</span>
+                    <span class="fr-badge" id="screenFr">FR-E8-01</span>
+                    <span class="route-badge" id="screenRoute">/epic-8/fr-e8-01</span>
+                    <span id="screenMeta">Tema, hedef, sure, referanslar, role gore CTA ve son kalinan asama oturum ozeti</span>
                 </div>
             </div>
             <div class="viewer" id="viewer"></div>
-        </div>
+        </main>
     </div>
+
+    <div class="toast" id="toast" aria-live="polite"></div>
+
     <script>
         const screenData = {
-            1: { title: 'Workshop Home', us: 'US-8.1', meta: 'Overview & progress • 4/4 ACs • Entry: Kütüphane → Atölyelerim' },
-            2: { title: 'Reading Section', us: 'US-8.2', meta: 'Read content • 4/4 ACs • From: Workshop Home' },
-            3: { title: 'Exercise Section', us: 'US-8.3', meta: 'Practice steps • 4/4 ACs • From: Reading' },
-            4: { title: 'Reflection', us: 'US-8.4', meta: 'Write thoughts • 4/4 ACs • From: Exercise' },
-            5: { title: 'Progress View', us: 'US-8.5', meta: 'Track completion • 3/3 ACs • From: Workshop Home' },
-            6: { title: 'Completion', us: 'US-8.6', meta: 'Celebrate finish • 4/4 ACs • Auto-trigger' }
+            1: {
+                title: 'Atolye landing ve yapi ozeti',
+                fr: 'FR-E8-01',
+                route: '/epic-8/fr-e8-01',
+                event: 'workshop_fr_e8_01_viewed',
+                meta: 'Tema, hedef, sure, referanslar, role gore CTA ve son kalinan asama oturum ozeti'
+            },
+            2: {
+                title: 'Asama navigasyonu ve ilerleme modeli',
+                fr: 'FR-E8-02',
+                route: '/epic-8/fr-e8-02',
+                event: 'workshop_fr_e8_02_viewed',
+                meta: 'Liste veya zaman cizelgesi, asama tipi etiketleri, kilit nedeni ve devam et aksiyonu'
+            },
+            3: {
+                title: 'Asama icerik ekrani',
+                fr: 'FR-E8-03',
+                route: '/epic-8/fr-e8-03',
+                event: 'workshop_fr_e8_03_viewed',
+                meta: 'Yapilandirilmis bloklar, vurgu not favori ve bir sonraki asama/workbook gorevi'
+            },
+            4: {
+                title: '3 gunluk kamp ve oturum plani',
+                fr: 'FR-E8-04',
+                route: '/epic-8/fr-e8-04',
+                event: 'workshop_fr_e8_04_viewed',
+                meta: '1-2-3 gun sekmeleri, sabah ogle aksam oturumlari, tamamlanma ve sonraki oturum onerisi'
+            },
+            5: {
+                title: 'Egitmen rehberi ve facilitator mode',
+                fr: 'FR-E8-05',
+                route: '/epic-8/fr-e8-05',
+                event: 'workshop_fr_e8_05_viewed',
+                meta: 'Dakika dakika akis, birebir cumleler, zor senaryo kisayollari ve cevrimdisi rehber'
+            },
+            6: {
+                title: 'Katilimci defteri ve calisma kagitlari',
+                fr: 'FR-E8-06',
+                route: '/epic-8/fr-e8-06',
+                event: 'workshop_fr_e8_06_viewed',
+                meta: 'Yapilandirilmis worksheetler, otomatik kayit, devam etme ve gizlilik onayi'
+            },
+            7: {
+                title: 'Takip plani ve davranis surekliligi',
+                fr: 'FR-E8-07',
+                route: '/epic-8/fr-e8-07',
+                event: 'workshop_fr_e8_07_viewed',
+                meta: '72 saat, 3 hafta, 30 gun plani; niyet, gunluk cumle, kucuk adim ve ayrik hatirlatici'
+            },
+            8: {
+                title: 'Atolye tamamlama ve arsivleme',
+                fr: 'FR-E8-08',
+                route: '/epic-8/fr-e8-08',
+                event: 'workshop_fr_e8_08_viewed',
+                meta: 'Zorunlu asama kontrolu, ozet metrikler, rozet sertifika ve kutuphane arsivleme'
+            }
         };
-        function showScreen(num) {
-            document.getElementById('screenTitle').textContent = screenData[num].title;
-            document.getElementById('screenUS').textContent = screenData[num].us;
-            document.getElementById('screenMeta').textContent = screenData[num].meta;
-            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
-            const navMap = {1: 0, 2: 1, 3: 2, 4: 3, 5: 4, 6: 5};
-            document.querySelectorAll('.nav-item')[navMap[num]].classList.add('active');
-            document.querySelectorAll('[id^="nav-"]').forEach(box => box.classList.remove('active'));
-            const navBox = document.getElementById('nav-' + num);
-            if (navBox) navBox.classList.add('active');
-            document.getElementById('viewer').innerHTML = getScreenHTML(num);
+
+        const ui = {
+            currentScreen: 1,
+            screenStates: {
+                1: 'ready',
+                2: 'ready',
+                3: 'ready',
+                4: 'ready',
+                5: 'ready',
+                6: 'ready',
+                7: 'ready',
+                8: 'ready'
+            },
+            userRole: 'participant',
+            lastAnalyticsEvent: 'workshop_fr_e8_01_viewed',
+            workshop: {
+                title: 'Mutlak Muhtaclik, Ilahi Kayyumiyyet ve Dua Bilinci',
+                theme: 'Muhtacliktan guce degil; baglanarak dengeye gecis',
+                target: '18+ bireysel ve grup katilimcilar',
+                duration: '11 asama / 3 gun kamp / 30 gun takip',
+                references: 'Fatir 15, Bakara 186, Tevbe 51',
+                stageCount: 11,
+                campDays: 3,
+                workbookIncluded: true,
+                guideIncluded: true,
+                lastStageNo: 8,
+                lastSessionLabel: '2. Gun Aksam Oturumu',
+                lastSync: '04.04 19:12',
+                offlineSnapshot: true,
+                completionTarget: 'Kriz aninda dua dili, yuk haritasi, 30 gun niyet plani'
+            },
+            stageView: 'list',
+            stages: [
+                { no: 1, title: 'Kavram insasi', type: 'referans/icgoru', status: 'completed' },
+                { no: 2, title: 'Kisisel farkindalik', type: 'referans/icgoru', status: 'completed' },
+                { no: 3, title: 'Kirik inanc haritasi', type: 'referans/icgoru', status: 'completed' },
+                { no: 4, title: 'Ilişkisel denge', type: 'referans/icgoru', status: 'available' },
+                { no: 5, title: 'Dua dili pratigi', type: 'referans/icgoru', status: 'available' },
+                { no: 6, title: 'Sorumluluk dongusu', type: 'referans/icgoru', status: 'available' },
+                { no: 7, title: 'Kapanis hazirligi', type: 'referans/icgoru', status: 'available' },
+                { no: 8, title: '3 gunluk kamp', type: 'kamp', status: 'available' },
+                { no: 9, title: 'Egitmen rehberi', type: 'rehber', status: 'locked', reason: 'Kamp asamasi tamamlanmadi' },
+                { no: 10, title: 'Katilimci workbook', type: 'workbook', status: 'locked', reason: 'Asama 9 tamamlanmadi' },
+                { no: 11, title: 'Kapanis ve uygulama', type: 'kapanis', status: 'locked', reason: 'Workbook bitirilmedi' }
+            ],
+            stageContent: {
+                activeBlock: 'bridge',
+                highlightColor: 'amber',
+                note: 'Asama 3 ciktilarini workbook niyet planina bagla.',
+                favorite: false,
+                autosavedAt: '-',
+                blocks: {
+                    intro: 'Giris: katilimciyin su anki yuk algisi ve ihtiyac baglami acilir.',
+                    verse: 'Ayet/Hadis: Fatir 15 - "Ey insanlar, siz Allah\'a muhtacsiniz" temasi.',
+                    bridge: 'Psikoloji koprusu: kontrol yorgunlugundan baglanti bilincine gecis.',
+                    practice: 'Uygulama: 5 dakikalik nefes + dua niyeti + paylasim halkasi.',
+                    output: 'Cikti: kriz ani dua karti taslagi ve bir sonraki adim niyeti.'
+                }
+            },
+            camp: {
+                day: 1,
+                selectedSession: 'morning',
+                days: {
+                    1: [
+                        { id: 'morning', title: 'Sabah acilis', objective: 'Niyet senkronu', duration: 45, flow: 'Giris > ayet > paylasim', output: 'Niyet karti', worksheet: 'Yuk Haritasi', done: false },
+                        { id: 'noon', title: 'Ogle derinlesme', objective: 'Ic cümle analizi', duration: 55, flow: 'Analiz > grup calismasi', output: 'Ic cümle tablosu', worksheet: 'Cumle Donusumu', done: false },
+                        { id: 'evening', title: 'Aksam kapanis', objective: 'Gunu baglama', duration: 40, flow: 'Yansima > kapanis duasI', output: 'Kapanis notu', worksheet: 'Dua Karti', done: false }
+                    ],
+                    2: [
+                        { id: 'morning', title: 'Sabah odak', objective: 'Dengeyi yeniden kurma', duration: 50, flow: 'Mini sunum > uygulama', output: 'Denge listesi', worksheet: 'Tevekkul Dengesi', done: false },
+                        { id: 'noon', title: 'Ogle pratigi', objective: 'Kucuk adim modelleme', duration: 60, flow: 'Model > esli calisma', output: '3 adim plani', worksheet: 'Donus Plani', done: false },
+                        { id: 'evening', title: 'Aksam dairesi', objective: 'Sorumluluk kapani', duration: 45, flow: 'Daire > kapanis', output: 'Sozlesme cümlesi', worksheet: 'Dua Karti', done: false }
+                    ],
+                    3: [
+                        { id: 'morning', title: 'Sabah cagrisi', objective: 'Takip niyeti', duration: 45, flow: 'Niyet > ikili paylasim', output: '72 saat plani', worksheet: 'Donus Plani', done: false },
+                        { id: 'noon', title: 'Ogle baglantisi', objective: '3 hafta ritmi', duration: 50, flow: 'Ritim tasarimi', output: '3 hafta takvimi', worksheet: 'Yuk Haritasi', done: false },
+                        { id: 'evening', title: 'Aksam kapanis', objective: '30 gun onay', duration: 60, flow: 'Final sunum > dua', output: '30 gun taahhut', worksheet: 'Donus Plani', done: false }
+                    ]
+                }
+            },
+            facilitator: {
+                enabled: false,
+                downloaded: true,
+                minutePlan: [
+                    { min: '00-05', item: 'Giris ve guvenli alan cümlesi' },
+                    { min: '05-15', item: 'Tema baglami ve hedef aciklamasi' },
+                    { min: '15-30', item: 'Ayet baglami + psikoloji koprusu' },
+                    { min: '30-45', item: 'Uygulama adimlari ve grup paylasimi' }
+                ],
+                sampleLine: 'Bu alanda dogru veya yanlis yok; birlikte fark ediyoruz.',
+                reactions: ['Direnc gosteren katilimci', 'Sessiz kalan katilimci', 'Asiri duygulanma'],
+                shortcuts: ['Nefes gecisi', 'Mini mola metni', 'Yeniden cerceveleme sorusu']
+            },
+            workbook: {
+                loadMap: '',
+                sentenceShift: '',
+                duaCard: '',
+                tawakkulBalance: '',
+                transformationPlan: '',
+                autosavedAt: '-',
+                completedAt: '-',
+                privacyConsent: false,
+                context: 'Workshop=Mutlak, Asama=10, Oturum=Workbook'
+            },
+            followup: {
+                plan72: '',
+                plan3w: '',
+                plan30: '',
+                intention: '',
+                dailySentence: '',
+                microStep: '',
+                reminderEnabled: false,
+                reminderTime: '21:30',
+                progressPct: 18
+            },
+            completion: {
+                workshopCompleted: false,
+                certificateSupported: true,
+                archived: false
+            }
+        };
+
+        let toastTimer = null;
+
+        function stamp() {
+            return new Date().toLocaleString('tr-TR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
         }
-        function getScreenHTML(num) {
-            const screens = {
-                1: `<div class="iphone fade-in"><div class="island"></div><div class="screen"><div class="content">
-                    <div class="status"><div>9:41</div><div>📶 📡 🔋</div></div>
-                    <div style="position: relative; height: 180px; background: linear-gradient(135deg, var(--orange-light), #FED7AA); display: flex; align-items: center; justify-content: center; font-size: 5rem;">🎨
-                        <button style="position: absolute; top: 1rem; left: 1rem; background: rgba(0,0,0,0.3); color: white; border: none; width: 40px; height: 40px; border-radius: 9999px; font-size: 1.25rem; cursor: pointer; backdrop-filter: blur(10px);">←</button>
-                    </div>
-                    <div style="padding: 1.5rem;">
-                        <h1 style="font-family: Poppins, sans-serif; font-size: 1.75rem; font-weight: 800; color: var(--secondary); margin-bottom: 0.75rem; line-height: 1.2;">Sıdk Atölyesi</h1>
-                        <div style="display: flex; gap: 0.75rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
-                            <span style="background: var(--orange-light); color: var(--orange); padding: 0.375rem 0.75rem; border-radius: 0.5rem; font-size: 0.8125rem; font-weight: 600;">🎨 Atölye</span>
-                            <span style="background: var(--success-light); color: var(--success-dark); padding: 0.375rem 0.75rem; border-radius: 0.5rem; font-size: 0.8125rem; font-weight: 600;">5/8 Tamamlandı</span>
-                        </div>
-                        <div class="card" style="margin-bottom: 1.5rem;">
-                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.75rem; font-size: 0.875rem;">
-                                <span style="color: var(--gray-700); font-weight: 600;">İlerleme</span>
-                                <span style="color: var(--orange); font-weight: 700;">62%</span>
-                            </div>
-                            <div style="height: 8px; background: var(--gray-200); border-radius: 9999px; overflow: hidden;">
-                                <div style="width: 62%; height: 100%; background: linear-gradient(90deg, var(--orange), #EA580C);"></div>
-                            </div>
-                        </div>
-                        <h3 style="font-weight: 700; color: var(--gray-900); margin-bottom: 1rem; font-size: 1rem;">Bölümler</h3>
-                        <div style="display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1.5rem;">
-                            <div class="card" style="background: var(--success-light); border-left: 4px solid var(--success);">
-                                <div style="display: flex; align-items: center; gap: 1rem;">
-                                    <div style="font-size: 1.75rem;">✅</div>
-                                    <div style="flex: 1;">
-                                        <h4 style="font-weight: 700; font-size: 0.9375rem; color: var(--gray-900); margin-bottom: 0.25rem;">1. Sıdk Nedir?</h4>
-                                        <p style="font-size: 0.75rem; color: var(--gray-600);">Okuma • Tamamlandı</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card" style="background: var(--success-light); border-left: 4px solid var(--success);">
-                                <div style="display: flex; align-items: center; gap: 1rem;">
-                                    <div style="font-size: 1.75rem;">✅</div>
-                                    <div style="flex: 1;">
-                                        <h4 style="font-weight: 700; font-size: 0.9375rem; color: var(--gray-900); margin-bottom: 0.25rem;">2. İçsel Farkındalık</h4>
-                                        <p style="font-size: 0.75rem; color: var(--gray-600);">Uygulama • Tamamlandı</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card" style="background: linear-gradient(135deg, var(--primary-light), var(--primary-100)); border-left: 4px solid var(--primary);">
-                                <div style="display: flex; align-items: center; gap: 1rem;">
-                                    <div style="font-size: 1.75rem;">▶️</div>
-                                    <div style="flex: 1;">
-                                        <h4 style="font-weight: 700; font-size: 0.9375rem; color: var(--primary-dark); margin-bottom: 0.25rem;">3. Dürüstlük Pratiği</h4>
-                                        <p style="font-size: 0.75rem; color: var(--primary-dark);">Okuma • Devam</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card" style="background: var(--gray-100); border-left: 4px solid var(--gray-400);">
-                                <div style="display: flex; align-items: center; gap: 1rem;">
-                                    <div style="font-size: 1.75rem;">🔒</div>
-                                    <div style="flex: 1;">
-                                        <h4 style="font-weight: 700; font-size: 0.9375rem; color: var(--gray-600); margin-bottom: 0.25rem;">4. Toplumsal Gerçeklik</h4>
-                                        <p style="font-size: 0.75rem; color: var(--gray-500);">Uygulama • Kilitli</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <button class="btn btn-primary" style="width: 100%; padding: 1rem; font-size: 1.125rem;" onclick="parent.showScreen(2)">Devam Et</button>
-                    </div>
-                </div></div></div>`,
-                2: `<div class="iphone fade-in"><div class="island"></div><div class="screen"><div class="content">
-                    <div class="status"><div>9:41</div><div>📶 📡 🔋</div></div>
-                    <div style="background: white; padding: 1rem 1.5rem; border-bottom: 1px solid var(--gray-200); position: sticky; top: 0; z-index: 10;">
-                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem;">
-                            <button style="background: none; border: none; font-size: 1.5rem; cursor: pointer;" onclick="parent.showScreen(1)">←</button>
-                            <div style="flex: 1; text-align: center; padding: 0 1rem;">
-                                <h2 style="font-size: 0.9375rem; font-weight: 700; color: var(--secondary);">Sıdk Atölyesi</h2>
-                                <div style="font-size: 0.75rem; color: var(--gray-600); margin-top: 0.25rem;">Bölüm 3: Dürüstlük Pratiği</div>
-                            </div>
-                            <div style="display: flex; gap: 0.5rem;">
-                                <button style="background: var(--gray-100); border: none; width: 36px; height: 36px; border-radius: 9999px; font-size: 1.125rem; cursor: pointer;">🔊</button>
-                                <button style="background: var(--gray-100); border: none; width: 36px; height: 36px; border-radius: 9999px; font-size: 1.125rem; cursor: pointer;">⋮</button>
-                            </div>
-                        </div>
-                        <div style="display: flex; gap: 0.5rem; font-size: 0.75rem; color: var(--gray-600);">
-                            <span style="background: var(--orange-light); color: var(--orange); padding: 0.25rem 0.5rem; border-radius: 0.375rem; font-weight: 600;">📖 Okuma</span>
-                            <span>~8 dakika</span>
-                        </div>
-                    </div>
-                    <div style="padding: 2rem 1.5rem; background: white;">
-                        <h2 style="font-size: 1.5rem; font-weight: 700; color: var(--secondary); margin-bottom: 1.5rem; font-family: Poppins, sans-serif;">Dürüstlük Pratiği</h2>
-                        <p style="font-size: 1.0625rem; line-height: 1.9; color: var(--gray-900); margin-bottom: 1.5rem; text-align: justify;">
-                            Dürüstlük sadece bir değer değil, aynı zamanda günlük hayatta uygulayabileceğimiz bir pratiktir. Her gün kendimize ve başkalarına karşı ne kadar dürüst olduğumuzu gözlemlememiz gerekir.
-                        </p>
-                        <p style="font-size: 1.0625rem; line-height: 1.9; color: var(--gray-900); margin-bottom: 1.5rem; text-align: justify;">
-                            <span style="background: #FFEB3B; padding: 0 0.25rem; border-radius: 0.25rem;">Günlük dürüstlük kontrolü</span>, sabah veya akşam yapabileceğiniz kısa bir alıştırmadır. Kendinize şu soruları sorun:
-                        </p>
-                        <div style="background: var(--orange-light); padding: 1.5rem; border-radius: 1rem; border-left: 4px solid var(--orange); margin: 2rem 0;">
-                            <h4 style="font-weight: 700; color: var(--orange); margin-bottom: 1rem; font-size: 0.9375rem;">✨ Günlük Sorular</h4>
-                            <ul style="margin: 0; padding-left: 1.5rem; display: flex; flex-direction: column; gap: 0.75rem; font-size: 0.9375rem; line-height: 1.7; color: var(--gray-800);">
-                                <li>Bugün kendime karşı dürüst oldum mu?</li>
-                                <li>Gerçek hislerimi ifade edebildim mi?</li>
-                                <li>Başkalarına karşı samimi davrandım mı?</li>
-                                <li>Bir yerde kendimi kandırdım mı?</li>
-                            </ul>
-                        </div>
-                        <p style="font-size: 1.0625rem; line-height: 1.9; color: var(--gray-900); margin-bottom: 1.5rem; text-align: justify;">
-                            Bu sorular size rehberlik edecektir. Yanıtlarınızı not almak, farkındalığınızı artıracak ve sıdk yolculuğunuzda size destek olacaktır.
-                        </p>
-                        <p style="font-size: 1.0625rem; line-height: 1.9; color: var(--gray-900); text-align: justify;">
-                            Unutmayın: Dürüstlük bir hedef değil, sürekli bir pratiktir. Her gün biraz daha gerçek benliğimize yaklaşırız.
-                        </p>
-                    </div>
-                    <div style="padding: 1.5rem; background: white; border-top: 1px solid var(--gray-200);">
-                        <button class="btn btn-primary" style="width: 100%; padding: 1rem; font-size: 1.125rem;" onclick="parent.showScreen(3)">Uygulamaya Geç</button>
-                    </div>
-                </div></div></div>`,
-                3: `<div class="iphone fade-in"><div class="island"></div><div class="screen"><div class="content">
-                    <div class="status"><div>9:41</div><div>📶 📡 🔋</div></div>
-                    <div style="background: white; padding: 1rem 1.5rem; border-bottom: 1px solid var(--gray-200);">
-                        <div style="display: flex; align-items: center; gap: 1rem;">
-                            <button style="background: none; border: none; font-size: 1.5rem; cursor: pointer;" onclick="parent.showScreen(2)">←</button>
-                            <div style="flex: 1;">
-                                <h2 style="font-family: Poppins, sans-serif; font-size: 1rem; font-weight: 700; color: var(--secondary);">Uygulama: Dürüstlük Pratiği</h2>
-                                <div style="font-size: 0.75rem; color: var(--gray-600); margin-top: 0.25rem;">Bölüm 3</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div style="padding: 1.5rem;">
-                        <div class="card" style="margin-bottom: 1.5rem; background: var(--orange-light); border-left: 4px solid var(--orange);">
-                            <h3 style="font-weight: 700; color: var(--orange); margin-bottom: 0.75rem; font-size: 1rem;">📝 Uygulama Talimatları</h3>
-                            <p style="font-size: 0.875rem; color: var(--gray-800); line-height: 1.6;">
-                                Aşağıdaki adımları sırayla tamamlayın. Her adımı bitirdiğinizde işaretleyin.
-                            </p>
-                        </div>
-                        <div style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.5rem;">
-                            <div class="card" style="background: var(--success-light); border: 2px solid var(--success);">
-                                <div style="display: flex; gap: 1rem;">
-                                    <div style="width: 28px; height: 28px; background: var(--success); color: white; border-radius: 9999px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.875rem; flex-shrink: 0;">✓</div>
-                                    <div style="flex: 1;">
-                                        <h4 style="font-weight: 700; font-size: 0.9375rem; color: var(--gray-900); margin-bottom: 0.5rem;">Adım 1: Sakin Bir Yer Bulun</h4>
-                                        <p style="font-size: 0.875rem; color: var(--gray-700); line-height: 1.6;">Kendinizi rahat hissedeceğiniz, sessiz bir ortam seçin. 5-10 dakikanız olmalı.</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card" style="background: var(--success-light); border: 2px solid var(--success);">
-                                <div style="display: flex; gap: 1rem;">
-                                    <div style="width: 28px; height: 28px; background: var(--success); color: white; border-radius: 9999px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.875rem; flex-shrink: 0;">✓</div>
-                                    <div style="flex: 1;">
-                                        <h4 style="font-weight: 700; font-size: 0.9375rem; color: var(--gray-900); margin-bottom: 0.5rem;">Adım 2: Günü Gözden Geçirin</h4>
-                                        <p style="font-size: 0.875rem; color: var(--gray-700); line-height: 1.6;">Bugünü düşünün. Hangi anlar sizi etkiledi? Neler hissettiniz?</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card" style="background: linear-gradient(135deg, var(--primary-light), var(--primary-100)); border: 2px solid var(--primary);">
-                                <div style="display: flex; gap: 1rem;">
-                                    <div style="width: 28px; height: 28px; background: white; color: var(--primary); border: 2px solid var(--primary); border-radius: 9999px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.875rem; flex-shrink: 0;">3</div>
-                                    <div style="flex: 1;">
-                                        <h4 style="font-weight: 700; font-size: 0.9375rem; color: var(--primary-dark); margin-bottom: 0.5rem;">Adım 3: Dürüstlük Sorularını Yanıtlayın</h4>
-                                        <p style="font-size: 0.875rem; color: var(--gray-800); line-height: 1.6;">Aşağıdaki 4 soruyu kendinize sorun ve dürüstçe yanıtlayın.</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card" style="background: var(--gray-100); border: 2px dashed var(--gray-400);">
-                                <div style="display: flex; gap: 1rem;">
-                                    <div style="width: 28px; height: 28px; background: white; color: var(--gray-600); border: 2px solid var(--gray-400); border-radius: 9999px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.875rem; flex-shrink: 0;">4</div>
-                                    <div style="flex: 1;">
-                                        <h4 style="font-weight: 700; font-size: 0.9375rem; color: var(--gray-600); margin-bottom: 0.5rem;">Adım 4: Notlarınızı Kaydedin</h4>
-                                        <p style="font-size: 0.875rem; color: var(--gray-600); line-height: 1.6;">Yanıtlarınızı yazın ve düşüncelerinizi not alın.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card" style="background: var(--secondary-light);">
-                            <p style="font-size: 0.8125rem; color: var(--gray-700); line-height: 1.5;">
-                                <strong style="color: var(--secondary);">💡 İpucu:</strong> Acele etmeyin. Her adıma gereken zamanı ayırın.
-                            </p>
-                        </div>
-                    </div>
-                    <div style="padding: 1.5rem; background: white; border-top: 1px solid var(--gray-200); position: sticky; bottom: 0;">
-                        <button class="btn btn-primary" style="width: 100%; padding: 1rem; font-size: 1.125rem;" onclick="parent.showScreen(4)">Yorum Yaz</button>
-                    </div>
-                </div></div></div>`,
-                4: `<div class="iphone fade-in"><div class="island"></div><div class="screen"><div class="content">
-                    <div class="status"><div>9:41</div><div>📶 📡 🔋</div></div>
-                    <div style="background: white; padding: 1rem 1.5rem; border-bottom: 1px solid var(--gray-200);">
-                        <div style="display: flex; align-items: center; justify-content: space-between;">
-                            <button style="background: none; border: none; font-size: 1.5rem; cursor: pointer;" onclick="parent.showScreen(3)">←</button>
-                            <div style="flex: 1; text-align: center;">
-                                <h2 style="font-family: Poppins, sans-serif; font-size: 1rem; font-weight: 700; color: var(--secondary);">Yorumlarınız</h2>
-                                <div style="font-size: 0.75rem; color: var(--gray-600); margin-top: 0.25rem;">Bölüm 3: Dürüstlük Pratiği</div>
-                            </div>
-                            <button style="background: none; border: none; font-size: 1.125rem; color: var(--primary); font-weight: 700; cursor: pointer;">Önizle</button>
-                        </div>
-                    </div>
-                    <div style="padding: 1.5rem;">
-                        <div class="card" style="margin-bottom: 1rem; background: var(--orange-light); border-left: 4px solid var(--orange);">
-                            <div style="display: flex; justify-content: space-between; align-items: center;">
-                                <div style="font-size: 0.875rem; color: var(--gray-700);"><strong>Son teslim:</strong> 23:59</div>
-                                <div style="font-weight: 700; color: var(--orange);">7 saat 12 dk</div>
-                            </div>
-                        </div>
-                        <div class="card" style="margin-bottom: 1.5rem;">
-                            <label style="display: block; font-weight: 700; color: var(--secondary); margin-bottom: 0.75rem; font-size: 1rem;">1️⃣ Bugün kendime karşı dürüst oldum mu?</label>
-                            <textarea placeholder="Düşüncelerinizi yazın..." style="width: 100%; min-height: 100px; padding: 1rem; border: 2px solid var(--gray-200); border-radius: 0.75rem; font-family: Inter, sans-serif; font-size: 0.9375rem; resize: vertical;">Bugün bazı duygularımı bastırdığımı fark ettim. Özellikle iş toplantısında gerçek düşüncelerimi paylaşmaktan çekindim.</textarea>
-                            <div style="text-align: right; margin-top: 0.5rem; font-size: 0.8125rem; color: var(--gray-600);">94 kelime</div>
-                        </div>
-                        <div class="card" style="margin-bottom: 1.5rem;">
-                            <label style="display: block; font-weight: 700; color: var(--secondary); margin-bottom: 0.75rem; font-size: 1rem;">2️⃣ Gerçek hislerimi ifade edebildim mi?</label>
-                            <textarea placeholder="Düşüncelerinizi yazın..." style="width: 100%; min-height: 100px; padding: 1rem; border: 2px solid var(--gray-200); border-radius: 0.75rem; font-family: Inter, sans-serif; font-size: 0.9375rem; resize: vertical;"></textarea>
-                            <div style="text-align: right; margin-top: 0.5rem; font-size: 0.8125rem; color: var(--gray-600);">0 kelime</div>
-                        </div>
-                        <div class="card" style="margin-bottom: 1.5rem;">
-                            <label style="display: block; font-weight: 700; color: var(--secondary); margin-bottom: 0.75rem; font-size: 1rem;">3️⃣ Başkalarına karşı samimi davrandım mı?</label>
-                            <textarea placeholder="Düşüncelerinizi yazın..." style="width: 100%; min-height: 100px; padding: 1rem; border: 2px solid var(--gray-200); border-radius: 0.75rem; font-family: Inter, sans-serif; font-size: 0.9375rem; resize: vertical;"></textarea>
-                            <div style="text-align: right; margin-top: 0.5rem; font-size: 0.8125rem; color: var(--gray-600);">0 kelime</div>
-                        </div>
-                        <div class="card" style="margin-bottom: 1.5rem;">
-                            <label style="display: block; font-weight: 700; color: var(--secondary); margin-bottom: 0.75rem; font-size: 1rem;">4️⃣ Bir yerde kendimi kandırdım mı?</label>
-                            <textarea placeholder="Düşüncelerinizi yazın..." style="width: 100%; min-height: 100px; padding: 1rem; border: 2px solid var(--gray-200); border-radius: 0.75rem; font-family: Inter, sans-serif; font-size: 0.9375rem; resize: vertical;"></textarea>
-                            <div style="text-align: right; margin-top: 0.5rem; font-size: 0.8125rem; color: var(--gray-600);">0 kelime</div>
-                        </div>
-                        <div class="card" style="background: var(--secondary-light);">
-                            <p style="font-size: 0.8125rem; color: var(--gray-700); line-height: 1.5;">
-                                <strong style="color: var(--secondary);">💡 İpucu:</strong> Yanıtlarınız otomatik kaydedilir.
-                            </p>
-                        </div>
-                    </div>
-                </div></div></div>`,
-                5: `<div class="iphone fade-in"><div class="island"></div><div class="screen"><div class="content">
-                    <div class="status"><div>9:41</div><div>📶 📡 🔋</div></div>
-                    <div style="background: white; padding: 1rem 1.5rem; border-bottom: 1px solid var(--gray-200);">
-                        <div style="display: flex; align-items: center; gap: 1rem;">
-                            <button style="background: none; border: none; font-size: 1.5rem; cursor: pointer;" onclick="parent.showScreen(1)">←</button>
-                            <h2 style="font-family: Poppins, sans-serif; font-size: 1.25rem; font-weight: 800; color: var(--secondary);">İlerleme</h2>
-                        </div>
-                    </div>
-                    <div style="padding: 1.5rem;">
-                        <div style="text-align: center; margin-bottom: 2rem;">
-                            <h3 style="font-family: Poppins, sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--secondary); margin-bottom: 0.5rem;">Sıdk Atölyesi</h3>
-                            <p style="font-size: 0.875rem; color: var(--gray-600);">8 bölüm • ~2 saat</p>
-                        </div>
-                        <div class="card" style="margin-bottom: 2rem; background: linear-gradient(135deg, var(--orange-light), #FED7AA);">
-                            <div style="text-align: center; margin-bottom: 1rem;">
-                                <div style="font-family: Poppins, sans-serif; font-size: 3rem; font-weight: 800; color: var(--orange); margin-bottom: 0.5rem;">62%</div>
-                                <div style="font-size: 0.875rem; color: var(--gray-800);">Tamamlandı</div>
-                            </div>
-                            <div style="height: 12px; background: white; border-radius: 9999px; overflow: hidden;">
-                                <div style="width: 62%; height: 100%; background: var(--orange);"></div>
-                            </div>
-                        </div>
-                        <div style="margin-bottom: 1.5rem;">
-                            <h4 style="font-weight: 700; color: var(--gray-900); margin-bottom: 1rem; font-size: 0.9375rem;">Tamamlanan (5/8)</h4>
-                            <div style="display: flex; flex-direction: column; gap: 0.75rem;">
-                                <div style="padding: 1rem; background: var(--success-light); border-radius: 0.75rem; border-left: 4px solid var(--success);">
-                                    <div style="display: flex; justify-content: between; align-items: center; gap: 1rem;">
-                                        <div style="font-size: 1.5rem;">✅</div>
-                                        <div style="flex: 1;">
-                                            <div style="font-weight: 600; color: var(--gray-900); font-size: 0.875rem;">Bölüm 1: Sıdk Nedir?</div>
-                                            <div style="font-size: 0.75rem; color: var(--gray-600);">Okuma</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div style="padding: 1rem; background: var(--success-light); border-radius: 0.75rem; border-left: 4px solid var(--success);">
-                                    <div style="display: flex; justify-content: between; align-items: center; gap: 1rem;">
-                                        <div style="font-size: 1.5rem;">✅</div>
-                                        <div style="flex: 1;">
-                                            <div style="font-weight: 600; color: var(--gray-900); font-size: 0.875rem;">Bölüm 2: İçsel Farkındalık</div>
-                                            <div style="font-size: 0.75rem; color: var(--gray-600);">Uygulama</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div style="margin-bottom: 1.5rem;">
-                            <h4 style="font-weight: 700; color: var(--gray-900); margin-bottom: 1rem; font-size: 0.9375rem;">Devam (1/8)</h4>
-                            <div style="padding: 1rem; background: linear-gradient(135deg, var(--primary-light), var(--primary-100)); border-radius: 0.75rem; border-left: 4px solid var(--primary);">
-                                <div style="display: flex; justify-content: between; align-items: center; gap: 1rem;">
-                                    <div style="font-size: 1.5rem;">▶️</div>
-                                    <div style="flex: 1;">
-                                        <div style="font-weight: 700; color: var(--primary-dark); font-size: 0.875rem;">Bölüm 3: Dürüstlük Pratiği</div>
-                                        <div style="font-size: 0.75rem; color: var(--primary-dark);">Okuma</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div>
-                            <h4 style="font-weight: 700; color: var(--gray-900); margin-bottom: 1rem; font-size: 0.9375rem;">Kilitli (2/8)</h4>
-                            <div style="display: flex; flex-direction: column; gap: 0.75rem;">
-                                <div style="padding: 1rem; background: var(--gray-100); border-radius: 0.75rem; border-left: 4px solid var(--gray-400);">
-                                    <div style="display: flex; justify-content: between; align-items: center; gap: 1rem;">
-                                        <div style="font-size: 1.5rem;">🔒</div>
-                                        <div style="flex: 1;">
-                                            <div style="font-weight: 600; color: var(--gray-600); font-size: 0.875rem;">Bölüm 4: Toplumsal Gerçeklik</div>
-                                            <div style="font-size: 0.75rem; color: var(--gray-500);">Uygulama</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div></div></div>`,
-                6: `<div class="iphone fade-in"><div class="island"></div><div class="screen"><div class="content">
-                    <div class="status"><div>9:41</div><div>📶 📡 🔋</div></div>
-                    <div style="padding: 3rem 1.5rem; text-align: center;">
-                        <div style="font-size: 6rem; margin-bottom: 1.5rem;">🎉</div>
-                        <h1 style="font-family: Poppins, sans-serif; font-size: 2rem; font-weight: 800; color: var(--secondary); margin-bottom: 1rem;">Tebrikler!</h1>
-                        <p style="font-size: 1rem; color: var(--gray-700); margin-bottom: 2rem; line-height: 1.6;">
-                            <strong>Sıdk Atölyesi</strong>'ni başarıyla tamamladınız.
-                        </p>
-                        <div class="card" style="margin-bottom: 2rem; background: linear-gradient(135deg, var(--success-light), #A7F3D0); border: 2px solid var(--success);">
-                            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 1.5rem;">
-                                <div style="text-align: center;">
-                                    <div style="font-family: Poppins, sans-serif; font-size: 1.75rem; font-weight: 800; color: var(--success-dark); margin-bottom: 0.25rem;">8</div>
-                                    <div style="font-size: 0.75rem; color: var(--gray-700);">Bölüm</div>
-                                </div>
-                                <div style="text-align: center;">
-                                    <div style="font-family: Poppins, sans-serif; font-size: 1.75rem; font-weight: 800; color: var(--success-dark); margin-bottom: 0.25rem;">12</div>
-                                    <div style="font-size: 0.75rem; color: var(--gray-700);">Uygulama</div>
-                                </div>
-                                <div style="text-align: center;">
-                                    <div style="font-family: Poppins, sans-serif; font-size: 1.75rem; font-weight: 800; color: var(--success-dark); margin-bottom: 0.25rem;">2h</div>
-                                    <div style="font-size: 0.75rem; color: var(--gray-700);">Süre</div>
-                                </div>
-                            </div>
-                            <div style="font-size: 3rem; margin-bottom: 0.75rem;">🏅</div>
-                            <h3 style="font-family: Poppins, sans-serif; font-size: 1.25rem; font-weight: 700; color: var(--success-dark); margin-bottom: 0.5rem;">Sıdk Pratisyeni</h3>
-                            <p style="font-size: 0.875rem; color: var(--gray-800);">Atölye rozetini kazandınız!</p>
-                        </div>
-                        <div class="card" style="margin-bottom: 1.5rem; background: var(--orange-light); border-left: 4px solid var(--orange); text-align: left;">
-                            <h4 style="font-weight: 700; color: var(--orange); margin-bottom: 0.75rem; font-size: 0.9375rem;">🎨 Sonraki Önerimiz</h4>
-                            <p style="font-size: 0.875rem; color: var(--gray-800); line-height: 1.6; margin-bottom: 0.75rem;">
-                                <strong>Vicdan Atölyesi</strong> sıdk pratiğinizi bir üst seviyeye taşıyacak.
-                            </p>
-                            <button style="background: none; border: none; color: var(--orange); font-weight: 700; font-size: 0.875rem; padding: 0; cursor: pointer;">Keşfet →</button>
-                        </div>
-                        <button class="btn btn-primary" style="width: 100%; padding: 1rem; font-size: 1.125rem; margin-bottom: 0.75rem;">Ana Sayfaya Dön</button>
-                        <button style="background: white; border: 2px solid var(--primary); color: var(--primary); border-radius: 0.75rem; font-weight: 600; font-size: 1rem; width: 100%; padding: 1rem; cursor: pointer;">Sertifikamı Paylaş</button>
-                    </div>
-                </div></div></div>`
-            };
-            return screens[num] || screens[1];
+
+        function showToast(message, tone) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = 'toast show' + (tone ? ' ' + tone : '');
+            if (toastTimer) {
+                clearTimeout(toastTimer);
+            }
+            toastTimer = setTimeout(() => {
+                toast.className = 'toast';
+            }, 2200);
         }
-        document.getElementById('viewer').innerHTML = getScreenHTML(1);
+
+        function setCurrentScreen(screenNo) {
+            ui.currentScreen = screenNo;
+            ui.lastAnalyticsEvent = screenData[screenNo].event;
+            render();
+        }
+
+        function showScreen(screenNo) {
+            setCurrentScreen(screenNo);
+        }
+
+        function setScreenState(screenNo, state) {
+            ui.screenStates[screenNo] = state;
+            render();
+        }
+
+        function stateControls(screenNo) {
+            const states = ['ready', 'loading', 'empty', 'error', 'offline'];
+            return `
+                <div class="state-switcher">
+                    ${states.map((s) => `<button class="state-btn ${ui.screenStates[screenNo] === s ? 'active' : ''}" onclick="setScreenState(${screenNo}, '${s}')">${s}</button>`).join('')}
+                </div>
+            `;
+        }
+
+        function statePanel(screenNo) {
+            const state = ui.screenStates[screenNo];
+            if (state === 'ready') {
+                return '';
+            }
+            if (state === 'loading') {
+                return '<div class="state-panel loading"><strong>Loading</strong><span>Ekran verileri yukleniyor. Skeleton elemanlar ile gecici alan gosteriliyor.</span></div>';
+            }
+            if (state === 'empty') {
+                return '<div class="state-panel empty"><strong>Empty</strong><span>Bu ekranda gosterilecek veri yok. Sonraki en iyi aksiyon kullaniciya onerilir.</span><button class="btn btn-outline" onclick="showToast(\'Bos durumdan kesif ekranina yonlendirildi.\')">Kesfet</button></div>';
+            }
+            if (state === 'error') {
+                return '<div class="state-panel error"><strong>Error</strong><span>Kurtarilabilir hata mesaji ve tekrar dene aksiyonu sunulur.</span><button class="btn btn-primary" onclick="setScreenState(' + screenNo + ', \'ready\')">Tekrar Dene</button></div>';
+            }
+            return '<div class="state-panel offline"><strong>Offline</strong><span>Son senkronize yapi ile calisilir. Yazma islemleri baglanti geldiginde kuyruktan gonderilir.</span></div>';
+        }
+
+        function phoneShell(title, body, backScreen) {
+            const back = backScreen
+                ? `<button class="icon-btn" onclick="showScreen(${backScreen})" aria-label="Geri">←</button>`
+                : '<span style="width:34px;"></span>';
+
+            return `
+                <div class="iphone">
+                    <div class="island"></div>
+                    <div class="screen">
+                        <div class="content">
+                            <div class="status"><span>9:41</span><span>📶 📡 🔋</span></div>
+                            <div class="mobile-header">
+                                ${back}
+                                <div class="mobile-title">${title}</div>
+                            </div>
+                            <div class="mobile-body">${body}</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function toggleRole() {
+            ui.userRole = ui.userRole === 'participant' ? 'facilitator' : 'participant';
+            showToast('Rol degisti: ' + (ui.userRole === 'participant' ? 'Katilimci' : 'Egitmen'));
+            render();
+        }
+
+        function toggleOfflineSnapshot() {
+            ui.workshop.offlineSnapshot = !ui.workshop.offlineSnapshot;
+            ui.workshop.lastSync = stamp();
+            render();
+        }
+
+        function setStageView(view) {
+            ui.stageView = view;
+            render();
+        }
+
+        function openStage(stageNo) {
+            ui.workshop.lastStageNo = stageNo;
+            if (stageNo <= 7) {
+                setCurrentScreen(3);
+            } else if (stageNo === 8) {
+                setCurrentScreen(4);
+            } else if (stageNo === 9) {
+                setCurrentScreen(5);
+            } else if (stageNo === 10) {
+                setCurrentScreen(6);
+            } else {
+                setCurrentScreen(7);
+            }
+        }
+
+        function continueFromLast() {
+            openStage(ui.workshop.lastStageNo);
+            showToast('Son kalinan asamaya gecildi.', 'success');
+        }
+
+        function completeStage(no) {
+            const stage = ui.stages.find((s) => s.no === no);
+            if (!stage || stage.status === 'locked') {
+                return;
+            }
+            stage.status = 'completed';
+            const next = ui.stages.find((s) => s.no === no + 1);
+            if (next && next.status === 'locked') {
+                next.status = 'available';
+                delete next.reason;
+            }
+            ui.workshop.lastStageNo = Math.max(ui.workshop.lastStageNo, no);
+            showToast('Asama ' + no + ' tamamlandi.', 'success');
+            render();
+        }
+
+        function setContentBlock(name) {
+            ui.stageContent.activeBlock = name;
+            render();
+        }
+
+        function setStageNote(value) {
+            ui.stageContent.note = value;
+        }
+
+        function autosaveStageNote() {
+            ui.stageContent.autosavedAt = stamp();
+            showToast('Asama notu otomatik kaydedildi.', 'success');
+            render();
+        }
+
+        function toggleStageFavorite() {
+            ui.stageContent.favorite = !ui.stageContent.favorite;
+            render();
+        }
+
+        function openWorkbookTask() {
+            setCurrentScreen(6);
+            showToast('Ilgili workbook gorevine gidildi.', 'success');
+        }
+
+        function setCampDay(day) {
+            ui.camp.day = day;
+            ui.camp.selectedSession = 'morning';
+            render();
+        }
+
+        function selectCampSession(id) {
+            ui.camp.selectedSession = id;
+            render();
+        }
+
+        function getSession(day, id) {
+            return ui.camp.days[day].find((s) => s.id === id);
+        }
+
+        function completeCampSession() {
+            const current = getSession(ui.camp.day, ui.camp.selectedSession);
+            if (!current) {
+                return;
+            }
+            current.done = true;
+            showToast('Oturum tamamlandi ve ilerleme isaretlendi.', 'success');
+            render();
+        }
+
+        function campCompletionPct() {
+            const all = [1, 2, 3].flatMap((d) => ui.camp.days[d]);
+            const done = all.filter((s) => s.done).length;
+            return Math.round((done / all.length) * 100);
+        }
+
+        function toggleFacilitatorMode() {
+            ui.facilitator.enabled = !ui.facilitator.enabled;
+            render();
+        }
+
+        function toggleGuideDownloaded() {
+            ui.facilitator.downloaded = !ui.facilitator.downloaded;
+            render();
+        }
+
+        function runShortcut(name) {
+            showToast('Kisayol calistirildi: ' + name, 'success');
+        }
+
+        function setWorkbookField(field, value) {
+            ui.workbook[field] = value;
+        }
+
+        function autosaveWorkbook() {
+            ui.workbook.autosavedAt = stamp();
+            showToast('Worksheet girdileri otomatik kaydedildi.', 'success');
+            render();
+        }
+
+        function completeWorkbook() {
+            ui.workbook.completedAt = stamp();
+            showToast('Workbook tamamlandi ve tarih isaretlendi.', 'success');
+            render();
+        }
+
+        function setWorkbookConsent(enabled) {
+            ui.workbook.privacyConsent = enabled;
+            render();
+        }
+
+        function exportWorkbook() {
+            if (!ui.workbook.privacyConsent) {
+                showToast('Once gizlilik onayini acin.', 'error');
+                return;
+            }
+            showToast('Workbook disa aktarildi (PDF).', 'success');
+        }
+
+        function setFollowupField(field, value) {
+            ui.followup[field] = value;
+        }
+
+        function toggleFollowupReminder() {
+            ui.followup.reminderEnabled = !ui.followup.reminderEnabled;
+            render();
+        }
+
+        function saveFollowup() {
+            ui.followup.progressPct = Math.min(100, ui.followup.progressPct + 12);
+            showToast('Takip plani kaydedildi.', 'success');
+            render();
+        }
+
+        function setFollowupTime(value) {
+            ui.followup.reminderTime = value;
+            render();
+        }
+
+        function completedStageCount() {
+            return ui.stages.filter((s) => s.status === 'completed').length;
+        }
+
+        function completeWorkshop() {
+            const mustHave = [1, 2, 3, 4, 5, 6, 7, 8, 10, 11];
+            const missing = mustHave.filter((id) => {
+                const stage = ui.stages.find((s) => s.no === id);
+                return !stage || stage.status !== 'completed';
+            });
+            if (missing.length > 0) {
+                showToast('Tamamlama icin eksik asamalar var: ' + missing.join(', '), 'error');
+                return;
+            }
+            ui.completion.workshopCompleted = true;
+            ui.lastAnalyticsEvent = 'content_completed';
+            showToast('Atolye tamamlandi. Rozet/sertifika gorunumu acildi.', 'success');
+            render();
+        }
+
+        function toggleCertificateSupport() {
+            ui.completion.certificateSupported = !ui.completion.certificateSupported;
+            render();
+        }
+
+        function archiveWorkshop() {
+            if (!ui.completion.workshopCompleted) {
+                showToast('Once atolyeyi tamamlayin.', 'error');
+                return;
+            }
+            ui.completion.archived = !ui.completion.archived;
+            showToast(ui.completion.archived ? 'Atolye arsive eklendi.' : 'Atolye arsivden cikarildi.', 'success');
+            render();
+        }
+
+        function screenOne() {
+            const body = `
+                ${stateControls(1)}
+                ${statePanel(1)}
+                ${ui.screenStates[1] !== 'ready' ? '' : `
+                    <div class="card">
+                        <div class="card-title">${ui.workshop.title}</div>
+                        <div class="muted">AC-FR-E8-01-01: Tema, donusum hedefi, hedef kitle, toplam sure ve ana referanslar gorunur.</div>
+                        <div class="chips" style="margin-top:0.5rem;">
+                            <span class="chip indigo">Tema: ${ui.workshop.theme}</span>
+                            <span class="chip">Hedef kitle: ${ui.workshop.target}</span>
+                            <span class="chip">Sure: ${ui.workshop.duration}</span>
+                            <span class="chip">Referans: ${ui.workshop.references}</span>
+                        </div>
+                    </div>
+
+                    <div class="badge-grid">
+                        <div class="badge-card"><div class="badge-value">${ui.workshop.stageCount}</div><div class="badge-label">Asama</div></div>
+                        <div class="badge-card"><div class="badge-value">${ui.workshop.campDays}</div><div class="badge-label">Kamp Gunu</div></div>
+                        <div class="badge-card"><div class="badge-value">${ui.workshop.workbookIncluded ? 'Var' : 'Yok'}</div><div class="badge-label">Workbook</div></div>
+                        <div class="badge-card"><div class="badge-value">${ui.workshop.guideIncluded ? 'Var' : 'Yok'}</div><div class="badge-label">Egitmen Rehberi</div></div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">Rol bazli birincil CTA</div>
+                        <div class="chips">
+                            <button class="btn btn-outline" onclick="toggleRole()">Rol Degistir</button>
+                            <button class="btn btn-primary">${ui.userRole === 'participant' ? 'Basla / Devam Et' : 'Rehberi Ac'}</button>
+                        </div>
+                        <div class="muted" style="margin-top:0.45rem;">AC-FR-E8-01-03</div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">Son kalinan nokta</div>
+                        <div class="muted">Asama ${ui.workshop.lastStageNo} • ${ui.workshop.lastSessionLabel}</div>
+                        <div class="chips" style="margin-top:0.5rem;">
+                            <button class="btn btn-success" onclick="continueFromLast()">Devam Et</button>
+                            <button class="btn btn-outline" onclick="toggleOfflineSnapshot()">Offline Snapshot</button>
+                            <span class="chip ${ui.workshop.offlineSnapshot ? 'success' : 'warn'}">${ui.workshop.offlineSnapshot ? 'Son senkronize yapi acik' : 'Snapshot kapali'}</span>
+                        </div>
+                        <div class="muted" style="margin-top:0.45rem;">AC-FR-E8-01-04 • Son sync: ${ui.workshop.lastSync}</div>
+                    </div>
+                `}
+            `;
+            return phoneShell('Atolye landing', body, null);
+        }
+
+        function screenTwo() {
+            const body = `
+                ${stateControls(2)}
+                ${statePanel(2)}
+                ${ui.screenStates[2] !== 'ready' ? '' : `
+                    <div class="card">
+                        <div class="card-title">Gorunum secimi</div>
+                        <div class="chips">
+                            <button class="btn ${ui.stageView === 'list' ? 'btn-primary' : 'btn-outline'}" onclick="setStageView('list')">Asama listesi</button>
+                            <button class="btn ${ui.stageView === 'timeline' ? 'btn-primary' : 'btn-outline'}" onclick="setStageView('timeline')">Zaman cizelgesi</button>
+                            <button class="btn btn-success" onclick="continueFromLast()">Devam Et</button>
+                        </div>
+                        <div class="muted" style="margin-top:0.45rem;">AC-FR-E8-02-01 ve AC-FR-E8-02-04</div>
+                    </div>
+
+                    ${ui.stageView === 'list' ? `
+                        <div class="list">
+                            ${ui.stages.map((stage) => `
+                                <div class="list-item">
+                                    <div>
+                                        <div class="item-title">Asama ${stage.no}: ${stage.title}</div>
+                                        <div class="item-meta">Tip: ${stage.type} • Durum: ${stage.status}${stage.reason ? ' • Kilit nedeni: ' + stage.reason : ''}</div>
+                                    </div>
+                                    <div class="chips">
+                                        <button class="btn btn-outline" ${stage.status === 'locked' ? 'disabled' : ''} onclick="openStage(${stage.no})">Ac</button>
+                                        <button class="btn btn-success" ${stage.status === 'locked' ? 'disabled' : ''} onclick="completeStage(${stage.no})">Tamamla</button>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    ` : `
+                        <div class="timeline">
+                            ${ui.stages.map((stage) => `
+                                <div class="timeline-item">
+                                    <div class="item-title">Asama ${stage.no}: ${stage.title}</div>
+                                    <div class="item-meta">${stage.type} • ${stage.status}${stage.reason ? ' • ' + stage.reason : ''}</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    `}
+
+                    <div class="card">
+                        <div class="muted">AC-FR-E8-02-02: Asama 1-7 referans/icgoru, 8 kamp, 9 rehber, 10 workbook, 11 kapanis tip etiketleri ile sunulur.</div>
+                        <div class="muted" style="margin-top:0.4rem;">AC-FR-E8-02-03: Kilitli asamalarin nedeni acik yazilir.</div>
+                    </div>
+                `}
+            `;
+            return phoneShell('Asama navigasyonu', body, 1);
+        }
+
+        function screenThree() {
+            const active = ui.stageContent.activeBlock;
+            const body = `
+                ${stateControls(3)}
+                ${statePanel(3)}
+                ${ui.screenStates[3] !== 'ready' ? '' : `
+                    <div class="card">
+                        <div class="card-title">Yapilandirilmis asama bloklari</div>
+                        <div class="chips">
+                            <button class="btn ${active === 'intro' ? 'btn-primary' : 'btn-outline'}" onclick="setContentBlock('intro')">Giris</button>
+                            <button class="btn ${active === 'verse' ? 'btn-primary' : 'btn-outline'}" onclick="setContentBlock('verse')">Ayet/Hadis</button>
+                            <button class="btn ${active === 'bridge' ? 'btn-primary' : 'btn-outline'}" onclick="setContentBlock('bridge')">Psikoloji Koprusu</button>
+                            <button class="btn ${active === 'practice' ? 'btn-primary' : 'btn-outline'}" onclick="setContentBlock('practice')">Uygulama</button>
+                            <button class="btn ${active === 'output' ? 'btn-primary' : 'btn-outline'}" onclick="setContentBlock('output')">Cikti</button>
+                        </div>
+                        <div class="callout" style="margin-top:0.55rem;">
+                            <div class="muted">${ui.stageContent.blocks[active]}</div>
+                        </div>
+                        <div class="muted" style="margin-top:0.45rem;">AC-FR-E8-03-01 ve AC-FR-E8-03-02</div>
+                    </div>
+
+                    <div class="quote">Ayet notu: "Siz Allah'a muhtacsiniz" ekseninde bagimlilik degil, iliski bilinci kurulumu.</div>
+
+                    <div class="card">
+                        <div class="card-title">Vurgu, not, favori</div>
+                        <textarea class="field" rows="4" oninput="setStageNote(this.value)">${ui.stageContent.note}</textarea>
+                        <div class="chips" style="margin-top:0.55rem;">
+                            <button class="btn btn-success" onclick="autosaveStageNote()">Notu Kaydet</button>
+                            <button class="btn ${ui.stageContent.favorite ? 'btn-primary' : 'btn-outline'}" onclick="toggleStageFavorite()">${ui.stageContent.favorite ? 'Favoride' : 'Favoriye Ekle'}</button>
+                        </div>
+                        <div class="muted" style="margin-top:0.45rem;">AC-FR-E8-03-03 • Son kayit: ${ui.stageContent.autosavedAt}</div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">Asama sonu ozet ve sonraki adim</div>
+                        <div class="muted">Cikti: ${ui.workshop.completionTarget}</div>
+                        <div class="chips" style="margin-top:0.5rem;">
+                            <button class="btn btn-outline" onclick="completeStage(3)">Bu asamayi tamamla</button>
+                            <button class="btn btn-primary" onclick="openWorkbookTask()">Workbook Gorevine Git</button>
+                        </div>
+                        <div class="muted" style="margin-top:0.45rem;">AC-FR-E8-03-04</div>
+                    </div>
+                `}
+            `;
+            return phoneShell('Asama icerigi', body, 2);
+        }
+
+        function screenFour() {
+            const sessions = ui.camp.days[ui.camp.day];
+            const current = getSession(ui.camp.day, ui.camp.selectedSession) || sessions[0];
+            const body = `
+                ${stateControls(4)}
+                ${statePanel(4)}
+                ${ui.screenStates[4] !== 'ready' ? '' : `
+                    <div class="card">
+                        <div class="card-title">Kamp gunu secimi</div>
+                        <div class="chips">
+                            <button class="btn ${ui.camp.day === 1 ? 'btn-primary' : 'btn-outline'}" onclick="setCampDay(1)">1. Gun</button>
+                            <button class="btn ${ui.camp.day === 2 ? 'btn-primary' : 'btn-outline'}" onclick="setCampDay(2)">2. Gun</button>
+                            <button class="btn ${ui.camp.day === 3 ? 'btn-primary' : 'btn-outline'}" onclick="setCampDay(3)">3. Gun</button>
+                            <span class="chip indigo">Gate: auth + subscription</span>
+                        </div>
+                        <div class="muted" style="margin-top:0.45rem;">AC-FR-E8-04-01</div>
+                    </div>
+
+                    <div class="list">
+                        ${sessions.map((session) => `
+                            <div class="list-item">
+                                <div>
+                                    <div class="item-title">${session.title}</div>
+                                    <div class="item-meta">Amac: ${session.objective} • Sure: ${session.duration} dk • Cikti: ${session.output}</div>
+                                    <div class="item-meta">Worksheet: ${session.worksheet}</div>
+                                </div>
+                                <div class="chips">
+                                    <button class="btn btn-outline" onclick="selectCampSession('${session.id}')">Detay</button>
+                                    <span class="chip ${session.done ? 'success' : 'warn'}">${session.done ? 'Tamamlandi' : 'Bekliyor'}</span>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">Oturum detayi: ${current.title}</div>
+                        <div class="muted">Akis: ${current.flow}</div>
+                        <div class="muted">Konusma ornegi: "Bugun yuk degil bag kurma uzerinden ilerliyoruz."</div>
+                        <div class="muted">Grup calismasi: ikili paylasim + ortak kapanis cumlesi.</div>
+                        <div class="chips" style="margin-top:0.5rem;">
+                            <button class="btn btn-success" onclick="completeCampSession()">Oturumu Tamamla</button>
+                            <span class="chip">Kamp ilerleme: %${campCompletionPct()}</span>
+                        </div>
+                        <div class="muted" style="margin-top:0.45rem;">AC-FR-E8-04-02, AC-FR-E8-04-03, AC-FR-E8-04-04</div>
+                    </div>
+                `}
+            `;
+            return phoneShell('3 gunluk kamp', body, 2);
+        }
+
+        function screenFive() {
+            const body = `
+                ${stateControls(5)}
+                ${statePanel(5)}
+                ${ui.screenStates[5] !== 'ready' ? '' : `
+                    <div class="card ${ui.facilitator.enabled ? 'large-guide' : ''}">
+                        <div class="card-title">Facilitator mode</div>
+                        <div class="chips">
+                            <button class="btn ${ui.facilitator.enabled ? 'btn-primary' : 'btn-outline'}" onclick="toggleFacilitatorMode()">${ui.facilitator.enabled ? 'Facilitator Acik' : 'Facilitator Kapali'}</button>
+                            <button class="btn ${ui.facilitator.downloaded ? 'btn-success' : 'btn-outline'}" onclick="toggleGuideDownloaded()">${ui.facilitator.downloaded ? 'Rehber indirildi' : 'Rehber online'}</button>
+                        </div>
+                        <div class="muted" style="margin-top:0.45rem;">AC-FR-E8-05-02 ve AC-FR-E8-05-03</div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">Dakika dakika akis</div>
+                        <div class="list">
+                            ${ui.facilitator.minutePlan.map((row) => `
+                                <div class="list-item">
+                                    <div>
+                                        <div class="item-title">${row.min}</div>
+                                        <div class="item-meta">${row.item}</div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <div class="muted" style="margin-top:0.45rem;">AC-FR-E8-05-01</div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">Zor senaryo kisayollari</div>
+                        <div class="muted">Birebir cumle: "${ui.facilitator.sampleLine}"</div>
+                        <div class="chips" style="margin-top:0.5rem;">
+                            ${ui.facilitator.shortcuts.map((s) => `<button class="btn btn-outline" onclick="runShortcut('${s}')">${s}</button>`).join('')}
+                        </div>
+                        <div class="muted" style="margin-top:0.45rem;">AC-FR-E8-05-04</div>
+                    </div>
+                `}
+            `;
+            return phoneShell('Facilitator mode', body, 4);
+        }
+
+        function screenSix() {
+            const body = `
+                ${stateControls(6)}
+                ${statePanel(6)}
+                ${ui.screenStates[6] !== 'ready' ? '' : `
+                    <div class="card">
+                        <div class="card-title">Worksheet baglami</div>
+                        <div class="muted">${ui.workbook.context}</div>
+                        <div class="muted">AC-FR-E8-06-01: Yuk haritasi, ic cumle donusumu, dua karti, tevekkul dengesi, donus plani.</div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">Yuk haritasi</div>
+                        <textarea class="field" rows="2" oninput="setWorkbookField('loadMap', this.value)">${ui.workbook.loadMap}</textarea>
+                        <div class="card-title" style="margin-top:0.55rem;">Ic cumle donusumu</div>
+                        <textarea class="field" rows="2" oninput="setWorkbookField('sentenceShift', this.value)">${ui.workbook.sentenceShift}</textarea>
+                        <div class="card-title" style="margin-top:0.55rem;">Kriz ani dua karti</div>
+                        <textarea class="field" rows="2" oninput="setWorkbookField('duaCard', this.value)">${ui.workbook.duaCard}</textarea>
+                        <div class="card-title" style="margin-top:0.55rem;">Tevekkul dengesi</div>
+                        <textarea class="field" rows="2" oninput="setWorkbookField('tawakkulBalance', this.value)">${ui.workbook.tawakkulBalance}</textarea>
+                        <div class="card-title" style="margin-top:0.55rem;">Donus plani</div>
+                        <textarea class="field" rows="2" oninput="setWorkbookField('transformationPlan', this.value)">${ui.workbook.transformationPlan}</textarea>
+                        <div class="chips" style="margin-top:0.55rem;">
+                            <button class="btn btn-success" onclick="autosaveWorkbook()">Otomatik Kaydet</button>
+                            <button class="btn btn-outline" onclick="completeWorkbook()">Tamamlandi Isaretle</button>
+                        </div>
+                        <div class="muted" style="margin-top:0.45rem;">AC-FR-E8-06-02 ve AC-FR-E8-06-03 • Son kayit: ${ui.workbook.autosavedAt} • Tamamlanma: ${ui.workbook.completedAt}</div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">Gizlilik onayi ve disa aktarma</div>
+                        <label class="muted" style="display:flex; gap:0.45rem; align-items:center;">
+                            <input type="checkbox" ${ui.workbook.privacyConsent ? 'checked' : ''} onchange="setWorkbookConsent(this.checked)">
+                            Paylasim/disa aktarma oncesi gizlilik onayi veriyorum.
+                        </label>
+                        <div class="chips" style="margin-top:0.55rem;">
+                            <button class="btn btn-primary" ${ui.workbook.privacyConsent ? '' : 'disabled'} onclick="exportWorkbook()">PDF Olarak Aktar</button>
+                        </div>
+                        <div class="muted" style="margin-top:0.45rem;">AC-FR-E8-06-04</div>
+                    </div>
+                `}
+            `;
+            return phoneShell('Calisma kagitlari', body, 5);
+        }
+
+        function screenSeven() {
+            const body = `
+                ${stateControls(7)}
+                ${statePanel(7)}
+                ${ui.screenStates[7] !== 'ready' ? '' : `
+                    <div class="card">
+                        <div class="card-title">Takip plani katmanlari</div>
+                        <div class="muted">AC-FR-E8-07-01: 72 saatlik toparlanma, 3 haftalik takip ve 30 gunluk plan ayrik bolumlerde sunulur.</div>
+                        <div class="chips" style="margin-top:0.5rem;">
+                            <span class="chip indigo">Gate: auth + subscription</span>
+                            <span class="chip">Ilerleme: %${ui.followup.progressPct}</span>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">72 saat / 3 hafta / 30 gun</div>
+                        <textarea class="field" rows="2" placeholder="72 saat plani" oninput="setFollowupField('plan72', this.value)">${ui.followup.plan72}</textarea>
+                        <textarea class="field" rows="2" placeholder="3 hafta plani" style="margin-top:0.45rem;" oninput="setFollowupField('plan3w', this.value)">${ui.followup.plan3w}</textarea>
+                        <textarea class="field" rows="2" placeholder="30 gun plani" style="margin-top:0.45rem;" oninput="setFollowupField('plan30', this.value)">${ui.followup.plan30}</textarea>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">Niyet ve gunluk cumle</div>
+                        <input class="field" type="text" placeholder="Niyet" value="${ui.followup.intention}" oninput="setFollowupField('intention', this.value)">
+                        <input class="field" type="text" placeholder="Gunluk cumle" style="margin-top:0.45rem;" value="${ui.followup.dailySentence}" oninput="setFollowupField('dailySentence', this.value)">
+                        <input class="field" type="text" placeholder="Kucuk dogru adim" style="margin-top:0.45rem;" value="${ui.followup.microStep}" oninput="setFollowupField('microStep', this.value)">
+                        <div class="muted" style="margin-top:0.45rem;">AC-FR-E8-07-02</div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">Ayrik takip hatirlaticisi</div>
+                        <div class="chips">
+                            <button class="btn ${ui.followup.reminderEnabled ? 'btn-primary' : 'btn-outline'}" onclick="toggleFollowupReminder()">${ui.followup.reminderEnabled ? 'Takip Hatirlatici Acik' : 'Takip Hatirlatici Kapali'}</button>
+                            <input class="field" style="width:120px;" value="${ui.followup.reminderTime}" oninput="setFollowupTime(this.value)">
+                        </div>
+                        <div class="chips" style="margin-top:0.55rem;">
+                            <button class="btn btn-success" onclick="saveFollowup()">Takip Planini Kaydet</button>
+                        </div>
+                        <div class="muted" style="margin-top:0.45rem;">AC-FR-E8-07-03 ve AC-FR-E8-07-04</div>
+                    </div>
+                `}
+            `;
+            return phoneShell('Takip plani', body, 6);
+        }
+
+        function screenEight() {
+            const campPct = campCompletionPct();
+            const body = `
+                ${stateControls(8)}
+                ${statePanel(8)}
+                ${ui.screenStates[8] !== 'ready' ? '' : `
+                    <div class="card">
+                        <div class="card-title">Tamamlama kontrolu</div>
+                        <div class="muted">Zorunlu asamalar tamamlanmadan atolyeyi bitirme aktif olmaz.</div>
+                        <div class="chips" style="margin-top:0.55rem;">
+                            <span class="chip">Tamamlanan asama: ${completedStageCount()}/11</span>
+                            <span class="chip">Kamp tamamlama: %${campPct}</span>
+                            <span class="chip">Follow-up: %${ui.followup.progressPct}</span>
+                        </div>
+                        <div class="chips" style="margin-top:0.55rem;">
+                            <button class="btn btn-primary" onclick="completeWorkshop()">Atolyeyi Tamamla</button>
+                            <button class="btn btn-outline" onclick="toggleCertificateSupport()">${ui.completion.certificateSupported ? 'Sertifika Destegi Acik' : 'Sertifika Destegi Kapali'}</button>
+                        </div>
+                        <div class="muted" style="margin-top:0.45rem;">AC-FR-E8-08-01 ve AC-FR-E8-08-02</div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">Rozet / sertifika</div>
+                        <div class="chips">
+                            <span class="chip ${ui.completion.workshopCompleted ? 'success' : 'warn'}">${ui.completion.workshopCompleted ? 'Atolye tamamlandi' : 'Tamamlanmadi'}</span>
+                            <span class="chip ${ui.completion.certificateSupported ? 'indigo' : 'warn'}">${ui.completion.certificateSupported ? 'Sertifika sunulur' : 'Rozet sunulur'}</span>
+                        </div>
+                        <div class="muted" style="margin-top:0.45rem;">AC-FR-E8-08-03</div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">Kutuphane ve arsiv</div>
+                        <div class="chips">
+                            <button class="btn btn-success" onclick="archiveWorkshop()">${ui.completion.archived ? 'Arsivden Cikar' : 'Arsive Ekle'}</button>
+                            <span class="chip ${ui.completion.archived ? 'success' : 'warn'}">${ui.completion.archived ? 'Kutuphane/Favorilerde yeniden acilabilir' : 'Henuz arsivlenmedi'}</span>
+                        </div>
+                        <div class="muted" style="margin-top:0.45rem;">AC-FR-E8-08-04 • Event: content_completed + workshop_fr_e8_08_viewed</div>
+                    </div>
+                `}
+            `;
+            return phoneShell('Tamamlama ve arsiv', body, 7);
+        }
+
+        function renderScreen(screenNo) {
+            if (screenNo === 1) {
+                return screenOne();
+            }
+            if (screenNo === 2) {
+                return screenTwo();
+            }
+            if (screenNo === 3) {
+                return screenThree();
+            }
+            if (screenNo === 4) {
+                return screenFour();
+            }
+            if (screenNo === 5) {
+                return screenFive();
+            }
+            if (screenNo === 6) {
+                return screenSix();
+            }
+            if (screenNo === 7) {
+                return screenSeven();
+            }
+            return screenEight();
+        }
+
+        function render() {
+            const current = screenData[ui.currentScreen];
+            document.getElementById('screenTitle').textContent = current.title;
+            document.getElementById('screenFr').textContent = current.fr;
+            document.getElementById('screenRoute').textContent = current.route;
+            document.getElementById('screenMeta').textContent = current.meta + ' • event: ' + ui.lastAnalyticsEvent;
+
+            document.querySelectorAll('.nav-item').forEach((item) => {
+                item.classList.toggle('active', Number(item.dataset.screen) === ui.currentScreen);
+            });
+
+            document.querySelectorAll('[id^="flow-"]').forEach((step, index) => {
+                step.classList.toggle('active', index + 1 === ui.currentScreen);
+            });
+
+            document.getElementById('viewer').innerHTML = renderScreen(ui.currentScreen);
+        }
+
+        document.querySelectorAll('.nav-item').forEach((item) => {
+            item.addEventListener('click', () => {
+                setCurrentScreen(Number(item.dataset.screen));
+            });
+            item.addEventListener('keydown', (event) => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    setCurrentScreen(Number(item.dataset.screen));
+                }
+            });
+        });
+
+        render();
     </script>
 </body>
 </html>

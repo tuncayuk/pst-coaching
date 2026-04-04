@@ -10,7 +10,7 @@ from pathlib import Path
 root = Path(__file__).resolve().parent
 
 required = [
-  root/"artifacts"/"prd"/"PST_Mobile_PRD_Rev1.md",
+  root/"artifacts"/"prd"/"PST_Mobile_PRD_Rev4.md",
   root/"artifacts"/"prd"/"app_blueprint.yaml",
 ]
 missing = [str(p) for p in required if not p.exists()]

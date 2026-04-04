@@ -1,0 +1,70 @@
+{
+  "id": "subscription.fr_e3_05",
+  "title": "Plan yönetimi (değiştir/iptal)",
+  "route": "/epic-3/fr-e3-05",
+  "purpose": "Implements FR-E3-05: Plan yönetimi (değiştir/iptal).",
+  "entryPoints": [
+    "profile.overview"
+  ],
+  "inputs": [
+    {
+      "name": "userId",
+      "type": "uuid",
+      "required": true,
+      "source": "session"
+    },
+    {
+      "name": "subscriptionStatus",
+      "type": "SubscriptionStatus",
+      "required": true,
+      "source": "entitlement_cache"
+    },
+    {
+      "name": "locale",
+      "type": "LanguageCode",
+      "required": true,
+      "source": "profile"
+    }
+  ],
+  "dataDependencies": [
+    "Subscription",
+    "SubscriptionPlan",
+    "AddOn",
+    "Seat"
+  ],
+  "uiStates": {
+    "loading": {
+      "description": "Skeleton placeholders are shown while loading FR-E3-05 data."
+    },
+    "ready": {
+      "description": "FR-E3-05 flows are fully interactive with primary CTA available when prerequisites are met."
+    },
+    "empty": {
+      "description": "Empty state explains why no data is available and points to next best action."
+    },
+    "error": {
+      "description": "Error state is recoverable with user-safe messaging and a retry action."
+    },
+    "offline": {
+      "description": "Offline state shows last synchronized data and queues write actions for later sync."
+    }
+  },
+  "analytics": {
+    "screenView": "subscription_fr_e3_05_viewed",
+    "events": [
+      "subscription_fr_e3_05_viewed"
+    ]
+  },
+  "acceptanceCriteriaRefs": [
+    "AC-FR-E3-05-01",
+    "AC-FR-E3-05-02",
+    "AC-FR-E3-05-03",
+    "AC-FR-E3-05-04",
+    "AC-FR-E3-05-05"
+  ],
+  "gates": [
+    "auth",
+    "owner_role",
+    "subscription"
+  ]
+}

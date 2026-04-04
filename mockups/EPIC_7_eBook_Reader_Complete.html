@@ -4,605 +4,1661 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PST Coaching Mobile - EPIC 7: e-Kitap Okuyucu</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #00B4D8; --primary-dark: #0096B8; --primary-light: #E0F7FA; --primary-100: #B2EBF2;
-            --secondary: #2B1B5D; --secondary-light: #EDE7F6;
-            --success: #10B981; --success-light: #D1FAE5; --success-dark: #065F46;
-            --warning: #F59E0B; --error: #EF4444; --purple: #8B5CF6; --purple-light: #EDE9FE;
-            --gray-50: #FAFAFA; --gray-100: #F5F5F5; --gray-200: #E5E5E5; --gray-300: #D4D4D4;
-            --gray-400: #A3A3A3; --gray-600: #525252; --gray-700: #404040; --gray-900: #171717;
-            --sepia: #F4ECD8; --sepia-text: #5B4636;
+            --primary: #0891b2;
+            --primary-dark: #0f766e;
+            --primary-light: #ccfbf1;
+            --secondary: #1f2937;
+            --ink: #111827;
+            --success: #16a34a;
+            --success-light: #dcfce7;
+            --warning: #f59e0b;
+            --warning-light: #fef3c7;
+            --error: #ef4444;
+            --error-light: #fee2e2;
+            --violet: #7c3aed;
+            --violet-light: #ede9fe;
+            --gray-50: #fafafa;
+            --gray-100: #f5f5f5;
+            --gray-200: #e5e5e5;
+            --gray-300: #d4d4d4;
+            --gray-400: #a3a3a3;
+            --gray-600: #525252;
+            --gray-700: #404040;
+            --gray-900: #171717;
+            --sepia-bg: #f4ecd8;
+            --sepia-text: #5b4636;
+            --dark-bg: #111827;
+            --dark-text: #e5e7eb;
         }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #f0f0f0, #e0e0e0); overflow: hidden; }
-        .app { display: flex; height: 100vh; }
-        .sidebar { width: 400px; background: white; border-right: 1px solid var(--gray-200); overflow-y: auto; box-shadow: 2px 0 10px rgba(0,0,0,0.05); }
-        .main { flex: 1; display: flex; flex-direction: column; }
-        .topbar { background: white; border-bottom: 1px solid var(--gray-200); padding: 1.75rem 2.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
-        .viewer { flex: 1; overflow-y: auto; padding: 3rem; display: flex; justify-content: center; align-items: flex-start; }
-        .logo { font-family: 'Poppins', sans-serif; font-size: 2rem; font-weight: 800; color: var(--primary); padding: 2.5rem; border-bottom: 1px solid var(--gray-200); background: linear-gradient(135deg, var(--primary-light), white); }
-        .subtitle { font-size: 0.875rem; color: var(--gray-600); font-weight: 500; margin-top: 0.5rem; }
-        .epic-header { padding: 1.5rem; background: linear-gradient(135deg, var(--secondary-light), #E9D5FF); border-bottom: 2px solid var(--secondary); }
-        .epic-title { font-family: 'Poppins', sans-serif; font-size: 1.25rem; font-weight: 700; color: var(--gray-900); margin-bottom: 0.5rem; }
-        .epic-meta { font-size: 0.8125rem; color: var(--gray-600); }
-        .nav-map { background: var(--purple-light); border-left: 4px solid var(--purple); padding: 1rem; margin: 1rem 1.75rem; border-radius: 0.5rem; }
-        .nav-map-title { font-weight: 700; color: var(--purple); font-size: 0.8125rem; margin-bottom: 0.75rem; text-transform: uppercase; display: flex; align-items: center; gap: 0.5rem; }
-        .nav-flow { display: flex; flex-direction: column; gap: 0.5rem; }
-        .nav-flow-item { display: flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; color: var(--gray-700); }
-        .nav-flow-box { background: white; padding: 0.375rem 0.625rem; border-radius: 0.375rem; border: 2px solid var(--gray-300); font-weight: 600; white-space: nowrap; font-size: 0.6875rem; }
-        .nav-flow-box.active { background: var(--primary); color: white; border-color: var(--primary); }
-        .nav-flow-arrow { color: var(--gray-400); font-weight: 700; }
-        .nav-flow-label { color: var(--gray-600); font-size: 0.625rem; font-style: italic; }
-        .nav-section { padding: 1.25rem 0; border-bottom: 1px solid var(--gray-100); }
-        .nav-title { padding: 0.75rem 1.75rem; font-size: 0.6875rem; font-weight: 700; color: var(--gray-600); text-transform: uppercase; }
-        .nav-item { padding: 1rem 1.75rem; cursor: pointer; font-size: 0.9375rem; transition: all 0.2s; color: var(--gray-700); display: flex; align-items: center; gap: 0.875rem; border-left: 3px solid transparent; }
-        .nav-item:hover { background: var(--gray-50); }
-        .nav-item.active { background: var(--primary-light); color: var(--primary-dark); font-weight: 600; border-left-color: var(--primary); }
-        .nav-icon { font-size: 1.375rem; }
-        .nav-badge { background: var(--primary); color: white; padding: 0.25rem 0.625rem; border-radius: 9999px; font-size: 0.6875rem; font-weight: 700; margin-left: auto; }
-        .ac-section { background: var(--secondary-light); border-left: 4px solid var(--secondary); padding: 1rem; margin: 0.75rem 1.75rem; border-radius: 0.5rem; }
-        .ac-title { font-weight: 700; color: var(--secondary); font-size: 0.75rem; margin-bottom: 0.5rem; text-transform: uppercase; }
-        .ac-list { list-style: none; }
-        .ac-list li { font-size: 0.75rem; color: var(--gray-700); margin-bottom: 0.375rem; padding-left: 1.25rem; position: relative; line-height: 1.4; }
-        .ac-list li:before { content: "✓"; position: absolute; left: 0; color: var(--success); font-weight: 700; }
-        .screen-title { font-family: 'Poppins', sans-serif; font-size: 2.25rem; font-weight: 700; color: var(--gray-900); }
-        .screen-meta { color: var(--gray-600); font-size: 0.9375rem; margin-top: 0.5rem; display: flex; align-items: center; gap: 1rem; }
-        .meta-badge { background: var(--secondary-light); color: var(--secondary); padding: 0.375rem 0.875rem; border-radius: 0.5rem; font-size: 0.8125rem; font-weight: 600; }
-        .iphone { width: 393px; height: 852px; background: #1d1d1f; border-radius: 55px; padding: 12px; box-shadow: 0 60px 120px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.1); position: relative; }
-        .island { position: absolute; top: 20px; left: 50%; transform: translateX(-50%); width: 120px; height: 30px; background: #000; border-radius: 20px; z-index: 11; }
-        .screen { width: 100%; height: 100%; background: white; border-radius: 43px; overflow: hidden; position: relative; }
-        .content { width: 100%; height: 100%; overflow-y: auto; background: var(--gray-50); }
-        .content::-webkit-scrollbar { width: 4px; }
-        .content::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.3); border-radius: 10px; }
-        .status { height: 54px; display: flex; align-items: center; justify-content: space-between; padding: 0 1.5rem; font-size: 0.8125rem; font-weight: 600; background: white; }
-        .btn { padding: 0.875rem 1.5rem; border-radius: 0.75rem; font-weight: 600; font-size: 1rem; border: none; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.2s; }
-        .btn-primary { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; box-shadow: 0 4px 16px rgba(0,180,216,0.4); }
-        .card { background: white; border-radius: 1rem; padding: 1.25rem; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .fade-in { animation: fadeIn 0.3s ease-out; }
-        .highlight { background: #FFEB3B; padding: 0 0.25rem; border-radius: 0.25rem; }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--gray-900);
+            background: radial-gradient(circle at 15% 0%, #d8f4f8 0%, #eef2ff 45%, #e5e7eb 100%);
+            overflow: hidden;
+        }
+
+        .app {
+            height: 100vh;
+            display: flex;
+        }
+
+        .sidebar {
+            width: 430px;
+            background: #fff;
+            border-right: 1px solid var(--gray-200);
+            overflow-y: auto;
+            box-shadow: 2px 0 16px rgba(0, 0, 0, 0.07);
+        }
+
+        .main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .topbar {
+            background: #fff;
+            border-bottom: 1px solid var(--gray-200);
+            padding: 1.45rem 2rem;
+        }
+
+        .viewer {
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 2rem;
+        }
+
+        .logo {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.85rem;
+            font-weight: 800;
+            color: var(--primary-dark);
+            padding: 1.85rem;
+            border-bottom: 1px solid var(--gray-200);
+            background: linear-gradient(140deg, var(--primary-light), #fff);
+        }
+
+        .subtitle {
+            margin-top: 0.35rem;
+            font-size: 0.82rem;
+            color: var(--gray-600);
+            font-weight: 600;
+        }
+
+        .epic-header {
+            margin: 1rem 1.2rem;
+            border: 1px solid #99f6e4;
+            background: linear-gradient(140deg, #f0fdfa, #f8fafc);
+            border-radius: 0.85rem;
+            padding: 1rem;
+        }
+
+        .epic-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.03rem;
+            font-weight: 700;
+            margin-bottom: 0.35rem;
+        }
+
+        .epic-meta {
+            font-size: 0.76rem;
+            color: var(--gray-700);
+            line-height: 1.45;
+        }
+
+        .flow-map {
+            margin: 0 1.2rem 1rem;
+            border-radius: 0.85rem;
+            border: 1px solid #ddd6fe;
+            background: #f8f9ff;
+            padding: 0.75rem;
+        }
+
+        .flow-title {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: var(--gray-600);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .flow-list {
+            display: grid;
+            gap: 0.35rem;
+        }
+
+        .flow-step {
+            border: 1px solid var(--gray-300);
+            border-radius: 0.5rem;
+            background: #fff;
+            padding: 0.34rem 0.52rem;
+            font-size: 0.69rem;
+            font-weight: 600;
+            color: var(--gray-700);
+        }
+
+        .flow-step.active {
+            border-color: var(--violet);
+            background: var(--violet-light);
+            color: #4c1d95;
+        }
+
+        .gate-note {
+            margin-top: 0.55rem;
+            border-top: 1px solid #e9d5ff;
+            padding-top: 0.5rem;
+            font-size: 0.68rem;
+            color: var(--gray-600);
+            line-height: 1.45;
+        }
+
+        .nav-group {
+            border-bottom: 1px solid var(--gray-100);
+            padding: 0.28rem 0 0.72rem;
+        }
+
+        .nav-group-title {
+            padding: 0.66rem 1.2rem;
+            font-size: 0.68rem;
+            color: var(--gray-600);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            font-weight: 700;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.62rem;
+            padding: 0.7rem 1.2rem;
+            border-left: 3px solid transparent;
+            color: var(--gray-700);
+            cursor: pointer;
+            transition: background 0.18s ease;
+        }
+
+        .nav-item:hover {
+            background: var(--gray-50);
+        }
+
+        .nav-item.active {
+            border-left-color: var(--primary);
+            background: #ecfeff;
+            color: var(--primary-dark);
+        }
+
+        .nav-icon {
+            font-size: 1rem;
+        }
+
+        .nav-text {
+            flex: 1;
+            font-size: 0.83rem;
+            font-weight: 600;
+        }
+
+        .nav-badge {
+            font-size: 0.66rem;
+            font-weight: 700;
+            border-radius: 999px;
+            padding: 0.14rem 0.45rem;
+            background: #e2e8f0;
+            color: var(--gray-700);
+        }
+
+        .screen-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--secondary);
+        }
+
+        .screen-meta {
+            margin-top: 0.4rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--gray-600);
+            font-size: 0.9rem;
+            flex-wrap: wrap;
+        }
+
+        .fr-badge {
+            border: 1px solid #93c5fd;
+            background: #eff6ff;
+            color: #1d4ed8;
+            border-radius: 0.52rem;
+            padding: 0.2rem 0.58rem;
+            font-size: 0.78rem;
+            font-weight: 700;
+        }
+
+        .route-badge {
+            border: 1px solid #c4b5fd;
+            background: #f5f3ff;
+            color: #5b21b6;
+            border-radius: 0.52rem;
+            padding: 0.2rem 0.58rem;
+            font-size: 0.74rem;
+            font-weight: 700;
+        }
+
+        .iphone {
+            width: 393px;
+            height: 852px;
+            background: #1d1d1f;
+            border-radius: 54px;
+            padding: 12px;
+            box-shadow: 0 44px 94px rgba(0, 0, 0, 0.45);
+            position: relative;
+        }
+
+        .island {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 30px;
+            border-radius: 20px;
+            background: #000;
+            z-index: 4;
+        }
+
+        .screen {
+            width: 100%;
+            height: 100%;
+            border-radius: 42px;
+            overflow: hidden;
+            background: #fff;
+        }
+
+        .content {
+            width: 100%;
+            height: 100%;
+            overflow-y: auto;
+            background: var(--gray-50);
+        }
+
+        .status {
+            height: 54px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #fff;
+            padding: 0 1.2rem;
+            font-size: 0.82rem;
+            font-weight: 600;
+        }
+
+        .mobile-header {
+            display: flex;
+            align-items: center;
+            gap: 0.72rem;
+            background: #fff;
+            border-bottom: 1px solid var(--gray-200);
+            padding: 0.9rem 1.2rem;
+            position: sticky;
+            top: 0;
+            z-index: 2;
+        }
+
+        .mobile-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--secondary);
+        }
+
+        .icon-btn {
+            border: 1px solid var(--gray-300);
+            background: #fff;
+            color: var(--gray-700);
+            border-radius: 0.55rem;
+            padding: 0.3rem 0.5rem;
+            font-size: 0.84rem;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .mobile-body {
+            padding: 1rem 1.15rem 1.35rem;
+            display: grid;
+            gap: 0.78rem;
+        }
+
+        .card {
+            border: 1px solid var(--gray-200);
+            border-radius: 0.9rem;
+            background: #fff;
+            padding: 0.82rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .card-title {
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: 0.4rem;
+        }
+
+        .muted {
+            color: var(--gray-600);
+            font-size: 0.78rem;
+            line-height: 1.45;
+        }
+
+        .row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
+        }
+
+        .chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.42rem;
+        }
+
+        .chip {
+            border: 1px solid var(--gray-300);
+            border-radius: 999px;
+            background: #fff;
+            color: var(--gray-700);
+            font-size: 0.68rem;
+            font-weight: 700;
+            padding: 0.16rem 0.54rem;
+        }
+
+        .chip.success {
+            border-color: #86efac;
+            background: var(--success-light);
+            color: #166534;
+        }
+
+        .chip.warn {
+            border-color: #fcd34d;
+            background: var(--warning-light);
+            color: #92400e;
+        }
+
+        .chip.error {
+            border-color: #fca5a5;
+            background: var(--error-light);
+            color: #991b1b;
+        }
+
+        .chip.violet {
+            border-color: #c4b5fd;
+            background: #f5f3ff;
+            color: #6d28d9;
+        }
+
+        .btn {
+            border: none;
+            border-radius: 0.72rem;
+            padding: 0.73rem 0.92rem;
+            font-size: 0.84rem;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .btn:disabled {
+            opacity: 0.55;
+            cursor: not-allowed;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: #fff;
+        }
+
+        .btn-outline {
+            background: #fff;
+            border: 1px solid var(--gray-300);
+            color: var(--gray-700);
+        }
+
+        .btn-success {
+            background: #fff;
+            border: 1px solid var(--success);
+            color: #166534;
+        }
+
+        .state-switcher {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.42rem;
+        }
+
+        .state-btn {
+            border: 1px solid var(--gray-300);
+            background: #fff;
+            border-radius: 999px;
+            padding: 0.2rem 0.56rem;
+            font-size: 0.66rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            font-weight: 700;
+            color: var(--gray-700);
+            cursor: pointer;
+        }
+
+        .state-btn.active {
+            border-color: var(--primary);
+            color: var(--primary-dark);
+            background: var(--primary-light);
+        }
+
+        .state-panel {
+            border: 1px solid var(--gray-200);
+            border-radius: 0.8rem;
+            background: #fff;
+            padding: 0.72rem;
+            display: grid;
+            gap: 0.38rem;
+            font-size: 0.79rem;
+            line-height: 1.45;
+        }
+
+        .state-panel.loading {
+            border-color: #bfdbfe;
+            background: #eff6ff;
+        }
+
+        .state-panel.empty {
+            border-color: #cbd5e1;
+            background: #f8fafc;
+        }
+
+        .state-panel.error {
+            border-color: #fecaca;
+            background: var(--error-light);
+        }
+
+        .state-panel.offline {
+            border-color: #fcd34d;
+            background: #fffbeb;
+        }
+
+        .list {
+            display: grid;
+            gap: 0.5rem;
+        }
+
+        .list-item {
+            border: 1px solid var(--gray-200);
+            border-radius: 0.72rem;
+            background: #fff;
+            padding: 0.62rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
+        }
+
+        .item-title {
+            font-size: 0.84rem;
+            font-weight: 700;
+            color: var(--gray-900);
+        }
+
+        .item-meta {
+            font-size: 0.74rem;
+            color: var(--gray-600);
+            margin-top: 0.2rem;
+            line-height: 1.4;
+        }
+
+        .field {
+            width: 100%;
+            border: 1px solid var(--gray-300);
+            border-radius: 0.65rem;
+            background: #fff;
+            padding: 0.45rem 0.52rem;
+            font-size: 0.78rem;
+            color: var(--gray-700);
+            font-family: 'Inter', sans-serif;
+        }
+
+        .slider {
+            width: 100%;
+            accent-color: var(--primary);
+        }
+
+        .progress-line {
+            height: 7px;
+            border-radius: 999px;
+            overflow: hidden;
+            background: var(--gray-100);
+            margin-top: 0.24rem;
+        }
+
+        .progress-line > div {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+        }
+
+        .preview {
+            border-radius: 0.7rem;
+            border: 1px solid var(--gray-200);
+            padding: 0.65rem;
+            line-height: 1.65;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+        }
+
+        .preview.white {
+            background: #fff;
+            color: var(--ink);
+        }
+
+        .preview.sepia {
+            background: var(--sepia-bg);
+            color: var(--sepia-text);
+        }
+
+        .preview.dark {
+            background: var(--dark-bg);
+            color: var(--dark-text);
+        }
+
+        .swatch {
+            width: 24px;
+            height: 24px;
+            border-radius: 0.35rem;
+            border: 2px solid transparent;
+            cursor: pointer;
+        }
+
+        .swatch.active {
+            border-color: var(--secondary);
+        }
+
+        .swatch.yellow {
+            background: #fde047;
+        }
+
+        .swatch.green {
+            background: #86efac;
+        }
+
+        .swatch.blue {
+            background: #93c5fd;
+        }
+
+        .line-sample {
+            border: 1px solid var(--gray-200);
+            border-radius: 0.6rem;
+            background: #fff;
+            padding: 0.45rem 0.55rem;
+            font-size: 0.78rem;
+            color: var(--gray-700);
+        }
+
+        .line-sample.active {
+            border-color: var(--primary);
+            background: #ecfeff;
+            color: #155e75;
+        }
+
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.5rem;
+        }
+
+        .stat-box {
+            border: 1px solid var(--gray-200);
+            border-radius: 0.7rem;
+            background: #fff;
+            padding: 0.56rem;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.18rem;
+            font-weight: 800;
+            color: var(--secondary);
+            margin-bottom: 0.15rem;
+        }
+
+        .stat-label {
+            font-size: 0.68rem;
+            color: var(--gray-600);
+            font-weight: 600;
+        }
+
+        .certificate {
+            border: 1px dashed #22c55e;
+            background: #f0fdf4;
+            border-radius: 0.8rem;
+            padding: 0.72rem;
+        }
+
+        .toast {
+            position: fixed;
+            right: 1.2rem;
+            bottom: 1.2rem;
+            background: #111827;
+            color: #fff;
+            border-radius: 0.7rem;
+            padding: 0.62rem 0.92rem;
+            font-size: 0.8rem;
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22);
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(8px);
+            transition: opacity 0.2s ease, transform 0.2s ease;
+            z-index: 20;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .toast.success {
+            background: #065f46;
+        }
+
+        .toast.error {
+            background: #7f1d1d;
+        }
+
+        .nav-item:focus-visible,
+        button:focus-visible,
+        select:focus-visible,
+        textarea:focus-visible,
+        input:focus-visible {
+            outline: 3px solid #60a5fa;
+            outline-offset: 2px;
+        }
+
+        @media (max-width: 1200px) {
+            body {
+                overflow: auto;
+            }
+
+            .app {
+                flex-direction: column;
+                height: auto;
+                min-height: 100vh;
+            }
+
+            .sidebar {
+                width: 100%;
+                max-height: 52vh;
+            }
+
+            .viewer {
+                padding: 1.2rem;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation: none !important;
+                transition: none !important;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="app">
-        <div class="sidebar">
-            <div class="logo">PST Coaching<div class="subtitle">e-Kitap Okuyucu</div></div>
+        <aside class="sidebar">
+            <div class="logo">
+                PST Coaching
+                <div class="subtitle">EPIC 7 - e-Kitap Okuyucu</div>
+            </div>
+
             <div class="epic-header">
-                <div class="epic-title">EPIC 7: e-Kitap Okuyucu</div>
-                <div class="epic-meta">8 User Stories • 7 Screens • 32 ACs</div>
+                <div class="epic-title">EPIC-7 Sync Pack</div>
+                <div class="epic-meta">8 FR Screen • 31 AC • Requirements + UX artifacts + mockup senkron</div>
             </div>
-            <div class="nav-map">
-                <div class="nav-map-title"><span>🗺️</span><span>Navigation Map</span></div>
-                <div class="nav-flow">
-                    <div class="nav-flow-item"><div class="nav-flow-box active" id="nav-1">eBook Reader</div></div>
-                    <div class="nav-flow-item"><span class="nav-flow-arrow">├→</span><span class="nav-flow-label">tap navigation</span></div>
-                    <div class="nav-flow-item" style="margin-left: 1rem;"><div class="nav-flow-box" id="nav-2">Page Navigation</div></div>
-                    <div class="nav-flow-item"><span class="nav-flow-arrow">├→</span><span class="nav-flow-label">tap Aa</span></div>
-                    <div class="nav-flow-item" style="margin-left: 1rem;"><div class="nav-flow-box" id="nav-3">Reading Settings</div></div>
-                    <div class="nav-flow-item"><span class="nav-flow-arrow">├→</span><span class="nav-flow-label">select text</span></div>
-                    <div class="nav-flow-item" style="margin-left: 1rem;"><div class="nav-flow-box" id="nav-4">Highlight & Note</div></div>
-                    <div class="nav-flow-item"><span class="nav-flow-arrow">├→</span><span class="nav-flow-label">tap highlights icon</span></div>
-                    <div class="nav-flow-item" style="margin-left: 1rem;"><div class="nav-flow-box" id="nav-5">My Highlights</div></div>
-                    <div class="nav-flow-item"><span class="nav-flow-arrow">├→</span><span class="nav-flow-label">tap 🔊</span></div>
-                    <div class="nav-flow-item" style="margin-left: 1rem;"><div class="nav-flow-box" id="nav-6">Audio Mode</div></div>
-                    <div class="nav-flow-item"><span class="nav-flow-arrow">└→</span><span class="nav-flow-label">finish book</span></div>
-                    <div class="nav-flow-item" style="margin-left: 1rem;"><div class="nav-flow-box" id="nav-7">Completion</div></div>
+
+            <div class="flow-map">
+                <div class="flow-title">e-Kitap Akis Haritasi</div>
+                <div class="flow-list">
+                    <div class="flow-step active" id="flow-1">FR-E7-01 e-Kitap okuyucu acilisi</div>
+                    <div class="flow-step" id="flow-2">FR-E7-02 Sayfa navigasyonu</div>
+                    <div class="flow-step" id="flow-3">FR-E7-03 Okuma ayarlari</div>
+                    <div class="flow-step" id="flow-4">FR-E7-04 Metin vurgulama ve not</div>
+                    <div class="flow-step" id="flow-5">FR-E7-05 Vurgularim ve notlarim listesi</div>
+                    <div class="flow-step" id="flow-6">FR-E7-06 Sesli kitap destegi</div>
+                    <div class="flow-step" id="flow-7">FR-E7-07 Okuma ilerlemesi</div>
+                    <div class="flow-step" id="flow-8">FR-E7-08 Cevrimdisi indirme</div>
                 </div>
-                <div style="margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid var(--purple); font-size: 0.625rem; color: var(--gray-600); line-height: 1.4;">
-                    <strong>Entry:</strong> Kütüphane → e-Kitaplarım<br>
-                    <strong>Features:</strong> Read, Navigate, Customize
+                <div class="gate-note">
+                    Gate: auth • Entry: library.ebooks / discover.ebooks • Her ekran loading, ready, empty, error, offline durumlarini destekler.
                 </div>
             </div>
-            <div class="nav-section">
-                <div class="nav-title">US-7.1 & 7.2: Reading</div>
-                <div class="nav-item active" onclick="showScreen(1)">
-                    <span class="nav-icon">📖</span><span>eBook Reader</span><span class="nav-badge">4 ACs</span>
-                </div>
-                <div class="ac-section">
-                    <div class="ac-title">✓ Acceptance Criteria</div>
-                    <ul class="ac-list">
-                        <li>Last read page opens automatically</li>
-                        <li>Book title and current/total pages visible</li>
-                        <li>Table of contents accessible</li>
-                        <li>Offline reading supported</li>
-                    </ul>
-                </div>
-                <div class="nav-item" onclick="showScreen(2)">
-                    <span class="nav-icon">🧭</span><span>Page Navigation</span><span class="nav-badge">4 ACs</span>
-                </div>
-                <div class="ac-section">
-                    <div class="ac-title">✓ Acceptance Criteria</div>
-                    <ul class="ac-list">
-                        <li>Scroll/swipe navigation</li>
-                        <li>Jump to page number</li>
-                        <li>Jump to chapter from TOC</li>
-                        <li>Progress bar visible</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="nav-section">
-                <div class="nav-title">US-7.3 & 7.4: Customization</div>
-                <div class="nav-item" onclick="showScreen(3)">
-                    <span class="nav-icon">Aa</span><span>Reading Settings</span><span class="nav-badge">4 ACs</span>
-                </div>
-                <div class="ac-section">
-                    <div class="ac-title">✓ Acceptance Criteria</div>
-                    <ul class="ac-list">
-                        <li>Font size adjustable</li>
-                        <li>Background color (White/Sepia/Dark)</li>
-                        <li>Line spacing adjustable</li>
-                        <li>Settings persist across books</li>
-                    </ul>
-                </div>
-                <div class="nav-item" onclick="showScreen(4)">
-                    <span class="nav-icon">✍️</span><span>Highlight & Note</span><span class="nav-badge">4 ACs</span>
-                </div>
-                <div class="ac-section">
-                    <div class="ac-title">✓ Acceptance Criteria</div>
-                    <ul class="ac-list">
-                        <li>Text selection shows color options</li>
-                        <li>Notes can be added</li>
-                        <li>Highlights and notes saved</li>
-                        <li>Can add to favorites</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="nav-section">
-                <div class="nav-title">US-7.5, 7.6 & 7.7: Features</div>
-                <div class="nav-item" onclick="showScreen(5)">
-                    <span class="nav-icon">📝</span><span>My Highlights</span><span class="nav-badge">4 ACs</span>
-                </div>
-                <div class="ac-section">
-                    <div class="ac-title">✓ Acceptance Criteria</div>
-                    <ul class="ac-list">
-                        <li>Book-specific highlight/note list visible</li>
-                        <li>Tap to jump to page</li>
-                        <li>Notes editable</li>
-                        <li>Exportable</li>
-                    </ul>
-                </div>
-                <div class="nav-item" onclick="showScreen(6)">
-                    <span class="nav-icon">🔊</span><span>Audio Mode</span><span class="nav-badge">4 ACs</span>
-                </div>
-                <div class="ac-section">
-                    <div class="ac-title">✓ Acceptance Criteria</div>
-                    <ul class="ac-list">
-                        <li>Play button if audio version available</li>
-                        <li>Text synced with audio</li>
-                        <li>Speed adjustable</li>
-                        <li>Background playback supported</li>
-                    </ul>
-                </div>
-                <div class="nav-item" onclick="showScreen(7)">
-                    <span class="nav-icon">🏆</span><span>Completion</span><span class="nav-badge">4 ACs</span>
-                </div>
-                <div class="ac-section">
-                    <div class="ac-title">✓ Acceptance Criteria</div>
-                    <ul class="ac-list">
-                        <li>Progress percentage visible</li>
-                        <li>Estimated remaining time calculated</li>
-                        <li>Badge/certificate on completion</li>
-                        <li>Reflects in progress dashboard</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div class="main">
+
+            <section class="nav-group">
+                <div class="nav-group-title">Okuyucu Cekirdek</div>
+                <div class="nav-item active" data-screen="1" role="button" tabindex="0"><span class="nav-icon">📖</span><span class="nav-text">e-Kitap Acilis</span><span class="nav-badge">4 AC</span></div>
+                <div class="nav-item" data-screen="2" role="button" tabindex="0"><span class="nav-icon">🧭</span><span class="nav-text">Sayfa Navigasyonu</span><span class="nav-badge">4 AC</span></div>
+            </section>
+
+            <section class="nav-group">
+                <div class="nav-group-title">Kisisellestirme</div>
+                <div class="nav-item" data-screen="3" role="button" tabindex="0"><span class="nav-icon">Aa</span><span class="nav-text">Okuma Ayarlari</span><span class="nav-badge">4 AC</span></div>
+                <div class="nav-item" data-screen="4" role="button" tabindex="0"><span class="nav-icon">✍️</span><span class="nav-text">Vurgu ve Not</span><span class="nav-badge">3 AC</span></div>
+            </section>
+
+            <section class="nav-group">
+                <div class="nav-group-title">Not ve Ses</div>
+                <div class="nav-item" data-screen="5" role="button" tabindex="0"><span class="nav-icon">🗂️</span><span class="nav-text">Vurgularim Listesi</span><span class="nav-badge">4 AC</span></div>
+                <div class="nav-item" data-screen="6" role="button" tabindex="0"><span class="nav-icon">🔊</span><span class="nav-text">Sesli Kitap</span><span class="nav-badge">4 AC</span></div>
+            </section>
+
+            <section class="nav-group">
+                <div class="nav-group-title">Ilerleme ve Indirme</div>
+                <div class="nav-item" data-screen="7" role="button" tabindex="0"><span class="nav-icon">🏁</span><span class="nav-text">Okuma Ilerlemesi</span><span class="nav-badge">4 AC</span></div>
+                <div class="nav-item" data-screen="8" role="button" tabindex="0"><span class="nav-icon">⬇️</span><span class="nav-text">Cevrimdisi Indirme</span><span class="nav-badge">4 AC</span></div>
+            </section>
+        </aside>
+
+        <main class="main">
             <div class="topbar">
-                <h1 class="screen-title" id="screenTitle">eBook Reader</h1>
+                <h1 class="screen-title" id="screenTitle">e-Kitap okuyucu acilisi</h1>
                 <div class="screen-meta">
-                    <span class="meta-badge" id="screenUS">US-7.1</span>
-                    <span id="screenMeta">Reading experience • 4/4 ACs • Entry: Kütüphane → e-Kitaplarım</span>
+                    <span class="fr-badge" id="screenFr">FR-E7-01</span>
+                    <span class="route-badge" id="screenRoute">/epic-7/fr-e7-01</span>
+                    <span id="screenMeta">Son okunan sayfa, baslik/sayfa bilgisi, TOC erisimi ve cevrimdisi destek</span>
                 </div>
             </div>
             <div class="viewer" id="viewer"></div>
-        </div>
+        </main>
     </div>
+
+    <div class="toast" id="toast" aria-live="polite"></div>
+
     <script>
         const screenData = {
-            1: { title: 'eBook Reader', us: 'US-7.1', meta: 'Reading experience • 4/4 ACs • Entry: Kütüphane → e-Kitaplarım' },
-            2: { title: 'Page Navigation', us: 'US-7.2', meta: 'Navigate pages • 4/4 ACs • From: Reader Menu' },
-            3: { title: 'Reading Settings', us: 'US-7.3', meta: 'Customize view • 4/4 ACs • From: Reader Menu' },
-            4: { title: 'Highlight & Note', us: 'US-7.4', meta: 'Annotate text • 4/4 ACs • From: Text Selection' },
-            5: { title: 'My Highlights', us: 'US-7.5', meta: 'View annotations • 4/4 ACs • From: Reader Menu' },
-            6: { title: 'Audio Mode', us: 'US-7.6', meta: 'Listen to book • 4/4 ACs • From: Reader Menu' },
-            7: { title: 'Completion', us: 'US-7.7', meta: 'Finish book • 4/4 ACs • Auto-trigger' }
+            1: {
+                title: 'e-Kitap okuyucu acilisi',
+                fr: 'FR-E7-01',
+                route: '/epic-7/fr-e7-01',
+                event: 'reader_fr_e7_01_viewed',
+                meta: 'Son okunan sayfa, baslik/sayfa bilgisi, TOC erisimi ve cevrimdisi destek'
+            },
+            2: {
+                title: 'Sayfa navigasyonu',
+                fr: 'FR-E7-02',
+                route: '/epic-7/fr-e7-02',
+                event: 'reader_fr_e7_02_viewed',
+                meta: 'Kaydirma veya sayfa cevirme, sayfa numarasina atlama, TOC secimi, ilerleme cubugu'
+            },
+            3: {
+                title: 'Okuma ayarlari',
+                fr: 'FR-E7-03',
+                route: '/epic-7/fr-e7-03',
+                event: 'reader_fr_e7_03_viewed',
+                meta: 'Font boyutu, tema secimi, satir araligi ve kitaplar arasi ayar saklama'
+            },
+            4: {
+                title: 'Metin vurgulama ve not',
+                fr: 'FR-E7-04',
+                route: '/epic-7/fr-e7-04',
+                event: 'reader_fr_e7_04_viewed',
+                meta: 'Metin secimi, renkli vurgu, not ekleme, otomatik kayit ve favori'
+            },
+            5: {
+                title: 'Vurgularim ve notlarim listesi',
+                fr: 'FR-E7-05',
+                route: '/epic-7/fr-e7-05',
+                event: 'reader_fr_e7_05_viewed',
+                meta: 'Kitaba ozel not listesi, ilgili sayfaya gitme, not duzenleme ve disa aktarma'
+            },
+            6: {
+                title: 'Sesli kitap destegi',
+                fr: 'FR-E7-06',
+                route: '/epic-7/fr-e7-06',
+                event: 'reader_fr_e7_06_viewed',
+                meta: 'Audio varligina gore oynat, metin senkronu, hiz ayari ve arka plan calisma'
+            },
+            7: {
+                title: 'Okuma ilerlemesi',
+                fr: 'FR-E7-07',
+                route: '/epic-7/fr-e7-07',
+                event: 'reader_fr_e7_07_viewed',
+                meta: 'Ilerleme yuzdesi, kalan sure tahmini, bitirme rozeti ve gelisim paneline yansitma'
+            },
+            8: {
+                title: 'Cevrimdisi indirme',
+                fr: 'FR-E7-08',
+                route: '/epic-7/fr-e7-08',
+                event: 'reader_fr_e7_08_viewed',
+                meta: 'Indirme butonu, durum gosterimi, depolama uyari yonetimi ve indirildi isareti'
+            }
         };
-        function showScreen(num) {
-            document.getElementById('screenTitle').textContent = screenData[num].title;
-            document.getElementById('screenUS').textContent = screenData[num].us;
-            document.getElementById('screenMeta').textContent = screenData[num].meta;
-            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
-            const navMap = {1: 0, 2: 1, 3: 2, 4: 3, 5: 4, 6: 5, 7: 6};
-            document.querySelectorAll('.nav-item')[navMap[num]].classList.add('active');
-            document.querySelectorAll('[id^="nav-"]').forEach(box => box.classList.remove('active'));
-            const navBox = document.getElementById('nav-' + num);
-            if (navBox) navBox.classList.add('active');
-            document.getElementById('viewer').innerHTML = getScreenHTML(num);
+
+        const ui = {
+            currentScreen: 1,
+            screenStates: {
+                1: 'ready',
+                2: 'ready',
+                3: 'ready',
+                4: 'ready',
+                5: 'ready',
+                6: 'ready',
+                7: 'ready',
+                8: 'ready'
+            },
+            lastAnalyticsEvent: 'reader_fr_e7_01_viewed',
+            reader: {
+                bookTitle: 'Sukur Sifresi',
+                currentPage: 42,
+                lastReadPage: 42,
+                totalPages: 184,
+                navigationMode: 'swipe',
+                jumpPageDraft: 42,
+                toc: [
+                    { chapter: 'Bolum 1 - Sukrun temelleri', page: 8 },
+                    { chapter: 'Bolum 2 - Gunluk sukretme pratigi', page: 24 },
+                    { chapter: 'Bolum 3 - Sukrun kaynagi', page: 42 },
+                    { chapter: 'Bolum 4 - Zorlukta denge', page: 68 },
+                    { chapter: 'Bolum 5 - Donusum rotasi', page: 128 }
+                ]
+            },
+            settings: {
+                fontSize: 18,
+                lineSpacing: 1.6,
+                theme: 'white',
+                persistedAt: '-'
+            },
+            annotations: {
+                selectedText: 'Sukur, fark edilen nimetin kalpte yol actigi bir sukran hareketidir.',
+                color: 'yellow',
+                note: 'Bugun sukru daha bilincli yasamayi deneyecegim.',
+                autosavedAt: '-',
+                favorite: false,
+                items: [
+                    { page: 18, text: 'Sukrun ilk adimi fark etmektir.', note: 'Sabah rutini ile bagla', color: 'green', favorite: true },
+                    { page: 42, text: 'Kalbin acikligi sukrun derinligine yansir.', note: 'Aksam yansimasina ekle', color: 'yellow', favorite: false }
+                ]
+            },
+            audio: {
+                available: true,
+                playing: false,
+                speed: 1,
+                backgroundPlayback: true,
+                activeLine: 0,
+                lines: [
+                    'Sukur, bir anda ortaya cikmaz; farkindalikla buyur.',
+                    'Nimetleri fark etmek kalbe denge verir.',
+                    'Kucuk adimlar gunluk hayatta buyuk donusum getirir.',
+                    'Sukreden kisi, sahip olduklarina yakinlasir.'
+                ]
+            },
+            progress: {
+                percent: 63,
+                remainingMinutes: 62,
+                badgeUnlocked: false,
+                syncedAt: '-'
+            },
+            download: {
+                requiredMb: 95,
+                freeMb: 120,
+                status: 'idle',
+                progress: 0,
+                books: [
+                    { title: 'Sukur Sifresi', downloaded: false },
+                    { title: 'Sabir Defteri', downloaded: true },
+                    { title: 'Niyet Rehberi', downloaded: true }
+                ]
+            }
+        };
+
+        let toastTimer = null;
+        let downloadTimer = null;
+        let audioTimer = null;
+
+        function stamp() {
+            return new Date().toLocaleString('tr-TR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
         }
-        function getScreenHTML(num) {
-            const screens = {
-                1: `<div class="iphone fade-in"><div class="island"></div><div class="screen"><div class="content">
-                    <div class="status"><div>9:41</div><div>📶 📡 🔋</div></div>
-                    <div style="background: white; padding: 1rem 1.5rem; border-bottom: 1px solid var(--gray-200); position: sticky; top: 0; z-index: 10;">
-                        <div style="display: flex; align-items: center; justify-content: space-between;">
-                            <button style="background: none; border: none; font-size: 1.5rem; cursor: pointer;">←</button>
-                            <div style="flex: 1; text-align: center; padding: 0 1rem;">
-                                <h2 style="font-size: 0.9375rem; font-weight: 700; color: var(--secondary);">Şükür Şifresi</h2>
-                                <div style="font-size: 0.75rem; color: var(--gray-600); margin-top: 0.25rem;">Sayfa 42 / 184</div>
+
+        function showToast(message, tone) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = 'toast show' + (tone ? ' ' + tone : '');
+            if (toastTimer) {
+                clearTimeout(toastTimer);
+            }
+            toastTimer = setTimeout(() => {
+                toast.className = 'toast';
+            }, 2200);
+        }
+
+        function progressPct() {
+            return Math.max(0, Math.min(100, Math.round((ui.reader.currentPage / ui.reader.totalPages) * 100)));
+        }
+
+        function estimateRemaining() {
+            const remainingPct = Math.max(0, 100 - ui.progress.percent);
+            ui.progress.remainingMinutes = Math.round(remainingPct * 1.7);
+        }
+
+        function isCurrentBookDownloaded() {
+            return ui.download.books[0].downloaded;
+        }
+
+        function logScreenView(screenNo) {
+            ui.lastAnalyticsEvent = screenData[screenNo].event;
+        }
+
+        function setCurrentScreen(screenNo) {
+            ui.currentScreen = screenNo;
+            logScreenView(screenNo);
+            render();
+        }
+
+        function showScreen(screenNo) {
+            setCurrentScreen(screenNo);
+        }
+
+        function setScreenState(screenNo, state) {
+            ui.screenStates[screenNo] = state;
+            render();
+        }
+
+        function stateControls(screenNo) {
+            const states = ['ready', 'loading', 'empty', 'error', 'offline'];
+            return `
+                <div class="state-switcher">
+                    ${states.map((s) => `<button class="state-btn ${ui.screenStates[screenNo] === s ? 'active' : ''}" onclick="setScreenState(${screenNo}, '${s}')">${s}</button>`).join('')}
+                </div>
+            `;
+        }
+
+        function statePanel(screenNo) {
+            const state = ui.screenStates[screenNo];
+            if (state === 'ready') {
+                return '';
+            }
+            if (state === 'loading') {
+                return '<div class="state-panel loading"><strong>Loading</strong><span>Ekran verileri yukleniyor. Skeleton elemanlar ile gecici alan gosteriliyor.</span></div>';
+            }
+            if (state === 'empty') {
+                return '<div class="state-panel empty"><strong>Empty</strong><span>Bu ekranda gosterilecek veri yok. Sonraki en iyi aksiyon kullaniciya onerilir.</span><button class="btn btn-outline" onclick="showToast(\'Bos durumdan kesfe yonlendirildi.\')">Kesfet</button></div>';
+            }
+            if (state === 'error') {
+                return '<div class="state-panel error"><strong>Error</strong><span>Kurtarilabilir hata mesaji ve tekrar dene aksiyonu sunulur.</span><button class="btn btn-primary" onclick="setScreenState(' + screenNo + ', \'ready\')">Tekrar Dene</button></div>';
+            }
+            return '<div class="state-panel offline"><strong>Offline</strong><span>Son senkronize veri ile okuma surer. Yazma islemleri baglanti geldikten sonra kuyruktan gonderilir.</span></div>';
+        }
+
+        function phoneShell(title, body, backScreen) {
+            const back = backScreen
+                ? `<button class="icon-btn" onclick="showScreen(${backScreen})" aria-label="Geri">←</button>`
+                : '<span style="width:34px;"></span>';
+
+            return `
+                <div class="iphone">
+                    <div class="island"></div>
+                    <div class="screen">
+                        <div class="content">
+                            <div class="status"><span>9:41</span><span>📶 📡 🔋</span></div>
+                            <div class="mobile-header">
+                                ${back}
+                                <div class="mobile-title">${title}</div>
                             </div>
-                            <div style="display: flex; gap: 0.5rem;">
-                                <button style="background: var(--gray-100); border: none; width: 36px; height: 36px; border-radius: 9999px; font-size: 1rem; cursor: pointer;" onclick="parent.showScreen(2)">☰</button>
-                                <button style="background: var(--gray-100); border: none; width: 36px; height: 36px; border-radius: 9999px; font-size: 1rem; cursor: pointer;" onclick="parent.showScreen(3)">Aa</button>
-                            </div>
-                        </div>
-                        <div style="margin-top: 0.75rem;">
-                            <div style="height: 4px; background: var(--gray-200); border-radius: 9999px; overflow: hidden;">
-                                <div style="width: 23%; height: 100%; background: var(--primary);"></div>
-                            </div>
+                            <div class="mobile-body">${body}</div>
                         </div>
                     </div>
-                    <div style="padding: 2rem 1.5rem; background: white; font-family: Merriweather, serif;">
-                        <h2 style="font-size: 1.5rem; font-weight: 700; color: var(--secondary); margin-bottom: 1.5rem; font-family: Poppins, sans-serif;">Bölüm 3: Şükrün Kaynağı</h2>
-                        <p style="font-size: 1.0625rem; line-height: 1.9; color: var(--gray-900); margin-bottom: 1.5rem; text-align: justify;">
-                            <span class="highlight">Şükür, kalbimizde yeşeren bir duygudur.</span> O sadece ağzımızdan dökülen sözcükler değil, içimizde var olan bir farkındalıktır. Şükretmek için önce neye sahip olduğumuzu görmemiz gerekir.
-                        </p>
-                        <p style="font-size: 1.0625rem; line-height: 1.9; color: var(--gray-900); margin-bottom: 1.5rem; text-align: justify;">
-                            Çoğu zaman hayatımızdaki güzellikleri görmezden geliriz. Sabah güneşi, sevdiklerimizin gülümsemesi, yağmurun sesini dinlemek... Bunların hepsi birer nimettir.
-                        </p>
-                        <p style="font-size: 1.0625rem; line-height: 1.9; color: var(--gray-900); margin-bottom: 1.5rem; text-align: justify;">
-                            Şükür pratiği yapmak, bu nimetleri görebilme yeteneğimizi geliştirir. Her gün bir şey için minnettarlık duymak, kalbimizdeki şükür kaynağını besler ve güçlendirir.
-                        </p>
-                        <div style="background: var(--primary-light); padding: 1.5rem; border-radius: 1rem; border-left: 4px solid var(--primary); margin: 2rem 0;">
-                            <p style="font-size: 1rem; line-height: 1.7; color: var(--gray-800); font-style: italic;">
-                                "Şükretmek bir seçimdir. Her an, hayatımızdaki güzellikleri görmeyi seçebiliriz."
-                            </p>
-                        </div>
-                        <p style="font-size: 1.0625rem; line-height: 1.9; color: var(--gray-900); text-align: justify;">
-                            Şükür alıştırması yaparken, küçük şeylere odaklanın. Büyük başarılar kadar, günlük hayattaki ufak anlar da değerlidir.
-                        </p>
-                    </div>
-                </div></div></div>`,
-                2: `<div class="iphone fade-in"><div class="island"></div><div class="screen"><div class="content">
-                    <div class="status"><div>9:41</div><div>📶 📡 🔋</div></div>
-                    <div style="background: white; padding: 1rem 1.5rem; border-bottom: 1px solid var(--gray-200);">
-                        <div style="display: flex; align-items: center; gap: 1rem;">
-                            <button style="background: none; border: none; font-size: 1.5rem; cursor: pointer;" onclick="parent.showScreen(1)">←</button>
-                            <h2 style="font-family: Poppins, sans-serif; font-size: 1.25rem; font-weight: 800; color: var(--secondary);">Navigasyon</h2>
-                        </div>
-                    </div>
-                    <div style="padding: 1.5rem;">
-                        <div class="card" style="margin-bottom: 1.5rem;">
-                            <h3 style="font-weight: 700; color: var(--gray-900); margin-bottom: 1rem; font-size: 1rem;">Sayfaya Git</h3>
-                            <div style="display: flex; gap: 0.75rem; align-items: center; margin-bottom: 1rem;">
-                                <input type="number" placeholder="Sayfa numarası" value="42" style="flex: 1; padding: 0.875rem 1rem; border: 2px solid var(--gray-300); border-radius: 0.75rem; font-size: 1rem; font-weight: 600;">
-                                <button class="btn btn-primary" style="padding: 0.875rem 1.5rem;">Git</button>
-                            </div>
-                            <div style="font-size: 0.8125rem; color: var(--gray-600);">Toplam 184 sayfa</div>
-                        </div>
-                        <div class="card" style="margin-bottom: 1.5rem;">
-                            <h3 style="font-weight: 700; color: var(--gray-900); margin-bottom: 1rem; font-size: 1rem;">İçindekiler</h3>
-                            <div style="display: flex; flex-direction: column; gap: 0.75rem;">
-                                <div style="padding: 1rem; background: var(--gray-50); border-radius: 0.75rem; cursor: pointer;">
-                                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                                        <div><div style="font-weight: 600; color: var(--gray-900); margin-bottom: 0.25rem;">Bölüm 1: Şükrün Temelleri</div>
-                                        <div style="font-size: 0.75rem; color: var(--gray-600);">Sayfa 8</div></div>
-                                        <div style="color: var(--gray-400);">›</div>
-                                    </div>
-                                </div>
-                                <div style="padding: 1rem; background: var(--gray-50); border-radius: 0.75rem; cursor: pointer;">
-                                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                                        <div><div style="font-weight: 600; color: var(--gray-900); margin-bottom: 0.25rem;">Bölüm 2: Günlük Şükür</div>
-                                        <div style="font-size: 0.75rem; color: var(--gray-600);">Sayfa 24</div></div>
-                                        <div style="color: var(--gray-400);">›</div>
-                                    </div>
-                                </div>
-                                <div style="padding: 1rem; background: var(--primary-light); border: 2px solid var(--primary); border-radius: 0.75rem; cursor: pointer;">
-                                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                                        <div><div style="font-weight: 700; color: var(--primary-dark); margin-bottom: 0.25rem;">Bölüm 3: Şükrün Kaynağı</div>
-                                        <div style="font-size: 0.75rem; color: var(--primary-dark);">Sayfa 42 • Şu an burada</div></div>
-                                        <div style="color: var(--primary);">●</div>
-                                    </div>
-                                </div>
-                                <div style="padding: 1rem; background: var(--gray-50); border-radius: 0.75rem; cursor: pointer;">
-                                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                                        <div><div style="font-weight: 600; color: var(--gray-900); margin-bottom: 0.25rem;">Bölüm 4: Zorlukta Şükür</div>
-                                        <div style="font-size: 0.75rem; color: var(--gray-600);">Sayfa 68</div></div>
-                                        <div style="color: var(--gray-400);">›</div>
-                                    </div>
-                                </div>
-                                <div style="padding: 1rem; background: var(--gray-50); border-radius: 0.75rem; cursor: pointer;">
-                                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                                        <div><div style="font-weight: 600; color: var(--gray-900); margin-bottom: 0.25rem;">Bölüm 5: Şükürle Dönüşüm</div>
-                                        <div style="font-size: 0.75rem; color: var(--gray-600);">Sayfa 128</div></div>
-                                        <div style="color: var(--gray-400);">›</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div></div></div>`,
-                3: `<div class="iphone fade-in"><div class="island"></div><div class="screen"><div class="content">
-                    <div class="status"><div>9:41</div><div>📶 📡 🔋</div></div>
-                    <div style="background: white; padding: 1rem 1.5rem; border-bottom: 1px solid var(--gray-200);">
-                        <div style="display: flex; align-items: center; gap: 1rem;">
-                            <button style="background: none; border: none; font-size: 1.5rem; cursor: pointer;" onclick="parent.showScreen(1)">←</button>
-                            <h2 style="font-family: Poppins, sans-serif; font-size: 1.25rem; font-weight: 800; color: var(--secondary);">Okuma Ayarları</h2>
-                        </div>
-                    </div>
-                    <div style="padding: 1.5rem;">
-                        <div class="card" style="margin-bottom: 1.5rem;">
-                            <h3 style="font-weight: 700; color: var(--gray-900); margin-bottom: 1rem; font-size: 1rem;">Yazı Boyutu</h3>
-                            <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
-                                <button style="background: var(--gray-100); border: none; width: 44px; height: 44px; border-radius: 9999px; font-size: 1.25rem; cursor: pointer; font-weight: 700;">-</button>
-                                <div style="flex: 1; text-align: center;">
-                                    <div style="font-family: Merriweather, serif; font-size: 1.25rem; color: var(--gray-900); margin-bottom: 0.25rem;">Aa</div>
-                                    <div style="font-size: 0.75rem; color: var(--gray-600);">Orta</div>
-                                </div>
-                                <button style="background: var(--gray-100); border: none; width: 44px; height: 44px; border-radius: 9999px; font-size: 1.25rem; cursor: pointer; font-weight: 700;">+</button>
-                            </div>
-                            <div style="display: flex; gap: 0.5rem; justify-content: center;">
-                                <div style="width: 12px; height: 12px; background: var(--gray-300); border-radius: 9999px;"></div>
-                                <div style="width: 12px; height: 12px; background: var(--gray-300); border-radius: 9999px;"></div>
-                                <div style="width: 12px; height: 12px; background: var(--primary); border-radius: 9999px;"></div>
-                                <div style="width: 12px; height: 12px; background: var(--gray-300); border-radius: 9999px;"></div>
-                                <div style="width: 12px; height: 12px; background: var(--gray-300); border-radius: 9999px;"></div>
-                            </div>
-                        </div>
-                        <div class="card" style="margin-bottom: 1.5rem;">
-                            <h3 style="font-weight: 700; color: var(--gray-900); margin-bottom: 1rem; font-size: 1rem;">Arka Plan</h3>
-                            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem;">
-                                <button style="padding: 1rem; background: white; border: 3px solid var(--primary); border-radius: 0.75rem; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
-                                    <div style="width: 48px; height: 48px; background: white; border: 2px solid var(--gray-300); border-radius: 0.5rem;"></div>
-                                    <div style="font-size: 0.75rem; font-weight: 600; color: var(--primary);">Beyaz</div>
-                                </button>
-                                <button style="padding: 1rem; background: white; border: 2px solid var(--gray-300); border-radius: 0.75rem; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
-                                    <div style="width: 48px; height: 48px; background: var(--sepia); border-radius: 0.5rem;"></div>
-                                    <div style="font-size: 0.75rem; font-weight: 600; color: var(--gray-700);">Sepia</div>
-                                </button>
-                                <button style="padding: 1rem; background: white; border: 2px solid var(--gray-300); border-radius: 0.75rem; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
-                                    <div style="width: 48px; height: 48px; background: #1F1F1F; border-radius: 0.5rem;"></div>
-                                    <div style="font-size: 0.75rem; font-weight: 600; color: var(--gray-700);">Koyu</div>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="card" style="margin-bottom: 1.5rem;">
-                            <h3 style="font-weight: 700; color: var(--gray-900); margin-bottom: 1rem; font-size: 1rem;">Satır Aralığı</h3>
-                            <div style="display: flex; flex-direction: column; gap: 0.75rem;">
-                                <label style="display: flex; align-items: center; gap: 1rem; padding: 1rem; background: var(--gray-50); border-radius: 0.75rem; cursor: pointer;">
-                                    <input type="radio" name="spacing" style="width: 20px; height: 20px; accent-color: var(--primary);">
-                                    <div style="flex: 1;"><div style="font-weight: 600; color: var(--gray-900);">Dar</div>
-                                    <div style="font-size: 0.75rem; color: var(--gray-600);">1.4 satır</div></div>
-                                </label>
-                                <label style="display: flex; align-items: center; gap: 1rem; padding: 1rem; background: var(--primary-light); border: 2px solid var(--primary); border-radius: 0.75rem; cursor: pointer;">
-                                    <input type="radio" name="spacing" checked style="width: 20px; height: 20px; accent-color: var(--primary);">
-                                    <div style="flex: 1;"><div style="font-weight: 600; color: var(--gray-900);">Normal</div>
-                                    <div style="font-size: 0.75rem; color: var(--gray-600);">1.8 satır</div></div>
-                                </label>
-                                <label style="display: flex; align-items: center; gap: 1rem; padding: 1rem; background: var(--gray-50); border-radius: 0.75rem; cursor: pointer;">
-                                    <input type="radio" name="spacing" style="width: 20px; height: 20px; accent-color: var(--primary);">
-                                    <div style="flex: 1;"><div style="font-weight: 600; color: var(--gray-900);">Geniş</div>
-                                    <div style="font-size: 0.75rem; color: var(--gray-600);">2.2 satır</div></div>
-                                </label>
-                            </div>
-                        </div>
-                        <div class="card" style="background: var(--secondary-light);">
-                            <p style="font-size: 0.8125rem; color: var(--gray-700); line-height: 1.5;">
-                                <strong style="color: var(--secondary);">💡 İpucu:</strong> Ayarlarınız tüm e-kitaplarda otomatik uygulanır.
-                            </p>
-                        </div>
-                    </div>
-                </div></div></div>`,
-                4: `<div class="iphone fade-in"><div class="island"></div><div class="screen"><div class="content">
-                    <div class="status"><div>9:41</div><div>📶 📡 🔋</div></div>
-                    <div style="background: white; padding: 1rem 1.5rem; border-bottom: 1px solid var(--gray-200);">
-                        <div style="display: flex; align-items: center; justify-content: space-between;">
-                            <button style="background: none; border: none; font-size: 1.5rem; cursor: pointer;" onclick="parent.showScreen(1)">←</button>
-                            <h2 style="font-family: Poppins, sans-serif; font-size: 1rem; font-weight: 700; color: var(--secondary);">Vurgula & Not</h2>
-                            <button style="background: none; border: none; font-size: 1.125rem; color: var(--primary); font-weight: 700; cursor: pointer;">Kaydet</button>
-                        </div>
-                    </div>
-                    <div style="padding: 2rem 1.5rem;">
-                        <div class="card" style="margin-bottom: 1.5rem; background: #FFFBEB; border: 2px solid #FDE68A;">
-                            <div style="font-size: 0.875rem; color: var(--gray-600); margin-bottom: 0.75rem; font-weight: 600;">Seçili Metin</div>
-                            <p style="font-size: 1.0625rem; line-height: 1.8; color: var(--gray-900); font-family: Merriweather, serif; background: #FFEB3B; padding: 0.75rem; border-radius: 0.5rem;">
-                                Şükür, kalbimizde yeşeren bir duygudur. O sadece ağzımızdan dökülen sözcükler değil, içimizde var olan bir farkındalıktır.
-                            </p>
-                        </div>
-                        <div class="card" style="margin-bottom: 1.5rem;">
-                            <label style="display: block; font-weight: 600; color: var(--gray-900); margin-bottom: 0.75rem; font-size: 0.9375rem;">Renk Seç</label>
-                            <div style="display: flex; gap: 0.75rem;">
-                                <button style="width: 56px; height: 56px; background: #FFEB3B; border: 3px solid var(--primary); border-radius: 0.75rem; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.25rem;">✓</button>
-                                <button style="width: 56px; height: 56px; background: #A7F3D0; border: 2px solid var(--gray-300); border-radius: 0.75rem; cursor: pointer;"></button>
-                                <button style="width: 56px; height: 56px; background: #FFDDC1; border: 2px solid var(--gray-300); border-radius: 0.75rem; cursor: pointer;"></button>
-                                <button style="width: 56px; height: 56px; background: #E9D5FF; border: 2px solid var(--gray-300); border-radius: 0.75rem; cursor: pointer;"></button>
-                                <button style="width: 56px; height: 56px; background: #FEE2E2; border: 2px solid var(--gray-300); border-radius: 0.75rem; cursor: pointer;"></button>
-                            </div>
-                        </div>
-                        <div class="card" style="margin-bottom: 1.5rem;">
-                            <label style="display: block; font-weight: 600; color: var(--gray-900); margin-bottom: 0.75rem; font-size: 0.9375rem;">Notunuz (İsteğe Bağlı)</label>
-                            <textarea placeholder="Bu bölümle ilgili düşüncelerinizi yazın..." style="width: 100%; min-height: 140px; padding: 1rem; border: 2px solid var(--gray-200); border-radius: 0.75rem; font-family: Inter, sans-serif; font-size: 0.9375rem; resize: vertical;">Şükrün sadece sözcükler değil bir farkındalık olduğunu vurgulayan çok güzel bir tanım. Bu perspektif değişimi önemli.</textarea>
-                            <div style="display: flex; justify-content: space-between; margin-top: 0.5rem; font-size: 0.8125rem; color: var(--gray-600);">
-                                <span>Taslak kaydedildi</span>
-                                <span>87/500</span>
-                            </div>
-                        </div>
-                        <div class="card" style="background: var(--secondary-light);">
-                            <label style="display: flex; align-items: center; gap: 0.75rem; cursor: pointer;">
-                                <input type="checkbox" checked style="width: 24px; height: 24px; accent-color: var(--primary);">
-                                <span style="font-weight: 600; color: var(--gray-900); font-size: 0.9375rem;">Favorilere Ekle</span>
-                            </label>
-                        </div>
-                    </div>
-                </div></div></div>`,
-                5: `<div class="iphone fade-in"><div class="island"></div><div class="screen"><div class="content">
-                    <div class="status"><div>9:41</div><div>📶 📡 🔋</div></div>
-                    <div style="background: white; padding: 1rem 1.5rem; border-bottom: 1px solid var(--gray-200);">
-                        <div style="display: flex; align-items: center; justify-content: space-between;">
-                            <button style="background: none; border: none; font-size: 1.5rem; cursor: pointer;" onclick="parent.showScreen(1)">←</button>
-                            <h2 style="font-family: Poppins, sans-serif; font-size: 1.25rem; font-weight: 800; color: var(--secondary);">Vurgularım</h2>
-                            <button style="background: none; border: none; font-size: 1.125rem; color: var(--primary); font-weight: 700; cursor: pointer;">📤</button>
-                        </div>
-                    </div>
-                    <div style="padding: 1.5rem;">
-                        <div style="display: flex; gap: 0.5rem; margin-bottom: 1.5rem; overflow-x: auto;">
-                            <button style="padding: 0.5rem 1rem; background: var(--primary); color: white; border: none; border-radius: 0.5rem; font-weight: 600; font-size: 0.8125rem; white-space: nowrap;">Tümü (8)</button>
-                            <button style="padding: 0.5rem 1rem; background: var(--gray-100); color: var(--gray-700); border: none; border-radius: 0.5rem; font-weight: 600; font-size: 0.8125rem; white-space: nowrap;">🟡 Sarı</button>
-                            <button style="padding: 0.5rem 1rem; background: var(--gray-100); color: var(--gray-700); border: none; border-radius: 0.5rem; font-weight: 600; font-size: 0.8125rem; white-space: nowrap;">🟢 Yeşil</button>
-                            <button style="padding: 0.5rem 1rem; background: var(--gray-100); color: var(--gray-700); border: none; border-radius: 0.5rem; font-weight: 600; font-size: 0.8125rem; white-space: nowrap;">⭐ Favori</button>
-                        </div>
-                        <div class="card" style="margin-bottom: 1rem; cursor: pointer;">
-                            <div style="display: flex; gap: 0.75rem; margin-bottom: 0.75rem;">
-                                <div style="width: 6px; background: #FFEB3B; border-radius: 9999px;"></div>
-                                <div style="flex: 1;">
-                                    <p style="font-size: 0.9375rem; line-height: 1.7; color: var(--gray-900); font-family: Merriweather, serif; margin-bottom: 0.75rem;">
-                                        "Şükür, kalbimizde yeşeren bir duygudur. O sadece ağzımızdan dökülen sözcükler değil..."
-                                    </p>
-                                    <div style="background: var(--gray-50); padding: 0.75rem; border-radius: 0.5rem; margin-bottom: 0.75rem;">
-                                        <div style="font-size: 0.8125rem; color: var(--gray-700); line-height: 1.5;">
-                                            Şükrün sadece sözcükler değil bir farkındalık olduğunu vurgulayan çok güzel bir tanım.
-                                        </div>
-                                    </div>
-                                    <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--gray-600);">
-                                        <span>Sayfa 42 • Bölüm 3</span>
-                                        <span>⭐ Favori</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card" style="margin-bottom: 1rem; cursor: pointer;">
-                            <div style="display: flex; gap: 0.75rem; margin-bottom: 0.75rem;">
-                                <div style="width: 6px; background: #A7F3D0; border-radius: 9999px;"></div>
-                                <div style="flex: 1;">
-                                    <p style="font-size: 0.9375rem; line-height: 1.7; color: var(--gray-900); font-family: Merriweather, serif; margin-bottom: 0.75rem;">
-                                        "Şükür pratiği yapmak, bu nimetleri görebilme yeteneğimizi geliştirir."
-                                    </p>
-                                    <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--gray-600);">
-                                        <span>Sayfa 43 • Bölüm 3</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card" style="margin-bottom: 1rem; cursor: pointer;">
-                            <div style="display: flex; gap: 0.75rem; margin-bottom: 0.75rem;">
-                                <div style="width: 6px; background: #FFEB3B; border-radius: 9999px;"></div>
-                                <div style="flex: 1;">
-                                    <p style="font-size: 0.9375rem; line-height: 1.7; color: var(--gray-900); font-family: Merriweather, serif; margin-bottom: 0.75rem;">
-                                        "Her gün bir şey için minnettarlık duymak, kalbimizdeki şükür kaynağını besler."
-                                    </p>
-                                    <div style="background: var(--gray-50); padding: 0.75rem; border-radius: 0.5rem; margin-bottom: 0.75rem;">
-                                        <div style="font-size: 0.8125rem; color: var(--gray-700); line-height: 1.5;">
-                                            Günlük pratik yapmanın önemi.
-                                        </div>
-                                    </div>
-                                    <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--gray-600);">
-                                        <span>Sayfa 43 • Bölüm 3</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card" style="background: var(--secondary-light);">
-                            <p style="font-size: 0.8125rem; color: var(--gray-700); line-height: 1.5; text-align: center;">
-                                <strong style="color: var(--secondary);">💡 İpucu:</strong> Vurgularınızı dokunarak ilgili sayfaya atlayabilirsiniz.
-                            </p>
-                        </div>
-                    </div>
-                </div></div></div>`,
-                6: `<div class="iphone fade-in"><div class="island"></div><div class="screen"><div class="content">
-                    <div class="status"><div>9:41</div><div>📶 📡 🔋</div></div>
-                    <div style="background: white; padding: 1rem 1.5rem; border-bottom: 1px solid var(--gray-200);">
-                        <div style="display: flex; align-items: center; gap: 1rem;">
-                            <button style="background: none; border: none; font-size: 1.5rem; cursor: pointer;" onclick="parent.showScreen(1)">←</button>
-                            <h2 style="font-family: Poppins, sans-serif; font-size: 1.25rem; font-weight: 800; color: var(--secondary);">Sesli Dinle</h2>
-                        </div>
-                    </div>
-                    <div style="padding: 2rem 1.5rem;">
-                        <div style="text-align: center; margin-bottom: 2rem;">
-                            <div style="width: 160px; height: 160px; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); border-radius: 9999px; margin: 0 auto 1.5rem; display: flex; align-items: center; justify-content: center; box-shadow: 0 12px 40px rgba(0,180,216,0.4);">
-                                <div style="font-size: 5rem; color: white;">🔊</div>
-                            </div>
-                            <h3 style="font-family: Poppins, sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--secondary); margin-bottom: 0.5rem;">Şükür Şifresi</h3>
-                            <p style="font-size: 0.875rem; color: var(--gray-600);">Bölüm 3: Şükrün Kaynağı</p>
-                        </div>
-                        <div class="card" style="margin-bottom: 2rem; background: var(--primary-light); border-left: 4px solid var(--primary);">
-                            <p style="font-size: 0.9375rem; line-height: 1.8; color: var(--gray-900); font-family: Merriweather, serif; font-style: italic;">
-                                <strong style="color: var(--primary-dark);">Şu an okunan:</strong><br>
-                                "Şükür, kalbimizde yeşeren bir duygudur. O sadece ağzımızdan dökülen sözcükler değil, içimizde var olan bir farkındalıktır."
-                            </p>
-                        </div>
-                        <div style="margin-bottom: 2rem;">
-                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.75rem; font-size: 0.875rem; color: var(--gray-600);">
-                                <span>2:15</span>
-                                <span>8:42</span>
-                            </div>
-                            <div style="height: 8px; background: var(--gray-200); border-radius: 9999px; position: relative; cursor: pointer;">
-                                <div style="width: 26%; height: 100%; background: var(--primary); border-radius: 9999px;"></div>
-                                <div style="position: absolute; left: 26%; top: 50%; transform: translate(-50%, -50%); width: 20px; height: 20px; background: white; border: 3px solid var(--primary); border-radius: 9999px; box-shadow: 0 2px 8px rgba(0,0,0,0.2);"></div>
-                            </div>
-                        </div>
-                        <div style="display: flex; align-items: center; justify-content: center; gap: 1.5rem; margin-bottom: 2rem;">
-                            <button style="background: var(--gray-100); border: none; width: 64px; height: 64px; border-radius: 9999px; font-size: 1.75rem; cursor: pointer; display: flex; align-items: center; justify-content: center;">⏮️</button>
-                            <button style="background: linear-gradient(135deg, var(--primary), var(--primary-dark)); border: none; width: 80px; height: 80px; border-radius: 9999px; font-size: 2.25rem; cursor: pointer; display: flex; align-items: center; justify-content: center; color: white; box-shadow: 0 6px 20px rgba(0,180,216,0.4);">⏸️</button>
-                            <button style="background: var(--gray-100); border: none; width: 64px; height: 64px; border-radius: 9999px; font-size: 1.75rem; cursor: pointer; display: flex; align-items: center; justify-content: center;">⏭️</button>
-                        </div>
-                        <div class="card">
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                                <div><div style="font-size: 0.875rem; color: var(--gray-600); margin-bottom: 0.25rem;">Hız</div>
-                                <div style="font-weight: 700; color: var(--gray-900); font-size: 1.125rem;">1.0×</div></div>
-                                <div style="display: flex; gap: 0.5rem;">
-                                    <button style="padding: 0.625rem 1rem; background: var(--gray-100); border: none; border-radius: 0.5rem; font-weight: 600; font-size: 0.875rem; cursor: pointer;">0.75×</button>
-                                    <button style="padding: 0.625rem 1rem; background: var(--primary); color: white; border: none; border-radius: 0.5rem; font-weight: 600; font-size: 0.875rem; cursor: pointer;">1×</button>
-                                    <button style="padding: 0.625rem 1rem; background: var(--gray-100); border: none; border-radius: 0.5rem; font-weight: 600; font-size: 0.875rem; cursor: pointer;">1.25×</button>
-                                    <button style="padding: 0.625rem 1rem; background: var(--gray-100); border: none; border-radius: 0.5rem; font-weight: 600; font-size: 0.875rem; cursor: pointer;">1.5×</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div></div></div>`,
-                7: `<div class="iphone fade-in"><div class="island"></div><div class="screen"><div class="content">
-                    <div class="status"><div>9:41</div><div>📶 📡 🔋</div></div>
-                    <div style="padding: 3rem 1.5rem; text-align: center;">
-                        <div style="font-size: 6rem; margin-bottom: 1.5rem;">🏆</div>
-                        <h1 style="font-family: Poppins, sans-serif; font-size: 2rem; font-weight: 800; color: var(--secondary); margin-bottom: 1rem;">Kitap Tamamlandı!</h1>
-                        <p style="font-size: 1rem; color: var(--gray-700); margin-bottom: 2rem; line-height: 1.6;">
-                            <strong>Şükür Şifresi</strong>'ni başarıyla bitirdiniz.
-                        </p>
-                        <div class="card" style="margin-bottom: 2rem; background: linear-gradient(135deg, var(--success-light), #A7F3D0); border: 2px solid var(--success);">
-                            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 1.5rem;">
-                                <div style="text-align: center;">
-                                    <div style="font-family: Poppins, sans-serif; font-size: 1.75rem; font-weight: 800; color: var(--success-dark); margin-bottom: 0.25rem;">184</div>
-                                    <div style="font-size: 0.75rem; color: var(--gray-700);">Sayfa</div>
-                                </div>
-                                <div style="text-align: center;">
-                                    <div style="font-family: Poppins, sans-serif; font-size: 1.75rem; font-weight: 800; color: var(--success-dark); margin-bottom: 0.25rem;">8</div>
-                                    <div style="font-size: 0.75rem; color: var(--gray-700);">Vurgu</div>
-                                </div>
-                                <div style="text-align: center;">
-                                    <div style="font-family: Poppins, sans-serif; font-size: 1.75rem; font-weight: 800; color: var(--success-dark); margin-bottom: 0.25rem;">3h</div>
-                                    <div style="font-size: 0.75rem; color: var(--gray-700);">Okuma</div>
-                                </div>
-                            </div>
-                            <div style="font-size: 3rem; margin-bottom: 0.75rem;">🎖️</div>
-                            <h3 style="font-family: Poppins, sans-serif; font-size: 1.25rem; font-weight: 700; color: var(--success-dark); margin-bottom: 0.5rem;">Şükür Ustası</h3>
-                            <p style="font-size: 0.875rem; color: var(--gray-800);">e-Kitap rozetini kazandınız!</p>
-                        </div>
-                        <div class="card" style="margin-bottom: 1.5rem; background: var(--primary-light); border-left: 4px solid var(--primary); text-align: left;">
-                            <h4 style="font-weight: 700; color: var(--primary-dark); margin-bottom: 0.75rem; font-size: 0.9375rem;">📚 Sonraki Önerimiz</h4>
-                            <p style="font-size: 0.875rem; color: var(--gray-800); line-height: 1.6; margin-bottom: 0.75rem;">
-                                <strong>Kalbimin Beyazı</strong> şükür pratiğinizi derinleştirecek içgörüler sunuyor.
-                            </p>
-                            <button style="background: none; border: none; color: var(--primary); font-weight: 700; font-size: 0.875rem; padding: 0; cursor: pointer;">Keşfet →</button>
-                        </div>
-                        <button class="btn btn-primary" style="width: 100%; padding: 1rem; font-size: 1.125rem; margin-bottom: 0.75rem;">Ana Sayfaya Dön</button>
-                        <button style="background: white; border: 2px solid var(--primary); color: var(--primary); border-radius: 0.75rem; font-weight: 600; font-size: 1rem; width: 100%; padding: 1rem; cursor: pointer;">Vurgularımı Paylaş</button>
-                    </div>
-                </div></div></div>`
+                </div>
+            `;
+        }
+
+        function restoreLastReadPage() {
+            ui.reader.currentPage = ui.reader.lastReadPage;
+            showToast('Son okunan sayfa geri yuklendi.', 'success');
+            render();
+        }
+
+        function toggleCurrentBookDownloaded() {
+            ui.download.books[0].downloaded = !ui.download.books[0].downloaded;
+            if (ui.download.books[0].downloaded) {
+                ui.download.status = 'completed';
+                ui.download.progress = 100;
+                showToast('Kitap cihazda hazir. Cevrimdisi okuma aktif.', 'success');
+            } else {
+                ui.download.status = 'idle';
+                ui.download.progress = 0;
+                showToast('Kitap cihazdan kaldirildi.', 'error');
+            }
+            render();
+        }
+
+        function jumpToPage() {
+            const target = Number(ui.reader.jumpPageDraft);
+            if (!target || target < 1 || target > ui.reader.totalPages) {
+                showToast('Gecerli bir sayfa numarasi girin.', 'error');
+                return;
+            }
+            ui.reader.currentPage = target;
+            ui.reader.lastReadPage = target;
+            showToast('Sayfa ' + target + ' acildi.', 'success');
+            render();
+        }
+
+        function jumpToChapter(page) {
+            ui.reader.currentPage = page;
+            ui.reader.lastReadPage = page;
+            ui.reader.jumpPageDraft = page;
+            showToast('Icindekilerden sayfa ' + page + ' acildi.', 'success');
+            render();
+        }
+
+        function setNavigationMode(mode) {
+            ui.reader.navigationMode = mode;
+            showToast('Navigasyon modu: ' + (mode === 'swipe' ? 'Sayfa cevirme' : 'Dikey kaydirma'));
+            render();
+        }
+
+        function setTheme(theme) {
+            ui.settings.theme = theme;
+            render();
+        }
+
+        function saveReaderSettings() {
+            ui.settings.persistedAt = stamp();
+            showToast('Ayarlar tum kitaplar icin kaydedildi.', 'success');
+            render();
+        }
+
+        function setHighlightColor(color) {
+            ui.annotations.color = color;
+            render();
+        }
+
+        function setNote(value) {
+            ui.annotations.note = value;
+        }
+
+        function autosaveNote() {
+            ui.annotations.autosavedAt = stamp();
+            showToast('Not otomatik kaydedildi.', 'success');
+            render();
+        }
+
+        function toggleFavorite() {
+            ui.annotations.favorite = !ui.annotations.favorite;
+            render();
+        }
+
+        function addHighlightEntry() {
+            const entry = {
+                page: ui.reader.currentPage,
+                text: ui.annotations.selectedText,
+                note: ui.annotations.note,
+                color: ui.annotations.color,
+                favorite: ui.annotations.favorite
             };
-            return screens[num] || screens[1];
+            ui.annotations.items.unshift(entry);
+            ui.annotations.autosavedAt = stamp();
+            showToast('Vurgu not listesine eklendi.', 'success');
+            render();
         }
-        document.getElementById('viewer').innerHTML = getScreenHTML(1);
+
+        function openAnnotation(index) {
+            const item = ui.annotations.items[index];
+            if (!item) {
+                return;
+            }
+            ui.reader.currentPage = item.page;
+            ui.reader.lastReadPage = item.page;
+            ui.reader.jumpPageDraft = item.page;
+            ui.annotations.selectedText = item.text;
+            ui.annotations.note = item.note;
+            ui.annotations.color = item.color;
+            ui.annotations.favorite = item.favorite;
+            setCurrentScreen(4);
+            showToast('Nottan ilgili sayfaya gidildi.', 'success');
+        }
+
+        function editAnnotation(index) {
+            const item = ui.annotations.items[index];
+            if (!item) {
+                return;
+            }
+            item.note = item.note + ' (duzenlendi)';
+            showToast('Not listeden duzenlendi.', 'success');
+            render();
+        }
+
+        function exportNotes(format) {
+            showToast('Notlar ' + format.toUpperCase() + ' olarak disa aktarildi.', 'success');
+        }
+
+        function toggleAudioAvailability() {
+            ui.audio.available = !ui.audio.available;
+            if (!ui.audio.available) {
+                ui.audio.playing = false;
+                if (audioTimer) {
+                    clearInterval(audioTimer);
+                    audioTimer = null;
+                }
+                showToast('Bu kitapta sesli versiyon gizlendi. Play butonu yok.', 'error');
+            } else {
+                showToast('Sesli versiyon mevcut. Play butonu gorunur.', 'success');
+            }
+            render();
+        }
+
+        function cycleAudioLine() {
+            ui.audio.activeLine = (ui.audio.activeLine + 1) % ui.audio.lines.length;
+            render();
+        }
+
+        function toggleAudioPlayback() {
+            if (!ui.audio.available) {
+                return;
+            }
+            ui.audio.playing = !ui.audio.playing;
+            if (ui.audio.playing) {
+                audioTimer = setInterval(cycleAudioLine, 1600);
+                showToast('Sesli okuma basladi.', 'success');
+            } else {
+                if (audioTimer) {
+                    clearInterval(audioTimer);
+                    audioTimer = null;
+                }
+                showToast('Sesli okuma durduruldu.');
+            }
+            render();
+        }
+
+        function setAudioSpeed(speed) {
+            ui.audio.speed = speed;
+            showToast('Oynatma hizi ' + speed + 'x olarak ayarlandi.');
+            render();
+        }
+
+        function toggleBackgroundPlayback() {
+            ui.audio.backgroundPlayback = !ui.audio.backgroundPlayback;
+            render();
+        }
+
+        function simulateReadingSession() {
+            ui.progress.percent = Math.min(100, ui.progress.percent + 7);
+            ui.reader.currentPage = Math.min(ui.reader.totalPages, ui.reader.currentPage + 10);
+            ui.reader.lastReadPage = ui.reader.currentPage;
+            ui.reader.jumpPageDraft = ui.reader.currentPage;
+            if (ui.progress.percent === 100) {
+                ui.progress.badgeUnlocked = true;
+            }
+            estimateRemaining();
+            render();
+        }
+
+        function completeBook() {
+            ui.progress.percent = 100;
+            ui.progress.badgeUnlocked = true;
+            ui.reader.currentPage = ui.reader.totalPages;
+            ui.reader.lastReadPage = ui.reader.totalPages;
+            ui.reader.jumpPageDraft = ui.reader.totalPages;
+            estimateRemaining();
+            showToast('Kitap tamamlandi. Rozet ve sertifika acildi.', 'success');
+            render();
+        }
+
+        function syncProgressPanel() {
+            ui.progress.syncedAt = stamp();
+            showToast('Ilerleme Gelisim paneline gonderildi.', 'success');
+            render();
+        }
+
+        function setLowStorage(enabled) {
+            ui.download.freeMb = enabled ? 42 : 120;
+            if (enabled) {
+                showToast('Yetersiz depolama senaryosu aktif.', 'error');
+            } else {
+                showToast('Depolama yeterli senaryosu aktif.', 'success');
+            }
+            render();
+        }
+
+        function startDownload() {
+            if (ui.download.freeMb < ui.download.requiredMb) {
+                ui.download.status = 'error';
+                ui.download.progress = 0;
+                showToast('Depolama yetersiz. Indirme baslatilamadi.', 'error');
+                render();
+                return;
+            }
+
+            ui.download.status = 'downloading';
+            ui.download.progress = 0;
+            ui.download.books[0].downloaded = false;
+            if (downloadTimer) {
+                clearInterval(downloadTimer);
+            }
+            downloadTimer = setInterval(() => {
+                ui.download.progress = Math.min(100, ui.download.progress + 20);
+                if (ui.download.progress >= 100) {
+                    clearInterval(downloadTimer);
+                    downloadTimer = null;
+                    ui.download.status = 'completed';
+                    ui.download.books[0].downloaded = true;
+                    showToast('Indirme tamamlandi. Kitap indirildi isaretlendi.', 'success');
+                }
+                render();
+            }, 420);
+            render();
+        }
+
+        function screenOne() {
+            const offlineReady = isCurrentBookDownloaded();
+            const body = `
+                ${stateControls(1)}
+                ${statePanel(1)}
+                ${ui.screenStates[1] !== 'ready' ? '' : `
+                    <div class="card">
+                        <div class="card-title">${ui.reader.bookTitle}</div>
+                        <div class="muted">AC-FR-E7-01-01 ve AC-FR-E7-01-02: Son okunan sayfa otomatik acilir, baslik ve sayfa gostergesi sabittir.</div>
+                        <div class="row" style="margin-top:0.55rem;">
+                            <strong>Sayfa ${ui.reader.currentPage} / ${ui.reader.totalPages}</strong>
+                            <span class="chip violet">Son okunan: ${ui.reader.lastReadPage}</span>
+                        </div>
+                        <div class="progress-line"><div style="width:${progressPct()}%"></div></div>
+                    </div>
+
+                    <div class="chips">
+                        <button class="btn btn-outline" onclick="restoreLastReadPage()">Son sayfayi ac</button>
+                        <button class="btn btn-outline" onclick="showScreen(2)">Icindekiler paneli</button>
+                        <button class="btn btn-primary" onclick="toggleCurrentBookDownloaded()">${offlineReady ? 'Indirmeyi Kaldir' : 'Cihazima Indir'}</button>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">Cevrimdisi destek durumu</div>
+                        <div class="chips">
+                            <span class="chip ${offlineReady ? 'success' : 'warn'}">${offlineReady ? 'AC-FR-E7-01-04: Cevrimdisi okuma hazir' : 'Cevrimdisi okumak icin indirme gerekli'}</span>
+                            <span class="chip">Etkin event: ${ui.lastAnalyticsEvent}</span>
+                        </div>
+                    </div>
+                `}
+            `;
+            return phoneShell('e-Kitap okuyucu', body, null);
+        }
+
+        function screenTwo() {
+            const body = `
+                ${stateControls(2)}
+                ${statePanel(2)}
+                ${ui.screenStates[2] !== 'ready' ? '' : `
+                    <div class="card">
+                        <div class="card-title">Sayfa gecis modu</div>
+                        <div class="chips">
+                            <button class="btn ${ui.reader.navigationMode === 'swipe' ? 'btn-primary' : 'btn-outline'}" onclick="setNavigationMode('swipe')">Sayfa cevirme</button>
+                            <button class="btn ${ui.reader.navigationMode === 'scroll' ? 'btn-primary' : 'btn-outline'}" onclick="setNavigationMode('scroll')">Dikey kaydirma</button>
+                        </div>
+                        <div class="muted" style="margin-top:0.45rem;">AC-FR-E7-02-01: Kullanici kaydirma veya sayfa cevirme davranisini secer.</div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">Sayfaya atla</div>
+                        <div class="row">
+                            <input class="field" type="number" min="1" max="${ui.reader.totalPages}" value="${ui.reader.jumpPageDraft}" oninput="ui.reader.jumpPageDraft=this.value">
+                            <button class="btn btn-primary" onclick="jumpToPage()">Git</button>
+                        </div>
+                        <div class="muted" style="margin-top:0.45rem;">AC-FR-E7-02-02: Hedef sayfaya dogrudan gecis.</div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">Icindekiler</div>
+                        <div class="list">
+                            ${ui.reader.toc.map((item) => `
+                                <div class="list-item">
+                                    <div>
+                                        <div class="item-title">${item.chapter}</div>
+                                        <div class="item-meta">Sayfa ${item.page}</div>
+                                    </div>
+                                    <button class="btn btn-outline" onclick="jumpToChapter(${item.page})">Ac</button>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <div class="muted" style="margin-top:0.45rem;">AC-FR-E7-02-03: TOC secimi ile bolume gecis.</div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">Ilerleme cubugu</div>
+                        <div class="row"><strong>%${progressPct()}</strong><span class="muted">${ui.reader.currentPage}/${ui.reader.totalPages}</span></div>
+                        <div class="progress-line"><div style="width:${progressPct()}%"></div></div>
+                        <div class="muted" style="margin-top:0.45rem;">AC-FR-E7-02-04: Cubuk her ekranda gorunur.</div>
+                    </div>
+                `}
+            `;
+            return phoneShell('Sayfa navigasyonu', body, 1);
+        }
+
+        function screenThree() {
+            const body = `
+                ${stateControls(3)}
+                ${statePanel(3)}
+                ${ui.screenStates[3] !== 'ready' ? '' : `
+                    <div class="card">
+                        <div class="card-title">Font boyutu (${ui.settings.fontSize}px)</div>
+                        <input class="slider" type="range" min="14" max="28" step="1" value="${ui.settings.fontSize}" oninput="ui.settings.fontSize=Number(this.value); render();">
+                        <div class="muted">AC-FR-E7-03-01</div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">Tema secimi</div>
+                        <div class="chips">
+                            <button class="btn ${ui.settings.theme === 'white' ? 'btn-primary' : 'btn-outline'}" onclick="setTheme('white')">Beyaz</button>
+                            <button class="btn ${ui.settings.theme === 'sepia' ? 'btn-primary' : 'btn-outline'}" onclick="setTheme('sepia')">Sepia</button>
+                            <button class="btn ${ui.settings.theme === 'dark' ? 'btn-primary' : 'btn-outline'}" onclick="setTheme('dark')">Koyu</button>
+                        </div>
+                        <div class="muted" style="margin-top:0.45rem;">AC-FR-E7-03-02</div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">Satir araligi (${ui.settings.lineSpacing.toFixed(1)})</div>
+                        <input class="slider" type="range" min="1.2" max="2.2" step="0.1" value="${ui.settings.lineSpacing}" oninput="ui.settings.lineSpacing=Number(this.value); render();">
+                        <div class="muted">AC-FR-E7-03-03</div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">Canli onizleme</div>
+                        <div class="preview ${ui.settings.theme}" style="font-size:${ui.settings.fontSize}px; line-height:${ui.settings.lineSpacing};">
+                            Sukur, gunluk hayatta fark edilen nimetlerin kalpte bir dengeye donusmesidir.
+                        </div>
+                        <div class="chips" style="margin-top:0.55rem;">
+                            <button class="btn btn-success" onclick="saveReaderSettings()">Ayarlarimi Kaydet</button>
+                            <span class="chip">AC-FR-E7-03-04: Kayit zamani ${ui.settings.persistedAt}</span>
+                        </div>
+                    </div>
+                `}
+            `;
+            return phoneShell('Okuma ayarlari', body, 1);
+        }
+
+        function screenFour() {
+            const body = `
+                ${stateControls(4)}
+                ${statePanel(4)}
+                ${ui.screenStates[4] !== 'ready' ? '' : `
+                    <div class="card">
+                        <div class="card-title">Secili metin</div>
+                        <div class="preview white" style="font-size:0.9rem;">${ui.annotations.selectedText}</div>
+                        <div class="muted" style="margin-top:0.45rem;">AC-FR-E7-04-01: Metin secilince renk secenekleri acilir.</div>
+                        <div class="chips" style="margin-top:0.55rem;">
+                            <button class="swatch yellow ${ui.annotations.color === 'yellow' ? 'active' : ''}" aria-label="Sari" onclick="setHighlightColor('yellow')"></button>
+                            <button class="swatch green ${ui.annotations.color === 'green' ? 'active' : ''}" aria-label="Yesil" onclick="setHighlightColor('green')"></button>
+                            <button class="swatch blue ${ui.annotations.color === 'blue' ? 'active' : ''}" aria-label="Mavi" onclick="setHighlightColor('blue')"></button>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">Not alani</div>
+                        <textarea class="field" rows="4" oninput="setNote(this.value)">${ui.annotations.note}</textarea>
+                        <div class="chips" style="margin-top:0.55rem;">
+                            <button class="btn btn-success" onclick="autosaveNote()">Notu Otomatik Kaydet</button>
+                            <button class="btn ${ui.annotations.favorite ? 'btn-primary' : 'btn-outline'}" onclick="toggleFavorite()">${ui.annotations.favorite ? 'Favoride' : 'Favoriye Ekle'}</button>
+                        </div>
+                        <div class="muted" style="margin-top:0.45rem;">AC-FR-E7-04-02 ve AC-FR-E7-04-03 • Son kayit: ${ui.annotations.autosavedAt}</div>
+                    </div>
+
+                    <button class="btn btn-primary" onclick="addHighlightEntry()">Vurgu ve notu listeye ekle</button>
+                `}
+            `;
+            return phoneShell('Metin vurgulama', body, 1);
+        }
+
+        function screenFive() {
+            const body = `
+                ${stateControls(5)}
+                ${statePanel(5)}
+                ${ui.screenStates[5] !== 'ready' ? '' : `
+                    <div class="card">
+                        <div class="card-title">Kitaba ozel vurgular ve notlar</div>
+                        <div class="muted">AC-FR-E7-05-01: Yalnizca ${ui.reader.bookTitle} kayitlari listelenir.</div>
+                    </div>
+
+                    <div class="list">
+                        ${ui.annotations.items.map((item, index) => `
+                            <div class="list-item">
+                                <div>
+                                    <div class="item-title">Sayfa ${item.page} • ${item.favorite ? '★ Favori' : 'Not'}</div>
+                                    <div class="item-meta">${item.text}</div>
+                                    <div class="item-meta">${item.note}</div>
+                                </div>
+                                <div class="chips">
+                                    <button class="btn btn-outline" onclick="openAnnotation(${index})">Sayfaya Git</button>
+                                    <button class="btn btn-outline" onclick="editAnnotation(${index})">Duzenle</button>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+
+                    <div class="chips">
+                        <button class="btn btn-primary" onclick="exportNotes('pdf')">PDF Aktar</button>
+                        <button class="btn btn-outline" onclick="exportNotes('text')">Metin Aktar</button>
+                    </div>
+
+                    <div class="card">
+                        <div class="muted">AC-FR-E7-05-02, AC-FR-E7-05-03, AC-FR-E7-05-04: Sayfaya gecis, duzenleme ve disa aktarma akislarini taklit eder.</div>
+                    </div>
+                `}
+            `;
+            return phoneShell('Vurgularim listesi', body, 1);
+        }
+
+        function screenSix() {
+            const body = `
+                ${stateControls(6)}
+                ${statePanel(6)}
+                ${ui.screenStates[6] !== 'ready' ? '' : `
+                    <div class="card">
+                        <div class="row">
+                            <div>
+                                <div class="card-title">Sesli versiyon durumu</div>
+                                <div class="muted">AC-FR-E7-06-01: Audio varsa Play gorunur, yoksa gizlenir.</div>
+                            </div>
+                            <button class="btn btn-outline" onclick="toggleAudioAvailability()">${ui.audio.available ? 'Audio Var' : 'Audio Yok'}</button>
+                        </div>
+                    </div>
+
+                    ${!ui.audio.available ? `
+                        <div class="state-panel empty"><strong>Play butonu gizli</strong><span>Bu kitapta sesli versiyon bulunmadiginda kullaniciya yalnizca metin okuma gosterilir.</span></div>
+                    ` : `
+                        <div class="card">
+                            <div class="chips">
+                                <button class="btn btn-primary" onclick="toggleAudioPlayback()">${ui.audio.playing ? 'Duraklat' : 'Oynat'}</button>
+                                <button class="btn ${ui.audio.speed === 0.75 ? 'btn-primary' : 'btn-outline'}" onclick="setAudioSpeed(0.75)">0.75x</button>
+                                <button class="btn ${ui.audio.speed === 1 ? 'btn-primary' : 'btn-outline'}" onclick="setAudioSpeed(1)">1x</button>
+                                <button class="btn ${ui.audio.speed === 1.25 ? 'btn-primary' : 'btn-outline'}" onclick="setAudioSpeed(1.25)">1.25x</button>
+                            </div>
+                            <div class="chips" style="margin-top:0.5rem;">
+                                <button class="btn ${ui.audio.backgroundPlayback ? 'btn-success' : 'btn-outline'}" onclick="toggleBackgroundPlayback()">Arka Plan ${ui.audio.backgroundPlayback ? 'Acik' : 'Kapali'}</button>
+                                <button class="btn btn-outline" onclick="cycleAudioLine()">Sonraki satir</button>
+                            </div>
+                            <div class="muted" style="margin-top:0.45rem;">AC-FR-E7-06-02, AC-FR-E7-06-03, AC-FR-E7-06-04</div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-title">Metin senkronu</div>
+                            <div class="list">
+                                ${ui.audio.lines.map((line, idx) => `<div class="line-sample ${idx === ui.audio.activeLine ? 'active' : ''}">${line}</div>`).join('')}
+                            </div>
+                        </div>
+                    `}
+                `}
+            `;
+            return phoneShell('Sesli kitap', body, 1);
+        }
+
+        function screenSeven() {
+            const body = `
+                ${stateControls(7)}
+                ${statePanel(7)}
+                ${ui.screenStates[7] !== 'ready' ? '' : `
+                    <div class="stat-grid">
+                        <div class="stat-box"><div class="stat-value">${ui.progress.percent}%</div><div class="stat-label">Ilerleme</div></div>
+                        <div class="stat-box"><div class="stat-value">${ui.progress.remainingMinutes}dk</div><div class="stat-label">Kalan Sure</div></div>
+                        <div class="stat-box"><div class="stat-value">${ui.progress.badgeUnlocked ? '1' : '0'}</div><div class="stat-label">Rozet</div></div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">Okuma tamamlama takibi</div>
+                        <div class="progress-line"><div style="width:${ui.progress.percent}%"></div></div>
+                        <div class="chips" style="margin-top:0.55rem;">
+                            <button class="btn btn-outline" onclick="simulateReadingSession()">+1 Okuma Seansi</button>
+                            <button class="btn btn-primary" onclick="completeBook()">Kitabi Bitir</button>
+                            <button class="btn btn-success" onclick="syncProgressPanel()">Panele Yansit</button>
+                        </div>
+                        <div class="muted" style="margin-top:0.45rem;">AC-FR-E7-07-01, AC-FR-E7-07-02, AC-FR-E7-07-04 • Son panel senkronu: ${ui.progress.syncedAt}</div>
+                    </div>
+
+                    ${ui.progress.badgeUnlocked ? `
+                        <div class="certificate">
+                            <strong>AC-FR-E7-07-03 Tamamlandi</strong>
+                            <div class="muted" style="margin-top:0.35rem;">Okuma rozeti ve sertifika onizlemesi aktif. Kullanici profilinde rozet bolumunde goruntulenir.</div>
+                        </div>
+                    ` : ''}
+                `}
+            `;
+            return phoneShell('Okuma ilerlemesi', body, 1);
+        }
+
+        function screenEight() {
+            const enoughStorage = ui.download.freeMb >= ui.download.requiredMb;
+            const statusLabel = ui.download.status === 'idle'
+                ? 'Hazir'
+                : ui.download.status === 'downloading'
+                    ? 'Indiriliyor'
+                    : ui.download.status === 'completed'
+                        ? 'Tamamlandi'
+                        : 'Hata';
+
+            const body = `
+                ${stateControls(8)}
+                ${statePanel(8)}
+                ${ui.screenStates[8] !== 'ready' ? '' : `
+                    <div class="card">
+                        <div class="card-title">e-Kitap detayinda indirme</div>
+                        <div class="row">
+                            <div>
+                                <div class="item-title">${ui.reader.bookTitle}</div>
+                                <div class="item-meta">Gereken alan: ${ui.download.requiredMb} MB • Bos alan: ${ui.download.freeMb} MB</div>
+                            </div>
+                            <button class="btn btn-primary" onclick="startDownload()">Indir</button>
+                        </div>
+                        <div class="chips" style="margin-top:0.5rem;">
+                            <button class="btn btn-outline" onclick="setLowStorage(true)">Dusuk depolama</button>
+                            <button class="btn btn-outline" onclick="setLowStorage(false)">Yeterli depolama</button>
+                        </div>
+                        <div class="muted" style="margin-top:0.45rem;">AC-FR-E7-08-01 ve AC-FR-E7-08-03</div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">Indirme durumu: ${statusLabel}</div>
+                        <div class="chips">
+                            <span class="chip ${ui.download.status === 'completed' ? 'success' : ui.download.status === 'error' ? 'error' : 'warn'}">${ui.download.progress}%</span>
+                            <span class="chip ${enoughStorage ? 'success' : 'error'}">${enoughStorage ? 'Depolama yeterli' : 'Depolama yetersiz'}</span>
+                        </div>
+                        <div class="progress-line"><div style="width:${ui.download.progress}%"></div></div>
+                        <div class="muted" style="margin-top:0.45rem;">AC-FR-E7-08-02: Ilerleme, tamamlandi ve hata durumlari gorunur.</div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">Indirilen kitaplar</div>
+                        <div class="list">
+                            ${ui.download.books.map((book) => `
+                                <div class="list-item">
+                                    <div>
+                                        <div class="item-title">${book.title}</div>
+                                        <div class="item-meta">${book.downloaded ? 'Cihazda hazir ✓' : 'Bulutta, henuz indirilmadi'}</div>
+                                    </div>
+                                    <span class="chip ${book.downloaded ? 'success' : 'warn'}">${book.downloaded ? '✓' : '...'}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <div class="muted" style="margin-top:0.45rem;">AC-FR-E7-08-04: Indirilen kitaplar gorsel olarak isaretlenir.</div>
+                    </div>
+                `}
+            `;
+            return phoneShell('Cevrimdisi indirme', body, 1);
+        }
+
+        function renderScreen(screenNo) {
+            if (screenNo === 1) {
+                return screenOne();
+            }
+            if (screenNo === 2) {
+                return screenTwo();
+            }
+            if (screenNo === 3) {
+                return screenThree();
+            }
+            if (screenNo === 4) {
+                return screenFour();
+            }
+            if (screenNo === 5) {
+                return screenFive();
+            }
+            if (screenNo === 6) {
+                return screenSix();
+            }
+            if (screenNo === 7) {
+                return screenSeven();
+            }
+            return screenEight();
+        }
+
+        function render() {
+            estimateRemaining();
+            const current = screenData[ui.currentScreen];
+            document.getElementById('screenTitle').textContent = current.title;
+            document.getElementById('screenFr').textContent = current.fr;
+            document.getElementById('screenRoute').textContent = current.route;
+            document.getElementById('screenMeta').textContent = current.meta + ' • event: ' + ui.lastAnalyticsEvent;
+
+            document.querySelectorAll('.nav-item').forEach((item) => {
+                item.classList.toggle('active', Number(item.dataset.screen) === ui.currentScreen);
+            });
+
+            document.querySelectorAll('[id^="flow-"]').forEach((step, index) => {
+                step.classList.toggle('active', index + 1 === ui.currentScreen);
+            });
+
+            document.getElementById('viewer').innerHTML = renderScreen(ui.currentScreen);
+        }
+
+        document.querySelectorAll('.nav-item').forEach((item) => {
+            item.setAttribute('tabindex', '0');
+            item.addEventListener('click', () => {
+                setCurrentScreen(Number(item.dataset.screen));
+            });
+            item.addEventListener('keydown', (event) => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    setCurrentScreen(Number(item.dataset.screen));
+                }
+            });
+        });
+
+        render();
     </script>
 </body>
 </html>

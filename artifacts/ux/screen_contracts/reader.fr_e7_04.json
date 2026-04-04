@@ -1,0 +1,67 @@
+{
+  "id": "reader.fr_e7_04",
+  "title": "Metin vurgulama ve not",
+  "route": "/epic-7/fr-e7-04",
+  "purpose": "Implements FR-E7-04: Metin vurgulama ve not.",
+  "entryPoints": [
+    "library.ebooks",
+    "discover.ebooks"
+  ],
+  "inputs": [
+    {
+      "name": "userId",
+      "type": "uuid",
+      "required": true,
+      "source": "session"
+    },
+    {
+      "name": "subscriptionStatus",
+      "type": "SubscriptionStatus",
+      "required": true,
+      "source": "entitlement_cache"
+    },
+    {
+      "name": "locale",
+      "type": "LanguageCode",
+      "required": true,
+      "source": "profile"
+    }
+  ],
+  "dataDependencies": [
+    "Ebook",
+    "EbookChapter",
+    "FavoriteItem",
+    "ContentProgress"
+  ],
+  "uiStates": {
+    "loading": {
+      "description": "Skeleton placeholders are shown while loading FR-E7-04 data."
+    },
+    "ready": {
+      "description": "FR-E7-04 flows are fully interactive with primary CTA available when prerequisites are met."
+    },
+    "empty": {
+      "description": "Empty state explains why no data is available and points to next best action."
+    },
+    "error": {
+      "description": "Error state is recoverable with user-safe messaging and a retry action."
+    },
+    "offline": {
+      "description": "Offline state shows last synchronized data and queues write actions for later sync."
+    }
+  },
+  "analytics": {
+    "screenView": "reader_fr_e7_04_viewed",
+    "events": [
+      "reader_fr_e7_04_viewed"
+    ]
+  },
+  "acceptanceCriteriaRefs": [
+    "AC-FR-E7-04-01",
+    "AC-FR-E7-04-02",
+    "AC-FR-E7-04-03"
+  ],
+  "gates": [
+    "auth"
+  ]
+}

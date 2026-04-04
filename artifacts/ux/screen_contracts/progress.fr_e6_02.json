@@ -1,0 +1,66 @@
+{
+  "id": "progress.fr_e6_02",
+  "title": "Duygusal harita",
+  "route": "/epic-6/fr-e6-02",
+  "purpose": "Implements FR-E6-02: Duygusal harita.",
+  "entryPoints": [
+    "progress.dashboard"
+  ],
+  "inputs": [
+    {
+      "name": "userId",
+      "type": "uuid",
+      "required": true,
+      "source": "session"
+    },
+    {
+      "name": "subscriptionStatus",
+      "type": "SubscriptionStatus",
+      "required": true,
+      "source": "entitlement_cache"
+    },
+    {
+      "name": "locale",
+      "type": "LanguageCode",
+      "required": true,
+      "source": "profile"
+    }
+  ],
+  "dataDependencies": [
+    "ContentProgress",
+    "CommentSubmission",
+    "WorkshopFollowUpPlan"
+  ],
+  "uiStates": {
+    "loading": {
+      "description": "Skeleton placeholders are shown while loading FR-E6-02 data."
+    },
+    "ready": {
+      "description": "FR-E6-02 flows are fully interactive with primary CTA available when prerequisites are met."
+    },
+    "empty": {
+      "description": "Empty state explains why no data is available and points to next best action."
+    },
+    "error": {
+      "description": "Error state is recoverable with user-safe messaging and a retry action."
+    },
+    "offline": {
+      "description": "Offline state shows last synchronized data and queues write actions for later sync."
+    }
+  },
+  "analytics": {
+    "screenView": "progress_fr_e6_02_viewed",
+    "events": [
+      "progress_fr_e6_02_viewed"
+    ]
+  },
+  "acceptanceCriteriaRefs": [
+    "AC-FR-E6-02-01",
+    "AC-FR-E6-02-02",
+    "AC-FR-E6-02-03",
+    "AC-FR-E6-02-04"
+  ],
+  "gates": [
+    "auth"
+  ]
+}

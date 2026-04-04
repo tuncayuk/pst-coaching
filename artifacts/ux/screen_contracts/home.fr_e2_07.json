@@ -1,0 +1,67 @@
+{
+  "id": "home.fr_e2_07",
+  "title": "Son görüntülenen içerikler",
+  "route": "/epic-2/fr-e2-07",
+  "purpose": "Implements FR-E2-07: Son görüntülenen içerikler.",
+  "entryPoints": [
+    "home.dashboard"
+  ],
+  "inputs": [
+    {
+      "name": "userId",
+      "type": "uuid",
+      "required": true,
+      "source": "session"
+    },
+    {
+      "name": "subscriptionStatus",
+      "type": "SubscriptionStatus",
+      "required": true,
+      "source": "entitlement_cache"
+    },
+    {
+      "name": "locale",
+      "type": "LanguageCode",
+      "required": true,
+      "source": "profile"
+    }
+  ],
+  "dataDependencies": [
+    "User",
+    "Subscription",
+    "ContentProgress",
+    "ReminderSetting"
+  ],
+  "uiStates": {
+    "loading": {
+      "description": "Skeleton placeholders are shown while loading FR-E2-07 data."
+    },
+    "ready": {
+      "description": "FR-E2-07 flows are fully interactive with primary CTA available when prerequisites are met."
+    },
+    "empty": {
+      "description": "Empty state explains why no data is available and points to next best action."
+    },
+    "error": {
+      "description": "Error state is recoverable with user-safe messaging and a retry action."
+    },
+    "offline": {
+      "description": "Offline state shows last synchronized data and queues write actions for later sync."
+    }
+  },
+  "analytics": {
+    "screenView": "home_fr_e2_07_viewed",
+    "events": [
+      "home_fr_e2_07_viewed",
+      "recent_content_item_clicked",
+      "recent_content_viewed"
+    ]
+  },
+  "acceptanceCriteriaRefs": [
+    "AC-FR-E2-07-01",
+    "AC-FR-E2-07-02",
+    "AC-FR-E2-07-03",
+    "AC-FR-E2-07-04"
+  ],
+  "gates": []
+}

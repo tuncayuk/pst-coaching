@@ -1,0 +1,61 @@
+{
+  "id": "coach.fr_e12_02",
+  "title": "Danisan profili ve metrikler",
+  "route": "/epic-12/fr-e12-02",
+  "purpose": "Implements FR-E12-02: Danisan profili ve metrikler.",
+  "entryPoints": [
+    "coach.dashboard"
+  ],
+  "inputs": [
+    {
+      "name": "userId",
+      "type": "uuid",
+      "required": true,
+      "source": "session"
+    },
+    {
+      "name": "locale",
+      "type": "LanguageCode",
+      "required": true,
+      "source": "profile"
+    }
+  ],
+  "dataDependencies": [
+    "User",
+    "ContentProgress",
+    "CoachAssignment"
+  ],
+  "uiStates": {
+    "loading": {
+      "description": "Skeleton placeholders are shown while loading FR-E12-02 data."
+    },
+    "ready": {
+      "description": "FR-E12-02 flows are fully interactive with primary CTA available when prerequisites are met."
+    },
+    "empty": {
+      "description": "Empty state explains why no data is available and points to next best action."
+    },
+    "error": {
+      "description": "Error state is recoverable with user-safe messaging and a retry action."
+    },
+    "offline": {
+      "description": "Offline state shows last synchronized data and queues write actions for later sync."
+    }
+  },
+  "analytics": {
+    "screenView": "coach_fr_e12_02_viewed",
+    "events": [
+      "coach_fr_e12_02_viewed"
+    ]
+  },
+  "acceptanceCriteriaRefs": [
+    "AC-FR-E12-02-01",
+    "AC-FR-E12-02-02",
+    "AC-FR-E12-02-03",
+    "AC-FR-E12-02-04"
+  ],
+  "gates": [
+    "auth",
+    "coach_role"
+  ]
+}

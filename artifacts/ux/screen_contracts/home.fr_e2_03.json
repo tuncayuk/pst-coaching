@@ -1,0 +1,64 @@
+{
+  "id": "home.fr_e2_03",
+  "title": "İçerik alanları navigasyonu",
+  "route": "/epic-2/fr-e2-03",
+  "purpose": "Implements FR-E2-03: İçerik alanları navigasyonu.",
+  "entryPoints": [
+    "home.dashboard"
+  ],
+  "inputs": [
+    {
+      "name": "userId",
+      "type": "uuid",
+      "required": true,
+      "source": "session"
+    },
+    {
+      "name": "subscriptionStatus",
+      "type": "SubscriptionStatus",
+      "required": true,
+      "source": "entitlement_cache"
+    },
+    {
+      "name": "locale",
+      "type": "LanguageCode",
+      "required": true,
+      "source": "profile"
+    }
+  ],
+  "dataDependencies": [
+    "User",
+    "Subscription",
+    "ContentProgress",
+    "ReminderSetting"
+  ],
+  "uiStates": {
+    "loading": {
+      "description": "Skeleton placeholders are shown while loading FR-E2-03 data."
+    },
+    "ready": {
+      "description": "FR-E2-03 flows are fully interactive with primary CTA available when prerequisites are met."
+    },
+    "empty": {
+      "description": "Empty state explains why no data is available and points to next best action."
+    },
+    "error": {
+      "description": "Error state is recoverable with user-safe messaging and a retry action."
+    },
+    "offline": {
+      "description": "Offline state shows last synchronized data and queues write actions for later sync."
+    }
+  },
+  "analytics": {
+    "screenView": "home_fr_e2_03_viewed",
+    "events": [
+      "home_fr_e2_03_viewed"
+    ]
+  },
+  "acceptanceCriteriaRefs": [
+    "AC-FR-E2-03-01",
+    "AC-FR-E2-03-02",
+    "AC-FR-E2-03-03"
+  ],
+  "gates": []
+}

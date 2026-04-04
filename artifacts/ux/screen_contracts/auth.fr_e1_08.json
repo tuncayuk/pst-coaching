@@ -1,0 +1,71 @@
+{
+  "id": "auth.fr_e1_08",
+  "title": "Demografi bilgisi toplama (Tek Kaynak)",
+  "route": "/epic-1/fr-e1-08",
+  "purpose": "Implements FR-E1-08: Demografi bilgisi toplama (Tek Kaynak).",
+  "entryPoints": [
+    "onboarding.welcome"
+  ],
+  "inputs": [
+    {
+      "name": "userId",
+      "type": "uuid",
+      "required": false,
+      "source": "session"
+    },
+    {
+      "name": "subscriptionStatus",
+      "type": "SubscriptionStatus",
+      "required": true,
+      "source": "entitlement_cache"
+    },
+    {
+      "name": "locale",
+      "type": "LanguageCode",
+      "required": true,
+      "source": "profile"
+    }
+  ],
+  "dataDependencies": [
+    "User",
+    "UserSession",
+    "DemographicProfile"
+  ],
+  "uiStates": {
+    "loading": {
+      "description": "Skeleton placeholders are shown while loading FR-E1-08 data."
+    },
+    "ready": {
+      "description": "FR-E1-08 flows are fully interactive with primary CTA available when prerequisites are met."
+    },
+    "empty": {
+      "description": "Empty state explains why no data is available and points to next best action."
+    },
+    "error": {
+      "description": "Error state is recoverable with user-safe messaging and a retry action."
+    },
+    "offline": {
+      "description": "Offline state shows last synchronized data and queues write actions for later sync."
+    }
+  },
+  "analytics": {
+    "screenView": "auth_fr_e1_08_viewed",
+    "events": [
+      "auth_fr_e1_08_viewed"
+    ]
+  },
+  "acceptanceCriteriaRefs": [
+    "AC-FR-E1-08-01",
+    "AC-FR-E1-08-02",
+    "AC-FR-E1-08-03",
+    "AC-FR-E1-08-04",
+    "AC-FR-E1-08-05",
+    "AC-FR-E1-08-06",
+    "AC-FR-E1-08-07"
+  ],
+  "gates": [
+    "auth",
+    "subscription",
+    "add_on"
+  ]
+}

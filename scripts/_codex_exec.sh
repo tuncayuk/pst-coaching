@@ -4,11 +4,12 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 PROMPT_FILE="$1"
 
-# Codex CLI non-interactive mode. PROMPT can be read from stdin via '-'.
-# Reference: codex exec options: https://developers.openai.com/codex/cli/reference/
+# OpenAI CLI non-interactive mode. PROMPT can be read from stdin via '-'.
+# Reference: https://platform.openai.com/docs/api-reference/completions/create
 
-codex exec \
-  --cd "$ROOT_DIR" \
-  --full-auto \
-  --color never \
-  - < "$PROMPT_FILE"
+openai api completions.create \
+  --model "code-davinci-002" \
+  --prompt "$(cat "$PROMPT_FILE")" \
+  --temperature 0 \
+  --max-tokens 1024 \
+  --stop "\n" 

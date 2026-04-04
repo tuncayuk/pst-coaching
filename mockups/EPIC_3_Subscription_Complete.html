@@ -3,455 +3,1460 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PST Coaching Mobile - EPIC 3: Abonelik ve Kişi Yönetimi</title>
+    <title>PST Coaching Mobile - EPIC 3: Abonelik ve Kisi Yonetimi</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #00B4D8; --primary-dark: #0096B8; --primary-light: #E0F7FA; --primary-100: #B2EBF2;
-            --secondary: #2B1B5D; --secondary-light: #EDE7F6;
-            --success: #10B981; --success-light: #D1FAE5; --success-dark: #065F46;
-            --warning: #F59E0B; --error: #EF4444; --purple: #8B5CF6; --purple-light: #EDE9FE;
-            --gray-50: #FAFAFA; --gray-100: #F5F5F5; --gray-200: #E5E5E5; --gray-300: #D4D4D4;
-            --gray-400: #A3A3A3; --gray-600: #525252; --gray-700: #404040; --gray-900: #171717;
+            --primary: #00b4d8;
+            --primary-dark: #0085a3;
+            --primary-light: #e0f7fa;
+            --secondary: #1f2a44;
+            --success: #10b981;
+            --success-light: #d1fae5;
+            --warning: #f59e0b;
+            --warning-light: #ffedd5;
+            --error: #ef4444;
+            --error-light: #fee2e2;
+            --gray-50: #fafafa;
+            --gray-100: #f5f5f5;
+            --gray-200: #e5e5e5;
+            --gray-300: #d4d4d4;
+            --gray-400: #a3a3a3;
+            --gray-600: #525252;
+            --gray-700: #3f3f46;
+            --gray-900: #171717;
         }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #f0f0f0, #e0e0e0); overflow: hidden; }
-        .app { display: flex; height: 100vh; }
-        .sidebar { width: 400px; background: white; border-right: 1px solid var(--gray-200); overflow-y: auto; box-shadow: 2px 0 10px rgba(0,0,0,0.05); }
-        .main { flex: 1; display: flex; flex-direction: column; }
-        .topbar { background: white; border-bottom: 1px solid var(--gray-200); padding: 1.75rem 2.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
-        .viewer { flex: 1; overflow-y: auto; padding: 3rem; display: flex; justify-content: center; align-items: flex-start; }
-        .logo { font-family: 'Poppins', sans-serif; font-size: 2rem; font-weight: 800; color: var(--primary); padding: 2.5rem; border-bottom: 1px solid var(--gray-200); background: linear-gradient(135deg, var(--primary-light), white); }
-        .subtitle { font-size: 0.875rem; color: var(--gray-600); font-weight: 500; margin-top: 0.5rem; }
-        .epic-header { padding: 1.5rem; background: linear-gradient(135deg, #FEF3C7, #FDE68A); border-bottom: 2px solid var(--warning); }
-        .epic-title { font-family: 'Poppins', sans-serif; font-size: 1.25rem; font-weight: 700; color: var(--gray-900); margin-bottom: 0.5rem; }
-        .epic-meta { font-size: 0.8125rem; color: var(--gray-600); }
-        .nav-map { background: var(--purple-light); border-left: 4px solid var(--purple); padding: 1rem; margin: 1rem 1.75rem; border-radius: 0.5rem; }
-        .nav-map-title { font-weight: 700; color: var(--purple); font-size: 0.8125rem; margin-bottom: 0.75rem; text-transform: uppercase; display: flex; align-items: center; gap: 0.5rem; }
-        .nav-flow { display: flex; flex-direction: column; gap: 0.5rem; }
-        .nav-flow-item { display: flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; color: var(--gray-700); }
-        .nav-flow-box { background: white; padding: 0.375rem 0.625rem; border-radius: 0.375rem; border: 2px solid var(--gray-300); font-weight: 600; white-space: nowrap; font-size: 0.6875rem; }
-        .nav-flow-box.active { background: var(--primary); color: white; border-color: var(--primary); }
-        .nav-flow-arrow { color: var(--gray-400); font-weight: 700; }
-        .nav-flow-label { color: var(--gray-600); font-size: 0.625rem; font-style: italic; }
-        .nav-section { padding: 1.25rem 0; border-bottom: 1px solid var(--gray-100); }
-        .nav-title { padding: 0.75rem 1.75rem; font-size: 0.6875rem; font-weight: 700; color: var(--gray-600); text-transform: uppercase; }
-        .nav-item { padding: 1rem 1.75rem; cursor: pointer; font-size: 0.9375rem; transition: all 0.2s; color: var(--gray-700); display: flex; align-items: center; gap: 0.875rem; border-left: 3px solid transparent; }
-        .nav-item:hover { background: var(--gray-50); }
-        .nav-item.active { background: var(--primary-light); color: var(--primary-dark); font-weight: 600; border-left-color: var(--primary); }
-        .nav-icon { font-size: 1.375rem; }
-        .nav-badge { background: var(--primary); color: white; padding: 0.25rem 0.625rem; border-radius: 9999px; font-size: 0.6875rem; font-weight: 700; margin-left: auto; }
-        .ac-section { background: var(--secondary-light); border-left: 4px solid var(--secondary); padding: 1rem; margin: 0.75rem 1.75rem; border-radius: 0.5rem; }
-        .ac-title { font-weight: 700; color: var(--secondary); font-size: 0.75rem; margin-bottom: 0.5rem; text-transform: uppercase; }
-        .ac-list { list-style: none; }
-        .ac-list li { font-size: 0.75rem; color: var(--gray-700); margin-bottom: 0.375rem; padding-left: 1.25rem; position: relative; line-height: 1.4; }
-        .ac-list li:before { content: "✓"; position: absolute; left: 0; color: var(--success); font-weight: 700; }
-        .screen-title { font-family: 'Poppins', sans-serif; font-size: 2.25rem; font-weight: 700; color: var(--gray-900); }
-        .screen-meta { color: var(--gray-600); font-size: 0.9375rem; margin-top: 0.5rem; display: flex; align-items: center; gap: 1rem; }
-        .meta-badge { background: #FEF3C7; color: var(--warning); padding: 0.375rem 0.875rem; border-radius: 0.5rem; font-size: 0.8125rem; font-weight: 600; }
-        .iphone { width: 393px; height: 852px; background: #1d1d1f; border-radius: 55px; padding: 12px; box-shadow: 0 60px 120px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.1); position: relative; }
-        .island { position: absolute; top: 20px; left: 50%; transform: translateX(-50%); width: 120px; height: 30px; background: #000; border-radius: 20px; z-index: 11; }
-        .screen { width: 100%; height: 100%; background: white; border-radius: 43px; overflow: hidden; position: relative; }
-        .content { width: 100%; height: 100%; overflow-y: auto; background: var(--gray-50); }
-        .content::-webkit-scrollbar { width: 4px; }
-        .content::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.3); border-radius: 10px; }
-        .status { height: 54px; display: flex; align-items: center; justify-content: space-between; padding: 0 1.5rem; font-size: 0.8125rem; font-weight: 600; background: white; }
-        .btn { padding: 0.875rem 1.5rem; border-radius: 0.75rem; font-weight: 600; font-size: 1rem; border: none; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.2s; }
-        .btn-primary { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; box-shadow: 0 4px 16px rgba(0,180,216,0.4); }
-        .card { background: white; border-radius: 1rem; padding: 1.25rem; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .fade-in { animation: fadeIn 0.3s ease-out; }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: radial-gradient(circle at 10% 20%, #edf7ff 0%, #eef2f7 42%, #dde5ef 100%);
+            overflow: hidden;
+            color: var(--gray-900);
+        }
+
+        .app {
+            display: flex;
+            height: 100vh;
+        }
+
+        .sidebar {
+            width: 412px;
+            background: #fff;
+            border-right: 1px solid var(--gray-200);
+            overflow-y: auto;
+            box-shadow: 2px 0 20px rgba(0, 0, 0, 0.06);
+        }
+
+        .main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .topbar {
+            background: #fff;
+            border-bottom: 1px solid var(--gray-200);
+            padding: 1.5rem 2rem;
+        }
+
+        .viewer {
+            flex: 1;
+            overflow-y: auto;
+            padding: 2rem;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .logo {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.85rem;
+            font-weight: 800;
+            color: var(--primary-dark);
+            padding: 2rem;
+            border-bottom: 1px solid var(--gray-200);
+            background: linear-gradient(140deg, var(--primary-light), #fff);
+        }
+
+        .subtitle {
+            margin-top: 0.35rem;
+            font-size: 0.85rem;
+            color: var(--gray-600);
+            font-weight: 500;
+        }
+
+        .epic-header {
+            margin: 1rem 1.25rem;
+            border: 1px solid #dbeafe;
+            background: linear-gradient(135deg, #eff6ff, #e0f2fe);
+            border-radius: 0.9rem;
+            padding: 1rem;
+        }
+
+        .epic-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.05rem;
+            font-weight: 700;
+            margin-bottom: 0.35rem;
+        }
+
+        .epic-meta {
+            font-size: 0.78rem;
+            color: var(--gray-700);
+        }
+
+        .nav-map {
+            margin: 0 1.25rem 1rem;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.85rem;
+            padding: 0.9rem;
+        }
+
+        .nav-map-title {
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: var(--gray-600);
+            font-weight: 700;
+            margin-bottom: 0.65rem;
+        }
+
+        .flow-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0.45rem;
+        }
+
+        .flow-box {
+            padding: 0.45rem 0.6rem;
+            border-radius: 0.5rem;
+            border: 1px solid var(--gray-300);
+            font-size: 0.72rem;
+            font-weight: 600;
+            background: #fff;
+            color: var(--gray-700);
+        }
+
+        .flow-box.active {
+            border-color: var(--primary);
+            background: var(--primary-light);
+            color: var(--primary-dark);
+        }
+
+        .nav-section {
+            padding: 0.25rem 0 0.85rem;
+            border-bottom: 1px solid var(--gray-100);
+        }
+
+        .nav-title {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: var(--gray-600);
+            font-weight: 700;
+            padding: 0.55rem 1.25rem;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.65rem;
+            padding: 0.75rem 1.25rem;
+            cursor: pointer;
+            border-left: 3px solid transparent;
+            color: var(--gray-700);
+            transition: background 0.2s ease, border-color 0.2s ease;
+        }
+
+        .nav-item:hover {
+            background: var(--gray-50);
+        }
+
+        .nav-item.active {
+            border-left-color: var(--primary);
+            background: var(--primary-light);
+            color: var(--primary-dark);
+        }
+
+        .nav-icon {
+            font-size: 1.1rem;
+        }
+
+        .nav-label {
+            flex: 1;
+            font-size: 0.88rem;
+            font-weight: 600;
+        }
+
+        .nav-badge {
+            font-size: 0.68rem;
+            background: #e2e8f0;
+            color: var(--gray-700);
+            border-radius: 999px;
+            padding: 0.15rem 0.5rem;
+            font-weight: 700;
+        }
+
+        .screen-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--secondary);
+        }
+
+        .screen-meta {
+            margin-top: 0.4rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            color: var(--gray-600);
+        }
+
+        .meta-badge {
+            background: #f0f9ff;
+            border: 1px solid #bae6fd;
+            color: #0369a1;
+            padding: 0.22rem 0.6rem;
+            border-radius: 0.55rem;
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+
+        .iphone {
+            width: 393px;
+            height: 852px;
+            background: #1d1d1f;
+            border-radius: 54px;
+            padding: 12px;
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.45);
+            position: relative;
+        }
+
+        .island {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 30px;
+            background: #000;
+            border-radius: 20px;
+            z-index: 5;
+        }
+
+        .screen {
+            width: 100%;
+            height: 100%;
+            background: #fff;
+            border-radius: 42px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .content {
+            width: 100%;
+            height: 100%;
+            overflow-y: auto;
+            background: var(--gray-50);
+        }
+
+        .status {
+            height: 54px;
+            padding: 0 1.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.82rem;
+            font-weight: 600;
+            background: #fff;
+        }
+
+        .mobile-header {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.95rem 1.25rem;
+            border-bottom: 1px solid var(--gray-200);
+            background: #fff;
+            position: sticky;
+            top: 0;
+            z-index: 2;
+        }
+
+        .header-title {
+            font-weight: 800;
+            color: var(--secondary);
+            font-size: 1.05rem;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .icon-btn {
+            border: 1px solid var(--gray-300);
+            background: #fff;
+            color: var(--gray-700);
+            border-radius: 0.55rem;
+            padding: 0.35rem 0.55rem;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .mobile-body {
+            padding: 1rem 1.15rem 1.5rem;
+            display: grid;
+            gap: 0.85rem;
+        }
+
+        .card {
+            background: #fff;
+            border: 1px solid var(--gray-200);
+            border-radius: 0.95rem;
+            padding: 0.95rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .state-switcher {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.45rem;
+        }
+
+        .state-btn {
+            border: 1px solid var(--gray-300);
+            background: #fff;
+            color: var(--gray-700);
+            border-radius: 999px;
+            padding: 0.26rem 0.62rem;
+            font-size: 0.7rem;
+            font-weight: 700;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .state-btn.active {
+            border-color: var(--primary);
+            color: var(--primary-dark);
+            background: var(--primary-light);
+        }
+
+        .state-panel {
+            border-radius: 0.85rem;
+            padding: 0.9rem;
+            border: 1px solid var(--gray-200);
+            background: #fff;
+            font-size: 0.84rem;
+            line-height: 1.45;
+            display: grid;
+            gap: 0.5rem;
+        }
+
+        .state-panel strong {
+            font-size: 0.82rem;
+        }
+
+        .state-panel.loading {
+            border-color: #bfdbfe;
+            background: #eff6ff;
+        }
+
+        .state-panel.empty {
+            border-color: #cbd5e1;
+            background: #f8fafc;
+        }
+
+        .state-panel.error {
+            border-color: #fecaca;
+            background: var(--error-light);
+        }
+
+        .state-panel.offline {
+            border-color: #fcd34d;
+            background: #fffbeb;
+        }
+
+        .plan-grid {
+            display: grid;
+            gap: 0.65rem;
+        }
+
+        .plan-card {
+            border: 2px solid var(--gray-300);
+            border-radius: 0.85rem;
+            background: #fff;
+            padding: 0.85rem;
+            cursor: pointer;
+            transition: border-color 0.2s ease, transform 0.2s ease;
+        }
+
+        .plan-card.selected {
+            border-color: var(--primary);
+            background: linear-gradient(135deg, var(--primary-light), #fff);
+            transform: translateY(-1px);
+        }
+
+        .plan-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 0.45rem;
+        }
+
+        .plan-name {
+            font-weight: 800;
+            color: var(--secondary);
+        }
+
+        .plan-price {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.08rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+        }
+
+        .plan-seat {
+            font-size: 0.78rem;
+            color: var(--gray-600);
+            margin-bottom: 0.5rem;
+        }
+
+        .check-list {
+            list-style: none;
+            display: grid;
+            gap: 0.25rem;
+            font-size: 0.79rem;
+            color: var(--gray-700);
+        }
+
+        .check-list li::before {
+            content: "✓ ";
+            color: var(--success);
+            font-weight: 700;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.76rem;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            border: 1px solid var(--gray-200);
+            padding: 0.35rem;
+            text-align: center;
+        }
+
+        .comparison-table th {
+            background: var(--gray-100);
+            font-size: 0.72rem;
+        }
+
+        .btn {
+            border: none;
+            border-radius: 0.75rem;
+            padding: 0.82rem 1rem;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: transform 0.18s ease, opacity 0.18s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: #fff;
+        }
+
+        .btn-outline {
+            background: #fff;
+            border: 1px solid var(--gray-300);
+            color: var(--gray-700);
+        }
+
+        .btn-danger {
+            background: #fff;
+            border: 1px solid var(--error);
+            color: var(--error);
+        }
+
+        .row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.65rem;
+        }
+
+        .row + .row {
+            margin-top: 0.55rem;
+        }
+
+        .muted {
+            color: var(--gray-600);
+            font-size: 0.78rem;
+        }
+
+        .chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.45rem;
+        }
+
+        .chip {
+            border-radius: 999px;
+            border: 1px solid var(--gray-300);
+            background: #fff;
+            padding: 0.2rem 0.58rem;
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: var(--gray-700);
+        }
+
+        .chip.success {
+            border-color: #86efac;
+            background: var(--success-light);
+            color: #166534;
+        }
+
+        .chip.warning {
+            border-color: #fdba74;
+            background: var(--warning-light);
+            color: #9a3412;
+        }
+
+        .chip.error {
+            border-color: #fca5a5;
+            background: var(--error-light);
+            color: #991b1b;
+        }
+
+        .toggle {
+            border: 1px solid var(--gray-300);
+            background: #fff;
+            border-radius: 999px;
+            width: 52px;
+            height: 30px;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .toggle::after {
+            content: "";
+            position: absolute;
+            width: 22px;
+            height: 22px;
+            border-radius: 999px;
+            background: #fff;
+            top: 3px;
+            left: 3px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+            transition: left 0.2s ease;
+        }
+
+        .toggle.active {
+            background: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .toggle.active::after {
+            left: 26px;
+        }
+
+        .seat-bar {
+            background: var(--gray-100);
+            border-radius: 999px;
+            height: 8px;
+            overflow: hidden;
+            margin-top: 0.35rem;
+        }
+
+        .seat-bar > div {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+        }
+
+        .list {
+            display: grid;
+            gap: 0.55rem;
+        }
+
+        .list-item {
+            background: #fff;
+            border: 1px solid var(--gray-200);
+            border-radius: 0.75rem;
+            padding: 0.68rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.6rem;
+        }
+
+        .title-sm {
+            font-size: 0.86rem;
+            font-weight: 700;
+        }
+
+        .toast {
+            position: fixed;
+            right: 1.2rem;
+            bottom: 1.2rem;
+            background: #111827;
+            color: #fff;
+            padding: 0.65rem 0.95rem;
+            border-radius: 0.7rem;
+            font-size: 0.82rem;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(8px);
+            transition: opacity 0.2s ease, transform 0.2s ease;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .toast.success {
+            background: #065f46;
+        }
+
+        .toast.error {
+            background: #7f1d1d;
+        }
+
+        .nav-item:focus-visible,
+        button:focus-visible,
+        .plan-card:focus-visible,
+        .toggle:focus-visible {
+            outline: 3px solid #60a5fa;
+            outline-offset: 2px;
+        }
+
+        @media (max-width: 1200px) {
+            body {
+                overflow: auto;
+            }
+
+            .app {
+                flex-direction: column;
+                height: auto;
+                min-height: 100vh;
+            }
+
+            .sidebar {
+                width: 100%;
+                max-height: 52vh;
+            }
+
+            .viewer {
+                padding: 1.2rem;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation: none !important;
+                transition: none !important;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="app">
-        <div class="sidebar">
-            <div class="logo">PST Coaching<div class="subtitle">Abonelik & Kişi Yönetimi</div></div>
+        <aside class="sidebar">
+            <div class="logo">PST Coaching<div class="subtitle">Abonelik ve Kisi Yonetimi - Rev4 Sync</div></div>
             <div class="epic-header">
-                <div class="epic-title">EPIC 3: Abonelik ve Kişi Yönetimi</div>
-                <div class="epic-meta">8 User Stories • 5 Screens • 35 ACs</div>
+                <div class="epic-title">EPIC 3: Abonelik ve Kisi Yonetimi</div>
+                <div class="epic-meta">7 FR Screens • 27 AC • Requirement + Artifact + Mockup senkron</div>
             </div>
             <div class="nav-map">
-                <div class="nav-map-title"><span>🗺️</span><span>Navigation Map</span></div>
-                <div class="nav-flow">
-                    <div class="nav-flow-item"><div class="nav-flow-box active" id="nav-1">Plan Selection</div></div>
-                    <div class="nav-flow-item"><span class="nav-flow-arrow">↓</span><span class="nav-flow-label">tap plan</span></div>
-                    <div class="nav-flow-item"><div class="nav-flow-box" id="nav-2">Payment</div></div>
-                    <div class="nav-flow-item"><span class="nav-flow-arrow">↓</span><span class="nav-flow-label">purchase</span></div>
-                    <div class="nav-flow-item"><div class="nav-flow-box" id="nav-3">Manage Subscription</div></div>
-                    <div class="nav-flow-item"><span class="nav-flow-arrow">├→</span><span class="nav-flow-label">tap Add-ons</span></div>
-                    <div class="nav-flow-item" style="margin-left: 1rem;"><div class="nav-flow-box" id="nav-4">Add-on Management</div></div>
-                    <div class="nav-flow-item"><span class="nav-flow-arrow">└→</span><span class="nav-flow-label">tap Kişi Yönetimi</span></div>
-                    <div class="nav-flow-item" style="margin-left: 1rem;"><div class="nav-flow-box" id="nav-5">User Management</div></div>
-                </div>
-                <div style="margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid var(--purple); font-size: 0.625rem; color: var(--gray-600); line-height: 1.4;">
-                    <strong>Entry:</strong> Profil → Abonelik<br>
-                    <strong>Plans:</strong> Bireysel (1), Aile (5), Grup (10)
+                <div class="nav-map-title">Akis Gorunumu</div>
+                <div class="flow-grid">
+                    <div class="flow-box active" id="flow-1">FR-E3-01 Plan Secimi</div>
+                    <div class="flow-box" id="flow-2">FR-E3-02 Satin Alma</div>
+                    <div class="flow-box" id="flow-3">FR-E3-03 Add-on</div>
+                    <div class="flow-box" id="flow-4">FR-E3-04 Ogrenci Indirimi</div>
+                    <div class="flow-box" id="flow-5">FR-E3-05 Plan Yonetimi</div>
+                    <div class="flow-box" id="flow-6">FR-E3-06 Seat Yonetimi</div>
+                    <div class="flow-box" id="flow-7">FR-E3-07 Odeme ve Geri Yukleme</div>
                 </div>
             </div>
-            <div class="nav-section">
-                <div class="nav-title">US-3.1 & 3.2: Plan & Payment</div>
-                <div class="nav-item active" onclick="showScreen(1)">
-                    <span class="nav-icon">💳</span><span>Plan Selection</span><span class="nav-badge">8 ACs</span>
-                </div>
-                <div class="ac-section">
-                    <div class="ac-title">✓ Acceptance Criteria</div>
-                    <ul class="ac-list">
-                        <li>Plans listed with user limits (1/5/10)</li>
-                        <li>All content access highlighted</li>
-                        <li>Selected plan highlighted</li>
-                        <li>"Devam Et" button activates</li>
-                        <li>Platform payment flow opens</li>
-                        <li>Server-side validation</li>
-                        <li>Entitlement activates immediately</li>
-                        <li>Syncs across devices</li>
-                    </ul>
-                </div>
-                <div class="nav-item" onclick="showScreen(2)">
-                    <span class="nav-icon">✅</span><span>Payment Success</span><span class="nav-badge">3 ACs</span>
-                </div>
-                <div class="ac-section">
-                    <div class="ac-title">✓ Acceptance Criteria</div>
-                    <ul class="ac-list">
-                        <li>Success confirmation displayed</li>
-                        <li>Plan details shown</li>
-                        <li>"Keşfe Başla" CTA visible</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="nav-section">
-                <div class="nav-title">US-3.3 & 3.5: Subscription Mgmt</div>
-                <div class="nav-item" onclick="showScreen(3)">
-                    <span class="nav-icon">⚙️</span><span>Manage Subscription</span><span class="nav-badge">10 ACs</span>
-                </div>
-                <div class="ac-section">
-                    <div class="ac-title">✓ Acceptance Criteria</div>
-                    <ul class="ac-list">
-                        <li>Current plan, renewal date visible</li>
-                        <li>Occupancy shown (3/5 full)</li>
-                        <li>Downgrade requires user reduction</li>
-                        <li>Platform-compliant navigation</li>
-                        <li>Add-on management access</li>
-                        <li>User management access (Aile/Grup)</li>
-                        <li>Payment history link</li>
-                        <li>Restore purchases option</li>
-                        <li>Cancel subscription option</li>
-                        <li>Plan member sees limited view</li>
-                    </ul>
-                </div>
-                <div class="nav-item" onclick="showScreen(4)">
-                    <span class="nav-icon">🎁</span><span>Add-on Management</span><span class="nav-badge">7 ACs</span>
-                </div>
-                <div class="ac-section">
-                    <div class="ac-title">✓ Acceptance Criteria</div>
-                    <ul class="ac-list">
-                        <li>Add-ons listed with price/status</li>
-                        <li>Activate/deactivate toggle</li>
-                        <li>Extra seats only for Aile/Grup</li>
-                        <li>Plan member cannot purchase</li>
-                        <li>AI Package available</li>
-                        <li>Coaching Training available</li>
-                        <li>Status updates immediately</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="nav-section">
-                <div class="nav-title">US-3.6: User Management</div>
-                <div class="nav-item" onclick="showScreen(5)">
-                    <span class="nav-icon">👥</span><span>User Management</span><span class="nav-badge">7 ACs</span>
-                </div>
-                <div class="ac-section">
-                    <div class="ac-title">✓ Acceptance Criteria</div>
-                    <ul class="ac-list">
-                        <li>Occupancy displayed (3/5 full)</li>
-                        <li>Send invitation option</li>
-                        <li>Remove user option</li>
-                        <li>Full capacity suggests add-on</li>
-                        <li>Plan member sees own status only</li>
-                        <li>Email/link invitation methods</li>
-                        <li>Status updates in real-time</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div class="main">
+
+            <section class="nav-section">
+                <div class="nav-title">FR-E3-01 • FR-E3-02</div>
+                <div class="nav-item active" data-screen="1"><span class="nav-icon">💳</span><span class="nav-label">Plan Secimi ve Karsilastirma</span><span class="nav-badge">3 AC</span></div>
+                <div class="nav-item" data-screen="2"><span class="nav-icon">✅</span><span class="nav-label">Satin Alma ve Aktivasyon</span><span class="nav-badge">4 AC</span></div>
+            </section>
+
+            <section class="nav-section">
+                <div class="nav-title">FR-E3-03 • FR-E3-04</div>
+                <div class="nav-item" data-screen="3"><span class="nav-icon">🎁</span><span class="nav-label">Add-on Yonetimi</span><span class="nav-badge">4 AC</span></div>
+                <div class="nav-item" data-screen="4"><span class="nav-icon">🎓</span><span class="nav-label">Ogrenci Indirimi</span><span class="nav-badge">4 AC</span></div>
+            </section>
+
+            <section class="nav-section">
+                <div class="nav-title">FR-E3-05 • FR-E3-07</div>
+                <div class="nav-item" data-screen="5"><span class="nav-icon">⚙️</span><span class="nav-label">Plan Yonetimi</span><span class="nav-badge">5 AC</span></div>
+                <div class="nav-item" data-screen="6"><span class="nav-icon">👥</span><span class="nav-label">Seat Yonetimi</span><span class="nav-badge">4 AC</span></div>
+                <div class="nav-item" data-screen="7"><span class="nav-icon">🧾</span><span class="nav-label">Odeme ve Restore</span><span class="nav-badge">3 AC</span></div>
+            </section>
+        </aside>
+
+        <main class="main">
             <div class="topbar">
-                <h1 class="screen-title" id="screenTitle">Plan Selection</h1>
+                <h1 class="screen-title" id="screenTitle">Plan Secimi ve Karsilastirma</h1>
                 <div class="screen-meta">
-                    <span class="meta-badge" id="screenUS">US-3.1</span>
-                    <span id="screenMeta">Choose subscription • 8/8 ACs • Entry: Profil → Abonelik</span>
+                    <span class="meta-badge" id="screenFR">FR-E3-01</span>
+                    <span id="screenMeta">Planlar 1/5/10 kisi limiti ile listelenir, secim yapildiginda devam butonu aktif olur.</span>
                 </div>
             </div>
             <div class="viewer" id="viewer"></div>
-        </div>
+        </main>
     </div>
+
+    <div class="toast" id="toast"></div>
+
     <script>
         const screenData = {
-            1: { title: 'Plan Selection', us: 'US-3.1', meta: 'Choose subscription • 8/8 ACs • Entry: Profil → Abonelik' },
-            2: { title: 'Payment Success', us: 'US-3.2', meta: 'Activation complete • 3/3 ACs • From: Payment' },
-            3: { title: 'Manage Subscription', us: 'US-3.5', meta: 'Subscription details • 10/10 ACs • From: Profil' },
-            4: { title: 'Add-on Management', us: 'US-3.3', meta: 'Manage extras • 7/7 ACs • From: Subscription' },
-            5: { title: 'User Management', us: 'US-3.6', meta: 'Manage seats • 7/7 ACs • From: Subscription' }
+            1: { title: 'Plan Secimi ve Karsilastirma', fr: 'FR-E3-01', meta: 'Planlar 1/5/10 kisi limiti ile listelenir, secim yapildiginda devam butonu aktif olur.' },
+            2: { title: 'Satin Alma ve Aktivasyon', fr: 'FR-E3-02', meta: 'Platform satin alma akisina gidilir, entitlement dogrulanir, cihazlar arasi senkronlanir.' },
+            3: { title: 'Add-on Yonetimi', fr: 'FR-E3-03', meta: 'Add-on fiyatlari ve durumlari gorulur, rol ve plan kisitlari uygulanir.' },
+            4: { title: 'Ogrenci Indirimi', fr: 'FR-E3-04', meta: 'E-posta veya belge ile dogrulama, gizlilik metni ve yillik yenileme uyarisini kapsar.' },
+            5: { title: 'Plan Yonetimi (Degistir / Iptal)', fr: 'FR-E3-05', meta: 'Mevcut plan, yenileme, downgrade kurallari ve platform iptal yonlendirmesi gosterilir.' },
+            6: { title: 'Kisi (Seat) Yonetimi', fr: 'FR-E3-06', meta: 'Doluluk, davet, kaldirma ve limit doluysa ek kisi add-on onerisi sunulur.' },
+            7: { title: 'Odeme Gecmisi ve Geri Yukleme', fr: 'FR-E3-07', meta: 'Odeme listesi, makbuz detayi ve satin alimlari geri yukleme akislarini gosterir.' },
         };
-        function showScreen(num) {
-            document.getElementById('screenTitle').textContent = screenData[num].title;
-            document.getElementById('screenUS').textContent = screenData[num].us;
-            document.getElementById('screenMeta').textContent = screenData[num].meta;
-            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
-            const navMap = {1: 0, 2: 1, 3: 2, 4: 3, 5: 4};
-            document.querySelectorAll('.nav-item')[navMap[num]].classList.add('active');
-            document.querySelectorAll('[id^="nav-"]').forEach(box => box.classList.remove('active'));
-            const navBox = document.getElementById('nav-' + num);
-            if (navBox) navBox.classList.add('active');
-            document.getElementById('viewer').innerHTML = getScreenHTML(num);
+
+        const plans = {
+            individual: { label: 'Bireysel', seats: 1, price: '₺349/ay' },
+            family: { label: 'Aile', seats: 5, price: '₺899/ay' },
+            group: { label: 'Grup', seats: 10, price: '₺1.699/ay' },
+        };
+
+        const addOnCatalog = [
+            { id: 'ai_pack', label: 'AI Paketi', price: '₺199/ay', desc: 'Kisisel oneriler ve analiz', allowedPlans: ['individual', 'family', 'group'] },
+            { id: 'seat_plus_5', label: 'Ek Kisi +5', price: '₺450/ay', desc: 'Aile ve Grup planlari icin ekstra kapasite', allowedPlans: ['family', 'group'] },
+            { id: 'coach_training', label: 'Kocluk Egitimi', price: '₺2.999/tek', desc: 'Sertifika odakli egitim paketi', allowedPlans: ['individual', 'family', 'group'] },
+        ];
+
+        const paymentHistory = [
+            { id: 'inv-2026-03', date: '03 Mart 2026', amount: '₺899', method: 'Apple Pay', receipt: 'Makbuz #A-2026-03-7741' },
+            { id: 'inv-2026-02', date: '03 Subat 2026', amount: '₺899', method: 'Apple Pay', receipt: 'Makbuz #A-2026-02-7612' },
+            { id: 'inv-2026-01', date: '03 Ocak 2026', amount: '₺899', method: 'Apple Pay', receipt: 'Makbuz #A-2026-01-7450' },
+        ];
+
+        const ui = {
+            currentScreen: 1,
+            selectedPlan: 'family',
+            activePlan: 'family',
+            targetPlan: 'individual',
+            userRole: 'owner',
+            addOnStatus: {
+                ai_pack: false,
+                seat_plus_5: false,
+                coach_training: false,
+            },
+            screenStates: {
+                1: 'ready',
+                2: 'ready',
+                3: 'ready',
+                4: 'ready',
+                5: 'ready',
+                6: 'ready',
+                7: 'ready',
+            },
+            studentMethod: 'email',
+            studentVerified: false,
+            studentRenewalWarning: true,
+            selectedReceiptId: paymentHistory[0].id,
+            lastSync: 'Bugun 09:41',
+            lastRestore: '-',
+            seats: [
+                { id: 'seat-owner', name: 'Ahmet Yilmaz', state: 'owner' },
+                { id: 'seat-2', name: 'Fatma Yilmaz', state: 'active' },
+                { id: 'seat-3', name: 'Mehmet Yilmaz', state: 'active' },
+                { id: 'seat-4', name: 'Bos Slot', state: 'open' },
+                { id: 'seat-5', name: 'Bos Slot', state: 'open' },
+            ],
+        };
+
+        let toastTimer = null;
+
+        function showToast(message, tone) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = 'toast show' + (tone ? ' ' + tone : '');
+            if (toastTimer) {
+                clearTimeout(toastTimer);
+            }
+            toastTimer = setTimeout(() => {
+                toast.className = 'toast';
+            }, 2200);
         }
-        function getScreenHTML(num) {
-            const screens = {
-                1: `<div class="iphone fade-in"><div class="island"></div><div class="screen"><div class="content">
-                    <div class="status"><div>9:41</div><div>📶 📡 🔋</div></div>
-                    <div style="background: white; padding: 1rem 1.5rem; border-bottom: 1px solid var(--gray-200);">
-                        <div style="display: flex; align-items: center; gap: 1rem;">
-                            <button style="background: none; border: none; font-size: 1.5rem; cursor: pointer;">←</button>
-                            <h2 style="font-family: Poppins, sans-serif; font-size: 1.25rem; font-weight: 800; color: var(--secondary);">Plan Seçimi</h2>
+
+        function nowStamp() {
+            return new Date().toLocaleString('tr-TR', {
+                day: '2-digit',
+                month: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+            });
+        }
+
+        function occupiedSeats() {
+            return ui.seats.filter((seat) => seat.state !== 'open').length;
+        }
+
+        function effectiveSeatLimit() {
+            const base = plans[ui.activePlan].seats;
+            return base + (ui.addOnStatus.seat_plus_5 ? 5 : 0);
+        }
+
+        function canUseSeatAddOn() {
+            return ui.activePlan === 'family' || ui.activePlan === 'group';
+        }
+
+        function stateControls(screenNo) {
+            const allStates = ['ready', 'loading', 'empty', 'error', 'offline'];
+            return `
+                <div class="state-switcher">
+                    ${allStates
+                        .map((state) => `
+                            <button class="state-btn ${ui.screenStates[screenNo] === state ? 'active' : ''}" onclick="setScreenState(${screenNo}, '${state}')">
+                                ${state}
+                            </button>
+                        `)
+                        .join('')}
+                </div>
+            `;
+        }
+
+        function statePanel(screenNo) {
+            const state = ui.screenStates[screenNo];
+            if (state === 'ready') {
+                return '';
+            }
+
+            if (state === 'loading') {
+                return `
+                    <div class="state-panel loading">
+                        <strong>Yukleniyor</strong>
+                        <span>FR verileri getiriliyor. Skeleton ve gecici icerik gosteriliyor.</span>
+                    </div>
+                `;
+            }
+
+            if (state === 'empty') {
+                return `
+                    <div class="state-panel empty">
+                        <strong>Bos Durum</strong>
+                        <span>Bu bolumde gosterilecek veri bulunamadi. Sonraki uygun aksiyon onerildi.</span>
+                        <button class="btn btn-outline" onclick="showToast('Bos durumdan kesfet aksiyonu tetiklendi.')">Kesfet</button>
+                    </div>
+                `;
+            }
+
+            if (state === 'error') {
+                return `
+                    <div class="state-panel error">
+                        <strong>Hata Durumu</strong>
+                        <span>Islem basarisiz. Kullaniciya guvenli mesaj ve tekrar dene aksiyonu sunuluyor.</span>
+                        <button class="btn btn-primary" onclick="setScreenState(${screenNo}, 'ready')">Tekrar Dene</button>
+                    </div>
+                `;
+            }
+
+            return `
+                <div class="state-panel offline">
+                    <strong>Offline Durum</strong>
+                    <span>Son senkronize veri gosteriliyor. Yazma islemleri kuyruga alinacak.</span>
+                    <span class="muted">Son senkron: ${ui.lastSync}</span>
+                </div>
+            `;
+        }
+
+        function phoneShell(title, body, backTarget) {
+            const backButton = backTarget
+                ? `<button class="icon-btn" onclick="showScreen(${backTarget})" aria-label="Geri">←</button>`
+                : '<span style="width: 36px;"></span>';
+
+            return `
+                <div class="iphone">
+                    <div class="island"></div>
+                    <div class="screen">
+                        <div class="content">
+                            <div class="status"><div>9:41</div><div>📶 📡 🔋</div></div>
+                            <div class="mobile-header">
+                                ${backButton}
+                                <div class="header-title">${title}</div>
+                            </div>
+                            <div class="mobile-body">
+                                ${body}
+                            </div>
                         </div>
                     </div>
-                    <div style="padding: 1.5rem;">
-                        <p style="text-align: center; color: var(--gray-600); margin-bottom: 2rem; font-size: 0.9375rem;">Tüm içeriklere sınırsız erişim</p>
-                        <div class="card" style="margin-bottom: 1rem; cursor: pointer; border: 2px solid var(--gray-300);">
-                            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
-                                <div><h3 style="font-family: Poppins, sans-serif; font-size: 1.25rem; font-weight: 700; color: var(--secondary); margin-bottom: 0.5rem;">Bireysel</h3>
-                                <p style="font-size: 0.875rem; color: var(--gray-600);">1 kişi</p></div>
-                                <div><div style="font-family: Poppins, sans-serif; font-size: 1.75rem; font-weight: 800; color: var(--primary);">₺349</div>
-                                <p style="font-size: 0.75rem; color: var(--gray-600); text-align: right;">/ay</p></div>
+                </div>
+            `;
+        }
+
+        function renderPlanCards() {
+            return ['individual', 'family', 'group']
+                .map((id) => {
+                    const p = plans[id];
+                    return `
+                        <button class="plan-card ${ui.selectedPlan === id ? 'selected' : ''}" onclick="selectPlan('${id}')" aria-pressed="${ui.selectedPlan === id}">
+                            <div class="plan-head">
+                                <span class="plan-name">${p.label}</span>
+                                <span class="plan-price">${p.price}</span>
                             </div>
-                            <div style="display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.875rem; color: var(--gray-700);">
-                                <div style="display: flex; align-items: center; gap: 0.5rem;"><span style="color: var(--success);">✓</span><span>Tüm Yolculuklar</span></div>
-                                <div style="display: flex; align-items: center; gap: 0.5rem;"><span style="color: var(--success);">✓</span><span>Tüm Atölyeler</span></div>
-                                <div style="display: flex; align-items: center; gap: 0.5rem;"><span style="color: var(--success);">✓</span><span>Tüm e-Kitaplar</span></div>
-                            </div>
-                        </div>
-                        <div class="card" style="margin-bottom: 1rem; cursor: pointer; border: 3px solid var(--primary); background: linear-gradient(135deg, var(--primary-light), white); position: relative;">
-                            <div style="position: absolute; top: -12px; right: 1rem; background: var(--primary); color: white; padding: 0.25rem 0.75rem; border-radius: 0.5rem; font-size: 0.75rem; font-weight: 700;">POPÜLER</div>
-                            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
-                                <div><h3 style="font-family: Poppins, sans-serif; font-size: 1.25rem; font-weight: 700; color: var(--secondary); margin-bottom: 0.5rem;">Aile</h3>
-                                <p style="font-size: 0.875rem; color: var(--gray-600);">5 kişiye kadar</p></div>
-                                <div><div style="font-family: Poppins, sans-serif; font-size: 1.75rem; font-weight: 800; color: var(--primary);">₺899</div>
-                                <p style="font-size: 0.75rem; color: var(--gray-600); text-align: right;">/ay</p></div>
-                            </div>
-                            <div style="display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.875rem; color: var(--gray-700);">
-                                <div style="display: flex; align-items: center; gap: 0.5rem;"><span style="color: var(--success);">✓</span><span>Tüm İçerikler</span></div>
-                                <div style="display: flex; align-items: center; gap: 0.5rem;"><span style="color: var(--success);">✓</span><span>5 Kişi Paylaşım</span></div>
-                                <div style="display: flex; align-items: center; gap: 0.5rem;"><span style="color: var(--success);">✓</span><span>Kişi Yönetimi</span></div>
-                            </div>
-                        </div>
-                        <div class="card" style="margin-bottom: 1.5rem; cursor: pointer; border: 2px solid var(--gray-300);">
-                            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
-                                <div><h3 style="font-family: Poppins, sans-serif; font-size: 1.25rem; font-weight: 700; color: var(--secondary); margin-bottom: 0.5rem;">Grup</h3>
-                                <p style="font-size: 0.875rem; color: var(--gray-600);">10 kişiye kadar</p></div>
-                                <div><div style="font-family: Poppins, sans-serif; font-size: 1.75rem; font-weight: 800; color: var(--primary);">₺1.699</div>
-                                <p style="font-size: 0.75rem; color: var(--gray-600); text-align: right;">/ay</p></div>
-                            </div>
-                            <div style="display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.875rem; color: var(--gray-700);">
-                                <div style="display: flex; align-items: center; gap: 0.5rem;"><span style="color: var(--success);">✓</span><span>Tüm İçerikler</span></div>
-                                <div style="display: flex; align-items: center; gap: 0.5rem;"><span style="color: var(--success);">✓</span><span>10 Kişi Paylaşım</span></div>
-                                <div style="display: flex; align-items: center; gap: 0.5rem;"><span style="color: var(--success);">✓</span><span>Gelişmiş Yönetim</span></div>
-                            </div>
-                        </div>
-                        <button class="btn btn-primary" style="width: 100%; padding: 1rem; font-size: 1.125rem; margin-bottom: 1rem;" onclick="parent.showScreen(2)">Devam Et</button>
-                        <p style="text-align: center; font-size: 0.75rem; color: var(--gray-600);">🎓 Öğrenci misiniz? %50 indirim için doğrulayın</p>
+                            <div class="plan-seat">${p.seats} kisi limiti</div>
+                            <ul class="check-list">
+                                <li>Tum iceriklere erisim</li>
+                                <li>Plan karsilastirma acikligi</li>
+                                <li>Secilen plan gorunur vurgu</li>
+                            </ul>
+                        </button>
+                    `;
+                })
+                .join('');
+        }
+
+        function screenOne() {
+            const body = `
+                ${stateControls(1)}
+                ${statePanel(1)}
+                ${ui.screenStates[1] !== 'ready' ? '' : `
+                    <div class="card">
+                        <div class="title-sm" style="margin-bottom: 0.35rem;">Planlar</div>
+                        <div class="muted" style="margin-bottom: 0.6rem;">Bireysel (1), Aile (5), Grup (10) planlari karsilastirilmali gosterilir.</div>
+                        <div class="plan-grid">${renderPlanCards()}</div>
                     </div>
-                </div></div></div>`,
-                2: `<div class="iphone fade-in"><div class="island"></div><div class="screen"><div class="content">
-                    <div class="status"><div>9:41</div><div>📶 📡 🔋</div></div>
-                    <div style="padding: 3rem 1.5rem; text-align: center;">
-                        <div style="font-size: 5rem; margin-bottom: 1.5rem;">🎉</div>
-                        <h1 style="font-family: Poppins, sans-serif; font-size: 2rem; font-weight: 800; color: var(--secondary); margin-bottom: 1rem;">Hoş Geldiniz!</h1>
-                        <p style="font-size: 1rem; color: var(--gray-700); margin-bottom: 2rem; line-height: 1.6;">Aile planınız başarıyla aktif edildi.<br>Artık tüm içeriklere erişebilirsiniz.</p>
-                        <div class="card" style="margin-bottom: 2rem; text-align: left;">
-                            <div style="display: flex; justify-content: space-between; margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid var(--gray-200);">
-                                <span style="color: var(--gray-600); font-size: 0.875rem;">Plan</span>
-                                <span style="font-weight: 700; color: var(--gray-900);">Aile (5 kişi)</span>
-                            </div>
-                            <div style="display: flex; justify-content: space-between; margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid var(--gray-200);">
-                                <span style="color: var(--gray-600); font-size: 0.875rem;">Ücret</span>
-                                <span style="font-weight: 700; color: var(--gray-900);">₺899/ay</span>
-                            </div>
-                            <div style="display: flex; justify-content: space-between;">
-                                <span style="color: var(--gray-600); font-size: 0.875rem;">Yenileme</span>
-                                <span style="font-weight: 700; color: var(--gray-900);">23 Şubat 2026</span>
-                            </div>
-                        </div>
-                        <button class="btn btn-primary" style="width: 100%; padding: 1rem; font-size: 1.125rem; margin-bottom: 1rem;" onclick="parent.showScreen(3)">Keşfe Başla</button>
-                        <button style="background: none; border: none; color: var(--primary); font-weight: 600; font-size: 0.9375rem; cursor: pointer;">Kişileri Davet Et</button>
+                    <div class="card">
+                        <div class="title-sm" style="margin-bottom: 0.45rem;">Plan Karsilastirma Tablosu</div>
+                        <table class="comparison-table">
+                            <thead>
+                                <tr><th>Ozellik</th><th>Bireysel</th><th>Aile</th><th>Grup</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>Kisi Limiti</td><td>1</td><td>5</td><td>10</td></tr>
+                                <tr><td>Tum Icerikler</td><td>✓</td><td>✓</td><td>✓</td></tr>
+                                <tr><td>Kisi Yonetimi</td><td>-</td><td>✓</td><td>✓</td></tr>
+                            </tbody>
+                        </table>
                     </div>
-                </div></div></div>`,
-                3: `<div class="iphone fade-in"><div class="island"></div><div class="screen"><div class="content">
-                    <div class="status"><div>9:41</div><div>📶 📡 🔋</div></div>
-                    <div style="background: white; padding: 1rem 1.5rem; border-bottom: 1px solid var(--gray-200);">
-                        <div style="display: flex; align-items: center; gap: 1rem;">
-                            <button style="background: none; border: none; font-size: 1.5rem; cursor: pointer;">←</button>
-                            <h2 style="font-family: Poppins, sans-serif; font-size: 1.25rem; font-weight: 800; color: var(--secondary);">Abonelik Yönetimi</h2>
+                    <button class="btn btn-primary" onclick="showScreen(2)">Devam Et</button>
+                    <div class="card">
+                        <div class="row">
+                            <div>
+                                <div class="title-sm">Ogrenci indirimi</div>
+                                <div class="muted">%50 indirim icin dogrulama akisina gecin.</div>
+                            </div>
+                            <button class="btn btn-outline" onclick="showScreen(4)">Dogrula</button>
                         </div>
                     </div>
-                    <div style="padding: 1.5rem;">
-                        <div class="card" style="margin-bottom: 1.5rem; background: linear-gradient(135deg, var(--primary-light), var(--primary-100)); border: 2px solid var(--primary);">
-                            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
-                                <div><h3 style="font-family: Poppins, sans-serif; font-size: 1.25rem; font-weight: 700; color: var(--secondary);">Aile Planı</h3>
-                                <p style="font-size: 0.875rem; color: var(--gray-600);">Aktif</p></div>
-                                <div style="background: var(--success); color: white; padding: 0.375rem 0.75rem; border-radius: 0.5rem; font-size: 0.75rem; font-weight: 700;">AKTİF</div>
-                            </div>
-                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.75rem;">
-                                <span style="font-size: 0.875rem; color: var(--gray-700);">Kişi Sayısı</span>
-                                <span style="font-weight: 700; color: var(--primary-dark);">3/5 dolu</span>
-                            </div>
-                            <div style="display: flex; justify-content: space-between;">
-                                <span style="font-size: 0.875rem; color: var(--gray-700);">Yenileme Tarihi</span>
-                                <span style="font-weight: 700; color: var(--gray-900);">23 Şubat 2026</span>
-                            </div>
-                        </div>
-                        <div style="margin-bottom: 1.5rem;">
-                            <h3 style="font-weight: 700; color: var(--gray-900); margin-bottom: 1rem; font-size: 1rem;">Yönetim</h3>
-                            <div class="card" style="margin-bottom: 0.75rem; cursor: pointer;" onclick="parent.showScreen(4)">
-                                <div style="display: flex; align-items: center; gap: 1rem;"><div style="font-size: 1.5rem;">🎁</div>
-                                    <div style="flex: 1;"><div style="font-weight: 600; color: var(--gray-900); font-size: 0.9375rem;">Add-on Yönetimi</div>
-                                    <p style="font-size: 0.75rem; color: var(--gray-600);">AI Paketi, Ek Kişiler</p></div>
-                                    <div style="color: var(--gray-400);">›</div>
-                                </div>
-                            </div>
-                            <div class="card" style="margin-bottom: 0.75rem; cursor: pointer;" onclick="parent.showScreen(5)">
-                                <div style="display: flex; align-items: center; gap: 1rem;"><div style="font-size: 1.5rem;">👥</div>
-                                    <div style="flex: 1;"><div style="font-weight: 600; color: var(--gray-900); font-size: 0.9375rem;">Kişi Yönetimi</div>
-                                    <p style="font-size: 0.75rem; color: var(--gray-600);">3/5 dolu</p></div>
-                                    <div style="color: var(--gray-400);">›</div>
-                                </div>
-                            </div>
-                            <div class="card" style="margin-bottom: 0.75rem; cursor: pointer;">
-                                <div style="display: flex; align-items: center; gap: 1rem;"><div style="font-size: 1.5rem;">📄</div>
-                                    <div style="flex: 1;"><div style="font-weight: 600; color: var(--gray-900); font-size: 0.9375rem;">Ödeme Geçmişi</div></div>
-                                    <div style="color: var(--gray-400);">›</div>
-                                </div>
-                            </div>
-                            <div class="card" style="cursor: pointer;">
-                                <div style="display: flex; align-items: center; gap: 1rem;"><div style="font-size: 1.5rem;">🔄</div>
-                                    <div style="flex: 1;"><div style="font-weight: 600; color: var(--gray-900); font-size: 0.9375rem;">Satın Alımları Geri Yükle</div></div>
-                                    <div style="color: var(--gray-400);">›</div>
-                                </div>
-                            </div>
-                        </div>
+                `}
+            `;
+            return phoneShell('Plan Secimi', body, null);
+        }
+
+        function startPurchase() {
+            showToast('Apple/Google satin alma akisi acildi.');
+        }
+
+        function activateEntitlement() {
+            ui.activePlan = ui.selectedPlan;
+            if (ui.targetPlan === 'individual' && occupiedSeats() > plans.individual.seats) {
+                ui.targetPlan = 'family';
+            }
+            showToast('Entitlement aktif. Cihazlar arasi senkron tamamlandi.', 'success');
+            render();
+        }
+
+        function screenTwo() {
+            const body = `
+                ${stateControls(2)}
+                ${statePanel(2)}
+                ${ui.screenStates[2] !== 'ready' ? '' : `
+                    <div class="card">
+                        <div class="title-sm" style="margin-bottom: 0.45rem;">Satin Alma Akisi</div>
+                        <ul class="check-list">
+                            <li>Platform satin alma paneli acilir (Apple/Google)</li>
+                            <li>Server-side dogrulama sonrasi erisim aktif edilir</li>
+                            <li>Diger cihazlarda giriste abonelik otomatik senkronlanir</li>
+                            <li>Hata durumunda acik ve geri alinabilir mesaj gosterilir</li>
+                        </ul>
+                    </div>
+                    <div class="state-panel error">
+                        <strong>Ornek Satin Alma Hatasi</strong>
+                        <span>Odeme dogrulanamadi. Baglantiyi kontrol edip tekrar deneyin.</span>
+                        <button class="btn btn-outline" onclick="showToast('Satin alma tekrar denendi.')">Tekrar Dene</button>
+                    </div>
+                    <button class="btn btn-primary" onclick="startPurchase()">Satin Almayi Baslat</button>
+                    <button class="btn btn-outline" onclick="activateEntitlement()">Entitlement Dogrula</button>
+                    <button class="btn btn-outline" onclick="showScreen(5)">Plan Yonetimine Git</button>
+                `}
+            `;
+            return phoneShell('Satin Alma ve Aktivasyon', body, 1);
+        }
+
+        function setRole(role) {
+            ui.userRole = role;
+            render();
+        }
+
+        function toggleAddOn(addOnId) {
+            if (ui.userRole === 'member') {
+                showToast('Plan Uyesi add-on satin alamaz. Plan Sahibi gerekli.', 'error');
+                return;
+            }
+
+            if (addOnId === 'seat_plus_5' && !canUseSeatAddOn()) {
+                showToast('Ek Kisi add-on yalnizca Aile/Grup planinda gosterilir.', 'error');
+                return;
+            }
+
+            ui.addOnStatus[addOnId] = !ui.addOnStatus[addOnId];
+            showToast('Add-on durumu guncellendi.', 'success');
+            render();
+        }
+
+        function renderAddOnRows() {
+            return addOnCatalog
+                .filter((item) => item.allowedPlans.includes(ui.activePlan))
+                .map((item) => `
+                    <div class="list-item">
                         <div>
-                            <h3 style="font-weight: 700; color: var(--gray-900); margin-bottom: 1rem; font-size: 1rem;">Plan İşlemleri</h3>
-                            <button style="width: 100%; padding: 1rem; background: white; border: 2px solid var(--gray-300); border-radius: 0.75rem; font-weight: 600; color: var(--gray-900); font-size: 0.9375rem; margin-bottom: 0.75rem; cursor: pointer;">Planı Değiştir</button>
-                            <button style="width: 100%; padding: 1rem; background: white; border: 2px solid var(--error); color: var(--error); border-radius: 0.75rem; font-weight: 600; font-size: 0.9375rem; cursor: pointer;">Aboneliği İptal Et</button>
+                            <div class="title-sm">${item.label}</div>
+                            <div class="muted">${item.desc}</div>
+                            <div class="muted" style="font-weight: 700; margin-top: 0.2rem;">${item.price}</div>
                         </div>
+                        <button class="toggle ${ui.addOnStatus[item.id] ? 'active' : ''}" onclick="toggleAddOn('${item.id}')" aria-pressed="${ui.addOnStatus[item.id]}"></button>
                     </div>
-                </div></div></div>`,
-                4: `<div class="iphone fade-in"><div class="island"></div><div class="screen"><div class="content">
-                    <div class="status"><div>9:41</div><div>📶 📡 🔋</div></div>
-                    <div style="background: white; padding: 1rem 1.5rem; border-bottom: 1px solid var(--gray-200);">
-                        <div style="display: flex; align-items: center; gap: 1rem;">
-                            <button style="background: none; border: none; font-size: 1.5rem; cursor: pointer;" onclick="parent.showScreen(3)">←</button>
-                            <h2 style="font-family: Poppins, sans-serif; font-size: 1.25rem; font-weight: 800; color: var(--secondary);">Add-on Yönetimi</h2>
-                        </div>
-                    </div>
-                    <div style="padding: 1.5rem;">
-                        <p style="color: var(--gray-600); margin-bottom: 1.5rem; font-size: 0.9375rem;">Aboneliğinizi güçlendirin</p>
-                        <div class="card" style="margin-bottom: 1rem; border: 2px solid var(--gray-300);">
-                            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
-                                <div style="flex: 1;"><h4 style="font-weight: 700; font-size: 1rem; color: var(--gray-900); margin-bottom: 0.5rem;">🤖 AI Paketi</h4>
-                                <p style="font-size: 0.875rem; color: var(--gray-600); margin-bottom: 0.75rem;">Kişiselleştirilmiş içerik önerileri ve analiz</p>
-                                <div style="font-family: Poppins, sans-serif; font-size: 1.25rem; font-weight: 700; color: var(--primary);">₺199<span style="font-size: 0.875rem; font-weight: 400; color: var(--gray-600);">/ay</span></div></div>
-                                <div style="width: 51px; height: 31px; background: var(--gray-300); border-radius: 9999px; position: relative; cursor: pointer; flex-shrink: 0;">
-                                    <div style="position: absolute; left: 4px; top: 4px; width: 23px; height: 23px; background: white; border-radius: 9999px;"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card" style="margin-bottom: 1rem; border: 2px solid var(--primary); background: linear-gradient(135deg, var(--primary-light), white);">
-                            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
-                                <div style="flex: 1;"><h4 style="font-weight: 700; font-size: 1rem; color: var(--gray-900); margin-bottom: 0.5rem;">👥 Ek Kişi Paketi</h4>
-                                <p style="font-size: 0.875rem; color: var(--gray-600); margin-bottom: 0.75rem;">5 ek kişi kapasitesi (Toplam: 10)</p>
-                                <div style="font-family: Poppins, sans-serif; font-size: 1.25rem; font-weight: 700; color: var(--primary);">₺450<span style="font-size: 0.875rem; font-weight: 400; color: var(--gray-600);">/ay</span></div></div>
-                                <div style="width: 51px; height: 31px; background: var(--primary); border-radius: 9999px; position: relative; cursor: pointer; flex-shrink: 0;">
-                                    <div style="position: absolute; right: 4px; top: 4px; width: 23px; height: 23px; background: white; border-radius: 9999px;"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card" style="margin-bottom: 1.5rem; border: 2px solid var(--gray-300);">
-                            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
-                                <div style="flex: 1;"><h4 style="font-weight: 700; font-size: 1rem; color: var(--gray-900); margin-bottom: 0.5rem;">📚 Koçluk Eğitimi</h4>
-                                <p style="font-size: 0.875rem; color: var(--gray-600); margin-bottom: 0.75rem;">Profesyonel coaching sertifika programı</p>
-                                <div style="font-family: Poppins, sans-serif; font-size: 1.25rem; font-weight: 700; color: var(--primary);">₺2.999<span style="font-size: 0.875rem; font-weight: 400; color: var(--gray-600);">/tek seferlik</span></div></div>
-                                <div style="width: 51px; height: 31px; background: var(--gray-300); border-radius: 9999px; position: relative; cursor: pointer; flex-shrink: 0;">
-                                    <div style="position: absolute; left: 4px; top: 4px; width: 23px; height: 23px; background: white; border-radius: 9999px;"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card" style="background: var(--secondary-light);">
-                            <p style="font-size: 0.8125rem; color: var(--gray-700); line-height: 1.5;">
-                                <strong style="color: var(--secondary);">💡 Not:</strong> Add-on'lar ana aboneliğinizle birlikte yenilenir. İstediğiniz zaman değiştirebilirsiniz.
-                            </p>
-                        </div>
-                    </div>
-                </div></div></div>`,
-                5: `<div class="iphone fade-in"><div class="island"></div><div class="screen"><div class="content">
-                    <div class="status"><div>9:41</div><div>📶 📡 🔋</div></div>
-                    <div style="background: white; padding: 1rem 1.5rem; border-bottom: 1px solid var(--gray-200);">
-                        <div style="display: flex; align-items: center; gap: 1rem;">
-                            <button style="background: none; border: none; font-size: 1.5rem; cursor: pointer;" onclick="parent.showScreen(3)">←</button>
-                            <h2 style="font-family: Poppins, sans-serif; font-size: 1.25rem; font-weight: 800; color: var(--secondary);">Kişi Yönetimi</h2>
-                        </div>
-                    </div>
-                    <div style="padding: 1.5rem;">
-                        <div class="card" style="margin-bottom: 1.5rem; background: linear-gradient(135deg, var(--primary-light), var(--primary-100)); border: 2px solid var(--primary);">
-                            <div style="display: flex; justify-content: space-between; align-items: center;">
-                                <div><div style="font-size: 0.875rem; color: var(--gray-700); margin-bottom: 0.25rem;">Kullanılan Kapasite</div>
-                                <div style="font-family: Poppins, sans-serif; font-size: 2rem; font-weight: 800; color: var(--primary);">3/5</div></div>
-                                <div style="font-size: 3rem;">👥</div>
-                            </div>
-                        </div>
-                        <button class="btn btn-primary" style="width: 100%; padding: 1rem; margin-bottom: 1.5rem;">+ Yeni Kişi Davet Et</button>
-                        <h3 style="font-weight: 700; color: var(--gray-900); margin-bottom: 1rem; font-size: 1rem;">Mevcut Üyeler</h3>
-                        <div class="card" style="margin-bottom: 0.75rem;">
-                            <div style="display: flex; align-items: center; gap: 1rem;">
-                                <div style="width: 48px; height: 48px; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); border-radius: 9999px; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; color: white; font-weight: 700;">AY</div>
-                                <div style="flex: 1;">
-                                    <div style="font-weight: 600; color: var(--gray-900); font-size: 0.9375rem;">Ahmet Yılmaz</div>
-                                    <p style="font-size: 0.75rem; color: var(--gray-600);">Plan Sahibi</p>
-                                </div>
-                                <div style="background: var(--success-light); color: var(--success-dark); padding: 0.25rem 0.75rem; border-radius: 0.5rem; font-size: 0.75rem; font-weight: 700;">SAHİP</div>
-                            </div>
-                        </div>
-                        <div class="card" style="margin-bottom: 0.75rem;">
-                            <div style="display: flex; align-items: center; gap: 1rem;">
-                                <div style="width: 48px; height: 48px; background: linear-gradient(135deg, var(--secondary-light), #E9D5FF); border-radius: 9999px; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; color: var(--secondary); font-weight: 700;">FY</div>
-                                <div style="flex: 1;">
-                                    <div style="font-weight: 600; color: var(--gray-900); font-size: 0.9375rem;">Fatma Yılmaz</div>
-                                    <p style="font-size: 0.75rem; color: var(--gray-600);">fatma@email.com</p>
-                                </div>
-                                <button style="background: none; border: none; color: var(--error); font-size: 1.25rem; cursor: pointer;">🗑️</button>
-                            </div>
-                        </div>
-                        <div class="card" style="margin-bottom: 0.75rem;">
-                            <div style="display: flex; align-items: center; gap: 1rem;">
-                                <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #FEF3C7, #FDE68A); border-radius: 9999px; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; color: var(--warning); font-weight: 700;">MY</div>
-                                <div style="flex: 1;">
-                                    <div style="font-weight: 600; color: var(--gray-900); font-size: 0.9375rem;">Mehmet Yılmaz</div>
-                                    <p style="font-size: 0.75rem; color: var(--gray-600);">mehmet@email.com</p>
-                                </div>
-                                <button style="background: none; border: none; color: var(--error); font-size: 1.25rem; cursor: pointer;">🗑️</button>
-                            </div>
-                        </div>
-                        <div class="card" style="background: var(--gray-50); border: 2px dashed var(--gray-300);">
-                            <div style="text-align: center; padding: 1rem;">
-                                <div style="font-size: 2rem; margin-bottom: 0.5rem; opacity: 0.5;">👤</div>
-                                <p style="font-size: 0.875rem; color: var(--gray-600);">2 boş slot</p>
-                            </div>
-                        </div>
-                    </div>
-                </div></div></div>`
-            };
-            return screens[num] || screens[1];
+                `)
+                .join('');
         }
-        document.getElementById('viewer').innerHTML = getScreenHTML(1);
+
+        function screenThree() {
+            const roleBadge = ui.userRole === 'owner' ? '<span class="chip success">Plan Sahibi</span>' : '<span class="chip warning">Plan Uyesi</span>';
+
+            const body = `
+                ${stateControls(3)}
+                ${statePanel(3)}
+                ${ui.screenStates[3] !== 'ready' ? '' : `
+                    <div class="card">
+                        <div class="row" style="margin-bottom: 0.45rem;">
+                            <div class="title-sm">Rol</div>
+                            <div class="chips">${roleBadge}</div>
+                        </div>
+                        <div class="chips">
+                            <button class="btn btn-outline" onclick="setRole('owner')">Plan Sahibi Gorunumu</button>
+                            <button class="btn btn-outline" onclick="setRole('member')">Plan Uyesi Gorunumu</button>
+                        </div>
+                    </div>
+                    ${ui.activePlan === 'individual' ? `
+                        <div class="state-panel offline">
+                            <strong>Plan Kurali</strong>
+                            <span>Ek Kisi add-on yalnizca Aile veya Grup planinda listelenir.</span>
+                        </div>
+                    ` : ''}
+                    <div class="list">${renderAddOnRows()}</div>
+                    ${ui.userRole === 'member' ? `
+                        <div class="state-panel error">
+                            <strong>Yetki Siniri</strong>
+                            <span>Plan Uyesi add-on satin alma islemi yapamaz. Yalnizca Plan Sahibi yetkilidir.</span>
+                        </div>
+                    ` : ''}
+                `}
+            `;
+            return phoneShell('Add-on Yonetimi', body, 5);
+        }
+
+        function setStudentMethod(method) {
+            ui.studentMethod = method;
+            render();
+        }
+
+        function verifyStudent() {
+            ui.studentVerified = true;
+            showToast('%50 ogrenci indirimi aktif edildi.', 'success');
+            render();
+        }
+
+        function screenFour() {
+            const selected = plans[ui.selectedPlan];
+            const discountedPrice = Math.round((parseInt(selected.price.replace(/[^0-9]/g, ''), 10) || 0) * 0.5);
+            const body = `
+                ${stateControls(4)}
+                ${statePanel(4)}
+                ${ui.screenStates[4] !== 'ready' ? '' : `
+                    <div class="card">
+                        <div class="title-sm" style="margin-bottom: 0.45rem;">Dogrulama Yontemi</div>
+                        <div class="chips" style="margin-bottom: 0.6rem;">
+                            <button class="btn ${ui.studentMethod === 'email' ? 'btn-primary' : 'btn-outline'}" onclick="setStudentMethod('email')">Ogrenci E-postasi</button>
+                            <button class="btn ${ui.studentMethod === 'document' ? 'btn-primary' : 'btn-outline'}" onclick="setStudentMethod('document')">Belge Yukleme</button>
+                        </div>
+                        <div class="muted">Secilen yontem: ${ui.studentMethod === 'email' ? 'Ogrenci e-postasi' : 'Belge yukleme'}</div>
+                    </div>
+                    <div class="card">
+                        <div class="title-sm" style="margin-bottom: 0.35rem;">Gizlilik Aciklamasi</div>
+                        <div class="muted">Kimlik ve ogrenci dogrulama verileri yalnizca indirim dogrulamasi icin kullanilir.</div>
+                    </div>
+                    ${ui.studentRenewalWarning ? `
+                        <div class="state-panel offline">
+                            <strong>Yillik Yeniden Dogrulama Uyarisi</strong>
+                            <span>Dogrulama suresi yaklasiyor. Yenileme tarihinden once tekrar dogrulama gerekli.</span>
+                        </div>
+                    ` : ''}
+                    <button class="btn btn-primary" onclick="verifyStudent()">Dogrulamayi Tamamla</button>
+                    ${ui.studentVerified ? `
+                        <div class="state-panel loading">
+                            <strong>Indirim Aktif</strong>
+                            <span>${selected.label} planinda yeni tutar: ₺${discountedPrice}/ay</span>
+                        </div>
+                    ` : ''}
+                `}
+            `;
+            return phoneShell('Ogrenci Indirimi', body, 1);
+        }
+
+        function setTargetPlan(planId) {
+            ui.targetPlan = planId;
+            render();
+        }
+
+        function applyPlanChange() {
+            const limit = plans[ui.targetPlan].seats;
+            if (occupiedSeats() > limit) {
+                showToast('Plan dusurme icin once uye sayisi azaltilmali.', 'error');
+                return;
+            }
+
+            ui.activePlan = ui.targetPlan;
+            showToast('Plan degisikligi kaydedildi.', 'success');
+            render();
+        }
+
+        function goCancelPlatform() {
+            showToast('Platform iptal akisina yonlendirildi. Erişim donem sonuna kadar acik kalir.');
+        }
+
+        function screenFive() {
+            const used = occupiedSeats();
+            const limit = effectiveSeatLimit();
+            const targetLimit = plans[ui.targetPlan].seats;
+            const downgradeBlocked = used > targetLimit;
+
+            const body = `
+                ${stateControls(5)}
+                ${statePanel(5)}
+                ${ui.screenStates[5] !== 'ready' ? '' : `
+                    <div class="card">
+                        <div class="row"><span class="muted">Mevcut Plan</span><strong>${plans[ui.activePlan].label}</strong></div>
+                        <div class="row"><span class="muted">Yenileme Tarihi</span><strong>03 Nisan 2026</strong></div>
+                        <div class="row"><span class="muted">Doluluk</span><strong>${used}/${limit}</strong></div>
+                        <div class="seat-bar"><div style="width: ${Math.min(100, Math.round((used / limit) * 100))}%;"></div></div>
+                    </div>
+
+                    <div class="card">
+                        <div class="title-sm" style="margin-bottom: 0.45rem;">Plan Degistir</div>
+                        <div class="chips" style="margin-bottom: 0.55rem;">
+                            <button class="btn ${ui.targetPlan === 'individual' ? 'btn-primary' : 'btn-outline'}" onclick="setTargetPlan('individual')">Bireysel</button>
+                            <button class="btn ${ui.targetPlan === 'family' ? 'btn-primary' : 'btn-outline'}" onclick="setTargetPlan('family')">Aile</button>
+                            <button class="btn ${ui.targetPlan === 'group' ? 'btn-primary' : 'btn-outline'}" onclick="setTargetPlan('group')">Grup</button>
+                        </div>
+                        ${downgradeBlocked ? `
+                            <div class="state-panel error">
+                                <strong>Plan Dusurme Engeli</strong>
+                                <span>Secilen planda limit ${targetLimit}. Mevcut uye sayisi ${used}. Once uye azaltin.</span>
+                            </div>
+                        ` : ''}
+                        <button class="btn btn-primary" onclick="applyPlanChange()" ${downgradeBlocked ? 'disabled' : ''}>Plani Guncelle</button>
+                    </div>
+
+                    <div class="card">
+                        <div class="title-sm" style="margin-bottom: 0.35rem;">Iptal Etki Ozeti</div>
+                        <ul class="check-list">
+                            <li>Iptal edilse de donem sonuna kadar erisim devam eder</li>
+                            <li>Yolculuk ve atelye ilerlemesi hesapta sakli kalir</li>
+                            <li>Iptal islemi platform akisinda tamamlanir</li>
+                        </ul>
+                        <div style="margin-top: 0.7rem;"></div>
+                        <button class="btn btn-danger" onclick="goCancelPlatform()">Platform Iptal Akisina Git</button>
+                    </div>
+
+                    <div class="card">
+                        <div class="title-sm" style="margin-bottom: 0.45rem;">Ilgili Ekranlar</div>
+                        <div class="chips">
+                            <button class="btn btn-outline" onclick="showScreen(3)">Add-on Yonetimi</button>
+                            <button class="btn btn-outline" onclick="showScreen(6)">Seat Yonetimi</button>
+                            <button class="btn btn-outline" onclick="showScreen(7)">Odeme Gecmisi</button>
+                        </div>
+                    </div>
+                `}
+            `;
+            return phoneShell('Plan Yonetimi', body, null);
+        }
+
+        function inviteSeat(channel) {
+            if (ui.userRole === 'member') {
+                showToast('Plan Uyesi davet gonderemez.', 'error');
+                return;
+            }
+
+            const openSeat = ui.seats.find((seat) => seat.state === 'open');
+            if (!openSeat) {
+                showToast('Bos slot kalmadi. Ek Kisi add-on onerilir.', 'error');
+                return;
+            }
+
+            openSeat.state = 'invited';
+            openSeat.name = channel === 'email' ? 'Davetli (e-posta)' : 'Davetli (telefon)';
+            showToast('Davet gonderildi.', 'success');
+            render();
+        }
+
+        function removeSeat(seatId) {
+            const seat = ui.seats.find((item) => item.id === seatId);
+            if (!seat || seat.state === 'owner' || seat.state === 'open') {
+                return;
+            }
+
+            seat.state = 'open';
+            seat.name = 'Bos Slot';
+            showToast('Uye kaldirildi.', 'success');
+            render();
+        }
+
+        function seatStateChip(state) {
+            if (state === 'owner') {
+                return '<span class="chip success">Sahip</span>';
+            }
+            if (state === 'active') {
+                return '<span class="chip success">Aktif</span>';
+            }
+            if (state === 'invited') {
+                return '<span class="chip warning">Davet</span>';
+            }
+            return '<span class="chip">Bos</span>';
+        }
+
+        function screenSix() {
+            const used = occupiedSeats();
+            const limit = effectiveSeatLimit();
+            const full = used >= limit;
+
+            const ownerView = `
+                <div class="card">
+                    <div class="row"><span class="muted">Kapasite</span><strong>${used}/${limit}</strong></div>
+                    <div class="seat-bar"><div style="width: ${Math.min(100, Math.round((used / limit) * 100))}%;"></div></div>
+                </div>
+                <div class="card">
+                    <div class="title-sm" style="margin-bottom: 0.45rem;">Davet Gonder</div>
+                    <div class="chips">
+                        <button class="btn btn-outline" onclick="inviteSeat('email')">E-posta ile Davet</button>
+                        <button class="btn btn-outline" onclick="inviteSeat('phone')">Telefon ile Davet</button>
+                    </div>
+                </div>
+                <div class="list">
+                    ${ui.seats
+                        .map((seat) => `
+                            <div class="list-item">
+                                <div>
+                                    <div class="title-sm">${seat.name}</div>
+                                    <div class="muted">Durum: ${seat.state}</div>
+                                </div>
+                                <div class="chips">
+                                    ${seatStateChip(seat.state)}
+                                    ${seat.state === 'active' || seat.state === 'invited' ? `<button class="btn btn-outline" onclick="removeSeat('${seat.id}')">Kaldir</button>` : ''}
+                                </div>
+                            </div>
+                        `)
+                        .join('')}
+                </div>
+                ${full ? `
+                    <div class="state-panel offline">
+                        <strong>Kapasite Dolu</strong>
+                        <span>Limit dolu oldugu icin Ek Kisi add-on oneriliyor.</span>
+                        <button class="btn btn-outline" onclick="showScreen(3)">Add-on Ac</button>
+                    </div>
+                ` : ''}
+            `;
+
+            const memberView = `
+                <div class="state-panel loading">
+                    <strong>Plan Uyesi Gorunumu</strong>
+                    <span>Plan Uyesi yalnizca kendi seat durumunu gorur, davet veya kaldirma yapamaz.</span>
+                    <div class="chips"><span class="chip">Durum: Aktif Uye</span></div>
+                </div>
+            `;
+
+            const body = `
+                ${stateControls(6)}
+                ${statePanel(6)}
+                ${ui.screenStates[6] !== 'ready' ? '' : `
+                    <div class="card">
+                        <div class="title-sm" style="margin-bottom: 0.45rem;">Rol Simulasyonu</div>
+                        <div class="chips">
+                            <button class="btn btn-outline" onclick="setRole('owner')">Plan Sahibi</button>
+                            <button class="btn btn-outline" onclick="setRole('member')">Plan Uyesi</button>
+                        </div>
+                    </div>
+                    ${ui.userRole === 'owner' ? ownerView : memberView}
+                `}
+            `;
+            return phoneShell('Kisi (Seat) Yonetimi', body, 5);
+        }
+
+        function selectReceipt(receiptId) {
+            ui.selectedReceiptId = receiptId;
+            render();
+        }
+
+        function restorePurchases() {
+            ui.lastRestore = nowStamp();
+            showToast('Satin alimlar platform uzerinden geri yuklendi.', 'success');
+            render();
+        }
+
+        function screenSeven() {
+            const receipt = paymentHistory.find((row) => row.id === ui.selectedReceiptId) || paymentHistory[0];
+
+            const body = `
+                ${stateControls(7)}
+                ${statePanel(7)}
+                ${ui.screenStates[7] !== 'ready' ? '' : `
+                    <div class="card">
+                        <div class="title-sm" style="margin-bottom: 0.45rem;">Son Odemeler</div>
+                        <div class="list">
+                            ${paymentHistory
+                                .map((row) => `
+                                    <div class="list-item">
+                                        <div>
+                                            <div class="title-sm">${row.date}</div>
+                                            <div class="muted">${row.amount} • ${row.method}</div>
+                                        </div>
+                                        <button class="btn btn-outline" onclick="selectReceipt('${row.id}')">Makbuz</button>
+                                    </div>
+                                `)
+                                .join('')}
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="title-sm" style="margin-bottom: 0.35rem;">Makbuz Detayi</div>
+                        <div class="muted">${receipt.receipt}</div>
+                    </div>
+                    <button class="btn btn-primary" onclick="restorePurchases()">Satin Alimlari Geri Yukle</button>
+                    <div class="chips"><span class="chip">Son restore: ${ui.lastRestore}</span></div>
+                `}
+            `;
+            return phoneShell('Odeme ve Geri Yukleme', body, 5);
+        }
+
+        function renderScreen(screenNo) {
+            if (screenNo === 1) {
+                return screenOne();
+            }
+            if (screenNo === 2) {
+                return screenTwo();
+            }
+            if (screenNo === 3) {
+                return screenThree();
+            }
+            if (screenNo === 4) {
+                return screenFour();
+            }
+            if (screenNo === 5) {
+                return screenFive();
+            }
+            if (screenNo === 6) {
+                return screenSix();
+            }
+            return screenSeven();
+        }
+
+        function updateTopBar() {
+            const data = screenData[ui.currentScreen];
+            document.getElementById('screenTitle').textContent = data.title;
+            document.getElementById('screenFR').textContent = data.fr;
+            document.getElementById('screenMeta').textContent = data.meta;
+        }
+
+        function updateNav() {
+            const navItems = Array.from(document.querySelectorAll('.nav-item'));
+            navItems.forEach((item) => {
+                const active = Number(item.dataset.screen) === ui.currentScreen;
+                item.classList.toggle('active', active);
+                item.setAttribute('aria-current', active ? 'page' : 'false');
+            });
+
+            for (let i = 1; i <= 7; i += 1) {
+                const flowBox = document.getElementById('flow-' + i);
+                if (flowBox) {
+                    flowBox.classList.toggle('active', i === ui.currentScreen);
+                }
+            }
+        }
+
+        function showScreen(screenNo) {
+            ui.currentScreen = screenNo;
+            render();
+        }
+
+        function setScreenState(screenNo, state) {
+            ui.screenStates[screenNo] = state;
+            render();
+        }
+
+        function selectPlan(planId) {
+            ui.selectedPlan = planId;
+            render();
+        }
+
+        function wireNavigation() {
+            const navItems = Array.from(document.querySelectorAll('.nav-item'));
+            navItems.forEach((item) => {
+                item.setAttribute('role', 'button');
+                item.setAttribute('tabindex', '0');
+
+                item.addEventListener('click', () => {
+                    showScreen(Number(item.dataset.screen));
+                });
+
+                item.addEventListener('keydown', (event) => {
+                    if (event.key === 'Enter' || event.key === ' ') {
+                        event.preventDefault();
+                        showScreen(Number(item.dataset.screen));
+                    }
+                });
+            });
+        }
+
+        function render() {
+            updateTopBar();
+            updateNav();
+            document.getElementById('viewer').innerHTML = renderScreen(ui.currentScreen);
+        }
+
+        wireNavigation();
+        render();
     </script>
 </body>
 </html>

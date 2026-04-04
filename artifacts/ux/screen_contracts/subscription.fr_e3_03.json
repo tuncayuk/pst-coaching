@@ -1,0 +1,70 @@
+{
+  "id": "subscription.fr_e3_03",
+  "title": "Add-on yönetimi",
+  "route": "/epic-3/fr-e3-03",
+  "purpose": "Implements FR-E3-03: Add-on yönetimi.",
+  "entryPoints": [
+    "profile.overview"
+  ],
+  "inputs": [
+    {
+      "name": "userId",
+      "type": "uuid",
+      "required": true,
+      "source": "session"
+    },
+    {
+      "name": "subscriptionStatus",
+      "type": "SubscriptionStatus",
+      "required": true,
+      "source": "entitlement_cache"
+    },
+    {
+      "name": "locale",
+      "type": "LanguageCode",
+      "required": true,
+      "source": "profile"
+    }
+  ],
+  "dataDependencies": [
+    "Subscription",
+    "SubscriptionPlan",
+    "AddOn",
+    "Seat"
+  ],
+  "uiStates": {
+    "loading": {
+      "description": "Skeleton placeholders are shown while loading FR-E3-03 data."
+    },
+    "ready": {
+      "description": "FR-E3-03 flows are fully interactive with primary CTA available when prerequisites are met."
+    },
+    "empty": {
+      "description": "Empty state explains why no data is available and points to next best action."
+    },
+    "error": {
+      "description": "Error state is recoverable with user-safe messaging and a retry action."
+    },
+    "offline": {
+      "description": "Offline state shows last synchronized data and queues write actions for later sync."
+    }
+  },
+  "analytics": {
+    "screenView": "subscription_fr_e3_03_viewed",
+    "events": [
+      "subscription_fr_e3_03_viewed"
+    ]
+  },
+  "acceptanceCriteriaRefs": [
+    "AC-FR-E3-03-01",
+    "AC-FR-E3-03-02",
+    "AC-FR-E3-03-03",
+    "AC-FR-E3-03-04"
+  ],
+  "gates": [
+    "add_on",
+    "auth",
+    "owner_role",
+    "subscription"
+  ]
+}

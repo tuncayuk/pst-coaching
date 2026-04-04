@@ -2,54 +2,52 @@
   "id": "home.dashboard",
   "title": "Ana Sayfa",
   "route": "/home",
-  "purpose": "Ana Sayfa deneyimini sunmak.",
+  "purpose": "Tab root screen for Ana Sayfa.",
   "entryPoints": [
-    "home.dashboard"
+    "app.launch"
   ],
   "inputs": [
     {
       "name": "locale",
       "type": "LanguageCode",
       "required": true,
-      "source": "app_state"
+      "source": "profile"
+    },
+    {
+      "name": "subscriptionStatus",
+      "type": "SubscriptionStatus",
+      "required": true,
+      "source": "entitlement_cache"
     }
   ],
   "dataDependencies": [
+    "User",
     "Subscription",
-    "SubscriptionAddOn",
-    "ContentProgress",
-    "Journey",
-    "Workshop",
-    "Ebook",
-    "Module"
+    "ContentProgress"
   ],
   "uiStates": {
     "loading": {
-      "description": "Ana Sayfa yüklenirken iskelet ve temel CTA'lar gösterilir."
+      "description": "Tab shows skeleton cards while initial data is loading."
     },
     "ready": {
-      "description": "Ana Sayfa içeriği ve etkileşimler hazır; son goruntulenenler bolumu gosterilir."
+      "description": "Tab content is visible and interactive."
     },
     "empty": {
-      "description": "İçerik yoksa açıklayıcı boş durum ve birincil aksiyon sunulur."
+      "description": "Tab-specific empty state with CTA is displayed."
     },
     "error": {
-      "description": "Hata mesajı ve tekrar dene aksiyonu gösterilir."
+      "description": "Tab-level error UI appears with retry action."
     },
     "offline": {
-      "description": "Çevrimdışı modda önbellek içerik gösterilir, senkron bekler."
+      "description": "Last cache is shown with offline indicator."
     }
   },
   "analytics": {
     "screenView": "home_dashboard_viewed",
     "events": [
-      "home_dashboard_viewed",
-      "recent_content_viewed",
-      "recent_content_item_clicked"
+      "home_dashboard_viewed"
     ]
   },
-  "acceptanceCriteriaRefs": [
-    "RQ-04"
-  ],
+  "acceptanceCriteriaRefs": [],
   "gates": []
 }

@@ -1,0 +1,64 @@
+{
+  "id": "accessibility.fr_e10_03",
+  "title": "Yüksek kontrast ve tema",
+  "route": "/epic-10/fr-e10-03",
+  "purpose": "Implements FR-E10-03: Yüksek kontrast ve tema.",
+  "entryPoints": [
+    "profile.accessibility"
+  ],
+  "inputs": [
+    {
+      "name": "userId",
+      "type": "uuid",
+      "required": true,
+      "source": "session"
+    },
+    {
+      "name": "subscriptionStatus",
+      "type": "SubscriptionStatus",
+      "required": true,
+      "source": "entitlement_cache"
+    },
+    {
+      "name": "locale",
+      "type": "LanguageCode",
+      "required": true,
+      "source": "profile"
+    }
+  ],
+  "dataDependencies": [
+    "AccessibilitySettings",
+    "User"
+  ],
+  "uiStates": {
+    "loading": {
+      "description": "Skeleton placeholders are shown while loading FR-E10-03 data."
+    },
+    "ready": {
+      "description": "FR-E10-03 flows are fully interactive with primary CTA available when prerequisites are met."
+    },
+    "empty": {
+      "description": "Empty state explains why no data is available and points to next best action."
+    },
+    "error": {
+      "description": "Error state is recoverable with user-safe messaging and a retry action."
+    },
+    "offline": {
+      "description": "Offline state shows last synchronized data and queues write actions for later sync."
+    }
+  },
+  "analytics": {
+    "screenView": "accessibility_fr_e10_03_viewed",
+    "events": [
+      "accessibility_fr_e10_03_viewed"
+    ]
+  },
+  "acceptanceCriteriaRefs": [
+    "AC-FR-E10-03-01",
+    "AC-FR-E10-03-02",
+    "AC-FR-E10-03-03"
+  ],
+  "gates": [
+    "auth"
+  ]
+}

@@ -63,6 +63,77 @@
         .btn { padding: 0.875rem 1.5rem; border-radius: 0.75rem; font-weight: 600; font-size: 1rem; border: none; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.2s; }
         .btn-primary { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; box-shadow: 0 4px 16px rgba(0,180,216,0.4); }
         .card { background: white; border-radius: 1rem; padding: 1.25rem; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+        a, button, input, .nav-item, .tab, .toggle-switch, .time-chip-btn { -webkit-tap-highlight-color: transparent; }
+        .nav-item:focus-visible,
+        .tab:focus-visible,
+        button:focus-visible,
+        input:focus-visible,
+        a:focus-visible,
+        .toggle-switch:focus-visible,
+        .time-chip-btn:focus-visible {
+            outline: 3px solid rgba(0, 180, 216, 0.3);
+            outline-offset: 2px;
+        }
+        .screen-link { color: var(--primary-dark); text-decoration: none; font-weight: 700; }
+        .screen-link:hover { text-decoration: underline; }
+        .status-chip { display: inline-flex; align-items: center; gap: 0.35rem; border-radius: 9999px; padding: 0.375rem 0.75rem; font-size: 0.75rem; font-weight: 700; }
+        .status-warning { background: #FEF3C7; color: #92400E; }
+        .status-info { background: #E0F2FE; color: #0C4A6E; }
+        .status-success { background: #DCFCE7; color: #166534; }
+        .status-muted { background: #F3F4F6; color: #4B5563; }
+        .info-list { display: grid; gap: 0.625rem; }
+        .info-row { display: flex; justify-content: space-between; align-items: center; gap: 0.75rem; padding: 0.625rem 0.75rem; border: 1px solid var(--gray-200); border-radius: 0.75rem; background: white; }
+        .info-row small { color: var(--gray-600); font-size: 0.75rem; }
+        .skeleton-block { display: grid; gap: 0.5rem; padding: 0.875rem; border-radius: 0.75rem; border: 1px solid var(--gray-200); background: white; }
+        .skeleton-line { height: 10px; border-radius: 9999px; background: linear-gradient(90deg, #f1f5f9 0%, #e2e8f0 50%, #f1f5f9 100%); background-size: 200% 100%; animation: shimmer 1.2s linear infinite; }
+        .state-box { border: 1px dashed var(--gray-300); border-radius: 0.75rem; padding: 0.875rem; background: #F8FAFC; }
+        .toggle-switch { width: 52px; height: 32px; border-radius: 9999px; border: none; background: var(--gray-300); position: relative; cursor: pointer; transition: background-color 0.2s; }
+        .toggle-switch::after { content: ""; position: absolute; top: 4px; left: 4px; width: 24px; height: 24px; border-radius: 9999px; background: white; transition: left 0.2s; }
+        .toggle-switch.on { background: var(--primary); }
+        .toggle-switch.on::after { left: 24px; }
+        .time-chip-btn { border: 1px solid #7DD3FC; background: #E0F2FE; color: #0C4A6E; border-radius: 9999px; padding: 0.375rem 0.75rem; font-size: 0.75rem; font-weight: 700; cursor: pointer; }
+        .mock-toast {
+            position: fixed;
+            right: 1.25rem;
+            bottom: 1.25rem;
+            z-index: 999;
+            background: rgba(23, 23, 23, 0.92);
+            color: white;
+            padding: 0.75rem 0.95rem;
+            border-radius: 0.75rem;
+            font-size: 0.8125rem;
+            font-weight: 600;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.35);
+            max-width: 300px;
+        }
+        .mock-toast.warning { background: rgba(146, 64, 14, 0.95); }
+        .mock-toast.success { background: rgba(22, 101, 52, 0.95); }
+
+        @media (max-width: 1200px) {
+            body { overflow: auto; }
+            .app { flex-direction: column; height: auto; min-height: 100vh; }
+            .sidebar { width: 100%; border-right: none; border-bottom: 1px solid var(--gray-200); max-height: 44vh; }
+            .topbar { padding: 1.25rem 1.5rem; }
+            .screen-title { font-size: 1.75rem; }
+            .viewer { padding: 1.5rem 1rem 2rem; }
+        }
+
+        @media (max-width: 640px) {
+            .topbar { padding: 1rem; }
+            .screen-meta { flex-wrap: wrap; gap: 0.5rem; }
+            .viewer { padding: 0.75rem 0.25rem 1.5rem; }
+            .iphone { transform: scale(0.92); transform-origin: top center; }
+        }
+
+        @media (max-width: 460px) {
+            .iphone { transform: scale(0.84); }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+        }
+
+        @keyframes shimmer { from { background-position: 200% 0; } to { background-position: -200% 0; } }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         .fade-in { animation: fadeIn 0.3s ease-out; }
     </style>
@@ -73,7 +144,7 @@
             <div class="logo">PST Coaching<div class="subtitle">Home & Navigation</div></div>
             <div class="epic-header">
                 <div class="epic-title">EPIC 2: Ana Sayfa ve Navigasyon</div>
-                <div class="epic-meta">3 User Stories • 4 Screens • 29 ACs</div>
+                <div class="epic-meta">9 User Stories • 9 FRs • 30 ACs (Rev4)</div>
             </div>
             <div class="nav-map">
                 <div class="nav-map-title"><span>🗺️</span><span>Navigation Map</span></div>
@@ -93,69 +164,42 @@
                 </div>
             </div>
             <div class="nav-section">
-                <div class="nav-title">US-2.1: Home Screen</div>
-                <div class="nav-item active" onclick="showScreen(1)">
-                    <span class="nav-icon">🏠</span><span>Home Screen</span><span class="nav-badge">10 ACs</span>
+                <div class="nav-title">Prototype Screen Navigation</div>
+                <div class="nav-item active" data-screen="1" onclick="showScreen(1)">
+                    <span class="nav-icon">🏠</span><span>Home Screen</span><span class="nav-badge">6 FR</span>
+                </div>
+                <div class="nav-item" data-screen="2" onclick="showScreen(2)">
+                    <span class="nav-icon">🔍</span><span>Explore Tab</span><span class="nav-badge">2 FR</span>
+                </div>
+                <div class="nav-item" data-screen="3" onclick="showScreen(3)">
+                    <span class="nav-icon">👤</span><span>Profile Tab</span><span class="nav-badge">Flow</span>
+                </div>
+                <div class="nav-item" data-screen="4" onclick="showScreen(4)">
+                    <span class="nav-icon">⚙️</span><span>Settings</span><span class="nav-badge">FR-E2-08</span>
                 </div>
                 <div class="ac-section">
-                    <div class="ac-title">✓ Acceptance Criteria</div>
+                    <div class="ac-title">✓ Screen to FR Mapping</div>
                     <ul class="ac-list">
-                        <li>Personalized greeting with user name</li>
-                        <li>Quick stats (streak, completed, badges)</li>
-                        <li>Continue learning section with progress</li>
-                        <li>Recommended content AI-powered</li>
-                        <li>Recent activity feed</li>
-                        <li>Search bar at top</li>
-                        <li>Notifications badge</li>
-                        <li>Pull to refresh functionality</li>
-                        <li>Skeleton loading states</li>
-                        <li>Bottom navigation bar (5 tabs)</li>
+                        <li>Home: FR-E2-01, FR-E2-02, FR-E2-04, FR-E2-06, FR-E2-07, FR-E2-09</li>
+                        <li>Explore: FR-E2-03 ve FR-E2-05</li>
+                        <li>Profile + Settings geçişi: FR-E2-08 bildirim hatırlatıcı akışı</li>
                     </ul>
                 </div>
             </div>
             <div class="nav-section">
-                <div class="nav-title">US-2.2: Tab Navigation (3 tabs)</div>
-                <div class="nav-item" onclick="showScreen(2)">
-                    <span class="nav-icon">🔍</span><span>Explore Tab</span><span class="nav-badge">7 ACs</span>
-                </div>
+                <div class="nav-title">Rev4 EPIC-2 FR/AC Checklist</div>
                 <div class="ac-section">
-                    <div class="ac-title">✓ Acceptance Criteria</div>
+                    <div class="ac-title">✓ FR-E2-01..09 (Toplam 30 AC)</div>
                     <ul class="ac-list">
-                        <li>Display all content categories</li>
-                        <li>Featured content carousel/banner</li>
-                        <li>Search functionality with filters</li>
-                        <li>Filter by type, difficulty, duration</li>
-                        <li>Sort options (popular, new, trending)</li>
-                        <li>Category-based browsing (grid view)</li>
-                        <li>Smooth transitions between tabs</li>
-                    </ul>
-                </div>
-                <div class="nav-item" onclick="showScreen(3)">
-                    <span class="nav-icon">👤</span><span>Profile Tab</span><span class="nav-badge">8 ACs</span>
-                </div>
-                <div class="ac-section">
-                    <div class="ac-title">✓ Acceptance Criteria</div>
-                    <ul class="ac-list">
-                        <li>Display user avatar and full name</li>
-                        <li>Show membership tier/badge (Premium)</li>
-                        <li>Statistics overview (completed, streak, badges)</li>
-                        <li>Achievement badges display section</li>
-                        <li>Settings access button</li>
-                        <li>Logout option</li>
-                        <li>Edit profile button</li>
-                        <li>Share profile option</li>
-                    </ul>
-                </div>
-                <div class="nav-item" onclick="showScreen(4)">
-                    <span class="nav-icon">⚙️</span><span>Settings</span><span class="nav-badge">4 ACs</span>
-                </div>
-                <div class="ac-section">
-                    <div class="ac-title">✓ Acceptance Criteria</div>
-                    <ul class="ac-list">
-                        <li>Account settings (personal info, password, subscription)</li>
-                        <li>Notification preferences (push, email toggles)</li>
-                        <li>Privacy & security options</li>
-                        <li>Language & region settings</li>
+                        <li><strong>FR-E2-01 (4 AC):</strong> Bugün özeti, geri sayım, Devam Et CTA, offline özet</li>
+                        <li><strong>FR-E2-02 (3 AC):</strong> Abonelik rozetleri, add-on etiketleri, kısıtlama nedeni</li>
+                        <li><strong>FR-E2-03 (3 AC):</strong> İçerik alanı kartları, tek dokunuş navigasyon, paywall</li>
+                        <li><strong>FR-E2-04 (3 AC):</strong> Vicdandan Karaktere kartı, Detayları Gör, offline cache</li>
+                        <li><strong>FR-E2-05 (3 AC):</strong> Hızlı arama açılışı, tür bazlı sonuç, sonuç yok durumu</li>
+                        <li><strong>FR-E2-06 (3 AC):</strong> En fazla 3 aktif içerik, Tümünü Gör, kilit etiketi</li>
+                        <li><strong>FR-E2-07 (4 AC):</strong> Son görüntülenen 5 içerik, metadata, empty state, analytics</li>
+                        <li><strong>FR-E2-08 (4 AC):</strong> İzin öncesi açıklama, varsayılan 20:00, teslim sonrası sessiz, tekil hatırlatıcı</li>
+                        <li><strong>FR-E2-09 (3 AC):</strong> Skeleton, kritik kart önceliği, kart bazlı Tekrar Dene</li>
                     </ul>
                 </div>
             </div>
@@ -164,344 +208,507 @@
             <div class="topbar">
                 <h1 class="screen-title" id="screenTitle">Home Screen</h1>
                 <div class="screen-meta">
-                    <span class="meta-badge" id="screenUS">US-2.1</span>
-                    <span id="screenMeta">Personalized dashboard • 10/10 ACs • Entry: Post-Login</span>
+                    <span class="meta-badge" id="screenUS">FR-E2</span>
+                    <span id="screenMeta">Rev4 kapsamı: FR-E2-01..09 • 30 AC • Entry: Post-Login</span>
                 </div>
             </div>
             <div class="viewer" id="viewer"></div>
         </div>
     </div>
     <script>
+        let homeCountdownTimer = null;
+        let pushReminderEnabled = true;
+        let emailReminderEnabled = false;
+        let reminderTimeIndex = 0;
+
+        const reminderTimes = ['20:00', '20:30', '21:00'];
+
+        const exploreSearchDataset = [
+            { title: 'Liderlik Yolculugu', type: 'Yolculuk', meta: '8 hafta • Baslangic-Orta' },
+            { title: 'Mindfulness Atolyesi', type: 'Atolye', meta: '12 asama • Nefes odakli' },
+            { title: 'Sukur Sifresi', type: 'e-Kitap', meta: '240 sayfa • 8 saat' },
+            { title: 'Iletisim Modulu', type: 'Modul', meta: '6 paket • Uygulamali' },
+            { title: 'Kocluk Okulu Giris', type: 'Kocluk Okulu', meta: 'Teaser • Kisitli erisim' },
+            { title: 'Hedef Belirleme', type: 'Yolculuk', meta: '4 hafta • Hedef odakli' }
+        ];
+
         const screenData = {
-            1: { title: 'Home Screen', us: 'US-2.1', meta: 'Personalized dashboard • 10/10 ACs • Entry: Post-Login' },
-            2: { title: 'Explore Tab', us: 'US-2.2', meta: 'Browse all content • 7/7 ACs • From: Tab Bar' },
-            3: { title: 'Profile Tab', us: 'US-2.2', meta: 'User account & stats • 8/8 ACs • From: Tab Bar' },
-            4: { title: 'Settings', us: 'US-2.2', meta: 'App preferences • 4/4 ACs • From: Profile Menu' }
+            1: { title: 'Home Screen', us: 'FR-E2-01..09', meta: 'Home kapsamı: FR-E2-01,02,04,06,07,09 • Rev4' },
+            2: { title: 'Explore Tab', us: 'FR-E2-03 / FR-E2-05', meta: 'Katalog navigasyonu + hızlı arama • Rev4' },
+            3: { title: 'Profile Tab', us: 'Navigation Flow', meta: 'EPIC-2 tab akışı içinde profil geçiş adımı' },
+            4: { title: 'Settings', us: 'FR-E2-08', meta: 'Günlük hatırlatıcı tercihleri ve bildirim akışı' }
         };
-        function showScreen(num) {
-            document.getElementById('screenTitle').textContent = screenData[num].title;
-            document.getElementById('screenUS').textContent = screenData[num].us;
-            document.getElementById('screenMeta').textContent = screenData[num].meta;
-            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
-            document.querySelectorAll('.nav-item')[num-1].classList.add('active');
-            document.querySelectorAll('[id^="nav-"]').forEach(box => box.classList.remove('active'));
-            const navBox = document.getElementById('nav-' + num);
-            if (navBox) navBox.classList.add('active');
-            document.getElementById('viewer').innerHTML = getScreenHTML(num);
+
+        function initializeStaticInteractions() {
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.setAttribute('role', 'button');
+                item.setAttribute('tabindex', '0');
+                item.addEventListener('keydown', event => {
+                    if (event.key === 'Enter' || event.key === ' ') {
+                        event.preventDefault();
+                        item.click();
+                    }
+                });
+            });
+
+            document.querySelectorAll('a[href="#"]').forEach(link => {
+                if (!link.getAttribute('onclick')) {
+                    link.addEventListener('click', event => event.preventDefault());
+                }
+            });
         }
+
+        function enhanceDynamicInteractions() {
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.setAttribute('role', 'button');
+                tab.setAttribute('tabindex', '0');
+                tab.setAttribute('aria-current', tab.classList.contains('active') ? 'page' : 'false');
+                tab.addEventListener('keydown', event => {
+                    if (event.key === 'Enter' || event.key === ' ') {
+                        event.preventDefault();
+                        tab.click();
+                    }
+                });
+            });
+        }
+
+        function showScreen(num) {
+            const safeScreen = screenData[num] ? num : 1;
+            const selected = screenData[safeScreen];
+
+            document.getElementById('screenTitle').textContent = selected.title;
+            document.getElementById('screenUS').textContent = selected.us;
+            document.getElementById('screenMeta').textContent = selected.meta;
+
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+                item.setAttribute('aria-current', 'false');
+            });
+
+            const activeNavItem = document.querySelector(`.nav-item[data-screen="${safeScreen}"]`);
+            if (activeNavItem) {
+                activeNavItem.classList.add('active');
+                activeNavItem.setAttribute('aria-current', 'page');
+            }
+
+            document.querySelectorAll('[id^="nav-"]').forEach(box => box.classList.remove('active'));
+            const navBox = document.getElementById('nav-' + safeScreen);
+            if (navBox) navBox.classList.add('active');
+
+            document.getElementById('viewer').innerHTML = getScreenHTML(safeScreen);
+            enhanceDynamicInteractions();
+
+            if (safeScreen === 1) {
+                startHomeCountdown();
+            } else {
+                stopHomeCountdown();
+            }
+
+            if (safeScreen === 2) {
+                initializeExploreSearch();
+            }
+
+            if (safeScreen === 4) {
+                updateReminderUi();
+            }
+        }
+
+        function getCountdownText() {
+            const now = new Date();
+            const deadline = new Date(now);
+            deadline.setHours(23, 59, 0, 0);
+            let diff = Math.max(0, Math.floor((deadline - now) / 1000));
+
+            const hours = String(Math.floor(diff / 3600)).padStart(2, '0');
+            diff %= 3600;
+            const minutes = String(Math.floor(diff / 60)).padStart(2, '0');
+            const seconds = String(diff % 60).padStart(2, '0');
+
+            return `23:59'a ${hours}:${minutes}:${seconds}`;
+        }
+
+        function updateHomeCountdown() {
+            const pill = document.getElementById('countdownPill');
+            if (pill) pill.textContent = getCountdownText();
+
+            const syncTime = document.getElementById('offlineSummaryTime');
+            if (syncTime) {
+                const now = new Date();
+                const value = now.toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
+                syncTime.textContent = `Son senkron: ${value}`;
+            }
+        }
+
+        function startHomeCountdown() {
+            stopHomeCountdown();
+            updateHomeCountdown();
+            homeCountdownTimer = window.setInterval(updateHomeCountdown, 1000);
+        }
+
+        function stopHomeCountdown() {
+            if (homeCountdownTimer) {
+                window.clearInterval(homeCountdownTimer);
+                homeCountdownTimer = null;
+            }
+        }
+
+        function showMockToast(message, tone = 'info') {
+            document.querySelectorAll('.mock-toast').forEach(item => item.remove());
+
+            const toast = document.createElement('div');
+            toast.className = `mock-toast ${tone === 'warning' || tone === 'success' ? tone : ''}`;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            window.setTimeout(() => toast.remove(), 2200);
+        }
+
+        function showPaywallInfo(area) {
+            showMockToast(`${area} için aktif abonelik gerekli. Kisitlama nedeni: plan erisimi yok.`, 'warning');
+        }
+
+        function groupByType(list) {
+            return list.reduce((acc, item) => {
+                if (!acc[item.type]) acc[item.type] = [];
+                acc[item.type].push(item);
+                return acc;
+            }, {});
+        }
+
+        function renderExploreResults(query) {
+            const summary = document.getElementById('exploreResultSummary');
+            const container = document.getElementById('exploreResults');
+            if (!summary || !container) return;
+
+            const normalized = query.trim().toLowerCase();
+            const filtered = normalized
+                ? exploreSearchDataset.filter(item => item.title.toLowerCase().includes(normalized) || item.type.toLowerCase().includes(normalized))
+                : exploreSearchDataset.slice(0, 5);
+
+            if (filtered.length === 0) {
+                summary.textContent = 'Sonuc yok • Kesfet onerisi gosteriliyor';
+                container.innerHTML = `
+                    <div class="state-box">
+                        <strong style="display:block; margin-bottom:0.35rem; color: var(--gray-900);">Sonuc bulunamadi</strong>
+                        <p style="font-size:0.75rem; color: var(--gray-600); margin-bottom:0.75rem;">Farkli anahtar kelime deneyin veya Katalog oneri kartlarini inceleyin.</p>
+                        <button class="btn" style="padding:0.5rem 0.85rem; font-size:0.75rem; background: var(--gray-100);" onclick="showMockToast('Kesfet onerileri acildi')">Kesfete Don</button>
+                    </div>`;
+                return;
+            }
+
+            const grouped = groupByType(filtered);
+            summary.textContent = `${filtered.length} sonuc • Tur bazli kategorize`; 
+
+            container.innerHTML = Object.entries(grouped).map(([type, items]) => `
+                <div class="card" style="padding: 0.875rem; margin-bottom: 0.75rem;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
+                        <strong style="font-size:0.8125rem; color: var(--gray-900);">${type}</strong>
+                        <span class="status-chip status-muted">${items.length} sonuc</span>
+                    </div>
+                    <div class="info-list">
+                        ${items.map(item => `
+                            <div class="info-row">
+                                <div>
+                                    <div style="font-size:0.8125rem; font-weight:600; color: var(--gray-900);">${item.title}</div>
+                                    <small>${item.meta}</small>
+                                </div>
+                                <button class="btn" style="padding:0.45rem 0.65rem; font-size:0.6875rem; background: var(--gray-100);" onclick="showMockToast('Detay acildi')">Detay</button>
+                            </div>`).join('')}
+                    </div>
+                </div>`).join('');
+        }
+
+        function initializeExploreSearch() {
+            const input = document.getElementById('exploreSearchInput');
+            if (!input) return;
+            renderExploreResults(input.value || '');
+            input.addEventListener('input', event => renderExploreResults(event.target.value));
+        }
+
+        function togglePushReminder() {
+            pushReminderEnabled = !pushReminderEnabled;
+            updateReminderUi();
+            showMockToast(pushReminderEnabled ? 'Gunluk tekil hatirlatici acildi' : 'Gunluk tekil hatirlatici kapatildi', pushReminderEnabled ? 'success' : 'warning');
+        }
+
+        function toggleEmailReminder() {
+            emailReminderEnabled = !emailReminderEnabled;
+            updateReminderUi();
+            showMockToast(emailReminderEnabled ? 'E-posta bildirimleri acildi' : 'E-posta bildirimleri kapatildi');
+        }
+
+        function cycleReminderTime() {
+            reminderTimeIndex = (reminderTimeIndex + 1) % reminderTimes.length;
+            updateReminderUi();
+            showMockToast(`Hatirlatma saati ${reminderTimes[reminderTimeIndex]} olarak guncellendi`, 'success');
+        }
+
+        function updateReminderUi() {
+            const pushToggle = document.getElementById('pushReminderToggle');
+            const emailToggle = document.getElementById('emailReminderToggle');
+            const reminderTime = document.getElementById('reminderTimeButton');
+            const pushState = document.getElementById('pushReminderState');
+            const silenceState = document.getElementById('submissionSilenceState');
+
+            if (pushToggle) pushToggle.className = `toggle-switch ${pushReminderEnabled ? 'on' : ''}`;
+            if (emailToggle) emailToggle.className = `toggle-switch ${emailReminderEnabled ? 'on' : ''}`;
+            if (reminderTime) reminderTime.textContent = reminderTimes[reminderTimeIndex];
+            if (pushState) pushState.textContent = pushReminderEnabled ? 'Acilmis' : 'Kapali';
+            if (silenceState) {
+                silenceState.textContent = pushReminderEnabled
+                    ? 'Bugun yorum teslim edildigi icin hatirlatma gonderilmeyecek.'
+                    : 'Hatirlatma kapali oldugu icin bugun bildirim yok.';
+            }
+        }
+
         function getScreenHTML(num) {
             const screens = {
                 1: `<div class="iphone fade-in"><div class="island"></div><div class="screen"><div class="content">
                     <div class="status"><div>9:41</div><div>📶 📡 🔋</div></div>
                     <div style="padding: 1.5rem 1.5rem 6rem;">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-                            <div><p style="font-size: 0.875rem; color: var(--gray-600); margin-bottom: 0.25rem;">Merhaba,</p>
-                            <h1 style="font-family: Poppins, sans-serif; font-size: 1.75rem; font-weight: 800; color: var(--secondary);">Ahmet Yılmaz</h1></div>
-                            <div style="position: relative;"><button style="background: var(--gray-100); border: none; width: 44px; height: 44px; border-radius: 9999px; font-size: 1.25rem; cursor: pointer; position: relative;">🔔
-                            <span style="position: absolute; top: 8px; right: 8px; width: 10px; height: 10px; background: var(--error); border-radius: 9999px; border: 2px solid white;"></span></button></div>
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem; gap:0.75rem;">
+                            <div>
+                                <p style="font-size:0.75rem; color: var(--gray-600); margin-bottom:0.25rem;">Merhaba,</p>
+                                <h1 style="font-family:Poppins, sans-serif; font-size:1.5rem; font-weight:800; color: var(--secondary);">Ahmet Yilmaz</h1>
+                            </div>
+                            <span class="status-chip status-success">Aktif Plan • AI Add-on</span>
                         </div>
-                        <div style="position: relative; margin-bottom: 1.5rem;">
-                            <input type="text" placeholder="Ne aramak istersiniz?" style="width: 100%; padding: 1rem 1rem 1rem 3rem; border: 2px solid var(--gray-200); border-radius: 1rem; font-size: 1rem; background: white;">
-                            <span style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); font-size: 1.25rem;">🔍</span>
+
+                        <div style="position:relative; margin-bottom:1rem;">
+                            <input type="text" placeholder="Ne aramak istersiniz?" style="width:100%; padding:0.9rem 1rem 0.9rem 2.75rem; border:2px solid var(--gray-200); border-radius:1rem; font-size:0.875rem; background:white;">
+                            <span style="position:absolute; left:0.95rem; top:50%; transform:translateY(-50%); font-size:1.1rem;">🔍</span>
                         </div>
-                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin-bottom: 1.5rem;">
-                            <div class="card" style="text-align: center; padding: 1rem; background: linear-gradient(135deg, var(--primary-light), var(--primary-100));">
-                                <div style="font-size: 2rem; margin-bottom: 0.5rem;">🔥</div>
-                                <div style="font-family: Poppins, sans-serif; font-size: 1.5rem; font-weight: 800; color: var(--primary); margin-bottom: 0.25rem;">12</div>
-                                <div style="font-size: 0.75rem; color: var(--gray-600); font-weight: 600;">Gün Streak</div>
+
+                        <div class="card" style="border-left:4px solid var(--primary); margin-bottom:1rem;">
+                            <div style="display:flex; justify-content:space-between; align-items:center; gap:0.75rem; margin-bottom:0.65rem;">
+                                <div>
+                                    <h3 style="font-size:0.95rem; color: var(--gray-900); margin-bottom:0.25rem;">Bugun Ozeti</h3>
+                                    <p style="font-size:0.75rem; color: var(--gray-600);">Aktif icerik: Hedef Belirleme • Modul 3/8</p>
+                                </div>
+                                <span id="countdownPill" class="status-chip status-warning">23:59'a --:--:--</span>
                             </div>
-                            <div class="card" style="text-align: center; padding: 1rem; background: linear-gradient(135deg, var(--success-light), #A7F3D0);">
-                                <div style="font-size: 2rem; margin-bottom: 0.5rem;">✅</div>
-                                <div style="font-family: Poppins, sans-serif; font-size: 1.5rem; font-weight: 800; color: var(--success-dark); margin-bottom: 0.25rem;">28</div>
-                                <div style="font-size: 0.75rem; color: var(--gray-600); font-weight: 600;">Tamamlanan</div>
+                            <div style="margin-bottom:0.75rem;">
+                                <div style="display:flex; justify-content:space-between; margin-bottom:0.35rem; font-size:0.75rem; color: var(--gray-700);">
+                                    <span>Kalan adim</span><strong>63%</strong>
+                                </div>
+                                <div style="height:8px; background: var(--gray-100); border-radius:9999px; overflow:hidden;">
+                                    <div style="width:63%; height:100%; background: linear-gradient(90deg, var(--primary), var(--primary-dark));"></div>
+                                </div>
                             </div>
-                            <div class="card" style="text-align: center; padding: 1rem; background: linear-gradient(135deg, #FEF3C7, #FDE68A);">
-                                <div style="font-size: 2rem; margin-bottom: 0.5rem;">🏆</div>
-                                <div style="font-family: Poppins, sans-serif; font-size: 1.5rem; font-weight: 800; color: var(--warning); margin-bottom: 0.25rem;">8</div>
-                                <div style="font-size: 0.75rem; color: var(--gray-600); font-weight: 600;">Rozetler</div>
-                            </div>
+                            <button class="btn btn-primary" style="width:100%; padding:0.65rem; font-size:0.8125rem;" onclick="showMockToast('FR-E2-01 Devam Et akisina yonlendirildi')">Devam Et</button>
                         </div>
-                        <div style="margin-bottom: 1.5rem;">
-                            <h3 style="font-weight: 700; color: var(--gray-900); margin-bottom: 1rem; font-size: 1rem;">Öğrenmeye Devam Et</h3>
-                            <div class="card" style="border-left: 4px solid var(--primary);">
-                                <div style="display: flex; gap: 1rem; margin-bottom: 1rem;">
-                                    <div style="width: 60px; height: 60px; background: linear-gradient(135deg, var(--primary-light), var(--primary-100)); border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; font-size: 2rem; flex-shrink: 0;">🎯</div>
-                                    <div style="flex: 1;">
-                                        <h4 style="font-weight: 700; font-size: 0.9375rem; color: var(--gray-900); margin-bottom: 0.25rem;">Hedef Belirleme</h4>
-                                        <p style="font-size: 0.75rem; color: var(--gray-600);">Coaching Programı • Modül 3/8</p>
-                                    </div>
-                                </div>
-                                <div style="margin-bottom: 0.75rem;">
-                                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 0.875rem;">
-                                        <span style="color: var(--gray-700); font-weight: 600;">İlerleme</span>
-                                        <span style="color: var(--primary); font-weight: 700;">37%</span>
-                                    </div>
-                                    <div style="height: 8px; background: var(--gray-100); border-radius: 9999px; overflow: hidden;">
-                                        <div style="width: 37%; height: 100%; background: linear-gradient(90deg, var(--primary), var(--primary-dark));"></div>
-                                    </div>
-                                </div>
-                                <button class="btn btn-primary" style="width: 100%; padding: 0.75rem;">Devam Et</button>
+
+                        <div class="card" style="background:#F0F9FF; border:1px solid #BAE6FD; margin-bottom:1rem;">
+                            <div style="display:flex; justify-content:space-between; align-items:center; gap:0.75rem; margin-bottom:0.45rem;">
+                                <strong style="font-size:0.8125rem; color:#0C4A6E;">Offline Ozeti</strong>
+                                <span class="status-chip status-info">Cache Hazir</span>
                             </div>
+                            <p style="font-size:0.75rem; color:#0C4A6E; margin-bottom:0.35rem;">Baglanti yokken son senkron bugun ozeti gosterilir.</p>
+                            <p id="offlineSummaryTime" style="font-size:0.6875rem; color:#075985;">Son senkron: --:--</p>
                         </div>
-                        <div style="margin-bottom: 1.5rem;">
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                                <h3 style="font-weight: 700; color: var(--gray-900); font-size: 1rem;">Sizin İçin Önerilen</h3>
-                                <a href="#" style="color: var(--primary); font-size: 0.875rem; font-weight: 600; text-decoration: none;">Tümü →</a>
+
+                        <div class="card" style="margin-bottom:1rem;">
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.55rem;">
+                                <strong style="font-size:0.875rem; color: var(--gray-900);">Abonelik ve Erisim Durumu</strong>
+                                <span class="status-chip status-success">Premium</span>
                             </div>
-                            <div style="display: flex; gap: 1rem; overflow-x: auto; padding-bottom: 0.5rem;">
-                                <div style="min-width: 160px; background: white; border-radius: 1rem; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
-                                    <div style="height: 100px; background: linear-gradient(135deg, var(--secondary-light), #E9D5FF); display: flex; align-items: center; justify-content: center; font-size: 3rem;">💼</div>
-                                    <div style="padding: 1rem;"><h4 style="font-weight: 700; font-size: 0.875rem; color: var(--gray-900); margin-bottom: 0.5rem;">Liderlik</h4>
-                                    <p style="font-size: 0.75rem; color: var(--gray-600);">8 modül</p></div>
-                                </div>
-                                <div style="min-width: 160px; background: white; border-radius: 1rem; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
-                                    <div style="height: 100px; background: linear-gradient(135deg, var(--success-light), #A7F3D0); display: flex; align-items: center; justify-content: center; font-size: 3rem;">🧘</div>
-                                    <div style="padding: 1rem;"><h4 style="font-weight: 700; font-size: 0.875rem; color: var(--gray-900); margin-bottom: 0.5rem;">Mindfulness</h4>
-                                    <p style="font-size: 0.75rem; color: var(--gray-600);">12 aşama</p></div>
-                                </div>
+                            <div class="info-list">
+                                <div class="info-row"><div><div style="font-size:0.8125rem; font-weight:600; color:var(--gray-900);">AI Paketi</div><small>Add-on aktif</small></div><span class="status-chip status-success">Aktif</span></div>
+                                <div class="info-row"><div><div style="font-size:0.8125rem; font-weight:600; color:var(--gray-900);">Kutuphane Sekmesi</div><small>Kisitli iceriklerde paywall nedeni aciklanir</small></div><button class="btn" style="padding:0.4rem 0.65rem; font-size:0.6875rem; background:var(--gray-100);" onclick="showPaywallInfo('Kutuphane')">Nedeni Gor</button></div>
                             </div>
                         </div>
-                        <div><h3 style="font-weight: 700; color: var(--gray-900); margin-bottom: 1rem; font-size: 1rem;">Son Aktiviteler</h3>
-                            <div class="card" style="margin-bottom: 0.75rem;">
-                                <div style="display: flex; gap: 1rem; align-items: center;"><div style="font-size: 1.5rem;">✅</div>
-                                    <div style="flex: 1;"><div style="font-weight: 600; color: var(--gray-900); font-size: 0.875rem; margin-bottom: 0.25rem;">Modül 3 tamamlandı</div>
-                                    <div style="font-size: 0.75rem; color: var(--gray-600);">2 saat önce</div></div>
+
+                        <div class="card" style="background: linear-gradient(135deg, #F5F3FF, #EEF2FF); border:1px solid #C4B5FD; margin-bottom:1rem;">
+                            <div style="display:flex; justify-content:space-between; gap:0.75rem; align-items:flex-start;">
+                                <div>
+                                    <strong style="display:block; font-size:0.875rem; color:#4C1D95; margin-bottom:0.25rem;">Vicdandan Karaktere</strong>
+                                    <p style="font-size:0.75rem; color:#5B21B6; line-height:1.45;">Gunluk refleksiyon ve karakter gelisimi icin kisa bilgilendirme karti.</p>
                                 </div>
+                                <a href="#" class="screen-link" onclick="showMockToast('Detay sayfasi acildi'); return false;">Detaylari Gor</a>
                             </div>
-                            <div class="card">
-                                <div style="display: flex; gap: 1rem; align-items: center;"><div style="font-size: 1.5rem;">🏆</div>
-                                    <div style="flex: 1;"><div style="font-weight: 600; color: var(--gray-900); font-size: 0.875rem; margin-bottom: 0.25rem;">Yeni rozet kazandınız!</div>
-                                    <div style="font-size: 0.75rem; color: var(--gray-600);">1 gün önce</div></div>
-                                </div>
+                        </div>
+
+                        <div style="margin-bottom:1rem;">
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.65rem;">
+                                <h3 style="font-size:0.9rem; color: var(--gray-900);">Aktif Iceriklerim (Maks 3)</h3>
+                                <a href="#" class="screen-link" onclick="showMockToast('Kutuphane listesine gidildi'); return false;">Tumunu Gor</a>
                             </div>
+                            <div class="info-list">
+                                <div class="info-row"><div><div style="font-size:0.8125rem; font-weight:600; color: var(--gray-900);">Hedef Belirleme</div><small>Yolculuk • Modul 3/8</small></div><span class="status-chip status-success">37%</span></div>
+                                <div class="info-row"><div><div style="font-size:0.8125rem; font-weight:600; color: var(--gray-900);">Mindfulness Baslangic</div><small>Atolye • Asama 2/6</small></div><span class="status-chip status-info">21%</span></div>
+                                <div class="info-row"><div><div style="font-size:0.8125rem; font-weight:600; color: var(--gray-900);">Sukur Defteri</div><small>e-Kitap • Kilitli bolum</small></div><span class="status-chip status-warning">Kilitli</span></div>
+                            </div>
+                        </div>
+
+                        <div style="margin-bottom:1rem;">
+                            <h3 style="font-size:0.9rem; color: var(--gray-900); margin-bottom:0.65rem;">Son Goruntulenen Icerikler (5)</h3>
+                            <div class="info-list" style="margin-bottom:0.65rem;">
+                                <div class="info-row"><div><div style="font-size:0.8125rem; font-weight:600; color:var(--gray-900);">Liderlik 101</div><small>Yolculuk • Bolum 4 • 09:12</small></div><span class="status-chip status-muted">Yolculuk</span></div>
+                                <div class="info-row"><div><div style="font-size:0.8125rem; font-weight:600; color:var(--gray-900);">Dua Bilinci</div><small>Atolye • Oturum 2 • 08:45</small></div><span class="status-chip status-muted">Atolye</span></div>
+                                <div class="info-row"><div><div style="font-size:0.8125rem; font-weight:600; color:var(--gray-900);">Sukur Sifresi</div><small>e-Kitap • Sayfa 58 • 08:02</small></div><span class="status-chip status-muted">e-Kitap</span></div>
+                                <div class="info-row"><div><div style="font-size:0.8125rem; font-weight:600; color:var(--gray-900);">Iletisim Modulu</div><small>Modul • Paket 1 • 07:40</small></div><span class="status-chip status-muted">Modul</span></div>
+                                <div class="info-row"><div><div style="font-size:0.8125rem; font-weight:600; color:var(--gray-900);">Ozguven Adimi</div><small>Yolculuk • Bolum 2 • 07:10</small></div><span class="status-chip status-muted">Yolculuk</span></div>
+                            </div>
+                            <div class="state-box">
+                                <strong style="display:block; font-size:0.75rem; color: var(--gray-900); margin-bottom:0.25rem;">Bos Durum Ornegi</strong>
+                                <p style="font-size:0.75rem; color: var(--gray-600);">Son goruntulenen icerik olmadiginda "Kesfet" onerisi gosterilir.</p>
+                            </div>
+                        </div>
+
+                        <div class="card" style="margin-bottom:0.5rem;">
+                            <h3 style="font-size:0.85rem; color: var(--gray-900); margin-bottom:0.5rem;">Performans ve Hata Durumlari (FR-E2-09)</h3>
+                            <div class="skeleton-block" style="margin-bottom:0.65rem;">
+                                <div class="skeleton-line" style="width:88%;"></div>
+                                <div class="skeleton-line" style="width:72%;"></div>
+                                <div class="skeleton-line" style="width:64%;"></div>
+                            </div>
+                            <div class="info-row" style="margin-bottom:0.5rem;"><div><div style="font-size:0.8125rem; font-weight:600; color:var(--gray-900);">Kritik Kart Hatasi</div><small>Kart bazli tekrar dene aksiyonu</small></div><button class="btn" style="padding:0.45rem 0.75rem; font-size:0.6875rem; background:var(--gray-100);" onclick="showMockToast('Kart yeniden yukleniyor')">Tekrar Dene</button></div>
                         </div>
                     </div>
                     <div class="tabs">
-                        <div class="tab active"><div class="tab-icon">🏠</div><div>Ana Sayfa</div></div>
-                        <div class="tab" onclick="parent.showScreen(2)"><div class="tab-icon">🔍</div><div>Keşfet</div></div>
-                        <div class="tab"><div class="tab-icon">📚</div><div>Kütüphane</div></div>
-                        <div class="tab"><div class="tab-icon">📈</div><div>Gelişim</div></div>
-                        <div class="tab" onclick="parent.showScreen(3)"><div class="tab-icon">👤</div><div>Profil</div></div>
+                        <div class="tab active" data-tab="home" onclick="showScreen(1)"><div class="tab-icon">🏠</div><div>Ana Sayfa</div></div>
+                        <div class="tab" data-tab="discover" onclick="showScreen(2)"><div class="tab-icon">🔍</div><div>Kesfet</div></div>
+                        <div class="tab" data-tab="library" onclick="showPaywallInfo('Kutuphane')"><div class="tab-icon">📚</div><div>Kutuphane</div></div>
+                        <div class="tab" data-tab="progress" onclick="showPaywallInfo('Gelisim')"><div class="tab-icon">📈</div><div>Gelisim</div></div>
+                        <div class="tab" data-tab="profile" onclick="showScreen(3)"><div class="tab-icon">👤</div><div>Profil</div></div>
                     </div>
                 </div></div></div>`,
+
                 2: `<div class="iphone fade-in"><div class="island"></div><div class="screen"><div class="content">
                     <div class="status"><div>9:41</div><div>📶 📡 🔋</div></div>
                     <div style="padding: 1.5rem 1.5rem 6rem;">
-                        <h1 style="font-family: Poppins, sans-serif; font-size: 2rem; font-weight: 800; color: var(--secondary); margin-bottom: 1.5rem;">Keşfet</h1>
-                        <div style="position: relative; margin-bottom: 1.5rem;">
-                            <input type="text" placeholder="Program, modül ara..." style="width: 100%; padding: 1rem 1rem 1rem 3rem; border: 2px solid var(--gray-200); border-radius: 1rem; font-size: 1rem; background: white;">
-                            <span style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); font-size: 1.25rem;">🔍</span>
+                        <h1 style="font-family:Poppins, sans-serif; font-size:1.75rem; font-weight:800; color: var(--secondary); margin-bottom:1rem;">Kesfet</h1>
+
+                        <div style="position:relative; margin-bottom:0.85rem;">
+                            <input id="exploreSearchInput" type="text" placeholder="Program, modul veya atolye ara..." style="width:100%; padding:0.9rem 1rem 0.9rem 2.75rem; border:2px solid var(--gray-200); border-radius:1rem; font-size:0.875rem; background:white;">
+                            <span style="position:absolute; left:0.95rem; top:50%; transform:translateY(-50%); font-size:1.1rem;">🔍</span>
                         </div>
-                        <div style="display: flex; gap: 0.5rem; margin-bottom: 1.5rem; overflow-x: auto;">
-                            <button style="padding: 0.5rem 1rem; background: var(--primary); color: white; border: none; border-radius: 0.5rem; font-weight: 600; font-size: 0.8125rem; white-space: nowrap;">Tümü</button>
-                            <button style="padding: 0.5rem 1rem; background: var(--gray-100); color: var(--gray-700); border: none; border-radius: 0.5rem; font-weight: 600; font-size: 0.8125rem; white-space: nowrap;">Programlar</button>
-                            <button style="padding: 0.5rem 1rem; background: var(--gray-100); color: var(--gray-700); border: none; border-radius: 0.5rem; font-weight: 600; font-size: 0.8125rem; white-space: nowrap;">Atölyeler</button>
-                            <button style="padding: 0.5rem 1rem; background: var(--gray-100); color: var(--gray-700); border: none; border-radius: 0.5rem; font-weight: 600; font-size: 0.8125rem; white-space: nowrap;">Popüler</button>
+                        <p id="exploreResultSummary" style="font-size:0.75rem; color: var(--gray-600); margin-bottom:0.85rem;">Sonuclar hazirlaniyor...</p>
+
+                        <div style="display:grid; grid-template-columns:repeat(2, 1fr); gap:0.65rem; margin-bottom:1rem;">
+                            <div class="card" style="padding:0.875rem; cursor:pointer;" onclick="showMockToast('Yolculuk katalogu acildi')"><strong style="font-size:0.8125rem; color: var(--gray-900);">Yolculuklar</strong><p style="font-size:0.75rem; color:var(--gray-600); margin-top:0.25rem;">Tek dokunusla katalog</p></div>
+                            <div class="card" style="padding:0.875rem; cursor:pointer;" onclick="showMockToast('Atolye katalogu acildi')"><strong style="font-size:0.8125rem; color: var(--gray-900);">Atolyeler</strong><p style="font-size:0.75rem; color:var(--gray-600); margin-top:0.25rem;">Tema bazli listeleme</p></div>
+                            <div class="card" style="padding:0.875rem; cursor:pointer;" onclick="showMockToast('e-Kitap katalogu acildi')"><strong style="font-size:0.8125rem; color: var(--gray-900);">e-Kitaplar</strong><p style="font-size:0.75rem; color:var(--gray-600); margin-top:0.25rem;">Kategori ve sure filtresi</p></div>
+                            <div class="card" style="padding:0.875rem; cursor:pointer;" onclick="showPaywallInfo('Kocluk Okulu')"><strong style="font-size:0.8125rem; color: var(--gray-900);">Kocluk Okulu</strong><p style="font-size:0.75rem; color:var(--gray-600); margin-top:0.25rem;">Kisitli erisim</p></div>
                         </div>
-                        <div style="margin-bottom: 1.5rem;">
-                            <h3 style="font-weight: 700; color: var(--gray-900); margin-bottom: 1rem; font-size: 1rem;">Öne Çıkanlar</h3>
-                            <div class="card" style="background: linear-gradient(135deg, var(--primary-light), var(--primary-100)); border: 2px solid var(--primary);">
-                                <div style="display: flex; gap: 1rem;">
-                                    <div style="width: 80px; height: 80px; background: white; border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; font-size: 3rem;">⭐</div>
-                                    <div><div style="display: inline-block; background: var(--primary); color: white; padding: 0.25rem 0.75rem; border-radius: 0.375rem; font-size: 0.75rem; font-weight: 700; margin-bottom: 0.5rem;">YENİ</div>
-                                        <h4 style="font-weight: 700; font-size: 1rem; color: var(--secondary); margin-bottom: 0.5rem;">Executive Coaching</h4>
-                                        <p style="font-size: 0.875rem; color: var(--gray-700);">Üst düzey liderlik becerileri</p>
-                                    </div>
-                                </div>
+
+                        <div class="card" style="border:1px solid #FCD34D; background:#FFFBEB; margin-bottom:1rem;">
+                            <div style="display:flex; justify-content:space-between; align-items:center; gap:0.75rem; margin-bottom:0.35rem;">
+                                <strong style="font-size:0.8125rem; color:#92400E;">Paywall Nedeni</strong>
+                                <span class="status-chip status-warning">Abonelik gerekli</span>
                             </div>
+                            <p style="font-size:0.75rem; color:#92400E; margin-bottom:0.5rem;">Kisitli icerik acildiginda neden ve sonraki adim acikca gosterilir.</p>
+                            <button class="btn" style="padding:0.45rem 0.75rem; font-size:0.6875rem; background: #FDE68A;" onclick="showPaywallInfo('Kisitli Icerik')">Planlari Gor</button>
                         </div>
-                        <div style="margin-bottom: 1.5rem;">
-                            <h3 style="font-weight: 700; color: var(--gray-900); margin-bottom: 1rem; font-size: 1rem;">Kategoriler</h3>
-                            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;">
-                                <div class="card" style="text-align: center; cursor: pointer;">
-                                    <div style="font-size: 3rem; margin-bottom: 0.75rem;">💼</div>
-                                    <h4 style="font-weight: 700; font-size: 0.9375rem; color: var(--gray-900);">Liderlik</h4>
-                                    <p style="font-size: 0.75rem; color: var(--gray-600);">12 program</p>
-                                </div>
-                                <div class="card" style="text-align: center; cursor: pointer;">
-                                    <div style="font-size: 3rem; margin-bottom: 0.75rem;">🎯</div>
-                                    <h4 style="font-weight: 700; font-size: 0.9375rem; color: var(--gray-900);">Hedef</h4>
-                                    <p style="font-size: 0.75rem; color: var(--gray-600);">8 program</p>
-                                </div>
-                                <div class="card" style="text-align: center; cursor: pointer;">
-                                    <div style="font-size: 3rem; margin-bottom: 0.75rem;">🧘</div>
-                                    <h4 style="font-weight: 700; font-size: 0.9375rem; color: var(--gray-900);">Mindfulness</h4>
-                                    <p style="font-size: 0.75rem; color: var(--gray-600);">15 program</p>
-                                </div>
-                                <div class="card" style="text-align: center; cursor: pointer;">
-                                    <div style="font-size: 3rem; margin-bottom: 0.75rem;">💬</div>
-                                    <h4 style="font-weight: 700; font-size: 0.9375rem; color: var(--gray-900);">İletişim</h4>
-                                    <p style="font-size: 0.75rem; color: var(--gray-600);">10 program</p>
-                                </div>
-                            </div>
-                        </div>
+
+                        <div id="exploreResults"></div>
                     </div>
                     <div class="tabs">
-                        <div class="tab" onclick="parent.showScreen(1)"><div class="tab-icon">🏠</div><div>Ana Sayfa</div></div>
-                        <div class="tab active"><div class="tab-icon">🔍</div><div>Keşfet</div></div>
-                        <div class="tab"><div class="tab-icon">📚</div><div>Kütüphane</div></div>
-                        <div class="tab"><div class="tab-icon">📈</div><div>Gelişim</div></div>
-                        <div class="tab" onclick="parent.showScreen(3)"><div class="tab-icon">👤</div><div>Profil</div></div>
+                        <div class="tab" data-tab="home" onclick="showScreen(1)"><div class="tab-icon">🏠</div><div>Ana Sayfa</div></div>
+                        <div class="tab active" data-tab="discover" onclick="showScreen(2)"><div class="tab-icon">🔍</div><div>Kesfet</div></div>
+                        <div class="tab" data-tab="library" onclick="showPaywallInfo('Kutuphane')"><div class="tab-icon">📚</div><div>Kutuphane</div></div>
+                        <div class="tab" data-tab="progress" onclick="showPaywallInfo('Gelisim')"><div class="tab-icon">📈</div><div>Gelisim</div></div>
+                        <div class="tab" data-tab="profile" onclick="showScreen(3)"><div class="tab-icon">👤</div><div>Profil</div></div>
                     </div>
                 </div></div></div>`,
+
                 3: `<div class="iphone fade-in"><div class="island"></div><div class="screen"><div class="content">
                     <div class="status"><div>9:41</div><div>📶 📡 🔋</div></div>
                     <div style="padding: 1.5rem 1.5rem 6rem;">
-                        <div style="text-align: center; margin-bottom: 2rem;">
-                            <div style="width: 100px; height: 100px; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); border-radius: 9999px; margin: 0 auto 1rem; display: flex; align-items: center; justify-content: center; font-size: 3rem; color: white; font-weight: 800; box-shadow: 0 4px 20px rgba(0,180,216,0.3);">AY</div>
-                            <h2 style="font-family: Poppins, sans-serif; font-size: 1.5rem; font-weight: 800; color: var(--secondary); margin-bottom: 0.5rem;">Ahmet Yılmaz</h2>
-                            <p style="font-size: 0.875rem; color: var(--gray-600);">ahmet@example.com</p>
-                            <div style="display: inline-flex; align-items: center; gap: 0.5rem; background: linear-gradient(135deg, #FEF3C7, #FDE68A); padding: 0.5rem 1rem; border-radius: 9999px; margin-top: 0.75rem;">
-                                <span style="font-size: 1rem;">👑</span><span style="font-weight: 700; font-size: 0.875rem; color: var(--warning);">Premium Üye</span>
-                            </div>
+                        <div style="text-align:center; margin-bottom:1.25rem;">
+                            <div style="width:86px; height:86px; background:linear-gradient(135deg, var(--primary), var(--primary-dark)); border-radius:9999px; margin:0 auto 0.75rem; display:flex; align-items:center; justify-content:center; font-size:2.35rem; color:white; font-weight:800;">AY</div>
+                            <h2 style="font-family:Poppins, sans-serif; font-size:1.25rem; font-weight:800; color: var(--secondary); margin-bottom:0.25rem;">Ahmet Yilmaz</h2>
+                            <p style="font-size:0.75rem; color: var(--gray-600);">ahmet@example.com</p>
+                            <span class="status-chip status-success" style="margin-top:0.5rem;">Premium Uye</span>
                         </div>
-                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin-bottom: 1.5rem;">
-                            <div class="card" style="text-align: center; padding: 1rem;">
-                                <div style="font-family: Poppins, sans-serif; font-size: 1.5rem; font-weight: 800; color: var(--primary); margin-bottom: 0.25rem;">42</div>
-                                <div style="font-size: 0.75rem; color: var(--gray-600);">Tamamlanan</div>
-                            </div>
-                            <div class="card" style="text-align: center; padding: 1rem;">
-                                <div style="font-family: Poppins, sans-serif; font-size: 1.5rem; font-weight: 800; color: var(--success-dark); margin-bottom: 0.25rem;">12</div>
-                                <div style="font-size: 0.75rem; color: var(--gray-600);">Aktif Gün</div>
-                            </div>
-                            <div class="card" style="text-align: center; padding: 1rem;">
-                                <div style="font-family: Poppins, sans-serif; font-size: 1.5rem; font-weight: 800; color: var(--warning); margin-bottom: 0.25rem;">8</div>
-                                <div style="font-size: 0.75rem; color: var(--gray-600);">Rozetler</div>
-                            </div>
+
+                        <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:0.55rem; margin-bottom:1rem;">
+                            <div class="card" style="text-align:center; padding:0.75rem;"><div style="font-size:1.2rem; font-weight:800; color:var(--primary);">42</div><div style="font-size:0.6875rem; color:var(--gray-600);">Tamamlanan</div></div>
+                            <div class="card" style="text-align:center; padding:0.75rem;"><div style="font-size:1.2rem; font-weight:800; color:var(--success-dark);">12</div><div style="font-size:0.6875rem; color:var(--gray-600);">Aktif Gun</div></div>
+                            <div class="card" style="text-align:center; padding:0.75rem;"><div style="font-size:1.2rem; font-weight:800; color:var(--warning);">8</div><div style="font-size:0.6875rem; color:var(--gray-600);">Rozet</div></div>
                         </div>
-                        <div style="margin-bottom: 1.5rem;">
-                            <h3 style="font-weight: 700; color: var(--gray-900); margin-bottom: 1rem; font-size: 1rem;">Rozetler</h3>
-                            <div style="display: flex; gap: 1rem; overflow-x: auto; padding-bottom: 0.5rem;">
-                                <div style="text-align: center; min-width: 80px;">
-                                    <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #FEF3C7, #FDE68A); border-radius: 9999px; display: flex; align-items: center; justify-content: center; font-size: 2rem; margin: 0 auto 0.5rem;">🏆</div>
-                                    <p style="font-size: 0.75rem; color: var(--gray-700); font-weight: 600;">İlk Adım</p>
-                                </div>
-                                <div style="text-align: center; min-width: 80px;">
-                                    <div style="width: 60px; height: 60px; background: linear-gradient(135deg, var(--success-light), #A7F3D0); border-radius: 9999px; display: flex; align-items: center; justify-content: center; font-size: 2rem; margin: 0 auto 0.5rem;">🔥</div>
-                                    <p style="font-size: 0.75rem; color: var(--gray-700); font-weight: 600;">7 Gün</p>
-                                </div>
-                                <div style="text-align: center; min-width: 80px;">
-                                    <div style="width: 60px; height: 60px; background: linear-gradient(135deg, var(--primary-light), var(--primary-100)); border-radius: 9999px; display: flex; align-items: center; justify-content: center; font-size: 2rem; margin: 0 auto 0.5rem;">⭐</div>
-                                    <p style="font-size: 0.75rem; color: var(--gray-700); font-weight: 600;">Pro</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="card" style="margin-bottom: 0.75rem; cursor: pointer;" onclick="parent.showScreen(4)">
-                                <div style="display: flex; align-items: center; gap: 1rem;"><div style="font-size: 1.5rem;">⚙️</div>
-                                    <div style="flex: 1;"><div style="font-weight: 600; color: var(--gray-900); font-size: 0.9375rem;">Ayarlar</div></div>
-                                    <div style="color: var(--gray-400);">›</div>
-                                </div>
-                            </div>
-                            <div class="card" style="margin-bottom: 0.75rem; cursor: pointer;">
-                                <div style="display: flex; align-items: center; gap: 1rem;"><div style="font-size: 1.5rem;">✏️</div>
-                                    <div style="flex: 1;"><div style="font-weight: 600; color: var(--gray-900); font-size: 0.9375rem;">Profili Düzenle</div></div>
-                                    <div style="color: var(--gray-400);">›</div>
-                                </div>
-                            </div>
-                            <div class="card" style="margin-bottom: 0.75rem; cursor: pointer;">
-                                <div style="display: flex; align-items: center; gap: 1rem;"><div style="font-size: 1.5rem;">📤</div>
-                                    <div style="flex: 1;"><div style="font-weight: 600; color: var(--gray-900); font-size: 0.9375rem;">Profili Paylaş</div></div>
-                                    <div style="color: var(--gray-400);">›</div>
-                                </div>
-                            </div>
-                            <div class="card" style="cursor: pointer;">
-                                <div style="display: flex; align-items: center; gap: 1rem;"><div style="font-size: 1.5rem;">🚪</div>
-                                    <div style="flex: 1;"><div style="font-weight: 600; color: var(--error); font-size: 0.9375rem;">Çıkış Yap</div></div>
-                                </div>
-                            </div>
+
+                        <div class="info-list" style="margin-bottom:1rem;">
+                            <div class="info-row" onclick="showScreen(4)"><div><div style="font-size:0.8125rem; font-weight:600; color: var(--gray-900);">Ayarlar</div><small>Hatirlatici ve bildirim tercihleri</small></div><span>›</span></div>
+                            <div class="info-row"><div><div style="font-size:0.8125rem; font-weight:600; color: var(--gray-900);">Profili Duzenle</div><small>Kisisel bilgiler</small></div><span>›</span></div>
+                            <div class="info-row"><div><div style="font-size:0.8125rem; font-weight:600; color: var(--gray-900);">Profili Paylas</div><small>Harici paylasim</small></div><span>›</span></div>
+                            <div class="info-row"><div><div style="font-size:0.8125rem; font-weight:600; color: var(--error);">Cikis Yap</div><small>Guvenli cikis</small></div><span>⎋</span></div>
                         </div>
                     </div>
                     <div class="tabs">
-                        <div class="tab" onclick="parent.showScreen(1)"><div class="tab-icon">🏠</div><div>Ana Sayfa</div></div>
-                        <div class="tab" onclick="parent.showScreen(2)"><div class="tab-icon">🔍</div><div>Keşfet</div></div>
-                        <div class="tab"><div class="tab-icon">📚</div><div>Kütüphane</div></div>
-                        <div class="tab"><div class="tab-icon">📈</div><div>Gelişim</div></div>
-                        <div class="tab active"><div class="tab-icon">👤</div><div>Profil</div></div>
+                        <div class="tab" data-tab="home" onclick="showScreen(1)"><div class="tab-icon">🏠</div><div>Ana Sayfa</div></div>
+                        <div class="tab" data-tab="discover" onclick="showScreen(2)"><div class="tab-icon">🔍</div><div>Kesfet</div></div>
+                        <div class="tab" data-tab="library" onclick="showPaywallInfo('Kutuphane')"><div class="tab-icon">📚</div><div>Kutuphane</div></div>
+                        <div class="tab" data-tab="progress" onclick="showPaywallInfo('Gelisim')"><div class="tab-icon">📈</div><div>Gelisim</div></div>
+                        <div class="tab active" data-tab="profile" onclick="showScreen(3)"><div class="tab-icon">👤</div><div>Profil</div></div>
                     </div>
                 </div></div></div>`,
+
                 4: `<div class="iphone fade-in"><div class="island"></div><div class="screen"><div class="content">
                     <div class="status"><div>9:41</div><div>📶 📡 🔋</div></div>
-                    <div style="background: white; padding: 1rem 1.5rem; border-bottom: 1px solid var(--gray-200); position: sticky; top: 0; z-index: 10;">
-                        <div style="display: flex; align-items: center; gap: 1rem;">
-                            <button style="background: none; border: none; font-size: 1.5rem; cursor: pointer; padding: 0.5rem;" onclick="parent.showScreen(3)">←</button>
-                            <h2 style="font-family: Poppins, sans-serif; font-size: 1.25rem; font-weight: 800; color: var(--secondary);">Ayarlar</h2>
+                    <div style="background:white; padding:0.85rem 1.15rem; border-bottom:1px solid var(--gray-200); position:sticky; top:0; z-index:10;">
+                        <div style="display:flex; align-items:center; gap:0.75rem;">
+                            <button style="background:none; border:none; font-size:1.3rem; cursor:pointer; padding:0.25rem 0.4rem;" onclick="showScreen(3)">←</button>
+                            <h2 style="font-family:Poppins, sans-serif; font-size:1.1rem; font-weight:800; color:var(--secondary);">Ayarlar</h2>
                         </div>
                     </div>
-                    <div style="padding: 1.5rem;">
-                        <div style="margin-bottom: 2rem;">
-                            <h3 style="font-weight: 700; color: var(--gray-900); margin-bottom: 1rem; font-size: 1rem;">Hesap</h3>
-                            <div class="card" style="margin-bottom: 0.75rem; cursor: pointer;">
-                                <div style="display: flex; align-items: center; gap: 1rem;"><div style="font-size: 1.25rem;">👤</div>
-                                    <div style="flex: 1;"><div style="font-weight: 600; color: var(--gray-900); font-size: 0.875rem;">Kişisel Bilgiler</div></div>
-                                    <div style="color: var(--gray-400);">›</div>
+
+                    <div style="padding: 1.15rem 1.15rem 6rem;">
+                        <div class="card" style="background:#EFF6FF; border:1px solid #BFDBFE; margin-bottom:0.9rem;">
+                            <strong style="display:block; font-size:0.8125rem; color:#1E3A8A; margin-bottom:0.35rem;">Bildirim Izni Aciklamasi</strong>
+                            <p style="font-size:0.75rem; color:#1E3A8A; line-height:1.45;">Gunun tekil hatirlatmasi, yorum teslimi ve gunluk hedef takibi icin kullanilir.</p>
+                        </div>
+
+                        <div class="card" style="margin-bottom:0.9rem;">
+                            <div style="display:flex; justify-content:space-between; align-items:center; gap:0.75rem; margin-bottom:0.65rem;">
+                                <div>
+                                    <div style="font-size:0.875rem; font-weight:700; color:var(--gray-900);">Gunluk Hatirlatici</div>
+                                    <div style="font-size:0.75rem; color:var(--gray-600);">Faz-1 kapsaminda gunde tek bildirim</div>
                                 </div>
+                                <button id="pushReminderToggle" class="toggle-switch on" onclick="togglePushReminder()"></button>
                             </div>
-                            <div class="card" style="margin-bottom: 0.75rem; cursor: pointer;">
-                                <div style="display: flex; align-items: center; gap: 1rem;"><div style="font-size: 1.25rem;">🔒</div>
-                                    <div style="flex: 1;"><div style="font-weight: 600; color: var(--gray-900); font-size: 0.875rem;">Şifre Değiştir</div></div>
-                                    <div style="color: var(--gray-400);">›</div>
+                            <div class="info-row" style="margin-bottom:0.6rem;">
+                                <div>
+                                    <div style="font-size:0.75rem; font-weight:600; color:var(--gray-900);">Varsayilan Saat</div>
+                                    <small>Rev4 default: 20:00</small>
                                 </div>
+                                <button id="reminderTimeButton" class="time-chip-btn" onclick="cycleReminderTime()">20:00</button>
                             </div>
-                            <div class="card" style="cursor: pointer;">
-                                <div style="display: flex; align-items: center; gap: 1rem;"><div style="font-size: 1.25rem;">💳</div>
-                                    <div style="flex: 1;"><div style="font-weight: 600; color: var(--gray-900); font-size: 0.875rem;">Abonelik Yönetimi</div></div>
-                                    <div style="color: var(--gray-400);">›</div>
+                            <div class="status-chip status-info" id="pushReminderState">Acilmis</div>
+                        </div>
+
+                        <div class="card" style="margin-bottom:0.9rem;">
+                            <div style="display:flex; justify-content:space-between; align-items:center; gap:0.75rem; margin-bottom:0.45rem;">
+                                <div>
+                                    <div style="font-size:0.8125rem; font-weight:700; color:var(--gray-900);">E-posta Bildirimleri</div>
+                                    <div style="font-size:0.75rem; color:var(--gray-600);">Guncellemeler ve urun haberleri</div>
                                 </div>
+                                <button id="emailReminderToggle" class="toggle-switch" onclick="toggleEmailReminder()"></button>
                             </div>
                         </div>
-                        <div style="margin-bottom: 2rem;">
-                            <h3 style="font-weight: 700; color: var(--gray-900); margin-bottom: 1rem; font-size: 1rem;">Bildirimler</h3>
-                            <div class="card" style="margin-bottom: 0.75rem;">
-                                <div style="display: flex; align-items: center; justify-content: space-between;">
-                                    <div><div style="font-weight: 600; color: var(--gray-900); font-size: 0.875rem; margin-bottom: 0.25rem;">Push Bildirimleri</div>
-                                    <div style="font-size: 0.75rem; color: var(--gray-600);">Mobil bildirimler</div></div>
-                                    <div style="width: 51px; height: 31px; background: var(--primary); border-radius: 9999px; position: relative; cursor: pointer;">
-                                        <div style="position: absolute; right: 4px; top: 4px; width: 23px; height: 23px; background: white; border-radius: 9999px;"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card" style="margin-bottom: 0.75rem;">
-                                <div style="display: flex; align-items: center; justify-content: space-between;">
-                                    <div><div style="font-weight: 600; color: var(--gray-900); font-size: 0.875rem; margin-bottom: 0.25rem;">E-posta Bildirimleri</div>
-                                    <div style="font-size: 0.75rem; color: var(--gray-600);">Güncellemeler ve haberler</div></div>
-                                    <div style="width: 51px; height: 31px; background: var(--gray-300); border-radius: 9999px; position: relative; cursor: pointer;">
-                                        <div style="position: absolute; left: 4px; top: 4px; width: 23px; height: 23px; background: white; border-radius: 9999px;"></div>
-                                    </div>
-                                </div>
-                            </div>
+
+                        <div class="card" style="background:#F0FDF4; border:1px solid #86EFAC; margin-bottom:0.9rem;">
+                            <strong style="display:block; font-size:0.8125rem; color:#166534; margin-bottom:0.35rem;">Teslim Sonrasi Sessizlik Kurali</strong>
+                            <p id="submissionSilenceState" style="font-size:0.75rem; color:#166534; line-height:1.45;">Bugun yorum teslim edildigi icin hatirlatma gonderilmeyecek.</p>
                         </div>
-                        <div style="margin-bottom: 2rem;">
-                            <h3 style="font-weight: 700; color: var(--gray-900); margin-bottom: 1rem; font-size: 1rem;">Gizlilik</h3>
-                            <div class="card" style="margin-bottom: 0.75rem; cursor: pointer;">
-                                <div style="display: flex; align-items: center; gap: 1rem;"><div style="font-size: 1.25rem;">🔐</div>
-                                    <div style="flex: 1;"><div style="font-weight: 600; color: var(--gray-900); font-size: 0.875rem;">Gizlilik Ayarları</div></div>
-                                    <div style="color: var(--gray-400);">›</div>
-                                </div>
-                            </div>
-                            <div class="card" style="cursor: pointer;">
-                                <div style="display: flex; align-items: center; gap: 1rem;"><div style="font-size: 1.25rem;">📄</div>
-                                    <div style="flex: 1;"><div style="font-weight: 600; color: var(--gray-900); font-size: 0.875rem;">Kullanım Koşulları</div></div>
-                                    <div style="color: var(--gray-400);">›</div>
-                                </div>
-                            </div>
+
+                        <div class="card" style="background:#FFFBEB; border:1px solid #FCD34D; margin-bottom:0.9rem;">
+                            <strong style="display:block; font-size:0.8125rem; color:#92400E; margin-bottom:0.35rem;">Tekil Hatirlatici Kapsami</strong>
+                            <p style="font-size:0.75rem; color:#92400E; line-height:1.45;">Faz 1'de yalnizca gunluk tek hatirlatici gonderilir. Segment bazli kampanya bildirimleri kapsam disidir.</p>
                         </div>
-                        <div>
-                            <h3 style="font-weight: 700; color: var(--gray-900); margin-bottom: 1rem; font-size: 1rem;">Dil ve Bölge</h3>
-                            <div class="card" style="margin-bottom: 0.75rem; cursor: pointer;">
-                                <div style="display: flex; align-items: center; gap: 1rem;"><div style="font-size: 1.25rem;">🌐</div>
-                                    <div style="flex: 1;"><div style="font-weight: 600; color: var(--gray-900); font-size: 0.875rem;">Dil</div>
-                                    <div style="font-size: 0.75rem; color: var(--gray-600);">Türkçe</div></div>
-                                    <div style="color: var(--gray-400);">›</div>
-                                </div>
-                            </div>
+
+                        <div class="info-list">
+                            <div class="info-row"><div><div style="font-size:0.8125rem; font-weight:600; color:var(--gray-900);">Gizlilik Ayarlari</div><small>Bildirim verisi kullanimi</small></div><span>›</span></div>
+                            <div class="info-row"><div><div style="font-size:0.8125rem; font-weight:600; color:var(--gray-900);">Dil</div><small>Turkce</small></div><span>›</span></div>
                         </div>
                     </div>
                 </div></div></div>`
             };
+
             return screens[num] || screens[1];
         }
-        document.getElementById('viewer').innerHTML = getScreenHTML(1);
+
+        initializeStaticInteractions();
+        showScreen(1);
     </script>
 </body>
 </html>

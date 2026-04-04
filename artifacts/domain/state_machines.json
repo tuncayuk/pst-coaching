@@ -1,71 +1,79 @@
 {
   "content_progression": {
-    "description": "Generic progression for content items or parents with locked sequencing.",
+    "description": "Locked progression for journeys, modules, packages, and workshop nodes.",
     "initial_state": "locked",
-    "states": ["locked", "available", "in_progress", "completed"],
+    "states": [
+      "locked",
+      "available",
+      "in_progress",
+      "completed"
+    ],
     "transitions": [
       {
         "from": "locked",
         "to": "available",
-        "trigger": "prerequisite_completed_and_unlocked"
+        "trigger": "prerequisite_completed_or_server_unlock"
       },
       {
         "from": "available",
         "to": "in_progress",
-        "trigger": "user_starts"
+        "trigger": "user_starts_content"
       },
       {
         "from": "in_progress",
         "to": "completed",
-        "trigger": "all_steps_completed"
-      },
-      {
-        "from": "available",
-        "to": "completed",
-        "trigger": "complete_without_tracking"
+        "trigger": "all_required_steps_completed"
       }
     ]
   },
   "day_cycle_rules": {
-    "description": "Daily unlock at 08:00 and submission window until 23:59 (local time).",
+    "description": "Daily content unlock by user timezone at 08:00 and submission deadline at 23:59, with server time authority.",
     "initial_state": "locked_until_08_00",
     "states": [
       "locked_until_08_00",
-      "open_for_progress_and_submission",
+      "open_for_progress",
+      "submission_warning_23_00",
       "submission_closed",
       "next_day_pending"
     ],
     "transitions": [
       {
         "from": "locked_until_08_00",
-        "to": "open_for_progress_and_submission",
-        "trigger": "time_reaches_08_00"
+        "to": "open_for_progress",
+        "trigger": "server_time_reaches_08_00"
       },
       {
-        "from": "open_for_progress_and_submission",
+        "from": "open_for_progress",
+        "to": "submission_warning_23_00",
+        "trigger": "server_time_reaches_23_00"
+      },
+      {
+        "from": "submission_warning_23_00",
         "to": "submission_closed",
-        "trigger": "time_reaches_23_59"
+        "trigger": "server_time_reaches_23_59"
       },
       {
         "from": "submission_closed",
         "to": "next_day_pending",
-        "trigger": "day_end"
+        "trigger": "day_rollover"
       },
       {
         "from": "next_day_pending",
         "to": "locked_until_08_00",
-        "trigger": "next_day_starts"
+        "trigger": "next_day_initialized"
       }
     ],
-    "notes": [
-      "Show a warning at 23:00 before submission closes.",
-      "If today is completed early, next day stays locked until 08:00."
-    ]
+    "authority": "server_time"
   },
   "subscription_entitlement_gating": {
-    "description": "Access gating based on subscription status and period end rules.",
+    "description": "Authorization gate for protected tabs and content start flow.",
     "initial_state": "inactive",
-    "states": ["inactive", "trial", "active", "canceled"],
+    "states": [
+      "inactive",
+      "trial",
+      "active",
+      "canceled"
+    ],
     "transitions": [
       {
         "from": "inactive",
@@ -75,7 +83,7 @@
       {
         "from": "inactive",
         "to": "active",
-        "trigger": "purchase_validated"
+        "trigger": "purchase_validated_server_side"
       },
       {
         "from": "trial",
@@ -85,7 +93,7 @@
       {
         "from": "active",
         "to": "canceled",
-        "trigger": "user_cancels"
+        "trigger": "cancel_requested"
       },
       {
         "from": "trial",
@@ -100,12 +108,114 @@
       {
         "from": "canceled",
         "to": "active",
-        "trigger": "subscription_restored"
+        "trigger": "restore_purchase_success"
       }
     ],
     "notes": [
-      "Canceled subscriptions retain access until period end.",
-      "Access to Kütüphane and Gelişim requires trial or active status."
+      "Cancellation keeps access until period_end_reached."
+    ]
+  },
+  "workshop_stage_progression": {
+    "description": "Stage-level progression for Rev4 workshop structure (stages 1-11 with typed layers and lock reasons).",
+    "initial_state": "locked",
+    "states": [
+      "locked",
+      "available",
+      "in_progress",
+      "completed"
+    ],
+    "transitions": [
+      {
+        "from": "locked",
+        "to": "available",
+        "trigger": "previous_stage_completed_or_rule_opened"
+      },
+      {
+        "from": "available",
+        "to": "in_progress",
+        "trigger": "user_enters_stage"
+      },
+      {
+        "from": "in_progress",
+        "to": "completed",
+        "trigger": "required_outputs_saved"
+      }
+    ],
+    "constraints": [
+      "Lock reason must be shown to user.",
+      "Stage type controls UI blocks and expected outputs."
+    ]
+  },
+  "workshop_session_progression": {
+    "description": "Camp session lifecycle for day/slot sessions in Stage 8.",
+    "initial_state": "locked",
+    "states": [
+      "locked",
+      "scheduled",
+      "in_progress",
+      "completed",
+      "missed"
+    ],
+    "transitions": [
+      {
+        "from": "locked",
+        "to": "scheduled",
+        "trigger": "session_open_condition_met"
+      },
+      {
+        "from": "scheduled",
+        "to": "in_progress",
+        "trigger": "session_started"
+      },
+      {
+        "from": "in_progress",
+        "to": "completed",
+        "trigger": "session_output_saved"
+      },
+      {
+        "from": "scheduled",
+        "to": "missed",
+        "trigger": "session_window_expired"
+      }
+    ],
+    "notes": [
+      "Completion updates stage summary and recommends next session."
+    ]
+  },
+  "workbook_entry_lifecycle": {
+    "description": "Autosave and versioned persistence for workbook and worksheet entries.",
+    "initial_state": "draft",
+    "states": [
+      "draft",
+      "saved",
+      "submitted",
+      "archived"
+    ],
+    "transitions": [
+      {
+        "from": "draft",
+        "to": "saved",
+        "trigger": "autosave_or_manual_save"
+      },
+      {
+        "from": "saved",
+        "to": "submitted",
+        "trigger": "user_confirms_submission"
+      },
+      {
+        "from": "saved",
+        "to": "draft",
+        "trigger": "user_edits_again"
+      },
+      {
+        "from": "submitted",
+        "to": "archived",
+        "trigger": "workshop_archived"
+      }
+    ],
+    "constraints": [
+      "Entries are versioned by workshop/stage/session context.",
+      "Export requires explicit privacy consent."
     ]
   }
 }

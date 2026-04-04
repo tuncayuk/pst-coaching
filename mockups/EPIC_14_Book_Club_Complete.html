@@ -3,543 +3,1273 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PST Coaching Mobile - EPIC 14: Kitap Kulübü</title>
+    <title>PST Coaching Mobile - EPIC 14: Kitap Kulubu</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #00B4D8; --primary-dark: #0096B8; --primary-light: #E0F7FA; --primary-100: #B2EBF2;
-            --secondary: #2B1B5D; --secondary-light: #EDE7F6;
-            --success: #10B981; --success-light: #D1FAE5; --success-dark: #065F46;
-            --warning: #F59E0B; --error: #EF4444; --purple: #8B5CF6; --purple-light: #EDE9FE;
-            --orange: #F97316; --orange-light: #FFEDD5;
-            --gray-50: #FAFAFA; --gray-100: #F5F5F5; --gray-200: #E5E5E5; --gray-300: #D4D4D4;
-            --gray-400: #A3A3A3; --gray-600: #525252; --gray-700: #404040; --gray-900: #171717;
+            --primary: #7c2d12;
+            --primary-dark: #9a3412;
+            --primary-light: #ffedd5;
+            --secondary: #1f2937;
+            --success: #16a34a;
+            --success-light: #dcfce7;
+            --warning: #b45309;
+            --warning-light: #fef3c7;
+            --error: #dc2626;
+            --error-light: #fee2e2;
+            --violet: #7c3aed;
+            --violet-light: #f5f3ff;
+            --gray-50: #fafafa;
+            --gray-100: #f5f5f5;
+            --gray-200: #e5e5e5;
+            --gray-300: #d4d4d4;
+            --gray-400: #a3a3a3;
+            --gray-600: #525252;
+            --gray-700: #404040;
+            --gray-900: #171717;
         }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #f0f0f0, #e0e0e0); overflow: hidden; }
-        .app { display: flex; height: 100vh; }
-        .sidebar { width: 400px; background: white; border-right: 1px solid var(--gray-200); overflow-y: auto; box-shadow: 2px 0 10px rgba(0,0,0,0.05); }
-        .main { flex: 1; display: flex; flex-direction: column; }
-        .topbar { background: white; border-bottom: 1px solid var(--gray-200); padding: 1.75rem 2.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
-        .viewer { flex: 1; overflow-y: auto; padding: 3rem; display: flex; justify-content: center; align-items: flex-start; }
-        .logo { font-family: 'Poppins', sans-serif; font-size: 2rem; font-weight: 800; color: var(--primary); padding: 2.5rem; border-bottom: 1px solid var(--gray-200); background: linear-gradient(135deg, var(--primary-light), white); }
-        .subtitle { font-size: 0.875rem; color: var(--gray-600); font-weight: 500; margin-top: 0.5rem; }
-        .epic-header { padding: 1.5rem; background: linear-gradient(135deg, var(--orange-light), #FED7AA); border-bottom: 2px solid var(--orange); }
-        .epic-title { font-family: 'Poppins', sans-serif; font-size: 1.25rem; font-weight: 700; color: var(--gray-900); margin-bottom: 0.5rem; }
-        .epic-meta { font-size: 0.8125rem; color: var(--gray-600); }
-        .nav-map { background: var(--purple-light); border-left: 4px solid var(--purple); padding: 1rem; margin: 1rem 1.75rem; border-radius: 0.5rem; }
-        .nav-map-title { font-weight: 700; color: var(--purple); font-size: 0.8125rem; margin-bottom: 0.75rem; text-transform: uppercase; display: flex; align-items: center; gap: 0.5rem; }
-        .nav-flow { display: flex; flex-direction: column; gap: 0.5rem; }
-        .nav-flow-item { display: flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; color: var(--gray-700); }
-        .nav-flow-box { background: white; padding: 0.375rem 0.625rem; border-radius: 0.375rem; border: 2px solid var(--gray-300); font-weight: 600; white-space: nowrap; font-size: 0.6875rem; }
-        .nav-flow-box.active { background: var(--primary); color: white; border-color: var(--primary); }
-        .nav-flow-arrow { color: var(--gray-400); font-weight: 700; }
-        .nav-flow-label { color: var(--gray-600); font-size: 0.625rem; font-style: italic; }
-        .nav-section { padding: 1.25rem 0; border-bottom: 1px solid var(--gray-100); }
-        .nav-title { padding: 0.75rem 1.75rem; font-size: 0.6875rem; font-weight: 700; color: var(--gray-600); text-transform: uppercase; }
-        .nav-item { padding: 1rem 1.75rem; cursor: pointer; font-size: 0.9375rem; transition: all 0.2s; color: var(--gray-700); display: flex; align-items: center; gap: 0.875rem; border-left: 3px solid transparent; }
-        .nav-item:hover { background: var(--gray-50); }
-        .nav-item.active { background: var(--primary-light); color: var(--primary-dark); font-weight: 600; border-left-color: var(--primary); }
-        .nav-icon { font-size: 1.375rem; }
-        .nav-badge { background: var(--primary); color: white; padding: 0.25rem 0.625rem; border-radius: 9999px; font-size: 0.6875rem; font-weight: 700; margin-left: auto; }
-        .ac-section { background: var(--secondary-light); border-left: 4px solid var(--secondary); padding: 1rem; margin: 0.75rem 1.75rem; border-radius: 0.5rem; }
-        .ac-title { font-weight: 700; color: var(--secondary); font-size: 0.75rem; margin-bottom: 0.5rem; text-transform: uppercase; }
-        .ac-list { list-style: none; }
-        .ac-list li { font-size: 0.75rem; color: var(--gray-700); margin-bottom: 0.375rem; padding-left: 1.25rem; position: relative; line-height: 1.4; }
-        .ac-list li:before { content: "✓"; position: absolute; left: 0; color: var(--success); font-weight: 700; }
-        .screen-title { font-family: 'Poppins', sans-serif; font-size: 2.25rem; font-weight: 700; color: var(--gray-900); }
-        .screen-meta { color: var(--gray-600); font-size: 0.9375rem; margin-top: 0.5rem; display: flex; align-items: center; gap: 1rem; }
-        .meta-badge { background: var(--orange-light); color: var(--orange); padding: 0.375rem 0.875rem; border-radius: 0.5rem; font-size: 0.8125rem; font-weight: 600; }
-        .iphone { width: 393px; height: 852px; background: #1d1d1f; border-radius: 55px; padding: 12px; box-shadow: 0 60px 120px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.1); position: relative; }
-        .island { position: absolute; top: 20px; left: 50%; transform: translateX(-50%); width: 120px; height: 30px; background: #000; border-radius: 20px; z-index: 11; }
-        .screen { width: 100%; height: 100%; background: white; border-radius: 43px; overflow: hidden; position: relative; }
-        .content { width: 100%; height: 100%; overflow-y: auto; background: var(--gray-50); }
-        .content::-webkit-scrollbar { width: 4px; }
-        .content::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.3); border-radius: 10px; }
-        .status { height: 54px; display: flex; align-items: center; justify-content: space-between; padding: 0 1.5rem; font-size: 0.8125rem; font-weight: 600; background: white; }
-        .tabs { position: absolute; bottom: 0; left: 0; right: 0; height: 84px; background: white; border-top: 1px solid var(--gray-200); display: flex; justify-content: space-around; align-items: flex-start; padding: 0.75rem 0.5rem 1.5rem; z-index: 10; }
-        .tab { display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 0.625rem; font-weight: 600; color: var(--gray-600); min-width: 60px; text-align: center; cursor: pointer; }
-        .tab.active { color: var(--primary); }
-        .tab-icon { font-size: 1.5rem; }
-        .btn { padding: 0.875rem 1.5rem; border-radius: 0.75rem; font-weight: 600; font-size: 1rem; border: none; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.2s; }
-        .btn-primary { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; box-shadow: 0 4px 16px rgba(0,180,216,0.4); }
-        .card { background: white; border-radius: 1rem; padding: 1.25rem; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .fade-in { animation: fadeIn 0.3s ease-out; }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--gray-900);
+            background: radial-gradient(circle at 10% 0%, #fde68a 0%, #fde68a 6%, #e2e8f0 44%, #f8fafc 100%);
+            overflow: hidden;
+        }
+
+        .app {
+            height: 100vh;
+            display: flex;
+        }
+
+        .sidebar {
+            width: 430px;
+            background: #fff;
+            border-right: 1px solid var(--gray-200);
+            box-shadow: 2px 0 14px rgba(0, 0, 0, 0.06);
+            overflow-y: auto;
+        }
+
+        .main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.85rem;
+            font-weight: 800;
+            color: var(--primary-dark);
+            padding: 1.85rem;
+            border-bottom: 1px solid var(--gray-200);
+            background: linear-gradient(135deg, var(--primary-light), #fff);
+        }
+
+        .subtitle {
+            margin-top: 0.35rem;
+            font-size: 0.82rem;
+            color: var(--gray-600);
+            font-weight: 600;
+        }
+
+        .epic-header {
+            margin: 1rem 1.2rem;
+            border: 1px solid #fdba74;
+            border-radius: 0.85rem;
+            padding: 1rem;
+            background: linear-gradient(140deg, #fff7ed, #f8fafc);
+        }
+
+        .epic-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.03rem;
+            font-weight: 700;
+            margin-bottom: 0.35rem;
+        }
+
+        .epic-meta {
+            font-size: 0.76rem;
+            color: var(--gray-700);
+            line-height: 1.45;
+        }
+
+        .flow-map {
+            margin: 0 1.2rem 1rem;
+            border-radius: 0.85rem;
+            border: 1px solid #ddd6fe;
+            background: #f8f9ff;
+            padding: 0.75rem;
+        }
+
+        .flow-title {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: var(--gray-600);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .flow-list {
+            display: grid;
+            gap: 0.35rem;
+        }
+
+        .flow-step {
+            border: 1px solid var(--gray-300);
+            border-radius: 0.5rem;
+            background: #fff;
+            padding: 0.34rem 0.52rem;
+            font-size: 0.69rem;
+            font-weight: 600;
+            color: var(--gray-700);
+        }
+
+        .flow-step.active {
+            border-color: var(--violet);
+            background: var(--violet-light);
+            color: #4c1d95;
+        }
+
+        .gate-note {
+            margin-top: 0.55rem;
+            border-top: 1px solid #ddd6fe;
+            padding-top: 0.5rem;
+            font-size: 0.68rem;
+            color: var(--gray-600);
+            line-height: 1.45;
+        }
+
+        .nav-group {
+            border-bottom: 1px solid var(--gray-100);
+            padding: 0.28rem 0 0.72rem;
+        }
+
+        .nav-group-title {
+            padding: 0.66rem 1.2rem;
+            font-size: 0.68rem;
+            color: var(--gray-600);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            font-weight: 700;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.62rem;
+            padding: 0.7rem 1.2rem;
+            border-left: 3px solid transparent;
+            color: var(--gray-700);
+            cursor: pointer;
+            transition: background 0.18s ease;
+        }
+
+        .nav-item:hover {
+            background: var(--gray-50);
+        }
+
+        .nav-item.active {
+            border-left-color: var(--primary);
+            background: #fff7ed;
+            color: var(--primary-dark);
+        }
+
+        .nav-icon {
+            font-size: 0.72rem;
+            font-weight: 800;
+            width: 28px;
+            text-align: center;
+            border: 1px solid var(--gray-300);
+            border-radius: 0.35rem;
+            padding: 0.1rem 0.2rem;
+            background: #fff;
+        }
+
+        .nav-text {
+            flex: 1;
+            font-size: 0.83rem;
+            font-weight: 600;
+        }
+
+        .nav-badge {
+            font-size: 0.66rem;
+            font-weight: 700;
+            border-radius: 999px;
+            padding: 0.14rem 0.45rem;
+            background: #e2e8f0;
+            color: var(--gray-700);
+        }
+
+        .topbar {
+            background: #fff;
+            border-bottom: 1px solid var(--gray-200);
+            padding: 1.45rem 2rem;
+        }
+
+        .screen-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--secondary);
+        }
+
+        .screen-meta {
+            margin-top: 0.4rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--gray-600);
+            font-size: 0.9rem;
+            flex-wrap: wrap;
+        }
+
+        .fr-badge {
+            border: 1px solid #fdba74;
+            background: #fff7ed;
+            color: #9a3412;
+            border-radius: 0.52rem;
+            padding: 0.2rem 0.58rem;
+            font-size: 0.78rem;
+            font-weight: 700;
+        }
+
+        .route-badge {
+            border: 1px solid #c4b5fd;
+            background: #f5f3ff;
+            color: #5b21b6;
+            border-radius: 0.52rem;
+            padding: 0.2rem 0.58rem;
+            font-size: 0.74rem;
+            font-weight: 700;
+        }
+
+        .viewer {
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 2rem;
+        }
+
+        .iphone {
+            width: 393px;
+            height: 852px;
+            background: #1d1d1f;
+            border-radius: 54px;
+            padding: 12px;
+            box-shadow: 0 44px 94px rgba(0, 0, 0, 0.45);
+            position: relative;
+        }
+
+        .island {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 30px;
+            border-radius: 20px;
+            background: #000;
+            z-index: 12;
+        }
+
+        .screen {
+            width: 100%;
+            height: 100%;
+            background: #fff;
+            border-radius: 42px;
+            overflow: hidden;
+        }
+
+        .content {
+            width: 100%;
+            height: 100%;
+            overflow-y: auto;
+            background: var(--gray-50);
+            padding-bottom: 1.6rem;
+        }
+
+        .content::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .content::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+        }
+
+        .status {
+            height: 54px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 1.3rem;
+            font-size: 0.8rem;
+            font-weight: 700;
+            background: #fff;
+        }
+
+        .mobile-header {
+            position: sticky;
+            top: 0;
+            z-index: 3;
+            background: rgba(255, 255, 255, 0.94);
+            backdrop-filter: blur(6px);
+            border-bottom: 1px solid var(--gray-200);
+            padding: 0.75rem 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .mobile-title {
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: var(--secondary);
+        }
+
+        .mobile-body {
+            padding: 0.9rem;
+            display: grid;
+            gap: 0.75rem;
+        }
+
+        .icon-btn {
+            border: 1px solid var(--gray-300);
+            background: #fff;
+            border-radius: 0.5rem;
+            width: 34px;
+            height: 34px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--gray-700);
+        }
+
+        .card {
+            background: #fff;
+            border: 1px solid var(--gray-200);
+            border-radius: 0.8rem;
+            padding: 0.75rem;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+        }
+
+        .card-title {
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 0.45rem;
+        }
+
+        .muted {
+            color: var(--gray-600);
+            font-size: 0.73rem;
+            line-height: 1.45;
+        }
+
+        .chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.38rem;
+        }
+
+        .chip {
+            border-radius: 999px;
+            border: 1px solid var(--gray-300);
+            background: #fff;
+            color: var(--gray-700);
+            padding: 0.2rem 0.48rem;
+            font-size: 0.66rem;
+            font-weight: 700;
+        }
+
+        .chip.success {
+            border-color: #86efac;
+            background: var(--success-light);
+            color: #14532d;
+        }
+
+        .chip.warn {
+            border-color: #fcd34d;
+            background: var(--warning-light);
+            color: #92400e;
+        }
+
+        .chip.error {
+            border-color: #fca5a5;
+            background: var(--error-light);
+            color: #7f1d1d;
+        }
+
+        .btn {
+            border-radius: 0.55rem;
+            border: 1px solid transparent;
+            padding: 0.36rem 0.62rem;
+            font-size: 0.68rem;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: #fff;
+            border-color: var(--primary);
+        }
+
+        .btn-outline {
+            border-color: var(--gray-300);
+            color: var(--gray-700);
+            background: #fff;
+        }
+
+        .field {
+            width: 100%;
+            border: 1px solid var(--gray-300);
+            border-radius: 0.55rem;
+            padding: 0.5rem 0.58rem;
+            font-size: 0.74rem;
+            background: #fff;
+            font-family: inherit;
+        }
+
+        textarea.field {
+            resize: vertical;
+        }
+
+        .list {
+            display: grid;
+            gap: 0.52rem;
+        }
+
+        .list-item {
+            border: 1px solid var(--gray-200);
+            background: #fff;
+            border-radius: 0.68rem;
+            padding: 0.56rem;
+        }
+
+        .row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
+        }
+
+        .item-title {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--secondary);
+        }
+
+        .item-meta {
+            margin-top: 0.22rem;
+            font-size: 0.68rem;
+            color: var(--gray-600);
+            line-height: 1.4;
+        }
+
+        .progress {
+            width: 100%;
+            height: 7px;
+            border-radius: 999px;
+            background: var(--gray-200);
+            overflow: hidden;
+            margin-top: 0.34rem;
+        }
+
+        .progress > span {
+            display: block;
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), #f59e0b);
+        }
+
+        .state-switcher {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.35rem;
+            margin-bottom: 0.35rem;
+        }
+
+        .state-btn {
+            border: 1px solid var(--gray-300);
+            border-radius: 999px;
+            background: #fff;
+            color: var(--gray-700);
+            font-size: 0.63rem;
+            font-weight: 700;
+            padding: 0.16rem 0.45rem;
+            cursor: pointer;
+        }
+
+        .state-btn.active {
+            border-color: var(--violet);
+            background: var(--violet-light);
+            color: #5b21b6;
+        }
+
+        .state-panel {
+            border-radius: 0.68rem;
+            border: 1px solid var(--gray-300);
+            background: #fff;
+            padding: 0.62rem;
+            margin-bottom: 0.58rem;
+            display: grid;
+            gap: 0.3rem;
+            font-size: 0.72rem;
+            color: var(--gray-700);
+        }
+
+        .state-panel.loading {
+            border-color: #93c5fd;
+            background: #eff6ff;
+        }
+
+        .state-panel.empty {
+            border-color: #fde68a;
+            background: #fffbeb;
+        }
+
+        .state-panel.error {
+            border-color: #fca5a5;
+            background: #fef2f2;
+        }
+
+        .state-panel.offline {
+            border-color: #c4b5fd;
+            background: #f5f3ff;
+        }
+
+        .toast {
+            position: fixed;
+            right: 1.2rem;
+            bottom: 1.2rem;
+            padding: 0.65rem 0.85rem;
+            border-radius: 0.62rem;
+            color: #fff;
+            font-weight: 700;
+            font-size: 0.74rem;
+            background: #9a3412;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            transform: translateY(8px);
+            pointer-events: none;
+            transition: all 0.22s ease;
+            z-index: 50;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .toast.success {
+            background: #065f46;
+        }
+
+        .toast.error {
+            background: #7f1d1d;
+        }
+
+        .nav-item:focus-visible,
+        button:focus-visible,
+        textarea:focus-visible,
+        input:focus-visible {
+            outline: 3px solid #fdba74;
+            outline-offset: 2px;
+        }
+
+        @media (max-width: 1200px) {
+            body {
+                overflow: auto;
+            }
+
+            .app {
+                flex-direction: column;
+                height: auto;
+                min-height: 100vh;
+            }
+
+            .sidebar {
+                width: 100%;
+                max-height: 52vh;
+            }
+
+            .viewer {
+                padding: 1.2rem;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="app">
-        <div class="sidebar">
-            <div class="logo">PST Coaching<div class="subtitle">Kitap Kulübü</div></div>
+        <aside class="sidebar">
+            <div class="logo">
+                PST Coaching
+                <div class="subtitle">EPIC 14 - Kitap Kulubu</div>
+            </div>
+
             <div class="epic-header">
-                <div class="epic-title">EPIC 14: Kitap Kulübü</div>
-                <div class="epic-meta">1 User Story • 4 Screens • 16 ACs</div>
+                <div class="epic-title">EPIC-14 Sync Pack</div>
+                <div class="epic-meta">4 FR Screen | 16 AC | Requirements + UX artifacts + mockup sync</div>
             </div>
-            <div class="nav-map">
-                <div class="nav-map-title"><span>🗺️</span><span>Navigation Map</span></div>
-                <div class="nav-flow">
-                    <div class="nav-flow-item"><div class="nav-flow-box active" id="nav-1">Book Clubs</div></div>
-                    <div class="nav-flow-item"><span class="nav-flow-arrow">├→</span><span class="nav-flow-label">tap + Kulüp Oluştur</span></div>
-                    <div class="nav-flow-item" style="margin-left: 1rem;"><div class="nav-flow-box" id="nav-2">Create Club</div></div>
-                    <div class="nav-flow-item"><span class="nav-flow-arrow">├→</span><span class="nav-flow-label">tap club card</span></div>
-                    <div class="nav-flow-item" style="margin-left: 1rem;"><div class="nav-flow-box" id="nav-3">Club Detail</div></div>
-                    <div class="nav-flow-item"><span class="nav-flow-arrow">└→</span><span class="nav-flow-label">tap Tartışmalar</span></div>
-                    <div class="nav-flow-item" style="margin-left: 1rem;"><div class="nav-flow-box" id="nav-4">Discussion Thread</div></div>
+
+            <div class="flow-map">
+                <div class="flow-title">Kitap kulubu akis haritasi</div>
+                <div class="flow-list">
+                    <div class="flow-step active" id="flow-1">FR-E14-01 Kulup listesi ve kesif</div>
+                    <div class="flow-step" id="flow-2">FR-E14-02 Kulup olusturma ve kitap secimi</div>
+                    <div class="flow-step" id="flow-3">FR-E14-03 Kulup detayi ve uye alani</div>
+                    <div class="flow-step" id="flow-4">FR-E14-04 Tartisma basligi ve etkilesim</div>
                 </div>
-                <div style="margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid var(--purple); font-size: 0.625rem; color: var(--gray-600); line-height: 1.4;">
-                    <strong>Entry:</strong> Topluluk → Kitap Kulübü<br>
-                    <strong>Feature:</strong> Community discussions
+                <div class="gate-note">
+                    Gates: auth + subscription | Tum ekranlar loading, ready, empty, error, offline durumlarini destekler.
                 </div>
             </div>
-            <div class="nav-section">
-                <div class="nav-title">US-14.1: Create & Browse</div>
-                <div class="nav-item active" onclick="showScreen(1)">
-                    <span class="nav-icon">📚</span><span>Book Clubs</span><span class="nav-badge">4 ACs</span>
-                </div>
-                <div class="ac-section">
-                    <div class="ac-title">✓ Acceptance Criteria</div>
-                    <ul class="ac-list">
-                        <li>Active clubs displayed</li>
-                        <li>Create club button visible</li>
-                        <li>Club member count shown</li>
-                        <li>Current book/topic displayed</li>
-                    </ul>
-                </div>
-                <div class="nav-item" onclick="showScreen(2)">
-                    <span class="nav-icon">➕</span><span>Create Club</span><span class="nav-badge">4 ACs</span>
-                </div>
-                <div class="ac-section">
-                    <div class="ac-title">✓ Acceptance Criteria</div>
-                    <ul class="ac-list">
-                        <li>Club name input required</li>
-                        <li>Book selection available</li>
-                        <li>Discussion schedule configurable</li>
-                        <li>Privacy settings (Public/Private)</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="nav-section">
-                <div class="nav-title">US-14.1: Participate & Discuss</div>
-                <div class="nav-item" onclick="showScreen(3)">
-                    <span class="nav-icon">🎭</span><span>Club Detail</span><span class="nav-badge">4 ACs</span>
-                </div>
-                <div class="ac-section">
-                    <div class="ac-title">✓ Acceptance Criteria</div>
-                    <ul class="ac-list">
-                        <li>Club info and book shown</li>
-                        <li>Member list visible</li>
-                        <li>Discussion topics listed</li>
-                        <li>Meeting schedule displayed</li>
-                    </ul>
-                </div>
-                <div class="nav-item" onclick="showScreen(4)">
-                    <span class="nav-icon">💬</span><span>Discussion Thread</span><span class="nav-badge">4 ACs</span>
-                </div>
-                <div class="ac-section">
-                    <div class="ac-title">✓ Acceptance Criteria</div>
-                    <ul class="ac-list">
-                        <li>Thread messages displayed</li>
-                        <li>Reply to messages enabled</li>
-                        <li>Message timestamps shown</li>
-                        <li>Member reactions visible</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div class="main">
+
+            <section class="nav-group">
+                <div class="nav-group-title">Kulup giris ekranlari</div>
+                <div class="nav-item active" data-screen="1" role="button" tabindex="0"><span class="nav-icon">B1</span><span class="nav-text">Kulup Listesi ve Ozet</span><span class="nav-badge">4 AC</span></div>
+                <div class="nav-item" data-screen="2" role="button" tabindex="0"><span class="nav-icon">B2</span><span class="nav-text">Kulup Olusturma</span><span class="nav-badge">4 AC</span></div>
+            </section>
+
+            <section class="nav-group">
+                <div class="nav-group-title">Kulup ici akis</div>
+                <div class="nav-item" data-screen="3" role="button" tabindex="0"><span class="nav-icon">B3</span><span class="nav-text">Kulup Detayi ve Takvim</span><span class="nav-badge">4 AC</span></div>
+                <div class="nav-item" data-screen="4" role="button" tabindex="0"><span class="nav-icon">B4</span><span class="nav-text">Tartisma Akisi</span><span class="nav-badge">4 AC</span></div>
+            </section>
+        </aside>
+
+        <main class="main">
             <div class="topbar">
-                <h1 class="screen-title" id="screenTitle">Book Clubs</h1>
+                <h1 class="screen-title" id="screenTitle">Kulup listesi ve kesif ozeti</h1>
                 <div class="screen-meta">
-                    <span class="meta-badge" id="screenUS">US-14.1</span>
-                    <span id="screenMeta">Browse clubs • 4/4 ACs • Entry: Topluluk → Kitap Kulübü</span>
+                    <span class="fr-badge" id="screenFr">FR-E14-01</span>
+                    <span class="route-badge" id="screenRoute">/epic-14/fr-e14-01</span>
+                    <span id="screenMeta">Kulup kartlari, secili kitap, filtreleme ve toplanti ozeti</span>
                 </div>
             </div>
             <div class="viewer" id="viewer"></div>
-        </div>
+        </main>
     </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+
     <script>
         const screenData = {
-            1: { title: 'Book Clubs', us: 'US-14.1', meta: 'Browse clubs • 4/4 ACs • Entry: Topluluk → Kitap Kulübü' },
-            2: { title: 'Create Club', us: 'US-14.1', meta: 'Setup club • 4/4 ACs • From: Book Clubs' },
-            3: { title: 'Club Detail', us: 'US-14.1', meta: 'Club info • 4/4 ACs • From: Book Clubs' },
-            4: { title: 'Discussion Thread', us: 'US-14.1', meta: 'Participate • 4/4 ACs • From: Club Detail' }
+            1: {
+                title: 'Kulup listesi ve kesif ozeti',
+                fr: 'FR-E14-01',
+                route: '/epic-14/fr-e14-01',
+                event: 'bookclub_fr_e14_01_viewed',
+                meta: 'Kulup kartlari, secili kitap, filtreleme ve toplanti ozeti'
+            },
+            2: {
+                title: 'Kulup olusturma ve kitap secimi',
+                fr: 'FR-E14-02',
+                route: '/epic-14/fr-e14-02',
+                event: 'bookclub_fr_e14_02_viewed',
+                meta: 'Zorunlu kulup adi, kitap secimi, takvim ve gizlilik'
+            },
+            3: {
+                title: 'Kulup detayi ve uye alani',
+                fr: 'FR-E14-03',
+                route: '/epic-14/fr-e14-03',
+                event: 'bookclub_fr_e14_03_viewed',
+                meta: 'Kitap ve bolum ozeti, uye rolleri, basliklar ve planli oturumlar'
+            },
+            4: {
+                title: 'Tartisma basligi ve etkilesim akisi',
+                fr: 'FR-E14-04',
+                route: '/epic-14/fr-e14-04',
+                event: 'bookclub_fr_e14_04_viewed',
+                meta: 'Kronolojik mesajlar, yanitlar, reaksiyonlar ve moderasyon'
+            }
         };
-        function showScreen(num) {
-            document.getElementById('screenTitle').textContent = screenData[num].title;
-            document.getElementById('screenUS').textContent = screenData[num].us;
-            document.getElementById('screenMeta').textContent = screenData[num].meta;
-            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
-            const navMap = {1: 0, 2: 1, 3: 2, 4: 3};
-            document.querySelectorAll('.nav-item')[navMap[num]].classList.add('active');
-            document.querySelectorAll('[id^="nav-"]').forEach(box => box.classList.remove('active'));
-            const navBox = document.getElementById('nav-' + num);
-            if (navBox) navBox.classList.add('active');
-            document.getElementById('viewer').innerHTML = getScreenHTML(num);
+
+        const ui = {
+            currentScreen: 1,
+            screenStates: {
+                1: 'ready',
+                2: 'ready',
+                3: 'ready',
+                4: 'ready'
+            },
+            lastAnalyticsEvent: 'bookclub_fr_e14_01_viewed',
+            privacyFilter: 'all',
+            selectedClubId: 201,
+            clubs: [
+                {
+                    id: 201,
+                    name: 'Sukur Sifresi Kulubu',
+                    members: 15,
+                    book: 'Sukur Sifresi',
+                    chapter: 'Bolum 3: Sukrun Kaynagi',
+                    meetings: 'Persembe 20:00',
+                    privacy: 'private',
+                    lastActivity: '2 saat once'
+                },
+                {
+                    id: 202,
+                    name: 'Kalbimin Beyazi Okurlari',
+                    members: 22,
+                    book: 'Kalbimin Beyazi',
+                    chapter: 'Bolum 5: Icler Yolculuk',
+                    meetings: 'Cumartesi 18:00',
+                    privacy: 'public',
+                    lastActivity: '1 gun once'
+                },
+                {
+                    id: 203,
+                    name: 'Yolcu Sohbet Kulubu',
+                    members: 9,
+                    book: 'Yolcu',
+                    chapter: 'Bolum 2: Niyet ve Yon',
+                    meetings: 'Pazar 19:30',
+                    privacy: 'private',
+                    lastActivity: '4 saat once'
+                }
+            ],
+            members: {
+                201: [
+                    { name: 'Melek', role: 'owner', completion: 76 },
+                    { name: 'Burak', role: 'moderator', completion: 69 },
+                    { name: 'Asli', role: 'member', completion: 63 },
+                    { name: 'Umut', role: 'member', completion: 58 }
+                ],
+                202: [
+                    { name: 'Elif', role: 'owner', completion: 80 },
+                    { name: 'Ozan', role: 'member', completion: 74 },
+                    { name: 'Can', role: 'member', completion: 71 }
+                ],
+                203: [
+                    { name: 'Tugce', role: 'owner', completion: 66 },
+                    { name: 'Sinem', role: 'member', completion: 61 },
+                    { name: 'Arda', role: 'member', completion: 54 }
+                ]
+            },
+            topics: {
+                201: [
+                    'Bolum 3 ana fikir tartismasi',
+                    'Haftalik alinti secimi',
+                    'Bir sonraki okumaya hazirlik sorulari'
+                ],
+                202: [
+                    'Bolum 5 ozeti',
+                    'Kisa not paylasimi',
+                    'Hafta sonu toplanti plana baglama'
+                ],
+                203: [
+                    'Niyet konusu uzerine grup yorumu',
+                    'Pazar oturumu soru listesi'
+                ]
+            },
+            schedule: {
+                201: [
+                    { label: 'Canli okuma bulusmasi', when: 'Persembe 20:00' },
+                    { label: 'Yorum teslim kontrolu', when: 'Cuma 18:00' }
+                ],
+                202: [
+                    { label: 'Hafta sonu ortak okuma', when: 'Cumartesi 18:00' },
+                    { label: 'Moderasyon notu guncelleme', when: 'Pazar 17:00' }
+                ],
+                203: [
+                    { label: 'Pazar sohbet oturumu', when: 'Pazar 19:30' },
+                    { label: 'Takip mesaji', when: 'Pazartesi 10:00' }
+                ]
+            },
+            thread: {
+                201: [
+                    { id: 1, author: 'Melek', time: '20:05', text: 'Bu hafta bolum 3 icin ana cikarimim su oldu.', reacts: 5 },
+                    { id: 2, author: 'Burak', time: '20:12', text: 'Ayni noktayi fark ettim, ozellikle son paragraf kuvvetliydi.', reacts: 3 },
+                    { id: 3, author: 'Asli', time: '20:20', text: 'Yarin gorusmede bu bolumu sorularla acalim.', reacts: 2 }
+                ],
+                202: [
+                    { id: 1, author: 'Elif', time: '18:11', text: 'Toplanti icin kisa ozet akisini ekledim.', reacts: 4 }
+                ],
+                203: [
+                    { id: 1, author: 'Tugce', time: '19:45', text: 'Niyet bolumu icin iki acik soru biraktim.', reacts: 2 }
+                ]
+            },
+            composer: '',
+            draft: {
+                name: '',
+                book: '',
+                day: 'Persembe',
+                time: '20:00',
+                privacy: 'private',
+                invites: ''
+            }
+        };
+
+        let toastTimer = null;
+
+        function showToast(message, tone) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = 'toast show' + (tone ? ' ' + tone : '');
+            if (toastTimer) {
+                clearTimeout(toastTimer);
+            }
+            toastTimer = setTimeout(() => {
+                toast.className = 'toast';
+            }, 2200);
         }
-        function getScreenHTML(num) {
-            const screens = {
-                1: `<div class="iphone fade-in"><div class="island"></div><div class="screen"><div class="content">
-                    <div class="status"><div>9:41</div><div>📶 📡 🔋</div></div>
-                    <div style="padding: 1.5rem 1.5rem 6rem;">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-                            <h1 style="font-family: Poppins, sans-serif; font-size: 2rem; font-weight: 800; color: var(--secondary);">Kitap Kulübü</h1>
-                        </div>
-                        <button class="btn btn-primary" style="width: 100%; padding: 1rem; margin-bottom: 1.5rem; font-size: 1rem;" onclick="parent.showScreen(2)">+ Kulüp Oluştur</button>
-                        <h3 style="font-weight: 700; color: var(--gray-900); margin-bottom: 1rem; font-size: 1rem;">Kulüplerim (2)</h3>
-                        <div style="display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 2rem;">
-                            <div class="card" style="cursor: pointer; border-left: 4px solid var(--orange);" onclick="parent.showScreen(3)">
-                                <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
-                                    <div style="width: 56px; height: 56px; background: linear-gradient(135deg, var(--orange-light), #FED7AA); border-radius: 1rem; display: flex; align-items: center; justify-content: center; font-size: 1.75rem; flex-shrink: 0;">📚</div>
-                                    <div style="flex: 1;">
-                                        <h3 style="font-weight: 700; font-size: 1rem; color: var(--gray-900); margin-bottom: 0.25rem;">Şükür Şifresi Kulübü</h3>
-                                        <p style="font-size: 0.8125rem; color: var(--gray-600);">👥 15 üye • Aktif</p>
-                                    </div>
-                                    <div style="color: var(--gray-400);">›</div>
-                                </div>
-                                <div style="background: var(--gray-50); padding: 0.875rem; border-radius: 0.5rem; margin-bottom: 0.75rem;">
-                                    <div style="font-size: 0.8125rem; color: var(--gray-700); margin-bottom: 0.25rem;">
-                                        <strong>Kitap:</strong> Şükür Şifresi
-                                    </div>
-                                    <div style="font-size: 0.75rem; color: var(--gray-600);">Bu hafta: Bölüm 3 - Şükrün Kaynağı</div>
-                                </div>
-                                <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; font-size: 0.75rem;">
-                                    <span style="background: var(--success-light); color: var(--success-dark); padding: 0.25rem 0.5rem; border-radius: 0.375rem; font-weight: 600;">💬 24 tartışma</span>
-                                    <span style="background: var(--primary-light); color: var(--primary-dark); padding: 0.25rem 0.5rem; border-radius: 0.375rem; font-weight: 600;">📅 Her Perşembe 20:00</span>
-                                </div>
-                            </div>
-                            <div class="card" style="cursor: pointer; border-left: 4px solid var(--purple);">
-                                <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
-                                    <div style="width: 56px; height: 56px; background: linear-gradient(135deg, var(--purple-light), #E9D5FF); border-radius: 1rem; display: flex; align-items: center; justify-content: center; font-size: 1.75rem; flex-shrink: 0;">📖</div>
-                                    <div style="flex: 1;">
-                                        <h3 style="font-weight: 700; font-size: 1rem; color: var(--gray-900); margin-bottom: 0.25rem;">Kalbimin Beyazı Okurları</h3>
-                                        <p style="font-size: 0.8125rem; color: var(--gray-600);">👥 22 üye • Aktif</p>
-                                    </div>
-                                    <div style="color: var(--gray-400);">›</div>
-                                </div>
-                                <div style="background: var(--gray-50); padding: 0.875rem; border-radius: 0.5rem; margin-bottom: 0.75rem;">
-                                    <div style="font-size: 0.8125rem; color: var(--gray-700); margin-bottom: 0.25rem;">
-                                        <strong>Kitap:</strong> Kalbimin Beyazı
-                                    </div>
-                                    <div style="font-size: 0.75rem; color: var(--gray-600);">Bu hafta: Bölüm 5 - İçsel Yolculuk</div>
-                                </div>
-                                <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; font-size: 0.75rem;">
-                                    <span style="background: var(--success-light); color: var(--success-dark); padding: 0.25rem 0.5rem; border-radius: 0.375rem; font-weight: 600;">💬 36 tartışma</span>
-                                    <span style="background: var(--primary-light); color: var(--primary-dark); padding: 0.25rem 0.5rem; border-radius: 0.375rem; font-weight: 600;">📅 Her Cumartesi 18:00</span>
-                                </div>
-                            </div>
-                        </div>
-                        <h3 style="font-weight: 700; color: var(--gray-900); margin-bottom: 1rem; font-size: 1rem;">Önerilen Kulüpler (3)</h3>
-                        <div style="display: flex; flex-direction: column; gap: 0.75rem;">
-                            <div class="card" style="cursor: pointer; border-left: 4px solid var(--gray-400);">
-                                <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.75rem;">
-                                    <div style="width: 56px; height: 56px; background: linear-gradient(135deg, var(--gray-100), var(--gray-200)); border-radius: 1rem; display: flex; align-items: center; justify-content: center; font-size: 1.75rem; flex-shrink: 0;">📚</div>
-                                    <div style="flex: 1;">
-                                        <h3 style="font-weight: 700; font-size: 1rem; color: var(--gray-900); margin-bottom: 0.25rem;">Derin Farkındalık Kulübü</h3>
-                                        <p style="font-size: 0.8125rem; color: var(--gray-600);">👥 18 üye • 🌍 Açık</p>
-                                    </div>
-                                </div>
-                                <div style="background: var(--gray-50); padding: 0.875rem; border-radius: 0.5rem; margin-bottom: 0.75rem;">
-                                    <div style="font-size: 0.8125rem; color: var(--gray-700);">
-                                        <strong>Kitap:</strong> Özfarkındalık ve Dönüşüm
-                                    </div>
-                                </div>
-                                <button style="background: white; border: 2px solid var(--primary); color: var(--primary); border-radius: 0.5rem; padding: 0.5rem 1rem; font-weight: 600; font-size: 0.875rem; cursor: pointer; width: 100%;">Katıl</button>
-                            </div>
-                            <div class="card" style="cursor: pointer; border-left: 4px solid var(--gray-400);">
-                                <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.75rem;">
-                                    <div style="width: 56px; height: 56px; background: linear-gradient(135deg, var(--gray-100), var(--gray-200)); border-radius: 1rem; display: flex; align-items: center; justify-content: center; font-size: 1.75rem; flex-shrink: 0;">📖</div>
-                                    <div style="flex: 1;">
-                                        <h3 style="font-weight: 700; font-size: 1rem; color: var(--gray-900); margin-bottom: 0.25rem;">Maneviyat Arayışı</h3>
-                                        <p style="font-size: 0.8125rem; color: var(--gray-600);">👥 12 üye • 🌍 Açık</p>
-                                    </div>
-                                </div>
-                                <div style="background: var(--gray-50); padding: 0.875rem; border-radius: 0.5rem; margin-bottom: 0.75rem;">
-                                    <div style="font-size: 0.8125rem; color: var(--gray-700);">
-                                        <strong>Kitap:</strong> Ruhsal Yolculuk Rehberi
-                                    </div>
-                                </div>
-                                <button style="background: white; border: 2px solid var(--primary); color: var(--primary); border-radius: 0.5rem; padding: 0.5rem 1rem; font-weight: 600; font-size: 0.875rem; cursor: pointer; width: 100%;">Katıl</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tabs">
-                        <div class="tab"><div class="tab-icon">🏠</div><div>Ana Sayfa</div></div>
-                        <div class="tab"><div class="tab-icon">🔍</div><div>Keşfet</div></div>
-                        <div class="tab active"><div class="tab-icon">👥</div><div>Topluluk</div></div>
-                        <div class="tab"><div class="tab-icon">📈</div><div>Gelişim</div></div>
-                        <div class="tab"><div class="tab-icon">👤</div><div>Profil</div></div>
-                    </div>
-                </div></div></div>`,
-                2: `<div class="iphone fade-in"><div class="island"></div><div class="screen"><div class="content">
-                    <div class="status"><div>9:41</div><div>📶 📡 🔋</div></div>
-                    <div style="background: white; padding: 1rem 1.5rem; border-bottom: 1px solid var(--gray-200);">
-                        <div style="display: flex; align-items: center; gap: 1rem;">
-                            <button style="background: none; border: none; font-size: 1.5rem; cursor: pointer;" onclick="parent.showScreen(1)">←</button>
-                            <h2 style="font-family: Poppins, sans-serif; font-size: 1.25rem; font-weight: 800; color: var(--secondary); flex: 1;">Yeni Kulüp Oluştur</h2>
-                        </div>
-                    </div>
-                    <div style="padding: 2rem 1.5rem;">
-                        <div class="card" style="margin-bottom: 1.5rem;">
-                            <label style="display: block; font-weight: 700; color: var(--gray-900); margin-bottom: 0.75rem; font-size: 0.9375rem;">Kulüp Adı *</label>
-                            <input type="text" placeholder="Örn: Şükür Şifresi Kulübü" style="width: 100%; padding: 0.875rem; border: 2px solid var(--gray-200); border-radius: 0.75rem; font-family: Inter, sans-serif; font-size: 0.9375rem;">
-                        </div>
-                        <div class="card" style="margin-bottom: 1.5rem;">
-                            <label style="display: block; font-weight: 700; color: var(--gray-900); margin-bottom: 0.75rem; font-size: 0.9375rem;">Kitap Seçimi *</label>
-                            <div style="background: var(--gray-50); padding: 1rem; border: 2px dashed var(--gray-300); border-radius: 0.75rem; text-align: center; cursor: pointer; margin-bottom: 0.75rem;">
-                                <div style="font-size: 2rem; margin-bottom: 0.5rem;">📚</div>
-                                <div style="font-weight: 600; color: var(--gray-900); margin-bottom: 0.25rem;">Kitap Seç</div>
-                                <div style="font-size: 0.8125rem; color: var(--gray-600);">Kütüphaneden bir e-kitap seçin</div>
-                            </div>
-                            <div class="card" style="background: var(--primary-light); border: 2px solid var(--primary); padding: 1rem;">
-                                <div style="display: flex; align-items: center; gap: 1rem;">
-                                    <div style="font-size: 2rem;">📖</div>
-                                    <div style="flex: 1;">
-                                        <div style="font-weight: 700; font-size: 0.9375rem; color: var(--gray-900); margin-bottom: 0.25rem;">Şükür Şifresi</div>
-                                        <div style="font-size: 0.8125rem; color: var(--gray-700);">184 sayfa • 8 bölüm</div>
-                                    </div>
-                                    <button style="background: none; border: none; color: var(--primary); font-size: 1.5rem; cursor: pointer;">×</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card" style="margin-bottom: 1.5rem;">
-                            <label style="display: block; font-weight: 700; color: var(--gray-900); margin-bottom: 0.75rem; font-size: 0.9375rem;">Tartışma Programı</label>
-                            <div style="display: flex; flex-direction: column; gap: 0.75rem;">
-                                <select style="width: 100%; padding: 0.875rem; border: 2px solid var(--gray-200); border-radius: 0.75rem; font-family: Inter, sans-serif; font-size: 0.9375rem; background: white;">
-                                    <option>Haftalık</option>
-                                    <option>İki Haftada Bir</option>
-                                    <option>Aylık</option>
-                                </select>
-                                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem;">
-                                    <select style="padding: 0.875rem; border: 2px solid var(--gray-200); border-radius: 0.75rem; font-family: Inter, sans-serif; font-size: 0.9375rem; background: white;">
-                                        <option>Pazartesi</option>
-                                        <option>Salı</option>
-                                        <option>Çarşamba</option>
-                                        <option selected>Perşembe</option>
-                                        <option>Cuma</option>
-                                        <option>Cumartesi</option>
-                                        <option>Pazar</option>
-                                    </select>
-                                    <select style="padding: 0.875rem; border: 2px solid var(--gray-200); border-radius: 0.75rem; font-family: Inter, sans-serif; font-size: 0.9375rem; background: white;">
-                                        <option>18:00</option>
-                                        <option>19:00</option>
-                                        <option selected>20:00</option>
-                                        <option>21:00</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card" style="margin-bottom: 1.5rem;">
-                            <label style="display: block; font-weight: 700; color: var(--gray-900); margin-bottom: 0.75rem; font-size: 0.9375rem;">Gizlilik Ayarı</label>
-                            <div style="display: flex; flex-direction: column; gap: 0.75rem;">
-                                <label style="display: flex; align-items: center; gap: 1rem; padding: 1rem; background: var(--success-light); border: 2px solid var(--success); border-radius: 0.75rem; cursor: pointer;">
-                                    <input type="radio" name="privacy" checked style="width: 20px; height: 20px; accent-color: var(--success);">
-                                    <div style="flex: 1;">
-                                        <div style="font-weight: 600; color: var(--gray-900); margin-bottom: 0.25rem;">🌍 Açık Kulüp</div>
-                                        <div style="font-size: 0.8125rem; color: var(--gray-700);">Herkes katılabilir ve tartışmaları görebilir</div>
-                                    </div>
-                                </label>
-                                <label style="display: flex; align-items: center; gap: 1rem; padding: 1rem; background: var(--gray-50); border: 2px solid var(--gray-300); border-radius: 0.75rem; cursor: pointer;">
-                                    <input type="radio" name="privacy" style="width: 20px; height: 20px; accent-color: var(--success);">
-                                    <div style="flex: 1;">
-                                        <div style="font-weight: 600; color: var(--gray-900); margin-bottom: 0.25rem;">🔒 Özel Kulüp</div>
-                                        <div style="font-size: 0.8125rem; color: var(--gray-700);">Sadece davet edilenler katılabilir</div>
-                                    </div>
-                                </label>
-                            </div>
-                        </div>
-                        <div class="card" style="margin-bottom: 1.5rem;">
-                            <label style="display: block; font-weight: 700; color: var(--gray-900); margin-bottom: 0.75rem; font-size: 0.9375rem;">Kulüp Açıklaması (İsteğe Bağlı)</label>
-                            <textarea placeholder="Kulübünüz hakkında bilgi verin..." style="width: 100%; min-height: 100px; padding: 0.875rem; border: 2px solid var(--gray-200); border-radius: 0.75rem; font-family: Inter, sans-serif; font-size: 0.9375rem; resize: vertical;"></textarea>
-                        </div>
-                        <div class="card" style="background: var(--orange-light); margin-bottom: 1.5rem;">
-                            <p style="font-size: 0.8125rem; color: var(--gray-700); line-height: 1.5;">
-                                <strong style="color: var(--orange);">💡 İpucu:</strong> İlk tartışma konusunu kulüp oluşturduktan sonra belirleyebilirsiniz.
-                            </p>
-                        </div>
-                        <button class="btn btn-primary" style="width: 100%; padding: 1rem; font-size: 1.125rem;">Kulübü Oluştur</button>
-                    </div>
-                </div></div></div>`,
-                3: `<div class="iphone fade-in"><div class="island"></div><div class="screen"><div class="content">
-                    <div class="status"><div>9:41</div><div>📶 📡 🔋</div></div>
-                    <div style="position: relative; height: 180px; background: linear-gradient(135deg, var(--orange-light), #FED7AA); display: flex; align-items: center; justify-content: center; font-size: 5rem;">📚
-                        <button style="position: absolute; top: 1rem; left: 1rem; background: rgba(0,0,0,0.3); color: white; border: none; width: 40px; height: 40px; border-radius: 9999px; font-size: 1.25rem; cursor: pointer; backdrop-filter: blur(10px);" onclick="parent.showScreen(1)">←</button>
-                        <button style="position: absolute; top: 1rem; right: 1rem; background: rgba(0,0,0,0.3); color: white; border: none; width: 40px; height: 40px; border-radius: 9999px; font-size: 1.25rem; cursor: pointer; backdrop-filter: blur(10px);">⋮</button>
-                    </div>
-                    <div style="padding: 1.5rem;">
-                        <h1 style="font-family: Poppins, sans-serif; font-size: 1.75rem; font-weight: 800; color: var(--secondary); margin-bottom: 0.75rem; line-height: 1.2;">Şükür Şifresi Kulübü</h1>
-                        <div style="display: flex; gap: 0.75rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
-                            <span style="background: var(--orange-light); color: var(--orange); padding: 0.375rem 0.75rem; border-radius: 0.5rem; font-size: 0.8125rem; font-weight: 600;">👥 15 üye</span>
-                            <span style="background: var(--success-light); color: var(--success-dark); padding: 0.375rem 0.75rem; border-radius: 0.5rem; font-size: 0.8125rem; font-weight: 600;">🌍 Açık Kulüp</span>
-                        </div>
-                        <div class="card" style="margin-bottom: 1.5rem; background: var(--primary-light); border-left: 4px solid var(--primary);">
-                            <h3 style="font-weight: 700; color: var(--primary-dark); margin-bottom: 0.75rem; font-size: 1rem;">📖 Şu An Okuyoruz</h3>
-                            <div style="display: flex; align-items: center; gap: 1rem;">
-                                <div style="font-size: 3rem;">📖</div>
-                                <div style="flex: 1;">
-                                    <div style="font-weight: 700; font-size: 1rem; color: var(--gray-900); margin-bottom: 0.25rem;">Şükür Şifresi</div>
-                                    <div style="font-size: 0.8125rem; color: var(--gray-700);">Bölüm 3: Şükrün Kaynağı</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card" style="margin-bottom: 1.5rem;">
-                            <h3 style="font-weight: 700; color: var(--gray-900); margin-bottom: 0.75rem; font-size: 1rem;">📅 Toplantı Programı</h3>
-                            <div style="display: flex; align-items: center; gap: 1rem; padding: 1rem; background: var(--primary-light); border-radius: 0.75rem; margin-bottom: 0.75rem;">
-                                <div style="font-size: 2rem;">📅</div>
-                                <div style="flex: 1;">
-                                    <div style="font-weight: 700; font-size: 0.9375rem; color: var(--primary-dark); margin-bottom: 0.25rem;">Sonraki Toplantı</div>
-                                    <div style="font-size: 0.8125rem; color: var(--gray-800);">Perşembe, 20:00 • 2 gün sonra</div>
-                                </div>
-                            </div>
-                            <div style="font-size: 0.8125rem; color: var(--gray-700);">
-                                <strong>Sıklık:</strong> Her Perşembe 20:00
-                            </div>
-                        </div>
-                        <div class="card" style="margin-bottom: 1.5rem;">
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                                <h3 style="font-weight: 700; color: var(--gray-900); font-size: 1rem;">👥 Üyeler (15)</h3>
-                                <button style="background: none; border: none; color: var(--primary); font-weight: 700; font-size: 0.875rem; cursor: pointer;">Tümünü Gör →</button>
-                            </div>
-                            <div style="display: flex; gap: 0.75rem; overflow-x: auto;">
-                                <div style="text-align: center; min-width: 64px;">
-                                    <div style="width: 64px; height: 64px; background: linear-gradient(135deg, var(--primary-light), var(--primary-100)); border-radius: 9999px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 700; color: var(--primary-dark); margin-bottom: 0.5rem;">MK</div>
-                                    <div style="font-size: 0.75rem; color: var(--gray-700); font-weight: 600;">Mehmet</div>
-                                </div>
-                                <div style="text-align: center; min-width: 64px;">
-                                    <div style="width: 64px; height: 64px; background: linear-gradient(135deg, var(--success-light), #A7F3D0); border-radius: 9999px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 700; color: var(--success-dark); margin-bottom: 0.5rem;">EA</div>
-                                    <div style="font-size: 0.75rem; color: var(--gray-700); font-weight: 600;">Elif</div>
-                                </div>
-                                <div style="text-align: center; min-width: 64px;">
-                                    <div style="width: 64px; height: 64px; background: linear-gradient(135deg, var(--orange-light), #FED7AA); border-radius: 9999px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 700; color: var(--orange); margin-bottom: 0.5rem;">ZT</div>
-                                    <div style="font-size: 0.75rem; color: var(--gray-700); font-weight: 600;">Zeynep</div>
-                                </div>
-                                <div style="text-align: center; min-width: 64px;">
-                                    <div style="width: 64px; height: 64px; background: linear-gradient(135deg, var(--purple-light), #E9D5FF); border-radius: 9999px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 700; color: var(--purple); margin-bottom: 0.5rem;">+12</div>
-                                    <div style="font-size: 0.75rem; color: var(--gray-700); font-weight: 600;">Diğer</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card" style="margin-bottom: 1rem;">
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                                <h3 style="font-weight: 700; color: var(--gray-900); font-size: 1rem;">💬 Tartışmalar (24)</h3>
-                                <button style="background: none; border: none; color: var(--primary); font-weight: 700; font-size: 0.875rem; cursor: pointer;" onclick="parent.showScreen(4)">Tümünü Gör →</button>
-                            </div>
-                            <div style="padding: 0.875rem; background: var(--gray-50); border-radius: 0.5rem; margin-bottom: 0.5rem; cursor: pointer;" onclick="parent.showScreen(4)">
-                                <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
-                                    <div style="font-weight: 600; font-size: 0.875rem; color: var(--gray-900);">Mehmet K.</div>
-                                    <div style="font-size: 0.75rem; color: var(--gray-600);">3 saat önce</div>
-                                </div>
-                                <div style="font-size: 0.8125rem; color: var(--gray-700); margin-bottom: 0.5rem;">Şükrün günlük hayattaki pratik uygulamaları hakkında ne düşünüyorsunuz?</div>
-                                <div style="display: flex; gap: 0.5rem; font-size: 0.75rem;">
-                                    <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.375rem; font-weight: 600; color: var(--gray-700);">💬 8 yanıt</span>
-                                    <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.375rem; font-weight: 600; color: var(--gray-700);">❤️ 12</span>
-                                </div>
-                            </div>
-                            <div style="padding: 0.875rem; background: var(--gray-50); border-radius: 0.5rem;">
-                                <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
-                                    <div style="font-weight: 600; font-size: 0.875rem; color: var(--gray-900);">Elif A.</div>
-                                    <div style="font-size: 0.75rem; color: var(--gray-600);">1 gün önce</div>
-                                </div>
-                                <div style="font-size: 0.8125rem; color: var(--gray-700); margin-bottom: 0.5rem;">Bölüm 3'teki metaforlar çok etkileyiciydi. Sizce de öyle değil mi?</div>
-                                <div style="display: flex; gap: 0.5rem; font-size: 0.75rem;">
-                                    <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.375rem; font-weight: 600; color: var(--gray-700);">💬 15 yanıt</span>
-                                    <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.375rem; font-weight: 600; color: var(--gray-700);">❤️ 18</span>
-                                </div>
-                            </div>
-                        </div>
-                        <button class="btn btn-primary" style="width: 100%; padding: 1rem; font-size: 1.125rem;">+ Yeni Tartışma Başlat</button>
-                    </div>
-                </div></div></div>`,
-                4: `<div class="iphone fade-in"><div class="island"></div><div class="screen"><div class="content">
-                    <div class="status"><div>9:41</div><div>📶 📡 🔋</div></div>
-                    <div style="background: white; padding: 1rem 1.5rem; border-bottom: 1px solid var(--gray-200);">
-                        <div style="display: flex; align-items: center; gap: 1rem;">
-                            <button style="background: none; border: none; font-size: 1.5rem; cursor: pointer;" onclick="parent.showScreen(3)">←</button>
-                            <div style="flex: 1;">
-                                <h2 style="font-family: Poppins, sans-serif; font-size: 1rem; font-weight: 700; color: var(--secondary);">Tartışma</h2>
-                                <div style="font-size: 0.75rem; color: var(--gray-600); margin-top: 0.25rem;">Şükür Şifresi Kulübü</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div style="padding: 1.5rem; padding-bottom: 6rem;">
-                        <div class="card" style="margin-bottom: 1.5rem; background: var(--orange-light); border-left: 4px solid var(--orange);">
-                            <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
-                                <div style="width: 48px; height: 48px; background: linear-gradient(135deg, var(--primary-light), var(--primary-100)); border-radius: 9999px; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; font-weight: 700; color: var(--primary-dark); flex-shrink: 0;">MK</div>
-                                <div style="flex: 1;">
-                                    <div style="font-weight: 700; font-size: 0.9375rem; color: var(--gray-900);">Mehmet Kaya</div>
-                                    <div style="font-size: 0.75rem; color: var(--gray-600);">3 saat önce</div>
-                                </div>
-                            </div>
-                            <p style="font-size: 0.9375rem; color: var(--gray-900); line-height: 1.7; margin-bottom: 0.75rem;">
-                                Şükrün günlük hayattaki pratik uygulamaları hakkında ne düşünüyorsunuz? Ben sabah rutinime şükür günlüğü ekledim ve gerçekten fark yarattı.
-                            </p>
-                            <div style="display: flex; gap: 0.75rem; font-size: 0.875rem;">
-                                <button style="background: white; border: none; padding: 0.5rem 0.875rem; border-radius: 0.5rem; font-weight: 600; color: var(--gray-700); cursor: pointer; display: flex; align-items: center; gap: 0.5rem;">❤️ <span>12</span></button>
-                                <button style="background: white; border: none; padding: 0.5rem 0.875rem; border-radius: 0.5rem; font-weight: 600; color: var(--gray-700); cursor: pointer; display: flex; align-items: center; gap: 0.5rem;">💬 <span>8</span></button>
-                            </div>
-                        </div>
-                        <h3 style="font-weight: 700; color: var(--gray-900); margin-bottom: 1rem; font-size: 0.9375rem; padding-left: 0.5rem;">Yanıtlar (8)</h3>
-                        <div style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.5rem;">
-                            <div class="card" style="background: var(--gray-50);">
-                                <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
-                                    <div style="width: 40px; height: 40px; background: linear-gradient(135deg, var(--success-light), #A7F3D0); border-radius: 9999px; display: flex; align-items: center; justify-content: center; font-size: 1rem; font-weight: 700; color: var(--success-dark); flex-shrink: 0;">EA</div>
-                                    <div style="flex: 1;">
-                                        <div style="font-weight: 700; font-size: 0.875rem; color: var(--gray-900);">Elif Arslan</div>
-                                        <div style="font-size: 0.75rem; color: var(--gray-600);">2 saat önce</div>
-                                    </div>
-                                </div>
-                                <p style="font-size: 0.875rem; color: var(--gray-800); line-height: 1.6; margin-bottom: 0.5rem;">
-                                    Harika bir uygulama Mehmet! Ben de akşam yemeklerinde ailemle gün içinde şükrettiğimiz 3 şeyi paylaşıyoruz. Çocuklar çok seviyor.
-                                </p>
-                                <div style="display: flex; gap: 0.5rem; font-size: 0.8125rem;">
-                                    <button style="background: white; border: none; padding: 0.375rem 0.625rem; border-radius: 0.375rem; font-weight: 600; color: var(--gray-700); cursor: pointer; display: flex; align-items: center; gap: 0.375rem;">❤️ <span>5</span></button>
-                                    <button style="background: white; border: none; padding: 0.375rem 0.625rem; border-radius: 0.375rem; font-weight: 600; color: var(--primary); cursor: pointer;">Yanıtla</button>
-                                </div>
-                            </div>
-                            <div class="card" style="background: var(--gray-50);">
-                                <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
-                                    <div style="width: 40px; height: 40px; background: linear-gradient(135deg, var(--orange-light), #FED7AA); border-radius: 9999px; display: flex; align-items: center; justify-content: center; font-size: 1rem; font-weight: 700; color: var(--orange); flex-shrink: 0;">ZT</div>
-                                    <div style="flex: 1;">
-                                        <div style="font-weight: 700; font-size: 0.875rem; color: var(--gray-900);">Zeynep Toprak</div>
-                                        <div style="font-size: 0.75rem; color: var(--gray-600);">1 saat önce</div>
-                                    </div>
-                                </div>
-                                <p style="font-size: 0.875rem; color: var(--gray-800); line-height: 1.6; margin-bottom: 0.5rem;">
-                                    Ben telefon duvar kağıdıma şükür hatırlatıcısı koydum. Her telefona baktığımda görüyorum ve o an için şükrediyorum.
-                                </p>
-                                <div style="display: flex; gap: 0.5rem; font-size: 0.8125rem;">
-                                    <button style="background: white; border: none; padding: 0.375rem 0.625rem; border-radius: 0.375rem; font-weight: 600; color: var(--gray-700); cursor: pointer; display: flex; align-items: center; gap: 0.375rem;">❤️ <span>8</span></button>
-                                    <button style="background: white; border: none; padding: 0.375rem 0.625rem; border-radius: 0.375rem; font-weight: 600; color: var(--primary); cursor: pointer;">Yanıtla</button>
-                                </div>
-                            </div>
-                            <div class="card" style="background: var(--gray-50);">
-                                <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
-                                    <div style="width: 40px; height: 40px; background: linear-gradient(135deg, var(--purple-light), #E9D5FF); border-radius: 9999px; display: flex; align-items: center; justify-content: center; font-size: 1rem; font-weight: 700; color: var(--purple); flex-shrink: 0;">AY</div>
-                                    <div style="flex: 1;">
-                                        <div style="font-weight: 700; font-size: 0.875rem; color: var(--gray-900);">Ayşe Yılmaz</div>
-                                        <div style="font-size: 0.75rem; color: var(--gray-600);">45 dakika önce</div>
-                                    </div>
-                                </div>
-                                <p style="font-size: 0.875rem; color: var(--gray-800); line-height: 1.6; margin-bottom: 0.5rem;">
-                                    Bu öneriler muhteşem! Kitaptaki "şükür alıştırmaları" bölümünü de denemenizi tavsiye ederim.
-                                </p>
-                                <div style="display: flex; gap: 0.5rem; font-size: 0.8125rem;">
-                                    <button style="background: white; border: none; padding: 0.375rem 0.625rem; border-radius: 0.375rem; font-weight: 600; color: var(--gray-700); cursor: pointer; display: flex; align-items: center; gap: 0.375rem;">❤️ <span>3</span></button>
-                                    <button style="background: white; border: none; padding: 0.375rem 0.625rem; border-radius: 0.375rem; font-weight: 600; color: var(--primary); cursor: pointer;">Yanıtla</button>
-                                </div>
-                            </div>
-                        </div>
-                        <button style="background: white; border: 2px solid var(--primary); color: var(--primary); border-radius: 0.75rem; font-weight: 600; font-size: 0.9375rem; width: 100%; padding: 0.75rem; cursor: pointer;">+ Daha Fazla Yanıt Yükle (5)</button>
-                    </div>
-                    <div style="position: fixed; bottom: 0; left: 0; right: 0; background: white; border-top: 1px solid var(--gray-200); padding: 1rem 1.5rem; display: flex; gap: 0.75rem; align-items: center;">
-                        <input type="text" placeholder="Yanıtınızı yazın..." style="flex: 1; padding: 0.75rem; border: 2px solid var(--gray-200); border-radius: 9999px; font-family: Inter, sans-serif; font-size: 0.9375rem;">
-                        <button style="width: 44px; height: 44px; background: var(--primary); color: white; border: none; border-radius: 9999px; font-size: 1.25rem; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">➤</button>
-                    </div>
-                </div></div></div>`
-            };
-            return screens[num] || screens[1];
+
+        function phoneShell(title, body, backScreen) {
+            const back = backScreen
+                ? '<button class="icon-btn" onclick="showScreen(' + backScreen + ')" aria-label="Geri">&lt;</button>'
+                : '<span style="width:34px;"></span>';
+
+            return (
+                '<div class="iphone">' +
+                    '<div class="island"></div>' +
+                    '<div class="screen">' +
+                        '<div class="content">' +
+                            '<div class="status"><span>9:41</span><span>5G 90%</span></div>' +
+                            '<div class="mobile-header">' +
+                                back +
+                                '<div class="mobile-title">' + title + '</div>' +
+                            '</div>' +
+                            '<div class="mobile-body">' + body + '</div>' +
+                        '</div>' +
+                    '</div>' +
+                '</div>'
+            );
         }
-        document.getElementById('viewer').innerHTML = getScreenHTML(1);
+
+        function setCurrentScreen(screenNo) {
+            ui.currentScreen = screenNo;
+            ui.lastAnalyticsEvent = screenData[screenNo].event;
+            render();
+        }
+
+        function showScreen(screenNo) {
+            setCurrentScreen(screenNo);
+        }
+
+        function setScreenState(screenNo, state) {
+            ui.screenStates[screenNo] = state;
+            render();
+        }
+
+        function stateControls(screenNo) {
+            const states = ['ready', 'loading', 'empty', 'error', 'offline'];
+            return (
+                '<div class="state-switcher">' +
+                    states.map((s) => (
+                        '<button class="state-btn ' + (ui.screenStates[screenNo] === s ? 'active' : '') + '" ' +
+                        'onclick="setScreenState(' + screenNo + ', \'" + s + "\')" aria-label="Ekran durumu ' + s + '" ' +
+                        'aria-pressed="' + (ui.screenStates[screenNo] === s) + '">' + s + '</button>'
+                    )).join('') +
+                '</div>'
+            );
+        }
+
+        function statePanel(screenNo) {
+            const state = ui.screenStates[screenNo];
+            if (state === 'ready') {
+                return '';
+            }
+            if (state === 'loading') {
+                return '<div class="state-panel loading" role="status"><strong>Loading</strong><span>Kulup verileri yukleniyor.</span></div>';
+            }
+            if (state === 'empty') {
+                return '<div class="state-panel empty"><strong>Empty</strong><span>Bu gorunumde listelenecek kayit yok.</span><button class="btn btn-outline" onclick="resetDemo()" aria-label="Demo verisini sifirla">Varsayilan veriye don</button></div>';
+            }
+            if (state === 'error') {
+                return '<div class="state-panel error" role="alert"><strong>Error</strong><span>Kurtarilabilir hata olustu.</span><button class="btn btn-primary" onclick="setScreenState(' + screenNo + ', \'ready\')" aria-label="Tekrar dene">Tekrar Dene</button></div>';
+            }
+            return '<div class="state-panel offline" role="status"><strong>Offline</strong><span>Son senkronize kayitlar gosterilir, islemler kuyruga alinmistir.</span></div>';
+        }
+
+        function setPrivacyFilter(filter) {
+            ui.privacyFilter = filter;
+            render();
+        }
+
+        function filteredClubs() {
+            if (ui.privacyFilter === 'all') {
+                return ui.clubs;
+            }
+            return ui.clubs.filter((club) => club.privacy === ui.privacyFilter);
+        }
+
+        function selectClub(id) {
+            ui.selectedClubId = id;
+            showScreen(3);
+            showToast('Kulup detay ekranina gecildi.', 'success');
+        }
+
+        function selectedClub() {
+            return ui.clubs.find((club) => club.id === ui.selectedClubId) || ui.clubs[0];
+        }
+
+        function selectedMembers() {
+            const club = selectedClub();
+            return ui.members[club.id] || [];
+        }
+
+        function updateDraft(field, value) {
+            ui.draft[field] = value;
+            render();
+        }
+
+        function createClub() {
+            if (!ui.draft.name.trim()) {
+                showToast('Kulup adi zorunludur.', 'error');
+                return;
+            }
+            if (!ui.draft.book.trim()) {
+                showToast('Kitap secimi zorunludur.', 'error');
+                return;
+            }
+
+            const newId = Date.now();
+            ui.clubs.unshift({
+                id: newId,
+                name: ui.draft.name.trim(),
+                members: ui.draft.invites.trim() ? ui.draft.invites.split(',').map((i) => i.trim()).filter(Boolean).length + 1 : 1,
+                book: ui.draft.book.trim(),
+                chapter: 'Bolum 1: Giris',
+                meetings: ui.draft.day + ' ' + ui.draft.time,
+                privacy: ui.draft.privacy,
+                lastActivity: 'simdi'
+            });
+
+            ui.members[newId] = [
+                { name: 'Siz', role: 'owner', completion: 0 }
+            ];
+            ui.topics[newId] = [
+                'Kulup acilis mesaji'
+            ];
+            ui.schedule[newId] = [
+                { label: 'Ilk tanisma oturumu', when: ui.draft.day + ' ' + ui.draft.time }
+            ];
+            ui.thread[newId] = [
+                { id: 1, author: 'Sistem', time: 'simdi', text: 'Kulup olusturuldu. Ilk tartisma basliginizi acabilirsiniz.', reacts: 0 }
+            ];
+            ui.selectedClubId = newId;
+            showToast('Kulup olusturuldu.', 'success');
+            showScreen(3);
+        }
+
+        function addReply(threadId) {
+            const text = ui.composer.trim();
+            if (!text) {
+                showToast('Mesaj metni bos olamaz.', 'error');
+                return;
+            }
+
+            const club = selectedClub();
+            const list = ui.thread[club.id] || [];
+            list.push({
+                id: list.length + 1,
+                author: 'Siz',
+                time: new Date().toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' }),
+                text,
+                reacts: 0
+            });
+            ui.thread[club.id] = list;
+            ui.composer = '';
+            showToast('Yanit eklendi.', 'success');
+            render();
+        }
+
+        function quoteReplyById(messageId) {
+            const club = selectedClub();
+            const thread = ui.thread[club.id] || [];
+            const msg = thread.find((item) => item.id === messageId);
+            if (!msg) {
+                return;
+            }
+            ui.composer = '> ' + msg.text + '\n';
+            render();
+        }
+
+        function reportMessage(messageId) {
+            showToast('Mesaj #' + messageId + ' moderasyona bildirildi.', 'success');
+        }
+
+        function updateComposer(value) {
+            ui.composer = value;
+            render();
+        }
+
+        function resetDemo() {
+            ui.privacyFilter = 'all';
+            ui.selectedClubId = 201;
+            ui.composer = '';
+            ui.draft.name = '';
+            ui.draft.book = '';
+            ui.draft.day = 'Persembe';
+            ui.draft.time = '20:00';
+            ui.draft.privacy = 'private';
+            ui.draft.invites = '';
+            render();
+        }
+
+        function screenOne() {
+            const clubs = filteredClubs();
+            const body = (
+                stateControls(1) +
+                statePanel(1) +
+                (ui.screenStates[1] !== 'ready' ? '' : (
+                    '<div class="card">' +
+                        '<div class="card-title">Kulup listesi</div>' +
+                        '<div class="chips">' +
+                            '<span class="chip">Toplam kulup: ' + ui.clubs.length + '</span>' +
+                            '<span class="chip success">Acik: ' + ui.clubs.filter((c) => c.privacy === 'public').length + '</span>' +
+                            '<span class="chip warn">Ozel: ' + ui.clubs.filter((c) => c.privacy === 'private').length + '</span>' +
+                            '<button class="btn btn-primary" onclick="showScreen(2)" aria-label="Kulup olusturma ekranina gec">+ Kulup Olustur</button>' +
+                        '</div>' +
+                        '<div class="muted" style="margin-top:0.45rem;">AC-FR-E14-01-01</div>' +
+                    '</div>' +
+
+                    '<div class="card">' +
+                        '<div class="card-title">Gizlilik filtresi</div>' +
+                        '<div class="chips">' +
+                            '<button class="btn ' + (ui.privacyFilter === 'all' ? 'btn-primary' : 'btn-outline') + '" onclick="setPrivacyFilter(\'all\')" aria-label="Tum kulup" aria-pressed="' + (ui.privacyFilter === 'all') + '">Tum</button>' +
+                            '<button class="btn ' + (ui.privacyFilter === 'public' ? 'btn-primary' : 'btn-outline') + '" onclick="setPrivacyFilter(\'public\')" aria-label="Acik kulup" aria-pressed="' + (ui.privacyFilter === 'public') + '">Acik</button>' +
+                            '<button class="btn ' + (ui.privacyFilter === 'private' ? 'btn-primary' : 'btn-outline') + '" onclick="setPrivacyFilter(\'private\')" aria-label="Ozel kulup" aria-pressed="' + (ui.privacyFilter === 'private') + '">Ozel</button>' +
+                        '</div>' +
+                        '<div class="muted" style="margin-top:0.45rem;">AC-FR-E14-01-04</div>' +
+                    '</div>' +
+
+                    '<div class="card">' +
+                        '<div class="card-title">Kulup kart ozetleri</div>' +
+                        '<div class="list">' +
+                            clubs.map((club) => (
+                                '<button class="list-item" onclick="selectClub(' + club.id + ')" aria-label="' + club.name + ' detayini ac" style="text-align:left; cursor:pointer;">' +
+                                    '<div class="row">' +
+                                        '<div class="item-title">' + club.name + '</div>' +
+                                        '<span class="chip ' + (club.privacy === 'public' ? 'success' : 'warn') + '">' + (club.privacy === 'public' ? 'acik' : 'ozel') + '</span>' +
+                                    '</div>' +
+                                    '<div class="item-meta">Uye: ' + club.members + ' | Kitap: ' + club.book + '</div>' +
+                                    '<div class="item-meta">Son aktivite: ' + club.lastActivity + ' | Toplanti: ' + club.meetings + '</div>' +
+                                '</button>'
+                            )).join('') +
+                        '</div>' +
+                        '<div class="muted" style="margin-top:0.45rem;">AC-FR-E14-01-02</div>' +
+                        '<div class="muted">AC-FR-E14-01-03</div>' +
+                    '</div>'
+                ))
+            );
+
+            return phoneShell('Kulup listesi ve kesif', body, null);
+        }
+
+        function screenTwo() {
+            const draft = ui.draft;
+            const body = (
+                stateControls(2) +
+                statePanel(2) +
+                (ui.screenStates[2] !== 'ready' ? '' : (
+                    '<div class="card">' +
+                        '<div class="card-title">Kulup bilgisi</div>' +
+                        '<input class="field" type="text" placeholder="Kulup adini girin" value="' + draft.name.replace(/"/g, '&quot;') + '" oninput="updateDraft(\'name\', this.value)" aria-label="Kulup adi" />' +
+                        '<div class="muted" style="margin-top:0.4rem;">Kulup adi zorunludur.</div>' +
+                        '<div class="muted" style="margin-top:0.45rem;">AC-FR-E14-02-01</div>' +
+                    '</div>' +
+
+                    '<div class="card">' +
+                        '<div class="card-title">Kitap secimi</div>' +
+                        '<input class="field" type="text" placeholder="Kitap adi secin veya arayin" value="' + draft.book.replace(/"/g, '&quot;') + '" oninput="updateDraft(\'book\', this.value)" aria-label="Kitap secimi" />' +
+                        '<div class="chips" style="margin-top:0.45rem;">' +
+                            '<button class="btn btn-outline" onclick="updateDraft(\'book\', \'Sukur Sifresi\')" aria-label="Sukur Sifresi sec">Sukur Sifresi</button>' +
+                            '<button class="btn btn-outline" onclick="updateDraft(\'book\', \'Kalbimin Beyazi\')" aria-label="Kalbimin Beyazi sec">Kalbimin Beyazi</button>' +
+                            '<button class="btn btn-outline" onclick="updateDraft(\'book\', \'Yolcu\')" aria-label="Yolcu sec">Yolcu</button>' +
+                        '</div>' +
+                        '<div class="muted" style="margin-top:0.45rem;">AC-FR-E14-02-02</div>' +
+                    '</div>' +
+
+                    '<div class="card">' +
+                        '<div class="card-title">Toplanti takvimi</div>' +
+                        '<div class="chips">' +
+                            '<input class="field" style="max-width:47%;" type="text" value="' + draft.day + '" oninput="updateDraft(\'day\', this.value)" aria-label="Toplanti gunu" />' +
+                            '<input class="field" style="max-width:47%;" type="text" value="' + draft.time + '" oninput="updateDraft(\'time\', this.value)" aria-label="Toplanti saati" />' +
+                        '</div>' +
+                        '<div class="muted" style="margin-top:0.45rem;">AC-FR-E14-02-03</div>' +
+                    '</div>' +
+
+                    '<div class="card">' +
+                        '<div class="card-title">Gizlilik ve davet</div>' +
+                        '<div class="chips">' +
+                            '<button class="btn ' + (draft.privacy === 'public' ? 'btn-primary' : 'btn-outline') + '" onclick="updateDraft(\'privacy\', \'public\')" aria-label="Acik kulup" aria-pressed="' + (draft.privacy === 'public') + '">Acik</button>' +
+                            '<button class="btn ' + (draft.privacy === 'private' ? 'btn-primary' : 'btn-outline') + '" onclick="updateDraft(\'privacy\', \'private\')" aria-label="Ozel kulup" aria-pressed="' + (draft.privacy === 'private') + '">Ozel</button>' +
+                        '</div>' +
+                        '<textarea class="field" style="margin-top:0.45rem; min-height:72px;" placeholder="Davet e-postalari (virgulle ayirin)" oninput="updateDraft(\'invites\', this.value)" aria-label="Davet e-postalari">' + draft.invites + '</textarea>' +
+                        '<div class="chips" style="margin-top:0.5rem;">' +
+                            '<button class="btn btn-primary" onclick="createClub()" aria-label="Kulubu olustur">Kulubu Olustur</button>' +
+                            '<button class="btn btn-outline" onclick="showScreen(1)" aria-label="Listeye don">Listeye Don</button>' +
+                        '</div>' +
+                        '<div class="muted" style="margin-top:0.45rem;">AC-FR-E14-02-04</div>' +
+                    '</div>'
+                ))
+            );
+
+            return phoneShell('Kulup olusturma ve kitap secimi', body, 1);
+        }
+
+        function screenThree() {
+            const club = selectedClub();
+            const members = selectedMembers();
+            const topics = ui.topics[club.id] || [];
+            const schedule = ui.schedule[club.id] || [];
+
+            const body = (
+                stateControls(3) +
+                statePanel(3) +
+                (ui.screenStates[3] !== 'ready' ? '' : (
+                    '<div class="card">' +
+                        '<div class="card-title">Kulup kitabi ve bolum ozeti</div>' +
+                        '<div class="muted"><strong>Kulup:</strong> ' + club.name + '</div>' +
+                        '<div class="muted"><strong>Kitap:</strong> ' + club.book + '</div>' +
+                        '<div class="muted"><strong>Guncel bolum:</strong> ' + club.chapter + '</div>' +
+                        '<div class="muted" style="margin-top:0.45rem;">AC-FR-E14-03-01</div>' +
+                    '</div>' +
+
+                    '<div class="card">' +
+                        '<div class="card-title">Uye listesi ve roller</div>' +
+                        '<div class="list">' +
+                            members.map((member) => (
+                                '<div class="list-item">' +
+                                    '<div class="row">' +
+                                        '<div class="item-title">' + member.name + '</div>' +
+                                        '<span class="chip ' + (member.role === 'owner' ? 'success' : member.role === 'moderator' ? 'warn' : '') + '">' + member.role + '</span>' +
+                                    '</div>' +
+                                    '<div class="item-meta">Okuma tamamlanma: %' + member.completion + '</div>' +
+                                '</div>'
+                            )).join('') +
+                        '</div>' +
+                        '<div class="muted" style="margin-top:0.45rem;">AC-FR-E14-03-02</div>' +
+                    '</div>' +
+
+                    '<div class="card">' +
+                        '<div class="card-title">Aktif tartisma basliklari</div>' +
+                        '<div class="list">' +
+                            topics.map((topic) => (
+                                '<div class="list-item"><div class="item-meta">' + topic + '</div></div>'
+                            )).join('') +
+                        '</div>' +
+                        '<div class="chips" style="margin-top:0.5rem;">' +
+                            '<button class="btn btn-primary" onclick="showScreen(4)" aria-label="Tartisma ekranina gec">Tartismaya Gec</button>' +
+                        '</div>' +
+                        '<div class="muted" style="margin-top:0.45rem;">AC-FR-E14-03-03</div>' +
+                    '</div>' +
+
+                    '<div class="card">' +
+                        '<div class="card-title">Planli oturum takvimi</div>' +
+                        '<div class="list">' +
+                            schedule.map((slot) => (
+                                '<div class="list-item">' +
+                                    '<div class="row"><div class="item-title">' + slot.label + '</div><span class="chip warn">' + slot.when + '</span></div>' +
+                                '</div>'
+                            )).join('') +
+                        '</div>' +
+                        '<div class="muted" style="margin-top:0.45rem;">AC-FR-E14-03-04</div>' +
+                    '</div>'
+                ))
+            );
+
+            return phoneShell('Kulup detayi ve uye alani', body, 1);
+        }
+
+        function screenFour() {
+            const club = selectedClub();
+            const thread = ui.thread[club.id] || [];
+
+            const body = (
+                stateControls(4) +
+                statePanel(4) +
+                (ui.screenStates[4] !== 'ready' ? '' : (
+                    '<div class="card">' +
+                        '<div class="card-title">Kronolojik tartisma akisi</div>' +
+                        '<div class="list">' +
+                            thread.map((msg) => (
+                                '<div class="list-item">' +
+                                    '<div class="row"><div class="item-title">' + msg.author + '</div><span class="chip">' + msg.time + '</span></div>' +
+                                    '<div class="item-meta">' + msg.text + '</div>' +
+                                    '<div class="chips" style="margin-top:0.35rem;">' +
+                                        '<button class="btn btn-outline" onclick="quoteReplyById(' + msg.id + ')" aria-label="Mesaji alinti ile yanitla">Yanitla</button>' +
+                                        '<span class="chip success">Reaksiyon: ' + msg.reacts + '</span>' +
+                                        '<button class="btn btn-outline" onclick="reportMessage(' + msg.id + ')" aria-label="Mesaji bildir">Bildir</button>' +
+                                    '</div>' +
+                                '</div>'
+                            )).join('') +
+                        '</div>' +
+                        '<div class="muted" style="margin-top:0.45rem;">AC-FR-E14-04-01</div>' +
+                        '<div class="muted">AC-FR-E14-04-03</div>' +
+                    '</div>' +
+
+                    '<div class="card">' +
+                        '<div class="card-title">Yanit olustur</div>' +
+                        '<textarea class="field" style="min-height:88px;" placeholder="Mesajinizi yazin" aria-label="Mesaj olustur" oninput="updateComposer(this.value)">' + ui.composer + '</textarea>' +
+                        '<div class="chips" style="margin-top:0.5rem;">' +
+                            '<button class="btn btn-primary" onclick="addReply()" aria-label="Yaniti gonder">Gonder</button>' +
+                            '<button class="btn btn-outline" onclick="showScreen(3)" aria-label="Kulup detayina don">Kulube Don</button>' +
+                        '</div>' +
+                        '<div class="muted" style="margin-top:0.45rem;">AC-FR-E14-04-02</div>' +
+                        '<div class="muted">AC-FR-E14-04-04</div>' +
+                    '</div>'
+                ))
+            );
+
+            return phoneShell('Tartisma basligi ve etkilesim', body, 3);
+        }
+
+        function renderScreen(screenNo) {
+            if (screenNo === 1) {
+                return screenOne();
+            }
+            if (screenNo === 2) {
+                return screenTwo();
+            }
+            if (screenNo === 3) {
+                return screenThree();
+            }
+            return screenFour();
+        }
+
+        function render() {
+            const current = screenData[ui.currentScreen];
+            document.getElementById('screenTitle').textContent = current.title;
+            document.getElementById('screenFr').textContent = current.fr;
+            document.getElementById('screenRoute').textContent = current.route;
+            document.getElementById('screenMeta').textContent = current.meta + ' | event: ' + ui.lastAnalyticsEvent;
+
+            document.querySelectorAll('.nav-item').forEach((item) => {
+                item.classList.toggle('active', Number(item.dataset.screen) === ui.currentScreen);
+            });
+
+            document.querySelectorAll('[id^="flow-"]').forEach((step, index) => {
+                step.classList.toggle('active', index + 1 === ui.currentScreen);
+            });
+
+            document.getElementById('viewer').innerHTML = renderScreen(ui.currentScreen);
+        }
+
+        document.querySelectorAll('.nav-item').forEach((item) => {
+            item.addEventListener('click', () => {
+                setCurrentScreen(Number(item.dataset.screen));
+            });
+            item.addEventListener('keydown', (event) => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    setCurrentScreen(Number(item.dataset.screen));
+                }
+            });
+        });
+
+        render();
     </script>
 </body>
 </html>

@@ -2,45 +2,44 @@
   "id": "profile.overview",
   "title": "Profil",
   "route": "/profile",
-  "purpose": "Profil deneyimini sunmak.",
+  "purpose": "Tab root screen for Profil.",
   "entryPoints": [
-    "profile.overview"
+    "app.launch"
   ],
   "inputs": [
     {
       "name": "locale",
       "type": "LanguageCode",
       "required": true,
-      "source": "app_state"
+      "source": "profile"
+    },
+    {
+      "name": "subscriptionStatus",
+      "type": "SubscriptionStatus",
+      "required": true,
+      "source": "entitlement_cache"
     }
   ],
   "dataDependencies": [
     "User",
     "Subscription",
-    "SubscriptionPlan",
-    "AddOn",
-    "Seat",
-    "Invitation",
-    "PaymentTransaction",
-    "AccessibilitySettings",
-    "ReminderSettings",
-    "ReadingSettings"
+    "ContentProgress"
   ],
   "uiStates": {
     "loading": {
-      "description": "Profil yüklenirken iskelet ve temel CTA'lar gösterilir."
+      "description": "Tab shows skeleton cards while initial data is loading."
     },
     "ready": {
-      "description": "Profil içeriği ve etkileşimler hazır."
+      "description": "Tab content is visible and interactive."
     },
     "empty": {
-      "description": "İçerik yoksa açıklayıcı boş durum ve birincil aksiyon sunulur."
+      "description": "Tab-specific empty state with CTA is displayed."
     },
     "error": {
-      "description": "Hata mesajı ve tekrar dene aksiyonu gösterilir."
+      "description": "Tab-level error UI appears with retry action."
     },
     "offline": {
-      "description": "Çevrimdışı modda önbellek içerik gösterilir, senkron bekler."
+      "description": "Last cache is shown with offline indicator."
     }
   },
   "analytics": {
@@ -49,11 +48,6 @@
       "profile_overview_viewed"
     ]
   },
-  "acceptanceCriteriaRefs": [
-    "RQ-03",
-    "RQ-06",
-    "RQ-14",
-    "RQ-15"
-  ],
+  "acceptanceCriteriaRefs": [],
   "gates": []
 }

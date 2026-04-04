@@ -3,579 +3,1567 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PST Coaching Mobile - EPIC 4: İçerik Keşfi ve Katalog</title>
+    <title>PST Coaching Mobile - EPIC 4: Icerik Kesfi ve Katalog</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #00B4D8; --primary-dark: #0096B8; --primary-light: #E0F7FA; --primary-100: #B2EBF2;
-            --secondary: #2B1B5D; --secondary-light: #EDE7F6;
-            --success: #10B981; --success-light: #D1FAE5; --success-dark: #065F46;
-            --warning: #F59E0B; --error: #EF4444; --purple: #8B5CF6; --purple-light: #EDE9FE;
-            --gray-50: #FAFAFA; --gray-100: #F5F5F5; --gray-200: #E5E5E5; --gray-300: #D4D4D4;
-            --gray-400: #A3A3A3; --gray-600: #525252; --gray-700: #404040; --gray-900: #171717;
+            --primary: #0ea5e9;
+            --primary-dark: #0369a1;
+            --primary-light: #e0f2fe;
+            --secondary: #1e293b;
+            --success: #10b981;
+            --success-light: #dcfce7;
+            --warning: #f59e0b;
+            --warning-light: #fef3c7;
+            --error: #ef4444;
+            --error-light: #fee2e2;
+            --indigo: #4f46e5;
+            --indigo-light: #e0e7ff;
+            --gray-50: #fafafa;
+            --gray-100: #f5f5f5;
+            --gray-200: #e5e5e5;
+            --gray-300: #d4d4d4;
+            --gray-400: #a3a3a3;
+            --gray-600: #525252;
+            --gray-700: #404040;
+            --gray-900: #171717;
         }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #f0f0f0, #e0e0e0); overflow: hidden; }
-        .app { display: flex; height: 100vh; }
-        .sidebar { width: 400px; background: white; border-right: 1px solid var(--gray-200); overflow-y: auto; box-shadow: 2px 0 10px rgba(0,0,0,0.05); }
-        .main { flex: 1; display: flex; flex-direction: column; }
-        .topbar { background: white; border-bottom: 1px solid var(--gray-200); padding: 1.75rem 2.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
-        .viewer { flex: 1; overflow-y: auto; padding: 3rem; display: flex; justify-content: center; align-items: flex-start; }
-        .logo { font-family: 'Poppins', sans-serif; font-size: 2rem; font-weight: 800; color: var(--primary); padding: 2.5rem; border-bottom: 1px solid var(--gray-200); background: linear-gradient(135deg, var(--primary-light), white); }
-        .subtitle { font-size: 0.875rem; color: var(--gray-600); font-weight: 500; margin-top: 0.5rem; }
-        .epic-header { padding: 1.5rem; background: linear-gradient(135deg, var(--secondary-light), #E9D5FF); border-bottom: 2px solid var(--secondary); }
-        .epic-title { font-family: 'Poppins', sans-serif; font-size: 1.25rem; font-weight: 700; color: var(--gray-900); margin-bottom: 0.5rem; }
-        .epic-meta { font-size: 0.8125rem; color: var(--gray-600); }
-        .nav-map { background: var(--purple-light); border-left: 4px solid var(--purple); padding: 1rem; margin: 1rem 1.75rem; border-radius: 0.5rem; }
-        .nav-map-title { font-weight: 700; color: var(--purple); font-size: 0.8125rem; margin-bottom: 0.75rem; text-transform: uppercase; display: flex; align-items: center; gap: 0.5rem; }
-        .nav-flow { display: flex; flex-direction: column; gap: 0.5rem; }
-        .nav-flow-item { display: flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; color: var(--gray-700); }
-        .nav-flow-box { background: white; padding: 0.375rem 0.625rem; border-radius: 0.375rem; border: 2px solid var(--gray-300); font-weight: 600; white-space: nowrap; font-size: 0.6875rem; }
-        .nav-flow-box.active { background: var(--primary); color: white; border-color: var(--primary); }
-        .nav-flow-arrow { color: var(--gray-400); font-weight: 700; }
-        .nav-flow-label { color: var(--gray-600); font-size: 0.625rem; font-style: italic; }
-        .nav-section { padding: 1.25rem 0; border-bottom: 1px solid var(--gray-100); }
-        .nav-title { padding: 0.75rem 1.75rem; font-size: 0.6875rem; font-weight: 700; color: var(--gray-600); text-transform: uppercase; }
-        .nav-item { padding: 1rem 1.75rem; cursor: pointer; font-size: 0.9375rem; transition: all 0.2s; color: var(--gray-700); display: flex; align-items: center; gap: 0.875rem; border-left: 3px solid transparent; }
-        .nav-item:hover { background: var(--gray-50); }
-        .nav-item.active { background: var(--primary-light); color: var(--primary-dark); font-weight: 600; border-left-color: var(--primary); }
-        .nav-icon { font-size: 1.375rem; }
-        .nav-badge { background: var(--primary); color: white; padding: 0.25rem 0.625rem; border-radius: 9999px; font-size: 0.6875rem; font-weight: 700; margin-left: auto; }
-        .ac-section { background: var(--secondary-light); border-left: 4px solid var(--secondary); padding: 1rem; margin: 0.75rem 1.75rem; border-radius: 0.5rem; }
-        .ac-title { font-weight: 700; color: var(--secondary); font-size: 0.75rem; margin-bottom: 0.5rem; text-transform: uppercase; }
-        .ac-list { list-style: none; }
-        .ac-list li { font-size: 0.75rem; color: var(--gray-700); margin-bottom: 0.375rem; padding-left: 1.25rem; position: relative; line-height: 1.4; }
-        .ac-list li:before { content: "✓"; position: absolute; left: 0; color: var(--success); font-weight: 700; }
-        .screen-title { font-family: 'Poppins', sans-serif; font-size: 2.25rem; font-weight: 700; color: var(--gray-900); }
-        .screen-meta { color: var(--gray-600); font-size: 0.9375rem; margin-top: 0.5rem; display: flex; align-items: center; gap: 1rem; }
-        .meta-badge { background: var(--secondary-light); color: var(--secondary); padding: 0.375rem 0.875rem; border-radius: 0.5rem; font-size: 0.8125rem; font-weight: 600; }
-        .iphone { width: 393px; height: 852px; background: #1d1d1f; border-radius: 55px; padding: 12px; box-shadow: 0 60px 120px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.1); position: relative; }
-        .island { position: absolute; top: 20px; left: 50%; transform: translateX(-50%); width: 120px; height: 30px; background: #000; border-radius: 20px; z-index: 11; }
-        .screen { width: 100%; height: 100%; background: white; border-radius: 43px; overflow: hidden; position: relative; }
-        .content { width: 100%; height: 100%; overflow-y: auto; background: var(--gray-50); }
-        .content::-webkit-scrollbar { width: 4px; }
-        .content::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.3); border-radius: 10px; }
-        .status { height: 54px; display: flex; align-items: center; justify-content: space-between; padding: 0 1.5rem; font-size: 0.8125rem; font-weight: 600; background: white; }
-        .tabs { position: absolute; bottom: 0; left: 0; right: 0; height: 84px; background: white; border-top: 1px solid var(--gray-200); display: flex; justify-content: space-around; align-items: flex-start; padding: 0.75rem 0.5rem 1.5rem; z-index: 10; }
-        .tab { display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 0.625rem; font-weight: 600; color: var(--gray-600); min-width: 60px; text-align: center; cursor: pointer; }
-        .tab.active { color: var(--primary); }
-        .tab-icon { font-size: 1.5rem; }
-        .btn { padding: 0.875rem 1.5rem; border-radius: 0.75rem; font-weight: 600; font-size: 1rem; border: none; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.2s; }
-        .btn-primary { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; box-shadow: 0 4px 16px rgba(0,180,216,0.4); }
-        .card { background: white; border-radius: 1rem; padding: 1.25rem; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .fade-in { animation: fadeIn 0.3s ease-out; }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: radial-gradient(circle at 20% 0%, #e0f2fe 0%, #edf2f7 45%, #dbe4ef 100%);
+            color: var(--gray-900);
+            overflow: hidden;
+        }
+
+        .app {
+            height: 100vh;
+            display: flex;
+        }
+
+        .sidebar {
+            width: 420px;
+            background: #fff;
+            border-right: 1px solid var(--gray-200);
+            overflow-y: auto;
+            box-shadow: 2px 0 16px rgba(0, 0, 0, 0.06);
+        }
+
+        .main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .topbar {
+            padding: 1.5rem 2rem;
+            background: #fff;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .viewer {
+            flex: 1;
+            overflow-y: auto;
+            padding: 2rem;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .logo {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--primary-dark);
+            padding: 1.8rem;
+            border-bottom: 1px solid var(--gray-200);
+            background: linear-gradient(135deg, var(--primary-light), #fff);
+        }
+
+        .subtitle {
+            margin-top: 0.4rem;
+            font-size: 0.82rem;
+            color: var(--gray-600);
+            font-weight: 600;
+        }
+
+        .epic-header {
+            margin: 1rem 1.2rem;
+            padding: 1rem;
+            border-radius: 0.85rem;
+            border: 1px solid #bae6fd;
+            background: linear-gradient(140deg, #ecfeff, #eff6ff);
+        }
+
+        .epic-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.02rem;
+            font-weight: 700;
+            margin-bottom: 0.35rem;
+        }
+
+        .epic-meta {
+            font-size: 0.76rem;
+            color: var(--gray-700);
+            line-height: 1.45;
+        }
+
+        .flow-map {
+            margin: 0 1.2rem 1rem;
+            border-radius: 0.85rem;
+            border: 1px solid #e2e8f0;
+            background: #f8fafc;
+            padding: 0.8rem;
+        }
+
+        .flow-map-title {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: var(--gray-600);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .flow-list {
+            display: grid;
+            gap: 0.35rem;
+        }
+
+        .flow-step {
+            border: 1px solid var(--gray-300);
+            border-radius: 0.5rem;
+            background: #fff;
+            padding: 0.35rem 0.5rem;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: var(--gray-700);
+        }
+
+        .flow-step.active {
+            border-color: var(--primary);
+            color: var(--primary-dark);
+            background: var(--primary-light);
+        }
+
+        .nav-group {
+            padding: 0.25rem 0 0.75rem;
+            border-bottom: 1px solid var(--gray-100);
+        }
+
+        .nav-group-title {
+            font-size: 0.69rem;
+            color: var(--gray-600);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            padding: 0.65rem 1.25rem;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.65rem;
+            padding: 0.72rem 1.25rem;
+            border-left: 3px solid transparent;
+            cursor: pointer;
+            transition: background 0.18s ease;
+            color: var(--gray-700);
+        }
+
+        .nav-item:hover {
+            background: var(--gray-50);
+        }
+
+        .nav-item.active {
+            border-left-color: var(--primary);
+            background: var(--primary-light);
+            color: var(--primary-dark);
+        }
+
+        .nav-icon {
+            font-size: 1rem;
+        }
+
+        .nav-text {
+            flex: 1;
+            font-size: 0.82rem;
+            font-weight: 600;
+        }
+
+        .nav-badge {
+            font-size: 0.66rem;
+            background: #e2e8f0;
+            color: var(--gray-700);
+            padding: 0.14rem 0.45rem;
+            border-radius: 999px;
+            font-weight: 700;
+        }
+
+        .screen-title {
+            font-family: 'Poppins', sans-serif;
+            color: var(--secondary);
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .screen-meta {
+            margin-top: 0.4rem;
+            display: flex;
+            gap: 0.8rem;
+            align-items: center;
+            color: var(--gray-600);
+            font-size: 0.92rem;
+        }
+
+        .fr-badge {
+            border: 1px solid #93c5fd;
+            background: #eff6ff;
+            color: #1d4ed8;
+            border-radius: 0.5rem;
+            padding: 0.2rem 0.55rem;
+            font-size: 0.78rem;
+            font-weight: 700;
+        }
+
+        .iphone {
+            width: 393px;
+            height: 852px;
+            background: #1d1d1f;
+            border-radius: 54px;
+            padding: 12px;
+            box-shadow: 0 45px 95px rgba(0, 0, 0, 0.45);
+            position: relative;
+        }
+
+        .island {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 30px;
+            border-radius: 20px;
+            background: #000;
+            z-index: 4;
+        }
+
+        .screen {
+            width: 100%;
+            height: 100%;
+            border-radius: 42px;
+            overflow: hidden;
+            background: #fff;
+        }
+
+        .content {
+            width: 100%;
+            height: 100%;
+            overflow-y: auto;
+            background: var(--gray-50);
+        }
+
+        .status {
+            height: 54px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 1.2rem;
+            font-size: 0.82rem;
+            font-weight: 600;
+            background: #fff;
+        }
+
+        .mobile-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: #fff;
+            border-bottom: 1px solid var(--gray-200);
+            padding: 0.9rem 1.2rem;
+            position: sticky;
+            top: 0;
+            z-index: 2;
+        }
+
+        .icon-btn {
+            border: 1px solid var(--gray-300);
+            background: #fff;
+            color: var(--gray-700);
+            border-radius: 0.55rem;
+            padding: 0.3rem 0.5rem;
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .mobile-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--secondary);
+        }
+
+        .mobile-body {
+            padding: 1rem 1.15rem 1.3rem;
+            display: grid;
+            gap: 0.8rem;
+        }
+
+        .card {
+            border: 1px solid var(--gray-200);
+            background: #fff;
+            border-radius: 0.9rem;
+            padding: 0.85rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .card-title {
+            font-weight: 700;
+            font-size: 0.88rem;
+            margin-bottom: 0.4rem;
+            color: var(--gray-900);
+        }
+
+        .muted {
+            color: var(--gray-600);
+            font-size: 0.78rem;
+            line-height: 1.45;
+        }
+
+        .row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
+        }
+
+        .chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.45rem;
+        }
+
+        .chip {
+            border-radius: 999px;
+            border: 1px solid var(--gray-300);
+            background: #fff;
+            color: var(--gray-700);
+            padding: 0.16rem 0.55rem;
+            font-size: 0.69rem;
+            font-weight: 700;
+        }
+
+        .chip.free {
+            border-color: #86efac;
+            background: var(--success-light);
+            color: #166534;
+        }
+
+        .chip.premium {
+            border-color: #fcd34d;
+            background: var(--warning-light);
+            color: #92400e;
+        }
+
+        .chip.error {
+            border-color: #fca5a5;
+            background: var(--error-light);
+            color: #991b1b;
+        }
+
+        .chip.indigo {
+            border-color: #c7d2fe;
+            background: var(--indigo-light);
+            color: #3730a3;
+        }
+
+        .btn {
+            border: none;
+            border-radius: 0.72rem;
+            padding: 0.74rem 0.92rem;
+            font-size: 0.84rem;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .btn:disabled {
+            opacity: 0.55;
+            cursor: not-allowed;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: #fff;
+        }
+
+        .btn-outline {
+            background: #fff;
+            border: 1px solid var(--gray-300);
+            color: var(--gray-700);
+        }
+
+        .btn-warn {
+            background: #fff;
+            border: 1px solid var(--warning);
+            color: #92400e;
+        }
+
+        .state-switcher {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.42rem;
+        }
+
+        .state-btn {
+            border: 1px solid var(--gray-300);
+            background: #fff;
+            border-radius: 999px;
+            padding: 0.2rem 0.56rem;
+            font-size: 0.66rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            font-weight: 700;
+            color: var(--gray-700);
+            cursor: pointer;
+        }
+
+        .state-btn.active {
+            border-color: var(--primary);
+            color: var(--primary-dark);
+            background: var(--primary-light);
+        }
+
+        .state-panel {
+            border-radius: 0.8rem;
+            padding: 0.75rem;
+            border: 1px solid var(--gray-200);
+            display: grid;
+            gap: 0.4rem;
+            font-size: 0.79rem;
+            line-height: 1.45;
+            background: #fff;
+        }
+
+        .state-panel.loading {
+            border-color: #bfdbfe;
+            background: #eff6ff;
+        }
+
+        .state-panel.empty {
+            border-color: #cbd5e1;
+            background: #f8fafc;
+        }
+
+        .state-panel.error {
+            border-color: #fecaca;
+            background: var(--error-light);
+        }
+
+        .state-panel.offline {
+            border-color: #fcd34d;
+            background: #fffbeb;
+        }
+
+        .list {
+            display: grid;
+            gap: 0.5rem;
+        }
+
+        .list-item {
+            border: 1px solid var(--gray-200);
+            border-radius: 0.75rem;
+            background: #fff;
+            padding: 0.68rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .item-title {
+            font-size: 0.84rem;
+            font-weight: 700;
+            color: var(--gray-900);
+        }
+
+        .item-meta {
+            font-size: 0.74rem;
+            color: var(--gray-600);
+            margin-top: 0.2rem;
+            line-height: 1.4;
+        }
+
+        .grid-two {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.45rem;
+        }
+
+        .field-label {
+            font-size: 0.71rem;
+            font-weight: 700;
+            color: var(--gray-600);
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            margin-bottom: 0.2rem;
+        }
+
+        .field-value {
+            border: 1px solid var(--gray-300);
+            border-radius: 0.65rem;
+            background: #fff;
+            padding: 0.45rem 0.5rem;
+            font-size: 0.78rem;
+            color: var(--gray-700);
+            width: 100%;
+        }
+
+        .timeline {
+            display: grid;
+            gap: 0.45rem;
+        }
+
+        .timeline-step {
+            border-left: 3px solid var(--gray-300);
+            background: #fff;
+            border-radius: 0 0.5rem 0.5rem 0;
+            padding: 0.45rem 0.55rem;
+            font-size: 0.76rem;
+            color: var(--gray-700);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .timeline-step.done {
+            border-left-color: var(--success);
+            background: #ecfdf5;
+        }
+
+        .timeline-step.blocked {
+            border-left-color: var(--warning);
+            background: #fffbeb;
+        }
+
+        .toast {
+            position: fixed;
+            right: 1.2rem;
+            bottom: 1.2rem;
+            background: #111827;
+            color: #fff;
+            border-radius: 0.7rem;
+            padding: 0.62rem 0.92rem;
+            font-size: 0.8rem;
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22);
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(8px);
+            transition: opacity 0.2s ease, transform 0.2s ease;
+            z-index: 20;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .toast.success {
+            background: #065f46;
+        }
+
+        .toast.error {
+            background: #7f1d1d;
+        }
+
+        .nav-item:focus-visible,
+        button:focus-visible,
+        select:focus-visible,
+        input:focus-visible {
+            outline: 3px solid #60a5fa;
+            outline-offset: 2px;
+        }
+
+        @media (max-width: 1200px) {
+            body {
+                overflow: auto;
+            }
+
+            .app {
+                flex-direction: column;
+                height: auto;
+                min-height: 100vh;
+            }
+
+            .sidebar {
+                width: 100%;
+                max-height: 52vh;
+            }
+
+            .viewer {
+                padding: 1.2rem;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation: none !important;
+                transition: none !important;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="app">
-        <div class="sidebar">
-            <div class="logo">PST Coaching<div class="subtitle">İçerik Keşfi & Katalog</div></div>
+        <aside class="sidebar">
+            <div class="logo">
+                PST Coaching
+                <div class="subtitle">EPIC 4 - Icerik Kesfi ve Katalog</div>
+            </div>
+
             <div class="epic-header">
-                <div class="epic-title">EPIC 4: İçerik Keşfi ve Katalog</div>
-                <div class="epic-meta">11 User Stories • 7 Screens • 48 ACs</div>
+                <div class="epic-title">EPIC-4 Sync Pack</div>
+                <div class="epic-meta">10 FR Screen • 38 AC • Requirements, Screen Inventory ve Screen Contracts ile senkron</div>
             </div>
-            <div class="nav-map">
-                <div class="nav-map-title"><span>🗺️</span><span>Navigation Map</span></div>
-                <div class="nav-flow">
-                    <div class="nav-flow-item"><div class="nav-flow-box active" id="nav-1">Keşfet Hub</div></div>
-                    <div class="nav-flow-item"><span class="nav-flow-arrow">├→</span><span class="nav-flow-label">tap Asistan</span></div>
-                    <div class="nav-flow-item" style="margin-left: 1rem;"><div class="nav-flow-box" id="nav-2">AI Assistant</div></div>
-                    <div class="nav-flow-item"><span class="nav-flow-arrow">├→</span><span class="nav-flow-label">tap Yolculuklar</span></div>
-                    <div class="nav-flow-item" style="margin-left: 1rem;"><div class="nav-flow-box" id="nav-3">Journey Catalog</div></div>
-                    <div class="nav-flow-item"><span class="nav-flow-arrow">│ └→</span><span class="nav-flow-label">tap card</span></div>
-                    <div class="nav-flow-item" style="margin-left: 2rem;"><div class="nav-flow-box" id="nav-4">Journey Detail</div></div>
-                    <div class="nav-flow-item"><span class="nav-flow-arrow">├→</span><span class="nav-flow-label">tap e-Kitaplar</span></div>
-                    <div class="nav-flow-item" style="margin-left: 1rem;"><div class="nav-flow-box" id="nav-5">eBook Catalog</div></div>
-                    <div class="nav-flow-item"><span class="nav-flow-arrow">│ └→</span><span class="nav-flow-label">tap book</span></div>
-                    <div class="nav-flow-item" style="margin-left: 2rem;"><div class="nav-flow-box" id="nav-6">eBook Detail</div></div>
-                    <div class="nav-flow-item"><span class="nav-flow-arrow">└→</span><span class="nav-flow-label">tap Başlat</span></div>
-                    <div class="nav-flow-item" style="margin-left: 3rem;"><div class="nav-flow-box" id="nav-7">Start Content</div></div>
-                </div>
-                <div style="margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid var(--purple); font-size: 0.625rem; color: var(--gray-600); line-height: 1.4;">
-                    <strong>4 Content Types:</strong><br>
-                    🎯 Yolculuklar • 🎨 Atölyeler<br>
-                    📦 Modüller • 📖 e-Kitaplar
+
+            <div class="flow-map">
+                <div class="flow-map-title">Discover Akis Haritasi</div>
+                <div class="flow-list">
+                    <div class="flow-step active" id="flow-1">FR-E4-01 Kesfet Ana Ekran</div>
+                    <div class="flow-step" id="flow-2">FR-E4-02 Icerik Asistani</div>
+                    <div class="flow-step" id="flow-3">FR-E4-03 Yolculuk Katalogu</div>
+                    <div class="flow-step" id="flow-4">FR-E4-04 Atolye Katalogu</div>
+                    <div class="flow-step" id="flow-5">FR-E4-05 Modul Katalogu</div>
+                    <div class="flow-step" id="flow-6">FR-E4-06 e-Kitap Katalogu</div>
+                    <div class="flow-step" id="flow-7">FR-E4-07 Ortak Baslatma</div>
+                    <div class="flow-step" id="flow-8">FR-E4-08 Misafir Akisi</div>
+                    <div class="flow-step" id="flow-9">FR-E4-09 Demografi Girisi</div>
+                    <div class="flow-step" id="flow-10">FR-E4-10 Ilk DDL Testi</div>
                 </div>
             </div>
-            <div class="nav-section">
-                <div class="nav-title">US-4.1 & 4.2: Discovery Hub</div>
-                <div class="nav-item active" onclick="showScreen(1)">
-                    <span class="nav-icon">🧭</span><span>Keşfet Ana Ekran</span><span class="nav-badge">3 ACs</span>
-                </div>
-                <div class="ac-section">
-                    <div class="ac-title">✓ Acceptance Criteria</div>
-                    <ul class="ac-list">
-                        <li>Content types as tabs (Yolculuklar/Atölyeler/Modüller/e-Kitaplar)</li>
-                        <li>AI Assistant as primary CTA</li>
-                        <li>Paywall shown if no access</li>
-                    </ul>
-                </div>
-                <div class="nav-item" onclick="showScreen(2)">
-                    <span class="nav-icon">🤖</span><span>AI Assistant</span><span class="nav-badge">4 ACs</span>
-                </div>
-                <div class="ac-section">
-                    <div class="ac-title">✓ Acceptance Criteria</div>
-                    <ul class="ac-list">
-                        <li>Flow starts with goal/duration/preference questions</li>
-                        <li>Content type suggestion (journey/workshop/ebook)</li>
-                        <li>1 main + 2 alternative recommendations</li>
-                        <li>"Skip" to go to catalog</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="nav-section">
-                <div class="nav-title">US-4.3 & 4.4: Journeys</div>
-                <div class="nav-item" onclick="showScreen(3)">
-                    <span class="nav-icon">🎯</span><span>Journey Catalog</span><span class="nav-badge">4 ACs</span>
-                </div>
-                <div class="ac-section">
-                    <div class="ac-title">✓ Acceptance Criteria</div>
-                    <ul class="ac-list">
-                        <li>Journeys as cards (duration/level/content count)</li>
-                        <li>Goal/duration/level filters</li>
-                        <li>Recommended/Popular/New sorting</li>
-                        <li>Module/workshop/ebook count visible</li>
-                    </ul>
-                </div>
-                <div class="nav-item" onclick="showScreen(4)">
-                    <span class="nav-icon">📋</span><span>Journey Detail</span><span class="nav-badge">4 ACs</span>
-                </div>
-                <div class="ac-section">
-                    <div class="ac-title">✓ Acceptance Criteria</div>
-                    <ul class="ac-list">
-                        <li>Description, duration, daily goal range visible</li>
-                        <li>Modules, workshops, ebooks listed</li>
-                        <li>"Yolculuğu Başlat" CTA</li>
-                        <li>Add to favorites option</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="nav-section">
-                <div class="nav-title">US-4.9 & 4.10: eBooks</div>
-                <div class="nav-item" onclick="showScreen(5)">
-                    <span class="nav-icon">📚</span><span>eBook Catalog</span><span class="nav-badge">3 ACs</span>
-                </div>
-                <div class="ac-section">
-                    <div class="ac-title">✓ Acceptance Criteria</div>
-                    <ul class="ac-list">
-                        <li>eBooks with cover images</li>
-                        <li>Category/topic filtering</li>
-                        <li>Page count and estimated reading time</li>
-                    </ul>
-                </div>
-                <div class="nav-item" onclick="showScreen(6)">
-                    <span class="nav-icon">📖</span><span>eBook Detail</span><span class="nav-badge">4 ACs</span>
-                </div>
-                <div class="ac-section">
-                    <div class="ac-title">✓ Acceptance Criteria</div>
-                    <ul class="ac-list">
-                        <li>Book description, author, category visible</li>
-                        <li>Table of contents listed</li>
-                        <li>"Okumaya Başla" CTA</li>
-                        <li>Related journey shown if applicable</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="nav-section">
-                <div class="nav-title">US-4.11: Start Content</div>
-                <div class="nav-item" onclick="showScreen(7)">
-                    <span class="nav-icon">🚀</span><span>Start Content</span><span class="nav-badge">4 ACs</span>
-                </div>
-                <div class="ac-section">
-                    <div class="ac-title">✓ Acceptance Criteria</div>
-                    <ul class="ac-list">
-                        <li>Daily goal options presented</li>
-                        <li>Time rules shown (08:00 new day, 23:59 deadline)</li>
-                        <li>"Başla" activates content</li>
-                        <li>Reminder can be set</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div class="main">
+
+            <section class="nav-group">
+                <div class="nav-group-title">Kesif Temeli</div>
+                <div class="nav-item active" data-screen="1"><span class="nav-icon">🏠</span><span class="nav-text">Kesfet Ana Ekran</span><span class="nav-badge">3 AC</span></div>
+                <div class="nav-item" data-screen="2"><span class="nav-icon">🧭</span><span class="nav-text">Icerik Belirleme Asistani</span><span class="nav-badge">3 AC</span></div>
+            </section>
+
+            <section class="nav-group">
+                <div class="nav-group-title">Katalog ve Detaylar</div>
+                <div class="nav-item" data-screen="3"><span class="nav-icon">🛤️</span><span class="nav-text">Yolculuk Katalogu ve Detayi</span><span class="nav-badge">4 AC</span></div>
+                <div class="nav-item" data-screen="4"><span class="nav-icon">🎨</span><span class="nav-text">Atolye Katalogu ve Detayi</span><span class="nav-badge">4 AC</span></div>
+                <div class="nav-item" data-screen="5"><span class="nav-icon">📦</span><span class="nav-text">Modul Katalogu ve Detayi</span><span class="nav-badge">4 AC</span></div>
+                <div class="nav-item" data-screen="6"><span class="nav-icon">📚</span><span class="nav-text">e-Kitap Katalogu ve Detayi</span><span class="nav-badge">4 AC</span></div>
+            </section>
+
+            <section class="nav-group">
+                <div class="nav-group-title">Baslatma ve Gate Akislari</div>
+                <div class="nav-item" data-screen="7"><span class="nav-icon">🚀</span><span class="nav-text">Icerik Baslatma Ortak Akis</span><span class="nav-badge">5 AC</span></div>
+                <div class="nav-item" data-screen="8"><span class="nav-icon">👤</span><span class="nav-text">Misafir Goruntuleme</span><span class="nav-badge">4 AC</span></div>
+                <div class="nav-item" data-screen="9"><span class="nav-icon">🧩</span><span class="nav-text">Demografi Giris Noktalari</span><span class="nav-badge">2 AC</span></div>
+                <div class="nav-item" data-screen="10"><span class="nav-icon">🧠</span><span class="nav-text">Ilk Yolculuk DDL Testi</span><span class="nav-badge">5 AC</span></div>
+            </section>
+        </aside>
+
+        <main class="main">
             <div class="topbar">
-                <h1 class="screen-title" id="screenTitle">Keşfet Ana Ekran</h1>
+                <h1 class="screen-title" id="screenTitle">Kesfet Ana Ekran</h1>
                 <div class="screen-meta">
-                    <span class="meta-badge" id="screenUS">US-4.1</span>
-                    <span id="screenMeta">Content hub • 3/3 ACs • Entry: Tab Bar → Keşfet</span>
+                    <span class="fr-badge" id="screenFr">FR-E4-01</span>
+                    <span id="screenMeta">Tab bazli icerik turleri ve birincil Icerik Asistani CTA gosterimi</span>
                 </div>
             </div>
             <div class="viewer" id="viewer"></div>
-        </div>
+        </main>
     </div>
+
+    <div class="toast" id="toast"></div>
+
     <script>
         const screenData = {
-            1: { title: 'Keşfet Ana Ekran', us: 'US-4.1', meta: 'Content hub • 3/3 ACs • Entry: Tab Bar → Keşfet' },
-            2: { title: 'AI Assistant', us: 'US-4.2', meta: 'Smart recommendations • 4/4 ACs • From: Keşfet' },
-            3: { title: 'Journey Catalog', us: 'US-4.3', meta: 'Browse journeys • 4/4 ACs • From: Keşfet Tab' },
-            4: { title: 'Journey Detail', us: 'US-4.4', meta: 'Journey info • 4/4 ACs • From: Catalog Card' },
-            5: { title: 'eBook Catalog', us: 'US-4.9', meta: 'Browse books • 3/3 ACs • From: Keşfet Tab' },
-            6: { title: 'eBook Detail', us: 'US-4.10', meta: 'Book info • 4/4 ACs • From: Catalog Card' },
-            7: { title: 'Start Content', us: 'US-4.11', meta: 'Set goals • 4/4 ACs • From: Any Detail' }
+            1: { title: 'Kesfet Ana Ekran', fr: 'FR-E4-01', meta: 'Tab bazli icerik turleri ve birincil Icerik Asistani CTA gosterimi' },
+            2: { title: 'Icerik Belirleme Asistani', fr: 'FR-E4-02', meta: 'Hedef, sure ve tercih sorulari ile 1 ana + 2 alternatif onerisi' },
+            3: { title: 'Yolculuk Katalogu ve Detayi', fr: 'FR-E4-03', meta: 'Filtre, siralama, detay, baslatma ve favori aksiyonlari' },
+            4: { title: 'Atolye Katalogu ve Detayi', fr: 'FR-E4-04', meta: 'Tema/teslim filtresi, asama detaylari ve atolye aksiyonlari' },
+            5: { title: 'Modul Katalogu ve Detayi', fr: 'FR-E4-05', meta: 'Paket gorunumu, konu filtreleme ve modulu baslatma' },
+            6: { title: 'e-Kitap Katalogu ve Detayi', fr: 'FR-E4-06', meta: 'Kapak, kategori filtreleri, TOC ve okumaya basla' },
+            7: { title: 'Icerik Baslatma Ortak Akis', fr: 'FR-E4-07', meta: 'Gate sirasi, planlama secenekleri, zaman kurali ve guvenlik metni' },
+            8: { title: 'Misafir Goruntuleme ve Kayit', fr: 'FR-E4-08', meta: 'Misafir katalog goruntuler, free etiketi ve kayit zorunlulugu' },
+            9: { title: 'Demografi Giris Noktalari', fr: 'FR-E4-09', meta: 'Tum turlerde FR-E1-08 demografi kapisi tek kaynak olarak kullanilir' },
+            10: { title: 'Ilk Yolculukta DDL Testi', fr: 'FR-E4-10', meta: 'Ilk denemede DDL test zorunlu, analytics olaylari kayitli' }
         };
-        function showScreen(num) {
-            document.getElementById('screenTitle').textContent = screenData[num].title;
-            document.getElementById('screenUS').textContent = screenData[num].us;
-            document.getElementById('screenMeta').textContent = screenData[num].meta;
-            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
-            const navMap = {1: 0, 2: 1, 3: 2, 4: 3, 5: 4, 6: 5, 7: 6};
-            document.querySelectorAll('.nav-item')[navMap[num]].classList.add('active');
-            document.querySelectorAll('[id^="nav-"]').forEach(box => box.classList.remove('active'));
-            const navBox = document.getElementById('nav-' + num);
-            if (navBox) navBox.classList.add('active');
-            document.getElementById('viewer').innerHTML = getScreenHTML(num);
+
+        const journeys = [
+            { id: 'j1', name: 'Sukran Yolculugu', duration: '21 gun', level: 'Baslangic', contentCount: 24, target: 'Sukran', dailyRange: '15-20 dk', isFree: true, modules: '2 modul', workshops: '1 atolye', ebooks: '1 e-kitap' },
+            { id: 'j2', name: 'Odak Yenileme', duration: '14 gun', level: 'Orta', contentCount: 16, target: 'Odak', dailyRange: '20-30 dk', isFree: false, modules: '3 modul', workshops: '2 atolye', ebooks: '2 e-kitap' },
+            { id: 'j3', name: 'Aile Dengesi', duration: '30 gun', level: 'Ileri', contentCount: 36, target: 'Aile', dailyRange: '25-35 dk', isFree: false, modules: '4 modul', workshops: '2 atolye', ebooks: '3 e-kitap' }
+        ];
+
+        const workshops = [
+            { id: 'w1', name: 'Empati Kampi', theme: 'Empati', audience: '13-17', total: '180 dk', stages: 5, tags: ['kamp', 'rehber', 'workbook'], delivery: 'kamp', isFree: true, outcome: 'Guvenli iletisim modeli', verses: 'Nisa 36, Hadis #12', days: '3 gun' },
+            { id: 'w2', name: 'Guvenli Sinirlar', theme: 'Sinir Koyma', audience: '18+', total: '120 dk', stages: 4, tags: ['grup', 'workbook'], delivery: 'grup', isFree: false, outcome: 'Kisisel sinir plani', verses: 'Bakara 286', days: '2 gun' }
+        ];
+
+        const modules = [
+            { id: 'm1', name: 'Niyet ve Rutin', topic: 'Rutin', packages: [{ name: 'Niyet Girisi', duration: '20 dk' }, { name: 'Gunluk Plan', duration: '25 dk' }], isFree: true },
+            { id: 'm2', name: 'Zihinsel Dayaniklilik', topic: 'Dayaniklilik', packages: [{ name: 'Stres Haritasi', duration: '30 dk' }, { name: 'Yeniden Cerceveleme', duration: '35 dk' }], isFree: false }
+        ];
+
+        const ebooks = [
+            { id: 'e1', name: 'Sukran Defteri', author: 'M. Aydin', category: 'Maneviyat', pages: 132, readTime: '4 saat', isFree: true, toc: 'Bolum 1-4', relatedJourney: 'Sukran Yolculugu' },
+            { id: 'e2', name: 'Denge Pratikleri', author: 'Z. Kaya', category: 'Kisisel Gelisim', pages: 186, readTime: '6 saat', isFree: false, toc: 'Bolum 1-7', relatedJourney: 'Aile Dengesi' }
+        ];
+
+        const ui = {
+            currentScreen: 1,
+            screenStates: {
+                1: 'ready',
+                2: 'ready',
+                3: 'ready',
+                4: 'ready',
+                5: 'ready',
+                6: 'ready',
+                7: 'ready',
+                8: 'ready',
+                9: 'ready',
+                10: 'ready'
+            },
+            discoverTab: 'journeys',
+            subscriptionActive: false,
+            userMode: 'guest',
+            assistant: {
+                target: 'Sukran',
+                duration: '2 hafta',
+                preference: 'Kisa pratikler',
+                generated: false
+            },
+            selectedJourney: journeys[0].id,
+            selectedWorkshop: workshops[0].id,
+            selectedModule: modules[0].id,
+            selectedEbook: ebooks[0].id,
+            journeyFilter: {
+                target: 'Tum hedefler',
+                duration: 'Tum sureler',
+                level: 'Tum seviyeler',
+                sort: 'Onerilen'
+            },
+            workshopFilter: {
+                theme: 'Tum temalar',
+                age: 'Tum yaslar',
+                delivery: 'Tum tipler',
+                duration: 'Tum sureler'
+            },
+            moduleTopic: 'Tum konular',
+            ebookCategory: 'Tum kategoriler',
+            favorites: {},
+            startFlow: {
+                contentType: 'journey',
+                auth: true,
+                subscription: false,
+                addon: true,
+                demography: false,
+                ddl: false,
+                reminderConfigured: false
+            },
+            demographyCompleted: false,
+            ddl: {
+                firstJourneyAttempt: true,
+                completed: false,
+                completedAt: null,
+                eventLog: []
+            }
+        };
+
+        let toastTimer = null;
+
+        function showToast(message, tone) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = 'toast show' + (tone ? ' ' + tone : '');
+            if (toastTimer) {
+                clearTimeout(toastTimer);
+            }
+            toastTimer = setTimeout(() => {
+                toast.className = 'toast';
+            }, 2200);
         }
-        function getScreenHTML(num) {
-            const screens = {
-                1: `<div class="iphone fade-in"><div class="island"></div><div class="screen"><div class="content">
-                    <div class="status"><div>9:41</div><div>📶 📡 🔋</div></div>
-                    <div style="padding: 1.5rem 1.5rem 6rem;">
-                        <h1 style="font-family: Poppins, sans-serif; font-size: 2rem; font-weight: 800; color: var(--secondary); margin-bottom: 1.5rem;">Keşfet</h1>
-                        <div class="card" style="margin-bottom: 1.5rem; background: linear-gradient(135deg, var(--primary-light), var(--primary-100)); border: 2px solid var(--primary); cursor: pointer;" onclick="parent.showScreen(2)">
-                            <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
-                                <div style="font-size: 3rem;">🤖</div>
-                                <div style="flex: 1;">
-                                    <h3 style="font-family: Poppins, sans-serif; font-size: 1.25rem; font-weight: 700; color: var(--secondary); margin-bottom: 0.5rem;">İçerik Asistanı</h3>
-                                    <p style="font-size: 0.875rem; color: var(--gray-700);">Size özel içerik önerisi alalım</p>
-                                </div>
-                                <div style="color: var(--primary); font-size: 1.5rem;">→</div>
+
+        function stamp() {
+            return new Date().toLocaleString('tr-TR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
+        }
+
+        function phoneShell(title, body, backScreen) {
+            const back = backScreen
+                ? `<button class="icon-btn" onclick="showScreen(${backScreen})" aria-label="Geri">←</button>`
+                : '<span style="width: 34px;"></span>';
+
+            return `
+                <div class="iphone">
+                    <div class="island"></div>
+                    <div class="screen">
+                        <div class="content">
+                            <div class="status"><span>9:41</span><span>📶 📡 🔋</span></div>
+                            <div class="mobile-header">
+                                ${back}
+                                <div class="mobile-title">${title}</div>
                             </div>
-                        </div>
-                        <div style="display: flex; gap: 0.5rem; margin-bottom: 1.5rem; overflow-x: auto; padding-bottom: 0.5rem;">
-                            <button style="padding: 0.5rem 1rem; background: var(--primary); color: white; border: none; border-radius: 0.5rem; font-weight: 600; font-size: 0.8125rem; white-space: nowrap;" onclick="parent.showScreen(3)">🎯 Yolculuklar</button>
-                            <button style="padding: 0.5rem 1rem; background: var(--gray-100); color: var(--gray-700); border: none; border-radius: 0.5rem; font-weight: 600; font-size: 0.8125rem; white-space: nowrap;">🎨 Atölyeler</button>
-                            <button style="padding: 0.5rem 1rem; background: var(--gray-100); color: var(--gray-700); border: none; border-radius: 0.5rem; font-weight: 600; font-size: 0.8125rem; white-space: nowrap;">📦 Modüller</button>
-                            <button style="padding: 0.5rem 1rem; background: var(--gray-100); color: var(--gray-700); border: none; border-radius: 0.5rem; font-weight: 600; font-size: 0.8125rem; white-space: nowrap;" onclick="parent.showScreen(5)">📖 e-Kitaplar</button>
-                        </div>
-                        <div style="margin-bottom: 1.5rem;">
-                            <h3 style="font-weight: 700; color: var(--gray-900); margin-bottom: 1rem; font-size: 1rem;">Öne Çıkanlar</h3>
-                            <div class="card" style="margin-bottom: 1rem; cursor: pointer;" onclick="parent.showScreen(4)">
-                                <div style="display: flex; gap: 1rem;">
-                                    <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #FFDDC1, #FFB88C); border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; font-size: 2.5rem;">🎯</div>
-                                    <div style="flex: 1;">
-                                        <h4 style="font-weight: 700; font-size: 0.9375rem; color: var(--gray-900); margin-bottom: 0.375rem;">Sıdk ve Integrity Yolculuğu</h4>
-                                        <p style="font-size: 0.8125rem; color: var(--gray-600); margin-bottom: 0.5rem;">40 gün • Başlangıç</p>
-                                        <div style="display: flex; gap: 0.5rem; font-size: 0.75rem; color: var(--gray-600);">
-                                            <span>📦 3 Modül</span><span>•</span><span>🎨 2 Atölye</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card" style="cursor: pointer;" onclick="parent.showScreen(6)">
-                                <div style="display: flex; gap: 1rem;">
-                                    <div style="width: 60px; height: 90px; background: linear-gradient(135deg, var(--success-light), #A7F3D0); border-radius: 0.5rem; display: flex; align-items: center; justify-content: center; font-size: 2rem;">📖</div>
-                                    <div style="flex: 1;">
-                                        <h4 style="font-weight: 700; font-size: 0.9375rem; color: var(--gray-900); margin-bottom: 0.375rem;">Şükür Şifresi</h4>
-                                        <p style="font-size: 0.8125rem; color: var(--gray-600); margin-bottom: 0.5rem;">PST Coaching • Şükür</p>
-                                        <div style="font-size: 0.75rem; color: var(--gray-600);">184 sayfa • ~3 saat okuma</div>
-                                    </div>
-                                </div>
-                            </div>
+                            <div class="mobile-body">${body}</div>
                         </div>
                     </div>
-                    <div class="tabs">
-                        <div class="tab"><div class="tab-icon">🏠</div><div>Ana Sayfa</div></div>
-                        <div class="tab active"><div class="tab-icon">🔍</div><div>Keşfet</div></div>
-                        <div class="tab"><div class="tab-icon">📚</div><div>Kütüphane</div></div>
-                        <div class="tab"><div class="tab-icon">📈</div><div>Gelişim</div></div>
-                        <div class="tab"><div class="tab-icon">👤</div><div>Profil</div></div>
-                    </div>
-                </div></div></div>`,
-                2: `<div class="iphone fade-in"><div class="island"></div><div class="screen"><div class="content">
-                    <div class="status"><div>9:41</div><div>📶 📡 🔋</div></div>
-                    <div style="background: white; padding: 1rem 1.5rem; border-bottom: 1px solid var(--gray-200);">
-                        <div style="display: flex; align-items: center; gap: 1rem;">
-                            <button style="background: none; border: none; font-size: 1.5rem; cursor: pointer;" onclick="parent.showScreen(1)">←</button>
-                            <h2 style="font-family: Poppins, sans-serif; font-size: 1.25rem; font-weight: 800; color: var(--secondary);">İçerik Asistanı</h2>
-                        </div>
-                    </div>
-                    <div style="padding: 1.5rem;">
-                        <div style="text-align: center; margin-bottom: 2rem;">
-                            <div style="font-size: 4rem; margin-bottom: 1rem;">🤖</div>
-                            <h3 style="font-family: Poppins, sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--secondary); margin-bottom: 0.5rem;">Size En Uygun İçeriği Bulalım</h3>
-                            <p style="font-size: 0.9375rem; color: var(--gray-600);">Birkaç soruyla başlayalım</p>
-                        </div>
-                        <div class="card" style="margin-bottom: 1.5rem;">
-                            <div style="margin-bottom: 1.5rem;">
-                                <label style="display: block; font-weight: 600; color: var(--gray-900); margin-bottom: 0.75rem; font-size: 0.9375rem;">1️⃣ Ana hedefiniz nedir?</label>
-                                <div style="display: flex; flex-direction: column; gap: 0.75rem;">
-                                    <label style="display: flex; align-items: center; gap: 0.75rem; padding: 1rem; border: 2px solid var(--primary); background: var(--primary-light); border-radius: 0.75rem; cursor: pointer;">
-                                        <input type="radio" name="goal" checked style="width: 20px; height: 20px; accent-color: var(--primary);">
-                                        <span style="font-weight: 600; color: var(--gray-900);">Kişisel gelişim</span>
-                                    </label>
-                                    <label style="display: flex; align-items: center; gap: 0.75rem; padding: 1rem; border: 2px solid var(--gray-300); border-radius: 0.75rem; cursor: pointer;">
-                                        <input type="radio" name="goal" style="width: 20px; height: 20px; accent-color: var(--primary);">
-                                        <span style="color: var(--gray-700);">Maneviyat</span>
-                                    </label>
-                                    <label style="display: flex; align-items: center; gap: 0.75rem; padding: 1rem; border: 2px solid var(--gray-300); border-radius: 0.75rem; cursor: pointer;">
-                                        <input type="radio" name="goal" style="width: 20px; height: 20px; accent-color: var(--primary);">
-                                        <span style="color: var(--gray-700);">Duygusal denge</span>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card" style="margin-bottom: 1.5rem;">
-                            <label style="display: block; font-weight: 600; color: var(--gray-900); margin-bottom: 0.75rem; font-size: 0.9375rem;">2️⃣ Ne kadar zaman ayırabilirsiniz?</label>
-                            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem;">
-                                <button style="padding: 1rem; background: white; border: 2px solid var(--gray-300); border-radius: 0.75rem; font-weight: 600; color: var(--gray-700); cursor: pointer;">10 dk</button>
-                                <button style="padding: 1rem; background: var(--primary-light); border: 2px solid var(--primary); border-radius: 0.75rem; font-weight: 600; color: var(--primary-dark); cursor: pointer;">20 dk</button>
-                                <button style="padding: 1rem; background: white; border: 2px solid var(--gray-300); border-radius: 0.75rem; font-weight: 600; color: var(--gray-700); cursor: pointer;">30+ dk</button>
-                            </div>
-                        </div>
-                        <button class="btn btn-primary" style="width: 100%; padding: 1rem; font-size: 1.125rem; margin-bottom: 0.75rem;" onclick="parent.showScreen(3)">Öneri Al</button>
-                        <button style="background: none; border: none; color: var(--gray-600); font-weight: 600; font-size: 0.9375rem; width: 100%; padding: 0.75rem; cursor: pointer;" onclick="parent.showScreen(1)">Atla, Kataloğa Git</button>
-                    </div>
-                </div></div></div>`,
-                3: `<div class="iphone fade-in"><div class="island"></div><div class="screen"><div class="content">
-                    <div class="status"><div>9:41</div><div>📶 📡 🔋</div></div>
-                    <div style="padding: 1.5rem 1.5rem 6rem;">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-                            <h1 style="font-family: Poppins, sans-serif; font-size: 1.75rem; font-weight: 800; color: var(--secondary);">Yolculuklar</h1>
-                            <button style="background: var(--gray-100); border: none; padding: 0.5rem 1rem; border-radius: 0.5rem; font-weight: 600; font-size: 0.8125rem; color: var(--gray-700); cursor: pointer;">🔍 Filtrele</button>
-                        </div>
-                        <div style="display: flex; gap: 0.5rem; margin-bottom: 1.5rem; overflow-x: auto;">
-                            <button style="padding: 0.5rem 1rem; background: var(--primary); color: white; border: none; border-radius: 0.5rem; font-weight: 600; font-size: 0.8125rem; white-space: nowrap;">Önerilen</button>
-                            <button style="padding: 0.5rem 1rem; background: var(--gray-100); color: var(--gray-700); border: none; border-radius: 0.5rem; font-weight: 600; font-size: 0.8125rem; white-space: nowrap;">Popüler</button>
-                            <button style="padding: 0.5rem 1rem; background: var(--gray-100); color: var(--gray-700); border: none; border-radius: 0.5rem; font-weight: 600; font-size: 0.8125rem; white-space: nowrap;">Yeni</button>
-                        </div>
-                        <div class="card" style="margin-bottom: 1rem; cursor: pointer;" onclick="parent.showScreen(4)">
-                            <div style="display: flex; gap: 1rem; margin-bottom: 1rem;">
-                                <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #FFDDC1, #FFB88C); border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; flex-shrink: 0;">🎯</div>
-                                <div style="flex: 1;">
-                                    <h3 style="font-weight: 700; font-size: 1rem; color: var(--gray-900); margin-bottom: 0.5rem;">Sıdk ve Integrity Yolculuğu</h3>
-                                    <div style="display: flex; gap: 1rem; margin-bottom: 0.5rem; font-size: 0.8125rem; color: var(--gray-600);">
-                                        <span>⏱️ 40 gün</span><span>📊 Başlangıç</span>
-                                    </div>
-                                    <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-                                        <span style="background: var(--primary-light); color: var(--primary-dark); padding: 0.25rem 0.625rem; border-radius: 0.375rem; font-size: 0.75rem; font-weight: 600;">📦 3 Modül</span>
-                                        <span style="background: var(--success-light); color: var(--success-dark); padding: 0.25rem 0.625rem; border-radius: 0.375rem; font-size: 0.75rem; font-weight: 600;">🎨 2 Atölye</span>
-                                        <span style="background: var(--secondary-light); color: var(--secondary); padding: 0.25rem 0.625rem; border-radius: 0.375rem; font-size: 0.75rem; font-weight: 600;">📖 1 Kitap</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card" style="margin-bottom: 1rem; cursor: pointer;">
-                            <div style="display: flex; gap: 1rem; margin-bottom: 1rem;">
-                                <div style="width: 80px; height: 80px; background: linear-gradient(135deg, var(--success-light), #A7F3D0); border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; flex-shrink: 0;">🙏</div>
-                                <div style="flex: 1;">
-                                    <h3 style="font-weight: 700; font-size: 1rem; color: var(--gray-900); margin-bottom: 0.5rem;">Şükür Yolculuğu</h3>
-                                    <div style="display: flex; gap: 1rem; margin-bottom: 0.5rem; font-size: 0.8125rem; color: var(--gray-600);">
-                                        <span>⏱️ 30 gün</span><span>📊 Başlangıç</span>
-                                    </div>
-                                    <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-                                        <span style="background: var(--primary-light); color: var(--primary-dark); padding: 0.25rem 0.625rem; border-radius: 0.375rem; font-size: 0.75rem; font-weight: 600;">📦 2 Modül</span>
-                                        <span style="background: var(--success-light); color: var(--success-dark); padding: 0.25rem 0.625rem; border-radius: 0.375rem; font-size: 0.75rem; font-weight: 600;">🎨 3 Atölye</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card" style="cursor: pointer;">
-                            <div style="display: flex; gap: 1rem; margin-bottom: 1rem;">
-                                <div style="width: 80px; height: 80px; background: linear-gradient(135deg, var(--purple-light), #E9D5FF); border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; flex-shrink: 0;">💪</div>
-                                <div style="flex: 1;">
-                                    <h3 style="font-weight: 700; font-size: 1rem; color: var(--gray-900); margin-bottom: 0.5rem;">Sabır Yolculuğu</h3>
-                                    <div style="display: flex; gap: 1rem; margin-bottom: 0.5rem; font-size: 0.8125rem; color: var(--gray-600);">
-                                        <span>⏱️ 60 gün</span><span>📊 Orta</span>
-                                    </div>
-                                    <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-                                        <span style="background: var(--primary-light); color: var(--primary-dark); padding: 0.25rem 0.625rem; border-radius: 0.375rem; font-size: 0.75rem; font-weight: 600;">📦 4 Modül</span>
-                                        <span style="background: var(--success-light); color: var(--success-dark); padding: 0.25rem 0.625rem; border-radius: 0.375rem; font-size: 0.75rem; font-weight: 600;">🎨 2 Atölye</span>
-                                        <span style="background: var(--secondary-light); color: var(--secondary); padding: 0.25rem 0.625rem; border-radius: 0.375rem; font-size: 0.75rem; font-weight: 600;">📖 2 Kitap</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tabs">
-                        <div class="tab"><div class="tab-icon">🏠</div><div>Ana Sayfa</div></div>
-                        <div class="tab active"><div class="tab-icon">🔍</div><div>Keşfet</div></div>
-                        <div class="tab"><div class="tab-icon">📚</div><div>Kütüphane</div></div>
-                        <div class="tab"><div class="tab-icon">📈</div><div>Gelişim</div></div>
-                        <div class="tab"><div class="tab-icon">👤</div><div>Profil</div></div>
-                    </div>
-                </div></div></div>`,
-                4: `<div class="iphone fade-in"><div class="island"></div><div class="screen"><div class="content">
-                    <div class="status"><div>9:41</div><div>📶 📡 🔋</div></div>
-                    <div style="position: relative; height: 200px; background: linear-gradient(135deg, #FFDDC1, #FFB88C); display: flex; align-items: center; justify-content: center; font-size: 6rem;">🎯
-                        <button style="position: absolute; top: 1rem; left: 1rem; background: rgba(0,0,0,0.3); color: white; border: none; width: 40px; height: 40px; border-radius: 9999px; font-size: 1.25rem; cursor: pointer; backdrop-filter: blur(10px);" onclick="parent.showScreen(3)">←</button>
-                        <button style="position: absolute; top: 1rem; right: 1rem; background: rgba(0,0,0,0.3); color: white; border: none; width: 40px; height: 40px; border-radius: 9999px; font-size: 1.25rem; cursor: pointer; backdrop-filter: blur(10px);">♡</button>
-                    </div>
-                    <div style="padding: 1.5rem;">
-                        <h1 style="font-family: Poppins, sans-serif; font-size: 1.75rem; font-weight: 800; color: var(--secondary); margin-bottom: 1rem; line-height: 1.2;">Sıdk ve Integrity Yolculuğu</h1>
-                        <div style="display: flex; gap: 0.75rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
-                            <span style="background: var(--primary-light); color: var(--primary-dark); padding: 0.375rem 0.75rem; border-radius: 0.5rem; font-size: 0.8125rem; font-weight: 600;">⏱️ 40 gün</span>
-                            <span style="background: var(--success-light); color: var(--success-dark); padding: 0.375rem 0.75rem; border-radius: 0.5rem; font-size: 0.8125rem; font-weight: 600;">📊 Başlangıç</span>
-                            <span style="background: var(--secondary-light); color: var(--secondary); padding: 0.375rem 0.75rem; border-radius: 0.5rem; font-size: 0.8125rem; font-weight: 600;">📅 10-20 dk/gün</span>
-                        </div>
-                        <div class="card" style="margin-bottom: 1.5rem;">
-                            <h3 style="font-weight: 700; color: var(--gray-900); margin-bottom: 0.75rem; font-size: 1rem;">Yolculuk Hakkında</h3>
-                            <p style="font-size: 0.9375rem; color: var(--gray-700); line-height: 1.7;">
-                                Sıdk ve doğruluk üzerine derinlemesine bir keşif yolculuğu. Kendi gerçekliğinizle yüzleşin, içsel bütünlüğünüzü güçlendirin.
-                            </p>
-                        </div>
-                        <div class="card" style="margin-bottom: 1.5rem;">
-                            <h3 style="font-weight: 700; color: var(--gray-900); margin-bottom: 1rem; font-size: 1rem;">İçerik</h3>
-                            <div style="display: flex; flex-direction: column; gap: 0.75rem;">
-                                <div style="display: flex; align-items: center; gap: 1rem; padding: 0.75rem; background: var(--gray-50); border-radius: 0.5rem;">
-                                    <div style="font-size: 1.5rem;">📦</div>
-                                    <div style="flex: 1;"><div style="font-weight: 600; color: var(--gray-900); font-size: 0.875rem;">Duygular Evreni Modülü</div>
-                                    <p style="font-size: 0.75rem; color: var(--gray-600);">5 paket</p></div>
-                                </div>
-                                <div style="display: flex; align-items: center; gap: 1rem; padding: 0.75rem; background: var(--gray-50); border-radius: 0.5rem;">
-                                    <div style="font-size: 1.5rem;">🎨</div>
-                                    <div style="flex: 1;"><div style="font-weight: 600; color: var(--gray-900); font-size: 0.875rem;">Sıdk Atölyesi</div>
-                                    <p style="font-size: 0.75rem; color: var(--gray-600);">8 okuma • 4 uygulama</p></div>
-                                </div>
-                                <div style="display: flex; align-items: center; gap: 1rem; padding: 0.75rem; background: var(--gray-50); border-radius: 0.5rem;">
-                                    <div style="font-size: 1.5rem;">📖</div>
-                                    <div style="flex: 1;"><div style="font-weight: 600; color: var(--gray-900); font-size: 0.875rem;">Kalbimin Beyazı</div>
-                                    <p style="font-size: 0.75rem; color: var(--gray-600);">256 sayfa</p></div>
-                                </div>
-                            </div>
-                        </div>
-                        <button class="btn btn-primary" style="width: 100%; padding: 1rem; font-size: 1.125rem;" onclick="parent.showScreen(7)">Yolculuğu Başlat</button>
-                    </div>
-                </div></div></div>`,
-                5: `<div class="iphone fade-in"><div class="island"></div><div class="screen"><div class="content">
-                    <div class="status"><div>9:41</div><div>📶 📡 🔋</div></div>
-                    <div style="padding: 1.5rem 1.5rem 6rem;">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-                            <h1 style="font-family: Poppins, sans-serif; font-size: 1.75rem; font-weight: 800; color: var(--secondary);">e-Kitaplar</h1>
-                            <button style="background: var(--gray-100); border: none; padding: 0.5rem 1rem; border-radius: 0.5rem; font-weight: 600; font-size: 0.8125rem; color: var(--gray-700); cursor: pointer;">🔍 Filtrele</button>
-                        </div>
-                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;">
-                            <div style="cursor: pointer;" onclick="parent.showScreen(6)">
-                                <div style="height: 180px; background: linear-gradient(135deg, var(--success-light), #A7F3D0); border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; font-size: 4rem; margin-bottom: 0.75rem; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">📖</div>
-                                <h4 style="font-weight: 700; font-size: 0.875rem; color: var(--gray-900); margin-bottom: 0.375rem; line-height: 1.3;">Şükür Şifresi</h4>
-                                <p style="font-size: 0.75rem; color: var(--gray-600); margin-bottom: 0.25rem;">PST Coaching</p>
-                                <p style="font-size: 0.75rem; color: var(--gray-500);">184 sayfa • ~3h</p>
-                            </div>
-                            <div style="cursor: pointer;">
-                                <div style="height: 180px; background: linear-gradient(135deg, var(--primary-light), var(--primary-100)); border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; font-size: 4rem; margin-bottom: 0.75rem; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">📘</div>
-                                <h4 style="font-weight: 700; font-size: 0.875rem; color: var(--gray-900); margin-bottom: 0.375rem; line-height: 1.3;">Kalbimin Beyazı</h4>
-                                <p style="font-size: 0.75rem; color: var(--gray-600); margin-bottom: 0.25rem;">PST Coaching</p>
-                                <p style="font-size: 0.75rem; color: var(--gray-500);">256 sayfa • ~4h</p>
-                            </div>
-                            <div style="cursor: pointer;">
-                                <div style="height: 180px; background: linear-gradient(135deg, var(--secondary-light), #E9D5FF); border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; font-size: 4rem; margin-bottom: 0.75rem; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">📕</div>
-                                <h4 style="font-weight: 700; font-size: 0.875rem; color: var(--gray-900); margin-bottom: 0.375rem; line-height: 1.3;">Yolcu</h4>
-                                <p style="font-size: 0.75rem; color: var(--gray-600); margin-bottom: 0.25rem;">PST Coaching</p>
-                                <p style="font-size: 0.75rem; color: var(--gray-500);">312 sayfa • ~5h</p>
-                            </div>
-                            <div style="cursor: pointer;">
-                                <div style="height: 180px; background: linear-gradient(135deg, #FEF3C7, #FDE68A); border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; font-size: 4rem; margin-bottom: 0.75rem; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">📗</div>
-                                <h4 style="font-weight: 700; font-size: 0.875rem; color: var(--gray-900); margin-bottom: 0.375rem; line-height: 1.3;">Farkındalığın Aynası</h4>
-                                <p style="font-size: 0.75rem; color: var(--gray-600); margin-bottom: 0.25rem;">PST Coaching</p>
-                                <p style="font-size: 0.75rem; color: var(--gray-500);">198 sayfa • ~3h</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tabs">
-                        <div class="tab"><div class="tab-icon">🏠</div><div>Ana Sayfa</div></div>
-                        <div class="tab active"><div class="tab-icon">🔍</div><div>Keşfet</div></div>
-                        <div class="tab"><div class="tab-icon">📚</div><div>Kütüphane</div></div>
-                        <div class="tab"><div class="tab-icon">📈</div><div>Gelişim</div></div>
-                        <div class="tab"><div class="tab-icon">👤</div><div>Profil</div></div>
-                    </div>
-                </div></div></div>`,
-                6: `<div class="iphone fade-in"><div class="island"></div><div class="screen"><div class="content">
-                    <div class="status"><div>9:41</div><div>📶 📡 🔋</div></div>
-                    <div style="position: relative; height: 280px; background: linear-gradient(135deg, var(--success-light), #A7F3D0); display: flex; align-items: center; justify-content: center; font-size: 8rem;">📖
-                        <button style="position: absolute; top: 1rem; left: 1rem; background: rgba(0,0,0,0.3); color: white; border: none; width: 40px; height: 40px; border-radius: 9999px; font-size: 1.25rem; cursor: pointer; backdrop-filter: blur(10px);" onclick="parent.showScreen(5)">←</button>
-                        <button style="position: absolute; top: 1rem; right: 1rem; background: rgba(0,0,0,0.3); color: white; border: none; width: 40px; height: 40px; border-radius: 9999px; font-size: 1.25rem; cursor: pointer; backdrop-filter: blur(10px)">♡</button>
-                    </div>
-                    <div style="padding: 1.5rem;">
-                        <h1 style="font-family: Poppins, sans-serif; font-size: 2rem; font-weight: 800; color: var(--secondary); margin-bottom: 0.75rem; line-height: 1.2;">Şükür Şifresi</h1>
-                        <div style="display: flex; gap: 0.75rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
-                            <span style="background: var(--success-light); color: var(--success-dark); padding: 0.375rem 0.75rem; border-radius: 0.5rem; font-size: 0.8125rem; font-weight: 600;">📚 Şükür</span>
-                            <span style="background: var(--primary-light); color: var(--primary-dark); padding: 0.375rem 0.75rem; border-radius: 0.5rem; font-size: 0.8125rem; font-weight: 600;">184 sayfa</span>
-                            <span style="background: var(--secondary-light); color: var(--secondary); padding: 0.375rem 0.75rem; border-radius: 0.5rem; font-size: 0.8125rem; font-weight: 600;">~3 saat okuma</span>
-                        </div>
-                        <div class="card" style="margin-bottom: 1rem; background: var(--primary-light); border-left: 4px solid var(--primary);">
-                            <p style="font-size: 0.8125rem; color: var(--gray-700);">
-                                <strong style="color: var(--primary-dark);">🎯 Yolculuk:</strong> Şükür Yolculuğu'nun parçası
-                            </p>
-                        </div>
-                        <div class="card" style="margin-bottom: 1.5rem;">
-                            <h3 style="font-weight: 700; color: var(--gray-900); margin-bottom: 0.75rem; font-size: 1rem;">Kitap Hakkında</h3>
-                            <p style="font-size: 0.9375rem; color: var(--gray-700); line-height: 1.7; margin-bottom: 1rem;">
-                                Şükrün dönüştürücü gücünü keşfedin. Günlük hayatta şükrü nasıl yaşayacağınızı öğrenin.
-                            </p>
-                            <div style="padding: 0.75rem 1rem; background: var(--gray-50); border-radius: 0.5rem;">
-                                <div style="font-size: 0.8125rem; color: var(--gray-700); margin-bottom: 0.25rem;"><strong>Yazar:</strong> PST Coaching Ekibi</div>
-                                <div style="font-size: 0.8125rem; color: var(--gray-700);"><strong>Kategori:</strong> Kişisel Gelişim, Maneviyat</div>
-                            </div>
-                        </div>
-                        <div class="card" style="margin-bottom: 1.5rem;">
-                            <h3 style="font-weight: 700; color: var(--gray-900); margin-bottom: 0.75rem; font-size: 1rem;">İçindekiler</h3>
-                            <div style="display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.875rem; color: var(--gray-700);">
-                                <div>1. Şükrün Temelleri</div>
-                                <div>2. Günlük Şükür Pratiği</div>
-                                <div>3. Zorlukta Şükür</div>
-                                <div>4. Şükür ve İlişkiler</div>
-                                <div>5. Şükürle Dönüşüm</div>
-                            </div>
-                        </div>
-                        <button class="btn btn-primary" style="width: 100%; padding: 1rem; font-size: 1.125rem;" onclick="parent.showScreen(7)">Okumaya Başla</button>
-                    </div>
-                </div></div></div>`,
-                7: `<div class="iphone fade-in"><div class="island"></div><div class="screen"><div class="content">
-                    <div class="status"><div>9:41</div><div>📶 📡 🔋</div></div>
-                    <div style="background: white; padding: 1rem 1.5rem; border-bottom: 1px solid var(--gray-200);">
-                        <div style="display: flex; align-items: center; gap: 1rem;">
-                            <button style="background: none; border: none; font-size: 1.5rem; cursor: pointer;" onclick="parent.showScreen(4)">←</button>
-                            <h2 style="font-family: Poppins, sans-serif; font-size: 1.25rem; font-weight: 800; color: var(--secondary);">Hedef Belirle</h2>
-                        </div>
-                    </div>
-                    <div style="padding: 1.5rem;">
-                        <div style="text-align: center; margin-bottom: 2rem;">
-                            <div style="font-size: 4rem; margin-bottom: 1rem;">🎯</div>
-                            <h3 style="font-family: Poppins, sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--secondary); margin-bottom: 0.5rem;">Günlük Hedefiniz</h3>
-                            <p style="font-size: 0.9375rem; color: var(--gray-600);">Sıdk ve Integrity Yolculuğu</p>
-                        </div>
-                        <div class="card" style="margin-bottom: 1.5rem;">
-                            <label style="display: block; font-weight: 600; color: var(--gray-900); margin-bottom: 1rem; font-size: 1rem;">Günde ne kadar zaman ayırabilirsiniz?</label>
-                            <div style="display: flex; flex-direction: column; gap: 0.75rem;">
-                                <label style="display: flex; align-items: center; justify-content: space-between; padding: 1rem; border: 2px solid var(--gray-300); border-radius: 0.75rem; cursor: pointer;">
-                                    <div><div style="font-weight: 600; color: var(--gray-900); margin-bottom: 0.25rem;">10 dakika</div>
-                                    <div style="font-size: 0.8125rem; color: var(--gray-600);">Kısa ve öz</div></div>
-                                    <input type="radio" name="goal" style="width: 24px; height: 24px; accent-color: var(--primary);">
-                                </label>
-                                <label style="display: flex; align-items: center; justify-content: space-between; padding: 1rem; border: 2px solid var(--primary); background: var(--primary-light); border-radius: 0.75rem; cursor: pointer;">
-                                    <div><div style="font-weight: 600; color: var(--gray-900); margin-bottom: 0.25rem;">20 dakika</div>
-                                    <div style="font-size: 0.8125rem; color: var(--gray-600);">Önerilen</div></div>
-                                    <input type="radio" name="goal" checked style="width: 24px; height: 24px; accent-color: var(--primary);">
-                                </label>
-                                <label style="display: flex; align-items: center; justify-content: space-between; padding: 1rem; border: 2px solid var(--gray-300); border-radius: 0.75rem; cursor: pointer;">
-                                    <div><div style="font-weight: 600; color: var(--gray-900); margin-bottom: 0.25rem;">30+ dakika</div>
-                                    <div style="font-size: 0.8125rem; color: var(--gray-600);">Derinlemesine</div></div>
-                                    <input type="radio" name="goal" style="width: 24px; height: 24px; accent-color: var(--primary);">
-                                </label>
-                            </div>
-                        </div>
-                        <div class="card" style="margin-bottom: 1.5rem; background: var(--secondary-light);">
-                            <h4 style="font-weight: 700; color: var(--secondary); margin-bottom: 0.75rem; font-size: 0.9375rem;">⏰ Zaman Kuralları</h4>
-                            <div style="display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.875rem; color: var(--gray-700);">
-                                <div style="display: flex; align-items: center; gap: 0.5rem;"><span style="color: var(--success);">•</span><span>Yeni gün: Her sabah 08:00'de açılır</span></div>
-                                <div style="display: flex; align-items: center; gap: 0.5rem;"><span style="color: var(--error);">•</span><span>Teslim: Gece 23:59'a kadar</span></div>
-                                <div style="display: flex; align-items: center; gap: 0.5rem;"><span style="color: var(--primary);">•</span><span>Hatırlatıcı: İstediğiniz saatte</span></div>
-                            </div>
-                        </div>
-                        <div class="card" style="margin-bottom: 1.5rem;">
-                            <label style="display: flex; align-items: center; gap: 0.75rem; cursor: pointer;">
-                                <input type="checkbox" checked style="width: 24px; height: 24px; accent-color: var(--primary);">
-                                <div><div style="font-weight: 600; color: var(--gray-900); font-size: 0.9375rem; margin-bottom: 0.25rem;">Günlük Hatırlatıcı</div>
-                                <div style="font-size: 0.8125rem; color: var(--gray-600);">Her gün 20:00'de</div></div>
-                            </label>
-                        </div>
-                        <button class="btn btn-primary" style="width: 100%; padding: 1rem; font-size: 1.125rem;">Başla</button>
-                    </div>
-                </div></div></div>`
+                </div>
+            `;
+        }
+
+        function stateControls(screenNo) {
+            const states = ['ready', 'loading', 'empty', 'error', 'offline'];
+            return `
+                <div class="state-switcher">
+                    ${states.map((s) => `<button class="state-btn ${ui.screenStates[screenNo] === s ? 'active' : ''}" onclick="setScreenState(${screenNo}, '${s}')">${s}</button>`).join('')}
+                </div>
+            `;
+        }
+
+        function statePanel(screenNo) {
+            const state = ui.screenStates[screenNo];
+            if (state === 'ready') {
+                return '';
+            }
+            if (state === 'loading') {
+                return '<div class="state-panel loading"><strong>Loading</strong><span>Icerikler yukleniyor, skeleton gorunumu aktif.</span></div>';
+            }
+            if (state === 'empty') {
+                return '<div class="state-panel empty"><strong>Empty</strong><span>Bu filtrede sonuc yok, sonraki aksiyon oneriliyor.</span><button class="btn btn-outline" onclick="showToast(\'Filtre sifirlandi\')">Filtreyi Temizle</button></div>';
+            }
+            if (state === 'error') {
+                return '<div class="state-panel error"><strong>Error</strong><span>Veri alinirken bir sorun olustu, kullaniciya retry sunulur.</span><button class="btn btn-primary" onclick="setScreenState(' + screenNo + ', \'ready\')">Tekrar Dene</button></div>';
+            }
+            return '<div class="state-panel offline"><strong>Offline</strong><span>Son onbellek gorunumu aktif, yazma islemleri kuyruga alinacak.</span></div>';
+        }
+
+        function setScreenState(screenNo, state) {
+            ui.screenStates[screenNo] = state;
+            render();
+        }
+
+        function setDiscoverTab(tab) {
+            ui.discoverTab = tab;
+            render();
+        }
+
+        function toggleSubscription() {
+            ui.subscriptionActive = !ui.subscriptionActive;
+            showToast(ui.subscriptionActive ? 'Abonelik simulasyonu aktif.' : 'Abonelik simulasyonu kapali.');
+            render();
+        }
+
+        function onTapCatalogItem(isFree) {
+            if (!ui.subscriptionActive && !isFree) {
+                showToast('Paywall: Bu icerik abonelik gerektiriyor.', 'error');
+                return;
+            }
+            showToast('Icerik detayi acildi.', 'success');
+        }
+
+        function screenOne() {
+            const tabs = [
+                { id: 'journeys', label: 'Yolculuklar' },
+                { id: 'workshops', label: 'Atolyeler' },
+                { id: 'modules', label: 'Moduller' },
+                { id: 'ebooks', label: 'e-Kitaplar' }
+            ];
+
+            const listByTab = {
+                journeys,
+                workshops,
+                modules,
+                ebooks
             };
-            return screens[num] || screens[1];
+
+            const currentList = listByTab[ui.discoverTab];
+            const body = `
+                ${stateControls(1)}
+                ${statePanel(1)}
+                ${ui.screenStates[1] !== 'ready' ? '' : `
+                    <div class="card">
+                        <div class="card-title">Icerik Turleri</div>
+                        <div class="chips">
+                            ${tabs.map((tab) => `<button class="btn ${ui.discoverTab === tab.id ? 'btn-primary' : 'btn-outline'}" onclick="setDiscoverTab('${tab.id}')">${tab.label}</button>`).join('')}
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" onclick="showScreen(2)">Icerik Asistani (Birincil CTA)</button>
+                    <div class="card">
+                        <div class="row" style="margin-bottom: 0.5rem;">
+                            <div class="card-title" style="margin-bottom: 0;">Paywall Simulasyonu</div>
+                            <button class="btn btn-outline" onclick="toggleSubscription()">${ui.subscriptionActive ? 'Abonelik Aktif' : 'Abonelik Pasif'}</button>
+                        </div>
+                        <div class="list">
+                            ${currentList.map((item) => `
+                                <div class="list-item">
+                                    <div>
+                                        <div class="item-title">${item.name}</div>
+                                        <div class="item-meta">${item.duration || item.total || item.topic || item.category || 'Detay'}</div>
+                                    </div>
+                                    <div class="chips">
+                                        <span class="chip ${item.isFree ? 'free' : 'premium'}">${item.isFree ? 'Free' : 'Premium'}</span>
+                                        <button class="btn btn-outline" onclick="onTapCatalogItem(${item.isFree ? 'true' : 'false'})">Detay</button>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `}
+            `;
+            return phoneShell('Kesfet', body, null);
         }
-        document.getElementById('viewer').innerHTML = getScreenHTML(1);
+
+        function updateAssistantField(field, value) {
+            ui.assistant[field] = value;
+            render();
+        }
+
+        function generateRecommendations() {
+            ui.assistant.generated = true;
+            showToast('1 ana + 2 alternatif onerisi hazirlandi.', 'success');
+            render();
+        }
+
+        function screenTwo() {
+            const body = `
+                ${stateControls(2)}
+                ${statePanel(2)}
+                ${ui.screenStates[2] !== 'ready' ? '' : `
+                    <div class="card">
+                        <div class="card-title">Adim 1-3 Sorulari</div>
+                        <div class="grid-two" style="margin-bottom: 0.5rem;">
+                            <div>
+                                <div class="field-label">Hedef</div>
+                                <select class="field-value" onchange="updateAssistantField('target', this.value)">
+                                    <option ${ui.assistant.target === 'Sukran' ? 'selected' : ''}>Sukran</option>
+                                    <option ${ui.assistant.target === 'Odak' ? 'selected' : ''}>Odak</option>
+                                    <option ${ui.assistant.target === 'Aile' ? 'selected' : ''}>Aile</option>
+                                </select>
+                            </div>
+                            <div>
+                                <div class="field-label">Sure</div>
+                                <select class="field-value" onchange="updateAssistantField('duration', this.value)">
+                                    <option ${ui.assistant.duration === '1 hafta' ? 'selected' : ''}>1 hafta</option>
+                                    <option ${ui.assistant.duration === '2 hafta' ? 'selected' : ''}>2 hafta</option>
+                                    <option ${ui.assistant.duration === '1 ay' ? 'selected' : ''}>1 ay</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="field-label">Tercih</div>
+                            <select class="field-value" onchange="updateAssistantField('preference', this.value)">
+                                <option ${ui.assistant.preference === 'Kisa pratikler' ? 'selected' : ''}>Kisa pratikler</option>
+                                <option ${ui.assistant.preference === 'Derin okuma' ? 'selected' : ''}>Derin okuma</option>
+                                <option ${ui.assistant.preference === 'Karma akisi' ? 'selected' : ''}>Karma akisi</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" onclick="generateRecommendations()">Onerileri Getir</button>
+                    <button class="btn btn-outline" onclick="showScreen(3)">Atla ve Kataloga Git</button>
+                    ${ui.assistant.generated ? `
+                        <div class="card">
+                            <div class="card-title">Oneri Sonucu</div>
+                            <div class="list">
+                                <div class="list-item"><div><div class="item-title">Ana Oneri: ${journeys[0].name}</div><div class="item-meta">Hedef: ${ui.assistant.target}</div></div><span class="chip indigo">Ana</span></div>
+                                <div class="list-item"><div><div class="item-title">Alternatif 1: ${workshops[0].name}</div><div class="item-meta">Sure: ${ui.assistant.duration}</div></div><span class="chip">Alt</span></div>
+                                <div class="list-item"><div><div class="item-title">Alternatif 2: ${ebooks[0].name}</div><div class="item-meta">Tercih: ${ui.assistant.preference}</div></div><span class="chip">Alt</span></div>
+                            </div>
+                        </div>
+                    ` : ''}
+                `}
+            `;
+            return phoneShell('Icerik Asistani', body, 1);
+        }
+
+        function setJourneyFilter(field, value) {
+            ui.journeyFilter[field] = value;
+            render();
+        }
+
+        function selectJourney(id) {
+            ui.selectedJourney = id;
+            render();
+        }
+
+        function toggleFavorite(id) {
+            ui.favorites[id] = !ui.favorites[id];
+            showToast(ui.favorites[id] ? 'Favorilere eklendi.' : 'Favoriden cikarildi.');
+            render();
+        }
+
+        function screenThree() {
+            const selected = journeys.find((x) => x.id === ui.selectedJourney) || journeys[0];
+            const body = `
+                ${stateControls(3)}
+                ${statePanel(3)}
+                ${ui.screenStates[3] !== 'ready' ? '' : `
+                    <div class="card">
+                        <div class="card-title">Filtre ve Siralama</div>
+                        <div class="grid-two">
+                            <select class="field-value" onchange="setJourneyFilter('target', this.value)">
+                                <option ${ui.journeyFilter.target === 'Tum hedefler' ? 'selected' : ''}>Tum hedefler</option>
+                                <option ${ui.journeyFilter.target === 'Sukran' ? 'selected' : ''}>Sukran</option>
+                                <option ${ui.journeyFilter.target === 'Odak' ? 'selected' : ''}>Odak</option>
+                            </select>
+                            <select class="field-value" onchange="setJourneyFilter('duration', this.value)">
+                                <option ${ui.journeyFilter.duration === 'Tum sureler' ? 'selected' : ''}>Tum sureler</option>
+                                <option ${ui.journeyFilter.duration === '14 gun+' ? 'selected' : ''}>14 gun+</option>
+                                <option ${ui.journeyFilter.duration === '30 gun' ? 'selected' : ''}>30 gun</option>
+                            </select>
+                            <select class="field-value" onchange="setJourneyFilter('level', this.value)">
+                                <option ${ui.journeyFilter.level === 'Tum seviyeler' ? 'selected' : ''}>Tum seviyeler</option>
+                                <option ${ui.journeyFilter.level === 'Baslangic' ? 'selected' : ''}>Baslangic</option>
+                                <option ${ui.journeyFilter.level === 'Orta' ? 'selected' : ''}>Orta</option>
+                            </select>
+                            <select class="field-value" onchange="setJourneyFilter('sort', this.value)">
+                                <option ${ui.journeyFilter.sort === 'Onerilen' ? 'selected' : ''}>Onerilen</option>
+                                <option ${ui.journeyFilter.sort === 'Populer' ? 'selected' : ''}>Populer</option>
+                                <option ${ui.journeyFilter.sort === 'Yeni' ? 'selected' : ''}>Yeni</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="list">
+                        ${journeys.map((item) => `
+                            <div class="list-item">
+                                <div>
+                                    <div class="item-title">${item.name}</div>
+                                    <div class="item-meta">${item.duration} • ${item.level} • ${item.contentCount} icerik</div>
+                                </div>
+                                <button class="btn btn-outline" onclick="selectJourney('${item.id}')">Detay</button>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="card">
+                        <div class="card-title">Detay</div>
+                        <div class="muted" style="margin-bottom: 0.45rem;">${selected.name}: ${selected.duration} sureli akista gunluk hedef araligi ${selected.dailyRange}.</div>
+                        <div class="chips" style="margin-bottom: 0.5rem;">
+                            <span class="chip">${selected.modules}</span>
+                            <span class="chip">${selected.workshops}</span>
+                            <span class="chip">${selected.ebooks}</span>
+                        </div>
+                        <div class="chips">
+                            <button class="btn btn-primary" onclick="showScreen(7)">Yolculugu Baslat</button>
+                            <button class="btn btn-outline" onclick="toggleFavorite('${selected.id}')">${ui.favorites[selected.id] ? 'Favoriden Cikar' : 'Favoriye Ekle'}</button>
+                        </div>
+                    </div>
+                `}
+            `;
+            return phoneShell('Yolculuk Katalogu', body, 1);
+        }
+
+        function setWorkshopFilter(field, value) {
+            ui.workshopFilter[field] = value;
+            render();
+        }
+
+        function selectWorkshop(id) {
+            ui.selectedWorkshop = id;
+            render();
+        }
+
+        function screenFour() {
+            const selected = workshops.find((x) => x.id === ui.selectedWorkshop) || workshops[0];
+            const body = `
+                ${stateControls(4)}
+                ${statePanel(4)}
+                ${ui.screenStates[4] !== 'ready' ? '' : `
+                    <div class="card">
+                        <div class="card-title">Atolye Filtreleri</div>
+                        <div class="grid-two">
+                            <select class="field-value" onchange="setWorkshopFilter('theme', this.value)">
+                                <option ${ui.workshopFilter.theme === 'Tum temalar' ? 'selected' : ''}>Tum temalar</option>
+                                <option ${ui.workshopFilter.theme === 'Empati' ? 'selected' : ''}>Empati</option>
+                                <option ${ui.workshopFilter.theme === 'Sinir Koyma' ? 'selected' : ''}>Sinir Koyma</option>
+                            </select>
+                            <select class="field-value" onchange="setWorkshopFilter('age', this.value)">
+                                <option ${ui.workshopFilter.age === 'Tum yaslar' ? 'selected' : ''}>Tum yaslar</option>
+                                <option ${ui.workshopFilter.age === '13-17' ? 'selected' : ''}>13-17</option>
+                                <option ${ui.workshopFilter.age === '18+' ? 'selected' : ''}>18+</option>
+                            </select>
+                            <select class="field-value" onchange="setWorkshopFilter('delivery', this.value)">
+                                <option ${ui.workshopFilter.delivery === 'Tum tipler' ? 'selected' : ''}>Tum tipler</option>
+                                <option ${ui.workshopFilter.delivery === 'bireysel' ? 'selected' : ''}>bireysel</option>
+                                <option ${ui.workshopFilter.delivery === 'grup' ? 'selected' : ''}>grup</option>
+                                <option ${ui.workshopFilter.delivery === 'kamp' ? 'selected' : ''}>kamp</option>
+                            </select>
+                            <select class="field-value" onchange="setWorkshopFilter('duration', this.value)">
+                                <option ${ui.workshopFilter.duration === 'Tum sureler' ? 'selected' : ''}>Tum sureler</option>
+                                <option ${ui.workshopFilter.duration === '120 dk+' ? 'selected' : ''}>120 dk+</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="list">
+                        ${workshops.map((item) => `
+                            <div class="list-item">
+                                <div>
+                                    <div class="item-title">${item.name}</div>
+                                    <div class="item-meta">${item.theme} • ${item.audience} • ${item.total} • ${item.stages} asama</div>
+                                    <div class="chips" style="margin-top: 0.3rem;">${item.tags.map((tag) => `<span class="chip indigo">${tag}</span>`).join('')}</div>
+                                </div>
+                                <button class="btn btn-outline" onclick="selectWorkshop('${item.id}')">Detay</button>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="card">
+                        <div class="card-title">Atolye Detayi</div>
+                        <div class="muted" style="margin-bottom: 0.35rem;">${selected.outcome}</div>
+                        <div class="muted" style="margin-bottom: 0.35rem;">Ana ayet/hadis: ${selected.verses}</div>
+                        <div class="muted" style="margin-bottom: 0.35rem;">Asama listesi ve kamp gunleri: ${selected.stages} asama • ${selected.days}</div>
+                        <div class="chips" style="margin-bottom: 0.45rem;"><span class="chip">Bagli yolculuk: Sukran Yolculugu</span></div>
+                        <div class="chips">
+                            <button class="btn btn-primary" onclick="showScreen(7)">Atolyeyi Baslat</button>
+                            <button class="btn btn-outline" onclick="showToast('Katilimci defteri onizlemesi acildi.')">Defteri Onizle</button>
+                            <button class="btn btn-outline" onclick="showToast('Egitmen rehberi acildi.')">Egitmen Rehberi</button>
+                        </div>
+                    </div>
+                `}
+            `;
+            return phoneShell('Atolye Katalogu', body, 1);
+        }
+
+        function setModuleTopic(value) {
+            ui.moduleTopic = value;
+            render();
+        }
+
+        function selectModule(id) {
+            ui.selectedModule = id;
+            render();
+        }
+
+        function screenFive() {
+            const selected = modules.find((x) => x.id === ui.selectedModule) || modules[0];
+            const body = `
+                ${stateControls(5)}
+                ${statePanel(5)}
+                ${ui.screenStates[5] !== 'ready' ? '' : `
+                    <div class="card">
+                        <div class="card-title">Konu Filtreleme</div>
+                        <select class="field-value" onchange="setModuleTopic(this.value)">
+                            <option ${ui.moduleTopic === 'Tum konular' ? 'selected' : ''}>Tum konular</option>
+                            <option ${ui.moduleTopic === 'Rutin' ? 'selected' : ''}>Rutin</option>
+                            <option ${ui.moduleTopic === 'Dayaniklilik' ? 'selected' : ''}>Dayaniklilik</option>
+                        </select>
+                    </div>
+                    <div class="list">
+                        ${modules.map((item) => `
+                            <div class="list-item">
+                                <div>
+                                    <div class="item-title">${item.name}</div>
+                                    <div class="item-meta">${item.packages.length} paket • Konu: ${item.topic}</div>
+                                </div>
+                                <button class="btn btn-outline" onclick="selectModule('${item.id}')">Detay</button>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="card">
+                        <div class="card-title">Modul Detayi</div>
+                        <div class="list">
+                            ${selected.packages.map((pkg, index) => `
+                                <div class="list-item">
+                                    <div>
+                                        <div class="item-title">${index + 1}. ${pkg.name}</div>
+                                        <div class="item-meta">Kisa aciklama ve sure: ${pkg.duration}</div>
+                                    </div>
+                                    <span class="chip">${pkg.duration}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <button class="btn btn-primary" style="margin-top: 0.55rem;" onclick="showScreen(7)">Modulu Baslat</button>
+                    </div>
+                `}
+            `;
+            return phoneShell('Modul Katalogu', body, 1);
+        }
+
+        function setEbookCategory(value) {
+            ui.ebookCategory = value;
+            render();
+        }
+
+        function selectEbook(id) {
+            ui.selectedEbook = id;
+            render();
+        }
+
+        function screenSix() {
+            const selected = ebooks.find((x) => x.id === ui.selectedEbook) || ebooks[0];
+            const body = `
+                ${stateControls(6)}
+                ${statePanel(6)}
+                ${ui.screenStates[6] !== 'ready' ? '' : `
+                    <div class="card">
+                        <div class="card-title">Kategori Filtreleme</div>
+                        <select class="field-value" onchange="setEbookCategory(this.value)">
+                            <option ${ui.ebookCategory === 'Tum kategoriler' ? 'selected' : ''}>Tum kategoriler</option>
+                            <option ${ui.ebookCategory === 'Maneviyat' ? 'selected' : ''}>Maneviyat</option>
+                            <option ${ui.ebookCategory === 'Kisisel Gelisim' ? 'selected' : ''}>Kisisel Gelisim</option>
+                        </select>
+                    </div>
+                    <div class="list">
+                        ${ebooks.map((item) => `
+                            <div class="list-item">
+                                <div>
+                                    <div class="item-title">${item.name}</div>
+                                    <div class="item-meta">${item.category} • ${item.pages} sayfa • ${item.readTime}</div>
+                                </div>
+                                <button class="btn btn-outline" onclick="selectEbook('${item.id}')">Detay</button>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="card">
+                        <div class="card-title">e-Kitap Detayi</div>
+                        <div class="muted" style="margin-bottom: 0.35rem;">Yazar: ${selected.author} • Kategori: ${selected.category}</div>
+                        <div class="muted" style="margin-bottom: 0.35rem;">Icindekiler: ${selected.toc}</div>
+                        <div class="chips" style="margin-bottom: 0.45rem;"><span class="chip">Bagli yolculuk: ${selected.relatedJourney}</span></div>
+                        <button class="btn btn-primary" onclick="showScreen(7)">Okumaya Basla</button>
+                    </div>
+                `}
+            `;
+            return phoneShell('e-Kitap Katalogu', body, 1);
+        }
+
+        function setStartType(type) {
+            ui.startFlow.contentType = type;
+            render();
+        }
+
+        function toggleGate(gate) {
+            ui.startFlow[gate] = !ui.startFlow[gate];
+            render();
+        }
+
+        function gateItems() {
+            return [
+                { key: 'auth', label: 'Auth', done: ui.startFlow.auth },
+                { key: 'subscription', label: 'Abonelik', done: ui.startFlow.subscription },
+                { key: 'addon', label: 'Add-on', done: ui.startFlow.addon },
+                { key: 'demography', label: 'Demografi(FR-E1-08)', done: ui.startFlow.demography },
+                { key: 'ddl', label: 'DDL Test', done: ui.startFlow.ddl }
+            ];
+        }
+
+        function startContentFlow() {
+            const gates = gateItems();
+            const firstBlocked = gates.find((g) => !g.done);
+            if (firstBlocked) {
+                showToast('Gate sirasi engeli: ' + firstBlocked.label + ' tamamlanmadi.', 'error');
+                return;
+            }
+            ui.startFlow.reminderConfigured = true;
+            showToast('Icerik aktif edildi. Hatirlatici/takip plani ayarlanabilir.', 'success');
+            render();
+        }
+
+        function screenSeven() {
+            const isJourney = ui.startFlow.contentType === 'journey';
+            const timeRule = isJourney
+                ? 'Gunluk icerik zaman kurali: 08:00 acilis, 23:59 gun sonu.'
+                : 'Atolye zaman kurali: toplam sure, oturum suresi ve takip ritmi gosterilir.';
+            const body = `
+                ${stateControls(7)}
+                ${statePanel(7)}
+                ${ui.screenStates[7] !== 'ready' ? '' : `
+                    <div class="card">
+                        <div class="card-title">Icerik Turu</div>
+                        <div class="chips">
+                            <button class="btn ${ui.startFlow.contentType === 'journey' ? 'btn-primary' : 'btn-outline'}" onclick="setStartType('journey')">Yolculuk</button>
+                            <button class="btn ${ui.startFlow.contentType === 'workshop' ? 'btn-primary' : 'btn-outline'}" onclick="setStartType('workshop')">Atolye</button>
+                            <button class="btn ${ui.startFlow.contentType === 'module' ? 'btn-primary' : 'btn-outline'}" onclick="setStartType('module')">Modul</button>
+                            <button class="btn ${ui.startFlow.contentType === 'ebook' ? 'btn-primary' : 'btn-outline'}" onclick="setStartType('ebook')">e-Kitap</button>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">Gate Sirasi (BR-05)</div>
+                        <div class="timeline">
+                            ${gateItems().map((item) => `
+                                <div class="timeline-step ${item.done ? 'done' : 'blocked'}">
+                                    <span>${item.label}</span>
+                                    <button class="btn btn-outline" onclick="toggleGate('${item.key}')">${item.done ? 'Tamamlandi' : 'Tamamla'}</button>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">Planlama ve Zaman Kurali</div>
+                        <div class="muted" style="margin-bottom: 0.35rem;">${isJourney ? 'Yolculuk icin gunluk hedef secimi (15/30 dk)' : 'Atolye icin oturum/kamp plani secimi (bireysel/grup/kamp)'}</div>
+                        <div class="muted">${timeRule}</div>
+                    </div>
+                    <div class="state-panel offline">
+                        <strong>Psikolojik Guvenlik Bilgilendirmesi (BR-11)</strong>
+                        <span>Bu icerik profesyonel destek yerine gecmez. Gerekirse uzman destegi alin.</span>
+                    </div>
+                    <button class="btn btn-primary" onclick="startContentFlow()">Basla</button>
+                    ${ui.startFlow.reminderConfigured ? '<div class="chips"><span class="chip">Gunluk hatirlatici ayarlandi</span><span class="chip">Atolye takip plani acildi</span></div>' : ''}
+                `}
+            `;
+            return phoneShell('Icerik Baslatma', body, 1);
+        }
+
+        function setUserMode(mode) {
+            ui.userMode = mode;
+            render();
+        }
+
+        function guestStartAction(isFree) {
+            if (ui.userMode === 'guest') {
+                showToast('Kayit ekranina yonlendirildi.', 'error');
+                return;
+            }
+            if (isFree) {
+                showToast('Kayit sonrasi Free icerik paywallsiz acildi.', 'success');
+                return;
+            }
+            showToast('Premium icerik icin abonelik gerekli.', 'error');
+        }
+
+        function screenEight() {
+            const previewItems = [journeys[0], journeys[1], ebooks[0]];
+            const body = `
+                ${stateControls(8)}
+                ${statePanel(8)}
+                ${ui.screenStates[8] !== 'ready' ? '' : `
+                    <div class="card">
+                        <div class="row" style="margin-bottom: 0.4rem;">
+                            <div class="card-title" style="margin-bottom: 0;">Kullanici Modu</div>
+                            <div class="chips">
+                                <button class="btn ${ui.userMode === 'guest' ? 'btn-primary' : 'btn-outline'}" onclick="setUserMode('guest')">Misafir</button>
+                                <button class="btn ${ui.userMode === 'registered' ? 'btn-primary' : 'btn-outline'}" onclick="setUserMode('registered')">Kayitli</button>
+                            </div>
+                        </div>
+                        <div class="muted">Misafir tum katalog ve detay ekranlarini gorur; baslatma aksiyonu kayit zorunluluguna gider.</div>
+                    </div>
+                    <div class="list">
+                        ${previewItems.map((item) => `
+                            <div class="list-item">
+                                <div>
+                                    <div class="item-title">${item.name}</div>
+                                    <div class="item-meta">Katalog + detay erisimi var</div>
+                                </div>
+                                <div class="chips">
+                                    <span class="chip ${item.isFree ? 'free' : 'premium'}">${item.isFree ? 'Free' : 'Premium'}</span>
+                                    <button class="btn btn-outline" onclick="guestStartAction(${item.isFree ? 'true' : 'false'})">Baslat</button>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `}
+            `;
+            return phoneShell('Misafir Akisi', body, 1);
+        }
+
+        function completeDemographyGate() {
+            ui.demographyCompleted = true;
+            ui.startFlow.demography = true;
+            showToast('Demografi kapisi FR-E1-08 kaynagina gore tamamlandi.', 'success');
+            render();
+        }
+
+        function screenNine() {
+            const entryPoints = ['Yolculuk Baslat', 'Atolye Baslat', 'Modul Baslat', 'e-Kitap Baslat'];
+            const body = `
+                ${stateControls(9)}
+                ${statePanel(9)}
+                ${ui.screenStates[9] !== 'ready' ? '' : `
+                    <div class="card">
+                        <div class="card-title">Demografi Giris Noktalari</div>
+                        <div class="list">
+                            ${entryPoints.map((point) => `
+                                <div class="list-item">
+                                    <div>
+                                        <div class="item-title">${point}</div>
+                                        <div class="item-meta">Demografi kapisi kontrolu: FR-E1-08 (tek kaynak)</div>
+                                    </div>
+                                    <span class="chip ${ui.demographyCompleted ? 'free' : 'error'}">${ui.demographyCompleted ? 'Tamam' : 'Eksik'}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                    <div class="state-panel offline">
+                        <strong>Kural</strong>
+                        <span>Bu giris noktalarinda local demografi kurali tanimlanmaz. BR-06 geregi tek kaynak FR-E1-08.</span>
+                    </div>
+                    <button class="btn btn-primary" onclick="completeDemographyGate()">FR-E1-08 Demografiyi Tamamla</button>
+                `}
+            `;
+            return phoneShell('Demografi Gate', body, 7);
+        }
+
+        function pushDdlEvent(eventName) {
+            ui.ddl.eventLog.push({ name: eventName, at: stamp() });
+        }
+
+        function startDdlTest() {
+            pushDdlEvent('ddl_test_started');
+            showToast('DDL testi basladi.');
+            render();
+        }
+
+        function abandonDdlTest() {
+            pushDdlEvent('ddl_test_abandoned');
+            showToast('DDL testi yarida birakildi.', 'error');
+            render();
+        }
+
+        function completeDdlTest() {
+            ui.ddl.completed = true;
+            ui.ddl.completedAt = stamp();
+            ui.ddl.firstJourneyAttempt = false;
+            ui.startFlow.ddl = true;
+            pushDdlEvent('ddl_test_completed');
+            showToast('DDL testi tamamlandi ve profile kaydedildi.', 'success');
+            render();
+        }
+
+        function attemptFirstJourneyStart() {
+            if (ui.ddl.firstJourneyAttempt && !ui.ddl.completed) {
+                showToast('Ilk yolculukta DDL testi tamamlanmadan baslatma engellendi.', 'error');
+                return;
+            }
+            showToast('Yolculuk baslatildi. DDL tekrar istenmedi.', 'success');
+        }
+
+        function resetDdlScenario() {
+            ui.ddl = {
+                firstJourneyAttempt: true,
+                completed: false,
+                completedAt: null,
+                eventLog: []
+            };
+            ui.startFlow.ddl = false;
+            showToast('DDL senaryosu sifirlandi.');
+            render();
+        }
+
+        function screenTen() {
+            const body = `
+                ${stateControls(10)}
+                ${statePanel(10)}
+                ${ui.screenStates[10] !== 'ready' ? '' : `
+                    <div class="card">
+                        <div class="card-title">Ilk Yolculuk DDL Kapisi</div>
+                        <div class="muted" style="margin-bottom: 0.45rem;">Ilk baslatma denemesinde DDL testi acilir; tamamlanmadan yolculuk baslatilamaz.</div>
+                        <div class="chips" style="margin-bottom: 0.45rem;">
+                            <span class="chip ${ui.ddl.firstJourneyAttempt ? 'premium' : 'free'}">Ilk Deneme: ${ui.ddl.firstJourneyAttempt ? 'Evet' : 'Hayir'}</span>
+                            <span class="chip ${ui.ddl.completed ? 'free' : 'error'}">DDL: ${ui.ddl.completed ? 'Tamamlandi' : 'Tamamlanmadi'}</span>
+                            ${ui.ddl.completedAt ? `<span class="chip indigo">Tarih: ${ui.ddl.completedAt}</span>` : ''}
+                        </div>
+                        <div class="chips">
+                            <button class="btn btn-outline" onclick="startDdlTest()">DDL Testi Baslat</button>
+                            <button class="btn btn-warn" onclick="abandonDdlTest()">Yarida Birak</button>
+                            <button class="btn btn-primary" onclick="completeDdlTest()">DDL Tamamla</button>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" onclick="attemptFirstJourneyStart()">Yolculugu Baslatmayi Dene</button>
+                    <button class="btn btn-outline" onclick="resetDdlScenario()">Senaryoyu Sifirla</button>
+                    <div class="card">
+                        <div class="card-title">Analytics Olaylari</div>
+                        <div class="list">
+                            ${ui.ddl.eventLog.length
+                                ? ui.ddl.eventLog.map((evt) => `<div class="list-item"><div><div class="item-title">${evt.name}</div><div class="item-meta">${evt.at}</div></div></div>`).join('')
+                                : '<div class="state-panel empty"><strong>Olay yok</strong><span>ddl_test_started, ddl_test_completed, ddl_test_abandoned olaylari burada listelenir.</span></div>'}
+                        </div>
+                    </div>
+                `}
+            `;
+            return phoneShell('DDL Testi', body, 7);
+        }
+
+        function renderScreen(screenNo) {
+            if (screenNo === 1) {
+                return screenOne();
+            }
+            if (screenNo === 2) {
+                return screenTwo();
+            }
+            if (screenNo === 3) {
+                return screenThree();
+            }
+            if (screenNo === 4) {
+                return screenFour();
+            }
+            if (screenNo === 5) {
+                return screenFive();
+            }
+            if (screenNo === 6) {
+                return screenSix();
+            }
+            if (screenNo === 7) {
+                return screenSeven();
+            }
+            if (screenNo === 8) {
+                return screenEight();
+            }
+            if (screenNo === 9) {
+                return screenNine();
+            }
+            return screenTen();
+        }
+
+        function updateTopBar() {
+            const data = screenData[ui.currentScreen];
+            document.getElementById('screenTitle').textContent = data.title;
+            document.getElementById('screenFr').textContent = data.fr;
+            document.getElementById('screenMeta').textContent = data.meta;
+        }
+
+        function updateNav() {
+            const navItems = Array.from(document.querySelectorAll('.nav-item'));
+            navItems.forEach((item) => {
+                const active = Number(item.dataset.screen) === ui.currentScreen;
+                item.classList.toggle('active', active);
+                item.setAttribute('aria-current', active ? 'page' : 'false');
+            });
+            for (let i = 1; i <= 10; i += 1) {
+                const el = document.getElementById('flow-' + i);
+                if (el) {
+                    el.classList.toggle('active', i === ui.currentScreen);
+                }
+            }
+        }
+
+        function showScreen(screenNo) {
+            ui.currentScreen = screenNo;
+            render();
+        }
+
+        function wireNav() {
+            const navItems = Array.from(document.querySelectorAll('.nav-item'));
+            navItems.forEach((item) => {
+                item.setAttribute('role', 'button');
+                item.setAttribute('tabindex', '0');
+                item.addEventListener('click', () => {
+                    showScreen(Number(item.dataset.screen));
+                });
+                item.addEventListener('keydown', (event) => {
+                    if (event.key === 'Enter' || event.key === ' ') {
+                        event.preventDefault();
+                        showScreen(Number(item.dataset.screen));
+                    }
+                });
+            });
+        }
+
+        function render() {
+            updateTopBar();
+            updateNav();
+            document.getElementById('viewer').innerHTML = renderScreen(ui.currentScreen);
+        }
+
+        wireNav();
+        render();
     </script>
 </body>
 </html>

@@ -1,0 +1,67 @@
+{
+  "id": "notifications.fr_e17_04",
+  "title": "Hatirlatici planlama ve tip bazli zamanlama",
+  "route": "/epic-17/fr-e17-04",
+  "purpose": "Implements FR-E17-04: Hatirlatici planlama ve tip bazli zamanlama.",
+  "entryPoints": [
+    "profile.settings"
+  ],
+  "inputs": [
+    {
+      "name": "userId",
+      "type": "uuid",
+      "required": true,
+      "source": "session"
+    },
+    {
+      "name": "timezone",
+      "type": "iana_timezone",
+      "required": true,
+      "source": "device"
+    },
+    {
+      "name": "locale",
+      "type": "LanguageCode",
+      "required": true,
+      "source": "profile"
+    }
+  ],
+  "dataDependencies": [
+    "ReminderPlan",
+    "ReminderType",
+    "ReminderSchedule"
+  ],
+  "uiStates": {
+    "loading": {
+      "description": "Skeleton placeholders are shown while loading FR-E17-04 data."
+    },
+    "ready": {
+      "description": "FR-E17-04 flows are fully interactive with primary CTA available when prerequisites are met."
+    },
+    "empty": {
+      "description": "Empty state explains why no data is available and points to next best action."
+    },
+    "error": {
+      "description": "Error state is recoverable with user-safe messaging and a retry action."
+    },
+    "offline": {
+      "description": "Offline state shows last synchronized data and queues write actions for later sync."
+    }
+  },
+  "analytics": {
+    "screenView": "notifications_fr_e17_04_viewed",
+    "events": [
+      "notifications_fr_e17_04_viewed"
+    ]
+  },
+  "acceptanceCriteriaRefs": [
+    "AC-FR-E17-04-01",
+    "AC-FR-E17-04-02",
+    "AC-FR-E17-04-03",
+    "AC-FR-E17-04-04"
+  ],
+  "gates": [
+    "auth",
+    "subscription"
+  ]
+}

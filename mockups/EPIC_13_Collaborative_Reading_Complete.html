@@ -7,532 +7,1240 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #00B4D8; --primary-dark: #0096B8; --primary-light: #E0F7FA; --primary-100: #B2EBF2;
-            --secondary: #2B1B5D; --secondary-light: #EDE7F6;
-            --success: #10B981; --success-light: #D1FAE5; --success-dark: #065F46;
-            --warning: #F59E0B; --error: #EF4444; --purple: #8B5CF6; --purple-light: #EDE9FE;
-            --orange: #F97316; --orange-light: #FFEDD5;
-            --gray-50: #FAFAFA; --gray-100: #F5F5F5; --gray-200: #E5E5E5; --gray-300: #D4D4D4;
-            --gray-400: #A3A3A3; --gray-600: #525252; --gray-700: #404040; --gray-900: #171717;
+            --primary: #0f766e;
+            --primary-dark: #115e59;
+            --primary-light: #ccfbf1;
+            --secondary: #1f2937;
+            --success: #16a34a;
+            --success-light: #dcfce7;
+            --warning: #d97706;
+            --warning-light: #fffbeb;
+            --error: #dc2626;
+            --error-light: #fee2e2;
+            --violet: #7c3aed;
+            --violet-light: #f5f3ff;
+            --gray-50: #fafafa;
+            --gray-100: #f5f5f5;
+            --gray-200: #e5e5e5;
+            --gray-300: #d4d4d4;
+            --gray-400: #a3a3a3;
+            --gray-600: #525252;
+            --gray-700: #404040;
+            --gray-900: #171717;
         }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #f0f0f0, #e0e0e0); overflow: hidden; }
-        .app { display: flex; height: 100vh; }
-        .sidebar { width: 400px; background: white; border-right: 1px solid var(--gray-200); overflow-y: auto; box-shadow: 2px 0 10px rgba(0,0,0,0.05); }
-        .main { flex: 1; display: flex; flex-direction: column; }
-        .topbar { background: white; border-bottom: 1px solid var(--gray-200); padding: 1.75rem 2.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
-        .viewer { flex: 1; overflow-y: auto; padding: 3rem; display: flex; justify-content: center; align-items: flex-start; }
-        .logo { font-family: 'Poppins', sans-serif; font-size: 2rem; font-weight: 800; color: var(--primary); padding: 2.5rem; border-bottom: 1px solid var(--gray-200); background: linear-gradient(135deg, var(--primary-light), white); }
-        .subtitle { font-size: 0.875rem; color: var(--gray-600); font-weight: 500; margin-top: 0.5rem; }
-        .epic-header { padding: 1.5rem; background: linear-gradient(135deg, var(--success-light), #A7F3D0); border-bottom: 2px solid var(--success); }
-        .epic-title { font-family: 'Poppins', sans-serif; font-size: 1.25rem; font-weight: 700; color: var(--gray-900); margin-bottom: 0.5rem; }
-        .epic-meta { font-size: 0.8125rem; color: var(--gray-600); }
-        .nav-map { background: var(--purple-light); border-left: 4px solid var(--purple); padding: 1rem; margin: 1rem 1.75rem; border-radius: 0.5rem; }
-        .nav-map-title { font-weight: 700; color: var(--purple); font-size: 0.8125rem; margin-bottom: 0.75rem; text-transform: uppercase; display: flex; align-items: center; gap: 0.5rem; }
-        .nav-flow { display: flex; flex-direction: column; gap: 0.5rem; }
-        .nav-flow-item { display: flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; color: var(--gray-700); }
-        .nav-flow-box { background: white; padding: 0.375rem 0.625rem; border-radius: 0.375rem; border: 2px solid var(--gray-300); font-weight: 600; white-space: nowrap; font-size: 0.6875rem; }
-        .nav-flow-box.active { background: var(--primary); color: white; border-color: var(--primary); }
-        .nav-flow-arrow { color: var(--gray-400); font-weight: 700; }
-        .nav-flow-label { color: var(--gray-600); font-size: 0.625rem; font-style: italic; }
-        .nav-section { padding: 1.25rem 0; border-bottom: 1px solid var(--gray-100); }
-        .nav-title { padding: 0.75rem 1.75rem; font-size: 0.6875rem; font-weight: 700; color: var(--gray-600); text-transform: uppercase; }
-        .nav-item { padding: 1rem 1.75rem; cursor: pointer; font-size: 0.9375rem; transition: all 0.2s; color: var(--gray-700); display: flex; align-items: center; gap: 0.875rem; border-left: 3px solid transparent; }
-        .nav-item:hover { background: var(--gray-50); }
-        .nav-item.active { background: var(--primary-light); color: var(--primary-dark); font-weight: 600; border-left-color: var(--primary); }
-        .nav-icon { font-size: 1.375rem; }
-        .nav-badge { background: var(--primary); color: white; padding: 0.25rem 0.625rem; border-radius: 9999px; font-size: 0.6875rem; font-weight: 700; margin-left: auto; }
-        .ac-section { background: var(--secondary-light); border-left: 4px solid var(--secondary); padding: 1rem; margin: 0.75rem 1.75rem; border-radius: 0.5rem; }
-        .ac-title { font-weight: 700; color: var(--secondary); font-size: 0.75rem; margin-bottom: 0.5rem; text-transform: uppercase; }
-        .ac-list { list-style: none; }
-        .ac-list li { font-size: 0.75rem; color: var(--gray-700); margin-bottom: 0.375rem; padding-left: 1.25rem; position: relative; line-height: 1.4; }
-        .ac-list li:before { content: "✓"; position: absolute; left: 0; color: var(--success); font-weight: 700; }
-        .screen-title { font-family: 'Poppins', sans-serif; font-size: 2.25rem; font-weight: 700; color: var(--gray-900); }
-        .screen-meta { color: var(--gray-600); font-size: 0.9375rem; margin-top: 0.5rem; display: flex; align-items: center; gap: 1rem; }
-        .meta-badge { background: var(--success-light); color: var(--success-dark); padding: 0.375rem 0.875rem; border-radius: 0.5rem; font-size: 0.8125rem; font-weight: 600; }
-        .iphone { width: 393px; height: 852px; background: #1d1d1f; border-radius: 55px; padding: 12px; box-shadow: 0 60px 120px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.1); position: relative; }
-        .island { position: absolute; top: 20px; left: 50%; transform: translateX(-50%); width: 120px; height: 30px; background: #000; border-radius: 20px; z-index: 11; }
-        .screen { width: 100%; height: 100%; background: white; border-radius: 43px; overflow: hidden; position: relative; }
-        .content { width: 100%; height: 100%; overflow-y: auto; background: var(--gray-50); }
-        .content::-webkit-scrollbar { width: 4px; }
-        .content::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.3); border-radius: 10px; }
-        .status { height: 54px; display: flex; align-items: center; justify-content: space-between; padding: 0 1.5rem; font-size: 0.8125rem; font-weight: 600; background: white; }
-        .tabs { position: absolute; bottom: 0; left: 0; right: 0; height: 84px; background: white; border-top: 1px solid var(--gray-200); display: flex; justify-content: space-around; align-items: flex-start; padding: 0.75rem 0.5rem 1.5rem; z-index: 10; }
-        .tab { display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 0.625rem; font-weight: 600; color: var(--gray-600); min-width: 60px; text-align: center; cursor: pointer; }
-        .tab.active { color: var(--primary); }
-        .tab-icon { font-size: 1.5rem; }
-        .btn { padding: 0.875rem 1.5rem; border-radius: 0.75rem; font-weight: 600; font-size: 1rem; border: none; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.2s; }
-        .btn-primary { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; box-shadow: 0 4px 16px rgba(0,180,216,0.4); }
-        .card { background: white; border-radius: 1rem; padding: 1.25rem; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .fade-in { animation: fadeIn 0.3s ease-out; }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--gray-900);
+            background: radial-gradient(circle at 14% 0%, #d1fae5 0%, #e2e8f0 44%, #f8fafc 100%);
+            overflow: hidden;
+        }
+
+        .app {
+            height: 100vh;
+            display: flex;
+        }
+
+        .sidebar {
+            width: 430px;
+            background: #fff;
+            border-right: 1px solid var(--gray-200);
+            box-shadow: 2px 0 14px rgba(0, 0, 0, 0.06);
+            overflow-y: auto;
+        }
+
+        .main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.85rem;
+            font-weight: 800;
+            color: var(--primary-dark);
+            padding: 1.85rem;
+            border-bottom: 1px solid var(--gray-200);
+            background: linear-gradient(135deg, var(--primary-light), #fff);
+        }
+
+        .subtitle {
+            margin-top: 0.35rem;
+            font-size: 0.82rem;
+            color: var(--gray-600);
+            font-weight: 600;
+        }
+
+        .epic-header {
+            margin: 1rem 1.2rem;
+            border: 1px solid #99f6e4;
+            border-radius: 0.85rem;
+            padding: 1rem;
+            background: linear-gradient(140deg, #f0fdfa, #f8fafc);
+        }
+
+        .epic-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.03rem;
+            font-weight: 700;
+            margin-bottom: 0.35rem;
+        }
+
+        .epic-meta {
+            font-size: 0.76rem;
+            color: var(--gray-700);
+            line-height: 1.45;
+        }
+
+        .flow-map {
+            margin: 0 1.2rem 1rem;
+            border-radius: 0.85rem;
+            border: 1px solid #ddd6fe;
+            background: #f8f9ff;
+            padding: 0.75rem;
+        }
+
+        .flow-title {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: var(--gray-600);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .flow-list {
+            display: grid;
+            gap: 0.35rem;
+        }
+
+        .flow-step {
+            border: 1px solid var(--gray-300);
+            border-radius: 0.5rem;
+            background: #fff;
+            padding: 0.34rem 0.52rem;
+            font-size: 0.69rem;
+            font-weight: 600;
+            color: var(--gray-700);
+        }
+
+        .flow-step.active {
+            border-color: var(--violet);
+            background: var(--violet-light);
+            color: #4c1d95;
+        }
+
+        .gate-note {
+            margin-top: 0.55rem;
+            border-top: 1px solid #ddd6fe;
+            padding-top: 0.5rem;
+            font-size: 0.68rem;
+            color: var(--gray-600);
+            line-height: 1.45;
+        }
+
+        .nav-group {
+            border-bottom: 1px solid var(--gray-100);
+            padding: 0.28rem 0 0.72rem;
+        }
+
+        .nav-group-title {
+            padding: 0.66rem 1.2rem;
+            font-size: 0.68rem;
+            color: var(--gray-600);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            font-weight: 700;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.62rem;
+            padding: 0.7rem 1.2rem;
+            border-left: 3px solid transparent;
+            color: var(--gray-700);
+            cursor: pointer;
+            transition: background 0.18s ease;
+        }
+
+        .nav-item:hover {
+            background: var(--gray-50);
+        }
+
+        .nav-item.active {
+            border-left-color: var(--primary);
+            background: #ecfeff;
+            color: var(--primary-dark);
+        }
+
+        .nav-icon {
+            font-size: 0.72rem;
+            font-weight: 800;
+            width: 28px;
+            text-align: center;
+            border: 1px solid var(--gray-300);
+            border-radius: 0.35rem;
+            padding: 0.1rem 0.2rem;
+            background: #fff;
+        }
+
+        .nav-text {
+            flex: 1;
+            font-size: 0.83rem;
+            font-weight: 600;
+        }
+
+        .nav-badge {
+            font-size: 0.66rem;
+            font-weight: 700;
+            border-radius: 999px;
+            padding: 0.14rem 0.45rem;
+            background: #e2e8f0;
+            color: var(--gray-700);
+        }
+
+        .topbar {
+            background: #fff;
+            border-bottom: 1px solid var(--gray-200);
+            padding: 1.45rem 2rem;
+        }
+
+        .screen-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--secondary);
+        }
+
+        .screen-meta {
+            margin-top: 0.4rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--gray-600);
+            font-size: 0.9rem;
+            flex-wrap: wrap;
+        }
+
+        .fr-badge {
+            border: 1px solid #99f6e4;
+            background: #ecfeff;
+            color: #0f766e;
+            border-radius: 0.52rem;
+            padding: 0.2rem 0.58rem;
+            font-size: 0.78rem;
+            font-weight: 700;
+        }
+
+        .route-badge {
+            border: 1px solid #c4b5fd;
+            background: #f5f3ff;
+            color: #5b21b6;
+            border-radius: 0.52rem;
+            padding: 0.2rem 0.58rem;
+            font-size: 0.74rem;
+            font-weight: 700;
+        }
+
+        .viewer {
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 2rem;
+        }
+
+        .iphone {
+            width: 393px;
+            height: 852px;
+            background: #1d1d1f;
+            border-radius: 54px;
+            padding: 12px;
+            box-shadow: 0 44px 94px rgba(0, 0, 0, 0.45);
+            position: relative;
+        }
+
+        .island {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 30px;
+            border-radius: 20px;
+            background: #000;
+            z-index: 12;
+        }
+
+        .screen {
+            width: 100%;
+            height: 100%;
+            background: #fff;
+            border-radius: 42px;
+            overflow: hidden;
+        }
+
+        .content {
+            width: 100%;
+            height: 100%;
+            overflow-y: auto;
+            background: var(--gray-50);
+            padding-bottom: 1.6rem;
+        }
+
+        .content::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .content::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+        }
+
+        .status {
+            height: 54px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 1.3rem;
+            font-size: 0.8rem;
+            font-weight: 700;
+            background: #fff;
+        }
+
+        .mobile-header {
+            position: sticky;
+            top: 0;
+            z-index: 3;
+            background: rgba(255, 255, 255, 0.94);
+            backdrop-filter: blur(6px);
+            border-bottom: 1px solid var(--gray-200);
+            padding: 0.75rem 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .mobile-title {
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: var(--secondary);
+        }
+
+        .mobile-body {
+            padding: 0.9rem;
+            display: grid;
+            gap: 0.75rem;
+        }
+
+        .icon-btn {
+            border: 1px solid var(--gray-300);
+            background: #fff;
+            border-radius: 0.5rem;
+            width: 34px;
+            height: 34px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--gray-700);
+        }
+
+        .card {
+            background: #fff;
+            border: 1px solid var(--gray-200);
+            border-radius: 0.8rem;
+            padding: 0.75rem;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+        }
+
+        .card-title {
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 0.45rem;
+        }
+
+        .muted {
+            color: var(--gray-600);
+            font-size: 0.73rem;
+            line-height: 1.45;
+        }
+
+        .chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.38rem;
+        }
+
+        .chip {
+            border-radius: 999px;
+            border: 1px solid var(--gray-300);
+            background: #fff;
+            color: var(--gray-700);
+            padding: 0.2rem 0.48rem;
+            font-size: 0.66rem;
+            font-weight: 700;
+        }
+
+        .chip.success {
+            border-color: #86efac;
+            background: var(--success-light);
+            color: #14532d;
+        }
+
+        .chip.warn {
+            border-color: #fcd34d;
+            background: var(--warning-light);
+            color: #92400e;
+        }
+
+        .chip.error {
+            border-color: #fca5a5;
+            background: var(--error-light);
+            color: #7f1d1d;
+        }
+
+        .btn {
+            border-radius: 0.55rem;
+            border: 1px solid transparent;
+            padding: 0.36rem 0.62rem;
+            font-size: 0.68rem;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: #fff;
+            border-color: var(--primary);
+        }
+
+        .btn-outline {
+            border-color: var(--gray-300);
+            color: var(--gray-700);
+            background: #fff;
+        }
+
+        .field {
+            width: 100%;
+            border: 1px solid var(--gray-300);
+            border-radius: 0.55rem;
+            padding: 0.5rem 0.58rem;
+            font-size: 0.74rem;
+            background: #fff;
+            font-family: inherit;
+        }
+
+        textarea.field {
+            resize: vertical;
+        }
+
+        .list {
+            display: grid;
+            gap: 0.52rem;
+        }
+
+        .list-item {
+            border: 1px solid var(--gray-200);
+            background: #fff;
+            border-radius: 0.68rem;
+            padding: 0.56rem;
+        }
+
+        .row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
+        }
+
+        .item-title {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--secondary);
+        }
+
+        .item-meta {
+            margin-top: 0.22rem;
+            font-size: 0.68rem;
+            color: var(--gray-600);
+            line-height: 1.4;
+        }
+
+        .progress {
+            width: 100%;
+            height: 7px;
+            border-radius: 999px;
+            background: var(--gray-200);
+            overflow: hidden;
+            margin-top: 0.34rem;
+        }
+
+        .progress > span {
+            display: block;
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), #14b8a6);
+        }
+
+        .state-switcher {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.35rem;
+            margin-bottom: 0.35rem;
+        }
+
+        .state-btn {
+            border: 1px solid var(--gray-300);
+            border-radius: 999px;
+            background: #fff;
+            color: var(--gray-700);
+            font-size: 0.63rem;
+            font-weight: 700;
+            padding: 0.16rem 0.45rem;
+            cursor: pointer;
+        }
+
+        .state-btn.active {
+            border-color: var(--violet);
+            background: var(--violet-light);
+            color: #5b21b6;
+        }
+
+        .state-panel {
+            border-radius: 0.68rem;
+            border: 1px solid var(--gray-300);
+            background: #fff;
+            padding: 0.62rem;
+            margin-bottom: 0.58rem;
+            display: grid;
+            gap: 0.3rem;
+            font-size: 0.72rem;
+            color: var(--gray-700);
+        }
+
+        .state-panel.loading {
+            border-color: #93c5fd;
+            background: #eff6ff;
+        }
+
+        .state-panel.empty {
+            border-color: #fde68a;
+            background: #fffbeb;
+        }
+
+        .state-panel.error {
+            border-color: #fca5a5;
+            background: #fef2f2;
+        }
+
+        .state-panel.offline {
+            border-color: #c4b5fd;
+            background: #f5f3ff;
+        }
+
+        .toast {
+            position: fixed;
+            right: 1.2rem;
+            bottom: 1.2rem;
+            padding: 0.65rem 0.85rem;
+            border-radius: 0.62rem;
+            color: #fff;
+            font-weight: 700;
+            font-size: 0.74rem;
+            background: #0f766e;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            transform: translateY(8px);
+            pointer-events: none;
+            transition: all 0.22s ease;
+            z-index: 50;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .toast.success {
+            background: #065f46;
+        }
+
+        .toast.error {
+            background: #7f1d1d;
+        }
+
+        .nav-item:focus-visible,
+        button:focus-visible,
+        textarea:focus-visible,
+        input:focus-visible {
+            outline: 3px solid #5eead4;
+            outline-offset: 2px;
+        }
+
+        @media (max-width: 1200px) {
+            body {
+                overflow: auto;
+            }
+
+            .app {
+                flex-direction: column;
+                height: auto;
+                min-height: 100vh;
+            }
+
+            .sidebar {
+                width: 100%;
+                max-height: 52vh;
+            }
+
+            .viewer {
+                padding: 1.2rem;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="app">
-        <div class="sidebar">
-            <div class="logo">PST Coaching<div class="subtitle">Birlikte Okuma</div></div>
+        <aside class="sidebar">
+            <div class="logo">
+                PST Coaching
+                <div class="subtitle">EPIC 13 - Birlikte Okuma</div>
+            </div>
+
             <div class="epic-header">
-                <div class="epic-title">EPIC 13: Birlikte Okuma</div>
-                <div class="epic-meta">2 User Stories • 4 Screens • 16 ACs</div>
+                <div class="epic-title">EPIC-13 Sync Pack</div>
+                <div class="epic-meta">4 FR Screen | 16 AC | Requirements + UX artifacts + mockup sync</div>
             </div>
-            <div class="nav-map">
-                <div class="nav-map-title"><span>🗺️</span><span>Navigation Map</span></div>
-                <div class="nav-flow">
-                    <div class="nav-flow-item"><div class="nav-flow-box active" id="nav-1">Reading Groups</div></div>
-                    <div class="nav-flow-item"><span class="nav-flow-arrow">├→</span><span class="nav-flow-label">tap + Grup Oluştur</span></div>
-                    <div class="nav-flow-item" style="margin-left: 1rem;"><div class="nav-flow-box" id="nav-2">Create Group</div></div>
-                    <div class="nav-flow-item"><span class="nav-flow-arrow">├→</span><span class="nav-flow-label">tap group card</span></div>
-                    <div class="nav-flow-item" style="margin-left: 1rem;"><div class="nav-flow-box" id="nav-3">Group Detail</div></div>
-                    <div class="nav-flow-item"><span class="nav-flow-arrow">└→</span><span class="nav-flow-label">tap İlerleme tab</span></div>
-                    <div class="nav-flow-item" style="margin-left: 1rem;"><div class="nav-flow-box" id="nav-4">Group Progress</div></div>
+
+            <div class="flow-map">
+                <div class="flow-title">Birlikte okuma akis haritasi</div>
+                <div class="flow-list">
+                    <div class="flow-step active" id="flow-1">FR-E13-01 Grup listesi ve durum ozeti</div>
+                    <div class="flow-step" id="flow-2">FR-E13-02 Grup olusturma ve uye daveti</div>
+                    <div class="flow-step" id="flow-3">FR-E13-03 Grup detayi ve tartisma</div>
+                    <div class="flow-step" id="flow-4">FR-E13-04 Ilerleme ve karsilastirma</div>
                 </div>
-                <div style="margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid var(--purple); font-size: 0.625rem; color: var(--gray-600); line-height: 1.4;">
-                    <strong>Entry:</strong> Topluluk → Birlikte Okuma<br>
-                    <strong>Feature:</strong> Collaborative learning
+                <div class="gate-note">
+                    Gates: auth + subscription | Tum ekranlar loading, ready, empty, error, offline durumlarini destekler.
                 </div>
             </div>
-            <div class="nav-section">
-                <div class="nav-title">US-13.1: Create & Manage</div>
-                <div class="nav-item active" onclick="showScreen(1)">
-                    <span class="nav-icon">👥</span><span>Reading Groups</span><span class="nav-badge">4 ACs</span>
-                </div>
-                <div class="ac-section">
-                    <div class="ac-title">✓ Acceptance Criteria</div>
-                    <ul class="ac-list">
-                        <li>Active groups displayed</li>
-                        <li>Create new group button visible</li>
-                        <li>Group member count shown</li>
-                        <li>Current reading material displayed</li>
-                    </ul>
-                </div>
-                <div class="nav-item" onclick="showScreen(2)">
-                    <span class="nav-icon">➕</span><span>Create Group</span><span class="nav-badge">4 ACs</span>
-                </div>
-                <div class="ac-section">
-                    <div class="ac-title">✓ Acceptance Criteria</div>
-                    <ul class="ac-list">
-                        <li>Group name input required</li>
-                        <li>Material selection (Journey/Workshop/eBook)</li>
-                        <li>Privacy setting (Public/Private)</li>
-                        <li>Member invite option</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="nav-section">
-                <div class="nav-title">US-13.2: Track Progress</div>
-                <div class="nav-item" onclick="showScreen(3)">
-                    <span class="nav-icon">📚</span><span>Group Detail</span><span class="nav-badge">4 ACs</span>
-                </div>
-                <div class="ac-section">
-                    <div class="ac-title">✓ Acceptance Criteria</div>
-                    <ul class="ac-list">
-                        <li>Group info and material shown</li>
-                        <li>Member list visible</li>
-                        <li>Group chat/discussion available</li>
-                        <li>Reading schedule displayed</li>
-                    </ul>
-                </div>
-                <div class="nav-item" onclick="showScreen(4)">
-                    <span class="nav-icon">📊</span><span>Group Progress</span><span class="nav-badge">4 ACs</span>
-                </div>
-                <div class="ac-section">
-                    <div class="ac-title">✓ Acceptance Criteria</div>
-                    <ul class="ac-list">
-                        <li>Each member's progress visible</li>
-                        <li>Group average progress shown</li>
-                        <li>Individual completion % displayed</li>
-                        <li>Visual progress comparison</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div class="main">
+
+            <section class="nav-group">
+                <div class="nav-group-title">Grup kurulum ekranlari</div>
+                <div class="nav-item active" data-screen="1" role="button" tabindex="0"><span class="nav-icon">G1</span><span class="nav-text">Grup Listesi ve Ozet</span><span class="nav-badge">4 AC</span></div>
+                <div class="nav-item" data-screen="2" role="button" tabindex="0"><span class="nav-icon">G2</span><span class="nav-text">Grup Olusturma ve Davet</span><span class="nav-badge">4 AC</span></div>
+            </section>
+
+            <section class="nav-group">
+                <div class="nav-group-title">Isbirligi ve takip</div>
+                <div class="nav-item" data-screen="3" role="button" tabindex="0"><span class="nav-icon">G3</span><span class="nav-text">Grup Detayi ve Tartisma</span><span class="nav-badge">4 AC</span></div>
+                <div class="nav-item" data-screen="4" role="button" tabindex="0"><span class="nav-icon">G4</span><span class="nav-text">Ilerleme Karsilastirma</span><span class="nav-badge">4 AC</span></div>
+            </section>
+        </aside>
+
+        <main class="main">
             <div class="topbar">
-                <h1 class="screen-title" id="screenTitle">Reading Groups</h1>
+                <h1 class="screen-title" id="screenTitle">Okuma gruplari listesi ve durum ozeti</h1>
                 <div class="screen-meta">
-                    <span class="meta-badge" id="screenUS">US-13.1</span>
-                    <span id="screenMeta">Browse groups • 4/4 ACs • Entry: Topluluk → Birlikte Okuma</span>
+                    <span class="fr-badge" id="screenFr">FR-E13-01</span>
+                    <span class="route-badge" id="screenRoute">/epic-13/fr-e13-01</span>
+                    <span id="screenMeta">Uyelik listesi, grup kart ozeti ve filtreleme</span>
                 </div>
             </div>
             <div class="viewer" id="viewer"></div>
-        </div>
+        </main>
     </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+
     <script>
         const screenData = {
-            1: { title: 'Reading Groups', us: 'US-13.1', meta: 'Browse groups • 4/4 ACs • Entry: Topluluk → Birlikte Okuma' },
-            2: { title: 'Create Group', us: 'US-13.1', meta: 'Setup group • 4/4 ACs • From: Reading Groups' },
-            3: { title: 'Group Detail', us: 'US-13.2', meta: 'Group info • 4/4 ACs • From: Reading Groups' },
-            4: { title: 'Group Progress', us: 'US-13.2', meta: 'Track members • 4/4 ACs • From: Group Detail' }
+            1: {
+                title: 'Okuma gruplari listesi ve durum ozeti',
+                fr: 'FR-E13-01',
+                route: '/epic-13/fr-e13-01',
+                event: 'collab_fr_e13_01_viewed',
+                meta: 'Uyelik listesi, grup kart ozeti ve filtreleme'
+            },
+            2: {
+                title: 'Grup olusturma ve uye daveti',
+                fr: 'FR-E13-02',
+                route: '/epic-13/fr-e13-02',
+                event: 'collab_fr_e13_02_viewed',
+                meta: 'Zorunlu grup adi, materyal secimi, gizlilik ve davet akisi'
+            },
+            3: {
+                title: 'Grup detayi ve tartisma alani',
+                fr: 'FR-E13-03',
+                route: '/epic-13/fr-e13-03',
+                event: 'collab_fr_e13_03_viewed',
+                meta: 'Materyal ozeti, uye listesi, tartisma gecmisi ve takvim'
+            },
+            4: {
+                title: 'Grup ilerleme ve karsilastirma',
+                fr: 'FR-E13-04',
+                route: '/epic-13/fr-e13-04',
+                event: 'collab_fr_e13_04_viewed',
+                meta: 'Bireysel yuzdeler, grup ortalama trendi ve karsilastirma'
+            }
         };
-        function showScreen(num) {
-            document.getElementById('screenTitle').textContent = screenData[num].title;
-            document.getElementById('screenUS').textContent = screenData[num].us;
-            document.getElementById('screenMeta').textContent = screenData[num].meta;
-            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
-            const navMap = {1: 0, 2: 1, 3: 2, 4: 3};
-            document.querySelectorAll('.nav-item')[navMap[num]].classList.add('active');
-            document.querySelectorAll('[id^="nav-"]').forEach(box => box.classList.remove('active'));
-            const navBox = document.getElementById('nav-' + num);
-            if (navBox) navBox.classList.add('active');
-            document.getElementById('viewer').innerHTML = getScreenHTML(num);
+
+        const ui = {
+            currentScreen: 1,
+            screenStates: {
+                1: 'ready',
+                2: 'ready',
+                3: 'ready',
+                4: 'ready'
+            },
+            lastAnalyticsEvent: 'collab_fr_e13_01_viewed',
+            privacyFilter: 'all',
+            selectedGroupId: 101,
+            groups: [
+                {
+                    id: 101,
+                    name: 'Sukur Cemberi',
+                    members: 8,
+                    material: 'Sukur Sifresi - Bolum 3',
+                    materialType: 'eBook',
+                    progress: 62,
+                    privacy: 'private',
+                    lastActivity: '2 saat once',
+                    nextSession: 'Cumartesi 20:30'
+                },
+                {
+                    id: 102,
+                    name: 'Sidk Yolculugu Takimi',
+                    members: 5,
+                    material: 'Sidk Yolculugu - Gun 14',
+                    materialType: 'Journey',
+                    progress: 67,
+                    privacy: 'public',
+                    lastActivity: '1 gun once',
+                    nextSession: 'Pazar 21:00'
+                },
+                {
+                    id: 103,
+                    name: 'Atolye Eslik Grubu',
+                    members: 12,
+                    material: 'Mutlak Muhtaclik Atolyesi - Asama 4',
+                    materialType: 'Workshop',
+                    progress: 45,
+                    privacy: 'private',
+                    lastActivity: '3 saat once',
+                    nextSession: 'Pazartesi 20:00'
+                }
+            ],
+            groupMembers: {
+                101: [
+                    { name: 'Aylin', role: 'owner', completion: 74, delta: '+8' },
+                    { name: 'Mert', role: 'member', completion: 60, delta: '+5' },
+                    { name: 'Esra', role: 'member', completion: 58, delta: '+3' },
+                    { name: 'Can', role: 'member', completion: 56, delta: '+2' }
+                ],
+                102: [
+                    { name: 'Deniz', role: 'owner', completion: 79, delta: '+6' },
+                    { name: 'Seda', role: 'member', completion: 71, delta: '+9' },
+                    { name: 'Baris', role: 'member', completion: 65, delta: '+4' }
+                ],
+                103: [
+                    { name: 'Derya', role: 'owner', completion: 58, delta: '+2' },
+                    { name: 'Irem', role: 'member', completion: 47, delta: '+1' },
+                    { name: 'Efe', role: 'member', completion: 43, delta: '+1' }
+                ]
+            },
+            discussions: {
+                101: [
+                    { time: '20:15', author: 'Aylin', text: 'Bugun 3. bolumdeki soru uzerine notlarimi paylastim.' },
+                    { time: '20:28', author: 'Mert', text: 'Yarin teslimden once kisa bir ozet gecelim mi?' },
+                    { time: '20:35', author: 'Esra', text: 'Takvimdeki mini oturumu 20:30da sabitledim.' }
+                ],
+                102: [
+                    { time: '21:05', author: 'Deniz', text: 'Gun 14 yorumlarini pazar toplantisinda toplayalim.' },
+                    { time: '21:12', author: 'Seda', text: 'Tamamlama yuzdem bu hafta ciddi artti.' }
+                ],
+                103: [
+                    { time: '19:52', author: 'Derya', text: 'Asama 4 icin kaynak notlari yukledim.' },
+                    { time: '20:06', author: 'Irem', text: 'Bir sonraki oturumda soru-cevap bolumu ekleyelim.' }
+                ]
+            },
+            schedules: {
+                101: [
+                    { label: 'Bolum 3 ortak okuma', target: 'Cumartesi 20:30' },
+                    { label: 'Yorum teslim takip', target: 'Pazar 18:00' }
+                ],
+                102: [
+                    { label: 'Gun 14 grup toplantisi', target: 'Pazar 21:00' },
+                    { label: 'Haftalik degerlendirme', target: 'Pazartesi 20:00' }
+                ],
+                103: [
+                    { label: 'Asama 4 tekrar oturumu', target: 'Pazartesi 20:00' },
+                    { label: 'Ozet teslim kontrolu', target: 'Sali 19:30' }
+                ]
+            },
+            createDraft: {
+                name: '',
+                materialType: 'journey',
+                materialName: '',
+                privacy: 'private',
+                invites: '',
+                created: false
+            }
+        };
+
+        let toastTimer = null;
+
+        function showToast(message, tone) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = 'toast show' + (tone ? ' ' + tone : '');
+            if (toastTimer) {
+                clearTimeout(toastTimer);
+            }
+            toastTimer = setTimeout(() => {
+                toast.className = 'toast';
+            }, 2200);
         }
-        function getScreenHTML(num) {
-            const screens = {
-                1: `<div class="iphone fade-in"><div class="island"></div><div class="screen"><div class="content">
-                    <div class="status"><div>9:41</div><div>📶 📡 🔋</div></div>
-                    <div style="padding: 1.5rem 1.5rem 6rem;">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-                            <h1 style="font-family: Poppins, sans-serif; font-size: 2rem; font-weight: 800; color: var(--secondary);">Birlikte Okuma</h1>
-                        </div>
-                        <button class="btn btn-primary" style="width: 100%; padding: 1rem; margin-bottom: 1.5rem; font-size: 1rem;" onclick="parent.showScreen(2)">+ Grup Oluştur</button>
-                        <h3 style="font-weight: 700; color: var(--gray-900); margin-bottom: 1rem; font-size: 1rem;">Aktif Gruplarım (3)</h3>
-                        <div style="display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 2rem;">
-                            <div class="card" style="cursor: pointer; border-left: 4px solid var(--success);" onclick="parent.showScreen(3)">
-                                <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
-                                    <div style="width: 56px; height: 56px; background: linear-gradient(135deg, var(--success-light), #A7F3D0); border-radius: 1rem; display: flex; align-items: center; justify-content: center; font-size: 1.75rem; flex-shrink: 0;">📖</div>
-                                    <div style="flex: 1;">
-                                        <h3 style="font-weight: 700; font-size: 1rem; color: var(--gray-900); margin-bottom: 0.25rem;">Şükür Okuma Grubu</h3>
-                                        <p style="font-size: 0.8125rem; color: var(--gray-600);">👥 8 üye • Aktif</p>
-                                    </div>
-                                    <div style="color: var(--gray-400);">›</div>
-                                </div>
-                                <div style="background: var(--gray-50); padding: 0.875rem; border-radius: 0.5rem; margin-bottom: 0.75rem;">
-                                    <div style="font-size: 0.8125rem; color: var(--gray-700); margin-bottom: 0.25rem;">
-                                        <strong>Okuma:</strong> Şükür Şifresi (e-Kitap)
-                                    </div>
-                                    <div style="font-size: 0.75rem; color: var(--gray-600);">Bölüm 3: Şükrün Kaynağı</div>
-                                </div>
-                                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 0.875rem;">
-                                    <span style="color: var(--gray-700);">Grup İlerlemesi</span>
-                                    <span style="color: var(--success); font-weight: 700;">62%</span>
-                                </div>
-                                <div style="height: 6px; background: var(--gray-200); border-radius: 9999px; overflow: hidden;">
-                                    <div style="width: 62%; height: 100%; background: var(--success);"></div>
-                                </div>
-                            </div>
-                            <div class="card" style="cursor: pointer; border-left: 4px solid var(--primary);">
-                                <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
-                                    <div style="width: 56px; height: 56px; background: linear-gradient(135deg, var(--primary-light), var(--primary-100)); border-radius: 1rem; display: flex; align-items: center; justify-content: center; font-size: 1.75rem; flex-shrink: 0;">🎯</div>
-                                    <div style="flex: 1;">
-                                        <h3 style="font-weight: 700; font-size: 1rem; color: var(--gray-900); margin-bottom: 0.25rem;">Sıdk Yolculuğu Birlikte</h3>
-                                        <p style="font-size: 0.8125rem; color: var(--gray-600);">👥 5 üye • Aktif</p>
-                                    </div>
-                                    <div style="color: var(--gray-400);">›</div>
-                                </div>
-                                <div style="background: var(--gray-50); padding: 0.875rem; border-radius: 0.5rem; margin-bottom: 0.75rem;">
-                                    <div style="font-size: 0.8125rem; color: var(--gray-700); margin-bottom: 0.25rem;">
-                                        <strong>Okuma:</strong> Sıdk Yolculuğu (21 Gün)
-                                    </div>
-                                    <div style="font-size: 0.75rem; color: var(--gray-600);">Gün 14: İçsel Doğruluk</div>
-                                </div>
-                                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 0.875rem;">
-                                    <span style="color: var(--gray-700);">Grup İlerlemesi</span>
-                                    <span style="color: var(--primary); font-weight: 700;">67%</span>
-                                </div>
-                                <div style="height: 6px; background: var(--gray-200); border-radius: 9999px; overflow: hidden;">
-                                    <div style="width: 67%; height: 100%; background: var(--primary);"></div>
-                                </div>
-                            </div>
-                            <div class="card" style="cursor: pointer; border-left: 4px solid var(--orange);">
-                                <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
-                                    <div style="width: 56px; height: 56px; background: linear-gradient(135deg, var(--orange-light), #FED7AA); border-radius: 1rem; display: flex; align-items: center; justify-content: center; font-size: 1.75rem; flex-shrink: 0;">🎨</div>
-                                    <div style="flex: 1;">
-                                        <h3 style="font-weight: 700; font-size: 1rem; color: var(--gray-900); margin-bottom: 0.25rem;">Özfarkındalık Atölyesi</h3>
-                                        <p style="font-size: 0.8125rem; color: var(--gray-600);">👥 12 üye • Aktif</p>
-                                    </div>
-                                    <div style="color: var(--gray-400);">›</div>
-                                </div>
-                                <div style="background: var(--gray-50); padding: 0.875rem; border-radius: 0.5rem; margin-bottom: 0.75rem;">
-                                    <div style="font-size: 0.8125rem; color: var(--gray-700); margin-bottom: 0.25rem;">
-                                        <strong>Okuma:</strong> Farkındalık Atölyesi
-                                    </div>
-                                    <div style="font-size: 0.75rem; color: var(--gray-600);">Paket 2: Duyguları Tanımak</div>
-                                </div>
-                                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 0.875rem;">
-                                    <span style="color: var(--gray-700);">Grup İlerlemesi</span>
-                                    <span style="color: var(--orange); font-weight: 700;">45%</span>
-                                </div>
-                                <div style="height: 6px; background: var(--gray-200); border-radius: 9999px; overflow: hidden;">
-                                    <div style="width: 45%; height: 100%; background: var(--orange);"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <h3 style="font-weight: 700; color: var(--gray-900); margin-bottom: 1rem; font-size: 1rem;">Keşfet (2)</h3>
-                        <div style="display: flex; flex-direction: column; gap: 0.75rem;">
-                            <div class="card" style="cursor: pointer; border-left: 4px solid var(--gray-400);">
-                                <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.75rem;">
-                                    <div style="width: 56px; height: 56px; background: linear-gradient(135deg, var(--gray-100), var(--gray-200)); border-radius: 1rem; display: flex; align-items: center; justify-content: center; font-size: 1.75rem; flex-shrink: 0;">📖</div>
-                                    <div style="flex: 1;">
-                                        <h3 style="font-weight: 700; font-size: 1rem; color: var(--gray-900); margin-bottom: 0.25rem;">Kalbimin Beyazı Okuyoruz</h3>
-                                        <p style="font-size: 0.8125rem; color: var(--gray-600);">👥 6 üye • Açık Grup</p>
-                                    </div>
-                                </div>
-                                <button style="background: white; border: 2px solid var(--primary); color: var(--primary); border-radius: 0.5rem; padding: 0.5rem 1rem; font-weight: 600; font-size: 0.875rem; cursor: pointer; width: 100%;">Katıl</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tabs">
-                        <div class="tab"><div class="tab-icon">🏠</div><div>Ana Sayfa</div></div>
-                        <div class="tab"><div class="tab-icon">🔍</div><div>Keşfet</div></div>
-                        <div class="tab active"><div class="tab-icon">👥</div><div>Topluluk</div></div>
-                        <div class="tab"><div class="tab-icon">📈</div><div>Gelişim</div></div>
-                        <div class="tab"><div class="tab-icon">👤</div><div>Profil</div></div>
-                    </div>
-                </div></div></div>`,
-                2: `<div class="iphone fade-in"><div class="island"></div><div class="screen"><div class="content">
-                    <div class="status"><div>9:41</div><div>📶 📡 🔋</div></div>
-                    <div style="background: white; padding: 1rem 1.5rem; border-bottom: 1px solid var(--gray-200);">
-                        <div style="display: flex; align-items: center; gap: 1rem;">
-                            <button style="background: none; border: none; font-size: 1.5rem; cursor: pointer;" onclick="parent.showScreen(1)">←</button>
-                            <h2 style="font-family: Poppins, sans-serif; font-size: 1.25rem; font-weight: 800; color: var(--secondary); flex: 1;">Yeni Grup Oluştur</h2>
-                        </div>
-                    </div>
-                    <div style="padding: 2rem 1.5rem;">
-                        <div class="card" style="margin-bottom: 1.5rem;">
-                            <label style="display: block; font-weight: 700; color: var(--gray-900); margin-bottom: 0.75rem; font-size: 0.9375rem;">Grup Adı *</label>
-                            <input type="text" placeholder="Örn: Şükür Okuma Grubu" style="width: 100%; padding: 0.875rem; border: 2px solid var(--gray-200); border-radius: 0.75rem; font-family: Inter, sans-serif; font-size: 0.9375rem;">
-                        </div>
-                        <div class="card" style="margin-bottom: 1.5rem;">
-                            <label style="display: block; font-weight: 700; color: var(--gray-900); margin-bottom: 0.75rem; font-size: 0.9375rem;">Okuma Materyali *</label>
-                            <div style="display: flex; flex-direction: column; gap: 0.75rem;">
-                                <label style="display: flex; align-items: center; gap: 1rem; padding: 1rem; background: var(--primary-light); border: 2px solid var(--primary); border-radius: 0.75rem; cursor: pointer;">
-                                    <input type="radio" name="material" checked style="width: 20px; height: 20px; accent-color: var(--primary);">
-                                    <div style="flex: 1;">
-                                        <div style="font-weight: 600; color: var(--gray-900); margin-bottom: 0.25rem;">📖 e-Kitap</div>
-                                        <div style="font-size: 0.8125rem; color: var(--gray-700);">Şükür Şifresi, Kalbimin Beyazı...</div>
-                                    </div>
-                                </label>
-                                <label style="display: flex; align-items: center; gap: 1rem; padding: 1rem; background: var(--gray-50); border: 2px solid var(--gray-300); border-radius: 0.75rem; cursor: pointer;">
-                                    <input type="radio" name="material" style="width: 20px; height: 20px; accent-color: var(--primary);">
-                                    <div style="flex: 1;">
-                                        <div style="font-weight: 600; color: var(--gray-900); margin-bottom: 0.25rem;">🎯 Yolculuk</div>
-                                        <div style="font-size: 0.8125rem; color: var(--gray-700);">Sıdk, Şükür, Duygusal Zeka...</div>
-                                    </div>
-                                </label>
-                                <label style="display: flex; align-items: center; gap: 1rem; padding: 1rem; background: var(--gray-50); border: 2px solid var(--gray-300); border-radius: 0.75rem; cursor: pointer;">
-                                    <input type="radio" name="material" style="width: 20px; height: 20px; accent-color: var(--primary);">
-                                    <div style="flex: 1;">
-                                        <div style="font-weight: 600; color: var(--gray-900); margin-bottom: 0.25rem;">🎨 Atölye</div>
-                                        <div style="font-size: 0.8125rem; color: var(--gray-700);">Farkındalık, Şükür, Vicdan...</div>
-                                    </div>
-                                </label>
-                            </div>
-                        </div>
-                        <div class="card" style="margin-bottom: 1.5rem;">
-                            <label style="display: block; font-weight: 700; color: var(--gray-900); margin-bottom: 0.75rem; font-size: 0.9375rem;">Gizlilik Ayarı</label>
-                            <div style="display: flex; flex-direction: column; gap: 0.75rem;">
-                                <label style="display: flex; align-items: center; gap: 1rem; padding: 1rem; background: var(--success-light); border: 2px solid var(--success); border-radius: 0.75rem; cursor: pointer;">
-                                    <input type="radio" name="privacy" checked style="width: 20px; height: 20px; accent-color: var(--success);">
-                                    <div style="flex: 1;">
-                                        <div style="font-weight: 600; color: var(--gray-900); margin-bottom: 0.25rem;">🌍 Açık Grup</div>
-                                        <div style="font-size: 0.8125rem; color: var(--gray-700);">Herkes katılabilir ve içeriği görebilir</div>
-                                    </div>
-                                </label>
-                                <label style="display: flex; align-items: center; gap: 1rem; padding: 1rem; background: var(--gray-50); border: 2px solid var(--gray-300); border-radius: 0.75rem; cursor: pointer;">
-                                    <input type="radio" name="privacy" style="width: 20px; height: 20px; accent-color: var(--success);">
-                                    <div style="flex: 1;">
-                                        <div style="font-weight: 600; color: var(--gray-900); margin-bottom: 0.25rem;">🔒 Özel Grup</div>
-                                        <div style="font-size: 0.8125rem; color: var(--gray-700);">Sadece davet edilenler katılabilir</div>
-                                    </div>
-                                </label>
-                            </div>
-                        </div>
-                        <div class="card" style="margin-bottom: 1.5rem;">
-                            <label style="display: block; font-weight: 700; color: var(--gray-900); margin-bottom: 0.75rem; font-size: 0.9375rem;">Üye Davet Et (İsteğe Bağlı)</label>
-                            <input type="text" placeholder="🔍 Kullanıcı ara..." style="width: 100%; padding: 0.875rem; border: 2px solid var(--gray-200); border-radius: 0.75rem; font-family: Inter, sans-serif; font-size: 0.9375rem; margin-bottom: 0.75rem;">
-                            <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
-                                <span style="background: var(--primary-light); color: var(--primary-dark); padding: 0.5rem 0.875rem; border-radius: 9999px; font-size: 0.8125rem; font-weight: 600; display: flex; align-items: center; gap: 0.5rem;">Mehmet K. <button style="background: none; border: none; color: var(--primary-dark); cursor: pointer; font-size: 1rem;">×</button></span>
-                                <span style="background: var(--primary-light); color: var(--primary-dark); padding: 0.5rem 0.875rem; border-radius: 9999px; font-size: 0.8125rem; font-weight: 600; display: flex; align-items: center; gap: 0.5rem;">Ayşe Y. <button style="background: none; border: none; color: var(--primary-dark); cursor: pointer; font-size: 1rem;">×</button></span>
-                            </div>
-                        </div>
-                        <div class="card" style="background: var(--secondary-light); margin-bottom: 1.5rem;">
-                            <p style="font-size: 0.8125rem; color: var(--gray-700); line-height: 1.5;">
-                                <strong style="color: var(--secondary);">💡 İpucu:</strong> Grup oluşturduktan sonra okuma programı belirleyebilirsiniz.
-                            </p>
-                        </div>
-                        <button class="btn btn-primary" style="width: 100%; padding: 1rem; font-size: 1.125rem;">Grubu Oluştur</button>
-                    </div>
-                </div></div></div>`,
-                3: `<div class="iphone fade-in"><div class="island"></div><div class="screen"><div class="content">
-                    <div class="status"><div>9:41</div><div>📶 📡 🔋</div></div>
-                    <div style="position: relative; height: 180px; background: linear-gradient(135deg, var(--success-light), #A7F3D0); display: flex; align-items: center; justify-content: center; font-size: 5rem;">📖
-                        <button style="position: absolute; top: 1rem; left: 1rem; background: rgba(0,0,0,0.3); color: white; border: none; width: 40px; height: 40px; border-radius: 9999px; font-size: 1.25rem; cursor: pointer; backdrop-filter: blur(10px);" onclick="parent.showScreen(1)">←</button>
-                        <button style="position: absolute; top: 1rem; right: 1rem; background: rgba(0,0,0,0.3); color: white; border: none; width: 40px; height: 40px; border-radius: 9999px; font-size: 1.25rem; cursor: pointer; backdrop-filter: blur(10px);">⋮</button>
-                    </div>
-                    <div style="padding: 1.5rem;">
-                        <h1 style="font-family: Poppins, sans-serif; font-size: 1.75rem; font-weight: 800; color: var(--secondary); margin-bottom: 0.75rem; line-height: 1.2;">Şükür Okuma Grubu</h1>
-                        <div style="display: flex; gap: 0.75rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
-                            <span style="background: var(--success-light); color: var(--success-dark); padding: 0.375rem 0.75rem; border-radius: 0.5rem; font-size: 0.8125rem; font-weight: 600;">👥 8 üye</span>
-                            <span style="background: var(--success-light); color: var(--success-dark); padding: 0.375rem 0.75rem; border-radius: 0.5rem; font-size: 0.8125rem; font-weight: 600;">🌍 Açık Grup</span>
-                        </div>
-                        <div class="card" style="margin-bottom: 1.5rem; background: var(--primary-light); border-left: 4px solid var(--primary);">
-                            <h3 style="font-weight: 700; color: var(--primary-dark); margin-bottom: 0.75rem; font-size: 1rem;">📖 Okuma Materyali</h3>
-                            <div style="font-weight: 600; font-size: 0.9375rem; color: var(--gray-900); margin-bottom: 0.25rem;">Şükür Şifresi (e-Kitap)</div>
-                            <div style="font-size: 0.8125rem; color: var(--gray-700);">Bölüm 3: Şükrün Kaynağı • Sayfa 42-68</div>
-                        </div>
-                        <div class="card" style="margin-bottom: 1.5rem;">
-                            <h3 style="font-weight: 700; color: var(--gray-900); margin-bottom: 0.75rem; font-size: 1rem;">📅 Okuma Programı</h3>
-                            <div style="display: flex; flex-direction: column; gap: 0.75rem; font-size: 0.875rem;">
-                                <div style="display: flex; justify-content: space-between; padding: 0.75rem; background: var(--success-light); border-radius: 0.5rem;">
-                                    <span style="color: var(--gray-800);">✓ Bölüm 1-2</span>
-                                    <span style="color: var(--success-dark); font-weight: 600;">Tamamlandı</span>
-                                </div>
-                                <div style="display: flex; justify-content: space-between; padding: 0.75rem; background: var(--primary-light); border-radius: 0.5rem;">
-                                    <span style="color: var(--gray-800);">▶️ Bölüm 3</span>
-                                    <span style="color: var(--primary-dark); font-weight: 600;">Bu Hafta</span>
-                                </div>
-                                <div style="display: flex; justify-content: space-between; padding: 0.75rem; background: var(--gray-50); border-radius: 0.5rem;">
-                                    <span style="color: var(--gray-700);">Bölüm 4-5</span>
-                                    <span style="color: var(--gray-600); font-weight: 600;">Gelecek</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card" style="margin-bottom: 1.5rem;">
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                                <h3 style="font-weight: 700; color: var(--gray-900); font-size: 1rem;">👥 Üyeler (8)</h3>
-                                <button style="background: none; border: none; color: var(--primary); font-weight: 700; font-size: 0.875rem; cursor: pointer;" onclick="parent.showScreen(4)">Tümünü Gör →</button>
-                            </div>
-                            <div style="display: flex; gap: 0.75rem; overflow-x: auto;">
-                                <div style="text-align: center; min-width: 64px;">
-                                    <div style="width: 64px; height: 64px; background: linear-gradient(135deg, var(--primary-light), var(--primary-100)); border-radius: 9999px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 700; color: var(--primary-dark); margin-bottom: 0.5rem;">MK</div>
-                                    <div style="font-size: 0.75rem; color: var(--gray-700); font-weight: 600;">Mehmet</div>
-                                </div>
-                                <div style="text-align: center; min-width: 64px;">
-                                    <div style="width: 64px; height: 64px; background: linear-gradient(135deg, var(--success-light), #A7F3D0); border-radius: 9999px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 700; color: var(--success-dark); margin-bottom: 0.5rem;">EA</div>
-                                    <div style="font-size: 0.75rem; color: var(--gray-700); font-weight: 600;">Elif</div>
-                                </div>
-                                <div style="text-align: center; min-width: 64px;">
-                                    <div style="width: 64px; height: 64px; background: linear-gradient(135deg, var(--orange-light), #FED7AA); border-radius: 9999px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 700; color: var(--orange); margin-bottom: 0.5rem;">ZT</div>
-                                    <div style="font-size: 0.75rem; color: var(--gray-700); font-weight: 600;">Zeynep</div>
-                                </div>
-                                <div style="text-align: center; min-width: 64px;">
-                                    <div style="width: 64px; height: 64px; background: linear-gradient(135deg, var(--purple-light), #E9D5FF); border-radius: 9999px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 700; color: var(--purple); margin-bottom: 0.5rem;">+5</div>
-                                    <div style="font-size: 0.75rem; color: var(--gray-700); font-weight: 600;">Diğer</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card" style="margin-bottom: 1rem;">
-                            <h3 style="font-weight: 700; color: var(--gray-900); margin-bottom: 0.75rem; font-size: 1rem;">💬 Son Tartışmalar (3)</h3>
-                            <div style="padding: 0.875rem; background: var(--gray-50); border-radius: 0.5rem; margin-bottom: 0.5rem;">
-                                <div style="font-weight: 600; font-size: 0.875rem; color: var(--gray-900); margin-bottom: 0.25rem;">Mehmet K.</div>
-                                <div style="font-size: 0.8125rem; color: var(--gray-700); margin-bottom: 0.5rem;">Bölüm 3'teki şükür tanımı çok güzeldi...</div>
-                                <div style="font-size: 0.75rem; color: var(--gray-600);">2 saat önce • 4 yanıt</div>
-                            </div>
-                        </div>
-                        <button class="btn btn-primary" style="width: 100%; padding: 1rem; font-size: 1.125rem;">Gruba Git</button>
-                    </div>
-                </div></div></div>`,
-                4: `<div class="iphone fade-in"><div class="island"></div><div class="screen"><div class="content">
-                    <div class="status"><div>9:41</div><div>📶 📡 🔋</div></div>
-                    <div style="background: white; padding: 1rem 1.5rem; border-bottom: 1px solid var(--gray-200);">
-                        <div style="display: flex; align-items: center; gap: 1rem;">
-                            <button style="background: none; border: none; font-size: 1.5rem; cursor: pointer;" onclick="parent.showScreen(3)">←</button>
-                            <div style="flex: 1;">
-                                <h2 style="font-family: Poppins, sans-serif; font-size: 1rem; font-weight: 700; color: var(--secondary);">Grup İlerlemesi</h2>
-                                <div style="font-size: 0.75rem; color: var(--gray-600); margin-top: 0.25rem;">Şükür Okuma Grubu</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div style="padding: 1.5rem;">
-                        <div class="card" style="margin-bottom: 1.5rem; background: linear-gradient(135deg, var(--success-light), #A7F3D0); border: 2px solid var(--success);">
-                            <div style="text-align: center; margin-bottom: 1rem;">
-                                <div style="font-family: Poppins, sans-serif; font-size: 3rem; font-weight: 800; color: var(--success-dark); margin-bottom: 0.5rem;">62%</div>
-                                <div style="font-size: 0.9375rem; color: var(--gray-800); font-weight: 600;">Ortalama Grup İlerlemesi</div>
-                            </div>
-                            <div style="height: 12px; background: white; border-radius: 9999px; overflow: hidden;">
-                                <div style="width: 62%; height: 100%; background: var(--success);"></div>
-                            </div>
-                        </div>
-                        <h3 style="font-weight: 700; color: var(--gray-900); margin-bottom: 1rem; font-size: 1rem;">Üye İlerlemeleri (8)</h3>
-                        <div style="display: flex; flex-direction: column; gap: 0.75rem;">
-                            <div class="card">
-                                <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.75rem;">
-                                    <div style="width: 48px; height: 48px; background: linear-gradient(135deg, var(--primary-light), var(--primary-100)); border-radius: 9999px; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; font-weight: 700; color: var(--primary-dark); flex-shrink: 0;">MK</div>
-                                    <div style="flex: 1;">
-                                        <div style="font-weight: 700; font-size: 0.9375rem; color: var(--gray-900); margin-bottom: 0.25rem;">Mehmet Kaya</div>
-                                        <div style="font-size: 0.75rem; color: var(--gray-600);">Sayfa 68/68 • Bölüm 3 tamamlandı</div>
-                                    </div>
-                                </div>
-                                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 0.875rem;">
-                                    <span style="color: var(--gray-700);">İlerleme</span>
-                                    <span style="color: var(--success); font-weight: 700;">100%</span>
-                                </div>
-                                <div style="height: 6px; background: var(--gray-200); border-radius: 9999px; overflow: hidden;">
-                                    <div style="width: 100%; height: 100%; background: var(--success);"></div>
-                                </div>
-                            </div>
-                            <div class="card">
-                                <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.75rem;">
-                                    <div style="width: 48px; height: 48px; background: linear-gradient(135deg, var(--success-light), #A7F3D0); border-radius: 9999px; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; font-weight: 700; color: var(--success-dark); flex-shrink: 0;">EA</div>
-                                    <div style="flex: 1;">
-                                        <div style="font-weight: 700; font-size: 0.9375rem; color: var(--gray-900); margin-bottom: 0.25rem;">Elif Arslan</div>
-                                        <div style="font-size: 0.75rem; color: var(--gray-600);">Sayfa 62/68 • Bölüm 3 devam</div>
-                                    </div>
-                                </div>
-                                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 0.875rem;">
-                                    <span style="color: var(--gray-700);">İlerleme</span>
-                                    <span style="color: var(--primary); font-weight: 700;">91%</span>
-                                </div>
-                                <div style="height: 6px; background: var(--gray-200); border-radius: 9999px; overflow: hidden;">
-                                    <div style="width: 91%; height: 100%; background: var(--primary);"></div>
-                                </div>
-                            </div>
-                            <div class="card">
-                                <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.75rem;">
-                                    <div style="width: 48px; height: 48px; background: linear-gradient(135deg, var(--orange-light), #FED7AA); border-radius: 9999px; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; font-weight: 700; color: var(--orange); flex-shrink: 0;">ZT</div>
-                                    <div style="flex: 1;">
-                                        <div style="font-weight: 700; font-size: 0.9375rem; color: var(--gray-900); margin-bottom: 0.25rem;">Zeynep Toprak</div>
-                                        <div style="font-size: 0.75rem; color: var(--gray-600);">Sayfa 55/68 • Bölüm 3 devam</div>
-                                    </div>
-                                </div>
-                                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 0.875rem;">
-                                    <span style="color: var(--gray-700);">İlerleme</span>
-                                    <span style="color: var(--orange); font-weight: 700;">81%</span>
-                                </div>
-                                <div style="height: 6px; background: var(--gray-200); border-radius: 9999px; overflow: hidden;">
-                                    <div style="width: 81%; height: 100%; background: var(--orange);"></div>
-                                </div>
-                            </div>
-                            <div class="card">
-                                <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.75rem;">
-                                    <div style="width: 48px; height: 48px; background: linear-gradient(135deg, var(--purple-light), #E9D5FF); border-radius: 9999px; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; font-weight: 700; color: var(--purple); flex-shrink: 0;">AY</div>
-                                    <div style="flex: 1;">
-                                        <div style="font-weight: 700; font-size: 0.9375rem; color: var(--gray-900); margin-bottom: 0.25rem;">Ayşe Yılmaz</div>
-                                        <div style="font-size: 0.75rem; color: var(--gray-600);">Sayfa 48/68 • Bölüm 3 devam</div>
-                                    </div>
-                                </div>
-                                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 0.875rem;">
-                                    <span style="color: var(--gray-700);">İlerleme</span>
-                                    <span style="color: var(--warning); font-weight: 700;">71%</span>
-                                </div>
-                                <div style="height: 6px; background: var(--gray-200); border-radius: 9999px; overflow: hidden;">
-                                    <div style="width: 71%; height: 100%; background: var(--warning);"></div>
-                                </div>
-                            </div>
-                            <div class="card">
-                                <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.75rem;">
-                                    <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #DBEAFE, #BFDBFE); border-radius: 9999px; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; font-weight: 700; color: var(--primary-dark); flex-shrink: 0;">CY</div>
-                                    <div style="flex: 1;">
-                                        <div style="font-weight: 700; font-size: 0.9375rem; color: var(--gray-900); margin-bottom: 0.25rem;">Can Yıldız</div>
-                                        <div style="font-size: 0.75rem; color: var(--gray-600);">Sayfa 28/68 • Bölüm 3 başlangıç</div>
-                                    </div>
-                                </div>
-                                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 0.875rem;">
-                                    <span style="color: var(--gray-700);">İlerleme</span>
-                                    <span style="color: var(--error); font-weight: 700;">41%</span>
-                                </div>
-                                <div style="height: 6px; background: var(--gray-200); border-radius: 9999px; overflow: hidden;">
-                                    <div style="width: 41%; height: 100%; background: var(--error);"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div></div></div>`
-            };
-            return screens[num] || screens[1];
+
+        function phoneShell(title, body, backScreen) {
+            const back = backScreen
+                ? '<button class="icon-btn" onclick="showScreen(' + backScreen + ')" aria-label="Geri">&lt;</button>'
+                : '<span style="width:34px;"></span>';
+
+            return (
+                '<div class="iphone">' +
+                    '<div class="island"></div>' +
+                    '<div class="screen">' +
+                        '<div class="content">' +
+                            '<div class="status"><span>9:41</span><span>5G 91%</span></div>' +
+                            '<div class="mobile-header">' +
+                                back +
+                                '<div class="mobile-title">' + title + '</div>' +
+                            '</div>' +
+                            '<div class="mobile-body">' + body + '</div>' +
+                        '</div>' +
+                    '</div>' +
+                '</div>'
+            );
         }
-        document.getElementById('viewer').innerHTML = getScreenHTML(1);
+
+        function setCurrentScreen(screenNo) {
+            ui.currentScreen = screenNo;
+            ui.lastAnalyticsEvent = screenData[screenNo].event;
+            render();
+        }
+
+        function showScreen(screenNo) {
+            setCurrentScreen(screenNo);
+        }
+
+        function setScreenState(screenNo, state) {
+            ui.screenStates[screenNo] = state;
+            render();
+        }
+
+        function stateControls(screenNo) {
+            const states = ['ready', 'loading', 'empty', 'error', 'offline'];
+            return (
+                '<div class="state-switcher">' +
+                    states.map((s) => (
+                        '<button class="state-btn ' + (ui.screenStates[screenNo] === s ? 'active' : '') + '" ' +
+                        'onclick="setScreenState(' + screenNo + ', \'' + s + '\')" aria-label="Ekran durumu ' + s + '" ' +
+                        'aria-pressed="' + (ui.screenStates[screenNo] === s) + '">' + s + '</button>'
+                    )).join('') +
+                '</div>'
+            );
+        }
+
+        function statePanel(screenNo) {
+            const state = ui.screenStates[screenNo];
+            if (state === 'ready') {
+                return '';
+            }
+            if (state === 'loading') {
+                return '<div class="state-panel loading" role="status"><strong>Loading</strong><span>Grup verileri yukleniyor.</span></div>';
+            }
+            if (state === 'empty') {
+                return '<div class="state-panel empty"><strong>Empty</strong><span>Bu gorunumde listelenecek kayit yok.</span><button class="btn btn-outline" onclick="resetDemo()" aria-label="Demo verisini sifirla">Varsayilan veriye don</button></div>';
+            }
+            if (state === 'error') {
+                return '<div class="state-panel error" role="alert"><strong>Error</strong><span>Kurtarilabilir hata olustu.</span><button class="btn btn-primary" onclick="setScreenState(' + screenNo + ', \'ready\')" aria-label="Tekrar dene">Tekrar Dene</button></div>';
+            }
+            return '<div class="state-panel offline" role="status"><strong>Offline</strong><span>Son senkronize kayitlar gosterilir, yazma islemleri kuyruga alinmistir.</span></div>';
+        }
+
+        function filteredGroups() {
+            if (ui.privacyFilter === 'all') {
+                return ui.groups;
+            }
+            return ui.groups.filter((g) => g.privacy === ui.privacyFilter);
+        }
+
+        function setPrivacyFilter(filter) {
+            ui.privacyFilter = filter;
+            render();
+        }
+
+        function selectGroup(groupId) {
+            ui.selectedGroupId = groupId;
+            showScreen(3);
+            showToast('Grup detay ekranina gecildi.', 'success');
+        }
+
+        function selectedGroup() {
+            return ui.groups.find((g) => g.id === ui.selectedGroupId) || ui.groups[0];
+        }
+
+        function selectedMembers() {
+            const group = selectedGroup();
+            return ui.groupMembers[group.id] || [];
+        }
+
+        function groupAverage(list) {
+            if (!list.length) {
+                return 0;
+            }
+            return Math.round(list.reduce((sum, item) => sum + item.completion, 0) / list.length);
+        }
+
+        function trendLabel(avg) {
+            if (avg >= 70) {
+                return 'Yukseliyor';
+            }
+            if (avg >= 50) {
+                return 'Dengeli';
+            }
+            return 'Destek gerekiyor';
+        }
+
+        function updateDraft(field, value) {
+            ui.createDraft[field] = value;
+            render();
+        }
+
+        function createGroup() {
+            if (!ui.createDraft.name.trim()) {
+                showToast('Grup adi zorunludur.', 'error');
+                return;
+            }
+            if (!ui.createDraft.materialName.trim()) {
+                showToast('Materyal secimi zorunludur.', 'error');
+                return;
+            }
+
+            const newId = Date.now();
+            ui.groups.unshift({
+                id: newId,
+                name: ui.createDraft.name.trim(),
+                members: ui.createDraft.invites.trim() ? ui.createDraft.invites.split(',').map((x) => x.trim()).filter(Boolean).length + 1 : 1,
+                material: ui.createDraft.materialName.trim(),
+                materialType: ui.createDraft.materialType === 'journey' ? 'Journey' : ui.createDraft.materialType === 'workshop' ? 'Workshop' : 'eBook',
+                progress: 0,
+                privacy: ui.createDraft.privacy,
+                lastActivity: 'simdi',
+                nextSession: 'Planlanmadi'
+            });
+            ui.groupMembers[newId] = [{ name: 'Siz', role: 'owner', completion: 0, delta: '+0' }];
+            ui.discussions[newId] = [{ time: 'simdi', author: 'Sistem', text: 'Grup olusturuldu. Ilk tartisma mesaji icin hazir.' }];
+            ui.schedules[newId] = [{ label: 'Ilk grup tanisma oturumu', target: 'Planlanmadi' }];
+            ui.selectedGroupId = newId;
+            ui.createDraft.created = true;
+            showToast('Grup olusturuldu, detay ekranina yonlendirildiniz.', 'success');
+            showScreen(3);
+        }
+
+        function resetDemo() {
+            ui.privacyFilter = 'all';
+            ui.selectedGroupId = 101;
+            ui.createDraft.name = '';
+            ui.createDraft.materialType = 'journey';
+            ui.createDraft.materialName = '';
+            ui.createDraft.privacy = 'private';
+            ui.createDraft.invites = '';
+            ui.createDraft.created = false;
+            render();
+        }
+
+        function screenOne() {
+            const groups = filteredGroups();
+            const body = (
+                stateControls(1) +
+                statePanel(1) +
+                (ui.screenStates[1] !== 'ready' ? '' : (
+                    '<div class="card">' +
+                        '<div class="card-title">Dahil oldugunuz gruplar</div>' +
+                        '<div class="chips">' +
+                            '<span class="chip">Toplam grup: ' + ui.groups.length + '</span>' +
+                            '<span class="chip success">Acik: ' + ui.groups.filter((g) => g.privacy === 'public').length + '</span>' +
+                            '<span class="chip warn">Ozel: ' + ui.groups.filter((g) => g.privacy === 'private').length + '</span>' +
+                            '<button class="btn btn-primary" onclick="showScreen(2)" aria-label="Yeni grup olustur">+ Grup Olustur</button>' +
+                        '</div>' +
+                        '<div class="muted" style="margin-top:0.45rem;">AC-FR-E13-01-01</div>' +
+                    '</div>' +
+
+                    '<div class="card">' +
+                        '<div class="card-title">Gizlilik filtresi</div>' +
+                        '<div class="chips">' +
+                            '<button class="btn ' + (ui.privacyFilter === 'all' ? 'btn-primary' : 'btn-outline') + '" onclick="setPrivacyFilter(\'all\')" aria-label="Tum gruplar" aria-pressed="' + (ui.privacyFilter === 'all') + '">Tum</button>' +
+                            '<button class="btn ' + (ui.privacyFilter === 'public' ? 'btn-primary' : 'btn-outline') + '" onclick="setPrivacyFilter(\'public\')" aria-label="Acik gruplar" aria-pressed="' + (ui.privacyFilter === 'public') + '">Acik</button>' +
+                            '<button class="btn ' + (ui.privacyFilter === 'private' ? 'btn-primary' : 'btn-outline') + '" onclick="setPrivacyFilter(\'private\')" aria-label="Ozel gruplar" aria-pressed="' + (ui.privacyFilter === 'private') + '">Ozel</button>' +
+                        '</div>' +
+                        '<div class="muted" style="margin-top:0.45rem;">AC-FR-E13-01-04</div>' +
+                    '</div>' +
+
+                    '<div class="card">' +
+                        '<div class="card-title">Grup kartlari</div>' +
+                        '<div class="list">' +
+                            groups.map((g) => (
+                                '<button class="list-item" onclick="selectGroup(' + g.id + ')" aria-label="' + g.name + ' detayini ac" style="text-align:left; cursor:pointer;">' +
+                                    '<div class="row">' +
+                                        '<div class="item-title">' + g.name + '</div>' +
+                                        '<span class="chip ' + (g.privacy === 'public' ? 'success' : 'warn') + '">' + (g.privacy === 'public' ? 'acik' : 'ozel') + '</span>' +
+                                    '</div>' +
+                                    '<div class="item-meta">Uye: ' + g.members + ' | Materyal: ' + g.material + '</div>' +
+                                    '<div class="item-meta">Son aktivite: ' + g.lastActivity + '</div>' +
+                                    '<div class="progress"><span style="width:' + g.progress + '%;"></span></div>' +
+                                '</button>'
+                            )).join('') +
+                        '</div>' +
+                        '<div class="muted" style="margin-top:0.45rem;">AC-FR-E13-01-02</div>' +
+                        '<div class="muted">AC-FR-E13-01-03</div>' +
+                    '</div>'
+                ))
+            );
+
+            return phoneShell('Grup listesi ve durum ozeti', body, null);
+        }
+
+        function screenTwo() {
+            const draft = ui.createDraft;
+            const body = (
+                stateControls(2) +
+                statePanel(2) +
+                (ui.screenStates[2] !== 'ready' ? '' : (
+                    '<div class="card">' +
+                        '<div class="card-title">Temel grup bilgisi</div>' +
+                        '<input class="field" type="text" placeholder="Grup adini girin" value="' + draft.name.replace(/"/g, '&quot;') + '" oninput="updateDraft(\'name\', this.value)" aria-label="Grup adi" />' +
+                        '<div class="muted" style="margin-top:0.4rem;">Grup adi bos birakilamaz.</div>' +
+                        '<div class="muted" style="margin-top:0.45rem;">AC-FR-E13-02-01</div>' +
+                    '</div>' +
+
+                    '<div class="card">' +
+                        '<div class="card-title">Okuma materyali secimi</div>' +
+                        '<div class="chips">' +
+                            '<button class="btn ' + (draft.materialType === 'journey' ? 'btn-primary' : 'btn-outline') + '" onclick="updateDraft(\'materialType\', \'journey\')" aria-label="Yolculuk sec" aria-pressed="' + (draft.materialType === 'journey') + '">Journey</button>' +
+                            '<button class="btn ' + (draft.materialType === 'workshop' ? 'btn-primary' : 'btn-outline') + '" onclick="updateDraft(\'materialType\', \'workshop\')" aria-label="Atolye sec" aria-pressed="' + (draft.materialType === 'workshop') + '">Workshop</button>' +
+                            '<button class="btn ' + (draft.materialType === 'ebook' ? 'btn-primary' : 'btn-outline') + '" onclick="updateDraft(\'materialType\', \'ebook\')" aria-label="eBook sec" aria-pressed="' + (draft.materialType === 'ebook') + '">eBook</button>' +
+                        '</div>' +
+                        '<input class="field" style="margin-top:0.45rem;" type="text" placeholder="Materyal adini girin" value="' + draft.materialName.replace(/"/g, '&quot;') + '" oninput="updateDraft(\'materialName\', this.value)" aria-label="Materyal adi" />' +
+                        '<div class="muted" style="margin-top:0.45rem;">AC-FR-E13-02-02</div>' +
+                    '</div>' +
+
+                    '<div class="card">' +
+                        '<div class="card-title">Gizlilik ve davet</div>' +
+                        '<div class="chips">' +
+                            '<button class="btn ' + (draft.privacy === 'public' ? 'btn-primary' : 'btn-outline') + '" onclick="updateDraft(\'privacy\', \'public\')" aria-label="Acik grup" aria-pressed="' + (draft.privacy === 'public') + '">Acik</button>' +
+                            '<button class="btn ' + (draft.privacy === 'private' ? 'btn-primary' : 'btn-outline') + '" onclick="updateDraft(\'privacy\', \'private\')" aria-label="Ozel grup" aria-pressed="' + (draft.privacy === 'private') + '">Ozel</button>' +
+                        '</div>' +
+                        '<textarea class="field" style="margin-top:0.45rem; min-height:72px;" placeholder="Davet e-postalari (virgulle ayirin)" oninput="updateDraft(\'invites\', this.value)" aria-label="Davet e-postalari">' + draft.invites + '</textarea>' +
+                        '<div class="chips" style="margin-top:0.45rem;">' +
+                            '<button class="btn btn-primary" onclick="createGroup()" aria-label="Grubu olustur">Grubu Olustur</button>' +
+                            '<button class="btn btn-outline" onclick="showScreen(1)" aria-label="Listeye geri don">Listeye Don</button>' +
+                        '</div>' +
+                        '<div class="muted" style="margin-top:0.45rem;">AC-FR-E13-02-03</div>' +
+                        '<div class="muted">AC-FR-E13-02-04</div>' +
+                    '</div>'
+                ))
+            );
+
+            return phoneShell('Grup olusturma ve davet', body, 1);
+        }
+
+        function screenThree() {
+            const group = selectedGroup();
+            const members = selectedMembers();
+            const discussion = ui.discussions[group.id] || [];
+            const schedule = ui.schedules[group.id] || [];
+
+            const body = (
+                stateControls(3) +
+                statePanel(3) +
+                (ui.screenStates[3] !== 'ready' ? '' : (
+                    '<div class="card">' +
+                        '<div class="card-title">Grup ve materyal ozeti</div>' +
+                        '<div class="muted"><strong>Grup:</strong> ' + group.name + '</div>' +
+                        '<div class="muted"><strong>Materyal:</strong> ' + group.material + '</div>' +
+                        '<div class="muted"><strong>Siradaki oturum:</strong> ' + group.nextSession + '</div>' +
+                        '<div class="muted" style="margin-top:0.45rem;">AC-FR-E13-03-01</div>' +
+                    '</div>' +
+
+                    '<div class="card">' +
+                        '<div class="card-title">Uye listesi ve roller</div>' +
+                        '<div class="list">' +
+                            members.map((m) => (
+                                '<div class="list-item">' +
+                                    '<div class="row">' +
+                                        '<div class="item-title">' + m.name + '</div>' +
+                                        '<span class="chip ' + (m.role === 'owner' ? 'success' : '') + '">' + m.role + '</span>' +
+                                    '</div>' +
+                                    '<div class="item-meta">Tamamlanma: %' + m.completion + ' | Haftalik fark: ' + m.delta + '</div>' +
+                                '</div>'
+                            )).join('') +
+                        '</div>' +
+                        '<div class="muted" style="margin-top:0.45rem;">AC-FR-E13-03-02</div>' +
+                    '</div>' +
+
+                    '<div class="card">' +
+                        '<div class="card-title">Tartisma akisi</div>' +
+                        '<div class="list">' +
+                            discussion.map((d) => (
+                                '<div class="list-item">' +
+                                    '<div class="row"><div class="item-title">' + d.author + '</div><span class="chip">' + d.time + '</span></div>' +
+                                    '<div class="item-meta">' + d.text + '</div>' +
+                                '</div>'
+                            )).join('') +
+                        '</div>' +
+                        '<div class="muted" style="margin-top:0.45rem;">AC-FR-E13-03-03</div>' +
+                    '</div>' +
+
+                    '<div class="card">' +
+                        '<div class="card-title">Okuma takvimi</div>' +
+                        '<div class="list">' +
+                            schedule.map((s) => (
+                                '<div class="list-item">' +
+                                    '<div class="row"><div class="item-title">' + s.label + '</div><span class="chip warn">' + s.target + '</span></div>' +
+                                '</div>'
+                            )).join('') +
+                        '</div>' +
+                        '<div class="chips" style="margin-top:0.5rem;">' +
+                            '<button class="btn btn-primary" onclick="showScreen(4)" aria-label="Ilerleme ekranini ac">Ilerlemeye Gec</button>' +
+                        '</div>' +
+                        '<div class="muted" style="margin-top:0.45rem;">AC-FR-E13-03-04</div>' +
+                    '</div>'
+                ))
+            );
+
+            return phoneShell('Grup detayi ve tartisma', body, 1);
+        }
+
+        function screenFour() {
+            const group = selectedGroup();
+            const members = selectedMembers();
+            const avg = groupAverage(members);
+            const trend = trendLabel(avg);
+            const sorted = [...members].sort((a, b) => b.completion - a.completion);
+
+            const body = (
+                stateControls(4) +
+                statePanel(4) +
+                (ui.screenStates[4] !== 'ready' ? '' : (
+                    '<div class="card">' +
+                        '<div class="card-title">Bireysel tamamlanma yuzdeleri</div>' +
+                        '<div class="list">' +
+                            members.map((m) => (
+                                '<div class="list-item">' +
+                                    '<div class="row"><div class="item-title">' + m.name + '</div><span class="chip">%' + m.completion + '</span></div>' +
+                                    '<div class="progress"><span style="width:' + m.completion + '%;"></span></div>' +
+                                '</div>'
+                            )).join('') +
+                        '</div>' +
+                        '<div class="muted" style="margin-top:0.45rem;">AC-FR-E13-04-01</div>' +
+                    '</div>' +
+
+                    '<div class="card">' +
+                        '<div class="card-title">Grup ortalama ve trend</div>' +
+                        '<div class="chips">' +
+                            '<span class="chip success">Ortalama: %' + avg + '</span>' +
+                            '<span class="chip ' + (trend === 'Yukseliyor' ? 'success' : trend === 'Dengeli' ? 'warn' : 'error') + '">Trend: ' + trend + '</span>' +
+                            '<span class="chip">Grup: ' + group.name + '</span>' +
+                        '</div>' +
+                        '<div class="muted" style="margin-top:0.45rem;">AC-FR-E13-04-02</div>' +
+                    '</div>' +
+
+                    '<div class="card">' +
+                        '<div class="card-title">Uye karsilastirma siralamasi</div>' +
+                        '<div class="list">' +
+                            sorted.map((m, i) => (
+                                '<div class="list-item">' +
+                                    '<div class="row">' +
+                                        '<div class="item-title">' + (i + 1) + '. ' + m.name + '</div>' +
+                                        '<span class="chip">%' + m.completion + '</span>' +
+                                    '</div>' +
+                                    '<div class="item-meta">Haftalik fark: ' + m.delta + '</div>' +
+                                '</div>'
+                            )).join('') +
+                        '</div>' +
+                        '<div class="muted" style="margin-top:0.45rem;">AC-FR-E13-04-03</div>' +
+                    '</div>' +
+
+                    '<div class="card">' +
+                        '<div class="card-title">Nudge onerileri</div>' +
+                        '<div class="list">' +
+                            '<div class="list-item"><div class="item-meta">Tamamlanmasi %50 altinda kalan uyelere 24 saatlik mini hatirlatma gonder.</div></div>' +
+                            '<div class="list-item"><div class="item-meta">Son 3 gundur aktivite gostermeyen uyeler icin kisa ozet mesaji olustur.</div></div>' +
+                        '</div>' +
+                        '<div class="muted" style="margin-top:0.45rem;">AC-FR-E13-04-04</div>' +
+                    '</div>'
+                ))
+            );
+
+            return phoneShell('Grup ilerleme ve karsilastirma', body, 3);
+        }
+
+        function renderScreen(screenNo) {
+            if (screenNo === 1) {
+                return screenOne();
+            }
+            if (screenNo === 2) {
+                return screenTwo();
+            }
+            if (screenNo === 3) {
+                return screenThree();
+            }
+            return screenFour();
+        }
+
+        function render() {
+            const current = screenData[ui.currentScreen];
+            document.getElementById('screenTitle').textContent = current.title;
+            document.getElementById('screenFr').textContent = current.fr;
+            document.getElementById('screenRoute').textContent = current.route;
+            document.getElementById('screenMeta').textContent = current.meta + ' | event: ' + ui.lastAnalyticsEvent;
+
+            document.querySelectorAll('.nav-item').forEach((item) => {
+                item.classList.toggle('active', Number(item.dataset.screen) === ui.currentScreen);
+            });
+
+            document.querySelectorAll('[id^="flow-"]').forEach((step, index) => {
+                step.classList.toggle('active', index + 1 === ui.currentScreen);
+            });
+
+            document.getElementById('viewer').innerHTML = renderScreen(ui.currentScreen);
+        }
+
+        document.querySelectorAll('.nav-item').forEach((item) => {
+            item.addEventListener('click', () => {
+                setCurrentScreen(Number(item.dataset.screen));
+            });
+            item.addEventListener('keydown', (event) => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    setCurrentScreen(Number(item.dataset.screen));
+                }
+            });
+        });
+
+        render();
     </script>
 </body>
 </html>

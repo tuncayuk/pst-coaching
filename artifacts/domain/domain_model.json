@@ -1,445 +1,1083 @@
 {
   "app": {
     "name": "PST Coaching",
-    "version": "1.1"
+    "version": "4.0.0",
+    "source": "PST_Mobile_PRD_Rev4.md"
   },
   "entities": [
     {
       "name": "User",
-      "description": "Account holder for PST Mobile.",
+      "description": "Authenticated or guest person in PST app.",
       "fields": [
-        {"name": "id", "type": "uuid", "required": true},
-        {"name": "email", "type": "string", "required": false},
-        {"name": "phone", "type": "string", "required": false},
-        {"name": "password_hash", "type": "string", "required": false},
-        {"name": "role", "type": "UserRole", "required": true},
-        {"name": "language", "type": "LanguageCode", "required": true},
-        {"name": "created_at", "type": "datetime", "required": true},
-        {"name": "status", "type": "UserStatus", "required": true}
+        {
+          "name": "id",
+          "type": "uuid",
+          "required": true
+        },
+        {
+          "name": "role",
+          "type": "UserRole",
+          "required": true
+        },
+        {
+          "name": "language",
+          "type": "LanguageCode",
+          "required": true
+        },
+        {
+          "name": "subscription_status",
+          "type": "SubscriptionStatus",
+          "required": true
+        },
+        {
+          "name": "created_at",
+          "type": "datetime",
+          "required": true
+        }
       ]
     },
     {
       "name": "UserSession",
-      "description": "Authenticated session state and expiry.",
+      "description": "Token-backed session lifecycle.",
       "fields": [
-        {"name": "id", "type": "uuid", "required": true},
-        {"name": "user_id", "type": "uuid", "required": true},
-        {"name": "token", "type": "string", "required": true},
-        {"name": "expires_at", "type": "datetime", "required": true},
-        {"name": "last_active_at", "type": "datetime", "required": true}
+        {
+          "name": "id",
+          "type": "uuid",
+          "required": true
+        },
+        {
+          "name": "user_id",
+          "type": "uuid",
+          "required": true
+        },
+        {
+          "name": "expires_at",
+          "type": "datetime",
+          "required": true
+        },
+        {
+          "name": "last_active_at",
+          "type": "datetime",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "DemographicProfile",
+      "description": "Single-source demographic record from FR-E1-08.",
+      "fields": [
+        {
+          "name": "user_id",
+          "type": "uuid",
+          "required": true
+        },
+        {
+          "name": "age",
+          "type": "integer",
+          "required": true
+        },
+        {
+          "name": "gender",
+          "type": "GenderOption",
+          "required": false
+        },
+        {
+          "name": "country_code",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "updated_at",
+          "type": "datetime",
+          "required": true
+        }
       ]
     },
     {
       "name": "AccessibilitySettings",
-      "description": "User accessibility preferences.",
+      "description": "Persistent accessibility preferences.",
       "fields": [
-        {"name": "user_id", "type": "uuid", "required": true},
-        {"name": "text_size", "type": "string", "required": true},
-        {"name": "high_contrast", "type": "boolean", "required": true},
-        {"name": "reduce_motion", "type": "boolean", "required": true},
-        {"name": "theme", "type": "ThemeMode", "required": true}
-      ]
-    },
-    {
-      "name": "ReadingSettings",
-      "description": "e-Kitap reader settings persisted across books.",
-      "fields": [
-        {"name": "user_id", "type": "uuid", "required": true},
-        {"name": "font_size", "type": "integer", "required": true},
-        {"name": "line_height", "type": "string", "required": true},
-        {"name": "background", "type": "ReaderBackground", "required": true}
-      ]
-    },
-    {
-      "name": "ReminderSettings",
-      "description": "Daily reminder preferences.",
-      "fields": [
-        {"name": "user_id", "type": "uuid", "required": true},
-        {"name": "enabled", "type": "boolean", "required": true},
-        {"name": "time_local", "type": "time", "required": true},
-        {"name": "last_sent_at", "type": "datetime", "required": false}
+        {
+          "name": "user_id",
+          "type": "uuid",
+          "required": true
+        },
+        {
+          "name": "text_scale",
+          "type": "number",
+          "required": true
+        },
+        {
+          "name": "high_contrast",
+          "type": "boolean",
+          "required": true
+        },
+        {
+          "name": "reduce_motion",
+          "type": "boolean",
+          "required": true
+        },
+        {
+          "name": "theme_mode",
+          "type": "ThemeMode",
+          "required": true
+        }
       ]
     },
     {
       "name": "SubscriptionPlan",
-      "description": "Commercial plan definition.",
+      "description": "Commercial plan definition (individual/family/group).",
       "fields": [
-        {"name": "id", "type": "uuid", "required": true},
-        {"name": "name", "type": "string", "required": true},
-        {"name": "plan_type", "type": "PlanType", "required": true},
-        {"name": "seat_limit", "type": "integer", "required": true},
-        {"name": "student_discount_eligible", "type": "boolean", "required": true}
+        {
+          "name": "id",
+          "type": "uuid",
+          "required": true
+        },
+        {
+          "name": "plan_type",
+          "type": "PlanType",
+          "required": true
+        },
+        {
+          "name": "seat_limit",
+          "type": "integer",
+          "required": true
+        },
+        {
+          "name": "student_discount_eligible",
+          "type": "boolean",
+          "required": true
+        }
       ]
     },
     {
       "name": "Subscription",
-      "description": "User subscription instance tied to a plan.",
+      "description": "Plan entitlement and billing state.",
       "fields": [
-        {"name": "id", "type": "uuid", "required": true},
-        {"name": "owner_user_id", "type": "uuid", "required": true},
-        {"name": "plan_id", "type": "uuid", "required": true},
-        {"name": "status", "type": "SubscriptionStatus", "required": true},
-        {"name": "started_at", "type": "datetime", "required": true},
-        {"name": "renewal_at", "type": "datetime", "required": false},
-        {"name": "ends_at", "type": "datetime", "required": false},
-        {"name": "platform", "type": "StorePlatform", "required": true},
-        {"name": "student_discount_applied", "type": "boolean", "required": true}
+        {
+          "name": "id",
+          "type": "uuid",
+          "required": true
+        },
+        {
+          "name": "owner_user_id",
+          "type": "uuid",
+          "required": true
+        },
+        {
+          "name": "plan_id",
+          "type": "uuid",
+          "required": true
+        },
+        {
+          "name": "status",
+          "type": "SubscriptionStatus",
+          "required": true
+        },
+        {
+          "name": "renewal_at",
+          "type": "datetime",
+          "required": false
+        },
+        {
+          "name": "period_end_at",
+          "type": "datetime",
+          "required": false
+        }
       ]
     },
     {
       "name": "AddOn",
-      "description": "Optional add-on product.",
+      "description": "Optional add-on product bound to subscription.",
       "fields": [
-        {"name": "id", "type": "uuid", "required": true},
-        {"name": "code", "type": "AddOnCode", "required": true},
-        {"name": "name", "type": "string", "required": true},
-        {"name": "eligible_plan_types", "type": "PlanType[]", "required": true}
-      ]
-    },
-    {
-      "name": "SubscriptionAddOn",
-      "description": "Add-on activation for a subscription.",
-      "fields": [
-        {"name": "id", "type": "uuid", "required": true},
-        {"name": "subscription_id", "type": "uuid", "required": true},
-        {"name": "addon_id", "type": "uuid", "required": true},
-        {"name": "status", "type": "AddOnStatus", "required": true},
-        {"name": "activated_at", "type": "datetime", "required": false},
-        {"name": "deactivated_at", "type": "datetime", "required": false}
+        {
+          "name": "id",
+          "type": "uuid",
+          "required": true
+        },
+        {
+          "name": "code",
+          "type": "AddOnCode",
+          "required": true
+        },
+        {
+          "name": "eligible_plan_types",
+          "type": "PlanType[]",
+          "required": true
+        }
       ]
     },
     {
       "name": "Seat",
-      "description": "Seat allocation for family/group plans.",
+      "description": "Seat assignment in family/group plans.",
       "fields": [
-        {"name": "id", "type": "uuid", "required": true},
-        {"name": "subscription_id", "type": "uuid", "required": true},
-        {"name": "user_id", "type": "uuid", "required": false},
-        {"name": "status", "type": "SeatStatus", "required": true}
-      ]
-    },
-    {
-      "name": "Invitation",
-      "description": "Invite to join a subscription seat.",
-      "fields": [
-        {"name": "id", "type": "uuid", "required": true},
-        {"name": "subscription_id", "type": "uuid", "required": true},
-        {"name": "invitee_contact", "type": "string", "required": true},
-        {"name": "status", "type": "InvitationStatus", "required": true},
-        {"name": "sent_at", "type": "datetime", "required": true},
-        {"name": "accepted_at", "type": "datetime", "required": false}
-      ]
-    },
-    {
-      "name": "PaymentTransaction",
-      "description": "Store purchase record for restore/history.",
-      "fields": [
-        {"name": "id", "type": "uuid", "required": true},
-        {"name": "subscription_id", "type": "uuid", "required": true},
-        {"name": "store_transaction_id", "type": "string", "required": true},
-        {"name": "amount", "type": "decimal", "required": true},
-        {"name": "currency", "type": "string", "required": true},
-        {"name": "purchased_at", "type": "datetime", "required": true}
+        {
+          "name": "id",
+          "type": "uuid",
+          "required": true
+        },
+        {
+          "name": "subscription_id",
+          "type": "uuid",
+          "required": true
+        },
+        {
+          "name": "assigned_user_id",
+          "type": "uuid",
+          "required": false
+        },
+        {
+          "name": "status",
+          "type": "SeatStatus",
+          "required": true
+        }
       ]
     },
     {
       "name": "Journey",
-      "description": "Prebuilt program created by PST coaches.",
+      "description": "Coach-curated mixed program.",
       "fields": [
-        {"name": "id", "type": "uuid", "required": true},
-        {"name": "title", "type": "string", "required": true},
-        {"name": "description", "type": "string", "required": false},
-        {"name": "level", "type": "string", "required": false},
-        {"name": "duration_days", "type": "integer", "required": false},
-        {"name": "daily_target", "type": "string", "required": false},
-        {"name": "language", "type": "LanguageCode", "required": true}
-      ]
-    },
-    {
-      "name": "JourneyDay",
-      "description": "Day-based content within a journey.",
-      "fields": [
-        {"name": "id", "type": "uuid", "required": true},
-        {"name": "journey_id", "type": "uuid", "required": true},
-        {"name": "day_number", "type": "integer", "required": true},
-        {"name": "title", "type": "string", "required": false},
-        {"name": "unlock_time_local", "type": "time", "required": true}
+        {
+          "name": "id",
+          "type": "uuid",
+          "required": true
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "duration_days",
+          "type": "integer",
+          "required": false
+        },
+        {
+          "name": "level",
+          "type": "string",
+          "required": false
+        }
       ]
     },
     {
       "name": "Module",
-      "description": "Thematic module containing packages.",
+      "description": "Thematic module containing ordered packages.",
       "fields": [
-        {"name": "id", "type": "uuid", "required": true},
-        {"name": "title", "type": "string", "required": true},
-        {"name": "description", "type": "string", "required": false},
-        {"name": "language", "type": "LanguageCode", "required": true}
+        {
+          "name": "id",
+          "type": "uuid",
+          "required": true
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false
+        }
       ]
     },
     {
       "name": "Package",
       "description": "Module sub-unit with readings and exercises.",
       "fields": [
-        {"name": "id", "type": "uuid", "required": true},
-        {"name": "module_id", "type": "uuid", "required": true},
-        {"name": "title", "type": "string", "required": true},
-        {"name": "description", "type": "string", "required": false},
-        {"name": "order_index", "type": "integer", "required": true}
-      ]
-    },
-    {
-      "name": "Workshop",
-      "description": "Interactive workshop with reading and exercises.",
-      "fields": [
-        {"name": "id", "type": "uuid", "required": true},
-        {"name": "title", "type": "string", "required": true},
-        {"name": "description", "type": "string", "required": false},
-        {"name": "language", "type": "LanguageCode", "required": true}
+        {
+          "name": "id",
+          "type": "uuid",
+          "required": true
+        },
+        {
+          "name": "module_id",
+          "type": "uuid",
+          "required": true
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "order_index",
+          "type": "integer",
+          "required": true
+        }
       ]
     },
     {
       "name": "Ebook",
-      "description": "Digital book within PST library.",
+      "description": "Digital book within library.",
       "fields": [
-        {"name": "id", "type": "uuid", "required": true},
-        {"name": "title", "type": "string", "required": true},
-        {"name": "category", "type": "string", "required": false},
-        {"name": "total_pages", "type": "integer", "required": true},
-        {"name": "has_audio", "type": "boolean", "required": true},
-        {"name": "language", "type": "LanguageCode", "required": true}
+        {
+          "name": "id",
+          "type": "uuid",
+          "required": true
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "category",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "total_pages",
+          "type": "integer",
+          "required": true
+        }
       ]
     },
     {
       "name": "EbookChapter",
-      "description": "Chapter or section within an e-book.",
+      "description": "Table-of-contents chapter entry.",
       "fields": [
-        {"name": "id", "type": "uuid", "required": true},
-        {"name": "ebook_id", "type": "uuid", "required": true},
-        {"name": "title", "type": "string", "required": true},
-        {"name": "order_index", "type": "integer", "required": true},
-        {"name": "page_start", "type": "integer", "required": false},
-        {"name": "page_end", "type": "integer", "required": false}
+        {
+          "name": "id",
+          "type": "uuid",
+          "required": true
+        },
+        {
+          "name": "ebook_id",
+          "type": "uuid",
+          "required": true
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "order_index",
+          "type": "integer",
+          "required": true
+        }
       ]
     },
     {
-      "name": "ContentItem",
-      "description": "Atomic content item used in packages, workshops, or journey days.",
+      "name": "Workshop",
+      "description": "Rev4 workshop root object.",
       "fields": [
-        {"name": "id", "type": "uuid", "required": true},
-        {"name": "parent_type", "type": "ContentParentType", "required": true},
-        {"name": "parent_id", "type": "uuid", "required": true},
-        {"name": "content_type", "type": "ContentItemType", "required": true},
-        {"name": "title", "type": "string", "required": false},
-        {"name": "body", "type": "string", "required": false},
-        {"name": "order_index", "type": "integer", "required": true},
-        {"name": "has_audio", "type": "boolean", "required": false}
+        {
+          "name": "id",
+          "type": "uuid",
+          "required": true
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "theme",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "target_audience",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "total_duration_minutes",
+          "type": "integer",
+          "required": false
+        },
+        {
+          "name": "expected_outputs",
+          "type": "string[]",
+          "required": false
+        }
       ]
     },
     {
-      "name": "ExerciseStep",
-      "description": "Step within an exercise/application content item.",
+      "name": "WorkshopStage",
+      "description": "Workshop stage (concept/camp/facilitator/workbook/follow-up).",
       "fields": [
-        {"name": "id", "type": "uuid", "required": true},
-        {"name": "content_item_id", "type": "uuid", "required": true},
-        {"name": "step_number", "type": "integer", "required": true},
-        {"name": "text", "type": "string", "required": true}
+        {
+          "name": "id",
+          "type": "uuid",
+          "required": true
+        },
+        {
+          "name": "workshop_id",
+          "type": "uuid",
+          "required": true
+        },
+        {
+          "name": "stage_number",
+          "type": "integer",
+          "required": true
+        },
+        {
+          "name": "stage_type",
+          "type": "WorkshopStageType",
+          "required": true
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "WorkshopSession",
+      "description": "Time-boxed session for camp and facilitator flows.",
+      "fields": [
+        {
+          "name": "id",
+          "type": "uuid",
+          "required": true
+        },
+        {
+          "name": "workshop_stage_id",
+          "type": "uuid",
+          "required": true
+        },
+        {
+          "name": "day_index",
+          "type": "integer",
+          "required": false
+        },
+        {
+          "name": "slot",
+          "type": "SessionSlot",
+          "required": false
+        },
+        {
+          "name": "duration_minutes",
+          "type": "integer",
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "WorkshopContentBlock",
+      "description": "Structured block such as verse, explanation, bridge, exercise, output.",
+      "fields": [
+        {
+          "name": "id",
+          "type": "uuid",
+          "required": true
+        },
+        {
+          "name": "workshop_stage_id",
+          "type": "uuid",
+          "required": true
+        },
+        {
+          "name": "block_type",
+          "type": "WorkshopBlockType",
+          "required": true
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "body",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "order_index",
+          "type": "integer",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "WorkshopArtifact",
+      "description": "Persistent artifact such as worksheet, card, map, or guide section.",
+      "fields": [
+        {
+          "name": "id",
+          "type": "uuid",
+          "required": true
+        },
+        {
+          "name": "workshop_id",
+          "type": "uuid",
+          "required": true
+        },
+        {
+          "name": "artifact_type",
+          "type": "WorkshopArtifactType",
+          "required": true
+        },
+        {
+          "name": "version",
+          "type": "integer",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "WorkbookEntry",
+      "description": "Participant workbook inputs with autosave and versioning.",
+      "fields": [
+        {
+          "name": "id",
+          "type": "uuid",
+          "required": true
+        },
+        {
+          "name": "user_id",
+          "type": "uuid",
+          "required": true
+        },
+        {
+          "name": "workshop_id",
+          "type": "uuid",
+          "required": true
+        },
+        {
+          "name": "stage_id",
+          "type": "uuid",
+          "required": true
+        },
+        {
+          "name": "session_id",
+          "type": "uuid",
+          "required": false
+        },
+        {
+          "name": "worksheet_type",
+          "type": "WorksheetType",
+          "required": true
+        },
+        {
+          "name": "payload",
+          "type": "json",
+          "required": true
+        },
+        {
+          "name": "status",
+          "type": "WorkbookEntryStatus",
+          "required": true
+        },
+        {
+          "name": "version",
+          "type": "integer",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "WorkshopFollowUpPlan",
+      "description": "72h, 3-week, and 30-day follow-up plan records.",
+      "fields": [
+        {
+          "name": "id",
+          "type": "uuid",
+          "required": true
+        },
+        {
+          "name": "user_id",
+          "type": "uuid",
+          "required": true
+        },
+        {
+          "name": "workshop_id",
+          "type": "uuid",
+          "required": true
+        },
+        {
+          "name": "window_type",
+          "type": "FollowUpWindowType",
+          "required": true
+        },
+        {
+          "name": "intent_text",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "daily_phrase",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "small_step",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "status",
+          "type": "FollowUpStatus",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "CommentSubmission",
+      "description": "Guided reflection comment and submission state.",
+      "fields": [
+        {
+          "name": "id",
+          "type": "uuid",
+          "required": true
+        },
+        {
+          "name": "user_id",
+          "type": "uuid",
+          "required": true
+        },
+        {
+          "name": "target_type",
+          "type": "CommentTargetType",
+          "required": true
+        },
+        {
+          "name": "target_id",
+          "type": "uuid",
+          "required": true
+        },
+        {
+          "name": "content",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "submitted_at",
+          "type": "datetime",
+          "required": false
+        },
+        {
+          "name": "status",
+          "type": "CommentStatus",
+          "required": true
+        }
       ]
     },
     {
       "name": "ContentProgress",
-      "description": "User progression over content items or parents.",
+      "description": "Progress ledger across journey/module/package/workshop/ebook.",
       "fields": [
-        {"name": "id", "type": "uuid", "required": true},
-        {"name": "user_id", "type": "uuid", "required": true},
-        {"name": "content_type", "type": "ProgressTargetType", "required": true},
-        {"name": "content_id", "type": "uuid", "required": true},
-        {"name": "status", "type": "ProgressStatus", "required": true},
-        {"name": "started_at", "type": "datetime", "required": false},
-        {"name": "completed_at", "type": "datetime", "required": false}
+        {
+          "name": "id",
+          "type": "uuid",
+          "required": true
+        },
+        {
+          "name": "user_id",
+          "type": "uuid",
+          "required": true
+        },
+        {
+          "name": "target_type",
+          "type": "ProgressTargetType",
+          "required": true
+        },
+        {
+          "name": "target_id",
+          "type": "uuid",
+          "required": true
+        },
+        {
+          "name": "status",
+          "type": "ProgressStatus",
+          "required": true
+        },
+        {
+          "name": "started_at",
+          "type": "datetime",
+          "required": false
+        },
+        {
+          "name": "completed_at",
+          "type": "datetime",
+          "required": false
+        }
       ]
     },
     {
-      "name": "Comment",
-      "description": "User written response to guided questions.",
+      "name": "FavoriteItem",
+      "description": "Saved highlights, notes, and content references.",
       "fields": [
-        {"name": "id", "type": "uuid", "required": true},
-        {"name": "user_id", "type": "uuid", "required": true},
-        {"name": "content_item_id", "type": "uuid", "required": true},
-        {"name": "text", "type": "string", "required": true},
-        {"name": "status", "type": "CommentStatus", "required": true},
-        {"name": "word_count", "type": "integer", "required": false},
-        {"name": "submitted_at", "type": "datetime", "required": false},
-        {"name": "updated_at", "type": "datetime", "required": true}
+        {
+          "name": "id",
+          "type": "uuid",
+          "required": true
+        },
+        {
+          "name": "user_id",
+          "type": "uuid",
+          "required": true
+        },
+        {
+          "name": "source_type",
+          "type": "FavoriteSourceType",
+          "required": true
+        },
+        {
+          "name": "source_id",
+          "type": "uuid",
+          "required": true
+        },
+        {
+          "name": "note",
+          "type": "string",
+          "required": false
+        }
       ]
     },
     {
-      "name": "Highlight",
-      "description": "Highlighted text range within content.",
+      "name": "ReminderSetting",
+      "description": "Daily reminder and workshop follow-up reminder preferences.",
       "fields": [
-        {"name": "id", "type": "uuid", "required": true},
-        {"name": "user_id", "type": "uuid", "required": true},
-        {"name": "source_type", "type": "HighlightSourceType", "required": true},
-        {"name": "source_id", "type": "uuid", "required": true},
-        {"name": "quote", "type": "string", "required": true},
-        {"name": "color", "type": "string", "required": false},
-        {"name": "created_at", "type": "datetime", "required": true}
-      ]
-    },
-    {
-      "name": "Note",
-      "description": "User note attached to a highlight or content.",
-      "fields": [
-        {"name": "id", "type": "uuid", "required": true},
-        {"name": "user_id", "type": "uuid", "required": true},
-        {"name": "highlight_id", "type": "uuid", "required": false},
-        {"name": "source_type", "type": "HighlightSourceType", "required": true},
-        {"name": "source_id", "type": "uuid", "required": true},
-        {"name": "text", "type": "string", "required": true},
-        {"name": "updated_at", "type": "datetime", "required": true}
-      ]
-    },
-    {
-      "name": "Favorite",
-      "description": "Saved user item (highlight/note/content).",
-      "fields": [
-        {"name": "id", "type": "uuid", "required": true},
-        {"name": "user_id", "type": "uuid", "required": true},
-        {"name": "item_type", "type": "FavoriteItemType", "required": true},
-        {"name": "item_id", "type": "uuid", "required": true},
-        {"name": "created_at", "type": "datetime", "required": true}
-      ]
-    },
-    {
-      "name": "Collection",
-      "description": "User-defined grouping of favorites.",
-      "fields": [
-        {"name": "id", "type": "uuid", "required": true},
-        {"name": "user_id", "type": "uuid", "required": true},
-        {"name": "name", "type": "string", "required": true},
-        {"name": "created_at", "type": "datetime", "required": true}
-      ]
-    },
-    {
-      "name": "CollectionItem",
-      "description": "Mapping of favorites into collections.",
-      "fields": [
-        {"name": "collection_id", "type": "uuid", "required": true},
-        {"name": "favorite_id", "type": "uuid", "required": true},
-        {"name": "created_at", "type": "datetime", "required": true}
-      ]
-    },
-    {
-      "name": "EbookProgress",
-      "description": "Reading progress for an e-book.",
-      "fields": [
-        {"name": "id", "type": "uuid", "required": true},
-        {"name": "user_id", "type": "uuid", "required": true},
-        {"name": "ebook_id", "type": "uuid", "required": true},
-        {"name": "current_page", "type": "integer", "required": true},
-        {"name": "progress_percent", "type": "integer", "required": true},
-        {"name": "last_read_at", "type": "datetime", "required": true}
-      ]
-    },
-    {
-      "name": "Download",
-      "description": "Offline download record for content.",
-      "fields": [
-        {"name": "id", "type": "uuid", "required": true},
-        {"name": "user_id", "type": "uuid", "required": true},
-        {"name": "content_type", "type": "DownloadContentType", "required": true},
-        {"name": "content_id", "type": "uuid", "required": true},
-        {"name": "status", "type": "DownloadStatus", "required": true},
-        {"name": "size_bytes", "type": "integer", "required": false},
-        {"name": "updated_at", "type": "datetime", "required": true}
-      ]
-    },
-    {
-      "name": "Achievement",
-      "description": "Certificate or badge issued after completion.",
-      "fields": [
-        {"name": "id", "type": "uuid", "required": true},
-        {"name": "user_id", "type": "uuid", "required": true},
-        {"name": "type", "type": "AchievementType", "required": true},
-        {"name": "source_type", "type": "AchievementSourceType", "required": true},
-        {"name": "source_id", "type": "uuid", "required": true},
-        {"name": "issued_at", "type": "datetime", "required": true}
-      ]
-    },
-    {
-      "name": "ContentReview",
-      "description": "Post-completion evaluation prompt results.",
-      "fields": [
-        {"name": "id", "type": "uuid", "required": true},
-        {"name": "user_id", "type": "uuid", "required": true},
-        {"name": "content_type", "type": "ReviewTargetType", "required": true},
-        {"name": "content_id", "type": "uuid", "required": true},
-        {"name": "response", "type": "string", "required": true},
-        {"name": "submitted_at", "type": "datetime", "required": true}
-      ]
-    },
-    {
-      "name": "CoachAssignment",
-      "description": "Coach to client mapping (Phase 2).",
-      "fields": [
-        {"name": "coach_user_id", "type": "uuid", "required": true},
-        {"name": "client_user_id", "type": "uuid", "required": true},
-        {"name": "created_at", "type": "datetime", "required": true}
+        {
+          "name": "user_id",
+          "type": "uuid",
+          "required": true
+        },
+        {
+          "name": "daily_enabled",
+          "type": "boolean",
+          "required": true
+        },
+        {
+          "name": "daily_time_local",
+          "type": "time",
+          "required": true
+        },
+        {
+          "name": "workshop_followup_enabled",
+          "type": "boolean",
+          "required": true
+        }
       ]
     }
   ],
   "enums": [
-    {"name": "LanguageCode", "values": ["tr", "en", "es"]},
-    {"name": "UserRole", "values": ["plan_owner", "plan_member", "coach"]},
-    {"name": "UserStatus", "values": ["active", "disabled"]},
-    {"name": "ThemeMode", "values": ["system", "light", "dark"]},
-    {"name": "ReaderBackground", "values": ["white", "sepia", "dark"]},
-    {"name": "PlanType", "values": ["individual", "family", "group"]},
-    {"name": "SubscriptionStatus", "values": ["trial", "active", "canceled", "inactive"]},
-    {"name": "StorePlatform", "values": ["apple", "google"]},
-    {"name": "AddOnCode", "values": ["ai_package", "coaching_training", "extra_seats_5", "extra_seats_10"]},
-    {"name": "AddOnStatus", "values": ["active", "inactive"]},
-    {"name": "SeatStatus", "values": ["available", "invited", "active", "removed"]},
-    {"name": "InvitationStatus", "values": ["pending", "accepted", "expired", "revoked"]},
-    {"name": "ContentParentType", "values": ["journey_day", "package", "workshop"]},
-    {"name": "ContentItemType", "values": ["reading", "exercise", "question"]},
-    {"name": "ProgressTargetType", "values": ["journey_day", "package", "workshop", "module", "journey", "ebook"]},
-    {"name": "ProgressStatus", "values": ["locked", "available", "in_progress", "completed"]},
-    {"name": "CommentStatus", "values": ["draft", "submitted", "locked"]},
-    {"name": "HighlightSourceType", "values": ["ebook", "workshop", "package", "journey_day"]},
-    {"name": "FavoriteItemType", "values": ["highlight", "note", "content"]},
-    {"name": "DownloadContentType", "values": ["ebook", "workshop", "package", "journey"]},
-    {"name": "DownloadStatus", "values": ["queued", "downloading", "downloaded", "failed"]},
-    {"name": "AchievementType", "values": ["badge", "certificate"]},
-    {"name": "AchievementSourceType", "values": ["workshop", "module", "journey", "ebook"]},
-    {"name": "ReviewTargetType", "values": ["workshop", "module", "journey"]}
+    {
+      "name": "UserRole",
+      "values": [
+        "guest",
+        "member",
+        "owner",
+        "coach"
+      ]
+    },
+    {
+      "name": "LanguageCode",
+      "values": [
+        "tr",
+        "en",
+        "es"
+      ]
+    },
+    {
+      "name": "SubscriptionStatus",
+      "values": [
+        "inactive",
+        "trial",
+        "active",
+        "canceled"
+      ]
+    },
+    {
+      "name": "PlanType",
+      "values": [
+        "individual",
+        "family",
+        "group"
+      ]
+    },
+    {
+      "name": "AddOnCode",
+      "values": [
+        "ai_pack",
+        "coach_training",
+        "seat_plus_5",
+        "seat_plus_10"
+      ]
+    },
+    {
+      "name": "SeatStatus",
+      "values": [
+        "open",
+        "invited",
+        "active",
+        "removed"
+      ]
+    },
+    {
+      "name": "WorkshopStageType",
+      "values": [
+        "insight",
+        "analysis",
+        "camp",
+        "facilitator_guide",
+        "workbook",
+        "closure"
+      ]
+    },
+    {
+      "name": "SessionSlot",
+      "values": [
+        "morning",
+        "midday",
+        "evening"
+      ]
+    },
+    {
+      "name": "WorkshopBlockType",
+      "values": [
+        "intro",
+        "verse_reference",
+        "explanation",
+        "bridge",
+        "exercise",
+        "output"
+      ]
+    },
+    {
+      "name": "WorkshopArtifactType",
+      "values": [
+        "worksheet",
+        "guide",
+        "output_card",
+        "plan_template",
+        "reflection_map"
+      ]
+    },
+    {
+      "name": "WorksheetType",
+      "values": [
+        "load_map",
+        "inner_sentence_shift",
+        "dua_card",
+        "trust_balance",
+        "transformation_plan"
+      ]
+    },
+    {
+      "name": "WorkbookEntryStatus",
+      "values": [
+        "draft",
+        "saved",
+        "submitted",
+        "archived"
+      ]
+    },
+    {
+      "name": "FollowUpWindowType",
+      "values": [
+        "h72",
+        "w3",
+        "d30"
+      ]
+    },
+    {
+      "name": "FollowUpStatus",
+      "values": [
+        "planned",
+        "active",
+        "completed",
+        "missed"
+      ]
+    },
+    {
+      "name": "CommentTargetType",
+      "values": [
+        "journey_day",
+        "module_package",
+        "workshop_stage",
+        "workshop_session",
+        "ebook_chapter"
+      ]
+    },
+    {
+      "name": "CommentStatus",
+      "values": [
+        "draft",
+        "submitted",
+        "locked",
+        "expired"
+      ]
+    },
+    {
+      "name": "ProgressTargetType",
+      "values": [
+        "journey",
+        "module",
+        "package",
+        "workshop",
+        "workshop_stage",
+        "workshop_session",
+        "ebook"
+      ]
+    },
+    {
+      "name": "ProgressStatus",
+      "values": [
+        "locked",
+        "available",
+        "in_progress",
+        "completed"
+      ]
+    },
+    {
+      "name": "FavoriteSourceType",
+      "values": [
+        "highlight",
+        "note",
+        "journey",
+        "workshop",
+        "module",
+        "ebook"
+      ]
+    },
+    {
+      "name": "ThemeMode",
+      "values": [
+        "light",
+        "dark",
+        "system"
+      ]
+    },
+    {
+      "name": "GenderOption",
+      "values": [
+        "female",
+        "male",
+        "prefer_not_to_say"
+      ]
+    }
   ],
   "relationships": [
-    {"from": "User", "to": "UserSession", "type": "one_to_many", "field": "user_id"},
-    {"from": "User", "to": "AccessibilitySettings", "type": "one_to_one", "field": "user_id"},
-    {"from": "User", "to": "ReadingSettings", "type": "one_to_one", "field": "user_id"},
-    {"from": "User", "to": "ReminderSettings", "type": "one_to_one", "field": "user_id"},
-    {"from": "User", "to": "Subscription", "type": "one_to_many", "field": "owner_user_id"},
-    {"from": "SubscriptionPlan", "to": "Subscription", "type": "one_to_many", "field": "plan_id"},
-    {"from": "Subscription", "to": "SubscriptionAddOn", "type": "one_to_many", "field": "subscription_id"},
-    {"from": "AddOn", "to": "SubscriptionAddOn", "type": "one_to_many", "field": "addon_id"},
-    {"from": "Subscription", "to": "Seat", "type": "one_to_many", "field": "subscription_id"},
-    {"from": "Subscription", "to": "Invitation", "type": "one_to_many", "field": "subscription_id"},
-    {"from": "Subscription", "to": "PaymentTransaction", "type": "one_to_many", "field": "subscription_id"},
-    {"from": "Journey", "to": "JourneyDay", "type": "one_to_many", "field": "journey_id"},
-    {"from": "Module", "to": "Package", "type": "one_to_many", "field": "module_id"},
-    {"from": "Ebook", "to": "EbookChapter", "type": "one_to_many", "field": "ebook_id"},
-    {"from": "ContentItem", "to": "ExerciseStep", "type": "one_to_many", "field": "content_item_id"},
-    {"from": "User", "to": "ContentProgress", "type": "one_to_many", "field": "user_id"},
-    {"from": "User", "to": "Comment", "type": "one_to_many", "field": "user_id"},
-    {"from": "User", "to": "Highlight", "type": "one_to_many", "field": "user_id"},
-    {"from": "User", "to": "Note", "type": "one_to_many", "field": "user_id"},
-    {"from": "User", "to": "Favorite", "type": "one_to_many", "field": "user_id"},
-    {"from": "User", "to": "Collection", "type": "one_to_many", "field": "user_id"},
-    {"from": "Collection", "to": "CollectionItem", "type": "one_to_many", "field": "collection_id"},
-    {"from": "User", "to": "EbookProgress", "type": "one_to_many", "field": "user_id"},
-    {"from": "User", "to": "Download", "type": "one_to_many", "field": "user_id"},
-    {"from": "User", "to": "Achievement", "type": "one_to_many", "field": "user_id"},
-    {"from": "User", "to": "ContentReview", "type": "one_to_many", "field": "user_id"},
-    {"from": "User", "to": "CoachAssignment", "type": "one_to_many", "field": "coach_user_id"}
+    {
+      "from": "UserSession",
+      "to": "User",
+      "type": "many_to_one",
+      "field": "user_id"
+    },
+    {
+      "from": "DemographicProfile",
+      "to": "User",
+      "type": "one_to_one",
+      "field": "user_id"
+    },
+    {
+      "from": "AccessibilitySettings",
+      "to": "User",
+      "type": "one_to_one",
+      "field": "user_id"
+    },
+    {
+      "from": "Subscription",
+      "to": "User",
+      "type": "many_to_one",
+      "field": "owner_user_id"
+    },
+    {
+      "from": "Subscription",
+      "to": "SubscriptionPlan",
+      "type": "many_to_one",
+      "field": "plan_id"
+    },
+    {
+      "from": "Seat",
+      "to": "Subscription",
+      "type": "many_to_one",
+      "field": "subscription_id"
+    },
+    {
+      "from": "Package",
+      "to": "Module",
+      "type": "many_to_one",
+      "field": "module_id"
+    },
+    {
+      "from": "EbookChapter",
+      "to": "Ebook",
+      "type": "many_to_one",
+      "field": "ebook_id"
+    },
+    {
+      "from": "WorkshopStage",
+      "to": "Workshop",
+      "type": "many_to_one",
+      "field": "workshop_id"
+    },
+    {
+      "from": "WorkshopSession",
+      "to": "WorkshopStage",
+      "type": "many_to_one",
+      "field": "workshop_stage_id"
+    },
+    {
+      "from": "WorkshopContentBlock",
+      "to": "WorkshopStage",
+      "type": "many_to_one",
+      "field": "workshop_stage_id"
+    },
+    {
+      "from": "WorkshopArtifact",
+      "to": "Workshop",
+      "type": "many_to_one",
+      "field": "workshop_id"
+    },
+    {
+      "from": "WorkbookEntry",
+      "to": "User",
+      "type": "many_to_one",
+      "field": "user_id"
+    },
+    {
+      "from": "WorkbookEntry",
+      "to": "Workshop",
+      "type": "many_to_one",
+      "field": "workshop_id"
+    },
+    {
+      "from": "WorkbookEntry",
+      "to": "WorkshopStage",
+      "type": "many_to_one",
+      "field": "stage_id"
+    },
+    {
+      "from": "WorkshopFollowUpPlan",
+      "to": "Workshop",
+      "type": "many_to_one",
+      "field": "workshop_id"
+    },
+    {
+      "from": "WorkshopFollowUpPlan",
+      "to": "User",
+      "type": "many_to_one",
+      "field": "user_id"
+    },
+    {
+      "from": "CommentSubmission",
+      "to": "User",
+      "type": "many_to_one",
+      "field": "user_id"
+    },
+    {
+      "from": "ContentProgress",
+      "to": "User",
+      "type": "many_to_one",
+      "field": "user_id"
+    },
+    {
+      "from": "FavoriteItem",
+      "to": "User",
+      "type": "many_to_one",
+      "field": "user_id"
+    },
+    {
+      "from": "ReminderSetting",
+      "to": "User",
+      "type": "one_to_one",
+      "field": "user_id"
+    }
   ]
 }

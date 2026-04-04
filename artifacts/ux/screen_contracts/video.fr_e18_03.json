@@ -1,0 +1,67 @@
+{
+  "id": "video.fr_e18_03",
+  "title": "Altyazi, transkript ve erisilebilirlik",
+  "route": "/epic-18/fr-e18-03",
+  "purpose": "Implements FR-E18-03: Altyazi, transkript ve erisilebilirlik.",
+  "entryPoints": [
+    "content.video_player"
+  ],
+  "inputs": [
+    {
+      "name": "videoId",
+      "type": "uuid",
+      "required": true,
+      "source": "navigation"
+    },
+    {
+      "name": "userId",
+      "type": "uuid",
+      "required": true,
+      "source": "session"
+    },
+    {
+      "name": "locale",
+      "type": "LanguageCode",
+      "required": true,
+      "source": "profile"
+    }
+  ],
+  "dataDependencies": [
+    "VideoSubtitleTrack",
+    "VideoTranscriptCue",
+    "AccessibilitySettings"
+  ],
+  "uiStates": {
+    "loading": {
+      "description": "Skeleton placeholders are shown while loading FR-E18-03 data."
+    },
+    "ready": {
+      "description": "FR-E18-03 flows are fully interactive with primary CTA available when prerequisites are met."
+    },
+    "empty": {
+      "description": "Empty state explains why no data is available and points to next best action."
+    },
+    "error": {
+      "description": "Error state is recoverable with user-safe messaging and a retry action."
+    },
+    "offline": {
+      "description": "Offline state shows last synchronized data and queues write actions for later sync."
+    }
+  },
+  "analytics": {
+    "screenView": "video_fr_e18_03_viewed",
+    "events": [
+      "video_fr_e18_03_viewed"
+    ]
+  },
+  "acceptanceCriteriaRefs": [
+    "AC-FR-E18-03-01",
+    "AC-FR-E18-03-02",
+    "AC-FR-E18-03-03",
+    "AC-FR-E18-03-04"
+  ],
+  "gates": [
+    "auth",
+    "subscription"
+  ]
+}

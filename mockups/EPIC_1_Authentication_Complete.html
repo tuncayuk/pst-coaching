@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PST Coaching Mobile - EPIC 1: Authentication</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary: #00B4D8; 
@@ -20,7 +20,19 @@
             --gray-400: #A3A3A3; --gray-600: #525252; --gray-700: #404040; --gray-900: #171717;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #f0f0f0, #e0e0e0); overflow: hidden; }
+        body {
+            font-family: 'Manrope', sans-serif;
+            background:
+                radial-gradient(circle at 8% 12%, #dff4ff 0%, rgba(223, 244, 255, 0) 38%),
+                radial-gradient(circle at 92% 90%, #ebe7ff 0%, rgba(235, 231, 255, 0) 42%),
+                linear-gradient(135deg, #eef3f8, #e6edf4);
+            overflow: hidden;
+        }
+        a,
+        button,
+        .nav-item {
+            -webkit-tap-highlight-color: transparent;
+        }
         
         /* Layout */
         .app { display: flex; height: 100vh; }
@@ -30,41 +42,42 @@
         .viewer { flex: 1; overflow-y: auto; padding: 3rem; display: flex; justify-content: center; align-items: flex-start; }
         
         /* Sidebar */
-        .logo { font-family: 'Poppins', sans-serif; font-size: 2rem; font-weight: 800; color: var(--primary); padding: 2.5rem; border-bottom: 1px solid var(--gray-200); background: linear-gradient(135deg, var(--primary-light), white); }
+        .logo { font-family: 'Sora', sans-serif; font-size: 2rem; font-weight: 800; color: var(--primary); padding: 2.5rem; border-bottom: 1px solid var(--gray-200); background: linear-gradient(135deg, var(--primary-light), white); }
         .subtitle { font-size: 0.875rem; color: var(--gray-600); font-weight: 500; margin-top: 0.5rem; letter-spacing: 0.02em; }
         .epic-header { padding: 1.5rem; background: linear-gradient(135deg, var(--primary-light), var(--primary-100)); border-bottom: 2px solid var(--primary); }
-        .epic-title { font-family: 'Poppins', sans-serif; font-size: 1.25rem; font-weight: 700; color: var(--gray-900); margin-bottom: 0.5rem; }
-        .epic-meta { font-size: 0.8125rem; color: var(--gray-600); }
+        .epic-title { font-family: 'Sora', sans-serif; font-size: 1.25rem; font-weight: 700; color: var(--gray-900); margin-bottom: 0.5rem; }
+        .epic-meta { font-size: 0.75rem; color: var(--gray-600); }
         
         /* Navigation Map */
         .nav-map { background: var(--purple-light); border-left: 4px solid var(--purple); padding: 1rem; margin: 1rem 1.75rem; border-radius: 0.5rem; }
-        .nav-map-title { font-weight: 700; color: var(--purple); font-size: 0.8125rem; margin-bottom: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; display: flex; align-items: center; gap: 0.5rem; }
+        .nav-map-title { font-weight: 700; color: var(--purple); font-size: 0.75rem; margin-bottom: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; display: flex; align-items: center; gap: 0.5rem; }
         .nav-flow { display: flex; flex-direction: column; gap: 0.5rem; }
         .nav-flow-item { display: flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; color: var(--gray-700); }
-        .nav-flow-box { background: white; padding: 0.375rem 0.625rem; border-radius: 0.375rem; border: 2px solid var(--gray-300); font-weight: 600; white-space: nowrap; font-size: 0.6875rem; }
+        .nav-flow-box { background: white; padding: 0.5rem 0.75rem; border-radius: 0.5rem; border: 2px solid var(--gray-300); font-weight: 600; white-space: nowrap; font-size: 0.75rem; }
         .nav-flow-box.active { background: var(--primary); color: white; border-color: var(--primary); }
         .nav-flow-arrow { color: var(--gray-400); font-weight: 700; }
-        .nav-flow-label { color: var(--gray-600); font-size: 0.625rem; font-style: italic; }
+        .nav-flow-label { color: var(--gray-600); font-size: 0.75rem; font-style: italic; }
         
         .nav-section { padding: 1.25rem 0; border-bottom: 1px solid var(--gray-100); }
-        .nav-title { padding: 0.75rem 1.75rem; font-size: 0.6875rem; font-weight: 700; color: var(--gray-600); text-transform: uppercase; letter-spacing: 0.1em; }
-        .nav-item { padding: 1rem 1.75rem; cursor: pointer; font-size: 0.9375rem; transition: all 0.2s; color: var(--gray-700); display: flex; align-items: center; gap: 0.875rem; border-left: 3px solid transparent; }
+        .nav-title { padding: 0.75rem 1.75rem; font-size: 0.75rem; font-weight: 700; color: var(--gray-600); text-transform: uppercase; letter-spacing: 0.1em; }
+        .nav-item { padding: 1rem 1.75rem; cursor: pointer; font-size: 1rem; transition: all 0.2s; color: var(--gray-700); display: flex; align-items: center; gap: 0.875rem; border-left: 3px solid transparent; }
         .nav-item:hover { background: var(--gray-50); }
         .nav-item.active { background: var(--primary-light); color: var(--primary-dark); font-weight: 600; border-left-color: var(--primary); }
-        .nav-icon { font-size: 1.375rem; }
-        .nav-badge { background: var(--primary); color: white; padding: 0.25rem 0.625rem; border-radius: 9999px; font-size: 0.6875rem; font-weight: 700; margin-left: auto; }
+        .nav-item:focus-visible { outline: 3px solid rgba(0, 180, 216, 0.35); outline-offset: -3px; background: var(--gray-50); }
+        .nav-icon { font-size: 1.5rem; }
+        .nav-badge { background: var(--primary); color: white; padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 700; margin-left: auto; }
         
         /* Acceptance Criteria */
         .ac-section { background: var(--secondary-light); border-left: 4px solid var(--secondary); padding: 1rem; margin: 0.75rem 1.75rem; border-radius: 0.5rem; }
         .ac-title { font-weight: 700; color: var(--secondary); font-size: 0.75rem; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.05em; }
         .ac-list { list-style: none; }
-        .ac-list li { font-size: 0.75rem; color: var(--gray-700); margin-bottom: 0.375rem; padding-left: 1.25rem; position: relative; line-height: 1.4; }
+        .ac-list li { font-size: 0.75rem; color: var(--gray-700); margin-bottom: 0.5rem; padding-left: 1.25rem; position: relative; line-height: 1.4; }
         .ac-list li:before { content: "✓"; position: absolute; left: 0; color: var(--success); font-weight: 700; }
         
         /* Topbar */
-        .screen-title { font-family: 'Poppins', sans-serif; font-size: 2.25rem; font-weight: 700; color: var(--gray-900); }
-        .screen-meta { color: var(--gray-600); font-size: 0.9375rem; margin-top: 0.5rem; display: flex; align-items: center; gap: 1rem; }
-        .meta-badge { background: var(--primary-light); color: var(--primary-dark); padding: 0.375rem 0.875rem; border-radius: 0.5rem; font-size: 0.8125rem; font-weight: 600; }
+        .screen-title { font-family: 'Sora', sans-serif; font-size: 2.25rem; font-weight: 700; color: var(--gray-900); letter-spacing: -0.02em; }
+        .screen-meta { color: var(--gray-600); font-size: 1rem; margin-top: 0.5rem; display: flex; align-items: center; gap: 1rem; }
+        .meta-badge { background: var(--primary-light); color: var(--primary-dark); padding: 0.5rem 0.875rem; border-radius: 0.5rem; font-size: 0.75rem; font-weight: 600; }
         
         /* iPhone Frame */
         .iphone { width: 393px; height: 852px; background: #1d1d1f; border-radius: 55px; padding: 12px; box-shadow: 0 60px 120px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.1); position: relative; }
@@ -75,14 +88,283 @@
         .content::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.3); border-radius: 10px; }
         
         /* Status Bar */
-        .status { height: 54px; display: flex; align-items: center; justify-content: space-between; padding: 0 1.5rem; font-size: 0.8125rem; font-weight: 600; background: white; }
+        .status { height: 54px; display: flex; align-items: center; justify-content: space-between; padding: 0 1.5rem; font-size: 0.75rem; font-weight: 600; background: white; }
         
         /* Common UI Elements */
-        .btn { padding: 0.875rem 1.5rem; border-radius: 0.75rem; font-weight: 600; font-size: 1rem; border: none; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.2s; display: inline-block; text-align: center; }
+        .btn { padding: 0.875rem 1.5rem; border-radius: 0.75rem; font-weight: 700; font-size: 1rem; border: none; cursor: pointer; font-family: 'Manrope', sans-serif; transition: all 0.2s; display: inline-block; text-align: center; }
         .btn-primary { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; box-shadow: 0 4px 16px rgba(0,180,216,0.4); }
         .btn-secondary { background: white; color: var(--gray-700); border: 2px solid var(--gray-300); }
+        .btn:hover { transform: translateY(-1px); }
+        .btn:active { transform: translateY(0); }
+        .btn:focus-visible,
+        .social-btn:focus-visible,
+        .choice-btn:focus-visible,
+        .field-action:focus-visible,
+        .subtle-link:focus-visible,
+        .form-input:focus-visible,
+        .form-select:focus-visible {
+            outline: 3px solid rgba(14, 165, 233, 0.28);
+            outline-offset: 2px;
+        }
         
         .card { background: white; border-radius: 1rem; padding: 1.25rem; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+
+        .screen-stack { padding: 1.5rem; min-height: calc(100% - 54px); display: flex; flex-direction: column; }
+        .screen-stack.center { justify-content: center; }
+        .hero { text-align: center; margin-bottom: 1.5rem; }
+        .hero-mark {
+            width: 4.5rem;
+            height: 4.5rem;
+            margin: 0 auto 1rem;
+            border-radius: 1rem;
+            display: grid;
+            place-items: center;
+            font-family: 'Sora', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: white;
+            background: linear-gradient(140deg, var(--primary), var(--primary-dark));
+            box-shadow: 0 12px 28px rgba(0, 180, 216, 0.35);
+        }
+        .hero-title {
+            font-family: 'Sora', sans-serif;
+            font-size: 1.75rem;
+            line-height: 1.15;
+            color: #1f2937;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
+        }
+        .hero-subtitle {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #525252;
+        }
+
+        .form-group { margin-bottom: 0.875rem; }
+        .form-label { display: block; font-size: 0.75rem; font-weight: 700; color: #374151; margin-bottom: 0.5rem; }
+        .form-input,
+        .form-select {
+            width: 100%;
+            padding: 0.875rem 0.875rem;
+            border-radius: 0.75rem;
+            border: 1.8px solid #d1d5db;
+            font-family: 'Manrope', sans-serif;
+            font-size: 1rem;
+            color: #1f2937;
+            background: white;
+        }
+        .form-input:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: #38bdf8;
+            box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+        }
+
+        .field-shell { position: relative; }
+        .field-action {
+            position: absolute;
+            right: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            border: none;
+            background: transparent;
+            color: #6b7280;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+        .field-row { display: flex; gap: 0.5rem; }
+
+        .note {
+            font-size: 0.75rem;
+            line-height: 1.45;
+            color: #6b7280;
+            margin-top: 0.5rem;
+        }
+
+        .divider {
+            position: relative;
+            text-align: center;
+            margin: 1.25rem 0;
+        }
+        .divider::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: #e5e7eb;
+        }
+        .divider span {
+            position: relative;
+            z-index: 1;
+            background: var(--gray-50);
+            padding: 0 0.75rem;
+            color: #737373;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .social-grid { display: flex; gap: 0.75rem; margin-bottom: 1.25rem; }
+        .social-btn {
+            flex: 1;
+            border: 1.5px solid #d1d5db;
+            border-radius: 0.75rem;
+            background: white;
+            color: #334155;
+            padding: 0.75rem;
+            font-size: 0.875rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            cursor: pointer;
+        }
+
+        .otp-grid { display: flex; justify-content: center; gap: 0.5rem; margin: 1.25rem 0; }
+        .otp-cell {
+            width: 2.5rem;
+            height: 3.5rem;
+            border-radius: 0.75rem;
+            border: 2px solid #cbd5e1;
+            display: grid;
+            place-items: center;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            font-size: 1rem;
+            font-weight: 700;
+            background: white;
+            color: #111827;
+        }
+
+        .strength { display: flex; gap: 0.25rem; margin-top: 0.5rem; }
+        .strength-seg { flex: 1; height: 0.25rem; border-radius: 999px; background: #e5e7eb; }
+        .strength-seg.active { background: #10b981; }
+
+        .pill {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.5rem 0.75rem;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+        }
+        .pill-danger { background: #fee2e2; color: #991b1b; }
+        .pill-success { background: #dcfce7; color: #166534; }
+        .pill-warning { background: #fef3c7; color: #92400e; }
+
+        .choice-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+        .choice-btn {
+            border: 1.5px solid #d1d5db;
+            border-radius: 0.75rem;
+            background: white;
+            color: #374151;
+            padding: 0.75rem;
+            font-size: 0.875rem;
+            font-weight: 700;
+            cursor: pointer;
+        }
+        .choice-btn.active { border-color: #38bdf8; background: #ecfeff; color: #0c4a6e; }
+
+        .list {
+            margin-left: 1rem;
+            font-size: 0.875rem;
+            line-height: 1.7;
+            color: #334155;
+        }
+
+        .subtle-link {
+            color: var(--primary-dark);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.875rem;
+        }
+        .subtle-link:hover { text-decoration: underline; }
+        .subtle-link[aria-disabled="true"] {
+            color: #94a3b8;
+            pointer-events: none;
+            text-decoration: none;
+        }
+
+        .footer-note {
+            margin-top: 0.875rem;
+            text-align: center;
+            font-size: 0.75rem;
+            line-height: 1.45;
+            color: #6b7280;
+        }
+
+        .status-right {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #4b5563;
+            letter-spacing: 0.01em;
+        }
+
+        .splash-wrap {
+            width: 100%;
+            height: 100%;
+            background:
+                radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.22) 0%, rgba(255, 255, 255, 0) 40%),
+                radial-gradient(circle at 80% 78%, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 45%),
+                linear-gradient(145deg, #00b4d8 0%, #0096b8 52%, #1370a8 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .loader-dots { display: flex; gap: 0.5rem; position: absolute; bottom: 3.5rem; }
+        .loader-dots span {
+            width: 0.5rem;
+            height: 0.5rem;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.56);
+            animation: pulse 1.2s ease-in-out infinite;
+        }
+        .loader-dots span:nth-child(2) { animation-delay: 0.18s; }
+        .loader-dots span:nth-child(3) { animation-delay: 0.36s; }
+
+        @media (max-width: 1200px) {
+            .sidebar { width: 340px; }
+            .topbar { padding: 1.25rem 1.5rem; }
+            .screen-title { font-size: 1.875rem; }
+            .viewer { padding: 1.5rem; }
+        }
+
+        @media (max-width: 900px) {
+            body { overflow: auto; }
+            .app { flex-direction: column; height: auto; min-height: 100vh; }
+            .sidebar {
+                width: 100%;
+                max-height: none;
+                border-right: none;
+                border-bottom: 1px solid var(--gray-200);
+            }
+            .nav-map { margin: 1rem; }
+            .nav-title,
+            .nav-item { padding-left: 1rem; padding-right: 1rem; }
+            .topbar { padding: 1rem; }
+            .screen-meta { flex-wrap: wrap; gap: 0.5rem; }
+            .viewer { padding: 1rem 0.75rem 2rem; }
+            .iphone { transform: scale(0.92); transform-origin: top center; margin: 0 auto; }
+        }
+
+        @media (max-width: 460px) {
+            .iphone { transform: scale(0.84); }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation: none !important;
+                transition: none !important;
+                scroll-behavior: auto !important;
+            }
+        }
         
         /* Animations */
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
@@ -101,7 +383,7 @@
             
             <div class="epic-header">
                 <div class="epic-title">EPIC 1: Kimlik Doğrulama</div>
-                <div class="epic-meta">8 User Stories • 11 Screens • 78 ACs</div>
+                <div class="epic-meta">10 User Stories • 9 FRs • 38 ACs (Rev4)</div>
             </div>
             
             <!-- Navigation Map -->
@@ -162,7 +444,7 @@
                     </div>
                     <div class="nav-flow-item">
                         <div class="nav-flow-box" id="nav-8">FaceID Setup</div>
-                        <span style="background: var(--error); color: white; padding: 0.25rem 0.5rem; border-radius: 0.375rem; font-size: 0.625rem; font-weight: 700; margin-left: 0.5rem;">NEW</span>
+                        <span style="background: var(--error); color: white; padding: 0.25rem 0.5rem; border-radius: 0.5rem; font-size: 0.75rem; font-weight: 700; margin-left: 0.5rem;">NEW</span>
                     </div>
                     <div class="nav-flow-item">
                         <span class="nav-flow-arrow">↓</span>
@@ -170,7 +452,7 @@
                     </div>
                     <div class="nav-flow-item">
                         <div class="nav-flow-box" id="nav-9">Demographics</div>
-                        <span style="background: var(--error); color: white; padding: 0.25rem 0.5rem; border-radius: 0.375rem; font-size: 0.625rem; font-weight: 700; margin-left: 0.5rem;">NEW</span>
+                        <span style="background: var(--error); color: white; padding: 0.25rem 0.5rem; border-radius: 0.5rem; font-size: 0.75rem; font-weight: 700; margin-left: 0.5rem;">NEW</span>
                     </div>
                     <div class="nav-flow-item">
                         <span class="nav-flow-arrow">↓</span>
@@ -180,217 +462,95 @@
                         <div class="nav-flow-box" style="border-color: var(--success); color: var(--success-dark);">Ana Sayfa</div>
                     </div>
                 </div>
-                <div style="margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid var(--purple); font-size: 0.625rem; color: var(--gray-600); line-height: 1.4;">
+                <div style="margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid var(--purple); font-size: 0.75rem; color: var(--gray-600); line-height: 1.4;">
                     <strong>Alt. Paths:</strong> Login → <span id="nav-10" class="nav-flow-box" style="display: inline-block; margin: 0 0.25rem;">Guest Mode</span> → Explore (limited)<br>
                     <strong>NEW:</strong> FaceID + Demographics before first content
                 </div>
             </div>
             
             <div class="nav-section">
-                <div class="nav-title">US-1.1: Splash & Onboarding</div>
+                <div class="nav-title">Prototype Screen Navigation (11 screens)</div>
                 <div class="nav-item active" onclick="showScreen(1)">
                     <span class="nav-icon">🎨</span>
                     <span>Splash Screen</span>
-                    <span class="nav-badge">7 ACs</span>
+                    <span class="nav-badge">FR-E1-01</span>
                 </div>
-                <div class="ac-section">
-                    <div class="ac-title">✓ Acceptance Criteria</div>
-                    <ul class="ac-list">
-                        <li>Display PST logo prominently</li>
-                        <li>Show brand colors and tagline</li>
-                        <li>Display loading indicator</li>
-                        <li>Auto-transition after 2-3 seconds</li>
-                        <li>Check authentication status</li>
-                        <li>Route to onboarding or home</li>
-                        <li>Handle offline state gracefully</li>
-                    </ul>
-                </div>
-                
                 <div class="nav-item" onclick="showScreen(2)">
                     <span class="nav-icon">👋</span>
                     <span>Onboarding</span>
-                    <span class="nav-badge">10 ACs</span>
+                    <span class="nav-badge">FR-E1-01</span>
                 </div>
-                <div class="ac-section">
-                    <div class="ac-title">✓ Acceptance Criteria</div>
-                    <ul class="ac-list">
-                        <li>3 screens with swipe gesture</li>
-                        <li>Visual illustrations per screen</li>
-                        <li>Clear title and description</li>
-                        <li>Progress dots indicator (1/3, 2/3, 3/3)</li>
-                        <li>Skip button on all screens</li>
-                        <li>Next/İleri button</li>
-                        <li>Final screen: Başla button</li>
-                        <li>Only show once per install</li>
-                        <li>Smooth animations</li>
-                        <li>Accessibility support</li>
-                    </ul>
-                </div>
-            </div>
-            
-            <div class="nav-section">
-                <div class="nav-title">US-1.2: Login</div>
                 <div class="nav-item" onclick="showScreen(3)">
                     <span class="nav-icon">🔐</span>
                     <span>Login</span>
-                    <span class="nav-badge">12 ACs</span>
+                    <span class="nav-badge">FR-E1-03</span>
                 </div>
-                <div class="ac-section">
-                    <div class="ac-title">✓ Acceptance Criteria</div>
-                    <ul class="ac-list">
-                        <li>Email/phone input field</li>
-                        <li>Password with show/hide toggle</li>
-                        <li>Remember me checkbox</li>
-                        <li>Login button (disabled until valid)</li>
-                        <li>Forgot password link</li>
-                        <li>Social login (Google/Apple)</li>
-                        <li>Sign up link</li>
-                        <li>Email/phone validation</li>
-                        <li>Password min 8 chars</li>
-                        <li>Show error messages</li>
-                        <li>Loading state during auth</li>
-                        <li>Redirect to home on success</li>
-                    </ul>
-                </div>
-            </div>
-            
-            <div class="nav-section">
-                <div class="nav-title">US-1.3: Register</div>
                 <div class="nav-item" onclick="showScreen(4)">
                     <span class="nav-icon">📝</span>
                     <span>Register</span>
-                    <span class="nav-badge">15 ACs</span>
+                    <span class="nav-badge">FR-E1-02</span>
                 </div>
-                <div class="ac-section">
-                    <div class="ac-title">✓ Acceptance Criteria</div>
-                    <ul class="ac-list">
-                        <li>Full name input field</li>
-                        <li>Email with validation</li>
-                        <li>Phone with country code</li>
-                        <li>Password (min 8 chars)</li>
-                        <li>Confirm password field</li>
-                        <li>Password strength indicator</li>
-                        <li>Terms & conditions checkbox</li>
-                        <li>Privacy policy checkbox</li>
-                        <li>Register button</li>
-                        <li>Social registration options</li>
-                        <li>Validate before submit</li>
-                        <li>Show specific errors</li>
-                        <li>Check password match</li>
-                        <li>Email uniqueness check</li>
-                        <li>Send verification code</li>
-                    </ul>
-                </div>
-            </div>
-            
-            <div class="nav-section">
-                <div class="nav-title">US-1.4: Forgot Password</div>
                 <div class="nav-item" onclick="showScreen(5)">
                     <span class="nav-icon">🔑</span>
                     <span>Forgot Password</span>
-                    <span class="nav-badge">8 ACs</span>
+                    <span class="nav-badge">FR-E1-04</span>
                 </div>
-                <div class="ac-section">
-                    <div class="ac-title">✓ Acceptance Criteria</div>
-                    <ul class="ac-list">
-                        <li>Email/phone input</li>
-                        <li>Send code button</li>
-                        <li>Validate email/phone format</li>
-                        <li>Check if account exists</li>
-                        <li>Send verification via email/SMS</li>
-                        <li>Show success message</li>
-                        <li>Route to verification</li>
-                        <li>Back to login option</li>
-                    </ul>
-                </div>
-            </div>
-            
-            <div class="nav-section">
-                <div class="nav-title">US-1.5: Verification & Reset</div>
                 <div class="nav-item" onclick="showScreen(6)">
                     <span class="nav-icon">📱</span>
                     <span>Verification</span>
-                    <span class="nav-badge">5 ACs</span>
+                    <span class="nav-badge">FR-E1-02/04</span>
                 </div>
-                <div class="ac-section">
-                    <div class="ac-title">✓ Acceptance Criteria</div>
-                    <ul class="ac-list">
-                        <li>6-digit code input fields</li>
-                        <li>Auto-focus next field</li>
-                        <li>Verify button</li>
-                        <li>Resend with timer</li>
-                        <li>Navigate to reset on success</li>
-                    </ul>
-                </div>
-                
                 <div class="nav-item" onclick="showScreen(7)">
                     <span class="nav-icon">🔒</span>
                     <span>Reset Password</span>
-                    <span class="nav-badge">3 ACs</span>
+                    <span class="nav-badge">FR-E1-04</span>
                 </div>
-                <div class="ac-section">
-                    <div class="ac-title">✓ Acceptance Criteria</div>
-                    <ul class="ac-list">
-                        <li>New password with validation</li>
-                        <li>Confirm new password</li>
-                        <li>Reset routes to login on success</li>
-                    </ul>
-                </div>
-            </div>
-            
-            <div class="nav-section">
-                <div class="nav-title">US-1.8: FaceID Login</div>
                 <div class="nav-item" onclick="showScreen(8)">
                     <span class="nav-icon">👤</span>
                     <span>FaceID Setup</span>
-                    <span class="nav-badge">4 ACs</span>
-                    <span style="background: var(--error); color: white; padding: 0.25rem 0.5rem; border-radius: 0.375rem; font-size: 0.625rem; font-weight: 700; margin-left: 0.5rem;">NEW</span>
+                    <span class="nav-badge">FR-E1-07</span>
                 </div>
-                <div class="ac-section">
-                    <div class="ac-title">✓ Acceptance Criteria</div>
-                    <ul class="ac-list">
-                        <li>FaceID destekli cihazlarda biyometrik giriş seçeneği sunulur</li>
-                        <li>İlk girişte açık onay alınır (opt-in)</li>
-                        <li>Biyometrik doğrulama başarısızsa şifre ile girişe düşer</li>
-                        <li>FaceID kapatma/açma ayarı Profil > Ayarlar'da bulunur</li>
-                    </ul>
-                </div>
-            </div>
-            
-            <div class="nav-section">
-                <div class="nav-title">US-1.9 & US-1.10: New Features</div>
                 <div class="nav-item" onclick="showScreen(9)">
                     <span class="nav-icon">📊</span>
                     <span>Demographics</span>
-                    <span class="nav-badge">7 ACs</span>
-                    <span style="background: var(--error); color: white; padding: 0.25rem 0.5rem; border-radius: 0.375rem; font-size: 0.625rem; font-weight: 700; margin-left: 0.5rem;">NEW</span>
+                    <span class="nav-badge">FR-E1-08</span>
                 </div>
-                <div class="ac-section">
-                    <div class="ac-title">✓ Acceptance Criteria</div>
-                    <ul class="ac-list">
-                        <li>İlk kez içerik başlatmadan önce yaş/cinsiyet/ülke formu açılır</li>
-                        <li>Bilgiler kaydedilmeden içerik başlatılamaz</li>
-                        <li>Yaş alanı zorunlu ve 13-120 aralığında doğrulanır</li>
-                        <li>Cinsiyet alanı opsiyoneldir: Kadın/Erkek/Belirtmek istemiyorum</li>
-                        <li>Ülke alanı zorunlu ve arama ile seçilebilir</li>
-                        <li>Bilgiler profilimde görüntülenir ve güncellenebilir</li>
-                        <li>Daha önce kaydedilmişse tekrar sorulmaz</li>
-                    </ul>
-                </div>
-                
                 <div class="nav-item" onclick="showScreen(10)">
                     <span class="nav-icon">👻</span>
                     <span>Guest Mode</span>
-                    <span class="nav-badge">4 ACs</span>
-                    <span style="background: var(--error); color: white; padding: 0.25rem 0.5rem; border-radius: 0.375rem; font-size: 0.625rem; font-weight: 700; margin-left: 0.5rem;">NEW</span>
+                    <span class="nav-badge">FR-E1-09</span>
+                </div>
+                <div class="nav-item" onclick="showScreen(11)">
+                    <span class="nav-icon">🛡️</span>
+                    <span>Session End / Re-Auth</span>
+                    <span class="nav-badge">FR-E1-05</span>
                 </div>
                 <div class="ac-section">
-                    <div class="ac-title">✓ Acceptance Criteria</div>
+                    <div class="ac-title">✓ Screen to FR Mapping</div>
                     <ul class="ac-list">
-                        <li>Misafir oturumu başlatılır ve profil oluşturulmaz</li>
-                        <li>Keşfet ve detay ekranları erişilebilir olur</li>
-                        <li>İçerik başlatma/okuma aksiyonlarında kayıt zorunlu tutulur</li>
-                        <li>Kayıt sonrası misafir verileri kullanıcıya devredilir</li>
+                        <li>Splash + Onboarding: FR-E1-01 (Dil seçimi ve profil dili)</li>
+                        <li>Login: FR-E1-03, giriş sonrası FR-E1-06 senkronu</li>
+                        <li>Register + Verification: FR-E1-02</li>
+                        <li>Forgot + Reset: FR-E1-04</li>
+                        <li>Session: FR-E1-05 • FaceID: FR-E1-07 • Demografi: FR-E1-08 • Guest: FR-E1-09</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-title">Rev4 EPIC-1 FR/AC Checklist</div>
+                <div class="ac-section">
+                    <div class="ac-title">✓ FR-E1-01..09 (Toplam 38 AC)</div>
+                    <ul class="ac-list">
+                        <li><strong>FR-E1-01 (5 AC):</strong> Çok dilli onboarding, kalıcı profil dili, TR fallback</li>
+                        <li><strong>FR-E1-02 (5 AC):</strong> Kayıt, OTP aktivasyon, deneme limiti ve geçici kilit</li>
+                        <li><strong>FR-E1-03 (4 AC):</strong> Güvenli giriş, hata mesajı, 5 denemede 15 dk kilit</li>
+                        <li><strong>FR-E1-04 (3 AC):</strong> Şifre sıfırlama ve politika doğrulaması</li>
+                        <li><strong>FR-E1-05 (4 AC):</strong> Oturum sonlandırma, 30 dk inaktiflikte yeniden doğrulama</li>
+                        <li><strong>FR-E1-06 (3 AC):</strong> Giriş sonrası abonelik durumu ve rol doğrulama</li>
+                        <li><strong>FR-E1-07 (3 AC):</strong> Biyometrik opt-in, başarısızlıkta şifre fallback</li>
+                        <li><strong>FR-E1-08 (7 AC):</strong> Demografi zorunluluğu (ilk içerik öncesi), yaş/cinsiyet/ülke kuralları</li>
+                        <li><strong>FR-E1-09 (4 AC):</strong> Misafir oturumu, kısıtlı aksiyonlar, kayıt sonrası veri devri</li>
                     </ul>
                 </div>
             </div>
@@ -401,8 +561,8 @@
             <div class="topbar">
                 <h1 class="screen-title" id="screenTitle">Splash Screen</h1>
                 <div class="screen-meta">
-                    <span class="meta-badge" id="screenUS">US-1.1</span>
-                    <span id="screenMeta">App entry • 7/7 ACs • Auto → Onboarding</span>
+                    <span class="meta-badge" id="screenUS">FR-E1</span>
+                    <span id="screenMeta">Rev4 kapsamı: FR-E1-01..09 • 38 AC • Entry: App launch</span>
                 </div>
             </div>
             
@@ -414,395 +574,245 @@
     
     <script>
         const LOGO_BASE64 = './pstLogo.png';
+        let otpResendTimer = null;
+        let otpResendRemaining = 45;
 
         const screenData = {
-            1: { title: 'Splash Screen', us: 'US-1.1', meta: 'App entry • 7/7 ACs • Auto → Onboarding' },
-            2: { title: 'Onboarding', us: 'US-1.1', meta: '3 screens • 10/10 ACs • Swipe → Login' },
-            3: { title: 'Login', us: 'US-1.2', meta: 'Authenticate • 12/12 ACs • From: Onboarding' },
-            4: { title: 'Register', us: 'US-1.3', meta: 'Create account • 15/15 ACs • From: Login' },
-            5: { title: 'Forgot Password', us: 'US-1.4', meta: 'Password recovery • 8/8 ACs • From: Login' },
-            6: { title: 'Verification', us: 'US-1.5', meta: 'Verify identity • 5/5 ACs • From: Register/Forgot' },
-            7: { title: 'Reset Password', us: 'US-1.5', meta: 'Set new password • 3/3 ACs • From: Verification' },
-            8: { title: 'FaceID Setup', us: 'US-1.8', meta: 'Biometric auth (NEW) • 4/4 ACs • After: First Login' },
-            9: { title: 'Demographics', us: 'US-1.9', meta: 'User info (NEW) • 7/7 ACs • Before: First Content' },
-            10: { title: 'Guest Mode', us: 'US-1.10', meta: 'Browse without account (NEW) • 4/4 ACs • From: Login' },
-            11: { title: 'Session End', us: 'US-1.5', meta: 'Logout • 13/13 ACs • From: Anywhere' }
+            1: { title: 'Splash Screen', us: 'FR-E1-01', meta: 'Dil seçimi ve onboarding başlangıcı' },
+            2: { title: 'Onboarding', us: 'FR-E1-01', meta: 'TR/EN/ES seçimi ve profil dilinin korunması' },
+            3: { title: 'Login', us: 'FR-E1-03 / FR-E1-06', meta: 'Giriş doğrulama + abonelik/rol senkronu' },
+            4: { title: 'Register', us: 'FR-E1-02', meta: 'Kayıt akışı ve OTP aktivasyon kuralları' },
+            5: { title: 'Forgot Password', us: 'FR-E1-04', meta: 'Şifre sıfırlama doğrulama başlangıcı' },
+            6: { title: 'Verification', us: 'FR-E1-02 / FR-E1-04', meta: 'OTP doğrulama ve deneme hakkı yönetimi' },
+            7: { title: 'Reset Password', us: 'FR-E1-04', meta: 'Şifre politikası: min 8 karakter, harf + rakam' },
+            8: { title: 'FaceID Setup', us: 'FR-E1-07', meta: 'Biyometrik opt-in ve şifre fallback' },
+            9: { title: 'Demographics', us: 'FR-E1-08', meta: 'İlk içerik öncesi zorunlu demografi formu' },
+            10: { title: 'Guest Mode', us: 'FR-E1-09', meta: 'Misafir erişimi ve kayıtla veri devri' },
+            11: { title: 'Session End / Re-Auth', us: 'FR-E1-05', meta: 'Token temizleme ve yeniden doğrulama' }
         };
-        
+
         function showScreen(num) {
-            const data = screenData[num];
+            if (num !== 6 && otpResendTimer) {
+                window.clearInterval(otpResendTimer);
+                otpResendTimer = null;
+                otpResendRemaining = 45;
+            }
+
+            const data = screenData[num] || screenData[1];
             document.getElementById('screenTitle').textContent = data.title;
             document.getElementById('screenUS').textContent = data.us;
             document.getElementById('screenMeta').textContent = data.meta;
-            
-            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+
             const navItems = document.querySelectorAll('.nav-item');
-            const navMap = {1: 0, 2: 1, 3: 2, 4: 3, 5: 4, 6: 5, 7: 6, 8: 7, 9: 8, 10: 9};
-            if (navMap[num] !== undefined) {
-                navItems[navMap[num]].classList.add('active');
+            navItems.forEach(item => {
+                item.classList.remove('active');
+                item.setAttribute('aria-current', 'false');
+            });
+            const navIndex = Math.max(0, Math.min(navItems.length - 1, num - 1));
+            if (navItems[navIndex]) {
+                navItems[navIndex].classList.add('active');
+                navItems[navIndex].setAttribute('aria-current', 'page');
             }
-            
+
             document.querySelectorAll('[id^="nav-"]').forEach(box => box.classList.remove('active'));
             const navBox = document.getElementById('nav-' + num);
             if (navBox) navBox.classList.add('active');
-            
+
             document.getElementById('viewer').innerHTML = getScreenHTML(num);
         }
-        
+
+        function initializeInteractiveElements() {
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => {
+                item.setAttribute('role', 'button');
+                item.setAttribute('tabindex', '0');
+                item.addEventListener('keydown', event => {
+                    if (event.key === 'Enter' || event.key === ' ') {
+                        event.preventDefault();
+                        item.click();
+                    }
+                });
+            });
+
+            document.querySelectorAll('a[href="#"]:not([onclick])').forEach(link => {
+                link.addEventListener('click', event => {
+                    event.preventDefault();
+                });
+            });
+        }
+
+        function updateOtpResendLabel(linkElement) {
+            const remaining = String(otpResendRemaining).padStart(2, '0');
+            linkElement.textContent = `Tekrar Gonder (00:${remaining})`;
+        }
+
+        function handleOtpResend(event, linkElement) {
+            event.preventDefault();
+
+            if (linkElement.getAttribute('aria-disabled') === 'true') {
+                return false;
+            }
+
+            if (otpResendTimer) {
+                window.clearInterval(otpResendTimer);
+            }
+
+            otpResendRemaining = 45;
+            linkElement.setAttribute('aria-disabled', 'true');
+            updateOtpResendLabel(linkElement);
+
+            otpResendTimer = window.setInterval(() => {
+                otpResendRemaining -= 1;
+                if (otpResendRemaining <= 0) {
+                    window.clearInterval(otpResendTimer);
+                    otpResendTimer = null;
+                    linkElement.removeAttribute('aria-disabled');
+                    linkElement.textContent = 'Tekrar Gonder';
+                    return;
+                }
+                updateOtpResendLabel(linkElement);
+            }, 1000);
+
+            return false;
+        }
+
+        function device(innerHtml) {
+            return `<div class="iphone fade-in"><div class="island"></div><div class="screen"><div class="content"><div class="status"><div>9:41</div><div class="status-right">5G | 93%</div></div>${innerHtml}</div></div></div>`;
+        }
+
         function getScreenHTML(num) {
             const screens = {
-                1: `<div class="iphone fade-in"><div class="island"></div><div class="screen">
-                    <div style="width: 100%; height: 100%; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative;">
-                        <img src="${LOGO_BASE64}" alt="PST Coaching" style="width: 280px; height: auto; margin-bottom: 2rem; filter: brightness(0) invert(1);">
-                        <p style="font-size: 1.125rem; color: rgba(255,255,255,0.95); font-weight: 600; text-align: center; max-width: 280px; line-height: 1.6;">Profesyonel Coaching Yolculuğunuz</p>
-                        <div style="position: absolute; bottom: 4rem; display: flex; gap: 0.5rem;">
-                            <div style="width: 8px; height: 8px; background: rgba(255,255,255,0.5); border-radius: 9999px; animation: pulse 1s ease-in-out infinite;"></div>
-                            <div style="width: 8px; height: 8px; background: rgba(255,255,255,0.5); border-radius: 9999px; animation: pulse 1s ease-in-out infinite 0.2s;"></div>
-                            <div style="width: 8px; height: 8px; background: rgba(255,255,255,0.5); border-radius: 9999px; animation: pulse 1s ease-in-out infinite 0.4s;"></div>
+                1: `<div class="iphone fade-in"><div class="island"></div><div class="screen"><div class="splash-wrap"><img src="${LOGO_BASE64}" alt="PST Coaching" style="width: 250px; height: auto; margin-bottom: 2rem; filter: brightness(0) invert(1);"><p style="color: rgba(255,255,255,0.95); font-size: 1rem; line-height: 1.65; font-weight: 600; max-width: 290px;">Profesyonel coaching yolculugunuza guvenli, hizli ve kisilestirilmis bir baslangic.</p><div class="loader-dots"><span></span><span></span><span></span></div></div></div></div>`,
+
+                2: device(`
+                    <div class="screen-stack" style="padding-top: 2rem;">
+                        <div style="display: flex; justify-content: flex-end; margin-bottom: 0.75rem;"><a href="#" class="subtle-link" onclick="showScreen(3); return false;">Atla</a></div>
+                        <div class="hero" style="margin-top: 0.5rem; margin-bottom: 1.25rem;">
+                            <div class="hero-mark" style="width: 5.5rem; height: 5.5rem; border-radius: 1.5rem; background: linear-gradient(145deg, #4f46e5, #0284c7); box-shadow: 0 18px 34px rgba(59, 130, 246, 0.36);">01</div>
+                            <h2 class="hero-title">Yeni Nesil Gelisim Akisi</h2>
+                            <p class="hero-subtitle">Yolculuk, atolye, moduller ve e-kitaplar tek bir odakli deneyimde birlesir.</p>
                         </div>
+                        <div class="card" style="background: linear-gradient(135deg, #eef2ff, #ecfeff); border: 1px solid #bfdbfe; margin-bottom: 1.25rem;">
+                            <h3 style="font-size: 0.875rem; margin-bottom: 0.5rem; color: #1e3a8a;">Ilk Adim</h3>
+                            <p style="font-size: 0.875rem; line-height: 1.55; color: #334155;">Dil tercihlerinizi belirleyin, hedefinizi secin ve size uygun icerik sirasiyla otomatik ilerleyin.</p>
+                        </div>
+                        <div style="display: flex; justify-content: center; gap: 0.5rem; margin-bottom: 1.5rem;"><span style="width: 2rem; height: 0.5rem; border-radius: 999px; background: #0ea5e9;"></span><span style="width: 0.5rem; height: 0.5rem; border-radius: 999px; background: #cbd5e1;"></span><span style="width: 0.5rem; height: 0.5rem; border-radius: 999px; background: #cbd5e1;"></span></div>
+                        <div style="display: flex; gap: 0.75rem; margin-top: auto;"><button class="btn btn-secondary" style="flex: 1;" onclick="showScreen(3)">Atla</button><button class="btn btn-primary" style="flex: 1;" onclick="showScreen(3)">Ileri</button></div>
                     </div>
-                </div></div>`,
-                
-                2: `<div class="iphone fade-in"><div class="island"></div><div class="screen"><div class="content">
-                    <div class="status"><div>9:41</div><div>📶 📡 🔋</div></div>
-                    <div style="padding: 3rem 2rem; height: calc(100% - 54px); display: flex; flex-direction: column;">
-                        <div style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;">
-                            <div style="font-size: 8rem; margin-bottom: 2rem;">🎯</div>
-                            <h2 style="font-family: Poppins, sans-serif; font-size: 2rem; font-weight: 800; color: var(--secondary); margin-bottom: 1rem;">Hedeflerinize Ulaşın</h2>
-                            <p style="font-size: 1rem; color: var(--gray-600); line-height: 1.7; max-width: 320px;">Profesyonel coaching desteğiyle potansiyelinizi keşfedin ve hayallerinizi gerçekleştirin.</p>
-                        </div>
-                        <div style="display: flex; justify-content: center; gap: 0.5rem; margin-bottom: 2rem;">
-                            <div style="width: 32px; height: 8px; background: var(--primary); border-radius: 9999px;"></div>
-                            <div style="width: 8px; height: 8px; background: var(--gray-300); border-radius: 9999px;"></div>
-                            <div style="width: 8px; height: 8px; background: var(--gray-300); border-radius: 9999px;"></div>
-                        </div>
-                        <div style="display: flex; gap: 1rem;">
-                            <button class="btn btn-secondary" style="flex: 1;" onclick="parent.showScreen(3)">Atla</button>
-                            <button class="btn btn-primary" style="flex: 1;">İleri</button>
-                        </div>
+                `),
+
+                3: device(`
+                    <div class="screen-stack">
+                        <div class="hero" style="margin-bottom: 1.25rem;"><img src="${LOGO_BASE64}" alt="PST Coaching" style="width: 170px; height: auto; margin: 0 auto 1rem;"><h1 class="hero-title" style="font-size: 1.5rem;">Tekrar Hos Geldiniz</h1><p class="hero-subtitle">E-posta veya telefon ve sifrenizle giris yapin.</p></div>
+                        <div class="form-group"><label class="form-label">E-posta veya Telefon</label><input class="form-input" type="text" value="ornek@email.com"></div>
+                        <div class="form-group"><label class="form-label">Sifre</label><div class="field-shell"><input class="form-input" type="password" value="12345678"><button class="field-action" type="button">Goster</button></div></div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;"><label style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.875rem; color: #4b5563;"><input type="checkbox" style="width: 16px; height: 16px; accent-color: var(--primary);"><span>Beni Hatirla</span></label><a href="#" class="subtle-link" onclick="showScreen(5); return false;">Sifremi Unuttum?</a></div>
+                        <button class="btn btn-primary" style="width: 100%;" onclick="showScreen(8)">Giris Yap</button>
+                        <div class="divider"><span>veya</span></div>
+                        <div class="social-grid"><button class="social-btn"><span style="font-size: 1rem;">G</span><span>Google</span></button><button class="social-btn"><span style="font-size: 1rem;">A</span><span>Apple</span></button></div>
+                        <div style="text-align: center; margin-bottom: 0.75rem;"><span style="font-size: 0.875rem; color: #6b7280;">Hesabiniz yok mu? </span><a href="#" class="subtle-link" onclick="showScreen(4); return false;">Kaydol</a></div>
+                        <div style="text-align: center; padding-top: 0.75rem; border-top: 1px solid #e5e7eb;"><a href="#" style="text-decoration: none; color: #166534; font-size: 0.875rem; font-weight: 700;" onclick="showScreen(10); return false;">Misafir olarak devam et</a></div>
                     </div>
-                </div></div></div>`,
-                
-                3: `<div class="iphone fade-in"><div class="island"></div><div class="screen"><div class="content">
-                    <div class="status"><div>9:41</div><div>📶 📡 🔋</div></div>
-                    <div style="padding: 2rem 1.5rem;">
-                        <div style="text-align: center; margin-bottom: 2.5rem;">
-                            <img src="${LOGO_BASE64}" alt="PST Coaching" style="width: 200px; height: auto; margin-bottom: 1.5rem;">
-                            <h1 style="font-family: Poppins, sans-serif; font-size: 1.75rem; font-weight: 800; color: var(--secondary); margin-bottom: 0.5rem;">Hoş Geldiniz</h1>
-                            <p style="font-size: 0.9375rem; color: var(--gray-600);">Hesabınıza giriş yapın</p>
-                        </div>
-                        
-                        <div style="margin-bottom: 1.5rem;">
-                            <label style="display: block; font-weight: 600; color: var(--gray-700); margin-bottom: 0.5rem; font-size: 0.875rem;">E-posta veya Telefon</label>
-                            <input type="text" placeholder="ornek@email.com" style="width: 100%; padding: 1rem; border: 2px solid var(--gray-200); border-radius: 0.75rem; font-size: 1rem;">
-                        </div>
-                        
-                        <div style="margin-bottom: 1rem;">
-                            <label style="display: block; font-weight: 600; color: var(--gray-700); margin-bottom: 0.5rem; font-size: 0.875rem;">Şifre</label>
-                            <div style="position: relative;">
-                                <input type="password" placeholder="••••••••" style="width: 100%; padding: 1rem; padding-right: 3rem; border: 2px solid var(--gray-200); border-radius: 0.75rem; font-size: 1rem;">
-                                <button style="position: absolute; right: 1rem; top: 50%; transform: translateY(-50%); background: none; border: none; font-size: 1.25rem; cursor: pointer;">👁️</button>
-                            </div>
-                        </div>
-                        
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-                            <label style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.875rem; color: var(--gray-700); cursor: pointer;">
-                                <input type="checkbox" style="width: 18px; height: 18px; accent-color: var(--primary);">
-                                <span>Beni Hatırla</span>
-                            </label>
-                            <a href="#" style="font-size: 0.875rem; color: var(--primary); font-weight: 600; text-decoration: none;" onclick="parent.showScreen(5); return false;">Şifremi Unuttum?</a>
-                        </div>
-                        
-                        <button class="btn btn-primary" style="width: 100%; padding: 1rem; font-size: 1.125rem; margin-bottom: 1.5rem;">Giriş Yap</button>
-                        
-                        <div style="position: relative; text-align: center; margin-bottom: 1.5rem;">
-                            <div style="position: absolute; top: 50%; left: 0; right: 0; height: 1px; background: var(--gray-200);"></div>
-                            <span style="position: relative; background: var(--gray-50); padding: 0 1rem; font-size: 0.875rem; color: var(--gray-600);">veya</span>
-                        </div>
-                        
-                        <div style="display: flex; gap: 1rem; margin-bottom: 2rem;">
-                            <button class="btn btn-secondary" style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
-                                <span style="font-size: 1.25rem;">🔵</span>
-                                <span>Google</span>
-                            </button>
-                            <button class="btn btn-secondary" style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
-                                <span style="font-size: 1.25rem;">🍎</span>
-                                <span>Apple</span>
-                            </button>
-                        </div>
-                        
-                        <div style="text-align: center;">
-                            <span style="color: var(--gray-600); font-size: 0.9375rem;">Hesabınız yok mu? </span>
-                            <a href="#" style="color: var(--primary); font-weight: 600; text-decoration: none; font-size: 0.9375rem;" onclick="parent.showScreen(4); return false;">Kaydol</a>
-                        </div>
-                        
-                        <div style="text-align: center; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--gray-200);">
-                            <span style="color: var(--gray-600); font-size: 0.9375rem;">veya </span>
-                            <a href="#" style="color: var(--success); font-weight: 600; text-decoration: none; font-size: 0.9375rem;" onclick="parent.showScreen(10); return false;">👻 Misafir Olarak Devam Et</a>
-                        </div>
+                `),
+
+                4: device(`
+                    <div class="screen-stack" style="padding-top: 1rem;">
+                        <button style="align-self: flex-start; border: none; background: transparent; color: #475569; font-size: 1.5rem; cursor: pointer; margin-bottom: 0.5rem;" onclick="showScreen(3)">←</button>
+                        <div class="hero" style="margin-bottom: 1rem;"><div class="hero-mark" style="background: linear-gradient(145deg, #0369a1, #0284c7);">ID</div><h2 class="hero-title" style="font-size: 1.5rem;">Hesap Olustur</h2><p class="hero-subtitle">Aktiflestirme icin OTP dogrulama adimi gerekir.</p></div>
+                        <div class="form-group"><label class="form-label">Ad Soyad</label><input class="form-input" type="text" value="Ahmet Yilmaz"></div>
+                        <div class="form-group"><label class="form-label">E-posta</label><input class="form-input" type="email" value="ahmet@email.com"></div>
+                        <div class="form-group"><label class="form-label">Telefon</label><div class="field-row"><select class="form-select" style="width: 92px;"><option>+90</option></select><input class="form-input" type="tel" value="5XX XXX XX XX"></div></div>
+                        <div class="form-group"><label class="form-label">Sifre</label><input class="form-input" type="password" value="Aa123456"><div class="strength"><span class="strength-seg active"></span><span class="strength-seg active"></span><span class="strength-seg active"></span><span class="strength-seg"></span></div><p class="note">Sifre gucu: Orta</p></div>
+                        <div class="form-group"><label class="form-label">Sifre Tekrar</label><input class="form-input" type="password" value="Aa123456"></div>
+                        <label style="display: flex; align-items: flex-start; gap: 0.5rem; font-size: 0.75rem; line-height: 1.55; color: #4b5563; margin-bottom: 0.875rem;"><input type="checkbox" style="width: 16px; height: 16px; margin-top: 2px; accent-color: var(--primary);"><span>Kullanim kosullarini ve gizlilik politikasini okudum, kabul ediyorum.</span></label>
+                        <button class="btn btn-primary" style="width: 100%;" onclick="showScreen(6)">Kaydol</button>
+                        <p class="footer-note">Zaten hesabiniz var mi? <a href="#" class="subtle-link" onclick="showScreen(3); return false;">Giris Yap</a></p>
                     </div>
-                </div></div></div>`,
-                
-                4: `<div class="iphone fade-in"><div class="island"></div><div class="screen"><div class="content">
-                    <div class="status"><div>9:41</div><div>📶 📡 🔋</div></div>
-                    <div style="padding: 1.5rem; overflow-y: auto; height: calc(100% - 54px);">
-                        <button style="background: none; border: none; font-size: 1.5rem; cursor: pointer; padding: 0.5rem; margin-bottom: 1rem;" onclick="parent.showScreen(3)">←</button>
-                        
-                        <div style="text-align: center; margin-bottom: 2rem;">
-                            <h1 style="font-family: Poppins, sans-serif; font-size: 2rem; font-weight: 800; color: var(--secondary); margin-bottom: 0.5rem;">Hesap Oluştur</h1>
-                            <p style="font-size: 0.9375rem; color: var(--gray-600);">Coaching yolculuğunuza başlayın</p>
-                        </div>
-                        
-                        <div style="margin-bottom: 1rem;">
-                            <label style="display: block; font-weight: 600; color: var(--gray-700); margin-bottom: 0.5rem; font-size: 0.875rem;">Ad Soyad</label>
-                            <input type="text" placeholder="Ahmet Yılmaz" style="width: 100%; padding: 0.875rem; border: 2px solid var(--gray-200); border-radius: 0.75rem; font-size: 1rem;">
-                        </div>
-                        
-                        <div style="margin-bottom: 1rem;">
-                            <label style="display: block; font-weight: 600; color: var(--gray-700); margin-bottom: 0.5rem; font-size: 0.875rem;">E-posta</label>
-                            <input type="email" placeholder="ornek@email.com" style="width: 100%; padding: 0.875rem; border: 2px solid var(--gray-200); border-radius: 0.75rem; font-size: 1rem;">
-                        </div>
-                        
-                        <div style="margin-bottom: 1rem;">
-                            <label style="display: block; font-weight: 600; color: var(--gray-700); margin-bottom: 0.5rem; font-size: 0.875rem;">Telefon</label>
-                            <div style="display: flex; gap: 0.5rem;">
-                                <select style="padding: 0.875rem; border: 2px solid var(--gray-200); border-radius: 0.75rem; font-size: 1rem; width: 100px;">
-                                    <option>🇹🇷 +90</option>
-                                </select>
-                                <input type="tel" placeholder="5XX XXX XX XX" style="flex: 1; padding: 0.875rem; border: 2px solid var(--gray-200); border-radius: 0.75rem; font-size: 1rem;">
-                            </div>
-                        </div>
-                        
-                        <div style="margin-bottom: 1rem;">
-                            <label style="display: block; font-weight: 600; color: var(--gray-700); margin-bottom: 0.5rem; font-size: 0.875rem;">Şifre</label>
-                            <input type="password" placeholder="Min. 8 karakter" style="width: 100%; padding: 0.875rem; border: 2px solid var(--gray-200); border-radius: 0.75rem; font-size: 1rem;">
-                            <div style="margin-top: 0.5rem; display: flex; gap: 0.25rem;">
-                                <div style="flex: 1; height: 4px; background: var(--success); border-radius: 9999px;"></div>
-                                <div style="flex: 1; height: 4px; background: var(--success); border-radius: 9999px;"></div>
-                                <div style="flex: 1; height: 4px; background: var(--gray-200); border-radius: 9999px;"></div>
-                                <div style="flex: 1; height: 4px; background: var(--gray-200); border-radius: 9999px;"></div>
-                            </div>
-                            <p style="font-size: 0.75rem; color: var(--success); margin-top: 0.25rem;">Orta Güçlü</p>
-                        </div>
-                        
-                        <div style="margin-bottom: 1rem;">
-                            <label style="display: block; font-weight: 600; color: var(--gray-700); margin-bottom: 0.5rem; font-size: 0.875rem;">Şifre Tekrar</label>
-                            <input type="password" placeholder="Şifrenizi tekrar girin" style="width: 100%; padding: 0.875rem; border: 2px solid var(--gray-200); border-radius: 0.75rem; font-size: 1rem;">
-                        </div>
-                        
-                        <div style="margin-bottom: 1rem;">
-                            <label style="display: flex; align-items: start; gap: 0.75rem; font-size: 0.8125rem; color: var(--gray-700); cursor: pointer;">
-                                <input type="checkbox" style="width: 18px; height: 18px; margin-top: 2px; accent-color: var(--primary); flex-shrink: 0;">
-                                <span><a href="#" style="color: var(--primary); text-decoration: none;">Kullanım Koşullarını</a> ve <a href="#" style="color: var(--primary); text-decoration: none;">Gizlilik Politikasını</a> okudum, kabul ediyorum</span>
-                            </label>
-                        </div>
-                        
-                        <button class="btn btn-primary" style="width: 100%; padding: 1rem; font-size: 1.125rem; margin-bottom: 1.5rem;" onclick="parent.showScreen(6)">Kaydol</button>
-                        
-                        <div style="text-align: center; margin-bottom: 1rem;">
-                            <span style="color: var(--gray-600); font-size: 0.9375rem;">Zaten hesabınız var mı? </span>
-                            <a href="#" style="color: var(--primary); font-weight: 600; text-decoration: none; font-size: 0.9375rem;" onclick="parent.showScreen(3); return false;">Giriş Yap</a>
-                        </div>
+                `),
+
+                5: device(`
+                    <div class="screen-stack" style="padding-top: 1rem;">
+                        <button style="align-self: flex-start; border: none; background: transparent; color: #475569; font-size: 1.5rem; cursor: pointer; margin-bottom: 0.5rem;" onclick="showScreen(3)">←</button>
+                        <div class="hero" style="margin-bottom: 1.5rem;"><div class="hero-mark" style="background: linear-gradient(145deg, #0f766e, #0ea5a4);">PW</div><h2 class="hero-title" style="font-size: 1.5rem;">Sifre Sifirlama</h2><p class="hero-subtitle">Hesabinizi dogrulamak icin e-posta veya telefon secin.</p></div>
+                        <div class="choice-grid" style="margin-bottom: 0.875rem;"><button class="choice-btn active">E-posta</button><button class="choice-btn">Telefon</button></div>
+                        <div class="form-group"><label class="form-label">E-posta veya Telefon</label><input class="form-input" type="text" value="ornek@email.com"></div>
+                        <div class="card" style="background: #ecfeff; border: 1px solid #a5f3fc; margin: 0.5rem 0 1rem;"><p style="font-size: 0.75rem; line-height: 1.5; color: #155e75;">Guvenlik nedeniyle hata mesajlari hesap bilgilerini aciga cikarmadan gosterilir.</p></div>
+                        <button class="btn btn-primary" style="width: 100%;" onclick="showScreen(6)">Dogrulama Kodu Gonder</button>
+                        <p class="footer-note"><a href="#" class="subtle-link" onclick="showScreen(3); return false;">Giris sayfasina don</a></p>
                     </div>
-                </div></div></div>`,
-                
-                5: `<div class="iphone fade-in"><div class="island"></div><div class="screen"><div class="content">
-                    <div class="status"><div>9:41</div><div>📶 📡 🔋</div></div>
-                    <div style="padding: 2rem 1.5rem;">
-                        <button style="background: none; border: none; font-size: 1.5rem; cursor: pointer; padding: 0.5rem; margin-bottom: 2rem;" onclick="parent.showScreen(3)">←</button>
-                        
-                        <div style="text-align: center; margin-bottom: 3rem;">
-                            <div style="font-size: 4rem; margin-bottom: 1rem;">🔑</div>
-                            <h1 style="font-family: Poppins, sans-serif; font-size: 2rem; font-weight: 800; color: var(--secondary); margin-bottom: 0.5rem;">Şifremi Unuttum</h1>
-                            <p style="font-size: 0.9375rem; color: var(--gray-600); line-height: 1.6;">E-posta adresinizi veya telefon numaranızı girin, size doğrulama kodu gönderelim.</p>
-                        </div>
-                        
-                        <div style="margin-bottom: 2rem;">
-                            <label style="display: block; font-weight: 600; color: var(--gray-700); margin-bottom: 0.5rem; font-size: 0.875rem;">E-posta veya Telefon</label>
-                            <input type="text" placeholder="ornek@email.com veya +90 5XX XXX XX XX" style="width: 100%; padding: 1rem; border: 2px solid var(--gray-200); border-radius: 0.75rem; font-size: 1rem;">
-                        </div>
-                        
-                        <button class="btn btn-primary" style="width: 100%; padding: 1rem; font-size: 1.125rem; margin-bottom: 1.5rem;" onclick="parent.showScreen(6)">Kod Gönder</button>
-                        
-                        <div style="text-align: center;">
-                            <a href="#" style="color: var(--primary); font-weight: 600; text-decoration: none; font-size: 0.9375rem;" onclick="parent.showScreen(3); return false;">← Giriş Sayfasına Dön</a>
-                        </div>
+                `),
+
+                6: device(`
+                    <div class="screen-stack" style="padding-top: 1rem;">
+                        <button style="align-self: flex-start; border: none; background: transparent; color: #475569; font-size: 1.5rem; cursor: pointer; margin-bottom: 0.5rem;" onclick="showScreen(5)">←</button>
+                        <div class="hero" style="margin-bottom: 1.25rem;"><div class="hero-mark" style="background: linear-gradient(145deg, #1d4ed8, #0ea5e9);">OTP</div><h2 class="hero-title" style="font-size: 1.5rem;">Dogrulama Kodu</h2><p class="hero-subtitle"><strong>ahmet@*****.com</strong> adresine gonderilen 6 haneli kodu girin.</p></div>
+                        <div class="otp-grid"><div class="otp-cell">4</div><div class="otp-cell">1</div><div class="otp-cell">8</div><div class="otp-cell">2</div><div class="otp-cell"></div><div class="otp-cell"></div></div>
+                        <div style="text-align: center; margin-bottom: 1.25rem;"><span class="pill pill-danger">Kalan deneme hakki: 3</span></div>
+                        <button class="btn btn-primary" style="width: 100%;" onclick="showScreen(7)">Dogrula</button>
+                        <p class="footer-note">Kod gelmedi mi? <a href="#" class="subtle-link" onclick="return handleOtpResend(event, this);">Tekrar Gonder (00:45)</a></p>
                     </div>
-                </div></div></div>`,
-                
-                6: `<div class="iphone fade-in"><div class="island"></div><div class="screen"><div class="content">
-                    <div class="status"><div>9:41</div><div>📶 📡 🔋</div></div>
-                    <div style="padding: 2rem 1.5rem;">
-                        <button style="background: none; border: none; font-size: 1.5rem; cursor: pointer; padding: 0.5rem; margin-bottom: 2rem;" onclick="parent.showScreen(5)">←</button>
-                        
-                        <div style="text-align: center; margin-bottom: 3rem;">
-                            <div style="font-size: 4rem; margin-bottom: 1rem;">📱</div>
-                            <h1 style="font-family: Poppins, sans-serif; font-size: 2rem; font-weight: 800; color: var(--secondary); margin-bottom: 0.5rem;">Doğrulama Kodu</h1>
-                            <p style="font-size: 0.9375rem; color: var(--gray-600); line-height: 1.6;">
-                                <strong>ahmet@*****.com</strong> adresine gönderilen 6 haneli kodu girin.
-                            </p>
-                        </div>
-                        
-                        <div style="display: flex; gap: 0.75rem; margin-bottom: 2rem; justify-content: center;">
-                            <input type="text" maxlength="1" style="width: 48px; height: 56px; text-align: center; font-size: 1.5rem; font-weight: 700; border: 2px solid var(--gray-300); border-radius: 0.75rem; font-family: monospace;">
-                            <input type="text" maxlength="1" style="width: 48px; height: 56px; text-align: center; font-size: 1.5rem; font-weight: 700; border: 2px solid var(--gray-300); border-radius: 0.75rem; font-family: monospace;">
-                            <input type="text" maxlength="1" style="width: 48px; height: 56px; text-align: center; font-size: 1.5rem; font-weight: 700; border: 2px solid var(--gray-300); border-radius: 0.75rem; font-family: monospace;">
-                            <input type="text" maxlength="1" style="width: 48px; height: 56px; text-align: center; font-size: 1.5rem; font-weight: 700; border: 2px solid var(--gray-300); border-radius: 0.75rem; font-family: monospace;">
-                            <input type="text" maxlength="1" style="width: 48px; height: 56px; text-align: center; font-size: 1.5rem; font-weight: 700; border: 2px solid var(--gray-300); border-radius: 0.75rem; font-family: monospace;">
-                            <input type="text" maxlength="1" style="width: 48px; height: 56px; text-align: center; font-size: 1.5rem; font-weight: 700; border: 2px solid var(--gray-300); border-radius: 0.75rem; font-family: monospace;">
-                        </div>
-                        
-                        <button class="btn btn-primary" style="width: 100%; padding: 1rem; font-size: 1.125rem; margin-bottom: 1.5rem;" onclick="parent.showScreen(7)">Doğrula</button>
-                        
-                        <div style="text-align: center; font-size: 0.875rem; color: var(--gray-600);">
-                            <p style="margin-bottom: 0.5rem;">Kod gelmedi mi?</p>
-                            <button style="background: none; border: none; color: var(--primary); font-weight: 600; cursor: pointer; font-size: 0.875rem;">Tekrar Gönder (45s)</button>
-                        </div>
+                `),
+
+                7: device(`
+                    <div class="screen-stack" style="padding-top: 1rem;">
+                        <button style="align-self: flex-start; border: none; background: transparent; color: #475569; font-size: 1.5rem; cursor: pointer; margin-bottom: 0.5rem;" onclick="showScreen(6)">←</button>
+                        <div class="hero" style="margin-bottom: 1.25rem;"><div class="hero-mark" style="background: linear-gradient(145deg, #2563eb, #4338ca);">NEW</div><h2 class="hero-title" style="font-size: 1.5rem;">Yeni Sifre Olustur</h2><p class="hero-subtitle">Minimum 8 karakter, harf + rakam kombinasyonu zorunlu.</p></div>
+                        <div class="form-group"><label class="form-label">Yeni Sifre</label><div class="field-shell"><input class="form-input" type="password" value="Aa123456"><button class="field-action" type="button">Goster</button></div><div class="strength"><span class="strength-seg active"></span><span class="strength-seg active"></span><span class="strength-seg active"></span><span class="strength-seg active"></span></div><p class="note" style="color: #166534;">Sifre gucu: Guclu</p></div>
+                        <div class="form-group"><label class="form-label">Yeni Sifre Tekrar</label><input class="form-input" type="password" value="Aa123456"></div>
+                        <button class="btn btn-primary" style="width: 100%;" onclick="showScreen(3)">Sifreyi Guncelle</button>
+                        <div class="card" style="margin-top: 0.875rem; background: #dcfce7; border: 1px solid #86efac;"><span class="pill pill-success">Sifre basariyla guncellendi</span><p class="note" style="margin-top: 0.5rem; color: #14532d;">Giris ekranina yonlendiriliyorsunuz.</p></div>
                     </div>
-                </div></div></div>`,
-                
-                7: `<div class="iphone fade-in"><div class="island"></div><div class="screen"><div class="content">
-                    <div class="status"><div>9:41</div><div>📶 📡 🔋</div></div>
-                    <div style="padding: 2rem 1.5rem;">
-                        <button style="background: none; border: none; font-size: 1.5rem; cursor: pointer; padding: 0.5rem; margin-bottom: 2rem;" onclick="parent.showScreen(6)">←</button>
-                        
-                        <div style="text-align: center; margin-bottom: 3rem;">
-                            <div style="font-size: 4rem; margin-bottom: 1rem;">🔒</div>
-                            <h1 style="font-family: Poppins, sans-serif; font-size: 2rem; font-weight: 800; color: var(--secondary); margin-bottom: 0.5rem;">Yeni Şifre Oluştur</h1>
-                            <p style="font-size: 0.9375rem; color: var(--gray-600); line-height: 1.6;">Yeni şifreniz en az 8 karakter olmalıdır.</p>
-                        </div>
-                        
-                        <div style="margin-bottom: 1.5rem;">
-                            <label style="display: block; font-weight: 600; color: var(--gray-700); margin-bottom: 0.5rem; font-size: 0.875rem;">Yeni Şifre</label>
-                            <div style="position: relative;">
-                                <input type="password" placeholder="••••••••" style="width: 100%; padding: 1rem; padding-right: 3rem; border: 2px solid var(--gray-200); border-radius: 0.75rem; font-size: 1rem;">
-                                <button style="position: absolute; right: 1rem; top: 50%; transform: translateY(-50%); background: none; border: none; font-size: 1.25rem; cursor: pointer;">👁️</button>
-                            </div>
-                            <div style="margin-top: 0.5rem; display: flex; gap: 0.25rem;">
-                                <div style="flex: 1; height: 4px; background: var(--success); border-radius: 9999px;"></div>
-                                <div style="flex: 1; height: 4px; background: var(--success); border-radius: 9999px;"></div>
-                                <div style="flex: 1; height: 4px; background: var(--success); border-radius: 9999px;"></div>
-                                <div style="flex: 1; height: 4px; background: var(--success); border-radius: 9999px;"></div>
-                            </div>
-                            <p style="font-size: 0.75rem; color: var(--success); margin-top: 0.25rem;">Güçlü Şifre</p>
-                        </div>
-                        
-                        <div style="margin-bottom: 2rem;">
-                            <label style="display: block; font-weight: 600; color: var(--gray-700); margin-bottom: 0.5rem; font-size: 0.875rem;">Yeni Şifre Tekrar</label>
-                            <div style="position: relative;">
-                                <input type="password" placeholder="••••••••" style="width: 100%; padding: 1rem; padding-right: 3rem; border: 2px solid var(--gray-200); border-radius: 0.75rem; font-size: 1rem;">
-                                <button style="position: absolute; right: 1rem; top: 50%; transform: translateY(-50%); background: none; border: none; font-size: 1.25rem; cursor: pointer;">👁️</button>
-                            </div>
-                        </div>
-                        
-                        <button class="btn btn-primary" style="width: 100%; padding: 1rem; font-size: 1.125rem; margin-bottom: 1.5rem;" onclick="parent.showScreen(3)">Şifremi Sıfırla</button>
-                        
-                        <div class="card" style="background: var(--secondary-light); border-left: 4px solid var(--secondary);">
-                            <p style="font-size: 0.8125rem; color: var(--gray-700); line-height: 1.5;">
-                                <strong style="color: var(--secondary);">💡 İpucu:</strong> Güçlü bir şifre için büyük/küçük harf, rakam ve özel karakter kullanın.
-                            </p>
-                        </div>
+                `),
+
+                8: device(`
+                    <div class="screen-stack center" style="padding-top: 1rem;">
+                        <div class="hero" style="margin-bottom: 1.25rem;"><div class="hero-mark" style="width: 5rem; height: 5rem; border-radius: 999px; background: linear-gradient(145deg, #6d28d9, #0284c7);">BIO</div><h2 class="hero-title" style="font-size: 1.5rem;">FaceID ile Hizli Giris</h2><p class="hero-subtitle">Bir sonraki oturumlarda biyometrik dogrulama kullanabilirsiniz.</p></div>
+                        <div class="card" style="background: #f5f3ff; border: 1px solid #ddd6fe; margin-bottom: 1rem;"><h3 style="font-size: 0.875rem; color: #5b21b6; margin-bottom: 0.5rem;">Avantajlar</h3><ul class="list" style="margin-top: 0; color: #4c1d95;"><li>Tek dokunusla guvenli giris</li><li>Sifre hatirlama ihtiyaci azalir</li><li>Basarisiz denemede sifreye geri donus</li></ul></div>
+                        <button class="btn btn-primary" style="width: 100%;" onclick="showScreen(9)">FaceID'yi Etkinlestir</button>
+                        <button class="btn btn-secondary" style="width: 100%; margin-top: 0.75rem;" onclick="showScreen(9)">Simdi Degil</button>
+                        <p class="footer-note">Bu ayari Profil > Ayarlar > Guvenlik ekranindan degistirebilirsiniz.</p>
                     </div>
-                </div></div></div>`,
-                
-                8: `<div class="iphone fade-in"><div class="island"></div><div class="screen"><div class="content">
-                    <div class="status"><div>9:41</div><div>📶 📡 🔋</div></div>
-                    <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%; padding: 2rem;">
-                        <div style="width: 120px; height: 120px; background: linear-gradient(135deg, var(--purple), #9333EA); border-radius: 9999px; display: flex; align-items: center; justify-content: center; font-size: 4rem; margin-bottom: 2rem; box-shadow: 0 20px 60px rgba(139,92,246,0.4);">👤</div>
-                        <h1 style="font-family: Poppins, sans-serif; font-size: 1.75rem; font-weight: 800; color: var(--secondary); margin-bottom: 1rem; text-align: center;">FaceID ile Hızlı Giriş</h1>
-                        <p style="font-size: 1rem; color: var(--gray-700); text-align: center; margin-bottom: 3rem; max-width: 300px;">Sonraki girişlerinizde FaceID kullanmak ister misiniz?</p>
-                        <div class="card" style="background: var(--purple-light); border: 2px solid var(--purple); padding: 1.5rem; max-width: 320px; margin-bottom: 2rem;">
-                            <h3 style="font-weight: 700; color: var(--purple); margin-bottom: 0.75rem; font-size: 0.9375rem;">✓ FaceID Avantajları</h3>
-                            <ul style="margin-left: 1.25rem; font-size: 0.875rem; color: var(--gray-800); line-height: 1.7;">
-                                <li>Hızlı ve güvenli giriş</li>
-                                <li>Şifre hatırlama gereksiz</li>
-                                <li>Biyometrik güvenlik</li>
-                                <li>İstediğiniz zaman kapatabilirsiniz</li>
-                            </ul>
-                        </div>
-                        <button class="btn btn-primary" style="width: 100%; max-width: 320px; margin-bottom: 1rem;">FaceID'yi Etkinleştir</button>
-                        <button style="background: none; border: none; color: var(--gray-600); font-weight: 600; font-size: 0.9375rem; cursor: pointer; margin-top: 1rem;">Şimdi Değil</button>
-                        <p style="text-align: center; font-size: 0.75rem; color: var(--gray-600); margin-top: 2rem; max-width: 280px;">FaceID ayarlarını dilediğiniz zaman Profil > Ayarlar > Güvenlik bölümünden değiştirebilirsiniz</p>
+                `),
+
+                9: device(`
+                    <div class="screen-stack" style="padding-top: 1rem;">
+                        <div class="hero" style="margin-bottom: 1rem;"><div class="hero-mark" style="background: linear-gradient(145deg, #0ea5e9, #10b981);">DEM</div><h2 class="hero-title" style="font-size: 1.5rem;">Demografi Bilgileri</h2><p class="hero-subtitle">Ilk icerik baslatmadan once bu alanlari tamamlayin.</p></div>
+                        <div class="card" style="background: #f0f9ff; border: 1px solid #bae6fd; margin-bottom: 0.875rem;"><p style="font-size: 0.75rem; color: #0c4a6e; line-height: 1.55;"><strong>Neden gerekli?</strong> Daha dogru icerik onerileri ve kisilestirilmis akis icin kullanilir.</p></div>
+                        <div class="form-group"><label class="form-label">Yas *</label><input class="form-input" type="number" value="32"><p class="note">Gecerli aralik: 13 - 120</p></div>
+                        <div class="form-group"><label class="form-label">Cinsiyet</label><div class="choice-grid"><button class="choice-btn active">Kadin</button><button class="choice-btn">Erkek</button></div><button class="choice-btn" style="width: 100%; margin-top: 0.5rem;">Belirtmek istemiyorum</button></div>
+                        <div class="form-group"><label class="form-label">Ulke *</label><select class="form-select"><option>Turkiye</option><option>Germany</option><option>United Kingdom</option><option>United States</option></select></div>
+                        <button class="btn btn-primary" style="width: 100%;" onclick="showScreen(11)">Kaydet ve Devam Et</button>
+                        <p class="footer-note">* Zorunlu alanlar</p>
                     </div>
-                </div></div></div>`,
-                
-                9: `<div class="iphone fade-in"><div class="island"></div><div class="screen"><div class="content">
-                    <div class="status"><div>9:41</div><div>📶 📡 🔋</div></div>
-                    <div style="padding: 2rem 1.5rem;">
-                        <div style="text-align: center; margin-bottom: 2rem;">
-                            <div style="font-size: 3rem; margin-bottom: 1rem;">📊</div>
-                            <h1 style="font-family: Poppins, sans-serif; font-size: 1.75rem; font-weight: 800; color: var(--secondary); margin-bottom: 0.5rem;">Demografi Bilgileri</h1>
-                            <p style="font-size: 0.9375rem; color: var(--gray-700);">İçeriğe başlamadan önce lütfen bilgilerinizi tamamlayın</p>
-                        </div>
-                        <div class="card" style="background: var(--primary-light); margin-bottom: 1.5rem; border-left: 4px solid var(--primary);">
-                            <p style="font-size: 0.875rem; color: var(--gray-800); line-height: 1.6;"><strong>💡 Neden soruluyor?</strong><br>Bu bilgiler size daha uygun içerik önerileri sunmamıza yardımcı olur. Verileriniz güvenli şekilde saklanır.</p>
-                        </div>
-                        <div style="margin-bottom: 1.5rem;">
-                            <label style="display: block; font-weight: 600; color: var(--gray-900); margin-bottom: 0.5rem; font-size: 0.875rem;">Yaş <span style="color: var(--error);">*</span></label>
-                            <input type="number" placeholder="Yaşınızı girin" style="width: 100%; padding: 1rem; border: 2px solid var(--gray-300); border-radius: 0.75rem; font-family: Inter, sans-serif; font-size: 1rem;" min="13" max="120" value="32">
-                            <p style="font-size: 0.75rem; color: var(--gray-600); margin-top: 0.5rem;">13-120 yaş arası</p>
-                        </div>
-                        <div style="margin-bottom: 1.5rem;">
-                            <label style="display: block; font-weight: 600; color: var(--gray-900); margin-bottom: 0.5rem; font-size: 0.875rem;">Cinsiyet</label>
-                            <div style="display: flex; gap: 0.75rem;">
-                                <button class="btn btn-primary" style="flex: 1; padding: 1rem;">Kadın</button>
-                                <button class="btn" style="flex: 1; padding: 1rem; background: white; color: var(--gray-900); border: 2px solid var(--gray-300);">Erkek</button>
-                            </div>
-                            <button class="btn" style="width: 100%; margin-top: 0.75rem; background: white; color: var(--gray-700); border: 2px solid var(--gray-300); padding: 0.75rem;">Belirtmek istemiyorum</button>
-                        </div>
-                        <div style="margin-bottom: 2rem;">
-                            <label style="display: block; font-weight: 600; color: var(--gray-900); margin-bottom: 0.5rem; font-size: 0.875rem;">Ülke <span style="color: var(--error);">*</span></label>
-                            <select style="width: 100%; padding: 1rem; border: 2px solid var(--gray-300); border-radius: 0.75rem; font-family: Inter, sans-serif; font-size: 1rem; background: white;">
-                                <option>Türkiye</option>
-                                <option>United States</option>
-                                <option>United Kingdom</option>
-                                <option>Germany</option>
-                                <option>France</option>
-                            </select>
-                        </div>
-                        <button class="btn btn-primary" style="width: 100%;">Kaydet ve Devam Et</button>
-                        <p style="text-align: center; font-size: 0.75rem; color: var(--gray-600); margin-top: 1rem;"><span style="color: var(--error);">*</span> Zorunlu alanlar</p>
+                `),
+
+                10: device(`
+                    <div class="screen-stack" style="padding-top: 1rem;">
+                        <div class="hero" style="margin-bottom: 1rem;"><div class="hero-mark" style="background: linear-gradient(145deg, #334155, #0f172a);">GST</div><h2 class="hero-title" style="font-size: 1.5rem;">Misafir Modu</h2><p class="hero-subtitle">Kayit olmadan kesfetmeye baslayin.</p></div>
+                        <div class="card" style="background: linear-gradient(135deg, #dcfce7, #bbf7d0); border: 1px solid #86efac; margin-bottom: 0.875rem;"><h3 style="font-size: 0.875rem; color: #14532d; margin-bottom: 0.5rem;">Erisilebilir Islevler</h3><ul class="list" style="color: #14532d;"><li>Kesfet ve detay sayfalari</li><li>Yolculuk ve atolye kataloglarini inceleme</li><li>Icerik onizleme</li></ul></div>
+                        <div class="card" style="background: #fff7ed; border: 1px solid #fdba74; margin-bottom: 1rem;"><h3 style="font-size: 0.875rem; color: #9a3412; margin-bottom: 0.5rem;">Kayit Gerektiren Islevler</h3><ul class="list" style="color: #9a3412;"><li>Icerik baslatma ve okuma</li><li>Yorum, ilerleme ve kaydetme</li><li>Abonelik tablari</li></ul></div>
+                        <button class="btn btn-primary" style="width: 100%;">Misafir Olarak Devam Et</button>
+                        <button class="btn btn-secondary" style="width: 100%; margin-top: 0.75rem;" onclick="showScreen(4)">Kayit Ol</button>
+                        <p class="footer-note">Kayit sonrasi misafir oturum verileri hesabiniza aktarilir.</p>
                     </div>
-                </div></div></div>`,
-                
-                10: `<div class="iphone fade-in"><div class="island"></div><div class="screen"><div class="content">
-                    <div class="status"><div>9:41</div><div>📶 📡 🔋</div></div>
-                    <div style="padding: 2rem 1.5rem;">
-                        <div style="text-align: center; margin-bottom: 2rem;">
-                            <div style="font-size: 4rem; margin-bottom: 1rem;">👻</div>
-                            <h1 style="font-family: Poppins, sans-serif; font-size: 1.75rem; font-weight: 800; color: var(--secondary); margin-bottom: 0.5rem;">Misafir Modunda Devam Et</h1>
-                            <p style="font-size: 0.9375rem; color: var(--gray-700);">Kayıt olmadan içerikleri keşfedin</p>
-                        </div>
-                        <div class="card" style="background: linear-gradient(135deg, var(--success-light), #A7F3D0); border-left: 4px solid var(--success); margin-bottom: 1.5rem;">
-                            <h3 style="font-weight: 700; color: var(--success-dark); margin-bottom: 0.75rem; font-size: 0.9375rem;">✓ Misafir Olarak Yapabilecekleriniz</h3>
-                            <ul style="margin-left: 1.25rem; font-size: 0.875rem; color: var(--gray-800); line-height: 1.7;">
-                                <li>Yolculukları keşfedin</li>
-                                <li>Atölyelere göz atın</li>
-                                <li>e-Kitap kataloğunu inceleyin</li>
-                                <li>Modülleri görüntüleyin</li>
-                            </ul>
-                        </div>
-                        <div class="card" style="background: var(--warning); color: white; margin-bottom: 2rem;">
-                            <h3 style="font-weight: 700; margin-bottom: 0.75rem; font-size: 0.9375rem;">⚠️ Sınırlamalar</h3>
-                            <ul style="margin-left: 1.25rem; font-size: 0.875rem; line-height: 1.7;">
-                                <li>İçerik başlatamazsınız</li>
-                                <li>Okuma yapamazsınız</li>
-                                <li>Yorum yazamazsınız</li>
-                                <li>İlerleme kaydedilemez</li>
-                            </ul>
-                        </div>
-                        <button class="btn btn-primary" style="width: 100%; margin-bottom: 1rem;">Misafir Olarak Devam Et</button>
-                        <button class="btn" style="width: 100%; background: white; color: var(--gray-900); border: 2px solid var(--gray-300);" onclick="parent.showScreen(4)">Kayıt Ol</button>
-                        <p style="text-align: center; font-size: 0.75rem; color: var(--gray-600); margin-top: 1.5rem;">💡 Kayıt olduktan sonra misafir oturumunuzdaki favorileriniz hesabınıza aktarılacaktır</p>
+                `),
+
+                11: device(`
+                    <div class="screen-stack center" style="padding-top: 0.5rem;">
+                        <div class="hero" style="margin-bottom: 1.25rem;"><div class="hero-mark" style="width: 5rem; height: 5rem; border-radius: 1.5rem; background: linear-gradient(145deg, #1d4ed8, #4338ca);">SEC</div><h2 class="hero-title" style="font-size: 1.5rem;">Oturum Sonlandi</h2><p class="hero-subtitle">30 dakika inaktiflik nedeniyle yeniden dogrulama gerekiyor.</p></div>
+                        <div class="card" style="background: #eef2ff; border: 1px solid #c7d2fe; margin-bottom: 1rem;"><h3 style="font-size: 0.875rem; color: #312e81; margin-bottom: 0.5rem;">Guvenlik Durumu</h3><p style="font-size: 0.875rem; line-height: 1.55; color: #3730a3;">Erisim tokenlari temizlendi. Korumali ekranlara donus icin kimlik dogrulama zorunlu.</p></div>
+                        <button class="btn btn-primary" style="width: 100%;" onclick="showScreen(3)">Yeniden Giris Yap</button>
+                        <button class="btn btn-secondary" style="width: 100%; margin-top: 0.75rem;" onclick="showScreen(1)">Uygulamadan Cik</button>
+                        <p class="footer-note">Gecersiz veya suresi dolmus oturumlar otomatik olarak guvenli sekilde sonlandirilir.</p>
                     </div>
-                </div></div></div>`
+                `)
             };
-            
+
             return screens[num] || screens[1];
         }
-        
-        // Initialize
-        document.getElementById('viewer').innerHTML = getScreenHTML(1);
+
+        initializeInteractiveElements();
+        showScreen(1);
     </script>
 </body>
 </html>

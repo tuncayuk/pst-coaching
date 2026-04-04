@@ -1,40 +1,45 @@
 {
   "id": "progress.dashboard",
-  "title": "Gelişim",
+  "title": "Gelisim",
   "route": "/progress",
-  "purpose": "Gelişim deneyimini sunmak.",
+  "purpose": "Tab root screen for Gelisim.",
   "entryPoints": [
-    "progress.dashboard"
+    "app.launch"
   ],
   "inputs": [
     {
       "name": "locale",
       "type": "LanguageCode",
       "required": true,
-      "source": "app_state"
+      "source": "profile"
+    },
+    {
+      "name": "subscriptionStatus",
+      "type": "SubscriptionStatus",
+      "required": true,
+      "source": "entitlement_cache"
     }
   ],
   "dataDependencies": [
-    "ContentProgress",
-    "Comment",
-    "Achievement",
-    "ContentReview"
+    "User",
+    "Subscription",
+    "ContentProgress"
   ],
   "uiStates": {
     "loading": {
-      "description": "Gelişim yüklenirken iskelet ve temel CTA'lar gösterilir."
+      "description": "Tab shows skeleton cards while initial data is loading."
     },
     "ready": {
-      "description": "Gelişim içeriği ve etkileşimler hazır."
+      "description": "Tab content is visible and interactive."
     },
     "empty": {
-      "description": "İçerik yoksa açıklayıcı boş durum ve birincil aksiyon sunulur."
+      "description": "Tab-specific empty state with CTA is displayed."
     },
     "error": {
-      "description": "Hata mesajı ve tekrar dene aksiyonu gösterilir."
+      "description": "Tab-level error UI appears with retry action."
     },
     "offline": {
-      "description": "Çevrimdışı modda önbellek içerik gösterilir, senkron bekler."
+      "description": "Last cache is shown with offline indicator."
     }
   },
   "analytics": {
@@ -43,10 +48,8 @@
       "progress_dashboard_viewed"
     ]
   },
-  "acceptanceCriteriaRefs": [
-    "RQ-13"
-  ],
+  "acceptanceCriteriaRefs": [],
   "gates": [
-    "subscription:trial_or_active"
+    "subscription"
   ]
 }

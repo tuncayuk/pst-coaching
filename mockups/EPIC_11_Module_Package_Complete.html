@@ -3,520 +3,1158 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PST Coaching Mobile - EPIC 11: Modül ve Paket Sistemi</title>
+    <title>PST Coaching Mobile - EPIC 11: Modul ve Paket Sistemi</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #00B4D8; --primary-dark: #0096B8; --primary-light: #E0F7FA; --primary-100: #B2EBF2;
-            --secondary: #2B1B5D; --secondary-light: #EDE7F6;
-            --success: #10B981; --success-light: #D1FAE5; --success-dark: #065F46;
-            --warning: #F59E0B; --error: #EF4444; --purple: #8B5CF6; --purple-light: #EDE9FE;
-            --orange: #F97316; --orange-light: #FFEDD5;
-            --gray-50: #FAFAFA; --gray-100: #F5F5F5; --gray-200: #E5E5E5; --gray-300: #D4D4D4;
-            --gray-400: #A3A3A3; --gray-600: #525252; --gray-700: #404040; --gray-900: #171717;
+            --primary: #0ea5e9;
+            --primary-dark: #0369a1;
+            --primary-light: #e0f2fe;
+            --secondary: #1f2937;
+            --success: #16a34a;
+            --success-light: #dcfce7;
+            --warning: #d97706;
+            --warning-light: #fffbeb;
+            --error: #dc2626;
+            --error-light: #fee2e2;
+            --violet: #7c3aed;
+            --violet-light: #f5f3ff;
+            --gray-50: #fafafa;
+            --gray-100: #f5f5f5;
+            --gray-200: #e5e5e5;
+            --gray-300: #d4d4d4;
+            --gray-400: #a3a3a3;
+            --gray-600: #525252;
+            --gray-700: #404040;
+            --gray-900: #171717;
         }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #f0f0f0, #e0e0e0); overflow: hidden; }
-        .app { display: flex; height: 100vh; }
-        .sidebar { width: 400px; background: white; border-right: 1px solid var(--gray-200); overflow-y: auto; box-shadow: 2px 0 10px rgba(0,0,0,0.05); }
-        .main { flex: 1; display: flex; flex-direction: column; }
-        .topbar { background: white; border-bottom: 1px solid var(--gray-200); padding: 1.75rem 2.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
-        .viewer { flex: 1; overflow-y: auto; padding: 3rem; display: flex; justify-content: center; align-items: flex-start; }
-        .logo { font-family: 'Poppins', sans-serif; font-size: 2rem; font-weight: 800; color: var(--primary); padding: 2.5rem; border-bottom: 1px solid var(--gray-200); background: linear-gradient(135deg, var(--primary-light), white); }
-        .subtitle { font-size: 0.875rem; color: var(--gray-600); font-weight: 500; margin-top: 0.5rem; }
-        .epic-header { padding: 1.5rem; background: linear-gradient(135deg, #DBEAFE, #BFDBFE); border-bottom: 2px solid var(--primary); }
-        .epic-title { font-family: 'Poppins', sans-serif; font-size: 1.25rem; font-weight: 700; color: var(--gray-900); margin-bottom: 0.5rem; }
-        .epic-meta { font-size: 0.8125rem; color: var(--gray-600); }
-        .nav-map { background: var(--purple-light); border-left: 4px solid var(--purple); padding: 1rem; margin: 1rem 1.75rem; border-radius: 0.5rem; }
-        .nav-map-title { font-weight: 700; color: var(--purple); font-size: 0.8125rem; margin-bottom: 0.75rem; text-transform: uppercase; display: flex; align-items: center; gap: 0.5rem; }
-        .nav-flow { display: flex; flex-direction: column; gap: 0.5rem; }
-        .nav-flow-item { display: flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; color: var(--gray-700); }
-        .nav-flow-box { background: white; padding: 0.375rem 0.625rem; border-radius: 0.375rem; border: 2px solid var(--gray-300); font-weight: 600; white-space: nowrap; font-size: 0.6875rem; }
-        .nav-flow-box.active { background: var(--primary); color: white; border-color: var(--primary); }
-        .nav-flow-arrow { color: var(--gray-400); font-weight: 700; }
-        .nav-flow-label { color: var(--gray-600); font-size: 0.625rem; font-style: italic; }
-        .nav-section { padding: 1.25rem 0; border-bottom: 1px solid var(--gray-100); }
-        .nav-title { padding: 0.75rem 1.75rem; font-size: 0.6875rem; font-weight: 700; color: var(--gray-600); text-transform: uppercase; }
-        .nav-item { padding: 1rem 1.75rem; cursor: pointer; font-size: 0.9375rem; transition: all 0.2s; color: var(--gray-700); display: flex; align-items: center; gap: 0.875rem; border-left: 3px solid transparent; }
-        .nav-item:hover { background: var(--gray-50); }
-        .nav-item.active { background: var(--primary-light); color: var(--primary-dark); font-weight: 600; border-left-color: var(--primary); }
-        .nav-icon { font-size: 1.375rem; }
-        .nav-badge { background: var(--primary); color: white; padding: 0.25rem 0.625rem; border-radius: 9999px; font-size: 0.6875rem; font-weight: 700; margin-left: auto; }
-        .ac-section { background: var(--secondary-light); border-left: 4px solid var(--secondary); padding: 1rem; margin: 0.75rem 1.75rem; border-radius: 0.5rem; }
-        .ac-title { font-weight: 700; color: var(--secondary); font-size: 0.75rem; margin-bottom: 0.5rem; text-transform: uppercase; }
-        .ac-list { list-style: none; }
-        .ac-list li { font-size: 0.75rem; color: var(--gray-700); margin-bottom: 0.375rem; padding-left: 1.25rem; position: relative; line-height: 1.4; }
-        .ac-list li:before { content: "✓"; position: absolute; left: 0; color: var(--success); font-weight: 700; }
-        .screen-title { font-family: 'Poppins', sans-serif; font-size: 2.25rem; font-weight: 700; color: var(--gray-900); }
-        .screen-meta { color: var(--gray-600); font-size: 0.9375rem; margin-top: 0.5rem; display: flex; align-items: center; gap: 1rem; }
-        .meta-badge { background: #DBEAFE; color: var(--primary-dark); padding: 0.375rem 0.875rem; border-radius: 0.5rem; font-size: 0.8125rem; font-weight: 600; }
-        .iphone { width: 393px; height: 852px; background: #1d1d1f; border-radius: 55px; padding: 12px; box-shadow: 0 60px 120px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.1); position: relative; }
-        .island { position: absolute; top: 20px; left: 50%; transform: translateX(-50%); width: 120px; height: 30px; background: #000; border-radius: 20px; z-index: 11; }
-        .screen { width: 100%; height: 100%; background: white; border-radius: 43px; overflow: hidden; position: relative; }
-        .content { width: 100%; height: 100%; overflow-y: auto; background: var(--gray-50); }
-        .content::-webkit-scrollbar { width: 4px; }
-        .content::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.3); border-radius: 10px; }
-        .status { height: 54px; display: flex; align-items: center; justify-content: space-between; padding: 0 1.5rem; font-size: 0.8125rem; font-weight: 600; background: white; }
-        .btn { padding: 0.875rem 1.5rem; border-radius: 0.75rem; font-weight: 600; font-size: 1rem; border: none; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.2s; }
-        .btn-primary { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; box-shadow: 0 4px 16px rgba(0,180,216,0.4); }
-        .card { background: white; border-radius: 1rem; padding: 1.25rem; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .fade-in { animation: fadeIn 0.3s ease-out; }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--gray-900);
+            background: radial-gradient(circle at 15% 0%, #e0f2fe 0%, #e2e8f0 48%, #f8fafc 100%);
+            overflow: hidden;
+        }
+
+        body.reduced-motion *,
+        body.reduced-motion *::before,
+        body.reduced-motion *::after {
+            animation: none !important;
+            transition: none !important;
+        }
+
+        .app {
+            height: 100vh;
+            display: flex;
+        }
+
+        .sidebar {
+            width: 430px;
+            background: #fff;
+            border-right: 1px solid var(--gray-200);
+            box-shadow: 2px 0 14px rgba(0, 0, 0, 0.06);
+            overflow-y: auto;
+        }
+
+        .main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.85rem;
+            font-weight: 800;
+            color: var(--primary-dark);
+            padding: 1.85rem;
+            border-bottom: 1px solid var(--gray-200);
+            background: linear-gradient(135deg, var(--primary-light), #fff);
+        }
+
+        .subtitle {
+            margin-top: 0.35rem;
+            font-size: 0.82rem;
+            color: var(--gray-600);
+            font-weight: 600;
+        }
+
+        .epic-header {
+            margin: 1rem 1.2rem;
+            border: 1px solid #93c5fd;
+            border-radius: 0.85rem;
+            padding: 1rem;
+            background: linear-gradient(140deg, #eff6ff, #f8fafc);
+        }
+
+        .epic-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.03rem;
+            font-weight: 700;
+            margin-bottom: 0.35rem;
+        }
+
+        .epic-meta {
+            font-size: 0.76rem;
+            color: var(--gray-700);
+            line-height: 1.45;
+        }
+
+        .flow-map {
+            margin: 0 1.2rem 1rem;
+            border-radius: 0.85rem;
+            border: 1px solid #ddd6fe;
+            background: #f8f9ff;
+            padding: 0.75rem;
+        }
+
+        .flow-title {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: var(--gray-600);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .flow-list {
+            display: grid;
+            gap: 0.35rem;
+        }
+
+        .flow-step {
+            border: 1px solid var(--gray-300);
+            border-radius: 0.5rem;
+            background: #fff;
+            padding: 0.34rem 0.52rem;
+            font-size: 0.69rem;
+            font-weight: 600;
+            color: var(--gray-700);
+        }
+
+        .flow-step.active {
+            border-color: var(--violet);
+            background: var(--violet-light);
+            color: #4c1d95;
+        }
+
+        .gate-note {
+            margin-top: 0.55rem;
+            border-top: 1px solid #ddd6fe;
+            padding-top: 0.5rem;
+            font-size: 0.68rem;
+            color: var(--gray-600);
+            line-height: 1.45;
+        }
+
+        .nav-group {
+            border-bottom: 1px solid var(--gray-100);
+            padding: 0.28rem 0 0.72rem;
+        }
+
+        .nav-group-title {
+            padding: 0.66rem 1.2rem;
+            font-size: 0.68rem;
+            color: var(--gray-600);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            font-weight: 700;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.62rem;
+            padding: 0.7rem 1.2rem;
+            border-left: 3px solid transparent;
+            color: var(--gray-700);
+            cursor: pointer;
+            transition: background 0.18s ease;
+        }
+
+        .nav-item:hover {
+            background: var(--gray-50);
+        }
+
+        .nav-item.active {
+            border-left-color: var(--primary);
+            background: #eff6ff;
+            color: var(--primary-dark);
+        }
+
+        .nav-icon {
+            font-size: 0.72rem;
+            font-weight: 800;
+            width: 28px;
+            text-align: center;
+            border: 1px solid var(--gray-300);
+            border-radius: 0.35rem;
+            padding: 0.1rem 0.2rem;
+            background: #fff;
+        }
+
+        .nav-text {
+            flex: 1;
+            font-size: 0.83rem;
+            font-weight: 600;
+        }
+
+        .nav-badge {
+            font-size: 0.66rem;
+            font-weight: 700;
+            border-radius: 999px;
+            padding: 0.14rem 0.45rem;
+            background: #e2e8f0;
+            color: var(--gray-700);
+        }
+
+        .topbar {
+            background: #fff;
+            border-bottom: 1px solid var(--gray-200);
+            padding: 1.45rem 2rem;
+        }
+
+        .screen-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--secondary);
+        }
+
+        .screen-meta {
+            margin-top: 0.4rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--gray-600);
+            font-size: 0.9rem;
+            flex-wrap: wrap;
+        }
+
+        .fr-badge {
+            border: 1px solid #93c5fd;
+            background: #eff6ff;
+            color: #1d4ed8;
+            border-radius: 0.52rem;
+            padding: 0.2rem 0.58rem;
+            font-size: 0.78rem;
+            font-weight: 700;
+        }
+
+        .route-badge {
+            border: 1px solid #c4b5fd;
+            background: #f5f3ff;
+            color: #5b21b6;
+            border-radius: 0.52rem;
+            padding: 0.2rem 0.58rem;
+            font-size: 0.74rem;
+            font-weight: 700;
+        }
+
+        .viewer {
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 2rem;
+        }
+
+        .iphone {
+            width: 393px;
+            height: 852px;
+            background: #1d1d1f;
+            border-radius: 54px;
+            padding: 12px;
+            box-shadow: 0 44px 94px rgba(0, 0, 0, 0.45);
+            position: relative;
+        }
+
+        .island {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 30px;
+            border-radius: 20px;
+            background: #000;
+            z-index: 4;
+        }
+
+        .screen {
+            width: 100%;
+            height: 100%;
+            border-radius: 42px;
+            overflow: hidden;
+            background: #fff;
+        }
+
+        .content {
+            width: 100%;
+            height: 100%;
+            overflow-y: auto;
+            background: var(--gray-50);
+        }
+
+        .status {
+            height: 54px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #fff;
+            padding: 0 1.2rem;
+            font-size: 0.82rem;
+            font-weight: 600;
+        }
+
+        .mobile-header {
+            display: flex;
+            align-items: center;
+            gap: 0.72rem;
+            background: #fff;
+            border-bottom: 1px solid var(--gray-200);
+            padding: 0.9rem 1.2rem;
+            position: sticky;
+            top: 0;
+            z-index: 2;
+        }
+
+        .mobile-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--secondary);
+        }
+
+        .icon-btn {
+            border: 1px solid var(--gray-300);
+            background: #fff;
+            color: var(--gray-700);
+            border-radius: 0.55rem;
+            padding: 0.3rem 0.5rem;
+            font-size: 0.84rem;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .mobile-body {
+            padding: 1rem 1.15rem 1.35rem;
+            display: grid;
+            gap: 0.78rem;
+        }
+
+        .card {
+            border: 1px solid var(--gray-200);
+            border-radius: 0.9rem;
+            background: #fff;
+            padding: 0.82rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .card-title {
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: 0.4rem;
+        }
+
+        .muted {
+            color: var(--gray-600);
+            font-size: 0.78rem;
+            line-height: 1.45;
+        }
+
+        .row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
+        }
+
+        .chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.42rem;
+        }
+
+        .chip {
+            border: 1px solid var(--gray-300);
+            border-radius: 999px;
+            background: #fff;
+            color: var(--gray-700);
+            font-size: 0.68rem;
+            font-weight: 700;
+            padding: 0.16rem 0.54rem;
+        }
+
+        .chip.success {
+            border-color: #86efac;
+            background: var(--success-light);
+            color: #166534;
+        }
+
+        .chip.warn {
+            border-color: #fcd34d;
+            background: var(--warning-light);
+            color: #92400e;
+        }
+
+        .chip.error {
+            border-color: #fca5a5;
+            background: var(--error-light);
+            color: #991b1b;
+        }
+
+        .btn {
+            border: none;
+            border-radius: 0.72rem;
+            padding: 0.73rem 0.92rem;
+            font-size: 0.84rem;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .btn:disabled {
+            opacity: 0.55;
+            cursor: not-allowed;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: #fff;
+        }
+
+        .btn-outline {
+            background: #fff;
+            border: 1px solid var(--gray-300);
+            color: var(--gray-700);
+        }
+
+        .state-switcher {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.42rem;
+        }
+
+        .state-btn {
+            border: 1px solid var(--gray-300);
+            background: #fff;
+            border-radius: 999px;
+            padding: 0.2rem 0.56rem;
+            font-size: 0.66rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            font-weight: 700;
+            color: var(--gray-700);
+            cursor: pointer;
+        }
+
+        .state-btn.active {
+            border-color: var(--primary);
+            color: var(--primary-dark);
+            background: var(--primary-light);
+        }
+
+        .state-panel {
+            border: 1px solid var(--gray-200);
+            border-radius: 0.8rem;
+            background: #fff;
+            padding: 0.72rem;
+            display: grid;
+            gap: 0.38rem;
+            font-size: 0.79rem;
+            line-height: 1.45;
+        }
+
+        .state-panel.loading {
+            border-color: #bfdbfe;
+            background: #eff6ff;
+        }
+
+        .state-panel.empty {
+            border-color: #cbd5e1;
+            background: #f8fafc;
+        }
+
+        .state-panel.error {
+            border-color: #fecaca;
+            background: var(--error-light);
+        }
+
+        .state-panel.offline {
+            border-color: #fcd34d;
+            background: #fffbeb;
+        }
+
+        .list {
+            display: grid;
+            gap: 0.5rem;
+        }
+
+        .list-item {
+            border: 1px solid var(--gray-200);
+            border-radius: 0.72rem;
+            background: #fff;
+            padding: 0.62rem;
+        }
+
+        .item-title {
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: var(--gray-900);
+        }
+
+        .item-meta {
+            font-size: 0.73rem;
+            color: var(--gray-600);
+            margin-top: 0.2rem;
+            line-height: 1.4;
+        }
+
+        .field {
+            width: 100%;
+            border: 1px solid var(--gray-300);
+            border-radius: 0.65rem;
+            background: #fff;
+            padding: 0.45rem 0.52rem;
+            font-size: 0.78rem;
+            color: var(--gray-700);
+            font-family: 'Inter', sans-serif;
+        }
+
+        .check-row {
+            display: flex;
+            align-items: center;
+            gap: 0.55rem;
+        }
+
+        .check {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--primary);
+        }
+
+        .progress {
+            width: 100%;
+            height: 10px;
+            border-radius: 999px;
+            background: #e2e8f0;
+            overflow: hidden;
+        }
+
+        .progress > span {
+            display: block;
+            height: 100%;
+            border-radius: 999px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        }
+
+        .toast {
+            position: fixed;
+            right: 1.2rem;
+            bottom: 1.2rem;
+            background: #111827;
+            color: #fff;
+            border-radius: 0.7rem;
+            padding: 0.62rem 0.92rem;
+            font-size: 0.8rem;
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22);
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(8px);
+            transition: opacity 0.2s ease, transform 0.2s ease;
+            z-index: 20;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .toast.success {
+            background: #065f46;
+        }
+
+        .toast.error {
+            background: #7f1d1d;
+        }
+
+        .nav-item:focus-visible,
+        button:focus-visible,
+        textarea:focus-visible,
+        input:focus-visible {
+            outline: 3px solid #60a5fa;
+            outline-offset: 2px;
+        }
+
+        @media (max-width: 1200px) {
+            body {
+                overflow: auto;
+            }
+
+            .app {
+                flex-direction: column;
+                height: auto;
+                min-height: 100vh;
+            }
+
+            .sidebar {
+                width: 100%;
+                max-height: 52vh;
+            }
+
+            .viewer {
+                padding: 1.2rem;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="app">
-        <div class="sidebar">
-            <div class="logo">PST Coaching<div class="subtitle">Modül & Paket Sistemi</div></div>
+        <aside class="sidebar">
+            <div class="logo">
+                PST Coaching
+                <div class="subtitle">EPIC 11 - Modul ve Paket Sistemi</div>
+            </div>
+
             <div class="epic-header">
-                <div class="epic-title">EPIC 11: Modül ve Paket Sistemi</div>
-                <div class="epic-meta">6 User Stories • 6 Screens • 24 ACs</div>
+                <div class="epic-title">EPIC-11 Sync Pack</div>
+                <div class="epic-meta">5 FR Screen | 17 AC | Requirements + UX artifacts + mockup sync</div>
             </div>
-            <div class="nav-map">
-                <div class="nav-map-title"><span>🗺️</span><span>Navigation Map</span></div>
-                <div class="nav-flow">
-                    <div class="nav-flow-item"><div class="nav-flow-box active" id="nav-1">Module Home</div></div>
-                    <div class="nav-flow-item"><span class="nav-flow-arrow">├→</span><span class="nav-flow-label">tap package card</span></div>
-                    <div class="nav-flow-item" style="margin-left: 1rem;"><div class="nav-flow-box" id="nav-2">Package Detail</div></div>
-                    <div class="nav-flow-item"><span class="nav-flow-arrow">│ ├→</span><span class="nav-flow-label">tap Start Package</span></div>
-                    <div class="nav-flow-item" style="margin-left: 2rem;"><div class="nav-flow-box" id="nav-3">Reading Section</div></div>
-                    <div class="nav-flow-item"><span class="nav-flow-arrow">│ ├→</span><span class="nav-flow-label">complete reading</span></div>
-                    <div class="nav-flow-item" style="margin-left: 2rem;"><div class="nav-flow-box" id="nav-4">Exercise Section</div></div>
-                    <div class="nav-flow-item"><span class="nav-flow-arrow">├→</span><span class="nav-flow-label">tap locked</span></div>
-                    <div class="nav-flow-item" style="margin-left: 1rem;"><div class="nav-flow-box" id="nav-5">Locked Package</div></div>
-                    <div class="nav-flow-item"><span class="nav-flow-arrow">└→</span><span class="nav-flow-label">finish all</span></div>
-                    <div class="nav-flow-item" style="margin-left: 1rem;"><div class="nav-flow-box" id="nav-6">Certificate</div></div>
+
+            <div class="flow-map">
+                <div class="flow-title">Modul akisi haritasi</div>
+                <div class="flow-list">
+                    <div class="flow-step active" id="flow-1">FR-E11-01 Modul ana ekrani</div>
+                    <div class="flow-step" id="flow-2">FR-E11-02 Paket detayi ve baslatma</div>
+                    <div class="flow-step" id="flow-3">FR-E11-03 Paket ici okuma ve uygulama</div>
+                    <div class="flow-step" id="flow-4">FR-E11-04 Kilitli ilerleme</div>
+                    <div class="flow-step" id="flow-5">FR-E11-05 Modul tamamlama ve sertifika</div>
                 </div>
-                <div style="margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid var(--purple); font-size: 0.625rem; color: var(--gray-600); line-height: 1.4;">
-                    <strong>Entry:</strong> Kütüphane → Modüllerim → Modül<br>
-                    <strong>Structure:</strong> Module → Packages → Content
+                <div class="gate-note">
+                    Gate: auth | Tum ekranlar loading, ready, empty, error, offline durumlarini destekler.
                 </div>
             </div>
-            <div class="nav-section">
-                <div class="nav-title">US-11.1 & 11.2: Overview & Start</div>
-                <div class="nav-item active" onclick="showScreen(1)">
-                    <span class="nav-icon">📦</span><span>Module Home</span><span class="nav-badge">3 ACs</span>
-                </div>
-                <div class="ac-section">
-                    <div class="ac-title">✓ Acceptance Criteria</div>
-                    <ul class="ac-list">
-                        <li>Module name and progress % visible</li>
-                        <li>Packages listed in order</li>
-                        <li>Each package status shown (complete/active/locked)</li>
-                    </ul>
-                </div>
-                <div class="nav-item" onclick="showScreen(2)">
-                    <span class="nav-icon">📋</span><span>Package Detail</span><span class="nav-badge">4 ACs</span>
-                </div>
-                <div class="ac-section">
-                    <div class="ac-title">✓ Acceptance Criteria</div>
-                    <ul class="ac-list">
-                        <li>Package description and goals visible</li>
-                        <li>Contained sections listed</li>
-                        <li>"Start Package" CTA present</li>
-                        <li>Locked if prerequisite incomplete</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="nav-section">
-                <div class="nav-title">US-11.3 & 11.4: Content</div>
-                <div class="nav-item" onclick="showScreen(3)">
-                    <span class="nav-icon">📖</span><span>Reading Section</span><span class="nav-badge">3 ACs</span>
-                </div>
-                <div class="ac-section">
-                    <div class="ac-title">✓ Acceptance Criteria</div>
-                    <ul class="ac-list">
-                        <li>Reading text shown fullscreen</li>
-                        <li>Highlighting and notes supported</li>
-                        <li>Next section offered on completion</li>
-                    </ul>
-                </div>
-                <div class="nav-item" onclick="showScreen(4)">
-                    <span class="nav-icon">✍️</span><span>Exercise Section</span><span class="nav-badge">3 ACs</span>
-                </div>
-                <div class="ac-section">
-                    <div class="ac-title">✓ Acceptance Criteria</div>
-                    <ul class="ac-list">
-                        <li>Exercise instructions clearly visible</li>
-                        <li>Steps listed sequentially</li>
-                        <li>Each step checked when completed</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="nav-section">
-                <div class="nav-title">US-11.5 & 11.6: Progression</div>
-                <div class="nav-item" onclick="showScreen(5)">
-                    <span class="nav-icon">🔒</span><span>Locked Package</span><span class="nav-badge">3 ACs</span>
-                </div>
-                <div class="ac-section">
-                    <div class="ac-title">✓ Acceptance Criteria</div>
-                    <ul class="ac-list">
-                        <li>Shows "locked" after incomplete package</li>
-                        <li>Lock reason explained</li>
-                        <li>08:00 rule info if applicable</li>
-                    </ul>
-                </div>
-                <div class="nav-item" onclick="showScreen(6)">
-                    <span class="nav-icon">🎓</span><span>Certificate</span><span class="nav-badge">4 ACs</span>
-                </div>
-                <div class="ac-section">
-                    <div class="ac-title">✓ Acceptance Criteria</div>
-                    <ul class="ac-list">
-                        <li>Module completes when all packages done</li>
-                        <li>Certificate/badge awarded</li>
-                        <li>Next module recommended</li>
-                        <li>Reflects in progress dashboard</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div class="main">
+
+            <section class="nav-group">
+                <div class="nav-group-title">Modul girisleri</div>
+                <div class="nav-item active" data-screen="1" role="button" tabindex="0"><span class="nav-icon">M1</span><span class="nav-text">Modul Ana Ekrani</span><span class="nav-badge">3 AC</span></div>
+                <div class="nav-item" data-screen="2" role="button" tabindex="0"><span class="nav-icon">M2</span><span class="nav-text">Paket Detayi ve Baslatma</span><span class="nav-badge">4 AC</span></div>
+            </section>
+
+            <section class="nav-group">
+                <div class="nav-group-title">Icerik ve ilerleme</div>
+                <div class="nav-item" data-screen="3" role="button" tabindex="0"><span class="nav-icon">M3</span><span class="nav-text">Paket Ici Okuma/Uygulama</span><span class="nav-badge">3 AC</span></div>
+                <div class="nav-item" data-screen="4" role="button" tabindex="0"><span class="nav-icon">M4</span><span class="nav-text">Kilitli Ilerleme</span><span class="nav-badge">3 AC</span></div>
+                <div class="nav-item" data-screen="5" role="button" tabindex="0"><span class="nav-icon">M5</span><span class="nav-text">Tamamlama ve Sertifika</span><span class="nav-badge">4 AC</span></div>
+            </section>
+        </aside>
+
+        <main class="main">
             <div class="topbar">
-                <h1 class="screen-title" id="screenTitle">Module Home</h1>
+                <h1 class="screen-title" id="screenTitle">Modul ana ekrani</h1>
                 <div class="screen-meta">
-                    <span class="meta-badge" id="screenUS">US-11.1</span>
-                    <span id="screenMeta">Overview • 3/3 ACs • Entry: Kütüphane → Modüllerim → Modül</span>
+                    <span class="fr-badge" id="screenFr">FR-E11-01</span>
+                    <span class="route-badge" id="screenRoute">/epic-11/fr-e11-01</span>
+                    <span id="screenMeta">Modul adi + ilerleme, paketlerin sirali listesi ve Devam Et aksiyonu</span>
                 </div>
             </div>
             <div class="viewer" id="viewer"></div>
-        </div>
+        </main>
     </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+
     <script>
         const screenData = {
-            1: { title: 'Module Home', us: 'US-11.1', meta: 'Overview • 3/3 ACs • Entry: Kütüphane → Modüllerim → Modül' },
-            2: { title: 'Package Detail', us: 'US-11.2', meta: 'Package info • 4/4 ACs • From: Module Home' },
-            3: { title: 'Reading Section', us: 'US-11.3', meta: 'Read content • 3/3 ACs • From: Package' },
-            4: { title: 'Exercise Section', us: 'US-11.4', meta: 'Practice steps • 3/3 ACs • From: Package' },
-            5: { title: 'Locked Package', us: 'US-11.5', meta: 'Gated progress • 3/3 ACs • From: Module' },
-            6: { title: 'Certificate', us: 'US-11.6', meta: 'Completion • 4/4 ACs • Auto-trigger' }
+            1: {
+                title: 'Modul ana ekrani',
+                fr: 'FR-E11-01',
+                route: '/epic-11/fr-e11-01',
+                event: 'modules_fr_e11_01_viewed',
+                meta: 'Modul adi + ilerleme, paketlerin sirali listesi ve Devam Et aksiyonu'
+            },
+            2: {
+                title: 'Paket detayi ve baslatma',
+                fr: 'FR-E11-02',
+                route: '/epic-11/fr-e11-02',
+                event: 'modules_fr_e11_02_viewed',
+                meta: 'Paket amaci + bolum listesi + Paketi Baslat CTA + onkosul kilit yonetimi'
+            },
+            3: {
+                title: 'Paket ici okuma ve uygulama',
+                fr: 'FR-E11-03',
+                route: '/epic-11/fr-e11-03',
+                event: 'modules_fr_e11_03_viewed',
+                meta: 'Okuma tam ekran, vurgu/not, adim adim uygulama ve sonraki bolume gecis'
+            },
+            4: {
+                title: 'Kilitli ilerleme',
+                fr: 'FR-E11-04',
+                route: '/epic-11/fr-e11-04',
+                event: 'modules_fr_e11_04_viewed',
+                meta: 'Tamamlanmayan paket sonrasi kilitli durum, neden ve 08:00 bilgi mesaji'
+            },
+            5: {
+                title: 'Modul tamamlama ve sertifika',
+                fr: 'FR-E11-05',
+                route: '/epic-11/fr-e11-05',
+                event: 'modules_fr_e11_05_viewed',
+                meta: 'Tum paketler tamamlaninca sertifika, sonraki modul onerisi ve gelisim paneli yansimasi'
+            }
         };
-        function showScreen(num) {
-            document.getElementById('screenTitle').textContent = screenData[num].title;
-            document.getElementById('screenUS').textContent = screenData[num].us;
-            document.getElementById('screenMeta').textContent = screenData[num].meta;
-            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
-            const navMap = {1: 0, 2: 1, 3: 2, 4: 3, 5: 4, 6: 5};
-            document.querySelectorAll('.nav-item')[navMap[num]].classList.add('active');
-            document.querySelectorAll('[id^="nav-"]').forEach(box => box.classList.remove('active'));
-            const navBox = document.getElementById('nav-' + num);
-            if (navBox) navBox.classList.add('active');
-            document.getElementById('viewer').innerHTML = getScreenHTML(num);
+
+        const ui = {
+            currentScreen: 1,
+            screenStates: {
+                1: 'ready',
+                2: 'ready',
+                3: 'ready',
+                4: 'ready',
+                5: 'ready'
+            },
+            lastAnalyticsEvent: 'modules_fr_e11_01_viewed',
+            module: {
+                name: 'Ozfarkindalik Modulu',
+                progress: 50,
+                nextModule: 'Duygu Reguluasyonu Modulu',
+                reflectedToProgress: true
+            },
+            packages: [
+                { id: 1, title: 'Paket 1 - Farkindalik Girisi', status: 'completed', goal: 'Temel farkindalik dili kurmak' },
+                { id: 2, title: 'Paket 2 - Ic Gozlem', status: 'in_progress', goal: 'Duygu ve dusunce haritasi cikarmak' },
+                { id: 3, title: 'Paket 3 - Uygulama Derinlestirme', status: 'locked', goal: 'Davranis aliskanliklari olusturmak' },
+                { id: 4, title: 'Paket 4 - Kapanis ve Transfer', status: 'locked', goal: 'Kalici plan ve kapanis' }
+            ],
+            selectedPackageId: 2,
+            prereqCompleted: false,
+            reading: {
+                done: false,
+                note: '',
+                highlighted: false
+            },
+            exercise: {
+                steps: [false, false, false]
+            },
+            completion: {
+                certificateReady: false,
+                badge: 'Modul Ustalik Rozeti'
+            }
+        };
+
+        let toastTimer = null;
+
+        function showToast(message, tone) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = 'toast show' + (tone ? ' ' + tone : '');
+            if (toastTimer) {
+                clearTimeout(toastTimer);
+            }
+            toastTimer = setTimeout(() => {
+                toast.className = 'toast';
+            }, 2200);
         }
-        function getScreenHTML(num) {
-            const screens = {
-                1: `<div class="iphone fade-in"><div class="island"></div><div class="screen"><div class="content">
-                    <div class="status"><div>9:41</div><div>📶 📡 🔋</div></div>
-                    <div style="position: relative; height: 180px; background: linear-gradient(135deg, #DBEAFE, #BFDBFE); display: flex; align-items: center; justify-content: center; font-size: 5rem;">📦
-                        <button style="position: absolute; top: 1rem; left: 1rem; background: rgba(0,0,0,0.3); color: white; border: none; width: 40px; height: 40px; border-radius: 9999px; font-size: 1.25rem; cursor: pointer; backdrop-filter: blur(10px);">←</button>
-                    </div>
-                    <div style="padding: 1.5rem;">
-                        <h1 style="font-family: Poppins, sans-serif; font-size: 1.75rem; font-weight: 800; color: var(--secondary); margin-bottom: 0.75rem; line-height: 1.2;">Özfarkındalık Modülü</h1>
-                        <div style="display: flex; gap: 0.75rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
-                            <span style="background: #DBEAFE; color: var(--primary-dark); padding: 0.375rem 0.75rem; border-radius: 0.5rem; font-size: 0.8125rem; font-weight: 600;">📦 Modül</span>
-                            <span style="background: var(--success-light); color: var(--success-dark); padding: 0.375rem 0.75rem; border-radius: 0.5rem; font-size: 0.8125rem; font-weight: 600;">2/4 Paket</span>
-                        </div>
-                        <div class="card" style="margin-bottom: 1.5rem;">
-                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.75rem; font-size: 0.875rem;">
-                                <span style="color: var(--gray-700); font-weight: 600;">İlerleme</span>
-                                <span style="color: var(--primary); font-weight: 700;">50%</span>
+
+        function phoneShell(title, body, backScreen) {
+            const back = backScreen
+                ? `<button class="icon-btn" onclick="showScreen(${backScreen})" aria-label="Geri">&lt;</button>`
+                : '<span style="width:34px;"></span>';
+
+            return `
+                <div class="iphone">
+                    <div class="island"></div>
+                    <div class="screen">
+                        <div class="content">
+                            <div class="status"><span>9:41</span><span>4G 93%</span></div>
+                            <div class="mobile-header">
+                                ${back}
+                                <div class="mobile-title">${title}</div>
                             </div>
-                            <div style="height: 8px; background: var(--gray-200); border-radius: 9999px; overflow: hidden;">
-                                <div style="width: 50%; height: 100%; background: linear-gradient(90deg, var(--primary), #0284C7);"></div>
-                            </div>
-                        </div>
-                        <h3 style="font-weight: 700; color: var(--gray-900); margin-bottom: 1rem; font-size: 1rem;">Paketler</h3>
-                        <div style="display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1.5rem;">
-                            <div class="card" style="background: var(--success-light); border-left: 4px solid var(--success); cursor: pointer;">
-                                <div style="display: flex; align-items: center; gap: 1rem;">
-                                    <div style="font-size: 1.75rem;">✅</div>
-                                    <div style="flex: 1;">
-                                        <h4 style="font-weight: 700; font-size: 0.9375rem; color: var(--gray-900); margin-bottom: 0.25rem;">Paket 1: Farkındalığın Temelleri</h4>
-                                        <p style="font-size: 0.75rem; color: var(--gray-600);">3 bölüm • Tamamlandı</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card" style="background: var(--success-light); border-left: 4px solid var(--success); cursor: pointer;">
-                                <div style="display: flex; align-items: center; gap: 1rem;">
-                                    <div style="font-size: 1.75rem;">✅</div>
-                                    <div style="flex: 1;">
-                                        <h4 style="font-weight: 700; font-size: 0.9375rem; color: var(--gray-900); margin-bottom: 0.25rem;">Paket 2: Duyguları Tanımak</h4>
-                                        <p style="font-size: 0.75rem; color: var(--gray-600);">4 bölüm • Tamamlandı</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card" style="background: linear-gradient(135deg, var(--primary-light), var(--primary-100)); border-left: 4px solid var(--primary); cursor: pointer;" onclick="parent.showScreen(2)">
-                                <div style="display: flex; align-items: center; gap: 1rem;">
-                                    <div style="font-size: 1.75rem;">▶️</div>
-                                    <div style="flex: 1;">
-                                        <h4 style="font-weight: 700; font-size: 0.9375rem; color: var(--primary-dark); margin-bottom: 0.25rem;">Paket 3: Düşünce Kalıpları</h4>
-                                        <p style="font-size: 0.75rem; color: var(--primary-dark);">5 bölüm • Hazır</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card" style="background: var(--gray-100); border-left: 4px solid var(--gray-400); cursor: pointer;" onclick="parent.showScreen(5)">
-                                <div style="display: flex; align-items: center; gap: 1rem;">
-                                    <div style="font-size: 1.75rem;">🔒</div>
-                                    <div style="flex: 1;">
-                                        <h4 style="font-weight: 700; font-size: 0.9375rem; color: var(--gray-600); margin-bottom: 0.25rem;">Paket 4: Değişim Yolculuğu</h4>
-                                        <p style="font-size: 0.75rem; color: var(--gray-500);">6 bölüm • Kilitli</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card" style="background: var(--secondary-light);">
-                            <p style="font-size: 0.8125rem; color: var(--gray-700); line-height: 1.5;">
-                                <strong style="color: var(--secondary);">💡 İpucu:</strong> Paketleri sırasıyla tamamlayın.
-                            </p>
+                            <div class="mobile-body">${body}</div>
                         </div>
                     </div>
-                </div></div></div>`,
-                2: `<div class="iphone fade-in"><div class="island"></div><div class="screen"><div class="content">
-                    <div class="status"><div>9:41</div><div>📶 📡 🔋</div></div>
-                    <div style="position: relative; height: 160px; background: linear-gradient(135deg, var(--primary-light), var(--primary-100)); display: flex; align-items: center; justify-content: center; font-size: 4rem;">📋
-                        <button style="position: absolute; top: 1rem; left: 1rem; background: rgba(0,0,0,0.3); color: white; border: none; width: 40px; height: 40px; border-radius: 9999px; font-size: 1.25rem; cursor: pointer; backdrop-filter: blur(10px);" onclick="parent.showScreen(1)">←</button>
-                    </div>
-                    <div style="padding: 1.5rem;">
-                        <h1 style="font-family: Poppins, sans-serif; font-size: 1.5rem; font-weight: 800; color: var(--secondary); margin-bottom: 0.75rem; line-height: 1.2;">Paket 3: Düşünce Kalıpları</h1>
-                        <div style="display: flex; gap: 0.75rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
-                            <span style="background: #DBEAFE; color: var(--primary-dark); padding: 0.375rem 0.75rem; border-radius: 0.5rem; font-size: 0.8125rem; font-weight: 600;">📦 Paket 3/4</span>
-                            <span style="background: var(--primary-light); color: var(--primary-dark); padding: 0.375rem 0.75rem; border-radius: 0.5rem; font-size: 0.8125rem; font-weight: 600;">5 bölüm</span>
-                        </div>
-                        <div class="card" style="margin-bottom: 1.5rem; background: var(--primary-light); border-left: 4px solid var(--primary);">
-                            <h3 style="font-weight: 700; color: var(--primary-dark); margin-bottom: 0.75rem; font-size: 1rem;">🎯 Paket Amaçları</h3>
-                            <ul style="margin: 0; padding-left: 1.5rem; display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.875rem; line-height: 1.6; color: var(--gray-800);">
-                                <li>Otomatik düşünce kalıplarını fark etmek</li>
-                                <li>Olumsuz düşünceleri yeniden çerçevelemek</li>
-                                <li>Bilişsel çarpıtmaları tanımak</li>
-                            </ul>
-                        </div>
-                        <div class="card" style="margin-bottom: 1.5rem;">
-                            <h3 style="font-weight: 700; color: var(--gray-900); margin-bottom: 0.75rem; font-size: 1rem;">📚 Açıklama</h3>
-                            <p style="font-size: 0.9375rem; line-height: 1.7; color: var(--gray-800);">
-                                Bu pakette, zihnimizde otomatik olarak oluşan düşünce kalıplarını keşfedeceksiniz. Olumsuz inanç sistemlerini tanımayı ve bunları daha faydalı düşüncelerle değiştirmeyi öğreneceksiniz.
-                            </p>
-                        </div>
-                        <div class="card" style="margin-bottom: 1.5rem;">
-                            <h3 style="font-weight: 700; color: var(--gray-900); margin-bottom: 1rem; font-size: 1rem;">İçindekiler</h3>
-                            <div style="display: flex; flex-direction: column; gap: 0.75rem;">
-                                <div style="padding: 0.875rem; background: var(--gray-50); border-radius: 0.5rem; display: flex; align-items: center; gap: 0.75rem;">
-                                    <div style="width: 32px; height: 32px; background: var(--primary); color: white; border-radius: 9999px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.875rem; flex-shrink: 0;">1</div>
-                                    <div style="flex: 1;">
-                                        <div style="font-weight: 600; font-size: 0.875rem; color: var(--gray-900);">Otomatik Düşünceler</div>
-                                        <div style="font-size: 0.75rem; color: var(--gray-600);">Okuma • 12 dk</div>
-                                    </div>
-                                </div>
-                                <div style="padding: 0.875rem; background: var(--gray-50); border-radius: 0.5rem; display: flex; align-items: center; gap: 0.75rem;">
-                                    <div style="width: 32px; height: 32px; background: var(--primary); color: white; border-radius: 9999px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.875rem; flex-shrink: 0;">2</div>
-                                    <div style="flex: 1;">
-                                        <div style="font-weight: 600; font-size: 0.875rem; color: var(--gray-900);">Kalıplarımı Keşfetmek</div>
-                                        <div style="font-size: 0.75rem; color: var(--gray-600);">Uygulama • 15 dk</div>
-                                    </div>
-                                </div>
-                                <div style="padding: 0.875rem; background: var(--gray-50); border-radius: 0.5rem; display: flex; align-items: center; gap: 0.75rem;">
-                                    <div style="width: 32px; height: 32px; background: var(--primary); color: white; border-radius: 9999px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.875rem; flex-shrink: 0;">3</div>
-                                    <div style="flex: 1;">
-                                        <div style="font-weight: 600; font-size: 0.875rem; color: var(--gray-900);">Bilişsel Çarpıtmalar</div>
-                                        <div style="font-size: 0.75rem; color: var(--gray-600);">Okuma • 10 dk</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <button class="btn btn-primary" style="width: 100%; padding: 1rem; font-size: 1.125rem;" onclick="parent.showScreen(3)">Paketi Başlat</button>
-                    </div>
-                </div></div></div>`,
-                3: `<div class="iphone fade-in"><div class="island"></div><div class="screen"><div class="content">
-                    <div class="status"><div>9:41</div><div>📶 📡 🔋</div></div>
-                    <div style="background: white; padding: 1rem 1.5rem; border-bottom: 1px solid var(--gray-200); position: sticky; top: 0; z-index: 10;">
-                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem;">
-                            <button style="background: none; border: none; font-size: 1.5rem; cursor: pointer;" onclick="parent.showScreen(2)">←</button>
-                            <div style="flex: 1; text-align: center; padding: 0 1rem;">
-                                <h2 style="font-size: 0.9375rem; font-weight: 700; color: var(--secondary);">Paket 3: Düşünce Kalıpları</h2>
-                                <div style="font-size: 0.75rem; color: var(--gray-600); margin-top: 0.25rem;">Bölüm 1: Otomatik Düşünceler</div>
-                            </div>
-                            <button style="background: var(--gray-100); border: none; width: 36px; height: 36px; border-radius: 9999px; font-size: 1.125rem; cursor: pointer;">⋮</button>
-                        </div>
-                        <div style="display: flex; gap: 0.5rem; font-size: 0.75rem; color: var(--gray-600);">
-                            <span style="background: #DBEAFE; color: var(--primary-dark); padding: 0.25rem 0.5rem; border-radius: 0.375rem; font-weight: 600;">📖 Okuma</span>
-                            <span>~12 dakika</span>
-                        </div>
-                    </div>
-                    <div style="padding: 2rem 1.5rem; background: white;">
-                        <h2 style="font-size: 1.5rem; font-weight: 700; color: var(--secondary); margin-bottom: 1.5rem; font-family: Poppins, sans-serif;">Otomatik Düşünceler</h2>
-                        <p style="font-size: 1.0625rem; line-height: 1.9; color: var(--gray-900); margin-bottom: 1.5rem; text-align: justify;">
-                            Zihnimiz her gün binlerce düşünce üretir. Bunların çoğu otomatiktir ve farkında bile olmadığımız hızda akar gider. Bu <span style="background: #FFEB3B; padding: 0 0.25rem; border-radius: 0.25rem;">otomatik düşünceler</span>, yaşadığımız deneyimleri yorumlamamızı sağlar.
-                        </p>
-                        <p style="font-size: 1.0625rem; line-height: 1.9; color: var(--gray-900); margin-bottom: 1.5rem; text-align: justify;">
-                            Ancak bu düşüncelerin hepsi gerçeği yansıtmaz. Bazen geçmiş deneyimlerimize, korkularımıza ya da çevremizden aldığımız mesajlara dayanır.
-                        </p>
-                        <div style="background: #DBEAFE; padding: 1.5rem; border-radius: 1rem; border-left: 4px solid var(--primary); margin: 2rem 0;">
-                            <h4 style="font-weight: 700; color: var(--primary-dark); margin-bottom: 1rem; font-size: 0.9375rem;">💡 Örnek Otomatik Düşünceler</h4>
-                            <ul style="margin: 0; padding-left: 1.5rem; display: flex; flex-direction: column; gap: 0.75rem; font-size: 0.9375rem; line-height: 1.7; color: var(--gray-800);">
-                                <li>"Başaramayacağım."</li>
-                                <li>"Herkes beni yargılıyor."</li>
-                                <li>"Ben yeterince iyi değilim."</li>
-                            </ul>
-                        </div>
-                        <p style="font-size: 1.0625rem; line-height: 1.9; color: var(--gray-900); margin-bottom: 1.5rem; text-align: justify;">
-                            Bu düşünceleri fark ettiğimizde, onları sorgulamaya ve daha gerçekçi alternatifler bulmaya başlayabiliriz.
-                        </p>
-                    </div>
-                    <div style="padding: 1.5rem; background: white; border-top: 1px solid var(--gray-200);">
-                        <button class="btn btn-primary" style="width: 100%; padding: 1rem; font-size: 1.125rem;" onclick="parent.showScreen(4)">Uygulamaya Geç</button>
-                    </div>
-                </div></div></div>`,
-                4: `<div class="iphone fade-in"><div class="island"></div><div class="screen"><div class="content">
-                    <div class="status"><div>9:41</div><div>📶 📡 🔋</div></div>
-                    <div style="background: white; padding: 1rem 1.5rem; border-bottom: 1px solid var(--gray-200);">
-                        <div style="display: flex; align-items: center; gap: 1rem;">
-                            <button style="background: none; border: none; font-size: 1.5rem; cursor: pointer;" onclick="parent.showScreen(3)">←</button>
-                            <div style="flex: 1;">
-                                <h2 style="font-family: Poppins, sans-serif; font-size: 1rem; font-weight: 700; color: var(--secondary);">Uygulama: Kalıplarımı Keşfetmek</h2>
-                                <div style="font-size: 0.75rem; color: var(--gray-600); margin-top: 0.25rem;">Bölüm 2 • Paket 3</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div style="padding: 1.5rem;">
-                        <div class="card" style="margin-bottom: 1.5rem; background: #DBEAFE; border-left: 4px solid var(--primary);">
-                            <h3 style="font-weight: 700; color: var(--primary-dark); margin-bottom: 0.75rem; font-size: 1rem;">📝 Uygulama Talimatları</h3>
-                            <p style="font-size: 0.875rem; color: var(--gray-800); line-height: 1.6;">
-                                Son bir haftada yaşadığınız zorlayıcı bir durumu düşünün ve o andaki otomatik düşüncelerinizi belirleyin.
-                            </p>
-                        </div>
-                        <div style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.5rem;">
-                            <div class="card" style="background: var(--success-light); border: 2px solid var(--success);">
-                                <div style="display: flex; gap: 1rem;">
-                                    <div style="width: 28px; height: 28px; background: var(--success); color: white; border-radius: 9999px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.875rem; flex-shrink: 0;">✓</div>
-                                    <div style="flex: 1;">
-                                        <h4 style="font-weight: 700; font-size: 0.9375rem; color: var(--gray-900); margin-bottom: 0.5rem;">Adım 1: Durumu Tanımlayın</h4>
-                                        <p style="font-size: 0.875rem; color: var(--gray-700); line-height: 1.6;">Hangi durum sizi rahatsız etti? Ne oldu?</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card" style="background: linear-gradient(135deg, var(--primary-light), var(--primary-100)); border: 2px solid var(--primary);">
-                                <div style="display: flex; gap: 1rem;">
-                                    <div style="width: 28px; height: 28px; background: white; color: var(--primary); border: 2px solid var(--primary); border-radius: 9999px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.875rem; flex-shrink: 0;">2</div>
-                                    <div style="flex: 1;">
-                                        <h4 style="font-weight: 700; font-size: 0.9375rem; color: var(--primary-dark); margin-bottom: 0.5rem;">Adım 2: Otomatik Düşünceyi Yazın</h4>
-                                        <p style="font-size: 0.875rem; color: var(--gray-800); line-height: 1.6;">O anda aklınıza gelen ilk düşünce neydi?</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card" style="background: var(--gray-100); border: 2px dashed var(--gray-400);">
-                                <div style="display: flex; gap: 1rem;">
-                                    <div style="width: 28px; height: 28px; background: white; color: var(--gray-600); border: 2px solid var(--gray-400); border-radius: 9999px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.875rem; flex-shrink: 0;">3</div>
-                                    <div style="flex: 1;">
-                                        <h4 style="font-weight: 700; font-size: 0.9375rem; color: var(--gray-600); margin-bottom: 0.5rem;">Adım 3: Kanıtları Değerlendirin</h4>
-                                        <p style="font-size: 0.875rem; color: var(--gray-600); line-height: 1.6;">Bu düşünceyi destekleyen ve çürüten kanıtlar neler?</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card" style="background: var(--gray-100); border: 2px dashed var(--gray-400);">
-                                <div style="display: flex; gap: 1rem;">
-                                    <div style="width: 28px; height: 28px; background: white; color: var(--gray-600); border: 2px solid var(--gray-400); border-radius: 9999px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.875rem; flex-shrink: 0;">4</div>
-                                    <div style="flex: 1;">
-                                        <h4 style="font-weight: 700; font-size: 0.9375rem; color: var(--gray-600); margin-bottom: 0.5rem;">Adım 4: Alternatif Düşünce Oluşturun</h4>
-                                        <p style="font-size: 0.875rem; color: var(--gray-600); line-height: 1.6;">Daha dengeli bir düşünce nasıl olabilir?</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card" style="background: var(--secondary-light);">
-                            <p style="font-size: 0.8125rem; color: var(--gray-700); line-height: 1.5;">
-                                <strong style="color: var(--secondary);">💡 İpucu:</strong> Düşüncelerinizi yargılamadan gözlemleyin.
-                            </p>
-                        </div>
-                    </div>
-                </div></div></div>`,
-                5: `<div class="iphone fade-in"><div class="island"></div><div class="screen"><div class="content">
-                    <div class="status"><div>9:41</div><div>📶 📡 🔋</div></div>
-                    <div style="position: relative; height: 160px; background: linear-gradient(135deg, var(--gray-100), var(--gray-200)); display: flex; align-items: center; justify-content: center; font-size: 4rem; filter: grayscale(1);">🔒
-                        <button style="position: absolute; top: 1rem; left: 1rem; background: rgba(0,0,0,0.3); color: white; border: none; width: 40px; height: 40px; border-radius: 9999px; font-size: 1.25rem; cursor: pointer; backdrop-filter: blur(10px);" onclick="parent.showScreen(1)">←</button>
-                    </div>
-                    <div style="padding: 2rem 1.5rem; text-align: center;">
-                        <div style="font-size: 5rem; margin-bottom: 1rem; filter: grayscale(0.5);">🔒</div>
-                        <h1 style="font-family: Poppins, sans-serif; font-size: 1.75rem; font-weight: 800; color: var(--gray-700); margin-bottom: 0.75rem;">Paket Kilitli</h1>
-                        <p style="font-size: 1rem; color: var(--gray-600); margin-bottom: 2rem; line-height: 1.6;">
-                            Bu pakete erişmek için önce <strong>Paket 3</strong>'ü tamamlamanız gerekiyor.
-                        </p>
-                        <div class="card" style="margin-bottom: 1.5rem; background: #FEF3C7; border-left: 4px solid var(--warning); text-align: left;">
-                            <h3 style="font-weight: 700; color: var(--warning); margin-bottom: 0.75rem; font-size: 1rem;">⚠️ Kilit Nedeni</h3>
-                            <p style="font-size: 0.875rem; color: var(--gray-800); line-height: 1.6; margin-bottom: 1rem;">
-                                Her paket, bir önceki paketin üzerine inşa edilir. Etkili öğrenme için sıralı ilerleme önemlidir.
-                            </p>
-                            <div style="background: white; padding: 1rem; border-radius: 0.5rem; margin-bottom: 0.75rem;">
-                                <div style="font-size: 0.875rem; color: var(--gray-700); margin-bottom: 0.5rem;">
-                                    <strong>Tamamlanması gereken:</strong>
-                                </div>
-                                <div style="display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem; background: var(--gray-50); border-radius: 0.5rem;">
-                                    <div style="font-size: 1.5rem;">▶️</div>
-                                    <div style="flex: 1;">
-                                        <div style="font-weight: 600; font-size: 0.875rem; color: var(--gray-900);">Paket 3: Düşünce Kalıpları</div>
-                                        <div style="font-size: 0.75rem; color: var(--gray-600);">0/5 bölüm tamamlandı</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card" style="margin-bottom: 1.5rem; background: var(--primary-light); border-left: 4px solid var(--primary); text-align: left;">
-                            <h3 style="font-weight: 700; color: var(--primary-dark); margin-bottom: 0.75rem; font-size: 1rem;">⏰ 08:00 Kuralı</h3>
-                            <p style="font-size: 0.875rem; color: var(--gray-800); line-height: 1.6;">
-                                Paket 3'ü tamamladıktan sonra, ertesi gün <strong>saat 08:00</strong>'dan önce bir sonraki pakete geçemezsiniz. Bu bekleme süresi, öğrendiklerinizi sindirmeniz için tasarlanmıştır.
-                            </p>
-                        </div>
-                        <button class="btn btn-primary" style="width: 100%; padding: 1rem; font-size: 1.125rem;" onclick="parent.showScreen(2)">Paket 3'e Dön</button>
-                    </div>
-                </div></div></div>`,
-                6: `<div class="iphone fade-in"><div class="island"></div><div class="screen"><div class="content">
-                    <div class="status"><div>9:41</div><div>📶 📡 🔋</div></div>
-                    <div style="padding: 3rem 1.5rem; text-align: center;">
-                        <div style="font-size: 6rem; margin-bottom: 1.5rem;">🎓</div>
-                        <h1 style="font-family: Poppins, sans-serif; font-size: 2rem; font-weight: 800; color: var(--secondary); margin-bottom: 1rem;">Tebrikler!</h1>
-                        <p style="font-size: 1rem; color: var(--gray-700); margin-bottom: 2rem; line-height: 1.6;">
-                            <strong>Özfarkındalık Modülü</strong>'nü başarıyla tamamladınız.
-                        </p>
-                        <div class="card" style="margin-bottom: 2rem; background: linear-gradient(135deg, #DBEAFE, #BFDBFE); border: 2px solid var(--primary);">
-                            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 1.5rem;">
-                                <div style="text-align: center;">
-                                    <div style="font-family: Poppins, sans-serif; font-size: 1.75rem; font-weight: 800; color: var(--primary-dark); margin-bottom: 0.25rem;">4</div>
-                                    <div style="font-size: 0.75rem; color: var(--gray-700);">Paket</div>
-                                </div>
-                                <div style="text-align: center;">
-                                    <div style="font-family: Poppins, sans-serif; font-size: 1.75rem; font-weight: 800; color: var(--primary-dark); margin-bottom: 0.25rem;">18</div>
-                                    <div style="font-size: 0.75rem; color: var(--gray-700);">Bölüm</div>
-                                </div>
-                                <div style="text-align: center;">
-                                    <div style="font-family: Poppins, sans-serif; font-size: 1.75rem; font-weight: 800; color: var(--primary-dark); margin-bottom: 0.25rem;">3h</div>
-                                    <div style="font-size: 0.75rem; color: var(--gray-700);">Süre</div>
-                                </div>
-                            </div>
-                            <div style="font-size: 3rem; margin-bottom: 0.75rem;">🏆</div>
-                            <h3 style="font-family: Poppins, sans-serif; font-size: 1.25rem; font-weight: 700; color: var(--primary-dark); margin-bottom: 0.5rem;">Özfarkındalık Uzmanı</h3>
-                            <p style="font-size: 0.875rem; color: var(--gray-800);">Modül sertifikasını kazandınız!</p>
-                        </div>
-                        <div class="card" style="margin-bottom: 1.5rem; background: var(--success-light); border-left: 4px solid var(--success); text-align: left;">
-                            <h4 style="font-weight: 700; color: var(--success-dark); margin-bottom: 0.75rem; font-size: 0.9375rem;">📊 Gelişim Panelinize Yansıdı</h4>
-                            <p style="font-size: 0.875rem; color: var(--gray-800); line-height: 1.6; margin-bottom: 0.75rem;">
-                                Bu başarı, gelişim panelinizde görünür ve ilerleme istatistiklerinize eklenmiştir.
-                            </p>
-                            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-                                <span style="background: white; padding: 0.375rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 600; color: var(--success-dark);">+100 XP</span>
-                                <span style="background: white; padding: 0.375rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 600; color: var(--success-dark);">🏅 Rozet Kazanıldı</span>
-                            </div>
-                        </div>
-                        <div class="card" style="margin-bottom: 1.5rem; background: var(--secondary-light); border-left: 4px solid var(--secondary); text-align: left;">
-                            <h4 style="font-weight: 700; color: var(--secondary); margin-bottom: 0.75rem; font-size: 0.9375rem;">📦 Sonraki Önerimiz</h4>
-                            <p style="font-size: 0.875rem; color: var(--gray-800); line-height: 1.6; margin-bottom: 0.75rem;">
-                                <strong>Duygusal Zeka Modülü</strong> özfarkındalık becerilerinizi bir üst seviyeye taşıyacak.
-                            </p>
-                            <button style="background: none; border: none; color: var(--secondary); font-weight: 700; font-size: 0.875rem; padding: 0; cursor: pointer;">Keşfet →</button>
-                        </div>
-                        <button class="btn btn-primary" style="width: 100%; padding: 1rem; font-size: 1.125rem; margin-bottom: 0.75rem;">Ana Sayfaya Dön</button>
-                        <button style="background: white; border: 2px solid var(--primary); color: var(--primary); border-radius: 0.75rem; font-weight: 600; font-size: 1rem; width: 100%; padding: 1rem; cursor: pointer;">Sertifikamı Paylaş</button>
-                    </div>
-                </div></div></div>`
-            };
-            return screens[num] || screens[1];
+                </div>
+            `;
         }
-        document.getElementById('viewer').innerHTML = getScreenHTML(1);
+
+        function setCurrentScreen(screenNo) {
+            ui.currentScreen = screenNo;
+            ui.lastAnalyticsEvent = screenData[screenNo].event;
+            render();
+        }
+
+        function showScreen(screenNo) {
+            setCurrentScreen(screenNo);
+        }
+
+        function setScreenState(screenNo, state) {
+            ui.screenStates[screenNo] = state;
+            render();
+        }
+
+        function stateControls(screenNo) {
+            const states = ['ready', 'loading', 'empty', 'error', 'offline'];
+            return `
+                <div class="state-switcher">
+                    ${states.map((s) => `<button class="state-btn ${ui.screenStates[screenNo] === s ? 'active' : ''}" onclick="setScreenState(${screenNo}, '${s}')" aria-label="Ekran durumu ${s}" aria-pressed="${ui.screenStates[screenNo] === s}">${s}</button>`).join('')}
+                </div>
+            `;
+        }
+
+        function statePanel(screenNo) {
+            const state = ui.screenStates[screenNo];
+            if (state === 'ready') {
+                return '';
+            }
+            if (state === 'loading') {
+                return '<div class="state-panel loading"><strong>Loading</strong><span>Modul ve paket verileri yukleniyor.</span></div>';
+            }
+            if (state === 'empty') {
+                return '<div class="state-panel empty"><strong>Empty</strong><span>Bu gorunumde gosterilecek veri yok.</span><button class="btn btn-outline" onclick="resetDemo()" aria-label="Demo verilerini sifirla">Varsayilan veriye don</button></div>';
+            }
+            if (state === 'error') {
+                return '<div class="state-panel error"><strong>Error</strong><span>Geri donulebilir hata olustu, tekrar denenebilir.</span><button class="btn btn-primary" onclick="setScreenState(' + screenNo + ', \'ready\')" aria-label="Tekrar dene">Tekrar Dene</button></div>';
+            }
+            return '<div class="state-panel offline"><strong>Offline</strong><span>Son senkronize modul durumlari gosterilir, islemler kuyruga alinir.</span></div>';
+        }
+
+        function packageStatusLabel(status) {
+            if (status === 'completed') {
+                return '<span class="chip success">Tamamlandi</span>';
+            }
+            if (status === 'in_progress') {
+                return '<span class="chip warn">Devam ediyor</span>';
+            }
+            return '<span class="chip error">Kilitli</span>';
+        }
+
+        function selectPackage(id) {
+            ui.selectedPackageId = id;
+            ui.prereqCompleted = ui.packages.find((p) => p.id === id).status !== 'locked';
+            render();
+        }
+
+        function continueToNextPackage() {
+            setCurrentScreen(2);
+            showToast('Sonraki uygun pakete yonlendirildi.', 'success');
+        }
+
+        function togglePrereqCompleted() {
+            ui.prereqCompleted = !ui.prereqCompleted;
+            showToast(ui.prereqCompleted ? 'Onkosul tamamlandi olarak isaretlendi.' : 'Onkosul tamamlanmadi olarak geri alindi.', ui.prereqCompleted ? 'success' : 'error');
+            render();
+        }
+
+        function startPackage() {
+            if (!ui.prereqCompleted) {
+                showToast('Onkosul tamamlanmadan paket baslatilamaz.', 'error');
+                return;
+            }
+            setCurrentScreen(3);
+            showToast('Paket baslatildi.', 'success');
+        }
+
+        function toggleHighlight() {
+            ui.reading.highlighted = !ui.reading.highlighted;
+            showToast(ui.reading.highlighted ? 'Vurgu eklendi.' : 'Vurgu kaldirildi.', 'success');
+            render();
+        }
+
+        function setReadingNote(value) {
+            ui.reading.note = value;
+        }
+
+        function completeReading() {
+            ui.reading.done = true;
+            showToast('Okuma bolumu tamamlandi.', 'success');
+            render();
+        }
+
+        function toggleExerciseStep(index) {
+            ui.exercise.steps[index] = !ui.exercise.steps[index];
+            render();
+        }
+
+        function allExerciseDone() {
+            return ui.exercise.steps.every(Boolean);
+        }
+
+        function goToLockedFlow() {
+            if (!ui.reading.done || !allExerciseDone()) {
+                showToast('Sonraki bolume gecis icin okuma ve uygulama tamamlanmali.', 'error');
+                return;
+            }
+            setCurrentScreen(4);
+            showToast('Sonraki paket kilit kontrolune gecildi.', 'success');
+        }
+
+        function unlockAndComplete() {
+            ui.completion.certificateReady = true;
+            ui.module.progress = 100;
+            ui.module.reflectedToProgress = true;
+            setCurrentScreen(5);
+            showToast('Tum paketler tamamlandi, sertifika hazir.', 'success');
+        }
+
+        function resetDemo() {
+            ui.module.progress = 50;
+            ui.prereqCompleted = false;
+            ui.reading.done = false;
+            ui.reading.note = '';
+            ui.reading.highlighted = false;
+            ui.exercise.steps = [false, false, false];
+            ui.completion.certificateReady = false;
+            render();
+        }
+
+        function screenOne() {
+            const body = `
+                ${stateControls(1)}
+                ${statePanel(1)}
+                ${ui.screenStates[1] !== 'ready' ? '' : `
+                    <div class="card">
+                        <div class="card-title">${ui.module.name}</div>
+                        <div class="muted">Modul ilerlemesi: %${ui.module.progress}</div>
+                        <div class="progress" style="margin-top:0.55rem;"><span style="width:${ui.module.progress}%;"></span></div>
+                        <div class="muted" style="margin-top:0.45rem;">AC-FR-E11-01-01</div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">Paket listesi (sirali)</div>
+                        <div class="list">
+                            ${ui.packages.map((p) => `
+                                <button class="list-item" onclick="selectPackage(${p.id})" aria-label="${p.title}" style="text-align:left; cursor:pointer; ${ui.selectedPackageId === p.id ? 'border-color:#7dd3fc;' : ''}">
+                                    <div class="row">
+                                        <div class="item-title">${p.id}. ${p.title}</div>
+                                        ${packageStatusLabel(p.status)}
+                                    </div>
+                                    <div class="item-meta">${p.goal}</div>
+                                </button>
+                            `).join('')}
+                        </div>
+                        <div class="muted" style="margin-top:0.45rem;">AC-FR-E11-01-02</div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">Tek dokunus devam aksiyonu</div>
+                        <button class="btn btn-primary" onclick="continueToNextPackage()" aria-label="Sonraki uygun pakete git">Devam Et</button>
+                        <div class="muted" style="margin-top:0.45rem;">AC-FR-E11-01-03</div>
+                    </div>
+                `}
+            `;
+            return phoneShell('Modul ana ekrani', body, null);
+        }
+
+        function screenTwo() {
+            const selected = ui.packages.find((p) => p.id === ui.selectedPackageId);
+            const locked = !ui.prereqCompleted;
+            const body = `
+                ${stateControls(2)}
+                ${statePanel(2)}
+                ${ui.screenStates[2] !== 'ready' ? '' : `
+                    <div class="card">
+                        <div class="card-title">${selected.title}</div>
+                        <div class="muted">Amac: ${selected.goal}</div>
+                        <div class="muted" style="margin-top:0.45rem;">AC-FR-E11-02-01</div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">Icerdigi bolumler</div>
+                        <div class="chips">
+                            <span class="chip">Okuma Bolumu</span>
+                            <span class="chip">Uygulama Adimlari</span>
+                        </div>
+                        <div class="muted" style="margin-top:0.45rem;">AC-FR-E11-02-02</div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">Baslatma ve onkosul kontrolu</div>
+                        <div class="chips">
+                            <button class="btn ${locked ? 'btn-outline' : 'btn-primary'}" onclick="startPackage()" ${locked ? 'disabled' : ''} aria-label="Paketi baslat">Paketi Baslat</button>
+                            <button class="btn btn-outline" onclick="togglePrereqCompleted()" aria-label="Onkosul durumunu degistir">Onkosul ${ui.prereqCompleted ? 'Tamamlandi' : 'Eksik'}</button>
+                        </div>
+                        <div class="muted" style="margin-top:0.35rem;">${locked ? 'Kilit nedeni: onceki paket tamamlanmadi.' : 'Paket baslatmaya hazir.'}</div>
+                        <div class="muted" style="margin-top:0.45rem;">AC-FR-E11-02-03</div>
+                        <div class="muted">AC-FR-E11-02-04</div>
+                    </div>
+                `}
+            `;
+            return phoneShell('Paket detayi ve baslatma', body, 1);
+        }
+
+        function screenThree() {
+            const body = `
+                ${stateControls(3)}
+                ${statePanel(3)}
+                ${ui.screenStates[3] !== 'ready' ? '' : `
+                    <div class="card">
+                        <div class="card-title">Okuma bolumu (tam ekran deneyim)</div>
+                        <div class="muted">Gunluk bolum metni bu alanda tam ekran okunur. Vurgu ve not desteklenir.</div>
+                        <div class="chips" style="margin-top:0.5rem;">
+                            <button class="btn btn-outline" onclick="toggleHighlight()" aria-label="Vurgu ekle ya da kaldir">${ui.reading.highlighted ? 'Vurgu Kaldir' : 'Vurgu Ekle'}</button>
+                            <button class="btn btn-outline" onclick="completeReading()" aria-label="Okuma bolumunu tamamla">Okumayi Tamamla</button>
+                        </div>
+                        <textarea class="field" style="margin-top:0.55rem; min-height:76px;" placeholder="Not ekle..." oninput="setReadingNote(this.value)">${ui.reading.note}</textarea>
+                        <div class="muted" style="margin-top:0.45rem;">AC-FR-E11-03-01</div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">Uygulama adimlari (sirali)</div>
+                        <div class="list">
+                            ${['Nefes egzersizi', 'Icerik yansitma sorusu', 'Kisa aksiyon plani'].map((step, idx) => `
+                                <label class="check-row">
+                                    <input class="check" type="checkbox" ${ui.exercise.steps[idx] ? 'checked' : ''} onchange="toggleExerciseStep(${idx})" aria-label="${step}">
+                                    <span>${idx + 1}. ${step}</span>
+                                </label>
+                            `).join('')}
+                        </div>
+                        <div class="muted" style="margin-top:0.45rem;">AC-FR-E11-03-02</div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">Sonraki bolum gecisi</div>
+                        <button class="btn btn-primary" onclick="goToLockedFlow()" aria-label="Sonraki bolume gec">Sonraki Bolume Gec</button>
+                        <div class="muted" style="margin-top:0.45rem;">AC-FR-E11-03-03</div>
+                    </div>
+                `}
+            `;
+            return phoneShell('Paket ici okuma ve uygulama', body, 2);
+        }
+
+        function screenFour() {
+            const body = `
+                ${stateControls(4)}
+                ${statePanel(4)}
+                ${ui.screenStates[4] !== 'ready' ? '' : `
+                    <div class="card">
+                        <div class="card-title">Kilitli paket gorunumu</div>
+                        <div class="row">
+                            <div>
+                                <div class="item-title">Paket 3 - Uygulama Derinlestirme</div>
+                                <div class="item-meta">Durum: kilitli</div>
+                            </div>
+                            <span class="chip error">Kilitli</span>
+                        </div>
+                        <div class="muted" style="margin-top:0.45rem;">AC-FR-E11-04-01</div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">Kilit nedeni</div>
+                        <div class="muted">Onceki paket tamamlanmadan bu paket acilamaz.</div>
+                        <div class="muted" style="margin-top:0.45rem;">AC-FR-E11-04-02</div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">08:00 kurali bilgisi</div>
+                        <div class="chips">
+                            <span class="chip warn">Yeni icerik 08:00'de acilir</span>
+                            <span class="chip">Kalan sure: 02:14:09</span>
+                        </div>
+                        <button class="btn btn-primary" style="margin-top:0.55rem;" onclick="unlockAndComplete()" aria-label="Tum paketleri tamamla ve sertifikaya git">Tum Paketleri Tamamla</button>
+                        <div class="muted" style="margin-top:0.45rem;">AC-FR-E11-04-03</div>
+                    </div>
+                `}
+            `;
+            return phoneShell('Kilitli ilerleme', body, 3);
+        }
+
+        function screenFive() {
+            const body = `
+                ${stateControls(5)}
+                ${statePanel(5)}
+                ${ui.screenStates[5] !== 'ready' ? '' : `
+                    <div class="card">
+                        <div class="card-title">Modul tamamlama ozeti</div>
+                        <div class="chips">
+                            <span class="chip success">Tum paketler tamamlandi</span>
+                            <span class="chip success">Ilerleme %${ui.module.progress}</span>
+                        </div>
+                        <div class="muted" style="margin-top:0.45rem;">AC-FR-E11-05-01</div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">Sertifika ve rozet</div>
+                        <div class="muted">${ui.completion.certificateReady ? 'Sertifika olusturuldu ve rozet tanimlandi.' : 'Sertifika hazirlaniyor...'}</div>
+                        <div class="chips" style="margin-top:0.5rem;">
+                            <span class="chip success">${ui.completion.badge}</span>
+                        </div>
+                        <div class="muted" style="margin-top:0.45rem;">AC-FR-E11-05-02</div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">Sonraki modul onerisi</div>
+                        <div class="muted">Onerilen sonraki adim: ${ui.module.nextModule}</div>
+                        <div class="muted" style="margin-top:0.45rem;">AC-FR-E11-05-03</div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">Gelisim paneli yansimasi</div>
+                        <div class="chips">
+                            <span class="chip ${ui.module.reflectedToProgress ? 'success' : 'warn'}">${ui.module.reflectedToProgress ? 'Gelisim paneline yansitildi' : 'Yansima bekleniyor'}</span>
+                        </div>
+                        <div class="muted" style="margin-top:0.45rem;">AC-FR-E11-05-04</div>
+                    </div>
+                `}
+            `;
+            return phoneShell('Modul tamamlama ve sertifika', body, 4);
+        }
+
+        function renderScreen(screenNo) {
+            if (screenNo === 1) {
+                return screenOne();
+            }
+            if (screenNo === 2) {
+                return screenTwo();
+            }
+            if (screenNo === 3) {
+                return screenThree();
+            }
+            if (screenNo === 4) {
+                return screenFour();
+            }
+            return screenFive();
+        }
+
+        function render() {
+            document.body.classList.toggle('reduced-motion', false);
+            const current = screenData[ui.currentScreen];
+            document.getElementById('screenTitle').textContent = current.title;
+            document.getElementById('screenFr').textContent = current.fr;
+            document.getElementById('screenRoute').textContent = current.route;
+            document.getElementById('screenMeta').textContent = current.meta + ' | event: ' + ui.lastAnalyticsEvent;
+
+            document.querySelectorAll('.nav-item').forEach((item) => {
+                item.classList.toggle('active', Number(item.dataset.screen) === ui.currentScreen);
+            });
+
+            document.querySelectorAll('[id^="flow-"]').forEach((step, index) => {
+                step.classList.toggle('active', index + 1 === ui.currentScreen);
+            });
+
+            document.getElementById('viewer').innerHTML = renderScreen(ui.currentScreen);
+        }
+
+        document.querySelectorAll('.nav-item').forEach((item) => {
+            item.addEventListener('click', () => {
+                setCurrentScreen(Number(item.dataset.screen));
+            });
+            item.addEventListener('keydown', (event) => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    setCurrentScreen(Number(item.dataset.screen));
+                }
+            });
+        });
+
+        render();
     </script>
 </body>
 </html>

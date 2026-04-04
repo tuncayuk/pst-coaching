@@ -1,0 +1,67 @@
+{
+  "id": "collab.fr_e13_04",
+  "title": "Grup ilerleme ve karsilastirma",
+  "route": "/epic-13/fr-e13-04",
+  "purpose": "Implements FR-E13-04: Grup ilerleme ve karsilastirma.",
+  "entryPoints": [
+    "community.collaborative_reading"
+  ],
+  "inputs": [
+    {
+      "name": "userId",
+      "type": "uuid",
+      "required": true,
+      "source": "session"
+    },
+    {
+      "name": "subscriptionStatus",
+      "type": "SubscriptionStatus",
+      "required": true,
+      "source": "entitlement_cache"
+    },
+    {
+      "name": "locale",
+      "type": "LanguageCode",
+      "required": true,
+      "source": "profile"
+    }
+  ],
+  "dataDependencies": [
+    "ReadingGroup",
+    "ReadingGroupMember",
+    "ContentProgress"
+  ],
+  "uiStates": {
+    "loading": {
+      "description": "Skeleton placeholders are shown while loading FR-E13-04 data."
+    },
+    "ready": {
+      "description": "FR-E13-04 flows are fully interactive with primary CTA available when prerequisites are met."
+    },
+    "empty": {
+      "description": "Empty state explains why no data is available and points to next best action."
+    },
+    "error": {
+      "description": "Error state is recoverable with user-safe messaging and a retry action."
+    },
+    "offline": {
+      "description": "Offline state shows last synchronized data and queues write actions for later sync."
+    }
+  },
+  "analytics": {
+    "screenView": "collab_fr_e13_04_viewed",
+    "events": [
+      "collab_fr_e13_04_viewed"
+    ]
+  },
+  "acceptanceCriteriaRefs": [
+    "AC-FR-E13-04-01",
+    "AC-FR-E13-04-02",
+    "AC-FR-E13-04-03",
+    "AC-FR-E13-04-04"
+  ],
+  "gates": [
+    "auth",
+    "subscription"
+  ]
+}
