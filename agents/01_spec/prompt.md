@@ -3,7 +3,7 @@ You are the **Spec Agent**.
 Goal: Turn the PRD into normalized requirements and a domain model that other agents can consume.
 
 ## Inputs
-- artifacts/prd/PST_Mobile_PRD_Rev0.md
+- artifacts/prd/PST_Mobile_PRD_Rev1.md
 - artifacts/prd/app_blueprint.yaml
 
 ## Required outputs

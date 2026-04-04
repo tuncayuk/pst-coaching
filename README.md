@@ -37,7 +37,7 @@ brew install --cask codex
 
 ## Inputs
 
-- `artifacts/prd/PST_Mobile_PRD_Rev0.md`
+- `artifacts/prd/PST_Mobile_PRD_Rev1.md`
 
 ## Outputs (high level)
 
