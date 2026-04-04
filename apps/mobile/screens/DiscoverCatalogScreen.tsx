@@ -78,7 +78,7 @@ const DiscoverReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
         </View>
       </PCard>
 
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.tabsRow}>
+      <ScrollView contentContainerStyle={styles.tabsRow}>
         {contentTabs.map((tab, index) => (
           <PButton
             key={tab.key}
@@ -284,10 +284,10 @@ const styles = StyleSheet.create({
     color: "#00B4D8",
   },
   tabsRow: {
+    flexDirection: "column",
     gap: 8,
     paddingBottom: 8,
     marginBottom: 16,
-    
   },
   tabButton: {
     borderRadius: 10,
@@ -295,11 +295,14 @@ const styles = StyleSheet.create({
   tabLabel: {
     fontSize: 12,
     fontWeight: "600",
+    textAlign: "center",
+    alignSelf: "center",
   },
   tabContent: {
-    
     height: 82,
     paddingHorizontal: 12,
+    alignItems: "center",
+    justifyContent: "center",
   },
   section: {
     marginBottom: 24,
