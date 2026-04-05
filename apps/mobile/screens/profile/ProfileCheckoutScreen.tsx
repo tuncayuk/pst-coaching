@@ -55,7 +55,7 @@ const ProfileCheckoutContent = ({ isOffline }: { isOffline?: boolean }) => {
           <PCard.Content>
             <View style={styles.priceRow}>
               <PText variant="bodyMedium">Plan Bedeli</PText>
-              <PText variant="bodyMedium">1.299,99 TL</PText>
+              <PText variant="bodyMedium">99,99 TL</PText>
             </View>
             <View style={styles.priceRow}>
               <PText variant="bodyMedium">KDV (%0)</PText>

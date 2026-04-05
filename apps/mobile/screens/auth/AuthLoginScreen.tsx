@@ -14,8 +14,8 @@ import { PActivityIndicator, PButton, PIconButton, PText, PTextInput } from "../
 const LoginContent = ({ isOffline }: { isOffline?: boolean }) => {
   const [rememberMe, setRememberMe] = React.useState(true);
   const [showPassword, setShowPassword] = React.useState(false);
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
+  const [email, setEmail] = React.useState("tuncay@bu.edu");
+  const [password, setPassword] = React.useState("12345678");
   const [loginError, setLoginError] = React.useState("");
   const [attemptCount, setAttemptCount] = React.useState(0);
   const navigation = useNavigation<any>();

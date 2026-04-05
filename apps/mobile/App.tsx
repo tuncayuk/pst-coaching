@@ -90,11 +90,10 @@ const MainTabs = () => (
     <Tab.Screen name="Home" component={HomeStack} options={{ tabBarLabel: "Ana Sayfa" }} />
     <Tab.Screen name="Discover" component={DiscoverStack} options={{ tabBarLabel: "Keşfet" }} />
     <Tab.Screen name="Library" component={DummyScreen} options={{ tabBarLabel: "Kütüphane" }} />
-    <Tab.Screen name="Progress" component={DummyScreen} options={{ tabBarLabel: "Gelişim" }} />
-    <Tab.Screen name="Profile" component={DummyScreen} options={{ tabBarLabel: "Profil" }} />
-    {/* <Tab.Screen name="Library" component={LibraryStack} options={{ tabBarLabel: "Kütüphane" }} />
     <Tab.Screen name="Progress" component={ProgressStack} options={{ tabBarLabel: "Gelişim" }} />
-    <Tab.Screen name="Profile" component={ProfileStack} options={{ tabBarLabel: "Profil" }} /> */}
+    <Tab.Screen name="Profile" component={ProfileStack} options={{ tabBarLabel: "Profil" }} />
+    {/* <Tab.Screen name="Library" component={LibraryStack} options={{ tabBarLabel: "Kütüphane" }} /> */}
+    {/* <Tab.Screen name="Progress" component={ProgressStack} options={{ tabBarLabel: "Gelişim" }} /> */}
 
   </Tab.Navigator>
 );

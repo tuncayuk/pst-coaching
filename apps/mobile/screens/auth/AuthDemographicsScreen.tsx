@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View, ScrollView, TouchableOpacity, FlatList } from "react-native";
+import { StyleSheet, View, ScrollView, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { OfflineNotice } from "../components/OfflineNotice";
@@ -131,13 +131,10 @@ const DemographicsContent = ({ isOffline }: { isOffline?: boolean }) => {
                 editable={!isOffline}
                 accessibilityLabel="Ulke ara"
               />
-              <FlatList
-                data={filteredCountries}
-                keyExtractor={(item) => item}
-                style={styles.dropdownList}
-                keyboardShouldPersistTaps="handled"
-                renderItem={({ item }) => (
+              <ScrollView style={styles.dropdownList} keyboardShouldPersistTaps="handled" nestedScrollEnabled>
+                {filteredCountries.map((item) => (
                   <TouchableOpacity
+                    key={item}
                     style={[styles.dropdownItem, item === country && styles.dropdownItemSelected]}
                     onPress={() => {
                       setCountry(item);
@@ -151,8 +148,8 @@ const DemographicsContent = ({ isOffline }: { isOffline?: boolean }) => {
                       {item}
                     </PText>
                   </TouchableOpacity>
-                )}
-              />
+                ))}
+              </ScrollView>
             </View>
           )}
         </View>
