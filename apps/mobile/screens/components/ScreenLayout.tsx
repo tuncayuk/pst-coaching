@@ -1,83 +1,121 @@
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
-import { SafeAreaView, ScrollView, StyleSheet, View } from "react-native";
+import {
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  View,
+  ViewStyle,
+} from "react-native";
 import { useTheme } from "react-native-paper";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 import { PIconButton, PSurface, PText } from "../../components";
 
-type ScreenLayoutProps = {
+const SPACING = 16;
+
+export type ScreenLayoutProps = {
   title: string;
   subtitle?: string;
   rightAction?: React.ReactNode;
   children: React.ReactNode;
+  headerVariant?: "default" | "transparent" | "none";
+  scrollEnabled?: boolean;
+  edges?: Array<"top" | "bottom" | "left" | "right">;
+  contentStyle?: ViewStyle;
 };
 
-export const ScreenLayout = ({ title, subtitle, rightAction, children }: ScreenLayoutProps) => {
+export const ScreenLayout = ({
+  title,
+  subtitle,
+  rightAction,
+  children,
+  headerVariant = "default",
+  scrollEnabled = true,
+  edges = ["top", "left", "right"],
+  contentStyle,
+}: ScreenLayoutProps) => {
   const theme = useTheme();
   const navigation = useNavigation();
   const canGoBack = navigation.canGoBack();
 
-  return (
-    <SafeAreaView style={[styles.root, { backgroundColor: theme.colors.background }]}>
-      <ScrollView contentContainerStyle={styles.content}>
-        <PSurface style={[styles.header, { backgroundColor: theme.colors.elevation.level1 }]}>
-          <View style={styles.titleRow}>
-            {canGoBack ? (
-              <PIconButton
-                icon="arrow-left"
-                size={24}
-                onPress={() => navigation.goBack()}
-                style={styles.backButton}
-                accessibilityLabel="Geri"
-                accessibilityRole="button"
-              />
-            ) : null}
-            <View style={styles.titleText}>
-              <PText variant="headlineSmall" accessibilityRole="header">
-                {title}
+  const header =
+    headerVariant !== "none" ? (
+      <PSurface
+        elevation={0}
+        style={[
+          styles.header,
+          {
+            borderRadius: theme.roundness * 2.5,
+            borderBottomColor: `${theme.colors.outlineVariant}66`,
+            backgroundColor:
+              headerVariant === "transparent" ? "transparent" : theme.colors.background,
+          },
+        ]}
+        accessibilityLabel={title}
+      >
+        <View style={styles.titleRow}>
+          {canGoBack ? (
+            <PIconButton
+              icon="arrow-left"
+              size={24}
+              onPress={() => navigation.goBack()}
+              style={styles.backButton}
+              accessibilityLabel="Geri"
+              accessibilityRole="button"
+            />
+          ) : null}
+          <View style={styles.titleText}>
+            <PText variant="headlineSmall" accessibilityRole="header">
+              {title}
+            </PText>
+            {subtitle ? (
+              <PText variant="bodyMedium" style={{ color: theme.colors.onSurfaceVariant }}>
+                {subtitle}
               </PText>
-              {subtitle ? (
-                <PText variant="bodyMedium" style={{ color: theme.colors.onSurfaceVariant }}>
-                  {subtitle}
-                </PText>
-              ) : null}
-            </View>
-            {rightAction ? <View style={styles.rightAction}>{rightAction}</View> : null}
+            ) : null}
           </View>
-        </PSurface>
-        <View style={styles.body}>{children}</View>
-      </ScrollView>
+          {rightAction ? <View style={styles.rightAction}>{rightAction}</View> : null}
+        </View>
+      </PSurface>
+    ) : null;
+
+  return (
+    <SafeAreaView
+      style={[styles.root, { backgroundColor: theme.colors.background }]}
+      edges={edges}
+      accessibilityViewIsModal={false}
+    >
+      <KeyboardAvoidingView
+        style={styles.root}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+      >
+        <ScrollView
+          contentContainerStyle={[styles.content, contentStyle]}
+          keyboardShouldPersistTaps="handled"
+          scrollEnabled={scrollEnabled}
+        >
+          {header}
+          {children}
+        </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  root: {
-    flex: 1,
-  },
-  content: {
-    padding: 16,
-  },
+  root: { flex: 1 },
+  content: { padding: SPACING, paddingBottom: SPACING * 3 },
   header: {
     paddingVertical: 12,
-    paddingRight: 16,
+    paddingRight: SPACING,
     paddingLeft: 8,
-    borderRadius: 20,
-    marginBottom: 16,
+    marginBottom: SPACING,
+    borderBottomWidth: 1,
   },
-  titleRow: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  backButton: {
-    margin: 0,
-    marginRight: 4,
-  },
-  titleText: {
-    flex: 1,
-  },
-  rightAction: {
-    marginLeft: 8,
-  },
-  body: {},
+  titleRow: { flexDirection: "row", alignItems: "center" },
+  backButton: { margin: 0, marginRight: 4 },
+  titleText: { flex: 1 },
+  rightAction: { marginLeft: 8 },
 });

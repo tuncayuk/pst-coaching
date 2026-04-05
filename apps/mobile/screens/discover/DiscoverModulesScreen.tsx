@@ -1,53 +1,47 @@
-import { useNavigation } from "@react-navigation/native";
-import React from "react";
-import { ScrollView, StyleSheet, View } from "react-native";
+import { useNavigation } from '@react-navigation/native';
+import React from 'react';
+import { ScrollView, StyleSheet, View } from 'react-native';
 
-import { PActivityIndicator, PButton, PCard, PText } from "../../components";
-import { getModules, getPackagesForModule } from "../../data/mockSelectors";
-import { OfflineNotice } from "../components/OfflineNotice";
-import { ScreenLayout } from "../components/ScreenLayout";
-import { ScreenState, resolveScreenState } from "../components/ScreenState";
-import { SkeletonBlock } from "../components/SkeletonBlock";
-import { StateMessage } from "../components/StateMessage";
+import { PActivityIndicator, PButton, PCard, PText } from '../../components';
+import { getModules, getPackagesForModule } from '../../data/mockSelectors';
+import { OfflineNotice } from '../components/OfflineNotice';
+import { ScreenLayout } from '../components/ScreenLayout';
+import { ScreenState, resolveScreenState } from '../components/ScreenState';
+import { SkeletonBlock } from '../components/SkeletonBlock';
+import { StateMessage } from '../components/StateMessage';
 
-const SORT_OPTIONS = ["Tumu", "Onerilen", "Populer", "Yeni"];
+const SORT_OPTIONS = ['Tumu', 'Onerilen', 'Populer', 'Yeni'];
 const TOPIC_OPTIONS = [
-  { key: "tumu", label: "Tumu" },
-  { key: "gelisim", label: "Gelisim" },
-  { key: "maneviyat", label: "Maneviyat" },
-  { key: "denge", label: "Denge" },
+  { key: 'tumu', label: 'Tumu' },
+  { key: 'gelisim', label: 'Gelisim' },
+  { key: 'maneviyat', label: 'Maneviyat' },
+  { key: 'denge', label: 'Denge' }
 ];
-const CARD_EMOJIS = ["📦", "🧩", "📘", "🧠"];
-const CARD_COLORS = ["#E0F7FA", "#D1FAE5", "#E9D5FF", "#FDE68A"];
-const TOPICS = ["gelisim", "maneviyat", "denge", "gelisim"];
+const CARD_EMOJIS = ['📦', '🧩', '📘', '🧠'];
+const CARD_COLORS = ['#E0F7FA', '#D1FAE5', '#E9D5FF', '#FDE68A'];
+const TOPICS = ['gelisim', 'maneviyat', 'denge', 'gelisim'];
 
 const DiscoverModulesContent = ({ isOffline }: { isOffline?: boolean }) => {
   const navigation = useNavigation<any>();
   const modules = getModules();
-  const [selectedSort, setSelectedSort] = React.useState("Tumu");
-  const [selectedTopic, setSelectedTopic] = React.useState("tumu");
+  const [selectedSort, setSelectedSort] = React.useState('Tumu');
+  const [selectedTopic, setSelectedTopic] = React.useState('tumu');
 
   const moduleTopic = (index: number) => TOPICS[index % TOPICS.length];
 
-  const filtered = modules.filter((_m, i) =>
-    selectedTopic === "tumu" ? true : moduleTopic(i) === selectedTopic
-  );
+  const filtered = modules.filter((_m, i) => (selectedTopic === 'tumu' ? true : moduleTopic(i) === selectedTopic));
 
   const sorted = [...filtered].sort((a, b) => {
-    if (selectedSort === "Populer") return b.id.localeCompare(a.id);
-    if (selectedSort === "Yeni") return a.id.localeCompare(b.id);
+    if (selectedSort === 'Populer') return b.id.localeCompare(a.id);
+    if (selectedSort === 'Yeni') return a.id.localeCompare(b.id);
     return 0;
   });
 
   return (
     <View>
       {/* Sort chips */}
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.chipsRow}
-      >
-        {SORT_OPTIONS.map((label) => (
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.chipsRow}>
+        {SORT_OPTIONS.map(label => (
           <PButton
             key={label}
             mode="contained"
@@ -56,8 +50,8 @@ const DiscoverModulesContent = ({ isOffline }: { isOffline?: boolean }) => {
             style={styles.chip}
             contentStyle={styles.chipContent}
             labelStyle={styles.chipLabel}
-            buttonColor={selectedSort === label ? "#2B1B5D" : "#F5F5F5"}
-            textColor={selectedSort === label ? "#FFFFFF" : "#525252"}
+            buttonColor={selectedSort === label ? '#2B1B5D' : '#F5F5F5'}
+            textColor={selectedSort === label ? '#FFFFFF' : '#525252'}
             onPress={() => setSelectedSort(label)}
           >
             {label}
@@ -66,22 +60,18 @@ const DiscoverModulesContent = ({ isOffline }: { isOffline?: boolean }) => {
       </ScrollView>
 
       {/* Topic filter */}
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.chipsRow}
-      >
-        {TOPIC_OPTIONS.map((topic) => (
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.chipsRow}>
+        {TOPIC_OPTIONS.map(topic => (
           <PButton
             key={topic.key}
-            mode={selectedTopic === topic.key ? "contained" : "outlined"}
+            mode={selectedTopic === topic.key ? 'contained' : 'outlined'}
             compact
             disabled={isOffline}
             style={styles.chip}
             contentStyle={styles.chipContent}
             labelStyle={styles.chipLabel}
-            buttonColor={selectedTopic === topic.key ? "#00B4D8" : "transparent"}
-            textColor={selectedTopic === topic.key ? "#FFFFFF" : "#2B1B5D"}
+            buttonColor={selectedTopic === topic.key ? '#00B4D8' : 'transparent'}
+            textColor={selectedTopic === topic.key ? '#FFFFFF' : '#2B1B5D'}
             onPress={() => setSelectedTopic(topic.key)}
           >
             {topic.label}
@@ -97,8 +87,8 @@ const DiscoverModulesContent = ({ isOffline }: { isOffline?: boolean }) => {
           icon="filter-remove-outline"
         />
       ) : (
-        sorted.map((item) => {
-          const origIndex = modules.findIndex((m) => m.id === item.id);
+        sorted.map(item => {
+          const origIndex = modules.findIndex(m => m.id === item.id);
           const packages = getPackagesForModule(item.id);
           const pkgCount = packages.length || 3 + (origIndex % 2);
           const color = CARD_COLORS[origIndex % CARD_COLORS.length];
@@ -110,9 +100,9 @@ const DiscoverModulesContent = ({ isOffline }: { isOffline?: boolean }) => {
               key={item.id}
               style={styles.card}
               onPress={() =>
-                navigation.navigate("Content", {
-                  screen: "ContentModuleHome",
-                  params: { id: item.id },
+                navigation.navigate('Content', {
+                  screen: 'ContentModuleHome',
+                  params: { id: item.id }
                 })
               }
               accessibilityLabel={item.title}
@@ -127,7 +117,7 @@ const DiscoverModulesContent = ({ isOffline }: { isOffline?: boolean }) => {
                   <View style={styles.cardInfo}>
                     <PText style={styles.cardTitle}>{item.title}</PText>
                     <PText style={styles.cardDescription} numberOfLines={2}>
-                      {item.description ?? "Bu modul icin icerik mevcut."}
+                      {item.description ?? 'Bu modul icin icerik mevcut.'}
                     </PText>
                     <View style={styles.pkgCountRow}>
                       <PText style={styles.pkgCountChip}>📦 {pkgCount} paket</PText>
@@ -162,9 +152,9 @@ const DiscoverModulesContent = ({ isOffline }: { isOffline?: boolean }) => {
                     labelStyle={styles.startButtonLabel}
                     buttonColor="#2B1B5D"
                     onPress={() =>
-                      navigation.navigate("Content", {
-                        screen: "ContentModuleHome",
-                        params: { id: item.id },
+                      navigation.navigate('Content', {
+                        screen: 'ContentModuleHome',
+                        params: { id: item.id }
                       })
                     }
                   >
@@ -181,14 +171,10 @@ const DiscoverModulesContent = ({ isOffline }: { isOffline?: boolean }) => {
   );
 };
 
-export const DiscoverModulesScreen = ({
-  route,
-}: {
-  route?: { params?: { state?: ScreenState } };
-}) => {
+export const DiscoverModulesScreen = ({ route }: { route?: { params?: { state?: ScreenState } } }) => {
   const state = resolveScreenState(route);
 
-  if (state === "loading") {
+  if (state === 'loading') {
     return (
       <ScreenLayout title="Moduller">
         <PActivityIndicator animating />
@@ -200,7 +186,7 @@ export const DiscoverModulesScreen = ({
     );
   }
 
-  if (state === "empty") {
+  if (state === 'empty') {
     return (
       <ScreenLayout title="Moduller">
         <StateMessage
@@ -213,7 +199,7 @@ export const DiscoverModulesScreen = ({
     );
   }
 
-  if (state === "error") {
+  if (state === 'error') {
     return (
       <ScreenLayout title="Moduller">
         <StateMessage
@@ -227,7 +213,7 @@ export const DiscoverModulesScreen = ({
     );
   }
 
-  if (state === "offline") {
+  if (state === 'offline') {
     return (
       <ScreenLayout title="Moduller">
         <OfflineNotice />
@@ -247,65 +233,65 @@ const styles = StyleSheet.create({
   chipsRow: { gap: 8, paddingBottom: 4, marginBottom: 12 },
   chip: { borderRadius: 20, elevation: 0 },
   chipContent: { height: 34, paddingHorizontal: 4 },
-  chipLabel: { fontSize: 12, fontWeight: "600" },
+  chipLabel: { fontSize: 12, fontWeight: '600' },
   card: { borderRadius: 16, marginBottom: 16 },
-  cardInner: { borderRadius: 16, overflow: "hidden" },
-  cardTop: { flexDirection: "row", gap: 12, padding: 16 },
+  cardInner: { borderRadius: 16, overflow: 'hidden' },
+  cardTop: { flexDirection: 'row', gap: 12, padding: 16 },
   cardIcon: {
     width: 64,
     height: 64,
     borderRadius: 12,
-    alignItems: "center",
-    justifyContent: "center",
-    flexShrink: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexShrink: 0
   },
   cardEmoji: { fontSize: 28 },
   cardInfo: { flex: 1 },
-  cardTitle: { fontSize: 16, fontWeight: "700", color: "#171717", marginBottom: 4 },
-  cardDescription: { fontSize: 12, color: "#737373", marginBottom: 6, lineHeight: 16 },
-  pkgCountRow: { flexDirection: "row" },
+  cardTitle: { fontSize: 16, fontWeight: '700', color: '#171717', marginBottom: 4 },
+  cardDescription: { fontSize: 12, color: '#737373', marginBottom: 6, lineHeight: 16 },
+  pkgCountRow: { flexDirection: 'row' },
   pkgCountChip: {
-    backgroundColor: "#E0F7FA",
-    color: "#00758C",
+    backgroundColor: '#E0F7FA',
+    color: '#00758C',
     fontSize: 11,
-    fontWeight: "700",
+    fontWeight: '700',
     paddingHorizontal: 8,
     paddingVertical: 2,
-    borderRadius: 6,
+    borderRadius: 6
   },
   pkgPreview: {
     borderTopWidth: 1,
-    borderTopColor: "#F5F5F5",
+    borderTopColor: '#F5F5F5',
     paddingHorizontal: 16,
     paddingTop: 10,
-    paddingBottom: 4,
+    paddingBottom: 4
   },
-  pkgRow: { flexDirection: "row", alignItems: "flex-start", gap: 8, marginBottom: 6 },
+  pkgRow: { flexDirection: 'row', alignItems: 'flex-start', gap: 8, marginBottom: 6 },
   pkgIndex: {
     fontSize: 11,
-    fontWeight: "700",
-    color: "#FFFFFF",
-    backgroundColor: "#2B1B5D",
+    fontWeight: '700',
+    color: '#FFFFFF',
+    backgroundColor: '#2B1B5D',
     width: 18,
     height: 18,
     borderRadius: 9,
-    textAlign: "center",
+    textAlign: 'center',
     lineHeight: 18,
-    flexShrink: 0,
+    flexShrink: 0
   },
   pkgInfo: { flex: 1 },
-  pkgTitle: { fontSize: 13, fontWeight: "600", color: "#171717" },
-  pkgDesc: { fontSize: 11, color: "#737373", marginTop: 1 },
-  moreText: { fontSize: 11, color: "#9CA3AF", marginBottom: 4 },
+  pkgTitle: { fontSize: 13, fontWeight: '600', color: '#171717' },
+  pkgDesc: { fontSize: 11, color: '#737373', marginTop: 1 },
+  moreText: { fontSize: 11, color: '#9CA3AF', marginBottom: 4 },
   cardFooter: {
     borderTopWidth: 1,
-    borderTopColor: "#F5F5F5",
+    borderTopColor: '#F5F5F5',
     paddingHorizontal: 16,
     paddingVertical: 10,
-    alignItems: "flex-start",
+    alignItems: 'flex-start'
   },
   startButton: { borderRadius: 8, elevation: 0 },
   startButtonContent: { height: 36, paddingHorizontal: 16 },
-  startButtonLabel: { fontSize: 13, fontWeight: "700" },
-  bottomSpacer: { height: 24 },
+  startButtonLabel: { fontSize: 13, fontWeight: '700' },
+  bottomSpacer: { height: 24 }
 });
