@@ -1,11 +1,11 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { PActivityIndicator, PButton, PCard, PIconButton, PText } from '../../components';
 import { getJourneys, getPackages } from '../../data/mockSelectors';
 import { OfflineNotice } from '../components/OfflineNotice';
+import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
 import { SkeletonBlock } from '../components/SkeletonBlock';
 import { StateMessage } from '../components/StateMessage';
@@ -70,16 +70,6 @@ const DiscoverJourneysContent = ({ isOffline }: { isOffline?: boolean }) => {
 
   return (
     <View>
-      <View style={styles.headerRow}>
-        <View style={styles.headerLeft}>
-          <PIconButton icon="arrow-left" size={24} onPress={() => navigation.goBack()} accessibilityLabel="Geri" />
-          <PText style={styles.title}>Yolculuklar</PText>
-        </View>
-        <View style={styles.countBadge}>
-          <PText style={styles.countBadgeText}>{sorted.length}</PText>
-        </View>
-      </View>
-
       {/* Sort chips */}
       <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.chipsRow}>
         {SORT_OPTIONS.map(label => (
@@ -214,66 +204,56 @@ export const DiscoverJourneysScreen = ({ route }: { route?: { params?: { state?:
 
   if (state === 'loading') {
     return (
-      <SafeAreaView style={styles.root}>
-        <ScrollView contentContainerStyle={styles.content}>
-          <PActivityIndicator animating />
-          <SkeletonBlock height={18} />
-          <SkeletonBlock height={36} />
-          <SkeletonBlock height={120} />
-          <SkeletonBlock height={120} />
-        </ScrollView>
-      </SafeAreaView>
+      <ScreenLayout title="Yolculuklar">
+        <PActivityIndicator animating />
+        <SkeletonBlock height={18} />
+        <SkeletonBlock height={36} />
+        <SkeletonBlock height={120} />
+        <SkeletonBlock height={120} />
+      </ScreenLayout>
     );
   }
 
   if (state === 'empty') {
     return (
-      <SafeAreaView style={styles.root}>
-        <ScrollView contentContainerStyle={styles.content}>
-          <StateMessage
-            title="Yolculuk bulunamadi"
-            description="Yeni icerikler kisa sure icinde eklenecek."
-            actionLabel="Bildirimleri Ac"
-            icon="bell-outline"
-          />
-        </ScrollView>
-      </SafeAreaView>
+      <ScreenLayout title="Yolculuklar">
+        <StateMessage
+          title="Yolculuk bulunamadi"
+          description="Yeni icerikler kisa sure icinde eklenecek."
+          actionLabel="Bildirimleri Ac"
+          icon="bell-outline"
+        />
+      </ScreenLayout>
     );
   }
 
   if (state === 'error') {
     return (
-      <SafeAreaView style={styles.root}>
-        <ScrollView contentContainerStyle={styles.content}>
-          <StateMessage
-            title="Yolculuklar yuklenemedi"
-            description="Baglantini kontrol edip tekrar dene."
-            actionLabel="Tekrar Dene"
-            icon="alert-circle-outline"
-            tone="error"
-          />
-        </ScrollView>
-      </SafeAreaView>
+      <ScreenLayout title="Yolculuklar">
+        <StateMessage
+          title="Yolculuklar yuklenemedi"
+          description="Baglantini kontrol edip tekrar dene."
+          actionLabel="Tekrar Dene"
+          icon="alert-circle-outline"
+          tone="error"
+        />
+      </ScreenLayout>
     );
   }
 
   if (state === 'offline') {
     return (
-      <SafeAreaView style={styles.root}>
-        <ScrollView contentContainerStyle={styles.content}>
-          <OfflineNotice />
-          <DiscoverJourneysContent isOffline />
-        </ScrollView>
-      </SafeAreaView>
+      <ScreenLayout title="Yolculuklar">
+        <OfflineNotice />
+        <DiscoverJourneysContent isOffline />
+      </ScreenLayout>
     );
   }
 
   return (
-    <SafeAreaView style={styles.root}>
-      <ScrollView contentContainerStyle={styles.content}>
-        <DiscoverJourneysContent />
-      </ScrollView>
-    </SafeAreaView>
+    <ScreenLayout title="Yolculuklar">
+      <DiscoverJourneysContent />
+    </ScreenLayout>
   );
 };
 

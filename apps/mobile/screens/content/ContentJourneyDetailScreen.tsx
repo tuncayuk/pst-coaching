@@ -1,11 +1,11 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { PActivityIndicator, PButton, PCard, PChip, PIconButton, PText } from '../../components';
 import { getEbooks, getJourneyById, getModules, getWorkshops } from '../../data/mockSelectors';
 import { OfflineNotice } from '../components/OfflineNotice';
+import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
 import { SkeletonBlock } from '../components/SkeletonBlock';
 import { StateMessage } from '../components/StateMessage';
@@ -24,8 +24,13 @@ const ContentJourneyDetailContent = ({ journeyId, isOffline }: { journeyId?: str
     <View>
       <View style={styles.hero}>
         <PText style={styles.heroEmoji}>🎯</PText>
-        <PIconButton icon="arrow-left" style={styles.heroBack} onPress={() => navigation.goBack()} />
-        <PIconButton icon="heart-outline" style={styles.heroFav} />
+        <PIconButton
+          icon="heart-outline"
+          style={styles.heroFav}
+          accessibilityLabel="Favorilere ekle"
+          accessibilityRole="button"
+          onPress={() => {}}
+        />
       </View>
 
       <View style={styles.content}>
@@ -80,12 +85,9 @@ const ContentJourneyDetailContent = ({ journeyId, isOffline }: { journeyId?: str
         <PButton
           mode="contained"
           disabled={isOffline}
-          onPress={() =>
-            navigation.navigate('Content', {
-              screen: 'ContentJourneyHome',
-              params: { id: journey?.id }
-            })
-          }
+          accessibilityLabel="Yolculugu Baslat"
+          accessibilityHint="Bu yolculuğa başlar"
+          onPress={() => navigation.navigate('ContentJourneyHome' as never, { id: journey?.id ?? '' } as never)}
         >
           Yolculugu Baslat
         </PButton>
@@ -104,65 +106,55 @@ export const ContentJourneyDetailScreen = ({
 
   if (state === 'loading') {
     return (
-      <SafeAreaView style={styles.root}>
-        <ScrollView contentContainerStyle={styles.page}>
-          <PActivityIndicator animating />
-          <SkeletonBlock height={18} />
-          <SkeletonBlock height={18} />
-          <SkeletonBlock height={120} />
-        </ScrollView>
-      </SafeAreaView>
+      <ScreenLayout title="Yolculuk Detayi">
+        <PActivityIndicator animating />
+        <SkeletonBlock height={18} />
+        <SkeletonBlock height={18} />
+        <SkeletonBlock height={120} />
+      </ScreenLayout>
     );
   }
 
   if (state === 'empty') {
     return (
-      <SafeAreaView style={styles.root}>
-        <ScrollView contentContainerStyle={styles.page}>
-          <StateMessage
-            title="Yolculuk bulunamadı"
-            description="Bu yolculuk şu anda erişilebilir değil."
-            actionLabel="Keşfe Dön"
-            icon="map-outline"
-          />
-        </ScrollView>
-      </SafeAreaView>
+      <ScreenLayout title="Yolculuk Detayi">
+        <StateMessage
+          title="Yolculuk bulunamadı"
+          description="Bu yolculuk şu anda erişilebilir değil."
+          actionLabel="Keşfe Dön"
+          icon="map-outline"
+        />
+      </ScreenLayout>
     );
   }
 
   if (state === 'error') {
     return (
-      <SafeAreaView style={styles.root}>
-        <ScrollView contentContainerStyle={styles.page}>
-          <StateMessage
-            title="Yolculuk yüklenemedi"
-            description="Bağlantını kontrol edip tekrar dene."
-            actionLabel="Tekrar Dene"
-            icon="alert-circle-outline"
-            tone="error"
-          />
-        </ScrollView>
-      </SafeAreaView>
+      <ScreenLayout title="Yolculuk Detayi">
+        <StateMessage
+          title="Yolculuk yüklenemedi"
+          description="Bağlantını kontrol edip tekrar dene."
+          actionLabel="Tekrar Dene"
+          icon="alert-circle-outline"
+          tone="error"
+        />
+      </ScreenLayout>
     );
   }
 
   if (state === 'offline') {
     return (
-      <SafeAreaView style={styles.root}>
-        <ScrollView contentContainerStyle={styles.page}>
-          <OfflineNotice />
-          <ContentJourneyDetailContent journeyId={journeyId} isOffline />
-        </ScrollView>
-      </SafeAreaView>
+      <ScreenLayout title="Yolculuk Detayi">
+        <OfflineNotice />
+        <ContentJourneyDetailContent journeyId={journeyId} isOffline />
+      </ScreenLayout>
     );
   }
 
   return (
-    <SafeAreaView style={styles.root}>
-      <ScrollView contentContainerStyle={styles.page}>
-        <ContentJourneyDetailContent journeyId={journeyId} />
-      </ScrollView>
-    </SafeAreaView>
+    <ScreenLayout title="Yolculuk Detayi">
+      <ContentJourneyDetailContent journeyId={journeyId} />
+    </ScreenLayout>
   );
 };
 

@@ -78,7 +78,20 @@ const routeNameToScreenId: Record<string, string> = {
   ContentCommentPreview: 'content.comment_preview',
   ContentAchievement: 'content.achievement',
   ContentReviewPrompt: 'content.review_prompt',
-  ContentPaywall: 'content.paywall'
+  ContentPaywall: 'content.paywall',
+  NotificationList: 'notifications.fr_e17_01',
+  NotificationDetail: 'notifications.fr_e17_02',
+  NotificationSettings: 'notifications.fr_e17_03',
+  ReminderPlanner: 'notifications.fr_e17_04',
+  ProfileTextScale: 'profile.text_scale',
+  ProfileTheme: 'profile.theme',
+  ProfileScreenReader: 'profile.screen_reader',
+  ProfilePlanManagement: 'profile.plan_management',
+  HomeSubscription: 'home.subscription',
+  HomeContentNav: 'home.content_nav',
+  HomeReminderSetting: 'home.reminder_setting',
+  ContentWorkshopCamp: 'content.workshop_camp',
+  ContentWorkshopGuide: 'content.workshop_guide'
 };
 
 const getActiveRoute = (state: RouteState) => {

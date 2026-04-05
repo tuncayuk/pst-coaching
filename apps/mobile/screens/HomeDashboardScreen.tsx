@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { trackCtaTap } from '../analytics';
 import {
   PActivityIndicator,
   PButton,
@@ -93,9 +94,11 @@ const HomeReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
 
   const handleContinue = () => {
     if (!nextStep) {
+      trackCtaTap('home.dashboard', 'continue_cta_tapped', { hasProgress: false });
       navigation.navigate('Discover');
       return;
     }
+    trackCtaTap('home.dashboard', 'continue_cta_tapped', { hasProgress: true });
     if (nextStep.content_type === 'journey_day') {
       navigation.navigate('Content', {
         screen: 'ContentJourneyDay',
@@ -138,7 +141,10 @@ const HomeReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
             accessibilityLabel="Bildirimler"
             accessibilityRole="button"
             accessibilityHint="Bildirimlerinizi goruntuler"
-            onPress={() => navigation.navigate('Notifications')}
+            onPress={() => {
+              trackCtaTap('home.dashboard', 'bell_tapped');
+              navigation.navigate('Notifications');
+            }}
           />
           {unreadCount > 0 && (
             <View
@@ -154,7 +160,12 @@ const HomeReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
 
       {/* Search bar - AC-FR-E2-05-01: tap opens search screen */}
       <TouchableOpacity
-        onPress={() => !isOffline && navigation.navigate('HomeSearch')}
+        onPress={() => {
+          if (!isOffline) {
+            trackCtaTap('home.dashboard', 'search_bar_tapped');
+            navigation.navigate('HomeSearch');
+          }
+        }}
         activeOpacity={0.7}
         accessibilityLabel="Icerik ara"
         accessibilityRole="search"
@@ -251,7 +262,12 @@ const HomeReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
             <TouchableOpacity
               key={area.label}
               style={styles.contentNavCard}
-              onPress={() => !isOffline && navigation.navigate(area.route as any)}
+              onPress={() => {
+                if (!isOffline) {
+                  trackCtaTap('home.dashboard', 'content_area_tapped', { route: area.route });
+                  navigation.navigate(area.route as any);
+                }
+              }}
               accessibilityLabel={`${area.label}, ${area.count}`}
               accessibilityRole="button"
               accessibilityHint={`${area.label} katalna gider`}

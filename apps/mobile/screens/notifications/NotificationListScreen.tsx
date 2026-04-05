@@ -5,6 +5,7 @@
  * AC-FR-E17-01-03: Single notification mark-as-read
  * AC-FR-E17-01-04: Bulk mark-all-read / clear all
  */
+import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 
@@ -154,6 +155,7 @@ type NotificationListScreenProps = {
 
 export const NotificationListScreen = ({ route }: NotificationListScreenProps) => {
   const state = resolveScreenState(route);
+  const navigation = useNavigation<any>();
 
   if (state === 'loading') {
     return (
@@ -194,6 +196,8 @@ export const NotificationListScreen = ({ route }: NotificationListScreenProps) =
         <StateMessage
           title="Bildirim yok"
           description="Henuz hic bildiriminiz yok. Iceriklerinize devam ederek yeni bildirimler alin."
+          actionLabel="Kesfete Git"
+          onAction={() => navigation.navigate('Discover' as never)}
         />
       </ScreenLayout>
     );

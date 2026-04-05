@@ -1,0 +1,62 @@
+{
+  "id": "home.search_results",
+  "title": "Arama Sonuclari",
+  "route": "/home/search-results",
+  "purpose": "Displays filtered content items matching the user's search query across journeys, workshops, ebooks, and modules.",
+  "entryPoints": ["home.search"],
+  "inputs": [
+    {
+      "name": "query",
+      "type": "string",
+      "required": true,
+      "source": "navigation_params"
+    },
+    {
+      "name": "locale",
+      "type": "LanguageCode",
+      "required": true,
+      "source": "profile"
+    },
+    {
+      "name": "subscriptionStatus",
+      "type": "SubscriptionStatus",
+      "required": true,
+      "source": "entitlement_cache"
+    }
+  ],
+  "dataDependencies": ["Journey", "Workshop", "EBook", "Module"],
+  "uiStates": {
+    "loading": {
+      "description": "Skeleton list shown while search results are computed."
+    },
+    "ready": {
+      "description": "Matched items grouped by content type are listed with thumbnails and metadata."
+    },
+    "empty": {
+      "description": "No results message is shown with a CTA to clear filters or explore catalog."
+    },
+    "error": {
+      "description": "Error state with retry action."
+    },
+    "offline": {
+      "description": "Only locally-cached results are shown with an offline notice."
+    }
+  },
+  "analytics": {
+    "screenView": "home_search_results_viewed",
+    "events": [
+      "home_search_results_viewed",
+      "home_search_result_item_tapped"
+    ]
+  },
+  "leadsTo": [
+    "content.journey_detail",
+    "content.ebook_detail",
+    "content.workshop_detail",
+    "content.module_home",
+    "content.paywall",
+    "discover.catalog"
+  ],
+  "acceptanceCriteriaRefs": ["AC-FR-E2-05-01", "AC-FR-E2-05-02"],
+  "gates": []
+}

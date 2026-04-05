@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Alert, Platform, StyleSheet, View } from 'react-native';
 
+import { trackCtaTap } from '../../analytics';
 import { PButton, PCard, PDivider, PListIcon, PListItem, PText, PTextInput } from '../../components';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
@@ -19,7 +20,7 @@ const ProfileCheckoutContent = ({ isOffline }: { isOffline?: boolean }) => {
 
   const handleApplyCoupon = () => {
     if (!couponCode.trim()) return;
-    // analytics: checkout_coupon_applied (stub)
+    trackCtaTap('profile.checkout', 'coupon_applied', { couponCode });
     Alert.alert('Kupon', `"${couponCode}" kodu uygulanacak. (Sahte ortamda simule edildi)`);
     setCouponApplied(true);
   };
@@ -31,13 +32,13 @@ const ProfileCheckoutContent = ({ isOffline }: { isOffline?: boolean }) => {
       return;
     }
     setPurchaseError(null);
-    // analytics: checkout_purchase_tapped (stub)
+    trackCtaTap('profile.checkout', 'purchase_tapped');
     Alert.alert(PLATFORM_LABEL + ' ile Satin Al', 'Magaza odeme akisi acilacak. (Sahte ortamda simule edildi)', [
       { text: 'Iptal', style: 'cancel' },
       {
         text: 'Onayla',
         onPress: () => {
-          // analytics: checkout_purchase_success (stub)
+          trackCtaTap('profile.checkout', 'purchase_success');
           Alert.alert('Basarili', 'Aboneliginiz aktiflestirildi. (AC-FR-E3-02-02)');
         }
       }

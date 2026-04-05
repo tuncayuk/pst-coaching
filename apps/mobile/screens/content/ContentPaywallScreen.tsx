@@ -4,6 +4,7 @@ import { StyleSheet } from 'react-native';
 
 import { trackCtaTap } from '../../analytics';
 import { PActivityIndicator, PButton, PCard, PDivider, PText } from '../../components';
+import { navigationRef } from '../../navigation/analytics';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -39,7 +40,7 @@ const ContentPaywallContent = ({ isOffline }: { isOffline?: boolean }) => {
               disabled={isOffline}
               onPress={() => {
                 trackCtaTap('content.paywall', 'monthly_plan_tapped');
-                navigation.getParent()?.navigate('MainTabs', {
+                (navigationRef.current as any)?.navigate('MainTabs', {
                   screen: 'Profile',
                   params: { screen: 'ProfileSubscription' }
                 });
@@ -61,7 +62,7 @@ const ContentPaywallContent = ({ isOffline }: { isOffline?: boolean }) => {
               disabled={isOffline}
               onPress={() => {
                 trackCtaTap('content.paywall', 'annual_plan_tapped');
-                navigation.getParent()?.navigate('MainTabs', {
+                (navigationRef.current as any)?.navigate('MainTabs', {
                   screen: 'Profile',
                   params: { screen: 'ProfileSubscription' }
                 });

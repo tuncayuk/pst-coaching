@@ -1,14 +1,14 @@
 module.exports = {
   // trailingComma: "es5",
   semi: true,
-  trailingComma: "none",
+  trailingComma: 'none',
   singleQuote: true,
   printWidth: 120,
-  arrowParens: "avoid",
+  arrowParens: 'avoid',
   tabWidth: 2,
-  endOfLine: "lf",
-  importOrder: ["^[./]"],
+  endOfLine: 'lf',
+  importOrder: ['^[./]'],
   importOrderSeparation: true,
   importOrderSortSpecifiers: true,
-  plugins: ["@trivago/prettier-plugin-sort-imports"],
+  plugins: ['@trivago/prettier-plugin-sort-imports']
 };

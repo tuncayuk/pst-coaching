@@ -1,0 +1,49 @@
+{
+  "id": "content.paywall",
+  "title": "Abonelik Gerekli",
+  "route": "/content/paywall",
+  "purpose": "Prompts the user to choose a subscription plan when gated content is accessed without an active subscription.",
+  "entryPoints": ["content.journey_detail", "content.ebook_detail", "content.workshop_detail", "content.module_home"],
+  "inputs": [
+    {
+      "name": "subscriptionStatus",
+      "type": "SubscriptionStatus",
+      "required": true,
+      "source": "entitlement_cache"
+    }
+  ],
+  "dataDependencies": ["Subscription"],
+  "uiStates": {
+    "loading": {
+      "description": "Skeleton placeholder displayed while entitlement check completes."
+    },
+    "ready": {
+      "description": "Plan cards (monthly and annual) are displayed with benefits list and CTAs."
+    },
+    "empty": {
+      "description": "Not applicable — plan data is static."
+    },
+    "error": {
+      "description": "Error state with retry action if entitlement check fails."
+    },
+    "offline": {
+      "description": "Plan cards shown read-only; purchase CTAs disabled with offline notice."
+    }
+  },
+  "analytics": {
+    "screenView": "content_paywall_viewed",
+    "events": [
+      "content_paywall_viewed",
+      "content_paywall_monthly_plan_tapped",
+      "content_paywall_annual_plan_tapped"
+    ]
+  },
+  "leadsTo": ["profile.subscription"],
+  "acceptanceCriteriaRefs": ["AC-FR-E3-01-01", "AC-FR-E3-01-02"],
+  "gates": [
+    {
+      "condition": "subscriptionStatus !== 'active'",
+      "action": "show_paywall"
+    }
+  ]
+}
