@@ -1,0 +1,10 @@
+{
+  "recommendations": [
+    "ms-playwright.playwright",
+    "editorconfig.editorconfig",
+    "dbaeumer.vscode-eslint",
+    "ryanluker.vscode-coverage-gutters",
+    "naumovs.color-highlight",
+    "wix.vscode-import-cost"
+  ]
+}
