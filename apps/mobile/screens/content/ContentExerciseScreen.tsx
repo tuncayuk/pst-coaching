@@ -408,6 +408,7 @@ const styles = StyleSheet.create({
   stepTitleLocked: { color: "#9CA3AF" },
   stepDesc: { fontSize: 13, color: "#475569", lineHeight: 20 },
   stepLockedHint: { fontSize: 12, color: "#9CA3AF", fontStyle: "italic" },
+  noteArea: { marginTop: 4 },
   noteDivider: { marginVertical: 10 },
   noteLabel: { fontSize: 11, color: "#94A3B8", marginBottom: 4, fontWeight: "600" },
   noteInput: {

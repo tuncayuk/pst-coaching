@@ -1,7 +1,7 @@
 {
   "id": "coach.fr_e12_02",
   "title": "Danisan profili ve metrikler",
-  "route": "/epic-12/fr-e12-02",
+  "route": "/coach/client",
   "purpose": "Implements FR-E12-02: Danisan profili ve metrikler.",
   "entryPoints": [
     "coach.dashboard"
@@ -18,19 +18,27 @@
       "type": "LanguageCode",
       "required": true,
       "source": "profile"
+    },
+    {
+      "name": "clientId",
+      "type": "uuid",
+      "required": true,
+      "source": "navigation"
     }
   ],
   "dataDependencies": [
     "User",
     "ContentProgress",
-    "CoachAssignment"
+    "CoachAssignment",
+    "UserSession",
+    "Achievement"
   ],
   "uiStates": {
     "loading": {
-      "description": "Skeleton placeholders are shown while loading FR-E12-02 data."
+      "description": "Skeleton placeholders shown while loading FR-E12-02 data."
     },
     "ready": {
-      "description": "FR-E12-02 flows are fully interactive with primary CTA available when prerequisites are met."
+      "description": "FR-E12-02 flows are fully interactive with primary CTA available."
     },
     "empty": {
       "description": "Empty state explains why no data is available and points to next best action."
@@ -45,7 +53,9 @@
   "analytics": {
     "screenView": "coach_fr_e12_02_viewed",
     "events": [
-      "coach_fr_e12_02_viewed"
+      "coach_client_profile_viewed",
+      "content_tracking_opened",
+      "feedback_compose_opened"
     ]
   },
   "acceptanceCriteriaRefs": [

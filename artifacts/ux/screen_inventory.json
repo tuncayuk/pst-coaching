@@ -1461,8 +1461,8 @@
     },
     {
       "id": "coach.fr_e12_01",
-      "route": "/epic-12/fr-e12-01",
-      "title": "Danışan listesi ve risk göstergeleri",
+      "route": "/coach/dashboard",
+      "title": "Danisan listesi ve risk gostergeleri",
       "type": "stack",
       "states": [
         "loading",
@@ -1480,8 +1480,8 @@
     },
     {
       "id": "coach.fr_e12_02",
-      "route": "/epic-12/fr-e12-02",
-      "title": "Danışan profili ve metrikler",
+      "route": "/coach/client",
+      "title": "Danisan profili ve metrikler",
       "type": "stack",
       "states": [
         "loading",
@@ -1499,7 +1499,7 @@
     },
     {
       "id": "coach.fr_e12_03",
-      "route": "/epic-12/fr-e12-03",
+      "route": "/coach/client/content",
       "title": "Icerik takibi",
       "type": "stack",
       "states": [
@@ -1518,7 +1518,7 @@
     },
     {
       "id": "coach.fr_e12_04",
-      "route": "/epic-12/fr-e12-04",
+      "route": "/coach/feedback",
       "title": "Koc geri bildirim akisi",
       "type": "stack",
       "states": [

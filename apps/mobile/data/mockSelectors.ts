@@ -103,3 +103,25 @@ export const getCollectionsForUser = (userId?: string) =>
 
 export const getDownloadsForUser = (userId?: string) =>
   getDownloads().filter((download) => download.user_id === userId);
+
+export const getCoachAssignments = () => getList(getData()?.coach_assignments as any[]);
+
+export const getClientsForCoach = (coachUserId?: string) => {
+  const assignments = getCoachAssignments().filter(
+    (a: any) => a.coach_user_id === coachUserId
+  );
+  const clientIds = new Set(assignments.map((a: any) => a.client_user_id));
+  // Mock: if no specific assignments, return all non-primary users for demo
+  if (clientIds.size === 0) {
+    return getUsers().filter((u) => u.id !== coachUserId);
+  }
+  return getUsers().filter((u) => clientIds.has(u.id));
+};
+
+export const getCommentsForClient = (clientUserId?: string) =>
+  getComments().filter((c: any) => c.user_id === clientUserId);
+
+export const getUserSessions = () => getList(getData()?.user_sessions as any[]);
+
+export const getSessionsForUser = (userId?: string) =>
+  getUserSessions().filter((s: any) => s.user_id === userId);

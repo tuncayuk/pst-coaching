@@ -42,7 +42,7 @@ const NavCard = ({
       <PText variant="titleSmall" style={styles.navCardTitle}>{title}</PText>
       <PText variant="bodySmall" style={styles.navCardSub}>{subtitle}</PText>
     </View>
-    <PText style={styles.navArrow} accessibilityElementsHidden>></PText>
+    <PText style={styles.navArrow} accessibilityElementsHidden>{'>'}</PText>
   </TouchableOpacity>
 );
 

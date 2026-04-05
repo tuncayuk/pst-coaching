@@ -1,10 +1,10 @@
 {
   "id": "coach.fr_e12_01",
   "title": "Danisan listesi ve risk gostergeleri",
-  "route": "/epic-12/fr-e12-01",
+  "route": "/coach/dashboard",
   "purpose": "Implements FR-E12-01: Danisan listesi ve risk gostergeleri.",
   "entryPoints": [
-    "coach.dashboard"
+    "profile.overview"
   ],
   "inputs": [
     {
@@ -23,14 +23,15 @@
   "dataDependencies": [
     "User",
     "ContentProgress",
-    "CoachAssignment"
+    "CoachAssignment",
+    "UserSession"
   ],
   "uiStates": {
     "loading": {
-      "description": "Skeleton placeholders are shown while loading FR-E12-01 data."
+      "description": "Skeleton placeholders shown while loading FR-E12-01 data."
     },
     "ready": {
-      "description": "FR-E12-01 flows are fully interactive with primary CTA available when prerequisites are met."
+      "description": "FR-E12-01 flows are fully interactive with primary CTA available."
     },
     "empty": {
       "description": "Empty state explains why no data is available and points to next best action."
@@ -45,7 +46,9 @@
   "analytics": {
     "screenView": "coach_fr_e12_01_viewed",
     "events": [
-      "coach_fr_e12_01_viewed"
+      "coach_dashboard_viewed",
+      "client_risk_filter_applied",
+      "client_profile_opened"
     ]
   },
   "acceptanceCriteriaRefs": [

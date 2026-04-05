@@ -14,6 +14,7 @@ import { ProgressStack } from "./navigation/ProgressStack";
 import { ProfileStack } from "./navigation/ProfileStack";
 import { AuthStack } from "./navigation/AuthStack";
 import { ContentStack } from "./navigation/ContentStack";
+import { CoachStack } from "./navigation/CoachStack";
 import { navigationAnalytics, navigationRef } from "./navigation/analytics";
 import { appStore } from "./state/store";
 import { PText } from "./components";
@@ -33,6 +34,8 @@ type RootStackParamList = {
   MainTabs: undefined;
   Auth: undefined;
   Content: undefined;
+  /** FR-E12-01..04: Coach dashboard stack (coach_role gate) */
+  Coach: undefined;
 };
 
 const RootStack = createNativeStackNavigator<RootStackParamList>();
@@ -111,6 +114,7 @@ export default function App() {
               <RootStack.Screen name="MainTabs" component={MainTabs} />
               <RootStack.Screen name="Auth" component={AuthStack} />
               <RootStack.Screen name="Content" component={ContentStack} />
+              <RootStack.Screen name="Coach" component={CoachStack} />
             </RootStack.Navigator>
           </NavigationContainer>
         </PaperProvider>

@@ -1,7 +1,7 @@
 {
   "id": "coach.fr_e12_03",
   "title": "Icerik takibi",
-  "route": "/epic-12/fr-e12-03",
+  "route": "/coach/client/content",
   "purpose": "Implements FR-E12-03: Icerik takibi.",
   "entryPoints": [
     "coach.dashboard"
@@ -18,20 +18,29 @@
       "type": "LanguageCode",
       "required": true,
       "source": "profile"
+    },
+    {
+      "name": "clientId",
+      "type": "uuid",
+      "required": true,
+      "source": "navigation"
     }
   ],
   "dataDependencies": [
     "User",
     "ContentProgress",
     "CoachAssignment",
-    "Ebook"
+    "Journey",
+    "Workshop",
+    "Ebook",
+    "EbookProgress"
   ],
   "uiStates": {
     "loading": {
-      "description": "Skeleton placeholders are shown while loading FR-E12-03 data."
+      "description": "Skeleton placeholders shown while loading FR-E12-03 data."
     },
     "ready": {
-      "description": "FR-E12-03 flows are fully interactive with primary CTA available when prerequisites are met."
+      "description": "FR-E12-03 flows are fully interactive with primary CTA available."
     },
     "empty": {
       "description": "Empty state explains why no data is available and points to next best action."
@@ -46,7 +55,8 @@
   "analytics": {
     "screenView": "coach_fr_e12_03_viewed",
     "events": [
-      "coach_fr_e12_03_viewed"
+      "coach_content_tracking_viewed",
+      "content_item_drilled"
     ]
   },
   "acceptanceCriteriaRefs": [
