@@ -1,10 +1,11 @@
 {
   "id": "progress.fr_e6_01",
-  "title": "Gelişim paneli",
-  "route": "/epic-6/fr-e6-01",
-  "purpose": "Implements FR-E6-01: Gelişim paneli.",
+  "title": "Gelisim paneli",
+  "route": "/progress/dashboard",
+  "purpose": "Implements FR-E6-01: Gelisim paneli — per-type progress metrics, streak, and accessibility.",
   "entryPoints": [
-    "progress.dashboard"
+    "home.dashboard",
+    "tab.progress"
   ],
   "inputs": [
     {
@@ -18,40 +19,40 @@
       "type": "SubscriptionStatus",
       "required": true,
       "source": "entitlement_cache"
-    },
-    {
-      "name": "locale",
-      "type": "LanguageCode",
-      "required": true,
-      "source": "profile"
     }
   ],
   "dataDependencies": [
     "ContentProgress",
-    "CommentSubmission",
-    "WorkshopFollowUpPlan"
+    "Achievement",
+    "User"
   ],
   "uiStates": {
     "loading": {
-      "description": "Skeleton placeholders are shown while loading FR-E6-01 data."
+      "description": "Skeleton cards shown for weekly-summary, progress-map, and achievements sections."
     },
     "ready": {
-      "description": "FR-E6-01 flows are fully interactive with primary CTA available when prerequisites are met."
+      "description": "Hero shows user name + streak count. Per-content-type progress section lists journey/workshop/module/ebook items with completion bars (AC-FR-E6-01-01). Streak chip + submission rate visible (AC-FR-E6-01-02). All progress values have accessibilityLabel for screen readers (AC-FR-E6-01-03). Quick-nav row links to EmotionalMap, Strengths, WeeklySummary, ReportExport sub-screens."
     },
     "empty": {
-      "description": "Empty state explains why no data is available and points to next best action."
+      "description": "Empty state explains no completed content yet; CTA navigates to Discover."
     },
     "error": {
-      "description": "Error state is recoverable with user-safe messaging and a retry action."
+      "description": "Error card with retry action; last cached snapshot shown if available."
     },
     "offline": {
-      "description": "Offline state shows last synchronized data and queues write actions for later sync."
+      "description": "Last-synced progress shown; write actions (review) disabled with indicator."
     }
   },
   "analytics": {
-    "screenView": "progress_fr_e6_01_viewed",
+    "screenView": "progress_dashboard_viewed",
     "events": [
-      "progress_fr_e6_01_viewed"
+      "progress_dashboard_viewed",
+      "progress_weekly_summary_tapped",
+      "progress_emotional_map_tapped",
+      "progress_strengths_tapped",
+      "progress_report_export_tapped",
+      "progress_achievement_tapped",
+      "progress_review_tapped"
     ]
   },
   "acceptanceCriteriaRefs": [

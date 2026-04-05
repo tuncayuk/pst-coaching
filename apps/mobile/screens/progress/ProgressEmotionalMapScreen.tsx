@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
@@ -8,49 +8,128 @@ import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
 import { PActivityIndicator, PButton, PCard, PChip, PProgressBar, PText } from "../../components";
 
+type Period = "14" | "30";
 
-const moodTags = ["Sakin", "Odaklı", "Meraklı", "Düşük enerji"];
+// AC-FR-E6-02-02: Legend with Sakin/Netlik/Gergin + color AND pattern/icon for color blindness (AC-FR-E6-02-04)
+const MOOD_LEGEND = [
+  { key: "sakin", label: "Sakin", color: "#DCFCE7", textColor: "#15803D", icon: "●" },
+  { key: "netlik", label: "Netlik", color: "#DBEAFE", textColor: "#1D4ED8", icon: "■" },
+  { key: "merakli", label: "Merakli", color: "#FEF9C3", textColor: "#A16207", icon: "▲" },
+  { key: "gergin", label: "Gergin", color: "#FEE2E2", textColor: "#B91C1C", icon: "✕" },
+];
 
-const moodSummary = [
-  {
-    title: "Sakin",
-    value: "%42",
-  },
-  {
-    title: "Duyarlı",
-    value: "%28",
-  },
+// Mock daily mood data (14 days)
+const MOOD_GRID_14 = [
+  "sakin", "sakin", "netlik", "merakli", "sakin", "gergin", "sakin",
+  "netlik", "merakli", "sakin", "sakin", "netlik", "sakin", "sakin",
+];
+const MOOD_GRID_30 = [
+  ...MOOD_GRID_14,
+  "sakin", "gergin", "merakli", "netlik", "sakin", "sakin", "netlik",
+  "merakli", "sakin", "netlik", "sakin", "gergin", "sakin", "sakin",
+  "netlik", "sakin",
+];
+
+const moodSummary14 = [
+  { key: "sakin", label: "Sakin", pct: 57 },
+  { key: "netlik", label: "Netlik", pct: 22 },
+  { key: "merakli", label: "Merakli", pct: 14 },
+  { key: "gergin", label: "Gergin", pct: 7 },
+];
+const moodSummary30 = [
+  { key: "sakin", label: "Sakin", pct: 50 },
+  { key: "netlik", label: "Netlik", pct: 27 },
+  { key: "merakli", label: "Merakli", pct: 13 },
+  { key: "gergin", label: "Gergin", pct: 10 },
 ];
 
 const ProgressEmotionalMapContent = ({ isOffline }: { isOffline?: boolean }) => {
+  // AC-FR-E6-02-01: period toggle
+  const [period, setPeriod] = useState<Period>("14");
+  const grid = period === "14" ? MOOD_GRID_14 : MOOD_GRID_30;
+  const summary = period === "14" ? moodSummary14 : moodSummary30;
+
   return (
     <>
-      <SectionCard title="14 Günlük Özet" actionLabel="30 Gün">
-        <View style={styles.row}>
-          {moodSummary.map((item) => (
-            <PCard key={item.title} style={styles.metricCard}>
-              <PCard.Title title={item.title} subtitle={item.value} />
-            </PCard>
+      {/* AC-FR-E6-02-01: 14 / 30-day selector */}
+      <SectionCard title="Sure Secimi">
+        <View style={styles.periodRow}>
+          {(["14", "30"] as Period[]).map((p) => (
+            <PButton
+              key={p}
+              mode={period === p ? "contained" : "outlined"}
+              compact
+              disabled={isOffline}
+              onPress={() => setPeriod(p)}
+              style={styles.periodBtn}
+            >
+              {p} Gun
+            </PButton>
           ))}
         </View>
-        <PText variant="bodySmall" style={styles.paragraph}>
-          Son iki haftada duygusal denge puanın %68.
-        </PText>
-        <PProgressBar progress={0.68} />
       </SectionCard>
 
-      <SectionCard title="Duygu Etiketleri" actionLabel="Filtre">
-        <View style={styles.chipRow}>
-          {moodTags.map((label) => (
-            <PChip key={label} style={styles.chip} disabled={isOffline}>
-              {label}
-            </PChip>
+      {/* Mood grid: color + icon for color-blind support (AC-FR-E6-02-04) */}
+      <SectionCard title={`Son ${period} Gun Duygusal Harita`}>
+        <View style={styles.grid}>
+          {grid.map((mood, i) => {
+            const meta = MOOD_LEGEND.find((m) => m.key === mood)!;
+            return (
+              <View
+                key={i}
+                style={[styles.gridCell, { backgroundColor: meta.color }]}
+                accessibilityLabel={`Gun ${i + 1}: ${meta.label}`}
+              >
+                <PText style={[styles.gridIcon, { color: meta.textColor }]}>
+                  {meta.icon}
+                </PText>
+              </View>
+            );
+          })}
+        </View>
+      </SectionCard>
+
+      {/* AC-FR-E6-02-02: Legend */}
+      <SectionCard title="Aciklama">
+        <View style={styles.legendRow}>
+          {MOOD_LEGEND.map((m) => (
+            <View key={m.key} style={styles.legendItem}>
+              <View style={[styles.legendSwatch, { backgroundColor: m.color }]}>
+                <PText style={[styles.legendIcon, { color: m.textColor }]}>{m.icon}</PText>
+              </View>
+              <PText style={styles.legendLabel}>{m.label}</PText>
+            </View>
           ))}
         </View>
-        <PButton mode="outlined" disabled={isOffline}>
-          Haritayı Güncelle
-        </PButton>
       </SectionCard>
+
+      {/* Mood summary percentages */}
+      <SectionCard title={`${period} Gunluk Ozet`}>
+        {summary.map((item) => {
+          const meta = MOOD_LEGEND.find((m) => m.key === item.key)!;
+          return (
+            <View key={item.key} style={styles.summaryRow}>
+              <View style={styles.summaryLabelRow}>
+                <PText style={[styles.summaryIcon, { color: meta.textColor }]}>{meta.icon}</PText>
+                <PText style={styles.summaryLabel}>{item.label}</PText>
+              </View>
+              <PProgressBar
+                progress={item.pct / 100}
+                style={styles.summaryBar}
+                accessibilityLabel={`${item.label}: yuzde ${item.pct}`}
+              />
+              <PText style={[styles.summaryPct, { color: meta.textColor }]}>{item.pct}%</PText>
+            </View>
+          );
+        })}
+      </SectionCard>
+
+      {/* AC-FR-E6-02-03: Disclaimer — always visible */}
+      <View style={styles.disclaimer}>
+        <PText style={styles.disclaimerText}>
+          Bu bir teshis degildir. Duygusal verilerin yalnizca kisisel farkindalik icin sunulmaktadir.
+        </PText>
+      </View>
     </>
   );
 };
@@ -64,15 +143,14 @@ export const ProgressEmotionalMapScreen = ({
 
   if (state === "loading") {
     return (
-      <ScreenLayout title="Duygusal Harita" subtitle="Harita hazırlanıyor">
-        <SectionCard title="Yükleniyor">
+      <ScreenLayout title="Duygusal Harita" subtitle="Harita hazirlaniyor">
+        <SectionCard title="Yukleniyor">
           <PActivityIndicator animating />
-          <SkeletonBlock height={18} />
-          <SkeletonBlock height={18} />
+          <SkeletonBlock height={40} />
         </SectionCard>
-        <SectionCard title="Özet">
-          <SkeletonBlock height={72} />
-          <SkeletonBlock height={72} />
+        <SectionCard title="Ozet">
+          <SkeletonBlock height={80} />
+          <SkeletonBlock height={80} />
         </SectionCard>
       </ScreenLayout>
     );
@@ -80,11 +158,11 @@ export const ProgressEmotionalMapScreen = ({
 
   if (state === "empty") {
     return (
-      <ScreenLayout title="Duygusal Harita" subtitle="Duygu verisi oluşacak">
+      <ScreenLayout title="Duygusal Harita" subtitle="Duygu verisi olusacak">
         <StateMessage
           title="Duygu verisi yok"
-          description="Günlük pratik yaptıkça duygusal haritan oluşacak."
-          actionLabel="Pratik Başlat"
+          description="Gunluk pratik yaptikca duygusal haritan olusacak."
+          actionLabel="Pratik Baslat"
           icon="emoticon-outline"
         />
       </ScreenLayout>
@@ -93,10 +171,10 @@ export const ProgressEmotionalMapScreen = ({
 
   if (state === "error") {
     return (
-      <ScreenLayout title="Duygusal Harita" subtitle="Bir sorun oluştu">
+      <ScreenLayout title="Duygusal Harita" subtitle="Bir sorun olustu">
         <StateMessage
-          title="Harita yüklenemedi"
-          description="Verileri getiremedik. Lütfen tekrar dene."
+          title="Harita yuklenemedi"
+          description="Verileri getiremedik. Lutfen tekrar dene."
           actionLabel="Tekrar Dene"
           icon="alert-circle-outline"
           tone="error"
@@ -107,7 +185,7 @@ export const ProgressEmotionalMapScreen = ({
 
   if (state === "offline") {
     return (
-      <ScreenLayout title="Duygusal Harita" subtitle="Önbellekteki içerikler">
+      <ScreenLayout title="Duygusal Harita" subtitle="Onbellekteki icerikler">
         <OfflineNotice />
         <ProgressEmotionalMapContent isOffline />
       </ScreenLayout>
@@ -122,24 +200,95 @@ export const ProgressEmotionalMapScreen = ({
 };
 
 const styles = StyleSheet.create({
-  row: {
+  periodRow: {
     flexDirection: "row",
-    marginBottom: 12,
+    gap: 10,
   },
-  metricCard: {
-    flex: 1,
-    marginRight: 8,
-  },
-  paragraph: {
-    marginBottom: 12,
-  },
-  chipRow: {
+  periodBtn: { flex: 1 },
+  grid: {
     flexDirection: "row",
     flexWrap: "wrap",
-    marginBottom: 12,
+    gap: 6,
   },
-  chip: {
-    marginRight: 8,
-    marginBottom: 8,
+  gridCell: {
+    width: 36,
+    height: 36,
+    borderRadius: 8,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  gridIcon: {
+    fontSize: 14,
+    fontWeight: "700",
+  },
+  legendRow: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 12,
+  },
+  legendItem: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
+  },
+  legendSwatch: {
+    width: 26,
+    height: 26,
+    borderRadius: 6,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  legendIcon: {
+    fontSize: 12,
+    fontWeight: "700",
+  },
+  legendLabel: {
+    fontSize: 12,
+    color: "#525252",
+  },
+  summaryRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+    marginBottom: 10,
+  },
+  summaryLabelRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 4,
+    width: 70,
+  },
+  summaryIcon: { fontSize: 11 },
+  summaryLabel: { fontSize: 12, color: "#525252" },
+  summaryBar: { flex: 1, height: 6, borderRadius: 3 },
+  summaryPct: { fontSize: 12, fontWeight: "700", width: 34, textAlign: "right" },
+  disclaimer: {
+    marginHorizontal: 16,
+    marginBottom: 24,
+    padding: 12,
+    backgroundColor: "#FEF9C3",
+    borderRadius: 10,
+    borderLeftWidth: 4,
+    borderLeftColor: "#CA8A04",
+  },
+  disclaimerText: {
+    fontSize: 12,
+    color: "#A16207",
+    fontWeight: "600",
   },
 });
+
+
+const moodTags = ["Sakin", "Odakli", "Merakli", "Dusuk enerji"];
+
+const moodSummary = [
+  {
+    title: "Sakin",
+    value: "%42",
+  },
+  {
+    title: "Duyarli",
+    value: "%28",
+  },
+];
+

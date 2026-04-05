@@ -1,8 +1,8 @@
 {
   "id": "progress.fr_e6_06",
-  "title": "Gelişim raporu (indir/paylaş)",
-  "route": "/epic-6/fr-e6-06",
-  "purpose": "Implements FR-E6-06: Gelişim raporu (indir/paylaş).",
+  "title": "Gelisim raporu (indir/paylas)",
+  "route": "/progress/report-export",
+  "purpose": "Implements FR-E6-06: Gelisim raporu — summary metrics, PDF download, privacy consent before sharing.",
   "entryPoints": [
     "progress.dashboard"
   ],
@@ -12,46 +12,39 @@
       "type": "uuid",
       "required": true,
       "source": "session"
-    },
-    {
-      "name": "subscriptionStatus",
-      "type": "SubscriptionStatus",
-      "required": true,
-      "source": "entitlement_cache"
-    },
-    {
-      "name": "locale",
-      "type": "LanguageCode",
-      "required": true,
-      "source": "profile"
     }
   ],
   "dataDependencies": [
     "ContentProgress",
-    "CommentSubmission",
-    "WorkshopFollowUpPlan"
+    "Achievement",
+    "EmotionLog"
   ],
   "uiStates": {
     "loading": {
-      "description": "Skeleton placeholders are shown while loading FR-E6-06 data."
+      "description": "Skeleton for report summary and export actions."
     },
     "ready": {
-      "description": "FR-E6-06 flows are fully interactive with primary CTA available when prerequisites are met."
+      "description": "Report summary card shows total sessions, completed items, streak, and top themes (AC-FR-E6-06-01). 'Raporu Indir' downloads a PDF (AC-FR-E6-06-02). 'Paylas' shows privacy consent modal first (BR-09), then native share sheet (AC-FR-E6-06-03). Format selector chips (PDF/Ozet) available."
     },
     "empty": {
-      "description": "Empty state explains why no data is available and points to next best action."
+      "description": "No data for report yet; CTA to complete content."
     },
     "error": {
-      "description": "Error state is recoverable with user-safe messaging and a retry action."
+      "description": "Export error with retry."
     },
     "offline": {
-      "description": "Offline state shows last synchronized data and queues write actions for later sync."
+      "description": "Download and share disabled offline; report summary visible from cache."
     }
   },
   "analytics": {
-    "screenView": "progress_fr_e6_06_viewed",
+    "screenView": "progress_report_export_viewed",
     "events": [
-      "progress_fr_e6_06_viewed"
+      "progress_report_export_viewed",
+      "progress_report_downloaded",
+      "progress_report_shared",
+      "progress_report_share_consent_shown",
+      "progress_report_share_consent_accepted",
+      "progress_report_share_consent_declined"
     ]
   },
   "acceptanceCriteriaRefs": [

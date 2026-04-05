@@ -1,6 +1,5 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import { useTheme } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
@@ -9,107 +8,208 @@ import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
 import { getAchievements, getContentProgressForUser, getPrimaryUser } from "../../data/mockSelectors";
-import { PActivityIndicator, PButton, PCard, PChip, PListIcon, PListItem, PProgressBar, PText } from "../../components";
+import {
+  PActivityIndicator,
+  PButton,
+  PCard,
+  PChip,
+  PListIcon,
+  PListItem,
+  PProgressBar,
+  PText,
+} from "../../components";
 
+const TYPE_META: Record<string, { label: string; icon: string; color: string }> = {
+  journey_day: { label: "Yolculuk", icon: "map-marker-path", color: "#6B46C1" },
+  package: { label: "Paket", icon: "cube-outline", color: "#0096B8" },
+  workshop: { label: "Atolye", icon: "account-group-outline", color: "#D97706" },
+  ebook: { label: "e-Kitap", icon: "book-open-variant", color: "#16A34A" },
+};
+
+// AC-FR-E6-01-02: streak computed from completed days
+const computeStreak = (items: ReturnType<typeof getContentProgressForUser>) => {
+  const completed = items.filter((p) => p.status === "completed" && p.completed_at);
+  return completed.length; // simplified streak count
+};
 
 const ProgressReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
-  const theme = useTheme();
   const navigation = useNavigation<any>();
   const user = getPrimaryUser();
   const progressItems = getContentProgressForUser(user?.id);
-  const achievements = getAchievements().filter((item) => item.user_id === user?.id);
-  const weeklySummary = [
-    { label: "Yolculuk", value: progressItems.filter((item) => item.content_type === "journey_day").length },
-    { label: "Paket", value: progressItems.filter((item) => item.content_type === "package").length },
-    { label: "Atölye", value: progressItems.filter((item) => item.content_type === "workshop").length },
-  ];
+  const achievements = getAchievements().filter((a) => a.user_id === user?.id);
+  const streak = computeStreak(progressItems);
+  const totalCompleted = progressItems.filter((p) => p.status === "completed").length;
+
+  // AC-FR-E6-01-01: per-type breakdown
+  const typeBreakdown = Object.entries(TYPE_META).map(([type, meta]) => {
+    const typeItems = progressItems.filter((p) => p.content_type === type);
+    const done = typeItems.filter((p) => p.status === "completed").length;
+    const total = typeItems.length || 1;
+    return { ...meta, type, done, total, ratio: done / total };
+  });
+
+  // AC-FR-E6-01-02: submission (teslim) rate
+  const submissionRate = progressItems.length
+    ? progressItems.filter((p) => p.status === "completed").length / progressItems.length
+    : 0;
 
   return (
     <>
-      <SectionCard title="Haftalık Özet" actionLabel="Rapor">
-        {weeklySummary.map((item) => (
-          <View key={item.label} style={styles.summaryRow}>
-            <PText variant="bodyMedium">{item.label}</PText>
-            <PChip compact>{item.value} seans</PChip>
+      {/* Hero / summary header */}
+      <View style={styles.hero}>
+        <View style={styles.heroLeft}>
+          <PText style={styles.heroGreeting}>Merhaba,</PText>
+          <PText style={styles.heroName}>{user?.email?.split("@")[0] ?? "Kullanici"}</PText>
+        </View>
+        <View style={styles.heroRight}>
+          {/* AC-FR-E6-01-02: streak chip */}
+          <View style={styles.streakBadge}>
+            <PText style={styles.streakNum}>{streak}</PText>
+            <PText style={styles.streakLabel}>Gun serisi</PText>
+          </View>
+        </View>
+      </View>
+
+      {/* AC-FR-E6-01-01: per-type progress cards */}
+      <SectionCard title="Icerik Turune Gore Ilerleme">
+        {typeBreakdown.map((t) => (
+          <View key={t.type} style={styles.typeRow}>
+            <View style={[styles.typeIcon, { backgroundColor: t.color + "22" }]}>
+              <PText style={[styles.typeIconText, { color: t.color }]}>
+                {t.done}/{t.total}
+              </PText>
+            </View>
+            <View style={styles.typeInfo}>
+              <PText style={styles.typeLabel}>{t.label}</PText>
+              {/* AC-FR-E6-01-03: accessibilityLabel for screen reader */}
+              <PProgressBar
+                progress={t.ratio}
+                style={styles.typeBar}
+                accessibilityLabel={`${t.label}: ${t.done} / ${t.total} tamamlandi`}
+              />
+            </View>
+            <PChip compact style={{ backgroundColor: t.color + "22" }}>
+              {Math.round(t.ratio * 100)}%
+            </PChip>
           </View>
         ))}
+        {/* AC-FR-E6-01-02: submission rate */}
+        <View style={styles.submissionRow}>
+          <PText style={styles.submissionLabel}>Teslim Orani:</PText>
+          <PProgressBar
+            progress={submissionRate}
+            style={styles.submissionBar}
+            accessibilityLabel={`Teslim orani: ${Math.round(submissionRate * 100)} yuzde`}
+          />
+          <PText style={styles.submissionPct}>{Math.round(submissionRate * 100)}%</PText>
+        </View>
+        <PText style={styles.completedCount}>Toplam: {totalCompleted} icerik tamamlandi</PText>
+      </SectionCard>
+
+      {/* Quick-nav row to sub-screens */}
+      <SectionCard title="Detayli Raporlar">
+        <View style={styles.navGrid}>
+          <PButton
+            mode="outlined"
+            compact
+            style={styles.navBtn}
+            disabled={isOffline}
+            onPress={() => navigation.navigate("ProgressEmotionalMap")}
+          >
+            Duygusal Harita
+          </PButton>
+          <PButton
+            mode="outlined"
+            compact
+            style={styles.navBtn}
+            disabled={isOffline}
+            onPress={() => navigation.navigate("ProgressStrengths")}
+          >
+            Guclu Alanlar
+          </PButton>
+          <PButton
+            mode="outlined"
+            compact
+            style={styles.navBtn}
+            disabled={isOffline}
+            onPress={() => navigation.navigate("ProgressWeeklySummary")}
+          >
+            Haftalik Ozet
+          </PButton>
+          <PButton
+            mode="outlined"
+            compact
+            style={styles.navBtn}
+            disabled={isOffline}
+            onPress={() => navigation.navigate("ProgressReportExport")}
+          >
+            Rapor Indir
+          </PButton>
+        </View>
+      </SectionCard>
+
+      {/* Achievements */}
+      <SectionCard title="Basarilar">
+        {achievements.length === 0 ? (
+          <PText style={styles.emptyHint}>Henuz basari yok. Icerik tamamladikca rozetler kazanirsin.</PText>
+        ) : (
+          achievements.map((item) => (
+            <PListItem
+              key={item.id}
+              title={item.type === "certificate" ? "Sertifika" : "Rozet"}
+              description={item.source_type}
+              left={(props) => <PListIcon {...props} icon="trophy-outline" />}
+              onPress={() =>
+                navigation.navigate("Content", {
+                  screen: "ContentAchievement",
+                  params: { id: item.id },
+                })
+              }
+            />
+          ))
+        )}
+      </SectionCard>
+
+      {/* Review CTA */}
+      <SectionCard title="Degerlendirme">
+        <PText style={styles.reviewHint}>
+          Son tamamladigin icerigi degerlendirerek onerilerin kalitesini artir.
+        </PText>
         <PButton
           mode="contained"
           style={styles.primaryButton}
           disabled={isOffline}
-          onPress={() => navigation.navigate("ProgressWeeklySummary")}
-        >
-          Haftayı İncele
-        </PButton>
-      </SectionCard>
-
-      <SectionCard title="İlerleme Haritası" actionLabel="Detay">
-        <PText variant="bodyMedium" style={{ color: theme.colors.onSurfaceVariant }}>
-          Bu ay içeriklerin %68'ini tamamladın. Odak alanın “Kendine Şefkat”.
-        </PText>
-        <PProgressBar progress={0.68} style={styles.progress} />
-        <View style={styles.metricRow}>
-          <PCard style={styles.metricCard}>
-            <PCard.Title title="Toplam Süre" subtitle="5s 20d" />
-          </PCard>
-          <PCard style={styles.metricCard}>
-            <PCard.Title title="Tamamlanan" subtitle="12 içerik" />
-          </PCard>
-        </View>
-      </SectionCard>
-
-      <SectionCard title="Başarılar" actionLabel="Tümü">
-        {achievements.map((item) => (
-          <PListItem
-            key={item.id}
-            title={item.type === "certificate" ? "Sertifika" : "Rozet"}
-            description={item.source_type}
-            left={(props) => <PListIcon {...props} icon="trophy-outline" />}
-            onPress={() =>
-              navigation.navigate("Content", {
-                screen: "ContentAchievement",
-                params: { id: item.id },
-              })
-            }
-          />
-        ))}
-      </SectionCard>
-
-      <SectionCard title="Geri Bildirim" actionLabel="Yaz">
-        <PText variant="bodyMedium" style={{ color: theme.colors.onSurfaceVariant }}>
-          Son atölyeni değerlendirerek önerilerimizi güçlendirebilirsin.
-        </PText>
-        <PButton
-          mode="outlined"
-          style={styles.actionButton}
-          disabled={isOffline}
           onPress={() =>
-            navigation.navigate("Content", {
-              screen: "ContentReviewPrompt",
-              params: { targetType: "journey", id: "latest" },
+            navigation.navigate("ProgressCompletionReview", {
+              contentType: "journey",
+              contentId: "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
             })
           }
         >
-          Değerlendirme Yap
+          Degerlendirme Yap
         </PButton>
       </SectionCard>
     </>
   );
 };
 
-export const ProgressDashboardScreen = ({ route }: { route?: { params?: { state?: ScreenState } } }) => {
+export const ProgressDashboardScreen = ({
+  route,
+}: {
+  route?: { params?: { state?: ScreenState } };
+}) => {
   const state = resolveScreenState(route);
 
   if (state === "loading") {
     return (
-      <ScreenLayout title="Gelişim" subtitle="Veriler hazırlanıyor">
-        <SectionCard title="Yükleniyor">
+      <ScreenLayout title="Gelisim" subtitle="Veriler hazirlaniyor">
+        <SectionCard title="Yukleniyor">
           <PActivityIndicator animating />
           <SkeletonBlock height={20} />
           <SkeletonBlock height={20} />
           <SkeletonBlock height={20} />
         </SectionCard>
-        <SectionCard title="Özet">
+        <SectionCard title="Ozet">
           <SkeletonBlock height={72} />
           <SkeletonBlock height={72} />
         </SectionCard>
@@ -119,11 +219,11 @@ export const ProgressDashboardScreen = ({ route }: { route?: { params?: { state?
 
   if (state === "empty") {
     return (
-      <ScreenLayout title="Gelişim" subtitle="İlerleme burada görünecek">
+      <ScreenLayout title="Gelisim" subtitle="Ilerleme burada gorunecek">
         <StateMessage
-          title="Henüz veri yok"
-          description="Bir içerik tamamladığında ilerleme raporun oluşur."
-          actionLabel="İçerik Bul"
+          title="Henuz veri yok"
+          description="Bir icerik tamamladiginda ilerleme raporun olusur."
+          actionLabel="Icerik Bul"
           icon="chart-line"
         />
       </ScreenLayout>
@@ -132,9 +232,9 @@ export const ProgressDashboardScreen = ({ route }: { route?: { params?: { state?
 
   if (state === "error") {
     return (
-      <ScreenLayout title="Gelişim" subtitle="Bir sorun oluştu">
+      <ScreenLayout title="Gelisim" subtitle="Bir sorun olustu">
         <StateMessage
-          title="Gelişim yüklenemedi"
+          title="Gelisim yuklenemedi"
           description="Verileri getiremedik. Tekrar deneyebilirsin."
           actionLabel="Tekrar Dene"
           icon="alert-circle-outline"
@@ -146,7 +246,7 @@ export const ProgressDashboardScreen = ({ route }: { route?: { params?: { state?
 
   if (state === "offline") {
     return (
-      <ScreenLayout title="Gelişim" subtitle="Önbellekteki içerikler">
+      <ScreenLayout title="Gelisim" subtitle="Onbellekteki icerikler">
         <OfflineNotice />
         <ProgressReadyContent isOffline />
       </ScreenLayout>
@@ -154,36 +254,76 @@ export const ProgressDashboardScreen = ({ route }: { route?: { params?: { state?
   }
 
   return (
-    <ScreenLayout title="Gelişim" subtitle="İlerlemeni takip et">
+    <ScreenLayout title="Gelisim" subtitle="Ilerlemeni takip et">
       <ProgressReadyContent />
     </ScreenLayout>
   );
 };
 
 const styles = StyleSheet.create({
-  summaryRow: {
+  hero: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: 8,
+    backgroundColor: "#2B1B5D",
+    paddingHorizontal: 20,
+    paddingVertical: 20,
+    marginBottom: 0,
   },
-  primaryButton: {
-    marginTop: 8,
-    alignSelf: "flex-start",
+  heroLeft: { flex: 1 },
+  heroGreeting: { fontSize: 13, color: "#C4B5FD" },
+  heroName: { fontSize: 20, fontWeight: "800", color: "#FFFFFF", marginTop: 2 },
+  heroRight: {},
+  streakBadge: {
+    backgroundColor: "#6B46C1",
+    borderRadius: 12,
+    paddingHorizontal: 14,
+    paddingVertical: 8,
+    alignItems: "center",
+    borderWidth: 2,
+    borderColor: "#C4B5FD",
   },
-  progress: {
-    marginTop: 12,
-  },
-  metricRow: {
+  streakNum: { fontSize: 22, fontWeight: "800", color: "#FFFFFF" },
+  streakLabel: { fontSize: 10, color: "#C4B5FD", marginTop: 2 },
+  typeRow: {
     flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 14,
+    gap: 10,
+  },
+  typeIcon: {
+    width: 40,
+    height: 40,
+    borderRadius: 10,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  typeIconText: { fontSize: 11, fontWeight: "700" },
+  typeInfo: { flex: 1 },
+  typeLabel: { fontSize: 13, fontWeight: "600", color: "#171717", marginBottom: 4 },
+  typeBar: { height: 6, borderRadius: 3 },
+  submissionRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
     marginTop: 12,
+    paddingTop: 12,
+    borderTopWidth: 1,
+    borderTopColor: "#E5E5E5",
   },
-  metricCard: {
-    flex: 1,
-    marginRight: 8,
+  submissionLabel: { fontSize: 12, color: "#525252", flexShrink: 0 },
+  submissionBar: { flex: 1, height: 6, borderRadius: 3 },
+  submissionPct: { fontSize: 12, fontWeight: "700", color: "#2B1B5D", flexShrink: 0 },
+  completedCount: { fontSize: 11, color: "#737373", marginTop: 8 },
+  navGrid: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 8,
   },
-  actionButton: {
-    marginTop: 8,
-    alignSelf: "flex-start",
-  },
+  navBtn: { flexShrink: 0 },
+  primaryButton: { marginTop: 8, alignSelf: "flex-start" },
+  reviewHint: { fontSize: 13, color: "#525252", marginBottom: 8 },
+  emptyHint: { fontSize: 13, color: "#737373" },
 });
+
+

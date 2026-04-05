@@ -1,8 +1,8 @@
 {
   "id": "progress.fr_e6_02",
   "title": "Duygusal harita",
-  "route": "/epic-6/fr-e6-02",
-  "purpose": "Implements FR-E6-02: Duygusal harita.",
+  "route": "/progress/emotional-map",
+  "purpose": "Implements FR-E6-02: Duygusal harita — 14/30-day period selector, legend, disclaimer, color-blind support.",
   "entryPoints": [
     "progress.dashboard"
   ],
@@ -12,46 +12,35 @@
       "type": "uuid",
       "required": true,
       "source": "session"
-    },
-    {
-      "name": "subscriptionStatus",
-      "type": "SubscriptionStatus",
-      "required": true,
-      "source": "entitlement_cache"
-    },
-    {
-      "name": "locale",
-      "type": "LanguageCode",
-      "required": true,
-      "source": "profile"
     }
   ],
   "dataDependencies": [
-    "ContentProgress",
-    "CommentSubmission",
-    "WorkshopFollowUpPlan"
+    "EmotionLog",
+    "ContentProgress"
   ],
   "uiStates": {
     "loading": {
-      "description": "Skeleton placeholders are shown while loading FR-E6-02 data."
+      "description": "Skeleton for period selector and mood grid."
     },
     "ready": {
-      "description": "FR-E6-02 flows are fully interactive with primary CTA available when prerequisites are met."
+      "description": "Toggle row lets user switch between 14-day and 30-day views (AC-FR-E6-02-01). Legend card shows Sakin/Netlik/Gergin labels with color swatches AND pattern/icon fallbacks for color blindness (AC-FR-E6-02-04). Mood grid uses both color and icon to represent emotional state. Disclaimer banner reading 'Bu bir teshis degildir' always visible below the map (AC-FR-E6-02-03). Mood summary cards with percentages."
     },
     "empty": {
-      "description": "Empty state explains why no data is available and points to next best action."
+      "description": "No data yet prompt with CTA to start daily practice."
     },
     "error": {
-      "description": "Error state is recoverable with user-safe messaging and a retry action."
+      "description": "Error card with retry."
     },
     "offline": {
-      "description": "Offline state shows last synchronized data and queues write actions for later sync."
+      "description": "Last-synced emotion data shown; update disabled."
     }
   },
   "analytics": {
-    "screenView": "progress_fr_e6_02_viewed",
+    "screenView": "progress_emotional_map_viewed",
     "events": [
-      "progress_fr_e6_02_viewed"
+      "progress_emotional_map_viewed",
+      "progress_emotional_period_changed",
+      "progress_emotional_map_refreshed"
     ]
   },
   "acceptanceCriteriaRefs": [

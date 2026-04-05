@@ -1,8 +1,8 @@
 {
   "id": "progress.fr_e6_04",
-  "title": "Haftalık özet",
-  "route": "/epic-6/fr-e6-04",
-  "purpose": "Implements FR-E6-04: Haftalık özet.",
+  "title": "Haftalik ozet",
+  "route": "/progress/weekly-summary",
+  "purpose": "Implements FR-E6-04: Haftalik ozet — positive trend, challenge area, suggestion, completed content list.",
   "entryPoints": [
     "progress.dashboard"
   ],
@@ -12,46 +12,35 @@
       "type": "uuid",
       "required": true,
       "source": "session"
-    },
-    {
-      "name": "subscriptionStatus",
-      "type": "SubscriptionStatus",
-      "required": true,
-      "source": "entitlement_cache"
-    },
-    {
-      "name": "locale",
-      "type": "LanguageCode",
-      "required": true,
-      "source": "profile"
     }
   ],
   "dataDependencies": [
     "ContentProgress",
-    "CommentSubmission",
-    "WorkshopFollowUpPlan"
+    "EmotionLog"
   ],
   "uiStates": {
     "loading": {
-      "description": "Skeleton placeholders are shown while loading FR-E6-04 data."
+      "description": "Skeleton for stats bar and completed content list."
     },
     "ready": {
-      "description": "FR-E6-04 flows are fully interactive with primary CTA available when prerequisites are met."
+      "description": "Weekly bar chart shows daily session counts. Trend card highlights positive trend area, challenge area, and one actionable suggestion (AC-FR-E6-04-01). Completed content list shows each finished item with type badge and completion date (AC-FR-E6-04-02)."
     },
     "empty": {
-      "description": "Empty state explains why no data is available and points to next best action."
+      "description": "Empty state shown when no content completed this week — with explanation message and CTA (AC-FR-E6-04-03)."
     },
     "error": {
-      "description": "Error state is recoverable with user-safe messaging and a retry action."
+      "description": "Error card with retry."
     },
     "offline": {
-      "description": "Offline state shows last synchronized data and queues write actions for later sync."
+      "description": "Last cached weekly data shown."
     }
   },
   "analytics": {
-    "screenView": "progress_fr_e6_04_viewed",
+    "screenView": "progress_weekly_summary_viewed",
     "events": [
-      "progress_fr_e6_04_viewed"
+      "progress_weekly_summary_viewed",
+      "progress_weekly_completed_item_tapped",
+      "progress_weekly_report_tapped"
     ]
   },
   "acceptanceCriteriaRefs": [

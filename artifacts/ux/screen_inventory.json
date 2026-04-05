@@ -793,8 +793,8 @@
     },
     {
       "id": "progress.fr_e6_01",
-      "route": "/epic-6/fr-e6-01",
-      "title": "Gelişim paneli",
+      "route": "/progress/dashboard",
+      "title": "Gelisim paneli",
       "type": "stack",
       "states": [
         "loading",
@@ -811,7 +811,7 @@
     },
     {
       "id": "progress.fr_e6_02",
-      "route": "/epic-6/fr-e6-02",
+      "route": "/progress/emotional-map",
       "title": "Duygusal harita",
       "type": "stack",
       "states": [
@@ -829,8 +829,8 @@
     },
     {
       "id": "progress.fr_e6_03",
-      "route": "/epic-6/fr-e6-03",
-      "title": "Güçlü ve gelişim alanları",
+      "route": "/progress/strengths",
+      "title": "Guclu ve gelisim alanlari",
       "type": "stack",
       "states": [
         "loading",
@@ -847,8 +847,8 @@
     },
     {
       "id": "progress.fr_e6_04",
-      "route": "/epic-6/fr-e6-04",
-      "title": "Haftalık özet",
+      "route": "/progress/weekly-summary",
+      "title": "Haftalik ozet",
       "type": "stack",
       "states": [
         "loading",
@@ -865,8 +865,8 @@
     },
     {
       "id": "progress.fr_e6_05",
-      "route": "/epic-6/fr-e6-05",
-      "title": "İçerik bitiş değerlendirmesi",
+      "route": "/progress/completion-review",
+      "title": "Icerik bitis degerlendirmesi",
       "type": "stack",
       "states": [
         "loading",
@@ -883,8 +883,8 @@
     },
     {
       "id": "progress.fr_e6_06",
-      "route": "/epic-6/fr-e6-06",
-      "title": "Gelişim raporu (indir/paylaş)",
+      "route": "/progress/report-export",
+      "title": "Gelisim raporu (indir/paylas)",
       "type": "stack",
       "states": [
         "loading",

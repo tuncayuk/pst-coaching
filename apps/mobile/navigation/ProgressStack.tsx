@@ -6,6 +6,7 @@ import { ProgressEmotionalMapScreen } from "../screens/progress/ProgressEmotiona
 import { ProgressWeeklySummaryScreen } from "../screens/progress/ProgressWeeklySummaryScreen";
 import { ProgressStrengthsScreen } from "../screens/progress/ProgressStrengthsScreen";
 import { ProgressReportExportScreen } from "../screens/progress/ProgressReportExportScreen";
+import { ProgressCompletionReviewScreen } from "../screens/progress/ProgressCompletionReviewScreen";
 import { ContentPaywallScreen } from "../screens/content/ContentPaywallScreen";
 import { withSubscriptionGate } from "./guards";
 
@@ -17,6 +18,7 @@ export type ProgressStackParamList = {
   ProgressWeeklySummary: ScreenStateParam;
   ProgressStrengths: ScreenStateParam;
   ProgressReportExport: ScreenStateParam;
+  ProgressCompletionReview: { contentType?: string; contentId?: string; state?: ScreenState } | undefined;
   ContentPaywall: ScreenStateParam;
 };
 
@@ -36,6 +38,11 @@ export const progressStackScreens: ProgressStackScreen[] = [
   {
     name: "ProgressReportExport",
     component: withSubscriptionGate(ProgressReportExportScreen),
+    options: modalOptions,
+  },
+  {
+    name: "ProgressCompletionReview",
+    component: withSubscriptionGate(ProgressCompletionReviewScreen),
     options: modalOptions,
   },
   { name: "ContentPaywall", component: ContentPaywallScreen, options: modalOptions },
