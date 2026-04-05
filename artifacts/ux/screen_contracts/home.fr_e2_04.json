@@ -1,8 +1,8 @@
 {
   "id": "home.fr_e2_04",
-  "title": "\"Vicdandan Karaktere\" bilgilendirmesi",
-  "route": "/epic-2/fr-e2-04",
-  "purpose": "Implements FR-E2-04: \"Vicdandan Karaktere\" bilgilendirmesi.",
+  "title": "Vicdandan Karaktere bilgilendirmesi",
+  "route": "/home/vicdandan-karaktere",
+  "purpose": "HomeVicdandanKaraktereDetailScreen. Summary card on home dashboard (AC-FR-E2-04-01). Daha Fazla Goster navigates to this detail screen (AC-FR-E2-04-02). Offline: served from cache (AC-FR-E2-04-03).",
   "entryPoints": [
     "home.dashboard"
   ],
@@ -34,25 +34,28 @@
   ],
   "uiStates": {
     "loading": {
-      "description": "Skeleton placeholders are shown while loading FR-E2-04 data."
+      "description": "Skeleton: title placeholder, 2x paragraph blocks, progress card skeleton, outline steps skeleton."
     },
     "ready": {
-      "description": "FR-E2-04 flows are fully interactive with primary CTA available when prerequisites are met."
+      "description": "Full program detail: hero card with progress (X/Y bolum), Devam Et CTA, program outline steps with durations, benefits list, Kaydet button. Back chevron navigates to home.dashboard. AC-FR-E2-04-01/02 satisfied."
     },
     "empty": {
-      "description": "Empty state explains why no data is available and points to next best action."
+      "description": "Program not yet started: Show 'Baslamaya hazir misin?' with Start CTA. Outline steps still visible."
     },
     "error": {
-      "description": "Error state is recoverable with user-safe messaging and a retry action."
+      "description": "'Program yuklenemedi' with Tekrar Dene. Back button always available."
     },
     "offline": {
-      "description": "Offline state shows last synchronized data and queues write actions for later sync."
+      "description": "Full cached program content shown. Devam Et enabled for downloaded content. Kaydet action queued. AC-FR-E2-04-03 satisfied."
     }
   },
   "analytics": {
-    "screenView": "home_fr_e2_04_viewed",
+    "screenView": "home_vicdandan_detail_viewed",
     "events": [
-      "home_fr_e2_04_viewed"
+      "home_vicdandan_detail_viewed",
+      "home_vicdandan_continue_tapped",
+      "home_vicdandan_save_tapped",
+      "home_vicdandan_outline_step_tapped"
     ]
   },
   "acceptanceCriteriaRefs": [

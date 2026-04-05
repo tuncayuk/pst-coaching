@@ -46,7 +46,8 @@ const LanguageSelectContent = ({ isOffline }: { isOffline?: boolean }) => {
           mode="contained"
           style={styles.primaryButton}
           disabled={isOffline}
-          onPress={() => navigation.navigate("AuthRegister")}
+          onPress={() => navigation.navigate("AuthLogin")}
+          accessibilityLabel="Devam et"
         >
           Devam Et
         </PButton>

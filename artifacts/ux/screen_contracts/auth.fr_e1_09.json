@@ -1,24 +1,12 @@
 {
   "id": "auth.fr_e1_09",
-  "title": "Misafir giriş (kayıtsız)",
+  "title": "Misafir giris (kayitsiz)",
   "route": "/epic-1/fr-e1-09",
-  "purpose": "Implements FR-E1-09: Misafir giriş (kayıtsız).",
+  "purpose": "Implements FR-E1-09: Guest session without profile creation. Discover + detail accessible; content start/read redirects to registration. Guest browsing data transfers to account post-registration.",
   "entryPoints": [
-    "onboarding.welcome"
+    "auth.fr_e1_03"
   ],
   "inputs": [
-    {
-      "name": "userId",
-      "type": "uuid",
-      "required": false,
-      "source": "session"
-    },
-    {
-      "name": "subscriptionStatus",
-      "type": "SubscriptionStatus",
-      "required": true,
-      "source": "entitlement_cache"
-    },
     {
       "name": "locale",
       "type": "LanguageCode",
@@ -26,32 +14,30 @@
       "source": "profile"
     }
   ],
-  "dataDependencies": [
-    "User",
-    "UserSession",
-    "DemographicProfile"
-  ],
+  "dataDependencies": [],
   "uiStates": {
     "loading": {
-      "description": "Skeleton placeholders are shown while loading FR-E1-09 data."
+      "description": "Skeleton capability/limitation cards while checking guest eligibility."
     },
     "ready": {
-      "description": "FR-E1-09 flows are fully interactive with primary CTA available when prerequisites are met."
+      "description": "Capabilities card (explore, browse, view catalog), limitations card (no start/read/comment/save), primary Continue as Guest CTA, and secondary Register button."
     },
     "empty": {
-      "description": "Empty state explains why no data is available and points to next best action."
+      "description": "Message explaining guest mode is unavailable, with link to register instead."
     },
     "error": {
-      "description": "Error state is recoverable with user-safe messaging and a retry action."
+      "description": "Banner explaining guest initialisation failed with retry action."
     },
     "offline": {
-      "description": "Offline state shows last synchronized data and queues write actions for later sync."
+      "description": "Guest mode works offline for cached content browsing. Offline banner shown with reduced feature set."
     }
   },
   "analytics": {
     "screenView": "auth_fr_e1_09_viewed",
     "events": [
-      "auth_fr_e1_09_viewed"
+      "auth_fr_e1_09_viewed",
+      "auth_guest_session_started",
+      "auth_guest_register_tapped"
     ]
   },
   "acceptanceCriteriaRefs": [

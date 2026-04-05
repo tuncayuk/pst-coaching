@@ -42,8 +42,9 @@ const FaceIdSetupContent = ({ isOffline }: { isOffline?: boolean }) => {
             navigation.navigate("AuthDemographics");
           }}
           style={styles.button}
+          accessibilityLabel="FaceID etkinlestir"
         >
-          FaceID'yi Etkinleştir
+          FaceID'yi Etkinlestir
         </PButton>
         <TouchableOpacity
           onPress={() => {
@@ -51,6 +52,9 @@ const FaceIdSetupContent = ({ isOffline }: { isOffline?: boolean }) => {
           }}
           style={styles.skipButton}
           disabled={isOffline}
+          accessibilityRole="button"
+          accessibilityLabel="Simdi degil, atla"
+          hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
         >
           <PText style={styles.skipText}>Şimdi Değil</PText>
         </TouchableOpacity>
@@ -150,8 +154,8 @@ const styles = StyleSheet.create({
     fontSize: 64,
   },
   title: {
-    fontSize: 28,
-    fontWeight: "800",
+    fontSize: 24,
+    fontWeight: "700",
     color: "#2B1B5D",
     marginBottom: 12,
     textAlign: "center",

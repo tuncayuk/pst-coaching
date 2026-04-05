@@ -26,19 +26,21 @@ const AuthReauthContent = ({ isOffline }: { isOffline?: boolean }) => {
           keyboardType="email-address"
           style={styles.input}
           editable={!isOffline}
+          accessibilityLabel="E-posta veya telefon numarasi"
         />
         <PTextInput
-          label="Şifre"
+          label="Sifre"
           mode="outlined"
           secureTextEntry
           style={styles.input}
           editable={!isOffline}
+          accessibilityLabel="Sifre"
         />
-        <PButton mode="contained" disabled={isOffline} onPress={() => navigation.getParent()?.navigate("MainTabs")}>
-          Doğrula ve Devam Et
+        <PButton mode="contained" disabled={isOffline} onPress={() => navigation.getParent()?.navigate("MainTabs")} accessibilityLabel="Dogrula ve devam et">
+          Dogrula ve Devam Et
         </PButton>
-        <PButton mode="text" disabled={isOffline} onPress={() => navigation.navigate("AuthPasswordReset")}>
-          Şifremi Unuttum
+        <PButton mode="text" disabled={isOffline} onPress={() => navigation.navigate("AuthForgotPassword")} accessibilityLabel="Sifremi unuttum">
+          Sifremi Unuttum
         </PButton>
       </SectionCard>
     </>

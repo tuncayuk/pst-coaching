@@ -50,13 +50,13 @@ export const OnboardingCarouselScreen = () => {
         animated: true,
       });
     } else {
-      // Final screen - navigate to Login
-      navigation.navigate("AuthLogin");
+      // Final screen - navigate to Language Select first (FR-E1-01)
+      navigation.navigate("OnboardingLanguageSelect");
     }
   };
 
   const handleSkip = () => {
-    navigation.navigate("AuthLogin");
+    navigation.navigate("OnboardingLanguageSelect");
   };
 
   return (

@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View, ScrollView } from "react-native";
+import { StyleSheet, View, ScrollView, TouchableOpacity, FlatList } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { OfflineNotice } from "../components/OfflineNotice";
@@ -10,13 +10,31 @@ import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
 import { PActivityIndicator, PButton, PText, PTextInput } from "../../components";
 
+const COUNTRIES = [
+  "Turkiye", "Almanya", "Amerika Birlesik Devletleri", "Avustralya",
+  "Avusturya", "Azerbaycan", "Belcika", "Birlesik Krallik", "Fransa",
+  "Hollanda", "Irak", "Iran", "Ispanya", "Isvec", "Isvicre", "Italya",
+  "Japonya", "Kanada", "Kazakistan", "Kirgizistan", "Kuzey Kibris",
+  "Misir", "Ozbekistan", "Polonya", "Romanya", "Rusya", "Suudi Arabistan",
+  "Turkmenistan", "Ukrayna", "Yunanistan",
+];
+
 
 const DemographicsContent = ({ isOffline }: { isOffline?: boolean }) => {
   const [age, setAge] = React.useState("");
   const [gender, setGender] = React.useState<string | null>(null);
+  const [country, setCountry] = React.useState("");
+  const [countrySearch, setCountrySearch] = React.useState("");
+  const [showCountryDropdown, setShowCountryDropdown] = React.useState(false);
   const navigation = useNavigation<any>();
 
-  const isFormValid = age.length > 0 && parseInt(age) >= 13 && parseInt(age) <= 120;
+  const filteredCountries = COUNTRIES.filter((c) =>
+    c.toLowerCase().includes(countrySearch.toLowerCase())
+  );
+
+  const ageNum = parseInt(age);
+  const isFormValid = age.length > 0 && ageNum >= 13 && ageNum <= 120 && country.length > 0;
+  const ageError = age.length > 0 && (isNaN(ageNum) || ageNum < 13 || ageNum > 120);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -35,7 +53,7 @@ const DemographicsContent = ({ isOffline }: { isOffline?: boolean }) => {
           </PText>
         </View>
         <View style={styles.inputGroup}>
-          <PText style={styles.label}>Yaş *</PText>
+          <PText style={styles.label}>Yas *</PText>
           <PTextInput
             mode="outlined"
             keyboardType="number-pad"
@@ -43,27 +61,36 @@ const DemographicsContent = ({ isOffline }: { isOffline?: boolean }) => {
             onChangeText={setAge}
             style={styles.input}
             contentStyle={styles.inputContent}
-            outlineStyle={styles.inputOutline}
+            outlineStyle={[styles.inputOutline, ageError && styles.inputOutlineError]}
             editable={!isOffline}
-            placeholder="Yaşınızı girin"
+            placeholder="Yasinizi girin"
+            accessibilityLabel="Yas girisi, zorunlu alan"
           />
-          <PText style={styles.helperText}>13-120 yaş arası</PText>
+          {ageError ? (
+            <PText style={styles.errorText}>Yas 13-120 arasinda olmalidir</PText>
+          ) : (
+            <PText style={styles.helperText}>13-120 yas arasi</PText>
+          )}
         </View>
         <PText style={styles.label}>Cinsiyet</PText>
         <View style={styles.genderRow}>
           <PButton
-            mode={gender === "Kadın" ? "contained" : "outlined"}
-            onPress={() => setGender("Kadın")}
+            mode={gender === "Kadin" ? "contained" : "outlined"}
+            onPress={() => setGender("Kadin")}
             style={styles.genderButton}
             disabled={isOffline}
+            accessibilityLabel="Kadin"
+            accessibilityState={{ selected: gender === "Kadin" }}
           >
-            Kadın
+            Kadin
           </PButton>
           <PButton
             mode={gender === "Erkek" ? "contained" : "outlined"}
             onPress={() => setGender("Erkek")}
             style={styles.genderButton}
             disabled={isOffline}
+            accessibilityLabel="Erkek"
+            accessibilityState={{ selected: gender === "Erkek" }}
           >
             Erkek
           </PButton>
@@ -73,12 +100,61 @@ const DemographicsContent = ({ isOffline }: { isOffline?: boolean }) => {
           onPress={() => setGender("Belirtmek istemiyorum")}
           style={styles.genderButtonFull}
           disabled={isOffline}
+          accessibilityLabel="Belirtmek istemiyorum"
         >
           Belirtmek istemiyorum
         </PButton>
-        <PText style={styles.label}>Ülke *</PText>
-        <View style={styles.countryContainer}>
-          <PText style={styles.countryText}>Türkiye</PText>
+        <View style={styles.inputGroup}>
+          <PText style={styles.label}>Ulke *</PText>
+          <TouchableOpacity
+            onPress={() => setShowCountryDropdown(!showCountryDropdown)}
+            disabled={isOffline}
+            accessibilityRole="button"
+            accessibilityLabel="Ulke secimi, zorunlu alan"
+          >
+            <View style={[styles.countrySelector, !country && styles.countrySelectorEmpty]}>
+              <PText style={[styles.countryText, !country && styles.countryPlaceholder]}>
+                {country || "Ulke secin"}
+              </PText>
+              <PText style={styles.countryChevron}>{showCountryDropdown ? "\u25B4" : "\u25BE"}</PText>
+            </View>
+          </TouchableOpacity>
+          {showCountryDropdown && (
+            <View style={styles.dropdownContainer}>
+              <PTextInput
+                mode="outlined"
+                value={countrySearch}
+                onChangeText={setCountrySearch}
+                placeholder="Ulke ara..."
+                style={styles.searchInput}
+                outlineStyle={styles.searchOutline}
+                editable={!isOffline}
+                accessibilityLabel="Ulke ara"
+              />
+              <FlatList
+                data={filteredCountries}
+                keyExtractor={(item) => item}
+                style={styles.dropdownList}
+                keyboardShouldPersistTaps="handled"
+                renderItem={({ item }) => (
+                  <TouchableOpacity
+                    style={[styles.dropdownItem, item === country && styles.dropdownItemSelected]}
+                    onPress={() => {
+                      setCountry(item);
+                      setCountrySearch("");
+                      setShowCountryDropdown(false);
+                    }}
+                    accessibilityRole="button"
+                    accessibilityState={{ selected: item === country }}
+                  >
+                    <PText style={[styles.dropdownItemText, item === country && styles.dropdownItemTextSelected]}>
+                      {item}
+                    </PText>
+                  </TouchableOpacity>
+                )}
+              />
+            </View>
+          )}
         </View>
         <PButton
           mode="contained"
@@ -171,8 +247,8 @@ const styles = StyleSheet.create({
     fontSize: 56,
   },
   title: {
-    fontSize: 28,
-    fontWeight: "800",
+    fontSize: 24,
+    fontWeight: "700",
     color: "#2B1B5D",
     marginBottom: 8,
     textAlign: "center",
@@ -216,6 +292,14 @@ const styles = StyleSheet.create({
     marginTop: 6,
     fontSize: 12,
   },
+  errorText: {
+    color: "#DC2626",
+    marginTop: 6,
+    fontSize: 12,
+  },
+  inputOutlineError: {
+    borderColor: "#EF4444",
+  },
   label: {
     fontWeight: "600",
     color: "#171717",
@@ -233,17 +317,67 @@ const styles = StyleSheet.create({
   genderButtonFull: {
     marginBottom: 16,
   },
-  countryContainer: {
+  countrySelector: {
     borderWidth: 2,
     borderColor: "#D4D4D4",
     borderRadius: 12,
     padding: 16,
-    marginBottom: 24,
     backgroundColor: "#FFFFFF",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  countrySelectorEmpty: {
+    borderColor: "#D4D4D4",
   },
   countryText: {
     fontSize: 16,
     color: "#171717",
+  },
+  countryPlaceholder: {
+    color: "#9CA3AF",
+  },
+  countryChevron: {
+    fontSize: 14,
+    color: "#525252",
+  },
+  dropdownContainer: {
+    marginTop: 4,
+    borderWidth: 1,
+    borderColor: "#D4D4D4",
+    borderRadius: 12,
+    backgroundColor: "#FFFFFF",
+    maxHeight: 240,
+    overflow: "hidden",
+  },
+  searchInput: {
+    backgroundColor: "#FFFFFF",
+    margin: 8,
+  },
+  searchOutline: {
+    borderWidth: 1,
+    borderRadius: 8,
+    borderColor: "#D4D4D4",
+  },
+  dropdownList: {
+    maxHeight: 180,
+  },
+  dropdownItem: {
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: "#F5F5F5",
+  },
+  dropdownItemSelected: {
+    backgroundColor: "#E0F7FA",
+  },
+  dropdownItemText: {
+    fontSize: 15,
+    color: "#171717",
+  },
+  dropdownItemTextSelected: {
+    color: "#00B4D8",
+    fontWeight: "600",
   },
   button: {
     marginBottom: 12,

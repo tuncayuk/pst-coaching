@@ -1,57 +1,54 @@
 {
   "id": "auth.fr_e1_07",
-  "title": "Biyometrik giriş (FaceID/TouchID)",
+  "title": "Biyometrik giris (FaceID/TouchID)",
   "route": "/epic-1/fr-e1-07",
-  "purpose": "Implements FR-E1-07: Biyometrik giriş (FaceID/TouchID).",
+  "purpose": "Implements FR-E1-07: Opt-in biometric login prompt on first login for capable devices; password fallback on failure; enable/disable from Profile > Settings.",
   "entryPoints": [
-    "onboarding.welcome"
+    "auth.fr_e1_03"
   ],
   "inputs": [
     {
       "name": "userId",
       "type": "uuid",
-      "required": false,
+      "required": true,
       "source": "session"
     },
     {
-      "name": "subscriptionStatus",
-      "type": "SubscriptionStatus",
+      "name": "biometricCapability",
+      "type": "BiometricType",
       "required": true,
-      "source": "entitlement_cache"
-    },
-    {
-      "name": "locale",
-      "type": "LanguageCode",
-      "required": true,
-      "source": "profile"
+      "source": "device",
+      "note": "face_id | touch_id | none -- determines prompt visibility"
     }
   ],
   "dataDependencies": [
     "User",
-    "UserSession",
-    "DemographicProfile"
+    "UserSession"
   ],
   "uiStates": {
     "loading": {
-      "description": "Skeleton placeholders are shown while loading FR-E1-07 data."
+      "description": "Checking device biometric capability with a brief spinner."
     },
     "ready": {
-      "description": "FR-E1-07 flows are fully interactive with primary CTA available when prerequisites are met."
+      "description": "Biometric icon circle, benefits list card, Enable CTA button, and Skip link. Biometric type label adapts to device capability."
     },
     "empty": {
-      "description": "Empty state explains why no data is available and points to next best action."
+      "description": "Message explaining biometrics are not available on this device, with a Skip button to continue."
     },
     "error": {
-      "description": "Error state is recoverable with user-safe messaging and a retry action."
+      "description": "Banner explaining biometric setup failed, with option to retry or skip."
     },
     "offline": {
-      "description": "Offline state shows last synchronized data and queues write actions for later sync."
+      "description": "Biometric setup is a local operation and works offline. No banner needed."
     }
   },
   "analytics": {
     "screenView": "auth_fr_e1_07_viewed",
     "events": [
-      "auth_fr_e1_07_viewed"
+      "auth_fr_e1_07_viewed",
+      "auth_biometric_enabled",
+      "auth_biometric_skipped",
+      "auth_biometric_failed"
     ]
   },
   "acceptanceCriteriaRefs": [

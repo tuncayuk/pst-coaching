@@ -1,5 +1,5 @@
-import React from "react";
-import { ScrollView, StyleSheet, View } from "react-native";
+import React, { useEffect, useRef, useState } from "react";
+import { ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "./components/OfflineNotice";
@@ -10,6 +10,7 @@ import {
   PActivityIndicator,
   PButton,
   PCard,
+  PChip,
   PIconButton,
   PProgressBar,
   PText,
@@ -23,40 +24,68 @@ import {
   getPrimaryUser,
 } from "../data/mockSelectors";
 
+/** Returns seconds remaining until 23:59:59 of today (local time). */
+function secondsUntilMidnight(): number {
+  const now = new Date();
+  const end = new Date(now);
+  end.setHours(23, 59, 59, 0);
+  return Math.max(0, Math.floor((end.getTime() - now.getTime()) / 1000));
+}
+
+/** Formats seconds as "HH:mm" countdown string. */
+function formatCountdown(secs: number): string {
+  const h = Math.floor(secs / 3600);
+  const m = Math.floor((secs % 3600) / 60);
+  return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`;
+}
+
+const CONTENT_AREAS = [
+  { label: "Yolculuklar", icon: "map-marker-path", route: "DiscoverJourneys", count: "12 program" },
+  { label: "Atolyeler", icon: "school-outline", route: "DiscoverWorkshops", count: "8 atolye" },
+  { label: "e-Kitaplar", icon: "book-open-variant", route: "DiscoverEbooks", count: "24 kitap" },
+  { label: "Kocluk Okulu", icon: "account-school", route: "DiscoverCatalog", count: "5 kurs" },
+] as const;
+
+const SUBSCRIPTION_BADGE_CONFIG = {
+  active: { label: "Aktif", bg: "#D1FAE5", text: "#065F46" },
+  trial: { label: "Deneme", bg: "#FEF3C7", text: "#92400E" },
+  cancelled: { label: "Iptal", bg: "#FEE2E2", text: "#991B1B" },
+} as const;
+
 const HomeReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
   const navigation = useNavigation<any>();
   const user = getPrimaryUser();
-  const displayName = user?.email ? user.email.split("@")[0] : "Ahmet Yılmaz";
+  const displayName = user?.email ? user.email.split("@")[0] : "Ahmet";
   const journeyDays = getJourneyDays();
   const progressItems = getContentProgressForUser(user?.id);
   const nextStep = progressItems.find((item) => item.status === "in_progress") ?? progressItems[0];
   const nextJourneyDay = journeyDays.find((day) => day.id === nextStep?.content_id);
   const nextJourney = getJourneyById(nextJourneyDay?.journey_id);
 
-  const stats = [
-    { label: "Gün Streak", value: 12, emoji: "🔥", tone: "primary" },
-    { label: "Tamamlanan", value: 28, emoji: "✅", tone: "success" },
-    { label: "Rozetler", value: 8, emoji: "🏆", tone: "warning" },
-  ];
+  // AC-FR-E2-01-01: countdown timer to 23:59
+  const [countdown, setCountdown] = useState(secondsUntilMidnight);
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  useEffect(() => {
+    timerRef.current = setInterval(() => {
+      setCountdown(secondsUntilMidnight());
+    }, 60_000);
+    return () => {
+      if (timerRef.current) clearInterval(timerRef.current);
+    };
+  }, []);
 
-  const recommendations = [
-    {
-      title: "Liderlik",
-      subtitle: "8 modül",
-      emoji: "💼",
-      target: "DiscoverModules",
-    },
-    {
-      title: "Mindfulness",
-      subtitle: "12 aşama",
-      emoji: "🧘",
-      target: "DiscoverJourneys",
-    },
+  const subscriptionStatus: keyof typeof SUBSCRIPTION_BADGE_CONFIG = "active";
+  const badge = SUBSCRIPTION_BADGE_CONFIG[subscriptionStatus];
+
+  const stats = [
+    { label: "Gun Serisi", value: 12, icon: "fire", tone: "primary" as const },
+    { label: "Tamamlanan", value: 28, icon: "check-circle", tone: "success" as const },
+    { label: "Rozetler", value: 8, icon: "trophy", tone: "warning" as const },
   ];
 
   const activities = [
-    { title: "Modül 3 tamamlandı", time: "2 saat önce", emoji: "✅" },
-    { title: "Yeni rozet kazandınız!", time: "1 gün önce", emoji: "🏆" },
+    { title: "Modul 3 tamamlandi", time: "2 saat once", icon: "check-circle-outline" },
+    { title: "Yeni rozet kazandiniz!", time: "1 gun once", icon: "trophy-outline" },
   ];
 
   const handleContinue = () => {
@@ -82,18 +111,51 @@ const HomeReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
 
   return (
     <View>
+      {/* Header row: greeting + subscription badge + notification bell */}
       <View style={styles.headerRow}>
-        <View>
+        <View style={styles.headerLeft}>
           <PText style={styles.greeting}>Merhaba,</PText>
-          <PText style={styles.nameText}>{displayName}</PText>
+          <View style={styles.nameRow}>
+            <PText style={styles.nameText}>{displayName}</PText>
+            {/* AC-FR-E2-02-01: subscription status badge */}
+            <View
+              style={[styles.subscriptionBadge, { backgroundColor: badge.bg }]}
+              accessibilityLabel={`Abonelik durumu: ${badge.label}`}
+              accessibilityRole="text"
+            >
+              <PText style={[styles.subscriptionBadgeText, { color: badge.text }]}>
+                {badge.label}
+              </PText>
+            </View>
+          </View>
         </View>
         <View style={styles.notificationWrapper}>
-          <PIconButton icon="bell" size={20} style={styles.notificationButton} />
-          <View style={styles.notificationDot} />
+          <PIconButton
+            icon="bell-outline"
+            size={22}
+            style={styles.notificationButton}
+            accessibilityLabel="Bildirimler"
+            accessibilityRole="button"
+            accessibilityHint="Bildirimlerinizi goruntuler"
+            onPress={() => navigation.navigate("HomeSubscription")}
+          />
+          <View
+            style={styles.notificationDot}
+            accessibilityLabel="Okunmamis bildirim var"
+            accessibilityRole="image"
+          />
         </View>
       </View>
 
-      <View style={styles.searchWrapper}>
+      {/* Search bar - AC-FR-E2-05-01: tap opens search screen */}
+      <TouchableOpacity
+        onPress={() => !isOffline && navigation.navigate("HomeSearch")}
+        activeOpacity={0.7}
+        accessibilityLabel="Icerik ara"
+        accessibilityRole="search"
+        accessibilityHint="Arama ekranini acar"
+        style={styles.searchWrapper}
+      >
         <PTextInput
           mode="outlined"
           placeholder="Ne aramak istersiniz?"
@@ -101,9 +163,12 @@ const HomeReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
           style={styles.searchInput}
           outlineStyle={styles.searchOutline}
           contentStyle={styles.searchContent}
+          editable={false}
+          pointerEvents="none"
         />
-      </View>
+      </TouchableOpacity>
 
+      {/* Stats row */}
       <View style={styles.statsRow}>
         {stats.map((stat) => (
           <View
@@ -114,71 +179,143 @@ const HomeReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
               stat.tone === "success" && styles.statSuccess,
               stat.tone === "warning" && styles.statWarning,
             ]}
+            accessibilityLabel={`${stat.label}: ${stat.value}`}
+            accessibilityRole="text"
           >
-            <PText style={styles.statEmoji}>{stat.emoji}</PText>
-            <PText style={[styles.statValue, stat.tone === "warning" && styles.statValueWarning]}>
-              {stat.value}
-            </PText>
+            <PText style={styles.statValue}>{stat.value}</PText>
             <PText style={styles.statLabel}>{stat.label}</PText>
           </View>
         ))}
       </View>
 
+      {/* AC-FR-E2-01-01/02: Today's CTA with countdown */}
       <View style={styles.section}>
-        <PText style={styles.sectionTitle}>Öğrenmeye Devam Et</PText>
-        <PCard style={styles.continueCard}>
-          <View style={styles.continueRow}>
-            <View style={styles.continueIcon}>
-              <PText style={styles.continueEmoji}>🎯</PText>
-            </View>
-            <View style={styles.continueInfo}>
-              <PText style={styles.continueTitle}>{nextJourney?.title ?? "Hedef Belirleme"}</PText>
-              <PText style={styles.continueSubtitle}>Coaching Programı • Modül 3/8</PText>
-            </View>
+        <View style={styles.sectionHeaderRow}>
+          <PText style={styles.sectionTitle}>Bugun Devam Et</PText>
+          <View style={styles.countdownBadge} accessibilityLabel={`Kalan sure: ${formatCountdown(countdown)}`}>
+            <PText style={styles.countdownText}>{formatCountdown(countdown)}</PText>
           </View>
+        </View>
+        {nextStep ? (
+          <PCard style={styles.continueCard}>
+            <View style={styles.continueRow}>
+              <View style={styles.continueIcon} accessibilityElementsHidden>
+                <PText style={styles.continueIconText}>H</PText>
+              </View>
+              <View style={styles.continueInfo}>
+                <PText style={styles.continueTitle}>{nextJourney?.title ?? "Hedef Belirleme"}</PText>
+                <PText style={styles.continueSubtitle}>Coaching Programi -- Modul 3/8</PText>
+              </View>
+            </View>
+            <View style={styles.progressRow}>
+              <View style={styles.progressHeader}>
+                <PText style={styles.progressLabel}>Ilerleme</PText>
+                <PText style={styles.progressValue}>37%</PText>
+              </View>
+              <PProgressBar progress={0.37} style={styles.progressBar} />
+            </View>
+            <PButton
+              mode="contained"
+              disabled={isOffline}
+              onPress={handleContinue}
+              accessibilityLabel="Kaldim yerden devam et"
+              accessibilityHint="Aktif icerigi acar"
+            >
+              Devam Et
+            </PButton>
+          </PCard>
+        ) : (
+          <PCard style={styles.continueCardEmpty}>
+            <PText style={styles.continueEmptyText}>Bugunki hedefini secmedin.</PText>
+            <PButton
+              mode="outlined"
+              onPress={() => navigation.navigate("Discover")}
+              accessibilityLabel="Kesfe cik ve icerik sec"
+            >
+              Kesfe Cik
+            </PButton>
+          </PCard>
+        )}
+      </View>
+
+      {/* AC-FR-E2-03-01/02: Content area navigation grid */}
+      <View style={styles.section}>
+        <PText style={styles.sectionTitle}>Icerik Alanlari</PText>
+        <View style={styles.contentNavGrid}>
+          {CONTENT_AREAS.map((area) => (
+            <TouchableOpacity
+              key={area.label}
+              style={styles.contentNavCard}
+              onPress={() => !isOffline && navigation.navigate(area.route as any)}
+              accessibilityLabel={`${area.label}, ${area.count}`}
+              accessibilityRole="button"
+              accessibilityHint={`${area.label} katalna gider`}
+              activeOpacity={0.75}
+            >
+              <PText style={styles.contentNavLabel}>{area.label}</PText>
+              <PText style={styles.contentNavCount}>{area.count}</PText>
+            </TouchableOpacity>
+          ))}
+        </View>
+      </View>
+
+      {/* AC-FR-E2-04-01: Program summary card */}
+      <View style={styles.section}>
+        <View style={styles.sectionHeaderRow}>
+          <PText style={styles.sectionTitle}>Vicdandan Karaktere</PText>
+          <PButton
+            mode="text"
+            onPress={() => navigation.navigate("HomeVicdandanKaraktereDetail")}
+            accessibilityLabel="Vicdandan Karaktere programi detaylari"
+          >
+            Detaylar
+          </PButton>
+        </View>
+        <PCard style={styles.programCard}>
+          <PText style={styles.programDescription}>
+            Ic sesini guclendir ve degerlerinle uyumlu kararlar al.
+          </PText>
           <View style={styles.progressRow}>
             <View style={styles.progressHeader}>
-              <PText style={styles.progressLabel}>İlerleme</PText>
-              <PText style={styles.progressValue}>37%</PText>
+              <PText style={styles.progressLabel}>3/8 bolum</PText>
+              <PText style={styles.progressValue}>38%</PText>
             </View>
-            <PProgressBar progress={0.37} style={styles.progressBar} />
+            <PProgressBar progress={0.38} style={styles.progressBar} />
           </View>
-          <PButton mode="contained" disabled={isOffline} onPress={handleContinue}>
-            Devam Et
-          </PButton>
         </PCard>
       </View>
 
+      {/* AC-FR-E2-06-01: Active content list (max 3) */}
       <View style={styles.section}>
         <View style={styles.sectionHeaderRow}>
-          <PText style={styles.sectionTitle}>Sizin İçin Önerilen</PText>
-          <PButton mode="text" onPress={() => navigation.navigate("Discover")}>
-            Tümü →
+          <PText style={styles.sectionTitle}>Aktif Iceriklerim</PText>
+          <PButton
+            mode="text"
+            onPress={() => navigation.navigate("HomeActiveContentList")}
+            accessibilityLabel="Tum aktif icerikleri gor"
+          >
+            Tumunu Gor
           </PButton>
         </View>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.recommendationsRow}>
-          {recommendations.map((item) => (
-            <PCard key={item.title} style={styles.recommendationCard}>
-              <View style={styles.recommendationContent}>
-                <View style={styles.recommendationHero}>
-                  <PText style={styles.recommendationEmoji}>{item.emoji}</PText>
-                </View>
-                <View style={styles.recommendationBody}>
-                  <PText style={styles.recommendationTitle}>{item.title}</PText>
-                  <PText style={styles.recommendationSubtitle}>{item.subtitle}</PText>
-                </View>
-              </View>
-            </PCard>
-          ))}
-        </ScrollView>
+        <PCard style={styles.activeContentCard}>
+          <View style={styles.activeContentRow}>
+            <PChip compact accessibilityLabel="Icerik turu: Yolculuk">Yolculuk</PChip>
+            <View style={styles.activeContentInfo}>
+              <PText style={styles.activeContentTitle}>Hedef Belirleme</PText>
+              <PText style={styles.activeContentMeta}>Gun 3 -- 12 dk</PText>
+            </View>
+            <PText style={styles.activeContentPct}>42%</PText>
+          </View>
+          <PProgressBar progress={0.42} style={styles.progressBar} />
+        </PCard>
       </View>
 
+      {/* Son Aktiviteler */}
       <View style={styles.section}>
         <PText style={styles.sectionTitle}>Son Aktiviteler</PText>
         {activities.map((activity) => (
           <PCard key={activity.title} style={styles.activityCard}>
             <View style={styles.activityRow}>
-              <PText style={styles.activityEmoji}>{activity.emoji}</PText>
               <View style={styles.activityInfo}>
                 <PText style={styles.activityTitle}>{activity.title}</PText>
                 <PText style={styles.activityTime}>{activity.time}</PText>
@@ -187,6 +324,18 @@ const HomeReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
           </PCard>
         ))}
       </View>
+
+      {/* Reminder nudge - AC-FR-E2-08-01 */}
+      <TouchableOpacity
+        style={styles.reminderNudge}
+        onPress={() => !isOffline && navigation.navigate("HomeReminderSetting")}
+        accessibilityLabel="Gunluk hatirlatici ayarla"
+        accessibilityRole="button"
+        accessibilityHint="Hatirlatici ayarlari ekranini acar"
+        activeOpacity={0.75}
+      >
+        <PText style={styles.reminderNudgeText}>Gunluk hatirlaticini ayarla -- 20:00 onerilen</PText>
+      </TouchableOpacity>
 
       <View style={styles.bottomSpacer} />
     </View>
@@ -221,9 +370,9 @@ export const HomeDashboardScreen = ({ route }: { route?: { params?: { state?: Sc
       <SafeAreaView style={styles.root}>
         <ScrollView contentContainerStyle={styles.content}>
           <StateMessage
-            title="Henüz içerik yok"
-            description="İlk yolculuğunu seçerek kişisel gelişim planını oluşturabilirsin."
-            actionLabel="Keşfe Çık"
+            title="Henuz icerik yok"
+            description="Ilk yolculugunu secerek kisisel gelisim planini olusturabilirsin."
+            actionLabel="Kesfe Cik"
             icon="compass-outline"
           />
         </ScrollView>
@@ -236,8 +385,8 @@ export const HomeDashboardScreen = ({ route }: { route?: { params?: { state?: Sc
       <SafeAreaView style={styles.root}>
         <ScrollView contentContainerStyle={styles.content}>
           <StateMessage
-            title="Ana sayfa yüklenemedi"
-            description="Bağlantını kontrol edip tekrar dene."
+            title="Ana sayfa yuklenemedi"
+            description="Baglantini kontrol edip tekrar dene."
             actionLabel="Tekrar Dene"
             icon="alert-circle-outline"
             tone="error"
@@ -278,38 +427,62 @@ const styles = StyleSheet.create({
   headerRow: {
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "center",
+    alignItems: "flex-start",
     marginBottom: 20,
+  },
+  headerLeft: {
+    flex: 1,
   },
   greeting: {
     fontSize: 14,
     color: "#525252",
-    marginBottom: 4,
+    marginBottom: 2,
+  },
+  nameRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+    flexWrap: "wrap",
   },
   nameText: {
-    fontSize: 28,
+    fontSize: 26,
     fontWeight: "800",
     color: "#2B1B5D",
   },
+  subscriptionBadge: {
+    paddingHorizontal: 10,
+    paddingVertical: 3,
+    borderRadius: 999,
+    alignSelf: "center",
+  },
+  subscriptionBadgeText: {
+    fontSize: 11,
+    fontWeight: "700",
+  },
   notificationWrapper: {
     position: "relative",
+    marginTop: 4,
   },
   notificationButton: {
     backgroundColor: "#F5F5F5",
+    minWidth: 48,
+    minHeight: 48,
   },
   notificationDot: {
     position: "absolute",
-    top: 6,
-    right: 6,
+    top: 8,
+    right: 8,
     width: 10,
     height: 10,
     borderRadius: 999,
     borderWidth: 2,
     borderColor: "#FFFFFF",
     backgroundColor: "#EF4444",
+    pointerEvents: "none",
   },
   searchWrapper: {
     marginBottom: 20,
+    minHeight: 48,
   },
   searchInput: {
     backgroundColor: "#FFFFFF",
@@ -317,21 +490,23 @@ const styles = StyleSheet.create({
   searchOutline: {
     borderWidth: 2,
     borderRadius: 16,
-    borderColor: "#E5E5E5",
+    borderColor: "#D4D4D4",
   },
   searchContent: {
     paddingVertical: 10,
   },
   statsRow: {
     flexDirection: "row",
-    gap: 12,
+    gap: 10,
     marginBottom: 24,
   },
   statCard: {
     flex: 1,
-    borderRadius: 16,
-    padding: 14,
+    borderRadius: 14,
+    padding: 12,
     alignItems: "center",
+    minHeight: 80,
+    justifyContent: "center",
   },
   statPrimary: {
     backgroundColor: "#E0F7FA",
@@ -342,21 +517,14 @@ const styles = StyleSheet.create({
   statWarning: {
     backgroundColor: "#FEF3C7",
   },
-  statEmoji: {
-    fontSize: 24,
-    marginBottom: 6,
-  },
   statValue: {
     fontSize: 22,
     fontWeight: "800",
-    color: "#00B4D8",
+    color: "#2B1B5D",
     marginBottom: 4,
   },
-  statValueWarning: {
-    color: "#F59E0B",
-  },
   statLabel: {
-    fontSize: 12,
+    fontSize: 11,
     fontWeight: "600",
     color: "#525252",
     textAlign: "center",
@@ -368,18 +536,41 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: 12,
+    marginBottom: 10,
   },
   sectionTitle: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: "700",
     color: "#171717",
-    marginBottom: 12,
+    marginBottom: 10,
+  },
+  countdownBadge: {
+    backgroundColor: "#FEF3C7",
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: "#FCD34D",
+  },
+  countdownText: {
+    fontSize: 13,
+    fontWeight: "700",
+    color: "#92400E",
   },
   continueCard: {
     borderLeftWidth: 4,
     borderLeftColor: "#00B4D8",
     padding: 16,
+  },
+  continueCardEmpty: {
+    padding: 16,
+    alignItems: "center",
+    gap: 12,
+  },
+  continueEmptyText: {
+    fontSize: 14,
+    color: "#525252",
+    marginBottom: 8,
   },
   continueRow: {
     flexDirection: "row",
@@ -387,18 +578,21 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   continueIcon: {
-    width: 60,
-    height: 60,
+    width: 56,
+    height: 56,
     borderRadius: 12,
     backgroundColor: "#E0F7FA",
     alignItems: "center",
     justifyContent: "center",
   },
-  continueEmoji: {
-    fontSize: 28,
+  continueIconText: {
+    fontSize: 22,
+    fontWeight: "800",
+    color: "#00B4D8",
   },
   continueInfo: {
     flex: 1,
+    justifyContent: "center",
   },
   continueTitle: {
     fontSize: 15,
@@ -419,12 +613,12 @@ const styles = StyleSheet.create({
     marginBottom: 6,
   },
   progressLabel: {
-    fontSize: 14,
+    fontSize: 13,
     fontWeight: "600",
     color: "#404040",
   },
   progressValue: {
-    fontSize: 14,
+    fontSize: 13,
     fontWeight: "700",
     color: "#00B4D8",
   },
@@ -432,50 +626,77 @@ const styles = StyleSheet.create({
     height: 8,
     borderRadius: 999,
   },
-  recommendationsRow: {
-    gap: 16,
-    paddingBottom: 8,
+  contentNavGrid: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 10,
   },
-  recommendationCard: {
-    width: 160,
-  },
-  recommendationContent: {
-    borderRadius: 16,
-    overflow: "hidden",
-  },
-  recommendationHero: {
-    height: 100,
-    alignItems: "center",
+  contentNavCard: {
+    width: "47%",
+    backgroundColor: "#FFFFFF",
+    borderRadius: 14,
+    padding: 16,
+    borderWidth: 1.5,
+    borderColor: "#E5E5E5",
+    minHeight: 72,
     justifyContent: "center",
-    backgroundColor: "#EDE7F6",
   },
-  recommendationEmoji: {
-    fontSize: 32,
-  },
-  recommendationBody: {
-    padding: 12,
-  },
-  recommendationTitle: {
+  contentNavLabel: {
     fontSize: 14,
     fontWeight: "700",
-    color: "#171717",
+    color: "#2B1B5D",
     marginBottom: 4,
   },
-  recommendationSubtitle: {
+  contentNavCount: {
     fontSize: 12,
     color: "#525252",
   },
-  activityCard: {
+  programCard: {
+    padding: 14,
+    borderLeftWidth: 4,
+    borderLeftColor: "#10B981",
+  },
+  programDescription: {
+    fontSize: 13,
+    color: "#404040",
     marginBottom: 12,
+    lineHeight: 20,
+  },
+  activeContentCard: {
+    padding: 14,
+    marginBottom: 0,
+  },
+  activeContentRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 10,
+    marginBottom: 10,
+  },
+  activeContentInfo: {
+    flex: 1,
+  },
+  activeContentTitle: {
+    fontSize: 14,
+    fontWeight: "700",
+    color: "#171717",
+  },
+  activeContentMeta: {
+    fontSize: 12,
+    color: "#525252",
+  },
+  activeContentPct: {
+    fontSize: 13,
+    fontWeight: "700",
+    color: "#00B4D8",
+  },
+  activityCard: {
+    marginBottom: 10,
     padding: 12,
   },
   activityRow: {
     flexDirection: "row",
     alignItems: "center",
     gap: 12,
-  },
-  activityEmoji: {
-    fontSize: 20,
   },
   activityInfo: {
     flex: 1,
@@ -484,11 +705,27 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "600",
     color: "#171717",
-    marginBottom: 4,
+    marginBottom: 2,
   },
   activityTime: {
     fontSize: 12,
     color: "#525252",
+  },
+  reminderNudge: {
+    backgroundColor: "#EDE9FE",
+    borderRadius: 12,
+    paddingVertical: 14,
+    paddingHorizontal: 16,
+    marginBottom: 16,
+    borderWidth: 1,
+    borderColor: "#DDD6FE",
+    minHeight: 48,
+    justifyContent: "center",
+  },
+  reminderNudgeText: {
+    fontSize: 13,
+    color: "#5B21B6",
+    fontWeight: "600",
   },
   bottomSpacer: {
     height: 24,

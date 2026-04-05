@@ -16,13 +16,21 @@ const PasswordResetContent = ({ isOffline }: { isOffline?: boolean }) => {
   const [confirmPassword, setConfirmPassword] = React.useState("");
   const [showPassword, setShowPassword] = React.useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
+  const [showSuccess, setShowSuccess] = React.useState(false);
   const navigation = useNavigation<any>();
 
+  // Password strength: consistent 4-level algorithm (same as RegisterScreen)
   const getPasswordStrength = () => {
     if (newPassword.length === 0) return { strength: 0, label: "", color: "" };
-    if (newPassword.length < 6) return { strength: 1, label: "Zayıf", color: "#EF4444" };
-    if (newPassword.length < 10) return { strength: 2, label: "Orta", color: "#F59E0B" };
-    return { strength: 4, label: "Güçlü Şifre", color: "#10B981" };
+    let score = 0;
+    if (newPassword.length >= 8) score++;
+    if (/[A-Z]/.test(newPassword) && /[a-z]/.test(newPassword)) score++;
+    if (/\d/.test(newPassword)) score++;
+    if (/[^A-Za-z0-9]/.test(newPassword)) score++;
+    if (score <= 1) return { strength: 1, label: "Zayif", color: "#EF4444" };
+    if (score === 2) return { strength: 2, label: "Orta", color: "#F59E0B" };
+    if (score === 3) return { strength: 3, label: "Iyi", color: "#10B981" };
+    return { strength: 4, label: "Guclu", color: "#10B981" };
   };
 
   const passwordStrength = getPasswordStrength();
@@ -36,6 +44,9 @@ const PasswordResetContent = ({ isOffline }: { isOffline?: boolean }) => {
           onPress={() => navigation.goBack()}
           style={styles.backButton}
           disabled={isOffline}
+          accessibilityRole="button"
+          accessibilityLabel="Geri don"
+          hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
         >
           <PText style={styles.backButtonText}>←</PText>
         </TouchableOpacity>
@@ -119,12 +130,23 @@ const PasswordResetContent = ({ isOffline }: { isOffline?: boolean }) => {
           mode="contained"
           disabled={isOffline || !isFormValid}
           onPress={() => {
-            navigation.navigate("AuthLogin");
+            setShowSuccess(true);
+            setTimeout(() => {
+              navigation.navigate("AuthLogin");
+            }, 1500);
           }}
           style={styles.button}
+          accessibilityLabel="Sifremi sifirla"
         >
-          Şifremi Sıfırla
+          Sifremi Sifirla
         </PButton>
+        {showSuccess ? (
+          <View style={styles.successContainer}>
+            <PText style={styles.successText}>
+              Sifreniz basariyla degistirildi! Giris sayfasina yonlendiriliyorsunuz...
+            </PText>
+          </View>
+        ) : null}
         <View style={styles.hintCard}>
           <PText style={styles.hintText}>
             <PText style={styles.hintBold}>💡 İpucu:</PText> Güçlü bir şifre için büyük/küçük harf, rakam ve özel karakter kullanın.
@@ -222,8 +244,8 @@ const styles = StyleSheet.create({
     fontSize: 64,
   },
   title: {
-    fontSize: 32,
-    fontWeight: "800",
+    fontSize: 24,
+    fontWeight: "700",
     color: "#2B1B5D",
     marginBottom: 8,
     textAlign: "center",
@@ -292,6 +314,18 @@ const styles = StyleSheet.create({
   button: {
     marginBottom: 16,
     borderRadius: 12,
+  },
+  successContainer: {
+    backgroundColor: "#F0FDF4",
+    borderRadius: 8,
+    padding: 12,
+    marginBottom: 16,
+    borderLeftWidth: 3,
+    borderLeftColor: "#10B981",
+  },
+  successText: {
+    color: "#065F46",
+    fontSize: 14,
   },
   hintCard: {
     backgroundColor: "#EDE7F6",

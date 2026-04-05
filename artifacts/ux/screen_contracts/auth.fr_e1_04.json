@@ -1,24 +1,12 @@
 {
   "id": "auth.fr_e1_04",
-  "title": "Şifre sıfırlama",
+  "title": "Sifre sifirlama",
   "route": "/epic-1/fr-e1-04",
-  "purpose": "Implements FR-E1-04: Şifre sıfırlama.",
+  "purpose": "Implements FR-E1-04: Password reset via email/phone OTP, password policy enforcement (min 8 chars, letter + number), and success redirect to login.",
   "entryPoints": [
-    "onboarding.welcome"
+    "auth.fr_e1_03"
   ],
   "inputs": [
-    {
-      "name": "userId",
-      "type": "uuid",
-      "required": false,
-      "source": "session"
-    },
-    {
-      "name": "subscriptionStatus",
-      "type": "SubscriptionStatus",
-      "required": true,
-      "source": "entitlement_cache"
-    },
     {
       "name": "locale",
       "type": "LanguageCode",
@@ -27,31 +15,31 @@
     }
   ],
   "dataDependencies": [
-    "User",
-    "UserSession",
-    "DemographicProfile"
+    "User"
   ],
   "uiStates": {
     "loading": {
-      "description": "Skeleton placeholders are shown while loading FR-E1-04 data."
+      "description": "Skeleton email/phone input and disabled Kod Gonder button shown."
     },
     "ready": {
-      "description": "FR-E1-04 flows are fully interactive with primary CTA available when prerequisites are met."
+      "description": "Email/phone field with inline validation. After code sent, OTP screen opens. After OTP verified, new password form with strength meter and policy hints."
     },
     "empty": {
-      "description": "Empty state explains why no data is available and points to next best action."
+      "description": "Message explains no reset request found. Offers to start a new request."
     },
     "error": {
-      "description": "Error state is recoverable with user-safe messaging and a retry action."
+      "description": "User-safe error explaining the reset failed (e.g. network issue, invalid code), with retry."
     },
     "offline": {
-      "description": "Offline state shows last synchronized data and queues write actions for later sync."
+      "description": "Form disabled, offline banner explains password reset requires connectivity."
     }
   },
   "analytics": {
     "screenView": "auth_fr_e1_04_viewed",
     "events": [
-      "auth_fr_e1_04_viewed"
+      "auth_fr_e1_04_viewed",
+      "auth_forgot_password_submitted",
+      "auth_password_reset_success"
     ]
   },
   "acceptanceCriteriaRefs": [

@@ -1,8 +1,8 @@
 {
   "id": "home.fr_e2_06",
-  "title": "Aktif içeriklerim özeti",
-  "route": "/epic-2/fr-e2-06",
-  "purpose": "Implements FR-E2-06: Aktif içeriklerim özeti.",
+  "title": "Aktif iceriklerim ozeti",
+  "route": "/home/active-content",
+  "purpose": "HomeActiveContentListScreen. Shows max 3 active content cards each with progress %, type label (Yolculuk/Atolye/e-Kitap), Devam Et button (AC-FR-E2-06-01). Tumunu Gor navigates to Library (AC-FR-E2-06-02). Locked items show Kilitli chip (AC-FR-E2-06-03).",
   "entryPoints": [
     "home.dashboard"
   ],
@@ -34,25 +34,28 @@
   ],
   "uiStates": {
     "loading": {
-      "description": "Skeleton placeholders are shown while loading FR-E2-06 data."
+      "description": "Three card skeletons (height 96) stacked vertically with shimmer."
     },
     "ready": {
-      "description": "FR-E2-06 flows are fully interactive with primary CTA available when prerequisites are met."
+      "description": "Max 3 cards: each shows content type chip (Yolculuk/Atolye/e-Kitap, color-coded), title, subtitle (chapter/duration), progress bar + % label, Devam Et button. Locked card shows Kilitli chip and disabled Devam Et. Tumunu Gor link at section bottom. AC-FR-E2-06-01/02/03 satisfied."
     },
     "empty": {
-      "description": "Empty state explains why no data is available and points to next best action."
+      "description": "'Aktif icerik yok' with compass icon and 'Kesfe Git' CTA. No active items in progress."
     },
     "error": {
-      "description": "Error state is recoverable with user-safe messaging and a retry action."
+      "description": "'Aktif icerikler yuklenemedi. Tekrar Dene' inline error card."
     },
     "offline": {
-      "description": "Offline state shows last synchronized data and queues write actions for later sync."
+      "description": "Cached active content list shown. Devam Et enabled only for locally cached content. Non-cached items show 'Cevrimdisi yuklenemiyor' subtitle."
     }
   },
   "analytics": {
-    "screenView": "home_fr_e2_06_viewed",
+    "screenView": "home_active_content_viewed",
     "events": [
-      "home_fr_e2_06_viewed"
+      "home_active_content_viewed",
+      "home_active_content_continue_tapped",
+      "home_active_content_see_all_tapped",
+      "home_active_content_locked_item_tapped"
     ]
   },
   "acceptanceCriteriaRefs": [

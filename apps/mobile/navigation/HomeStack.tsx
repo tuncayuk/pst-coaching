@@ -5,6 +5,9 @@ import { HomeSearchScreen } from "../screens/home/HomeSearchScreen";
 import { HomeSearchResultsScreen } from "../screens/home/HomeSearchResultsScreen";
 import { HomeVicdandanKaraktereDetailScreen } from "../screens/home/HomeVicdandanKaraktereDetailScreen";
 import { HomeActiveContentListScreen } from "../screens/home/HomeActiveContentListScreen";
+import { HomeSubscriptionScreen } from "../screens/home/HomeSubscriptionScreen";
+import { HomeContentNavScreen } from "../screens/home/HomeContentNavScreen";
+import { HomeReminderSettingScreen } from "../screens/home/HomeReminderSettingScreen";
 import { ScreenState } from "../screens/components/ScreenState";
 
 type ScreenStateParam = { state?: ScreenState } | undefined;
@@ -12,9 +15,16 @@ type ScreenStateParam = { state?: ScreenState } | undefined;
 export type HomeStackParamList = {
   HomeDashboard: ScreenStateParam;
   HomeSearch: ScreenStateParam;
-  HomeSearchResults: ScreenStateParam;
+  /** query: search term; activeFilter: optional content-type filter */
+  HomeSearchResults: (ScreenStateParam & { query?: string; activeFilter?: string }) | undefined;
   HomeVicdandanKaraktereDetail: ScreenStateParam;
   HomeActiveContentList: ScreenStateParam;
+  /** FR-E2-02: subscription status badges + paywall explanation */
+  HomeSubscription: ScreenStateParam;
+  /** FR-E2-03: content area navigation grid */
+  HomeContentNav: ScreenStateParam;
+  /** FR-E2-08: daily reminder configuration */
+  HomeReminderSetting: ScreenStateParam;
 };
 
 type HomeStackProps = {
@@ -34,6 +44,9 @@ export const HomeStack = ({ initialRouteName = "HomeDashboard" }: HomeStackProps
         component={HomeVicdandanKaraktereDetailScreen}
       />
       <Stack.Screen name="HomeActiveContentList" component={HomeActiveContentListScreen} />
+      <Stack.Screen name="HomeSubscription" component={HomeSubscriptionScreen} />
+      <Stack.Screen name="HomeContentNav" component={HomeContentNavScreen} />
+      <Stack.Screen name="HomeReminderSetting" component={HomeReminderSettingScreen} />
     </Stack.Navigator>
   );
 };

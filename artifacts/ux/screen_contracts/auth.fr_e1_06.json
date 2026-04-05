@@ -1,16 +1,16 @@
 {
   "id": "auth.fr_e1_06",
-  "title": "Abonelik ve rol doğrulama",
+  "title": "Abonelik ve rol dogrulama",
   "route": "/epic-1/fr-e1-06",
-  "purpose": "Implements FR-E1-06: Abonelik ve rol doğrulama.",
+  "purpose": "Implements FR-E1-06: Post-login subscription status sync, plan_owner/plan_member role assignment, and paywall display for non-subscribers on Library/Progress tabs.",
   "entryPoints": [
-    "onboarding.welcome"
+    "auth.fr_e1_03"
   ],
   "inputs": [
     {
       "name": "userId",
       "type": "uuid",
-      "required": false,
+      "required": true,
       "source": "session"
     },
     {
@@ -18,40 +18,36 @@
       "type": "SubscriptionStatus",
       "required": true,
       "source": "entitlement_cache"
-    },
-    {
-      "name": "locale",
-      "type": "LanguageCode",
-      "required": true,
-      "source": "profile"
     }
   ],
   "dataDependencies": [
     "User",
-    "UserSession",
-    "DemographicProfile"
+    "UserSession"
   ],
   "uiStates": {
     "loading": {
-      "description": "Skeleton placeholders are shown while loading FR-E1-06 data."
+      "description": "Spinner with 'Abonelik durumu kontrol ediliyor...' while syncing subscription from server."
     },
     "ready": {
-      "description": "FR-E1-06 flows are fully interactive with primary CTA available when prerequisites are met."
+      "description": "Subscription badge and role indicator shown. Non-subscribers see paywall prompt with subscribe CTA."
     },
     "empty": {
-      "description": "Empty state explains why no data is available and points to next best action."
+      "description": "Message explaining no subscription info found, with a link to plans page or retry."
     },
     "error": {
-      "description": "Error state is recoverable with user-safe messaging and a retry action."
+      "description": "Banner explaining subscription check failed, with reason and retry. Cached status used if available."
     },
     "offline": {
-      "description": "Offline state shows last synchronized data and queues write actions for later sync."
+      "description": "Last-known subscription status and role displayed from cache. Sync status indicator shown."
     }
   },
   "analytics": {
     "screenView": "auth_fr_e1_06_viewed",
     "events": [
-      "auth_fr_e1_06_viewed"
+      "auth_fr_e1_06_viewed",
+      "auth_subscription_synced",
+      "auth_paywall_shown",
+      "auth_role_assigned"
     ]
   },
   "acceptanceCriteriaRefs": [

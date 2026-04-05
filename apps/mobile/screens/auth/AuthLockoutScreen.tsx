@@ -9,24 +9,56 @@ import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
 import { PActivityIndicator, PButton, PText } from "../../components";
 
+const LOCKOUT_DURATION_MINUTES = 15;
 
 const AuthLockoutContent = ({ isOffline }: { isOffline?: boolean }) => {
   const navigation = useNavigation<any>();
+  const [remainingSeconds, setRemainingSeconds] = React.useState(LOCKOUT_DURATION_MINUTES * 60);
+
+  React.useEffect(() => {
+    if (remainingSeconds <= 0) return;
+    const interval = setInterval(() => {
+      setRemainingSeconds((prev) => {
+        if (prev <= 1) {
+          clearInterval(interval);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [remainingSeconds]);
+
+  const minutes = Math.floor(remainingSeconds / 60);
+  const seconds = remainingSeconds % 60;
+  const timeDisplay = `${minutes}:${seconds.toString().padStart(2, "0")}`;
 
   return (
     <>
-      <SectionCard title="Geçici Kilit">
+      <SectionCard title="Gecici Kilit">
         <PText variant="titleMedium" style={styles.title}>
-          Güvenlik nedeniyle hesabın geçici olarak kilitlendi.
+          Guvenlik nedeniyle hesabin gecici olarak kilitlendi.
         </PText>
         <PText variant="bodySmall" style={styles.body}>
-          Kalan süre: 10 dakika. Bu süre sonunda tekrar giriş yapabilirsin.
+          {remainingSeconds > 0
+            ? `Kalan sure: ${timeDisplay}. Bu sure sonunda tekrar giris yapabilirsin.`
+            : "Kilit suresi doldu. Tekrar giris yapabilirsin."}
         </PText>
-        <PButton mode="contained" disabled={isOffline} onPress={() => navigation.navigate("AuthLogin")}>
-          Giriş Sayfasına Dön
+        <PButton
+          mode="contained"
+          disabled={isOffline || remainingSeconds > 0}
+          onPress={() => navigation.navigate("AuthLogin")}
+          accessibilityLabel="Giris sayfasina don"
+        >
+          Giris Sayfasina Don
         </PButton>
-        <PButton mode="text" disabled={isOffline} onPress={() => navigation.navigate("AuthPasswordReset")}>
-          Şifre Sıfırla
+        <PButton
+          mode="text"
+          disabled={isOffline}
+          onPress={() => navigation.navigate("AuthForgotPassword")}
+          accessibilityLabel="Sifre sifirla"
+        >
+          Sifre Sifirla
         </PButton>
       </SectionCard>
     </>

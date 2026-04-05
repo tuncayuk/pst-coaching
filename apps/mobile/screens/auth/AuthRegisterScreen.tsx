@@ -22,12 +22,18 @@ const RegisterContent = ({ isOffline }: { isOffline?: boolean }) => {
   const [confirmPassword, setConfirmPassword] = React.useState("");
   const navigation = useNavigation<any>();
 
-  // Simple password strength calculation
+  // Password strength: consistent 4-level algorithm (same as PasswordResetScreen)
   const getPasswordStrength = () => {
     if (password.length === 0) return { strength: 0, label: "", color: "" };
-    if (password.length < 6) return { strength: 1, label: "Zayıf", color: "#EF4444" };
-    if (password.length < 10) return { strength: 2, label: "Orta Güçlü", color: "#10B981" };
-    return { strength: 4, label: "Güçlü", color: "#10B981" };
+    let score = 0;
+    if (password.length >= 8) score++;
+    if (/[A-Z]/.test(password) && /[a-z]/.test(password)) score++;
+    if (/\d/.test(password)) score++;
+    if (/[^A-Za-z0-9]/.test(password)) score++;
+    if (score <= 1) return { strength: 1, label: "Zayif", color: "#EF4444" };
+    if (score === 2) return { strength: 2, label: "Orta", color: "#F59E0B" };
+    if (score === 3) return { strength: 3, label: "Iyi", color: "#10B981" };
+    return { strength: 4, label: "Guclu", color: "#10B981" };
   };
 
   const passwordStrength = getPasswordStrength();
@@ -42,6 +48,9 @@ const RegisterContent = ({ isOffline }: { isOffline?: boolean }) => {
           onPress={() => navigation.goBack()}
           style={styles.backButton}
           disabled={isOffline}
+          accessibilityRole="button"
+          accessibilityLabel="Geri don"
+          hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
         >
           <PText style={styles.backButtonText}>←</PText>
         </TouchableOpacity>
@@ -175,6 +184,10 @@ const RegisterContent = ({ isOffline }: { isOffline?: boolean }) => {
           style={styles.checkboxRow}
           onPress={() => setAccepted((prev) => !prev)}
           disabled={isOffline}
+          accessibilityRole="checkbox"
+          accessibilityState={{ checked: accepted }}
+          accessibilityLabel="Kullanim kosullarini ve gizlilik politikasini kabul ediyorum"
+          hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
         >
           <View style={[styles.checkboxBox, accepted && styles.checkboxBoxChecked]}>
             {accepted ? <PText style={styles.checkboxCheck}>✓</PText> : null}
@@ -291,8 +304,8 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   title: {
-    fontSize: 32,
-    fontWeight: "800",
+    fontSize: 24,
+    fontWeight: "700",
     color: "#2B1B5D",
     marginBottom: 8,
     textAlign: "center",
@@ -321,7 +334,7 @@ const styles = StyleSheet.create({
   inputOutline: {
     borderWidth: 2,
     borderRadius: 12,
-    borderColor: "#E5E5E5",
+    borderColor: "#D4D4D4",
   },
   phoneRow: {
     flexDirection: "row",
@@ -402,11 +415,11 @@ const styles = StyleSheet.create({
     fontSize: 13,
   },
   checkboxBox: {
-    width: 18,
-    height: 18,
-    borderRadius: 4,
+    width: 24,
+    height: 24,
+    borderRadius: 6,
     borderWidth: 2,
-    borderColor: "#E5E5E5",
+    borderColor: "#D4D4D4",
     backgroundColor: "#FFFFFF",
     alignItems: "center",
     justifyContent: "center",

@@ -16,9 +16,29 @@ const LoginContent = ({ isOffline }: { isOffline?: boolean }) => {
   const [showPassword, setShowPassword] = React.useState(false);
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
+  const [loginError, setLoginError] = React.useState("");
+  const [attemptCount, setAttemptCount] = React.useState(0);
   const navigation = useNavigation<any>();
 
+  const MAX_ATTEMPTS = 5;
   const isFormValid = email.length > 0 && password.length >= 8;
+  const remainingAttempts = MAX_ATTEMPTS - attemptCount;
+
+  const handleLogin = () => {
+    if (attemptCount >= MAX_ATTEMPTS) {
+      navigation.navigate("AuthLockout");
+      return;
+    }
+    // Simulate login — safe error message (no account enumeration per AC-FR-E1-03-02)
+    setAttemptCount((prev) => prev + 1);
+    setLoginError("E-posta veya sifre hatali. Tekrar deneyin.");
+    if (attemptCount + 1 >= MAX_ATTEMPTS) {
+      navigation.navigate("AuthLockout");
+      return;
+    }
+    // On success: 
+    navigation.navigate("AuthFaceIdSetup");
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -38,12 +58,13 @@ const LoginContent = ({ isOffline }: { isOffline?: boolean }) => {
               autoCapitalize="none"
               keyboardType="email-address"
               value={email}
-              onChangeText={setEmail}
+              onChangeText={(v) => { setEmail(v); setLoginError(""); }}
               style={styles.input}
               contentStyle={styles.inputContent}
               outlineStyle={styles.inputOutline}
               editable={!isOffline}
               placeholder="ornek@email.com"
+              accessibilityLabel="E-posta veya telefon numarasi"
             />
           </View>
 
@@ -54,12 +75,13 @@ const LoginContent = ({ isOffline }: { isOffline?: boolean }) => {
                 mode="outlined"
                 secureTextEntry={!showPassword}
                 value={password}
-                onChangeText={setPassword}
+                onChangeText={(v) => { setPassword(v); setLoginError(""); }}
                 style={[styles.input, styles.passwordInput]}
                 contentStyle={styles.inputContent}
                 outlineStyle={styles.inputOutline}
                 editable={!isOffline}
-                placeholder="••••••••"
+                placeholder="Min. 8 karakter"
+                accessibilityLabel="Sifre"
               />
               <PIconButton
                 icon={showPassword ? "eye-off" : "eye"}
@@ -68,6 +90,7 @@ const LoginContent = ({ isOffline }: { isOffline?: boolean }) => {
                 style={styles.eyeIcon}
                 containerColor="transparent"
                 iconColor="#404040"
+                accessibilityLabel={showPassword ? "Sifreyi gizle" : "Sifreyi goster"}
               />
             </View>
           </View>
@@ -77,29 +100,44 @@ const LoginContent = ({ isOffline }: { isOffline?: boolean }) => {
               style={styles.rememberCheckbox}
               onPress={() => setRememberMe((prev) => !prev)}
               disabled={isOffline}
+              accessibilityRole="checkbox"
+              accessibilityState={{ checked: rememberMe }}
+              accessibilityLabel="Beni hatirla"
+              hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
             >
               <View style={[styles.checkboxBox, rememberMe && styles.checkboxBoxChecked]}>
                 {rememberMe ? <PText style={styles.checkboxCheck}>✓</PText> : null}
               </View>
-              <PText style={styles.checkboxLabel}>Beni Hatırla</PText>
+              <PText style={styles.checkboxLabel}>Beni Hatirla</PText>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => navigation.navigate("AuthForgotPassword")}
               disabled={isOffline}
+              accessibilityRole="link"
+              accessibilityLabel="Sifremi unuttum"
+              hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
             >
-              <PText style={styles.forgotLink}>Şifremi Unuttum?</PText>
+              <PText style={styles.forgotLink}>Sifremi Unuttum?</PText>
             </TouchableOpacity>
           </View>
+
+          {loginError ? (
+            <View style={styles.errorContainer}>
+              <PText style={styles.errorText}>{loginError}</PText>
+              {remainingAttempts > 0 && remainingAttempts < MAX_ATTEMPTS && (
+                <PText style={styles.attemptText}>
+                  Kalan deneme: {remainingAttempts}
+                </PText>
+              )}
+            </View>
+          ) : null}
 
           <PButton
             mode="contained"
             disabled={isOffline || !isFormValid}
-            onPress={() => {
-              // After successful login, check if FaceID setup is needed
-              // TODO: Check if user has completed FaceID setup
-              navigation.navigate("AuthFaceIdSetup");
-            }}
+            onPress={handleLogin}
             style={styles.loginButton}
+            accessibilityLabel="Giris yap"
           >
             Giriş Yap
           </PButton>
@@ -116,26 +154,31 @@ const LoginContent = ({ isOffline }: { isOffline?: boolean }) => {
               style={styles.socialButton}
               disabled={isOffline}
               onPress={() => {}}
+              accessibilityLabel="Google ile giris yap"
+              icon="google"
             >
-              <PText style={styles.socialIcon}>🔵</PText>
-              <PText style={styles.socialText}>Google</PText>
+              Google
             </PButton>
             <PButton
               mode="outlined"
               style={styles.socialButton}
               disabled={isOffline}
               onPress={() => {}}
+              accessibilityLabel="Apple ile giris yap"
+              icon="apple"
             >
-              <PText style={styles.socialIcon}>🍎</PText>
-              <PText style={styles.socialText}>Apple</PText>
+              Apple
             </PButton>
           </View>
 
           <View style={styles.signupRow}>
-            <PText style={styles.signupText}>Hesabınız yok mu? </PText>
+            <PText style={styles.signupText}>Hesabiniz yok mu? </PText>
             <TouchableOpacity
               onPress={() => navigation.navigate("AuthRegister")}
               disabled={isOffline}
+              accessibilityRole="link"
+              accessibilityLabel="Kayit ol"
+              hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
             >
               <PText style={styles.signupLink}>Kaydol</PText>
             </TouchableOpacity>
@@ -146,8 +189,11 @@ const LoginContent = ({ isOffline }: { isOffline?: boolean }) => {
             <TouchableOpacity
               onPress={() => navigation.navigate("AuthGuestMode")}
               disabled={isOffline}
+              accessibilityRole="link"
+              accessibilityLabel="Misafir olarak devam et"
+              hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
             >
-              <PText style={styles.guestLink}>👻 Misafir Olarak Devam Et</PText>
+              <PText style={styles.guestLink}>Misafir Olarak Devam Et</PText>
             </TouchableOpacity>
           </View>
         </View>
@@ -234,8 +280,8 @@ const styles = StyleSheet.create({
     resizeMode: "contain",
   },
   title: {
-    fontSize: 28,
-    fontWeight: "800",
+    fontSize: 24,
+    fontWeight: "700",
     color: "#2B1B5D",
     marginBottom: 8,
     textAlign: "center",
@@ -266,7 +312,7 @@ const styles = StyleSheet.create({
   inputOutline: {
     borderWidth: 2,
     borderRadius: 12,
-    borderColor: "#E5E5E5",
+    borderColor: "#D4D4D4",
   },
   passwordContainer: {
     position: "relative",
@@ -300,16 +346,34 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     fontSize: 14,
   },
+  errorContainer: {
+    backgroundColor: "#FEF2F2",
+    borderRadius: 8,
+    padding: 12,
+    marginBottom: 16,
+    borderLeftWidth: 3,
+    borderLeftColor: "#EF4444",
+  },
+  errorText: {
+    color: "#DC2626",
+    fontSize: 14,
+  },
+  attemptText: {
+    color: "#DC2626",
+    fontSize: 12,
+    fontWeight: "600",
+    marginTop: 4,
+  },
   loginButton: {
     marginBottom: 24,
     borderRadius: 12,
   },
   checkboxBox: {
-    width: 18,
-    height: 18,
-    borderRadius: 4,
+    width: 24,
+    height: 24,
+    borderRadius: 6,
     borderWidth: 2,
-    borderColor: "#E5E5E5",
+    borderColor: "#D4D4D4",
     backgroundColor: "#FFFFFF",
     alignItems: "center",
     justifyContent: "center",

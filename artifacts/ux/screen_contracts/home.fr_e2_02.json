@@ -1,8 +1,8 @@
 {
   "id": "home.fr_e2_02",
   "title": "Abonelik durumu rozetleri",
-  "route": "/epic-2/fr-e2-02",
-  "purpose": "Implements FR-E2-02: Abonelik durumu rozetleri.",
+  "route": "/home/subscription",
+  "purpose": "HomeSubscriptionScreen shows plan badge (Aktif/Deneme/Iptal) in header area. Tapping badge opens this screen with plan details, active add-ons list, and paywall explanation for restricted content. AC-FR-E2-02-01/02/03.",
   "entryPoints": [
     "home.dashboard"
   ],
@@ -34,25 +34,28 @@
   ],
   "uiStates": {
     "loading": {
-      "description": "Skeleton placeholders are shown while loading FR-E2-02 data."
+      "description": "Skeleton badge placeholder in header while subscription data loads from entitlement cache."
     },
     "ready": {
-      "description": "FR-E2-02 flows are fully interactive with primary CTA available when prerequisites are met."
+      "description": "Plan badge (Aktif green / Deneme amber / Iptal red) visible in header. Tapping opens detail sheet: plan name, renewal date, active add-ons list. AC-FR-E2-02-01/02 satisfied. Locked content tap shows paywall sheet with restriction reason. AC-FR-E2-02-03 satisfied."
     },
     "empty": {
-      "description": "Empty state explains why no data is available and points to next best action."
+      "description": "No subscription on record: show 'Plana Katil' banner with Upgrade CTA linking to subscription flow."
     },
     "error": {
-      "description": "Error state is recoverable with user-safe messaging and a retry action."
+      "description": "Badge shows neutral 'Plan?' state with retry. Full detail screen shows 'Abonelik bilgisi yuklenemedi. Tekrar Dene'."
     },
     "offline": {
-      "description": "Offline state shows last synchronized data and queues write actions for later sync."
+      "description": "Cached subscription status shown. Badge tint reflects last known state. Add-on list uses cache. Upgrade CTA disabled offline."
     }
   },
   "analytics": {
-    "screenView": "home_fr_e2_02_viewed",
+    "screenView": "home_subscription_viewed",
     "events": [
-      "home_fr_e2_02_viewed"
+      "home_subscription_badge_tapped",
+      "home_subscription_upgrade_tapped",
+      "home_paywall_shown",
+      "home_paywall_upgrade_tapped"
     ]
   },
   "acceptanceCriteriaRefs": [

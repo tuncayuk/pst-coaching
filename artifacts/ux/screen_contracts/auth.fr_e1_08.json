@@ -2,56 +2,54 @@
   "id": "auth.fr_e1_08",
   "title": "Demografi bilgisi toplama (Tek Kaynak)",
   "route": "/epic-1/fr-e1-08",
-  "purpose": "Implements FR-E1-08: Demografi bilgisi toplama (Tek Kaynak).",
+  "purpose": "Implements FR-E1-08: Demographics form (age required 13-120, gender optional, country required via searchable dropdown) before first content start. Not re-asked if already submitted. Editable from Profile > Settings.",
   "entryPoints": [
-    "onboarding.welcome"
+    "auth.fr_e1_07",
+    "auth.fr_e1_03"
   ],
   "inputs": [
     {
       "name": "userId",
       "type": "uuid",
-      "required": false,
+      "required": true,
       "source": "session"
     },
     {
-      "name": "subscriptionStatus",
-      "type": "SubscriptionStatus",
-      "required": true,
-      "source": "entitlement_cache"
-    },
-    {
-      "name": "locale",
-      "type": "LanguageCode",
-      "required": true,
-      "source": "profile"
+      "name": "existingProfile",
+      "type": "DemographicProfile",
+      "required": false,
+      "source": "api",
+      "note": "Pre-fills form if demographics were previously submitted (AC-FR-E1-08-06)"
     }
   ],
   "dataDependencies": [
     "User",
-    "UserSession",
     "DemographicProfile"
   ],
   "uiStates": {
     "loading": {
-      "description": "Skeleton placeholders are shown while loading FR-E1-08 data."
+      "description": "Skeleton fields for age, gender toggle buttons, and country dropdown with disabled Save button."
     },
     "ready": {
-      "description": "FR-E1-08 flows are fully interactive with primary CTA available when prerequisites are met."
+      "description": "Age number input (13-120 validation), gender toggle group (Kadin/Erkek/Belirtmek istemiyorum), searchable country dropdown, info card explaining data purpose, and Save button."
     },
     "empty": {
-      "description": "Empty state explains why no data is available and points to next best action."
+      "description": "Pre-filled form if profile exists (AC-FR-E1-08-06); otherwise clean form with required field markers."
     },
     "error": {
-      "description": "Error state is recoverable with user-safe messaging and a retry action."
+      "description": "Inline validation errors for age out-of-range. Network error banner with retry for submission failures."
     },
     "offline": {
-      "description": "Offline state shows last synchronized data and queues write actions for later sync."
+      "description": "Form editable with cached countries list. Submission queued for sync on reconnect. Offline banner shown."
     }
   },
   "analytics": {
     "screenView": "auth_fr_e1_08_viewed",
     "events": [
-      "auth_fr_e1_08_viewed"
+      "auth_fr_e1_08_viewed",
+      "auth_demographics_submitted",
+      "auth_demographics_validation_error",
+      "auth_demographics_skipped_existing"
     ]
   },
   "acceptanceCriteriaRefs": [

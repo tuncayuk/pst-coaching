@@ -87,7 +87,7 @@
     {
       "id": "auth.fr_e1_01",
       "route": "/epic-1/fr-e1-01",
-      "title": "Çok dilli onboarding ve profil dili",
+      "title": "Cok dilli onboarding ve profil dili",
       "type": "stack",
       "states": [
         "loading",
@@ -103,7 +103,7 @@
     {
       "id": "auth.fr_e1_02",
       "route": "/epic-1/fr-e1-02",
-      "title": "Kayıt olma",
+      "title": "Kayit olma",
       "type": "stack",
       "states": [
         "loading",
@@ -119,7 +119,7 @@
     {
       "id": "auth.fr_e1_03",
       "route": "/epic-1/fr-e1-03",
-      "title": "Giriş yapma",
+      "title": "Giris yapma",
       "type": "stack",
       "states": [
         "loading",
@@ -135,7 +135,7 @@
     {
       "id": "auth.fr_e1_04",
       "route": "/epic-1/fr-e1-04",
-      "title": "Şifre sıfırlama",
+      "title": "Sifre sifirlama",
       "type": "stack",
       "states": [
         "loading",
@@ -151,7 +151,7 @@
     {
       "id": "auth.fr_e1_05",
       "route": "/epic-1/fr-e1-05",
-      "title": "Oturum yönetimi ve güvenlik",
+      "title": "Oturum yonetimi ve guvenlik",
       "type": "stack",
       "states": [
         "loading",
@@ -169,7 +169,7 @@
     {
       "id": "auth.fr_e1_06",
       "route": "/epic-1/fr-e1-06",
-      "title": "Abonelik ve rol doğrulama",
+      "title": "Abonelik ve rol dogrulama",
       "type": "stack",
       "states": [
         "loading",
@@ -187,7 +187,7 @@
     {
       "id": "auth.fr_e1_07",
       "route": "/epic-1/fr-e1-07",
-      "title": "Biyometrik giriş (FaceID/TouchID)",
+      "title": "Biyometrik giris (FaceID/TouchID)",
       "type": "stack",
       "states": [
         "loading",
@@ -223,7 +223,7 @@
     {
       "id": "auth.fr_e1_09",
       "route": "/epic-1/fr-e1-09",
-      "title": "Misafir giriş (kayıtsız)",
+      "title": "Misafir giris (kayitsiz)",
       "type": "stack",
       "states": [
         "loading",
@@ -238,8 +238,8 @@
     },
     {
       "id": "home.fr_e2_01",
-      "route": "/epic-2/fr-e2-01",
-      "title": "Bugün özeti ve tekil devam CTA",
+      "route": "/home",
+      "title": "Bugun ozeti ve tekil devam CTA",
       "type": "stack",
       "states": [
         "loading",
@@ -254,7 +254,7 @@
     },
     {
       "id": "home.fr_e2_02",
-      "route": "/epic-2/fr-e2-02",
+      "route": "/home/subscription",
       "title": "Abonelik durumu rozetleri",
       "type": "stack",
       "states": [
@@ -272,8 +272,8 @@
     },
     {
       "id": "home.fr_e2_03",
-      "route": "/epic-2/fr-e2-03",
-      "title": "İçerik alanları navigasyonu",
+      "route": "/home/content-nav",
+      "title": "Icerik alanlari navigasyonu",
       "type": "stack",
       "states": [
         "loading",
@@ -288,8 +288,8 @@
     },
     {
       "id": "home.fr_e2_04",
-      "route": "/epic-2/fr-e2-04",
-      "title": "\"Vicdandan Karaktere\" bilgilendirmesi",
+      "route": "/home/vicdandan-karaktere",
+      "title": "Vicdandan Karaktere bilgilendirmesi",
       "type": "stack",
       "states": [
         "loading",
@@ -304,8 +304,8 @@
     },
     {
       "id": "home.fr_e2_05",
-      "route": "/epic-2/fr-e2-05",
-      "title": "Hızlı arama",
+      "route": "/home/search",
+      "title": "Hizli arama",
       "type": "stack",
       "states": [
         "loading",
@@ -320,8 +320,8 @@
     },
     {
       "id": "home.fr_e2_06",
-      "route": "/epic-2/fr-e2-06",
-      "title": "Aktif içeriklerim özeti",
+      "route": "/home/active-content",
+      "title": "Aktif iceriklerim ozeti",
       "type": "stack",
       "states": [
         "loading",
@@ -336,8 +336,8 @@
     },
     {
       "id": "home.fr_e2_07",
-      "route": "/epic-2/fr-e2-07",
-      "title": "Son görüntülenen içerikler",
+      "route": "/home/search-results",
+      "title": "Son gorutulen icerikler",
       "type": "stack",
       "states": [
         "loading",
@@ -352,8 +352,8 @@
     },
     {
       "id": "home.fr_e2_08",
-      "route": "/epic-2/fr-e2-08",
-      "title": "Günlük hatırlatıcı",
+      "route": "/home/reminder",
+      "title": "Gunluk hatirlatici",
       "type": "stack",
       "states": [
         "loading",
@@ -368,8 +368,8 @@
     },
     {
       "id": "home.fr_e2_09",
-      "route": "/epic-2/fr-e2-09",
-      "title": "Ana akış performansı",
+      "route": "/home",
+      "title": "Ana akis performansi",
       "type": "stack",
       "states": [
         "loading",

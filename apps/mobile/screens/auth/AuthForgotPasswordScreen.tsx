@@ -24,6 +24,9 @@ const ForgotPasswordContent = ({ isOffline }: { isOffline?: boolean }) => {
           onPress={() => navigation.goBack()}
           style={styles.backButton}
           disabled={isOffline}
+          accessibilityRole="button"
+          accessibilityLabel="Geri don"
+          hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
         >
           <PText style={styles.backButtonText}>←</PText>
         </TouchableOpacity>
@@ -166,8 +169,8 @@ const styles = StyleSheet.create({
     fontSize: 64,
   },
   title: {
-    fontSize: 32,
-    fontWeight: "800",
+    fontSize: 24,
+    fontWeight: "700",
     color: "#2B1B5D",
     marginBottom: 8,
     textAlign: "center",
@@ -196,7 +199,7 @@ const styles = StyleSheet.create({
   inputOutline: {
     borderWidth: 2,
     borderRadius: 12,
-    borderColor: "#E5E5E5",
+    borderColor: "#D4D4D4",
   },
   button: {
     marginBottom: 16,

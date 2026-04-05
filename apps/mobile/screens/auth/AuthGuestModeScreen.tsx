@@ -45,6 +45,7 @@ const GuestModeContent = ({ isOffline }: { isOffline?: boolean }) => {
           disabled={isOffline}
           onPress={() => navigation.getParent()?.navigate("MainTabs")}
           style={styles.button}
+          accessibilityLabel="Misafir olarak devam et"
         >
           Misafir Olarak Devam Et
         </PButton>
@@ -55,11 +56,12 @@ const GuestModeContent = ({ isOffline }: { isOffline?: boolean }) => {
           style={styles.secondaryButton}
           contentStyle={styles.secondaryButtonContent}
           labelStyle={styles.secondaryButtonLabel}
+          accessibilityLabel="Kayit ol"
         >
           Kayıt Ol
         </PButton>
         <PText style={styles.hint}>
-          💡 Kayıt olduktan sonra misafir oturumunuzdaki favorileriniz hesabınıza aktarılacaktır
+          Kayit olduktan sonra misafir oturumunuzdaki tum gozatma verileri (favoriler, goruntuleme gecmisi) hesabiniza aktarilacaktir.
         </PText>
       </ScrollView>
     </SafeAreaView>
@@ -141,8 +143,8 @@ const styles = StyleSheet.create({
     fontSize: 64,
   },
   title: {
-    fontSize: 28,
-    fontWeight: "800",
+    fontSize: 24,
+    fontWeight: "700",
     color: "#2B1B5D",
     marginBottom: 8,
     textAlign: "center",
@@ -167,14 +169,16 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   warningCard: {
-    backgroundColor: "#F59E0B",
+    backgroundColor: "#FEF3C7",
     padding: 16,
     borderRadius: 12,
     marginBottom: 24,
+    borderLeftWidth: 4,
+    borderLeftColor: "#F59E0B",
   },
   warningTitle: {
     fontWeight: "700",
-    color: "#FFFFFF",
+    color: "#92400E",
     marginBottom: 12,
   },
   list: {
@@ -187,7 +191,7 @@ const styles = StyleSheet.create({
   },
   warningItem: {
     fontSize: 14,
-    color: "#FFFFFF",
+    color: "#92400E",
     lineHeight: 24,
   },
   button: {

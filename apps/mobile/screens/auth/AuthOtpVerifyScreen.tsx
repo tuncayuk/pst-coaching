@@ -20,7 +20,12 @@ const OtpVerifyContent = ({
 }) => {
   const navigation = useNavigation<any>();
   const [codes, setCodes] = React.useState(["", "", "", "", "", ""]);
+  const [otpError, setOtpError] = React.useState("");
+  const [attemptCount, setAttemptCount] = React.useState(0);
   const inputRefs = React.useRef<(any)[]>([]);
+
+  const MAX_OTP_ATTEMPTS = 5;
+  const remainingAttempts = MAX_OTP_ATTEMPTS - attemptCount;
 
   const handleCodeChange = (index: number, value: string) => {
     if (value.length > 1) {
@@ -64,6 +69,9 @@ const OtpVerifyContent = ({
           onPress={() => navigation.goBack()}
           style={styles.backButton}
           disabled={isOffline}
+          accessibilityRole="button"
+          accessibilityLabel="Geri don"
+          hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
         >
           <PText style={styles.backButtonText}>←</PText>
         </TouchableOpacity>
@@ -71,9 +79,9 @@ const OtpVerifyContent = ({
         <View style={styles.iconContainer}>
           <PText style={styles.icon}>📱</PText>
         </View>
-        <PText style={styles.title}>Doğrulama Kodu</PText>
+        <PText style={styles.title}>Dogrulama Kodu</PText>
         <PText style={styles.description}>
-          <PText style={styles.emailText}>ahmet@*****.com</PText> adresine gönderilen 6 haneli kodu girin.
+          <PText style={styles.emailText}>ahmet@*****.com</PText> adresine gonderilen 6 haneli kodu girin.
         </PText>
         <View style={styles.codeContainer}>
           {codes.map((code, index) => (
@@ -91,20 +99,41 @@ const OtpVerifyContent = ({
               editable={!isOffline}
               textAlign="center"
               selectTextOnFocus
+              accessibilityLabel={`Dogrulama kodu hane ${index + 1}`}
             />
           ))}
         </View>
+        {otpError ? (
+          <View style={styles.errorContainer}>
+            <PText style={styles.errorText}>{otpError}</PText>
+            {remainingAttempts > 0 && (
+              <PText style={styles.attemptText}>
+                Kalan deneme: {remainingAttempts}
+              </PText>
+            )}
+          </View>
+        ) : null}
         <PButton
           mode="contained"
           disabled={isOffline || !isCodeComplete}
           onPress={() => {
-            if (source === "register") {
-              navigation.navigate("AuthFaceIdSetup");
-            } else {
-              navigation.navigate("AuthPasswordReset");
+            if (attemptCount >= MAX_OTP_ATTEMPTS) {
+              navigation.navigate("AuthLockout");
+              return;
             }
+            // Simulate OTP verification — on error show remaining attempts (AC-FR-E1-02-03)
+            setAttemptCount((prev) => prev + 1);
+            setOtpError("Girilen kod hatali. Lutfen tekrar deneyin.");
+            if (attemptCount + 1 >= MAX_OTP_ATTEMPTS) {
+              navigation.navigate("AuthLockout");
+              return;
+            }
+            // On success:
+            // if (source === "register") navigation.navigate("AuthFaceIdSetup");
+            // else navigation.navigate("AuthPasswordReset");
           }}
           style={styles.button}
+          accessibilityLabel="Dogrula"
         >
           Doğrula
         </PButton>
@@ -207,8 +236,8 @@ const styles = StyleSheet.create({
     fontSize: 64,
   },
   title: {
-    fontSize: 32,
-    fontWeight: "800",
+    fontSize: 24,
+    fontWeight: "700",
     color: "#2B1B5D",
     marginBottom: 8,
     textAlign: "center",
@@ -244,6 +273,24 @@ const styles = StyleSheet.create({
   button: {
     marginBottom: 16,
     borderRadius: 12,
+  },
+  errorContainer: {
+    backgroundColor: "#FEF2F2",
+    borderRadius: 8,
+    padding: 12,
+    marginBottom: 16,
+    borderLeftWidth: 3,
+    borderLeftColor: "#EF4444",
+  },
+  errorText: {
+    color: "#DC2626",
+    fontSize: 14,
+  },
+  attemptText: {
+    color: "#DC2626",
+    fontSize: 12,
+    fontWeight: "600",
+    marginTop: 4,
   },
   resendContainer: {
     alignItems: "center",

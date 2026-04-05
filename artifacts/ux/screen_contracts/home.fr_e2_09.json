@@ -1,8 +1,8 @@
 {
   "id": "home.fr_e2_09",
-  "title": "Ana akış performansı",
-  "route": "/epic-2/fr-e2-09",
-  "purpose": "Implements FR-E2-09: Ana akış performansı.",
+  "title": "Ana akis performansi",
+  "route": "/home",
+  "purpose": "Performance constraints embedded in home.dashboard. Skeleton shown on first load (AC-FR-E2-09-01). Critical cards (Bugun ozeti, Devam Et) loaded first via priority fetch (AC-FR-E2-09-02). Card-level retry on partial failures -- each section independent (AC-FR-E2-09-03).",
   "entryPoints": [
     "home.dashboard"
   ],
@@ -34,25 +34,28 @@
   ],
   "uiStates": {
     "loading": {
-      "description": "Skeleton placeholders are shown while loading FR-E2-09 data."
+      "description": "Full-screen skeleton with shimmer. Critical card slots at top rendered first. Non-critical sections (recommendations, recent) deferred. PActivityIndicator at header. AC-FR-E2-09-01/02 satisfied."
     },
     "ready": {
-      "description": "FR-E2-09 flows are fully interactive with primary CTA available when prerequisites are met."
+      "description": "All sections loaded and interactive. Performance budget: <500ms to first interactive card. Telemetry event home_dashboard_viewed fires on ready."
     },
     "empty": {
-      "description": "Empty state explains why no data is available and points to next best action."
+      "description": "Dashboard empty but not errored: show onboarding prompts for each missing section."
     },
     "error": {
-      "description": "Error state is recoverable with user-safe messaging and a retry action."
+      "description": "Per-section error cards each with Tekrar Dene. Non-failing sections remain visible. Global retry only if >2 sections fail. AC-FR-E2-09-03 satisfied."
     },
     "offline": {
-      "description": "Offline state shows last synchronized data and queues write actions for later sync."
+      "description": "Cached data served immediately (no loading state). OfflineBanner at top. Delta sync on reconnect."
     }
   },
   "analytics": {
-    "screenView": "home_fr_e2_09_viewed",
+    "screenView": "home_dashboard_viewed",
     "events": [
-      "home_fr_e2_09_viewed"
+      "home_dashboard_viewed",
+      "home_section_load_time",
+      "home_section_error",
+      "home_section_retry_tapped"
     ]
   },
   "acceptanceCriteriaRefs": [
