@@ -38,8 +38,35 @@
   },
   "analytics": {
     "screenView": "profile_overview_viewed",
-    "events": ["profile_overview_viewed"]
+    "events": [
+      "profile_overview_viewed",
+      "profile_upgrade_cta_tapped",
+      "profile_manage_plan_tapped",
+      "profile_account_tapped",
+      "profile_language_tapped",
+      "profile_reminders_tapped",
+      "profile_accessibility_tapped",
+      "profile_payment_history_tapped"
+    ]
   },
-  "acceptanceCriteriaRefs": [],
-  "gates": []
+  "leadsTo": [
+    "subscription.fr_e3_01",
+    "profile.account",
+    "profile.language",
+    "profile.reminders",
+    "profile.accessibility",
+    "profile.payment_history"
+  ],
+  "acceptanceCriteriaRefs": [
+    "AC-PROF-01-01",
+    "AC-PROF-01-02",
+    "AC-PROF-01-03",
+    "AC-PROF-01-04",
+    "AC-PROF-01-05"
+  ],
+  "gates": [],
+  "notes": [
+    "For non-subscribed users (status null/expired), show prominent upgrade CTA card with 'Plan Seç' button directly navigating to ProfileSubscription.",
+    "For subscribed users (active/trial), show plan details with 'Planı Yönet' button."
+  ]
 }

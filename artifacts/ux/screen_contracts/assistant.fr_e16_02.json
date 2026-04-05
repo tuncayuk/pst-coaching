@@ -1,9 +1,11 @@
 {
   "id": "assistant.fr_e16_02",
   "title": "RAG yaniti ve baglam sentezi",
-  "route": "/epic-16/fr-e16-02",
+  "route": "/assistant/rag-response",
   "purpose": "Implements FR-E16-02: RAG yaniti ve baglam sentezi.",
-  "entryPoints": ["content.reader"],
+  "entryPoints": [
+    "content.reader"
+  ],
   "inputs": [
     {
       "name": "conversationId",
@@ -24,7 +26,11 @@
       "source": "profile"
     }
   ],
-  "dataDependencies": ["AiAnswer", "AiSourceBundle", "AiFollowupSuggestion"],
+  "dataDependencies": [
+    "AiAnswer",
+    "AiSourceBundle",
+    "AiFollowupSuggestion"
+  ],
   "uiStates": {
     "loading": {
       "description": "Skeleton placeholders are shown while loading FR-E16-02 data."
@@ -44,8 +50,18 @@
   },
   "analytics": {
     "screenView": "assistant_fr_e16_02_viewed",
-    "events": ["assistant_fr_e16_02_viewed"]
+    "events": [
+      "assistant_fr_e16_02_viewed"
+    ]
   },
-  "acceptanceCriteriaRefs": ["AC-FR-E16-02-01", "AC-FR-E16-02-02", "AC-FR-E16-02-03", "AC-FR-E16-02-04"],
-  "gates": ["auth", "subscription"]
+  "acceptanceCriteriaRefs": [
+    "AC-FR-E16-02-01",
+    "AC-FR-E16-02-02",
+    "AC-FR-E16-02-03",
+    "AC-FR-E16-02-04"
+  ],
+  "gates": [
+    "auth",
+    "subscription"
+  ]
 }

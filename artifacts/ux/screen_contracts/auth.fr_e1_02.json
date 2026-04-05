@@ -1,9 +1,13 @@
 {
   "id": "auth.fr_e1_02",
   "title": "Kayit olma",
-  "route": "/epic-1/fr-e1-02",
+  "route": "/auth/register",
   "purpose": "Implements FR-E1-02: User registration with email/phone, inline validation, OTP verification before activation, lockout after 5 failed OTP attempts, and existing-account redirect.",
-  "entryPoints": ["auth.fr_e1_03", "auth.fr_e1_01", "onboarding.welcome"],
+  "entryPoints": [
+    "auth.fr_e1_03",
+    "auth.fr_e1_01",
+    "onboarding.welcome"
+  ],
   "inputs": [
     {
       "name": "locale",
@@ -12,7 +16,9 @@
       "source": "profile"
     }
   ],
-  "dataDependencies": ["User"],
+  "dataDependencies": [
+    "User"
+  ],
   "uiStates": {
     "loading": {
       "description": "Skeleton form fields (name, email, phone, password x2) and a disabled Kaydol button while initialising."
@@ -40,6 +46,12 @@
       "auth_register_success"
     ]
   },
-  "acceptanceCriteriaRefs": ["AC-FR-E1-02-01", "AC-FR-E1-02-02", "AC-FR-E1-02-03", "AC-FR-E1-02-04", "AC-FR-E1-02-05"],
+  "acceptanceCriteriaRefs": [
+    "AC-FR-E1-02-01",
+    "AC-FR-E1-02-02",
+    "AC-FR-E1-02-03",
+    "AC-FR-E1-02-04",
+    "AC-FR-E1-02-05"
+  ],
   "gates": []
 }

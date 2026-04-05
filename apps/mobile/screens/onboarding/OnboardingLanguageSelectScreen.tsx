@@ -31,7 +31,7 @@ const LanguageSelectContent = ({ isOffline }: { isOffline?: boolean }) => {
           mode="contained"
           style={styles.primaryButton}
           disabled={isOffline}
-          onPress={() => navigation.navigate('AuthLogin')}
+          onPress={() => navigation.getParent()?.navigate('Auth' as never)}
           accessibilityLabel="Devam et"
         >
           Devam Et

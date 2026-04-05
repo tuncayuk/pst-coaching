@@ -1,9 +1,11 @@
 {
   "id": "video.fr_e18_02",
   "title": "Video oynatici ve temel kontroller",
-  "route": "/epic-18/fr-e18-02",
+  "route": "/video/player",
   "purpose": "Implements FR-E18-02: Video oynatici ve temel kontroller.",
-  "entryPoints": ["content.video_detail"],
+  "entryPoints": [
+    "content.video_detail"
+  ],
   "inputs": [
     {
       "name": "videoId",
@@ -24,7 +26,11 @@
       "source": "profile"
     }
   ],
-  "dataDependencies": ["VideoContent", "VideoPlaybackSession", "VideoQualityProfile"],
+  "dataDependencies": [
+    "VideoContent",
+    "VideoPlaybackSession",
+    "VideoQualityProfile"
+  ],
   "uiStates": {
     "loading": {
       "description": "Skeleton placeholders are shown while loading FR-E18-02 data."
@@ -44,8 +50,18 @@
   },
   "analytics": {
     "screenView": "video_fr_e18_02_viewed",
-    "events": ["video_fr_e18_02_viewed"]
+    "events": [
+      "video_fr_e18_02_viewed"
+    ]
   },
-  "acceptanceCriteriaRefs": ["AC-FR-E18-02-01", "AC-FR-E18-02-02", "AC-FR-E18-02-03", "AC-FR-E18-02-04"],
-  "gates": ["auth", "subscription"]
+  "acceptanceCriteriaRefs": [
+    "AC-FR-E18-02-01",
+    "AC-FR-E18-02-02",
+    "AC-FR-E18-02-03",
+    "AC-FR-E18-02-04"
+  ],
+  "gates": [
+    "auth",
+    "subscription"
+  ]
 }

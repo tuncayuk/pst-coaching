@@ -1,9 +1,11 @@
 {
   "id": "gamification.fr_e15_04",
   "title": "Liderlik tablosu ve seri takibi",
-  "route": "/epic-15/fr-e15-04",
+  "route": "/gamification/leaderboard",
   "purpose": "Implements FR-E15-04: Liderlik tablosu ve seri takibi.",
-  "entryPoints": ["progress.dashboard"],
+  "entryPoints": [
+    "progress.dashboard"
+  ],
   "inputs": [
     {
       "name": "userId",
@@ -24,7 +26,11 @@
       "source": "profile"
     }
   ],
-  "dataDependencies": ["LeaderboardEntry", "UserStreak", "UserXpLedger"],
+  "dataDependencies": [
+    "LeaderboardEntry",
+    "UserStreak",
+    "UserXpLedger"
+  ],
   "uiStates": {
     "loading": {
       "description": "Skeleton placeholders are shown while loading FR-E15-04 data."
@@ -44,8 +50,18 @@
   },
   "analytics": {
     "screenView": "gamification_fr_e15_04_viewed",
-    "events": ["gamification_fr_e15_04_viewed"]
+    "events": [
+      "gamification_fr_e15_04_viewed"
+    ]
   },
-  "acceptanceCriteriaRefs": ["AC-FR-E15-04-01", "AC-FR-E15-04-02", "AC-FR-E15-04-03", "AC-FR-E15-04-04"],
-  "gates": ["auth", "subscription"]
+  "acceptanceCriteriaRefs": [
+    "AC-FR-E15-04-01",
+    "AC-FR-E15-04-02",
+    "AC-FR-E15-04-03",
+    "AC-FR-E15-04-04"
+  ],
+  "gates": [
+    "auth",
+    "subscription"
+  ]
 }

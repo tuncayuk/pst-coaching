@@ -1,9 +1,11 @@
 {
   "id": "auth.fr_e1_07",
   "title": "Biyometrik giris (FaceID/TouchID)",
-  "route": "/epic-1/fr-e1-07",
+  "route": "/auth/biometric",
   "purpose": "Implements FR-E1-07: Opt-in biometric login prompt on first login for capable devices; password fallback on failure; enable/disable from Profile > Settings.",
-  "entryPoints": ["auth.fr_e1_03"],
+  "entryPoints": [
+    "auth.fr_e1_03"
+  ],
   "inputs": [
     {
       "name": "userId",
@@ -19,7 +21,10 @@
       "note": "face_id | touch_id | none -- determines prompt visibility"
     }
   ],
-  "dataDependencies": ["User", "UserSession"],
+  "dataDependencies": [
+    "User",
+    "UserSession"
+  ],
   "uiStates": {
     "loading": {
       "description": "Checking device biometric capability with a brief spinner."
@@ -39,8 +44,17 @@
   },
   "analytics": {
     "screenView": "auth_fr_e1_07_viewed",
-    "events": ["auth_fr_e1_07_viewed", "auth_biometric_enabled", "auth_biometric_skipped", "auth_biometric_failed"]
+    "events": [
+      "auth_fr_e1_07_viewed",
+      "auth_biometric_enabled",
+      "auth_biometric_skipped",
+      "auth_biometric_failed"
+    ]
   },
-  "acceptanceCriteriaRefs": ["AC-FR-E1-07-01", "AC-FR-E1-07-02", "AC-FR-E1-07-03"],
+  "acceptanceCriteriaRefs": [
+    "AC-FR-E1-07-01",
+    "AC-FR-E1-07-02",
+    "AC-FR-E1-07-03"
+  ],
   "gates": []
 }

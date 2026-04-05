@@ -1,9 +1,11 @@
 {
   "id": "bookclub.fr_e14_04",
   "title": "Tartisma basligi ve etkilesim akisi",
-  "route": "/epic-14/fr-e14-04",
+  "route": "/book-club/discussion",
   "purpose": "Implements FR-E14-04: Tartisma basligi ve etkilesim akisi.",
-  "entryPoints": ["community.book_club"],
+  "entryPoints": [
+    "community.book_club"
+  ],
   "inputs": [
     {
       "name": "userId",
@@ -24,7 +26,12 @@
       "source": "profile"
     }
   ],
-  "dataDependencies": ["BookClubTopic", "BookClubMessage", "BookClubReaction", "BookClubModerationEvent"],
+  "dataDependencies": [
+    "BookClubTopic",
+    "BookClubMessage",
+    "BookClubReaction",
+    "BookClubModerationEvent"
+  ],
   "uiStates": {
     "loading": {
       "description": "Skeleton placeholders are shown while loading FR-E14-04 data."
@@ -44,8 +51,18 @@
   },
   "analytics": {
     "screenView": "bookclub_fr_e14_04_viewed",
-    "events": ["bookclub_fr_e14_04_viewed"]
+    "events": [
+      "bookclub_fr_e14_04_viewed"
+    ]
   },
-  "acceptanceCriteriaRefs": ["AC-FR-E14-04-01", "AC-FR-E14-04-02", "AC-FR-E14-04-03", "AC-FR-E14-04-04"],
-  "gates": ["auth", "subscription"]
+  "acceptanceCriteriaRefs": [
+    "AC-FR-E14-04-01",
+    "AC-FR-E14-04-02",
+    "AC-FR-E14-04-03",
+    "AC-FR-E14-04-04"
+  ],
+  "gates": [
+    "auth",
+    "subscription"
+  ]
 }

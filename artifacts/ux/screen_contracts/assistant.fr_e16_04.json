@@ -1,9 +1,11 @@
 {
   "id": "assistant.fr_e16_04",
   "title": "AI icgoruleri ve kisisel oneriler",
-  "route": "/epic-16/fr-e16-04",
+  "route": "/assistant/insights",
   "purpose": "Implements FR-E16-04: AI icgoruleri ve kisisel oneriler.",
-  "entryPoints": ["content.reader"],
+  "entryPoints": [
+    "content.reader"
+  ],
   "inputs": [
     {
       "name": "userId",
@@ -24,7 +26,12 @@
       "source": "profile"
     }
   ],
-  "dataDependencies": ["AiInsight", "ProgressSnapshot", "CommentSentiment", "Recommendation"],
+  "dataDependencies": [
+    "AiInsight",
+    "ProgressSnapshot",
+    "CommentSentiment",
+    "Recommendation"
+  ],
   "uiStates": {
     "loading": {
       "description": "Skeleton placeholders are shown while loading FR-E16-04 data."
@@ -44,8 +51,18 @@
   },
   "analytics": {
     "screenView": "assistant_fr_e16_04_viewed",
-    "events": ["assistant_fr_e16_04_viewed"]
+    "events": [
+      "assistant_fr_e16_04_viewed"
+    ]
   },
-  "acceptanceCriteriaRefs": ["AC-FR-E16-04-01", "AC-FR-E16-04-02", "AC-FR-E16-04-03", "AC-FR-E16-04-04"],
-  "gates": ["auth", "subscription"]
+  "acceptanceCriteriaRefs": [
+    "AC-FR-E16-04-01",
+    "AC-FR-E16-04-02",
+    "AC-FR-E16-04-03",
+    "AC-FR-E16-04-04"
+  ],
+  "gates": [
+    "auth",
+    "subscription"
+  ]
 }

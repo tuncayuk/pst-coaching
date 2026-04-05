@@ -1,9 +1,11 @@
 {
   "id": "auth.fr_e1_09",
   "title": "Misafir giris (kayitsiz)",
-  "route": "/epic-1/fr-e1-09",
+  "route": "/auth/guest",
   "purpose": "Implements FR-E1-09: Guest session without profile creation. Discover + detail accessible; content start/read redirects to registration. Guest browsing data transfers to account post-registration.",
-  "entryPoints": ["auth.fr_e1_03"],
+  "entryPoints": [
+    "auth.fr_e1_03"
+  ],
   "inputs": [
     {
       "name": "locale",
@@ -32,8 +34,17 @@
   },
   "analytics": {
     "screenView": "auth_fr_e1_09_viewed",
-    "events": ["auth_fr_e1_09_viewed", "auth_guest_session_started", "auth_guest_register_tapped"]
+    "events": [
+      "auth_fr_e1_09_viewed",
+      "auth_guest_session_started",
+      "auth_guest_register_tapped"
+    ]
   },
-  "acceptanceCriteriaRefs": ["AC-FR-E1-09-01", "AC-FR-E1-09-02", "AC-FR-E1-09-03", "AC-FR-E1-09-04"],
+  "acceptanceCriteriaRefs": [
+    "AC-FR-E1-09-01",
+    "AC-FR-E1-09-02",
+    "AC-FR-E1-09-03",
+    "AC-FR-E1-09-04"
+  ],
   "gates": []
 }

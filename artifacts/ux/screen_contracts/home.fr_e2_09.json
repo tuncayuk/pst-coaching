@@ -2,8 +2,10 @@
   "id": "home.fr_e2_09",
   "title": "Ana akis performansi",
   "route": "/home",
-  "purpose": "Performance constraints embedded in home.dashboard. Skeleton shown on first load (AC-FR-E2-09-01). Critical cards (Bugun ozeti, Devam Et) loaded first via priority fetch (AC-FR-E2-09-02). Card-level retry on partial failures -- each section independent (AC-FR-E2-09-03).",
-  "entryPoints": ["home.dashboard"],
+  "purpose": "Performance constraints embedded in home.dashboard. Skeleton shown on first load (AC-FR-E2-09-01). Critical cards (Bugun ozeti, Devam Et) loaded first via priority fetch (AC-FR-E2-09-02). Card-level retry on partial failures -- each section independent (AC-FR-E2-09-03). Performance NFR merged into home.dashboard ACs.",
+  "entryPoints": [
+    "home.dashboard"
+  ],
   "inputs": [
     {
       "name": "userId",
@@ -24,7 +26,12 @@
       "source": "profile"
     }
   ],
-  "dataDependencies": ["User", "Subscription", "ContentProgress", "ReminderSetting"],
+  "dataDependencies": [
+    "User",
+    "Subscription",
+    "ContentProgress",
+    "ReminderSetting"
+  ],
   "uiStates": {
     "loading": {
       "description": "Full-screen skeleton with shimmer. Critical card slots at top rendered first. Non-critical sections (recommendations, recent) deferred. PActivityIndicator at header. AC-FR-E2-09-01/02 satisfied."
@@ -44,8 +51,17 @@
   },
   "analytics": {
     "screenView": "home_dashboard_viewed",
-    "events": ["home_dashboard_viewed", "home_section_load_time", "home_section_error", "home_section_retry_tapped"]
+    "events": [
+      "home_dashboard_viewed",
+      "home_section_load_time",
+      "home_section_error",
+      "home_section_retry_tapped"
+    ]
   },
-  "acceptanceCriteriaRefs": ["AC-FR-E2-09-01", "AC-FR-E2-09-02", "AC-FR-E2-09-03"],
+  "acceptanceCriteriaRefs": [
+    "AC-FR-E2-09-01",
+    "AC-FR-E2-09-02",
+    "AC-FR-E2-09-03"
+  ],
   "gates": []
 }

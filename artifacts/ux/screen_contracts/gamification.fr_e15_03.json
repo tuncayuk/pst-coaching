@@ -1,9 +1,11 @@
 {
   "id": "gamification.fr_e15_03",
   "title": "Seviye sistemi ve XP ilerlemesi",
-  "route": "/epic-15/fr-e15-03",
+  "route": "/gamification/levels",
   "purpose": "Implements FR-E15-03: Seviye sistemi ve XP ilerlemesi.",
-  "entryPoints": ["progress.dashboard"],
+  "entryPoints": [
+    "progress.dashboard"
+  ],
   "inputs": [
     {
       "name": "userId",
@@ -24,7 +26,11 @@
       "source": "profile"
     }
   ],
-  "dataDependencies": ["UserLevel", "UserXpLedger", "LevelTier"],
+  "dataDependencies": [
+    "UserLevel",
+    "UserXpLedger",
+    "LevelTier"
+  ],
   "uiStates": {
     "loading": {
       "description": "Skeleton placeholders are shown while loading FR-E15-03 data."
@@ -44,8 +50,18 @@
   },
   "analytics": {
     "screenView": "gamification_fr_e15_03_viewed",
-    "events": ["gamification_fr_e15_03_viewed"]
+    "events": [
+      "gamification_fr_e15_03_viewed"
+    ]
   },
-  "acceptanceCriteriaRefs": ["AC-FR-E15-03-01", "AC-FR-E15-03-02", "AC-FR-E15-03-03", "AC-FR-E15-03-04"],
-  "gates": ["auth", "subscription"]
+  "acceptanceCriteriaRefs": [
+    "AC-FR-E15-03-01",
+    "AC-FR-E15-03-02",
+    "AC-FR-E15-03-03",
+    "AC-FR-E15-03-04"
+  ],
+  "gates": [
+    "auth",
+    "subscription"
+  ]
 }

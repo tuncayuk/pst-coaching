@@ -1,34 +1,28 @@
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import React from 'react';
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import React from "react";
 
-import { AuthDemographicsScreen } from '../screens/auth/AuthDemographicsScreen';
-import { AuthFaceIdSetupScreen } from '../screens/auth/AuthFaceIdSetupScreen';
-import { AuthForgotPasswordScreen } from '../screens/auth/AuthForgotPasswordScreen';
-import { AuthGuestModeScreen } from '../screens/auth/AuthGuestModeScreen';
-import { AuthLockoutScreen } from '../screens/auth/AuthLockoutScreen';
-import { AuthLoginScreen } from '../screens/auth/AuthLoginScreen';
-import { AuthOtpVerifyScreen } from '../screens/auth/AuthOtpVerifyScreen';
-import { AuthPasswordResetScreen } from '../screens/auth/AuthPasswordResetScreen';
-import { AuthReauthScreen } from '../screens/auth/AuthReauthScreen';
-import { AuthRegisterScreen } from '../screens/auth/AuthRegisterScreen';
-import { AuthSessionTimeoutScreen } from '../screens/auth/AuthSessionTimeoutScreen';
-import { AuthSplashScreen } from '../screens/auth/AuthSplashScreen';
-import { ScreenState } from '../screens/components/ScreenState';
-import { OnboardingCarouselScreen } from '../screens/onboarding/OnboardingCarouselScreen';
-import { OnboardingLanguageSelectScreen } from '../screens/onboarding/OnboardingLanguageSelectScreen';
-import { OnboardingWelcomeScreen } from '../screens/onboarding/OnboardingWelcomeScreen';
+import { AuthDemographicsScreen } from "../screens/auth/AuthDemographicsScreen";
+import { AuthFaceIdSetupScreen } from "../screens/auth/AuthFaceIdSetupScreen";
+import { AuthForgotPasswordScreen } from "../screens/auth/AuthForgotPasswordScreen";
+import { AuthGuestModeScreen } from "../screens/auth/AuthGuestModeScreen";
+import { AuthLockoutScreen } from "../screens/auth/AuthLockoutScreen";
+import { AuthLoginScreen } from "../screens/auth/AuthLoginScreen";
+import { AuthOtpVerifyScreen } from "../screens/auth/AuthOtpVerifyScreen";
+import { AuthPasswordResetScreen } from "../screens/auth/AuthPasswordResetScreen";
+import { AuthReauthScreen } from "../screens/auth/AuthReauthScreen";
+import { AuthRegisterScreen } from "../screens/auth/AuthRegisterScreen";
+import { AuthSessionTimeoutScreen } from "../screens/auth/AuthSessionTimeoutScreen";
+import { ScreenState } from "../screens/components/ScreenState";
 
 type ScreenStateParam = { state?: ScreenState } | undefined;
 
 export type AuthStackParamList = {
-  AuthSplash: ScreenStateParam;
-  OnboardingCarousel: ScreenStateParam;
-  OnboardingLanguageSelect: ScreenStateParam;
-  OnboardingWelcome: ScreenStateParam;
   AuthLogin: ScreenStateParam;
   AuthRegister: ScreenStateParam;
   AuthForgotPassword: ScreenStateParam;
-  AuthOtpVerify: ScreenStateParam | { state?: ScreenState; source?: 'register' | 'forgot-password' };
+  AuthOtpVerify:
+    | ScreenStateParam
+    | { state?: ScreenState; source?: "register" | "forgot-password" };
   AuthPasswordReset: ScreenStateParam;
   AuthFaceIdSetup: ScreenStateParam;
   AuthDemographics: ScreenStateParam;
@@ -44,13 +38,9 @@ type AuthStackProps = {
 
 const Stack = createNativeStackNavigator<AuthStackParamList>();
 
-export const AuthStack = ({ initialRouteName = 'AuthSplash' }: AuthStackProps) => {
+export const AuthStack = ({ initialRouteName = "AuthLogin" }: AuthStackProps) => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName={initialRouteName}>
-      <Stack.Screen name="AuthSplash" component={AuthSplashScreen} />
-      <Stack.Screen name="OnboardingCarousel" component={OnboardingCarouselScreen} />
-      <Stack.Screen name="OnboardingLanguageSelect" component={OnboardingLanguageSelectScreen} />
-      <Stack.Screen name="OnboardingWelcome" component={OnboardingWelcomeScreen} />
       <Stack.Screen name="AuthLogin" component={AuthLoginScreen} />
       <Stack.Screen name="AuthRegister" component={AuthRegisterScreen} />
       <Stack.Screen name="AuthForgotPassword" component={AuthForgotPasswordScreen} />
@@ -62,10 +52,18 @@ export const AuthStack = ({ initialRouteName = 'AuthSplash' }: AuthStackProps) =
       <Stack.Screen
         name="AuthSessionTimeout"
         component={AuthSessionTimeoutScreen}
-        options={{ presentation: 'modal' }}
+        options={{ presentation: "modal" }}
       />
-      <Stack.Screen name="AuthLockout" component={AuthLockoutScreen} options={{ presentation: 'modal' }} />
-      <Stack.Screen name="AuthReauth" component={AuthReauthScreen} options={{ presentation: 'modal' }} />
+      <Stack.Screen
+        name="AuthLockout"
+        component={AuthLockoutScreen}
+        options={{ presentation: "modal" }}
+      />
+      <Stack.Screen
+        name="AuthReauth"
+        component={AuthReauthScreen}
+        options={{ presentation: "modal" }}
+      />
     </Stack.Navigator>
   );
 };

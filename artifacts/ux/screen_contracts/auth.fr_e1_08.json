@@ -1,9 +1,12 @@
 {
   "id": "auth.fr_e1_08",
   "title": "Demografi bilgisi toplama (Tek Kaynak)",
-  "route": "/epic-1/fr-e1-08",
+  "route": "/auth/demographics",
   "purpose": "Implements FR-E1-08: Demographics form (age required 13-120, gender optional, country required via searchable dropdown) before first content start. Not re-asked if already submitted. Editable from Profile > Settings.",
-  "entryPoints": ["auth.fr_e1_07", "auth.fr_e1_03"],
+  "entryPoints": [
+    "auth.fr_e1_07",
+    "auth.fr_e1_03"
+  ],
   "inputs": [
     {
       "name": "userId",
@@ -19,7 +22,10 @@
       "note": "Pre-fills form if demographics were previously submitted (AC-FR-E1-08-06)"
     }
   ],
-  "dataDependencies": ["User", "DemographicProfile"],
+  "dataDependencies": [
+    "User",
+    "DemographicProfile"
+  ],
   "uiStates": {
     "loading": {
       "description": "Skeleton fields for age, gender toggle buttons, and country dropdown with disabled Save button."
@@ -55,5 +61,9 @@
     "AC-FR-E1-08-06",
     "AC-FR-E1-08-07"
   ],
-  "gates": ["auth", "subscription", "add_on"]
+  "gates": [
+    "auth",
+    "subscription",
+    "add_on"
+  ]
 }

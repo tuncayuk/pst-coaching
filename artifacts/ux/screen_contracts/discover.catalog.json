@@ -38,8 +38,25 @@
   },
   "analytics": {
     "screenView": "discover_catalog_viewed",
-    "events": ["discover_catalog_viewed"]
+    "events": [
+      "discover_catalog_viewed",
+      "discover_tab_tapped",
+      "discover_journey_card_tapped",
+      "discover_ebook_card_tapped",
+      "discover_assistant_tapped",
+      "discover_paywall_trigger"
+    ]
   },
-  "acceptanceCriteriaRefs": [],
+  "leadsTo": [
+    "discover.journeys",
+    "discover.workshops",
+    "discover.modules",
+    "discover.ebooks",
+    "discover.assistant_intro",
+    "content.journey_detail",
+    "content.ebook_detail",
+    "content.paywall"
+  ],
+  "acceptanceCriteriaRefs": ["AC-FR-E4-01-01", "AC-FR-E4-01-02", "AC-FR-E4-01-03"],
   "gates": []
 }

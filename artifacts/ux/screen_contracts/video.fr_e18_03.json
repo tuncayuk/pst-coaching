@@ -1,9 +1,11 @@
 {
   "id": "video.fr_e18_03",
   "title": "Altyazi, transkript ve erisilebilirlik",
-  "route": "/epic-18/fr-e18-03",
+  "route": "/video/accessibility",
   "purpose": "Implements FR-E18-03: Altyazi, transkript ve erisilebilirlik.",
-  "entryPoints": ["content.video_player"],
+  "entryPoints": [
+    "content.video_player"
+  ],
   "inputs": [
     {
       "name": "videoId",
@@ -24,7 +26,11 @@
       "source": "profile"
     }
   ],
-  "dataDependencies": ["VideoSubtitleTrack", "VideoTranscriptCue", "AccessibilitySettings"],
+  "dataDependencies": [
+    "VideoSubtitleTrack",
+    "VideoTranscriptCue",
+    "AccessibilitySettings"
+  ],
   "uiStates": {
     "loading": {
       "description": "Skeleton placeholders are shown while loading FR-E18-03 data."
@@ -44,8 +50,18 @@
   },
   "analytics": {
     "screenView": "video_fr_e18_03_viewed",
-    "events": ["video_fr_e18_03_viewed"]
+    "events": [
+      "video_fr_e18_03_viewed"
+    ]
   },
-  "acceptanceCriteriaRefs": ["AC-FR-E18-03-01", "AC-FR-E18-03-02", "AC-FR-E18-03-03", "AC-FR-E18-03-04"],
-  "gates": ["auth", "subscription"]
+  "acceptanceCriteriaRefs": [
+    "AC-FR-E18-03-01",
+    "AC-FR-E18-03-02",
+    "AC-FR-E18-03-03",
+    "AC-FR-E18-03-04"
+  ],
+  "gates": [
+    "auth",
+    "subscription"
+  ]
 }

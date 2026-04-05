@@ -1,9 +1,11 @@
 {
   "id": "collab.fr_e13_01",
   "title": "Okuma gruplari listesi ve durum ozeti",
-  "route": "/epic-13/fr-e13-01",
+  "route": "/collab/groups",
   "purpose": "Implements FR-E13-01: Okuma gruplari listesi ve durum ozeti.",
-  "entryPoints": ["community.collaborative_reading"],
+  "entryPoints": [
+    "community.collaborative_reading"
+  ],
   "inputs": [
     {
       "name": "userId",
@@ -24,7 +26,11 @@
       "source": "profile"
     }
   ],
-  "dataDependencies": ["ReadingGroup", "ReadingGroupMember", "ContentProgress"],
+  "dataDependencies": [
+    "ReadingGroup",
+    "ReadingGroupMember",
+    "ContentProgress"
+  ],
   "uiStates": {
     "loading": {
       "description": "Skeleton placeholders are shown while loading FR-E13-01 data."
@@ -44,8 +50,18 @@
   },
   "analytics": {
     "screenView": "collab_fr_e13_01_viewed",
-    "events": ["collab_fr_e13_01_viewed"]
+    "events": [
+      "collab_fr_e13_01_viewed"
+    ]
   },
-  "acceptanceCriteriaRefs": ["AC-FR-E13-01-01", "AC-FR-E13-01-02", "AC-FR-E13-01-03", "AC-FR-E13-01-04"],
-  "gates": ["auth", "subscription"]
+  "acceptanceCriteriaRefs": [
+    "AC-FR-E13-01-01",
+    "AC-FR-E13-01-02",
+    "AC-FR-E13-01-03",
+    "AC-FR-E13-01-04"
+  ],
+  "gates": [
+    "auth",
+    "subscription"
+  ]
 }

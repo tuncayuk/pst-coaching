@@ -1,9 +1,11 @@
 {
   "id": "auth.fr_e1_05",
   "title": "Oturum yonetimi ve guvenlik",
-  "route": "/epic-1/fr-e1-05",
+  "route": "/auth/session",
   "purpose": "Implements FR-E1-05: Session management -- logout clears tokens, 30-min inactivity triggers re-auth, expired/invalid tokens route to login.",
-  "entryPoints": ["any_authenticated_screen"],
+  "entryPoints": [
+    "any_authenticated_screen"
+  ],
   "inputs": [
     {
       "name": "userId",
@@ -18,7 +20,9 @@
       "source": "secure_storage"
     }
   ],
-  "dataDependencies": ["UserSession"],
+  "dataDependencies": [
+    "UserSession"
+  ],
   "uiStates": {
     "loading": {
       "description": "Spinner with message 'Oturum kontrol ediliyor...' while verifying session validity."
@@ -46,6 +50,13 @@
       "auth_token_expired"
     ]
   },
-  "acceptanceCriteriaRefs": ["AC-FR-E1-05-01", "AC-FR-E1-05-02", "AC-FR-E1-05-03", "AC-FR-E1-05-04"],
-  "gates": ["auth"]
+  "acceptanceCriteriaRefs": [
+    "AC-FR-E1-05-01",
+    "AC-FR-E1-05-02",
+    "AC-FR-E1-05-03",
+    "AC-FR-E1-05-04"
+  ],
+  "gates": [
+    "auth"
+  ]
 }

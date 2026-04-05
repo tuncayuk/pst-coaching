@@ -1,14 +1,14 @@
-import { useNavigation } from '@react-navigation/native';
-import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { useNavigation } from "@react-navigation/native";
+import React from "react";
+import { StyleSheet, View } from "react-native";
 
-import { PButton, PChip, PText } from '../../components';
-import { OfflineNotice } from '../components/OfflineNotice';
-import { ScreenLayout } from '../components/ScreenLayout';
-import { ScreenState, resolveScreenState } from '../components/ScreenState';
-import { SectionCard } from '../components/SectionCard';
-import { SkeletonBlock } from '../components/SkeletonBlock';
-import { StateMessage } from '../components/StateMessage';
+import { PButton, PChip, PText } from "../../components";
+import { OfflineNotice } from "../components/OfflineNotice";
+import { ScreenLayout } from "../components/ScreenLayout";
+import { ScreenState, resolveScreenState } from "../components/ScreenState";
+import { SectionCard } from "../components/SectionCard";
+import { SkeletonBlock } from "../components/SkeletonBlock";
+import { StateMessage } from "../components/StateMessage";
 
 const WelcomeContent = ({ isOffline }: { isOffline?: boolean }) => {
   const navigation = useNavigation<any>();
@@ -20,10 +20,11 @@ const WelcomeContent = ({ isOffline }: { isOffline?: boolean }) => {
           Yeni bir yolculuğa hoş geldin
         </PText>
         <PText variant="bodyMedium" style={styles.bodyText}>
-          PST Coaching ile kişisel gelişim yolculuğunu planla, günlük içeriklerle ilerle ve ilerlemeni takip et.
+          PST Coaching ile kişisel gelişim yolculuğunu planla, günlük içeriklerle ilerle ve
+          ilerlemeni takip et.
         </PText>
         <View style={styles.chipRow}>
-          {['Kişisel plan', 'Günlük içerik', 'İlerleme takibi'].map(label => (
+          {["Kişisel plan", "Günlük içerik", "İlerleme takibi"].map((label) => (
             <PChip key={label} style={styles.chip} disabled={isOffline}>
               {label}
             </PChip>
@@ -33,7 +34,7 @@ const WelcomeContent = ({ isOffline }: { isOffline?: boolean }) => {
           mode="contained"
           style={styles.primaryButton}
           disabled={isOffline}
-          onPress={() => navigation.navigate('AuthLogin')}
+          onPress={() => navigation.getParent()?.navigate("Auth" as never)}
         >
           Başla
         </PButton>
@@ -47,11 +48,15 @@ const WelcomeContent = ({ isOffline }: { isOffline?: boolean }) => {
             mode="outlined"
             style={styles.secondaryButton}
             disabled={isOffline}
-            onPress={() => navigation.navigate('AuthLogin')}
+            onPress={() => navigation.getParent()?.navigate("Auth" as never)}
           >
             Giriş Yap
           </PButton>
-          <PButton mode="text" disabled={isOffline} onPress={() => navigation.navigate('AuthRegister')}>
+          <PButton
+            mode="text"
+            disabled={isOffline}
+            onPress={() => navigation.getParent()?.navigate("Auth" as never)}
+          >
             Kayıt Ol
           </PButton>
         </View>
@@ -60,10 +65,14 @@ const WelcomeContent = ({ isOffline }: { isOffline?: boolean }) => {
   );
 };
 
-export const OnboardingWelcomeScreen = ({ route }: { route?: { params?: { state?: ScreenState } } }) => {
+export const OnboardingWelcomeScreen = ({
+  route,
+}: {
+  route?: { params?: { state?: ScreenState } };
+}) => {
   const state = resolveScreenState(route);
 
-  if (state === 'loading') {
+  if (state === "loading") {
     return (
       <ScreenLayout title="Hoş Geldiniz" subtitle="Karşılama hazırlanıyor">
         <SectionCard title="Yükleniyor">
@@ -76,7 +85,7 @@ export const OnboardingWelcomeScreen = ({ route }: { route?: { params?: { state?
     );
   }
 
-  if (state === 'empty') {
+  if (state === "empty") {
     return (
       <ScreenLayout title="Hoş Geldiniz" subtitle="Karşılama içeriği bulunamadı">
         <StateMessage
@@ -89,7 +98,7 @@ export const OnboardingWelcomeScreen = ({ route }: { route?: { params?: { state?
     );
   }
 
-  if (state === 'error') {
+  if (state === "error") {
     return (
       <ScreenLayout title="Hoş Geldiniz" subtitle="Bir sorun oluştu">
         <StateMessage
@@ -103,7 +112,7 @@ export const OnboardingWelcomeScreen = ({ route }: { route?: { params?: { state?
     );
   }
 
-  if (state === 'offline') {
+  if (state === "offline") {
     return (
       <ScreenLayout title="Hoş Geldiniz" subtitle="Önbellekteki içerikler">
         <OfflineNotice />
@@ -121,29 +130,29 @@ export const OnboardingWelcomeScreen = ({ route }: { route?: { params?: { state?
 
 const styles = StyleSheet.create({
   headline: {
-    marginBottom: 8
+    marginBottom: 8,
   },
   bodyText: {
     lineHeight: 20,
-    marginBottom: 12
+    marginBottom: 12,
   },
   chipRow: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    marginBottom: 12
+    flexDirection: "row",
+    flexWrap: "wrap",
+    marginBottom: 12,
   },
   chip: {
     marginRight: 8,
-    marginBottom: 8
+    marginBottom: 8,
   },
   primaryButton: {
-    alignSelf: 'flex-start'
+    alignSelf: "flex-start",
   },
   buttonRow: {
-    flexDirection: 'row',
-    alignItems: 'center'
+    flexDirection: "row",
+    alignItems: "center",
   },
   secondaryButton: {
-    marginRight: 12
-  }
+    marginRight: 12,
+  },
 });

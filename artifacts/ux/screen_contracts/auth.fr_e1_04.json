@@ -1,9 +1,11 @@
 {
   "id": "auth.fr_e1_04",
   "title": "Sifre sifirlama",
-  "route": "/epic-1/fr-e1-04",
+  "route": "/auth/password-reset",
   "purpose": "Implements FR-E1-04: Password reset via email/phone OTP, password policy enforcement (min 8 chars, letter + number), and success redirect to login.",
-  "entryPoints": ["auth.fr_e1_03"],
+  "entryPoints": [
+    "auth.fr_e1_03"
+  ],
   "inputs": [
     {
       "name": "locale",
@@ -12,7 +14,9 @@
       "source": "profile"
     }
   ],
-  "dataDependencies": ["User"],
+  "dataDependencies": [
+    "User"
+  ],
   "uiStates": {
     "loading": {
       "description": "Skeleton email/phone input and disabled Kod Gonder button shown."
@@ -32,8 +36,16 @@
   },
   "analytics": {
     "screenView": "auth_fr_e1_04_viewed",
-    "events": ["auth_fr_e1_04_viewed", "auth_forgot_password_submitted", "auth_password_reset_success"]
+    "events": [
+      "auth_fr_e1_04_viewed",
+      "auth_forgot_password_submitted",
+      "auth_password_reset_success"
+    ]
   },
-  "acceptanceCriteriaRefs": ["AC-FR-E1-04-01", "AC-FR-E1-04-02", "AC-FR-E1-04-03"],
+  "acceptanceCriteriaRefs": [
+    "AC-FR-E1-04-01",
+    "AC-FR-E1-04-02",
+    "AC-FR-E1-04-03"
+  ],
   "gates": []
 }

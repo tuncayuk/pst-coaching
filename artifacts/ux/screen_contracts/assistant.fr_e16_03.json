@@ -1,9 +1,11 @@
 {
   "id": "assistant.fr_e16_03",
   "title": "Kaynak referansi ve izlenebilirlik",
-  "route": "/epic-16/fr-e16-03",
+  "route": "/assistant/sources",
   "purpose": "Implements FR-E16-03: Kaynak referansi ve izlenebilirlik.",
-  "entryPoints": ["content.reader"],
+  "entryPoints": [
+    "content.reader"
+  ],
   "inputs": [
     {
       "name": "answerId",
@@ -24,7 +26,12 @@
       "source": "profile"
     }
   ],
-  "dataDependencies": ["AiSourceRef", "Journey", "Workshop", "Ebook"],
+  "dataDependencies": [
+    "AiSourceRef",
+    "Journey",
+    "Workshop",
+    "Ebook"
+  ],
   "uiStates": {
     "loading": {
       "description": "Skeleton placeholders are shown while loading FR-E16-03 data."
@@ -44,8 +51,18 @@
   },
   "analytics": {
     "screenView": "assistant_fr_e16_03_viewed",
-    "events": ["assistant_fr_e16_03_viewed"]
+    "events": [
+      "assistant_fr_e16_03_viewed"
+    ]
   },
-  "acceptanceCriteriaRefs": ["AC-FR-E16-03-01", "AC-FR-E16-03-02", "AC-FR-E16-03-03", "AC-FR-E16-03-04"],
-  "gates": ["auth", "subscription"]
+  "acceptanceCriteriaRefs": [
+    "AC-FR-E16-03-01",
+    "AC-FR-E16-03-02",
+    "AC-FR-E16-03-03",
+    "AC-FR-E16-03-04"
+  ],
+  "gates": [
+    "auth",
+    "subscription"
+  ]
 }

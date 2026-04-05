@@ -52,5 +52,6 @@
     ]
   },
   "acceptanceCriteriaRefs": ["AC-FR-E3-01-01", "AC-FR-E3-01-02", "AC-FR-E3-01-03"],
+  "leadsTo": ["subscription.fr_e3_02", "subscription.fr_e3_04"],
   "gates": ["auth", "subscription"]
 }

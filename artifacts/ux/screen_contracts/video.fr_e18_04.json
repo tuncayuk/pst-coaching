@@ -1,9 +1,11 @@
 {
   "id": "video.fr_e18_04",
   "title": "Video ilerleme, tamamlama ve senkronizasyon",
-  "route": "/epic-18/fr-e18-04",
+  "route": "/video/progress",
   "purpose": "Implements FR-E18-04: Video ilerleme, tamamlama ve senkronizasyon.",
-  "entryPoints": ["library.continue_watching"],
+  "entryPoints": [
+    "library.continue_watching"
+  ],
   "inputs": [
     {
       "name": "userId",
@@ -24,7 +26,11 @@
       "source": "profile"
     }
   ],
-  "dataDependencies": ["ContentProgress", "ContinueWatchingItem", "OfflineSyncQueue"],
+  "dataDependencies": [
+    "ContentProgress",
+    "ContinueWatchingItem",
+    "OfflineSyncQueue"
+  ],
   "uiStates": {
     "loading": {
       "description": "Skeleton placeholders are shown while loading FR-E18-04 data."
@@ -44,8 +50,18 @@
   },
   "analytics": {
     "screenView": "video_fr_e18_04_viewed",
-    "events": ["video_fr_e18_04_viewed"]
+    "events": [
+      "video_fr_e18_04_viewed"
+    ]
   },
-  "acceptanceCriteriaRefs": ["AC-FR-E18-04-01", "AC-FR-E18-04-02", "AC-FR-E18-04-03", "AC-FR-E18-04-04"],
-  "gates": ["auth", "subscription"]
+  "acceptanceCriteriaRefs": [
+    "AC-FR-E18-04-01",
+    "AC-FR-E18-04-02",
+    "AC-FR-E18-04-03",
+    "AC-FR-E18-04-04"
+  ],
+  "gates": [
+    "auth",
+    "subscription"
+  ]
 }

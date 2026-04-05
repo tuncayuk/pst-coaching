@@ -38,8 +38,21 @@
   },
   "analytics": {
     "screenView": "library_overview_viewed",
-    "events": ["library_overview_viewed"]
+    "events": [
+      "library_overview_viewed",
+      "library_favorites_tapped",
+      "library_collections_tapped",
+      "library_create_collection_tapped"
+    ]
   },
-  "acceptanceCriteriaRefs": [],
+  "leadsTo": ["library.favorites", "library.collections", "library.downloads"],
+  "acceptanceCriteriaRefs": [
+    "AC-FR-E9-01-01",
+    "AC-FR-E9-01-02",
+    "AC-FR-E7-01-01",
+    "AC-LIB-01-01",
+    "AC-LIB-01-02",
+    "AC-LIB-01-03"
+  ],
   "gates": ["subscription"]
 }

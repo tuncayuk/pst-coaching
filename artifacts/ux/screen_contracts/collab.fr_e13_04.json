@@ -1,9 +1,11 @@
 {
   "id": "collab.fr_e13_04",
   "title": "Grup ilerleme ve karsilastirma",
-  "route": "/epic-13/fr-e13-04",
+  "route": "/collab/groups/progress",
   "purpose": "Implements FR-E13-04: Grup ilerleme ve karsilastirma.",
-  "entryPoints": ["community.collaborative_reading"],
+  "entryPoints": [
+    "community.collaborative_reading"
+  ],
   "inputs": [
     {
       "name": "userId",
@@ -24,7 +26,11 @@
       "source": "profile"
     }
   ],
-  "dataDependencies": ["ReadingGroup", "ReadingGroupMember", "ContentProgress"],
+  "dataDependencies": [
+    "ReadingGroup",
+    "ReadingGroupMember",
+    "ContentProgress"
+  ],
   "uiStates": {
     "loading": {
       "description": "Skeleton placeholders are shown while loading FR-E13-04 data."
@@ -44,8 +50,18 @@
   },
   "analytics": {
     "screenView": "collab_fr_e13_04_viewed",
-    "events": ["collab_fr_e13_04_viewed"]
+    "events": [
+      "collab_fr_e13_04_viewed"
+    ]
   },
-  "acceptanceCriteriaRefs": ["AC-FR-E13-04-01", "AC-FR-E13-04-02", "AC-FR-E13-04-03", "AC-FR-E13-04-04"],
-  "gates": ["auth", "subscription"]
+  "acceptanceCriteriaRefs": [
+    "AC-FR-E13-04-01",
+    "AC-FR-E13-04-02",
+    "AC-FR-E13-04-03",
+    "AC-FR-E13-04-04"
+  ],
+  "gates": [
+    "auth",
+    "subscription"
+  ]
 }

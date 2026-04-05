@@ -1,9 +1,11 @@
 {
   "id": "gamification.fr_e15_01",
   "title": "Basarim panosu ve rozet listesi",
-  "route": "/epic-15/fr-e15-01",
+  "route": "/gamification/achievements",
   "purpose": "Implements FR-E15-01: Basarim panosu ve rozet listesi.",
-  "entryPoints": ["progress.dashboard"],
+  "entryPoints": [
+    "progress.dashboard"
+  ],
   "inputs": [
     {
       "name": "userId",
@@ -24,7 +26,11 @@
       "source": "profile"
     }
   ],
-  "dataDependencies": ["Badge", "BadgeUnlock", "UserXpLedger"],
+  "dataDependencies": [
+    "Badge",
+    "BadgeUnlock",
+    "UserXpLedger"
+  ],
   "uiStates": {
     "loading": {
       "description": "Skeleton placeholders are shown while loading FR-E15-01 data."
@@ -44,8 +50,18 @@
   },
   "analytics": {
     "screenView": "gamification_fr_e15_01_viewed",
-    "events": ["gamification_fr_e15_01_viewed"]
+    "events": [
+      "gamification_fr_e15_01_viewed"
+    ]
   },
-  "acceptanceCriteriaRefs": ["AC-FR-E15-01-01", "AC-FR-E15-01-02", "AC-FR-E15-01-03", "AC-FR-E15-01-04"],
-  "gates": ["auth", "subscription"]
+  "acceptanceCriteriaRefs": [
+    "AC-FR-E15-01-01",
+    "AC-FR-E15-01-02",
+    "AC-FR-E15-01-03",
+    "AC-FR-E15-01-04"
+  ],
+  "gates": [
+    "auth",
+    "subscription"
+  ]
 }

@@ -38,8 +38,29 @@
   },
   "analytics": {
     "screenView": "progress_dashboard_viewed",
-    "events": ["progress_dashboard_viewed"]
+    "events": [
+      "progress_dashboard_viewed",
+      "progress_emotional_map_tapped",
+      "progress_strengths_tapped",
+      "progress_weekly_summary_tapped",
+      "progress_report_export_tapped"
+    ]
   },
-  "acceptanceCriteriaRefs": [],
+  "leadsTo": [
+    "progress.emotional_map",
+    "progress.strengths",
+    "progress.weekly_summary",
+    "progress.report_export",
+    "content.achievement",
+    "content.review_prompt"
+  ],
+  "acceptanceCriteriaRefs": [
+    "AC-FR-E6-01-01",
+    "AC-FR-E6-01-02",
+    "AC-FR-E6-01-03",
+    "AC-PROG-01-01",
+    "AC-PROG-01-02",
+    "AC-PROG-01-03"
+  ],
   "gates": ["subscription"]
 }

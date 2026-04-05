@@ -1,9 +1,11 @@
 {
   "id": "video.fr_e18_01",
   "title": "Video katalogu ve kesif filtreleri",
-  "route": "/epic-18/fr-e18-01",
+  "route": "/video/catalog",
   "purpose": "Implements FR-E18-01: Video katalogu ve kesif filtreleri.",
-  "entryPoints": ["discover.catalog"],
+  "entryPoints": [
+    "discover.catalog"
+  ],
   "inputs": [
     {
       "name": "userId",
@@ -24,7 +26,11 @@
       "source": "profile"
     }
   ],
-  "dataDependencies": ["VideoContent", "VideoCategory", "ContentProgress"],
+  "dataDependencies": [
+    "VideoContent",
+    "VideoCategory",
+    "ContentProgress"
+  ],
   "uiStates": {
     "loading": {
       "description": "Skeleton placeholders are shown while loading FR-E18-01 data."
@@ -44,8 +50,18 @@
   },
   "analytics": {
     "screenView": "video_fr_e18_01_viewed",
-    "events": ["video_fr_e18_01_viewed"]
+    "events": [
+      "video_fr_e18_01_viewed"
+    ]
   },
-  "acceptanceCriteriaRefs": ["AC-FR-E18-01-01", "AC-FR-E18-01-02", "AC-FR-E18-01-03", "AC-FR-E18-01-04"],
-  "gates": ["auth", "subscription"]
+  "acceptanceCriteriaRefs": [
+    "AC-FR-E18-01-01",
+    "AC-FR-E18-01-02",
+    "AC-FR-E18-01-03",
+    "AC-FR-E18-01-04"
+  ],
+  "gates": [
+    "auth",
+    "subscription"
+  ]
 }
