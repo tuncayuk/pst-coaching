@@ -19,5 +19,9 @@ module.exports = {
       version: "detect"
     }
   },
-  ignorePatterns: ["**/node_modules/**", "**/dist/**", "**/coverage/**", "**/.expo/**"]
+  ignorePatterns: ["**/node_modules/**", "**/dist/**", "**/coverage/**", "**/.expo/**"],
+  rules: {
+    // @typescript-eslint/ban-types was removed in v8; disable to avoid config-expo conflict
+    "@typescript-eslint/ban-types": "off"
+  }
 };
