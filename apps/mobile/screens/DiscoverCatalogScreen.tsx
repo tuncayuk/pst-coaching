@@ -1,5 +1,5 @@
 import React from "react";
-import { ScrollView, StyleSheet, View } from "react-native";
+import { ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "./components/OfflineNotice";
@@ -14,7 +14,7 @@ import {
   getSubscriptionForUser,
   getWorkshops,
 } from "../data/mockSelectors";
-import { PActivityIndicator, PButton, PCard, PText } from "../components";
+import { PActivityIndicator, PCard, PText } from "../components";
 
 const CONTENT_TABS = [
   { key: "journeys", label: "Yolculuklar", emoji: "🎯", screen: "DiscoverJourneys" },
@@ -33,6 +33,7 @@ const JOURNEY_COLORS = ["#FFDDC1", "#D1FAE5", "#E9D5FF", "#FDE68A"];
 const JOURNEY_EMOJIS = ["🎯", "🙏", "🌿", "🧘"];
 const EBOOK_COLORS = ["#B2EBF2", "#D1FAE5", "#E9D5FF", "#FDE68A"];
 const EBOOK_EMOJIS = ["📖", "📘", "📕", "📗"];
+const MOSAIC_COLORS = ["#E9D5FF", "#D1FAE5", "#FDE68A", "#B2EBF2"];
 
 const DiscoverReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
   const navigation = useNavigation<any>();
@@ -72,13 +73,6 @@ const DiscoverReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
     navigation.navigate("DiscoverAssistantIntro");
   };
 
-  const stats = [
-    { count: journeys.length, label: "Yolculuk" },
-    { count: workshops.length, label: "Atolye" },
-    { count: modules.length, label: "Modul" },
-    { count: ebooks.length, label: "e-Kitap" },
-  ];
-
   return (
     <View>
       {/* Header */}
@@ -110,44 +104,40 @@ const DiscoverReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
         </View>
       </PCard>
 
-      {/* Content Type Tabs */}
-      <PText style={styles.sectionLabel}>Icerik Turleri</PText>
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.tabsRow}
-      >
-        {CONTENT_TABS.map((tab) => {
-          const isActive = activeTab === tab.key;
-          return (
-            <PButton
-              key={tab.key}
-              mode="contained"
-              compact
-              onPress={() => handleTabPress(tab)}
-              disabled={isOffline}
-              style={[styles.tabButton, isActive && styles.tabButtonActive]}
-              labelStyle={styles.tabLabel}
-              contentStyle={styles.tabContent}
-              buttonColor={isActive ? "#2B1B5D" : "#F5F5F5"}
-              textColor={isActive ? "#FFFFFF" : "#525252"}
-            >
-              {tab.emoji} {tab.label}
-            </PButton>
-          );
-        })}
-      </ScrollView>
-
-      {/* Stats Row */}
-      <View style={styles.statsRow}>
-        {stats.map((stat, i) => (
-          <React.Fragment key={stat.label}>
-            <View style={styles.statItem}>
-              <PText style={styles.statCount}>{stat.count}</PText>
-              <PText style={styles.statLabel}>{stat.label}</PText>
-            </View>
-            {i < stats.length - 1 && <View style={styles.statDivider} />}
-          </React.Fragment>
+      {/* Content Mosaic */}
+      <PText style={styles.sectionTitle}>Icerik Turleri</PText>
+      <View style={styles.mosaicGrid}>
+        {[0, 1].map((row) => (
+          <View key={row} style={styles.mosaicRow}>
+            {CONTENT_TABS.slice(row * 2, row * 2 + 2).map((tab, col) => {
+              const idx = row * 2 + col;
+              const count = [journeys.length, workshops.length, modules.length, ebooks.length][idx];
+              const isActive = activeTab === tab.key;
+              return (
+                <TouchableOpacity
+                  key={tab.key}
+                  style={[
+                    styles.mosaicTile,
+                    { backgroundColor: MOSAIC_COLORS[idx] },
+                    isActive && styles.mosaicTileActive,
+                  ]}
+                  onPress={() => handleTabPress(tab)}
+                  disabled={isOffline}
+                  accessibilityLabel={`${tab.label}, ${count} icerik`}
+                  accessibilityRole="button"
+                  activeOpacity={0.8}
+                >
+                  <View style={styles.mosaicTileHeader}>
+                    <PText style={styles.mosaicEmoji}>{tab.emoji}</PText>
+                    <View style={styles.mosaicCountBadge}>
+                      <PText style={styles.mosaicCountText}>{count}</PText>
+                    </View>
+                  </View>
+                  <PText style={styles.mosaicTileLabel}>{tab.label}</PText>
+                </TouchableOpacity>
+              );
+            })}
+          </View>
         ))}
       </View>
 
@@ -362,27 +352,38 @@ const styles = StyleSheet.create({
     textTransform: "uppercase",
     letterSpacing: 0.8,
   },
-  tabsRow: { gap: 8, paddingBottom: 4, marginBottom: 20 },
-  tabButton: { borderRadius: 20, elevation: 0 },
-  tabButtonActive: { elevation: 2 },
-  tabContent: { height: 36, paddingHorizontal: 4 },
-  tabLabel: { fontSize: 13, fontWeight: "600" },
-  statsRow: {
-    flexDirection: "row",
-    backgroundColor: "#FFFFFF",
+  mosaicGrid: { gap: 12, marginBottom: 24 },
+  mosaicRow: { flexDirection: "row", gap: 12 },
+  mosaicTile: {
+    flex: 1,
     borderRadius: 16,
-    paddingVertical: 16,
-    marginBottom: 24,
-    shadowColor: "#000",
-    shadowOpacity: 0.06,
+    padding: 16,
+    minHeight: 120,
+    justifyContent: "space-between",
+  },
+  mosaicTileActive: {
+    borderWidth: 2,
+    borderColor: "#2B1B5D",
+    shadowColor: "#2B1B5D",
+    shadowOpacity: 0.2,
     shadowRadius: 8,
     shadowOffset: { width: 0, height: 2 },
-    elevation: 2,
+    elevation: 4,
   },
-  statItem: { flex: 1, alignItems: "center" },
-  statCount: { fontSize: 20, fontWeight: "800", color: "#2B1B5D" },
-  statLabel: { fontSize: 11, color: "#737373", marginTop: 2 },
-  statDivider: { width: 1, backgroundColor: "#E5E5E5", marginVertical: 4 },
+  mosaicTileHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "flex-start",
+  },
+  mosaicEmoji: { fontSize: 32 },
+  mosaicCountBadge: {
+    backgroundColor: "rgba(0,0,0,0.12)",
+    borderRadius: 10,
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+  },
+  mosaicCountText: { fontSize: 13, fontWeight: "800", color: "#2B1B5D" },
+  mosaicTileLabel: { fontSize: 14, fontWeight: "700", color: "#2B1B5D" },
   section: { marginBottom: 24 },
   sectionTitle: { fontSize: 18, fontWeight: "700", color: "#171717", marginBottom: 12 },
   journeyCard: { borderRadius: 16, marginBottom: 12 },
