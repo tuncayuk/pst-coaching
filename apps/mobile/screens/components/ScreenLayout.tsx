@@ -1,17 +1,10 @@
-import { useNavigation } from "@react-navigation/native";
-import React from "react";
-import {
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  View,
-  ViewStyle,
-} from "react-native";
-import { useTheme } from "react-native-paper";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { useNavigation } from '@react-navigation/native';
+import React from 'react';
+import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, View, ViewStyle } from 'react-native';
+import { useTheme } from 'react-native-paper';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { PIconButton, PSurface, PText } from "../../components";
+import { PIconButton, PSurface, PText } from '../../components';
 
 const SPACING = 16;
 
@@ -20,9 +13,9 @@ export type ScreenLayoutProps = {
   subtitle?: string;
   rightAction?: React.ReactNode;
   children: React.ReactNode;
-  headerVariant?: "default" | "transparent" | "none";
+  headerVariant?: 'default' | 'transparent' | 'none';
   scrollEnabled?: boolean;
-  edges?: Array<"top" | "bottom" | "left" | "right">;
+  edges?: Array<'top' | 'bottom' | 'left' | 'right'>;
   contentStyle?: ViewStyle;
 };
 
@@ -31,17 +24,17 @@ export const ScreenLayout = ({
   subtitle,
   rightAction,
   children,
-  headerVariant = "default",
+  headerVariant = 'default',
   scrollEnabled = true,
-  edges = ["top", "left", "right"],
-  contentStyle,
+  edges = ['top', 'left', 'right'],
+  contentStyle
 }: ScreenLayoutProps) => {
   const theme = useTheme();
   const navigation = useNavigation();
   const canGoBack = navigation.canGoBack();
 
   const header =
-    headerVariant !== "none" ? (
+    headerVariant !== 'none' ? (
       <PSurface
         elevation={0}
         style={[
@@ -49,9 +42,8 @@ export const ScreenLayout = ({
           {
             borderRadius: theme.roundness * 2.5,
             borderBottomColor: `${theme.colors.outlineVariant}66`,
-            backgroundColor:
-              headerVariant === "transparent" ? "transparent" : theme.colors.background,
-          },
+            backgroundColor: headerVariant === 'transparent' ? 'transparent' : theme.colors.background
+          }
         ]}
         accessibilityLabel={title}
       >
@@ -87,10 +79,7 @@ export const ScreenLayout = ({
       edges={edges}
       accessibilityViewIsModal={false}
     >
-      <KeyboardAvoidingView
-        style={styles.root}
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-      >
+      <KeyboardAvoidingView style={styles.root} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
         <ScrollView
           contentContainerStyle={[styles.content, contentStyle]}
           keyboardShouldPersistTaps="handled"
@@ -112,10 +101,10 @@ const styles = StyleSheet.create({
     paddingRight: SPACING,
     paddingLeft: 8,
     marginBottom: SPACING,
-    borderBottomWidth: 1,
+    borderBottomWidth: 1
   },
-  titleRow: { flexDirection: "row", alignItems: "center" },
+  titleRow: { flexDirection: 'row', alignItems: 'center' },
   backButton: { margin: 0, marginRight: 4 },
   titleText: { flex: 1 },
-  rightAction: { marginLeft: 8 },
+  rightAction: { marginLeft: 8 }
 });
