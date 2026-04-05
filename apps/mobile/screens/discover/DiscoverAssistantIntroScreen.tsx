@@ -1,10 +1,10 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { StyleSheet, View } from 'react-native';
 
-import { PActivityIndicator, PButton, PCard, PIconButton, PText } from '../../components';
+import { PActivityIndicator, PButton, PCard, PText } from '../../components';
 import { OfflineNotice } from '../components/OfflineNotice';
+import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
 import { SkeletonBlock } from '../components/SkeletonBlock';
 import { StateMessage } from '../components/StateMessage';
@@ -25,53 +25,44 @@ const DiscoverAssistantIntroContent = ({ isOffline }: { isOffline?: boolean }) =
   const navigation = useNavigation<any>();
 
   return (
-    <SafeAreaView style={styles.root}>
-      <View style={styles.header}>
-        <View style={styles.headerRow}>
-          <PIconButton icon="arrow-left" onPress={() => navigation.goBack()} />
-          <PText style={styles.headerTitle}>Icerik Asistani</PText>
-        </View>
+    <View>
+      <View style={styles.hero}>
+        <PText style={styles.heroEmoji}>🤖</PText>
+        <PText style={styles.heroTitle}>Kisa bir testle oneri al</PText>
+        <PText style={styles.heroSubtitle}>Hedeflerine uygun yolculuk, atolye ve modul onerileri hazirlayalim.</PText>
       </View>
 
-      <ScrollView contentContainerStyle={styles.content}>
-        <View style={styles.hero}>
-          <PText style={styles.heroEmoji}>🤖</PText>
-          <PText style={styles.heroTitle}>Kisa bir testle oneri al</PText>
-          <PText style={styles.heroSubtitle}>Hedeflerine uygun yolculuk, atolye ve modul onerileri hazirlayalim.</PText>
-        </View>
+      <PCard style={styles.card}>
+        <PText style={styles.cardLabel}>Neler yapar?</PText>
+        {assistantBenefits.map(benefit => (
+          <PText key={benefit} style={styles.listItem}>
+            • {benefit}
+          </PText>
+        ))}
+      </PCard>
 
-        <PCard style={styles.card}>
-          <PText style={styles.cardLabel}>Neler yapar?</PText>
-          {assistantBenefits.map(benefit => (
-            <PText key={benefit} style={styles.listItem}>
-              • {benefit}
-            </PText>
-          ))}
-        </PCard>
+      <PCard style={styles.card}>
+        <PText style={styles.cardLabel}>Nasil calisir?</PText>
+        {assistantSteps.map(step => (
+          <View key={step.title} style={styles.stepRow}>
+            <PText style={styles.stepTitle}>{step.title}</PText>
+            <PText style={styles.stepSubtitle}>{step.subtitle}</PText>
+          </View>
+        ))}
+      </PCard>
 
-        <PCard style={styles.card}>
-          <PText style={styles.cardLabel}>Nasil calisir?</PText>
-          {assistantSteps.map(step => (
-            <View key={step.title} style={styles.stepRow}>
-              <PText style={styles.stepTitle}>{step.title}</PText>
-              <PText style={styles.stepSubtitle}>{step.subtitle}</PText>
-            </View>
-          ))}
-        </PCard>
-
-        <PButton
-          mode="contained"
-          disabled={isOffline}
-          onPress={() => navigation.navigate('DiscoverAssistantQuestions')}
-          style={styles.primaryButton}
-        >
-          Asistani Baslat
-        </PButton>
-        <PButton mode="text" disabled={isOffline} onPress={() => navigation.navigate('DiscoverCatalog')}>
-          Kataloga Don
-        </PButton>
-      </ScrollView>
-    </SafeAreaView>
+      <PButton
+        mode="contained"
+        disabled={isOffline}
+        onPress={() => navigation.navigate('DiscoverAssistantQuestions')}
+        style={styles.primaryButton}
+      >
+        Asistani Baslat
+      </PButton>
+      <PButton mode="text" disabled={isOffline} onPress={() => navigation.navigate('DiscoverCatalog')}>
+        Kataloga Don
+      </PButton>
+    </View>
   );
 };
 
@@ -80,85 +71,59 @@ export const DiscoverAssistantIntroScreen = ({ route }: { route?: { params?: { s
 
   if (state === 'loading') {
     return (
-      <SafeAreaView style={styles.root}>
-        <ScrollView contentContainerStyle={styles.content}>
-          <PActivityIndicator animating />
-          <SkeletonBlock height={18} />
-          <SkeletonBlock height={18} />
-          <SkeletonBlock height={90} />
-        </ScrollView>
-      </SafeAreaView>
+      <ScreenLayout title="Icerik Asistani">
+        <PActivityIndicator animating />
+        <SkeletonBlock height={18} />
+        <SkeletonBlock height={18} />
+        <SkeletonBlock height={90} />
+      </ScreenLayout>
     );
   }
 
   if (state === 'empty') {
     return (
-      <SafeAreaView style={styles.root}>
-        <ScrollView contentContainerStyle={styles.content}>
-          <StateMessage
-            title="Oneri yok"
-            description="Yeni icerikler icin daha sonra tekrar deneyebilirsin."
-            actionLabel="Kataloga Don"
-            icon="lightbulb-outline"
-          />
-        </ScrollView>
-      </SafeAreaView>
+      <ScreenLayout title="Icerik Asistani">
+        <StateMessage
+          title="Oneri yok"
+          description="Yeni icerikler icin daha sonra tekrar deneyebilirsin."
+          actionLabel="Kataloga Don"
+          icon="lightbulb-outline"
+        />
+      </ScreenLayout>
     );
   }
 
   if (state === 'error') {
     return (
-      <SafeAreaView style={styles.root}>
-        <ScrollView contentContainerStyle={styles.content}>
-          <StateMessage
-            title="Asistan yuklenemedi"
-            description="Baglantini kontrol edip tekrar dene."
-            actionLabel="Tekrar Dene"
-            icon="alert-circle-outline"
-            tone="error"
-          />
-        </ScrollView>
-      </SafeAreaView>
+      <ScreenLayout title="Icerik Asistani">
+        <StateMessage
+          title="Asistan yuklenemedi"
+          description="Baglantini kontrol edip tekrar dene."
+          actionLabel="Tekrar Dene"
+          icon="alert-circle-outline"
+          tone="error"
+        />
+      </ScreenLayout>
     );
   }
 
   if (state === 'offline') {
     return (
-      <SafeAreaView style={styles.root}>
+      <ScreenLayout title="Icerik Asistani">
         <OfflineNotice />
         <DiscoverAssistantIntroContent isOffline />
-      </SafeAreaView>
+      </ScreenLayout>
     );
   }
 
-  return <DiscoverAssistantIntroContent />;
+  return (
+    <ScreenLayout title="Icerik Asistani">
+      <DiscoverAssistantIntroContent />
+    </ScreenLayout>
+  );
 };
 
 const styles = StyleSheet.create({
-  root: {
-    flex: 1,
-    backgroundColor: '#FAFAFA'
-  },
-  header: {
-    backgroundColor: '#FFFFFF',
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: '#E5E5E5'
-  },
-  headerRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8
-  },
-  headerTitle: {
-    fontSize: 18,
-    fontWeight: '800',
-    color: '#2B1B5D'
-  },
-  content: {
-    padding: 16
-  },
   hero: {
     alignItems: 'center',
     marginBottom: 24

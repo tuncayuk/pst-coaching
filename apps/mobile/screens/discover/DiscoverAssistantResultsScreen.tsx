@@ -1,11 +1,11 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { StyleSheet, View } from 'react-native';
 
-import { PActivityIndicator, PButton, PCard, PIconButton, PText } from '../../components';
+import { PActivityIndicator, PButton, PCard, PText } from '../../components';
 import { getEbooks, getJourneys, getModules, getWorkshops } from '../../data/mockSelectors';
 import { OfflineNotice } from '../components/OfflineNotice';
+import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
 import { SkeletonBlock } from '../components/SkeletonBlock';
 import { StateMessage } from '../components/StateMessage';
@@ -54,100 +54,91 @@ const DiscoverAssistantResultsContent = ({ isOffline }: { isOffline?: boolean })
   ].filter(Boolean) as { id: string; title: string; subtitle: string; type: string }[];
 
   return (
-    <SafeAreaView style={styles.root}>
-      <View style={styles.header}>
-        <View style={styles.headerRow}>
-          <PIconButton icon="arrow-left" onPress={() => navigation.goBack()} />
-          <PText style={styles.headerTitle}>Icerik Asistani</PText>
-        </View>
+    <View>
+      <View style={styles.hero}>
+        <PText style={styles.heroEmoji}>✨</PText>
+        <PText style={styles.heroTitle}>Onerilerin hazir</PText>
+        <PText style={styles.heroSubtitle}>Sana uygun icerikleri listeledik.</PText>
       </View>
 
-      <ScrollView contentContainerStyle={styles.content}>
-        <View style={styles.hero}>
-          <PText style={styles.heroEmoji}>✨</PText>
-          <PText style={styles.heroTitle}>Onerilerin hazir</PText>
-          <PText style={styles.heroSubtitle}>Sana uygun icerikleri listeledik.</PText>
+      <PCard style={styles.primaryCard}>
+        <PText style={styles.cardLabel}>Onerilen Yolculuk</PText>
+        <PText style={styles.cardTitle}>{primaryTitle}</PText>
+        <PText style={styles.cardMeta}>{primaryMeta}</PText>
+        <PText style={styles.cardDetail}>{primaryDetail}</PText>
+        <View style={styles.primaryActions}>
+          <PButton
+            mode="contained"
+            disabled={isOffline}
+            onPress={() =>
+              journey &&
+              navigation.navigate('Content', {
+                screen: 'ContentJourneyDetail',
+                params: { id: journey.id }
+              })
+            }
+            style={styles.primaryAction}
+          >
+            Hemen Basla
+          </PButton>
+          <PButton
+            mode="outlined"
+            disabled={isOffline}
+            onPress={() =>
+              journey &&
+              navigation.navigate('Content', {
+                screen: 'ContentJourneyDetail',
+                params: { id: journey.id }
+              })
+            }
+          >
+            Detaylari Gor
+          </PButton>
         </View>
+      </PCard>
 
-        <PCard style={styles.primaryCard}>
-          <PText style={styles.cardLabel}>Onerilen Yolculuk</PText>
-          <PText style={styles.cardTitle}>{primaryTitle}</PText>
-          <PText style={styles.cardMeta}>{primaryMeta}</PText>
-          <PText style={styles.cardDetail}>{primaryDetail}</PText>
-          <View style={styles.primaryActions}>
-            <PButton
-              mode="contained"
-              disabled={isOffline}
-              onPress={() =>
-                journey &&
+      <PText style={styles.sectionTitle}>Alternatifler</PText>
+      {alternatives.slice(0, 2).map(item => (
+        <PCard key={item.id} style={styles.altCard}>
+          <PText style={styles.altTitle}>{item.title}</PText>
+          <PText style={styles.altMeta}>{item.subtitle}</PText>
+          <PButton
+            mode="outlined"
+            disabled={isOffline}
+            onPress={() => {
+              if (item.type === 'workshop') {
                 navigation.navigate('Content', {
-                  screen: 'ContentJourneyDetail',
-                  params: { id: journey.id }
-                })
+                  screen: 'ContentWorkshopDetail',
+                  params: { id: item.id }
+                });
               }
-              style={styles.primaryAction}
-            >
-              Hemen Basla
-            </PButton>
-            <PButton
-              mode="outlined"
-              disabled={isOffline}
-              onPress={() =>
-                journey &&
+              if (item.type === 'module') {
                 navigation.navigate('Content', {
-                  screen: 'ContentJourneyDetail',
-                  params: { id: journey.id }
-                })
+                  screen: 'ContentModuleHome',
+                  params: { id: item.id }
+                });
               }
-            >
-              Detaylari Gor
-            </PButton>
-          </View>
-        </PCard>
-
-        <PText style={styles.sectionTitle}>Alternatifler</PText>
-        {alternatives.slice(0, 2).map(item => (
-          <PCard key={item.id} style={styles.altCard}>
-            <PText style={styles.altTitle}>{item.title}</PText>
-            <PText style={styles.altMeta}>{item.subtitle}</PText>
-            <PButton
-              mode="outlined"
-              disabled={isOffline}
-              onPress={() => {
-                if (item.type === 'workshop') {
-                  navigation.navigate('Content', {
-                    screen: 'ContentWorkshopDetail',
-                    params: { id: item.id }
-                  });
-                }
-                if (item.type === 'module') {
-                  navigation.navigate('Content', {
-                    screen: 'ContentModuleHome',
-                    params: { id: item.id }
-                  });
-                }
-                if (item.type === 'ebook') {
-                  navigation.navigate('Content', {
-                    screen: 'ContentEbookDetail',
-                    params: { id: item.id }
-                  });
-                }
-              }}
-            >
-              Incele
-            </PButton>
-          </PCard>
-        ))}
-
-        <PCard style={styles.ctaCard}>
-          <PText style={styles.ctaTitle}>Kataloga Don</PText>
-          <PText style={styles.ctaText}>Daha fazla icerik gormek icin kesfet sayfasina donebilirsin.</PText>
-          <PButton mode="contained" disabled={isOffline} onPress={() => navigation.navigate('DiscoverCatalog')}>
-            Kataloga Git
+              if (item.type === 'ebook') {
+                navigation.navigate('Content', {
+                  screen: 'ContentEbookDetail',
+                  params: { id: item.id }
+                });
+              }
+            }}
+          >
+            Incele
           </PButton>
         </PCard>
-      </ScrollView>
-    </SafeAreaView>
+      ))}
+
+      <PCard style={styles.ctaCard}>
+        <PText style={styles.ctaTitle}>Kataloga Don</PText>
+        <PText style={styles.ctaText}>Daha fazla icerik gormek icin kesfet sayfasina donebilirsin.</PText>
+        <PButton mode="contained" disabled={isOffline} onPress={() => navigation.navigate('DiscoverCatalog')}>
+          Kataloga Git
+        </PButton>
+      </PCard>
+    </View>
   );
 };
 
@@ -156,85 +147,59 @@ export const DiscoverAssistantResultsScreen = ({ route }: { route?: { params?: {
 
   if (state === 'loading') {
     return (
-      <SafeAreaView style={styles.root}>
-        <ScrollView contentContainerStyle={styles.content}>
-          <PActivityIndicator animating />
-          <SkeletonBlock height={18} />
-          <SkeletonBlock height={18} />
-          <SkeletonBlock height={96} />
-        </ScrollView>
-      </SafeAreaView>
+      <ScreenLayout title="Icerik Asistani">
+        <PActivityIndicator animating />
+        <SkeletonBlock height={18} />
+        <SkeletonBlock height={18} />
+        <SkeletonBlock height={96} />
+      </ScreenLayout>
     );
   }
 
   if (state === 'empty') {
     return (
-      <SafeAreaView style={styles.root}>
-        <ScrollView contentContainerStyle={styles.content}>
-          <StateMessage
-            title="Oneri bulunamadi"
-            description="Secimlerini guncelleyerek yeniden deneyebilirsin."
-            actionLabel="Sorulari Guncelle"
-            icon="playlist-edit"
-          />
-        </ScrollView>
-      </SafeAreaView>
+      <ScreenLayout title="Icerik Asistani">
+        <StateMessage
+          title="Oneri bulunamadi"
+          description="Secimlerini guncelleyerek yeniden deneyebilirsin."
+          actionLabel="Sorulari Guncelle"
+          icon="playlist-edit"
+        />
+      </ScreenLayout>
     );
   }
 
   if (state === 'error') {
     return (
-      <SafeAreaView style={styles.root}>
-        <ScrollView contentContainerStyle={styles.content}>
-          <StateMessage
-            title="Oneriler yuklenemedi"
-            description="Baglantini kontrol edip tekrar dene."
-            actionLabel="Tekrar Dene"
-            icon="alert-circle-outline"
-            tone="error"
-          />
-        </ScrollView>
-      </SafeAreaView>
+      <ScreenLayout title="Icerik Asistani">
+        <StateMessage
+          title="Oneriler yuklenemedi"
+          description="Baglantini kontrol edip tekrar dene."
+          actionLabel="Tekrar Dene"
+          icon="alert-circle-outline"
+          tone="error"
+        />
+      </ScreenLayout>
     );
   }
 
   if (state === 'offline') {
     return (
-      <SafeAreaView style={styles.root}>
+      <ScreenLayout title="Icerik Asistani">
         <OfflineNotice />
         <DiscoverAssistantResultsContent isOffline />
-      </SafeAreaView>
+      </ScreenLayout>
     );
   }
 
-  return <DiscoverAssistantResultsContent />;
+  return (
+    <ScreenLayout title="Icerik Asistani">
+      <DiscoverAssistantResultsContent />
+    </ScreenLayout>
+  );
 };
 
 const styles = StyleSheet.create({
-  root: {
-    flex: 1,
-    backgroundColor: '#FAFAFA'
-  },
-  header: {
-    backgroundColor: '#FFFFFF',
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: '#E5E5E5'
-  },
-  headerRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8
-  },
-  headerTitle: {
-    fontSize: 18,
-    fontWeight: '800',
-    color: '#2B1B5D'
-  },
-  content: {
-    padding: 16
-  },
   hero: {
     alignItems: 'center',
     marginBottom: 24

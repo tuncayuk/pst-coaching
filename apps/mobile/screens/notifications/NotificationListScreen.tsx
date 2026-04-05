@@ -5,43 +5,31 @@
  * AC-FR-E17-01-03: Single notification mark-as-read
  * AC-FR-E17-01-04: Bulk mark-all-read / clear all
  */
-import { useNavigation } from "@react-navigation/native";
-import React, { useState } from "react";
-import { ScrollView, StyleSheet, View } from "react-native";
+import { useNavigation } from '@react-navigation/native';
+import React, { useState } from 'react';
+import { ScrollView, StyleSheet, View } from 'react-native';
 
-import {
-  PActivityIndicator,
-  PButton,
-  PCard,
-  PChip,
-  PDivider,
-  PIconButton,
-  PText,
-} from "../../components";
-import {
-  MockNotification,
-  getNotificationsForUser,
-  getPrimaryUser,
-} from "../../data/mockSelectors";
-import { OfflineNotice } from "../components/OfflineNotice";
-import { ScreenLayout } from "../components/ScreenLayout";
-import { ScreenState, resolveScreenState } from "../components/ScreenState";
-import { SectionCard } from "../components/SectionCard";
-import { SkeletonBlock } from "../components/SkeletonBlock";
-import { StateMessage } from "../components/StateMessage";
+import { PActivityIndicator, PButton, PCard, PChip, PDivider, PIconButton, PText } from '../../components';
+import { MockNotification, getNotificationsForUser, getPrimaryUser } from '../../data/mockSelectors';
+import { OfflineNotice } from '../components/OfflineNotice';
+import { ScreenLayout } from '../components/ScreenLayout';
+import { ScreenState, resolveScreenState } from '../components/ScreenState';
+import { SectionCard } from '../components/SectionCard';
+import { SkeletonBlock } from '../components/SkeletonBlock';
+import { StateMessage } from '../components/StateMessage';
 
-const TYPE_LABELS: Record<MockNotification["type"], string> = {
-  journey: "Yolculuk",
-  workshop: "Atolye",
-  reading: "Okuma",
-  social: "Sosyal",
-  achievement: "Basari",
+const TYPE_LABELS: Record<MockNotification['type'], string> = {
+  journey: 'Yolculuk',
+  workshop: 'Atolye',
+  reading: 'Okuma',
+  social: 'Sosyal',
+  achievement: 'Basari'
 };
 
 const NotificationCard = ({
   notification,
   onRead,
-  isOffline,
+  isOffline
 }: {
   notification: MockNotification;
   onRead: (id: string) => void;
@@ -49,21 +37,17 @@ const NotificationCard = ({
 }) => (
   <PCard
     style={[styles.notifCard, notification.is_read && styles.notifCardRead]}
-    accessibilityLabel={`${notification.title}, ${notification.is_read ? "okundu" : "okunmadi"}`}
+    accessibilityLabel={`${notification.title}, ${notification.is_read ? 'okundu' : 'okunmadi'}`}
   >
     <View style={styles.notifRow}>
       <View style={styles.notifBody}>
         <View style={styles.notifTitleRow}>
           <PText style={styles.notifTitle}>{notification.title}</PText>
-          {!notification.is_read && (
-            <View style={styles.unreadDot} accessibilityLabel="Okunmamis bildirim" />
-          )}
+          {!notification.is_read && <View style={styles.unreadDot} accessibilityLabel="Okunmamis bildirim" />}
         </View>
         <PText style={styles.notifDesc}>{notification.description}</PText>
         <PText style={styles.notifTime}>
-          {notification.created_at
-            ? new Date(notification.created_at).toLocaleDateString("tr-TR")
-            : ""}
+          {notification.created_at ? new Date(notification.created_at).toLocaleDateString('tr-TR') : ''}
         </PText>
       </View>
       {!notification.is_read && (
@@ -95,15 +79,15 @@ const NotificationListContent = ({ isOffline }: { isOffline?: boolean }) => {
   const rawNotifs = getNotificationsForUser(user?.id);
   const [notifications, setNotifications] = useState<MockNotification[]>(rawNotifs);
 
-  const unreadCount = notifications.filter((n) => !n.is_read).length;
+  const unreadCount = notifications.filter(n => !n.is_read).length;
   const grouped = groupByType(notifications);
 
   const handleMarkRead = (id: string) => {
-    setNotifications((prev) => prev.map((n) => (n.id === id ? { ...n, is_read: true } : n)));
+    setNotifications(prev => prev.map(n => (n.id === id ? { ...n, is_read: true } : n)));
   };
 
   const handleMarkAllRead = () => {
-    setNotifications((prev) => prev.map((n) => ({ ...n, is_read: true })));
+    setNotifications(prev => prev.map(n => ({ ...n, is_read: true })));
   };
 
   const handleClearAll = () => {
@@ -116,11 +100,7 @@ const NotificationListContent = ({ isOffline }: { isOffline?: boolean }) => {
       <SectionCard title="Bildirimler">
         <View style={styles.headerRow}>
           {unreadCount > 0 ? (
-            <PChip
-              compact
-              style={styles.badgeChip}
-              accessibilityLabel={`${unreadCount} okunmamis bildirim`}
-            >
+            <PChip compact style={styles.badgeChip} accessibilityLabel={`${unreadCount} okunmamis bildirim`}>
               {`${unreadCount} Okunmamis`}
             </PChip>
           ) : (
@@ -155,7 +135,7 @@ const NotificationListContent = ({ isOffline }: { isOffline?: boolean }) => {
 
       {/* AC-FR-E17-01-01: Grouped by type */}
       {Object.entries(grouped).map(([type, notifs]) => (
-        <SectionCard key={type} title={TYPE_LABELS[type as MockNotification["type"]] ?? type}>
+        <SectionCard key={type} title={TYPE_LABELS[type as MockNotification['type']] ?? type}>
           {notifs.map((n, idx) => (
             <View key={n.id}>
               {/* AC-FR-E17-01-03: Per-item mark-read */}
@@ -177,7 +157,7 @@ export const NotificationListScreen = ({ route }: NotificationListScreenProps) =
   const state = resolveScreenState(route);
   const navigation = useNavigation<any>();
 
-  if (state === "loading") {
+  if (state === 'loading') {
     return (
       <ScreenLayout title="Bildirimler">
         <PActivityIndicator />
@@ -188,7 +168,7 @@ export const NotificationListScreen = ({ route }: NotificationListScreenProps) =
     );
   }
 
-  if (state === "error") {
+  if (state === 'error') {
     return (
       <ScreenLayout title="Bildirimler">
         <StateMessage
@@ -201,7 +181,7 @@ export const NotificationListScreen = ({ route }: NotificationListScreenProps) =
     );
   }
 
-  if (state === "offline") {
+  if (state === 'offline') {
     return (
       <ScreenLayout title="Bildirimler">
         <OfflineNotice />
@@ -210,14 +190,14 @@ export const NotificationListScreen = ({ route }: NotificationListScreenProps) =
     );
   }
 
-  if (state === "empty") {
+  if (state === 'empty') {
     return (
       <ScreenLayout title="Bildirimler">
         <StateMessage
           title="Bildirim yok"
           description="Henuz hic bildiriminiz yok. Iceriklerinize devam ederek yeni bildirimler alin."
           actionLabel="Kesfete Git"
-          onAction={() => navigation.navigate("Discover" as never)}
+          onAction={() => navigation.navigate('Discover' as never)}
         />
       </ScreenLayout>
     );
@@ -235,27 +215,27 @@ const styles = StyleSheet.create({
   scrollContent: { paddingBottom: 32 },
   skeleton: { marginHorizontal: 16, marginBottom: 12 },
   headerRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingVertical: 4,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingVertical: 4
   },
-  badgeChip: { backgroundColor: "#00B4D8" },
-  allReadText: { fontSize: 13, color: "#737373" },
-  bulkActions: { flexDirection: "row", gap: 4 },
+  badgeChip: { backgroundColor: '#00B4D8' },
+  allReadText: { fontSize: 13, color: '#737373' },
+  bulkActions: { flexDirection: 'row', gap: 4 },
   notifCard: { marginBottom: 4 },
   notifCardRead: { opacity: 0.55 },
-  notifRow: { flexDirection: "row", alignItems: "flex-start", padding: 12 },
+  notifRow: { flexDirection: 'row', alignItems: 'flex-start', padding: 12 },
   notifBody: { flex: 1 },
-  notifTitleRow: { flexDirection: "row", alignItems: "center", gap: 6 },
-  notifTitle: { fontWeight: "700", fontSize: 14, flex: 1 },
+  notifTitleRow: { flexDirection: 'row', alignItems: 'center', gap: 6 },
+  notifTitle: { fontWeight: '700', fontSize: 14, flex: 1 },
   unreadDot: {
     width: 8,
     height: 8,
     borderRadius: 4,
-    backgroundColor: "#00B4D8",
+    backgroundColor: '#00B4D8'
   },
-  notifDesc: { fontSize: 13, color: "#525252", marginTop: 2 },
-  notifTime: { fontSize: 11, color: "#A3A3A3", marginTop: 4 },
-  divider: { marginVertical: 2 },
+  notifDesc: { fontSize: 13, color: '#525252', marginTop: 2 },
+  notifTime: { fontSize: 11, color: '#A3A3A3', marginTop: 4 },
+  divider: { marginVertical: 2 }
 });
