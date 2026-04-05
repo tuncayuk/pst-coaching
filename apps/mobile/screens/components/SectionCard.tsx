@@ -1,8 +1,8 @@
-import React from "react";
-import { StyleSheet, TouchableOpacity, View, ViewStyle } from "react-native";
-import { useTheme } from "react-native-paper";
+import React from 'react';
+import { StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
+import { useTheme } from 'react-native-paper';
 
-import { PSurface, PText } from "../../components";
+import { PSurface, PText } from '../../components';
 
 const SPACING = 16;
 const ACTION_HIT_SLOP = { top: 8, bottom: 8, left: 8, right: 8 };
@@ -15,13 +15,7 @@ export type SectionCardProps = {
   style?: ViewStyle;
 };
 
-export const SectionCard = ({
-  title,
-  actionLabel,
-  onAction,
-  children,
-  style,
-}: SectionCardProps) => {
+export const SectionCard = ({ title, actionLabel, onAction, children, style }: SectionCardProps) => {
   const theme = useTheme();
 
   return (
@@ -56,12 +50,12 @@ export const SectionCard = ({
 const styles = StyleSheet.create({
   card: {
     padding: SPACING,
-    marginBottom: SPACING,
+    marginBottom: SPACING
   },
   headerRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 12,
-  },
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 12
+  }
 });
