@@ -64,10 +64,6 @@ const tabIcons: Record<keyof RootTabParamList, keyof typeof MaterialCommunityIco
   Profile: "account-circle",
 };
 
-const DummyScreen = () => {
-  return null;
-};
-
 const MainTabs = () => (
   <Tab.Navigator
     screenOptions={({ route }) => ({
