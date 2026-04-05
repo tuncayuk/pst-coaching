@@ -16,12 +16,12 @@ import {
 import { getEbooks, getJourneys, getModules, getWorkshops } from "../../data/mockSelectors";
 
 const levelLabels: Record<string, string> = {
-  baslangic: "Başlangıç",
-  beginner: "Başlangıç",
+  baslangic: "Baslangic",
+  beginner: "Baslangic",
   orta: "Orta",
   intermediate: "Orta",
-  ileri: "İleri",
-  advanced: "İleri",
+  ileri: "Ileri",
+  advanced: "Ileri",
 };
 
 const DiscoverAssistantResultsContent = ({ isOffline }: { isOffline?: boolean }) => {
@@ -31,23 +31,23 @@ const DiscoverAssistantResultsContent = ({ isOffline }: { isOffline?: boolean })
   const module = getModules()[0];
   const ebook = getEbooks()[0];
 
-  const primaryTitle = journey?.title ?? "Önerilen Yolculuk";
+  const primaryTitle = journey?.title ?? "Onerilen Yolculuk";
   const primaryMeta = journey
-    ? `${journey.duration_days} gün • ${levelLabels[journey.level] ?? journey.level}`
-    : "6 gün • 20 dk";
-  const primaryDetail = journey?.description ?? "Sana uygun içeriklerle hazırlanan yolculuk.";
+    ? `${journey.duration_days} gun • ${levelLabels[journey.level] ?? journey.level}`
+    : "6 gun • 20 dk";
+  const primaryDetail = journey?.description ?? "Sana uygun iceriklerle hazirlanan yolculuk.";
 
   const alternatives = [
     workshop && {
       id: workshop.id,
       title: workshop.title,
-      subtitle: "Atölye • 3 bölüm",
+      subtitle: "Atolye • 3 bolum",
       type: "workshop",
     },
     module && {
       id: module.id,
       title: module.title,
-      subtitle: "Modül • 4 gün",
+      subtitle: "Modul • 4 gun",
       type: "module",
     },
     ebook && {
@@ -63,19 +63,19 @@ const DiscoverAssistantResultsContent = ({ isOffline }: { isOffline?: boolean })
       <View style={styles.header}>
         <View style={styles.headerRow}>
           <PIconButton icon="arrow-left" onPress={() => navigation.goBack()} />
-          <PText style={styles.headerTitle}>İçerik Asistanı</PText>
+          <PText style={styles.headerTitle}>Icerik Asistani</PText>
         </View>
       </View>
 
       <ScrollView contentContainerStyle={styles.content}>
         <View style={styles.hero}>
           <PText style={styles.heroEmoji}>✨</PText>
-          <PText style={styles.heroTitle}>Önerilerin hazır</PText>
-          <PText style={styles.heroSubtitle}>Sana uygun içerikleri listeledik.</PText>
+          <PText style={styles.heroTitle}>Onerilerin hazir</PText>
+          <PText style={styles.heroSubtitle}>Sana uygun icerikleri listeledik.</PText>
         </View>
 
         <PCard style={styles.primaryCard}>
-          <PText style={styles.cardLabel}>Önerilen Yolculuk</PText>
+          <PText style={styles.cardLabel}>Onerilen Yolculuk</PText>
           <PText style={styles.cardTitle}>{primaryTitle}</PText>
           <PText style={styles.cardMeta}>{primaryMeta}</PText>
           <PText style={styles.cardDetail}>{primaryDetail}</PText>
@@ -92,7 +92,7 @@ const DiscoverAssistantResultsContent = ({ isOffline }: { isOffline?: boolean })
               }
               style={styles.primaryAction}
             >
-              Hemen Başla
+              Hemen Basla
             </PButton>
             <PButton
               mode="outlined"
@@ -105,7 +105,7 @@ const DiscoverAssistantResultsContent = ({ isOffline }: { isOffline?: boolean })
                 })
               }
             >
-              Detayları Gör
+              Detaylari Gor
             </PButton>
           </View>
         </PCard>
@@ -139,22 +139,22 @@ const DiscoverAssistantResultsContent = ({ isOffline }: { isOffline?: boolean })
                 }
               }}
             >
-              İncele
+              Incele
             </PButton>
           </PCard>
         ))}
 
         <PCard style={styles.ctaCard}>
-          <PText style={styles.ctaTitle}>Kataloğa Dön</PText>
+          <PText style={styles.ctaTitle}>Kataloga Don</PText>
           <PText style={styles.ctaText}>
-            Daha fazla içerik görmek için keşfet sayfasına dönebilirsin.
+            Daha fazla icerik gormek icin kesfet sayfasina donebilirsin.
           </PText>
           <PButton
             mode="contained"
             disabled={isOffline}
             onPress={() => navigation.navigate("DiscoverCatalog")}
           >
-            Kataloğa Git
+            Kataloga Git
           </PButton>
         </PCard>
       </ScrollView>
@@ -187,9 +187,9 @@ export const DiscoverAssistantResultsScreen = ({
       <SafeAreaView style={styles.root}>
         <ScrollView contentContainerStyle={styles.content}>
           <StateMessage
-            title="Öneri bulunamadı"
-            description="Seçimlerini güncelleyerek yeniden deneyebilirsin."
-            actionLabel="Soruları Güncelle"
+            title="Oneri bulunamadi"
+            description="Secimlerini guncelleyerek yeniden deneyebilirsin."
+            actionLabel="Sorulari Guncelle"
             icon="playlist-edit"
           />
         </ScrollView>
@@ -202,8 +202,8 @@ export const DiscoverAssistantResultsScreen = ({
       <SafeAreaView style={styles.root}>
         <ScrollView contentContainerStyle={styles.content}>
           <StateMessage
-            title="Öneriler yüklenemedi"
-            description="Bağlantını kontrol edip tekrar dene."
+            title="Oneriler yuklenemedi"
+            description="Baglantini kontrol edip tekrar dene."
             actionLabel="Tekrar Dene"
             icon="alert-circle-outline"
             tone="error"

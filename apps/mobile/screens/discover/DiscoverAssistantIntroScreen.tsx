@@ -9,15 +9,15 @@ import { resolveScreenState, ScreenState } from "../components/ScreenState";
 import { PActivityIndicator, PButton, PCard, PIconButton, PText } from "../../components";
 
 const assistantBenefits = [
-  "Hedefine uygun içerik önerileri",
-  "Süre ve yoğunluğa göre plan",
-  "Kütüphanenden devam önerileri",
+  "Hedefine uygun icerik onerileri",
+  "Sure ve yogunluga gore plan",
+  "Kutuphanenden devam onerileri",
 ];
 
 const assistantSteps = [
-  { title: "Hedefini seç", subtitle: "Örn: sınır koyma" },
-  { title: "Süreni belirle", subtitle: "10-20 dk, 30-45 dk" },
-  { title: "Önerilerini al", subtitle: "1 ana + 2 alternatif" },
+  { title: "Hedefini sec", subtitle: "Orn: sinir koyma" },
+  { title: "Sureni belirle", subtitle: "10-20 dk, 30-45 dk" },
+  { title: "Onerilerini al", subtitle: "1 ana + 2 alternatif" },
 ];
 
 const DiscoverAssistantIntroContent = ({ isOffline }: { isOffline?: boolean }) => {
@@ -28,16 +28,16 @@ const DiscoverAssistantIntroContent = ({ isOffline }: { isOffline?: boolean }) =
       <View style={styles.header}>
         <View style={styles.headerRow}>
           <PIconButton icon="arrow-left" onPress={() => navigation.goBack()} />
-          <PText style={styles.headerTitle}>İçerik Asistanı</PText>
+          <PText style={styles.headerTitle}>Icerik Asistani</PText>
         </View>
       </View>
 
       <ScrollView contentContainerStyle={styles.content}>
         <View style={styles.hero}>
           <PText style={styles.heroEmoji}>🤖</PText>
-          <PText style={styles.heroTitle}>Kısa bir testle öneri al</PText>
+          <PText style={styles.heroTitle}>Kisa bir testle oneri al</PText>
           <PText style={styles.heroSubtitle}>
-            Hedeflerine uygun yolculuk, atölye ve modül önerileri hazırlayalım.
+            Hedeflerine uygun yolculuk, atolye ve modul onerileri hazirlayalim.
           </PText>
         </View>
 
@@ -51,7 +51,7 @@ const DiscoverAssistantIntroContent = ({ isOffline }: { isOffline?: boolean }) =
         </PCard>
 
         <PCard style={styles.card}>
-          <PText style={styles.cardLabel}>Nasıl çalışır?</PText>
+          <PText style={styles.cardLabel}>Nasil calisir?</PText>
           {assistantSteps.map((step) => (
             <View key={step.title} style={styles.stepRow}>
               <PText style={styles.stepTitle}>{step.title}</PText>
@@ -66,14 +66,14 @@ const DiscoverAssistantIntroContent = ({ isOffline }: { isOffline?: boolean }) =
           onPress={() => navigation.navigate("DiscoverAssistantQuestions")}
           style={styles.primaryButton}
         >
-          Asistanı Başlat
+          Asistani Baslat
         </PButton>
         <PButton
           mode="text"
           disabled={isOffline}
           onPress={() => navigation.navigate("DiscoverCatalog")}
         >
-          Kataloğa Dön
+          Kataloga Don
         </PButton>
       </ScrollView>
     </SafeAreaView>
@@ -105,9 +105,9 @@ export const DiscoverAssistantIntroScreen = ({
       <SafeAreaView style={styles.root}>
         <ScrollView contentContainerStyle={styles.content}>
           <StateMessage
-            title="Öneri yok"
-            description="Yeni içerikler için daha sonra tekrar deneyebilirsin."
-            actionLabel="Kataloğa Dön"
+            title="Oneri yok"
+            description="Yeni icerikler icin daha sonra tekrar deneyebilirsin."
+            actionLabel="Kataloga Don"
             icon="lightbulb-outline"
           />
         </ScrollView>
@@ -120,8 +120,8 @@ export const DiscoverAssistantIntroScreen = ({
       <SafeAreaView style={styles.root}>
         <ScrollView contentContainerStyle={styles.content}>
           <StateMessage
-            title="Asistan yüklenemedi"
-            description="Bağlantını kontrol edip tekrar dene."
+            title="Asistan yuklenemedi"
+            description="Baglantini kontrol edip tekrar dene."
             actionLabel="Tekrar Dene"
             icon="alert-circle-outline"
             tone="error"

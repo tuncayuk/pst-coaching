@@ -1,22 +1,22 @@
 {
   "id": "discover.fr_e4_10",
-  "title": "İlk yolculukta DDL testi",
-  "route": "/epic-4/fr-e4-10",
-  "purpose": "Implements FR-E4-10: İlk yolculukta DDL testi.",
+  "title": "Ilk Yolculukta DDL Testi",
+  "route": "/discover/ddl-test",
+  "purpose": "Implements FR-E4-10: DDL test gate on first journey start. Test required before launch. Results saved to profile. Not repeated if previously completed.",
   "entryPoints": [
-    "discover.catalog"
+    "discover.fr_e4_03"
   ],
   "inputs": [
     {
       "name": "userId",
       "type": "uuid",
-      "required": true,
+      "required": false,
       "source": "session"
     },
     {
       "name": "subscriptionStatus",
       "type": "SubscriptionStatus",
-      "required": true,
+      "required": false,
       "source": "entitlement_cache"
     },
     {
@@ -27,36 +27,34 @@
     }
   ],
   "dataDependencies": [
-    "Journey",
-    "Workshop",
-    "Module",
-    "Ebook",
-    "Subscription"
+    "UserProfile",
+    "DDLTest"
   ],
   "uiStates": {
     "loading": {
-      "description": "Skeleton placeholders are shown while loading FR-E4-10 data."
+      "description": "Checking DDL completion status."
     },
     "ready": {
-      "description": "FR-E4-10 flows are fully interactive with primary CTA available when prerequisites are met."
+      "description": "DDL test presented. Journey blocked until test completed. If previously completed, gate passes immediately."
     },
     "empty": {
-      "description": "Empty state explains why no data is available and points to next best action."
+      "description": "Not applicable."
     },
     "error": {
-      "description": "Error state is recoverable with user-safe messaging and a retry action."
+      "description": "Test load error with retry."
     },
     "offline": {
-      "description": "Offline state shows last synchronized data and queues write actions for later sync."
+      "description": "Test deferred until online."
     }
   },
   "analytics": {
-    "screenView": "discover_fr_e4_10_viewed",
+    "screenView": "ddl_test_viewed",
     "events": [
-      "ddl_test_abandoned",
-      "ddl_test_completed",
+      "ddl_test_viewed",
       "ddl_test_started",
-      "discover_fr_e4_10_viewed"
+      "ddl_test_completed",
+      "ddl_test_abandoned",
+      "ddl_test_skipped_already_done"
     ]
   },
   "acceptanceCriteriaRefs": [

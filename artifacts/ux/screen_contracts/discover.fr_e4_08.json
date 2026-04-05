@@ -1,22 +1,22 @@
 {
   "id": "discover.fr_e4_08",
-  "title": "Misafir görüntüleme ve kayıt zorunluluğu",
-  "route": "/epic-4/fr-e4-08",
-  "purpose": "Implements FR-E4-08: Misafir görüntüleme ve kayıt zorunluluğu.",
+  "title": "Misafir Goruntulemе ve Kayit Zorunlulugu",
+  "route": "/discover/guest",
+  "purpose": "Implements FR-E4-08: Guest users can browse all catalog/detail screens. Free content tagged. Start actions redirect to registration. Post-registration free content unlocked.",
   "entryPoints": [
-    "discover.catalog"
+    "bottom_tab.discover"
   ],
   "inputs": [
     {
       "name": "userId",
       "type": "uuid",
-      "required": true,
+      "required": false,
       "source": "session"
     },
     {
       "name": "subscriptionStatus",
       "type": "SubscriptionStatus",
-      "required": true,
+      "required": false,
       "source": "entitlement_cache"
     },
     {
@@ -27,33 +27,33 @@
     }
   ],
   "dataDependencies": [
-    "Journey",
-    "Workshop",
-    "Module",
     "Ebook",
+    "Journey",
     "Subscription"
   ],
   "uiStates": {
     "loading": {
-      "description": "Skeleton placeholders are shown while loading FR-E4-08 data."
+      "description": "Loading guest entitlement check."
     },
     "ready": {
-      "description": "FR-E4-08 flows are fully interactive with primary CTA available when prerequisites are met."
+      "description": "Catalog visible. Free badge rendered on free items. Start/read taps redirect to registration flow."
     },
     "empty": {
-      "description": "Empty state explains why no data is available and points to next best action."
+      "description": "Empty catalog state."
     },
     "error": {
-      "description": "Error state is recoverable with user-safe messaging and a retry action."
+      "description": "Error state with retry action."
     },
     "offline": {
-      "description": "Offline state shows last synchronized data and queues write actions for later sync."
+      "description": "Offline cached view with guest notice."
     }
   },
   "analytics": {
-    "screenView": "discover_fr_e4_08_viewed",
+    "screenView": "discover_guest_viewed",
     "events": [
-      "discover_fr_e4_08_viewed"
+      "discover_guest_viewed",
+      "discover_guest_start_tapped",
+      "discover_guest_registration_triggered"
     ]
   },
   "acceptanceCriteriaRefs": [

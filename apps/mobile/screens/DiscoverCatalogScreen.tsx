@@ -8,7 +8,6 @@ import { StateMessage } from "./components/StateMessage";
 import { resolveScreenState, ScreenState } from "./components/ScreenState";
 import {
   getEbooks,
-  getJourneyDays,
   getJourneys,
   getModules,
   getPrimaryUser,
@@ -17,168 +16,245 @@ import {
 } from "../data/mockSelectors";
 import { PActivityIndicator, PButton, PCard, PText } from "../components";
 
-const contentTabs = [
-  { key: "journeys", label: "🎯 Yolculuklar", screen: "DiscoverJourneys" },
-  { key: "workshops", label: "🎨 Atölyeler", screen: "DiscoverWorkshops" },
-  { key: "modules", label: "📦 Modüller", screen: "DiscoverModules" },
-  { key: "ebooks", label: "📖 e-Kitaplar", screen: "DiscoverEbooks" },
+const CONTENT_TABS = [
+  { key: "journeys", label: "Yolculuklar", emoji: "🎯", screen: "DiscoverJourneys" },
+  { key: "workshops", label: "Atolyeler", emoji: "🎨", screen: "DiscoverWorkshops" },
+  { key: "modules", label: "Moduller", emoji: "📦", screen: "DiscoverModules" },
+  { key: "ebooks", label: "e-Kitaplar", emoji: "📖", screen: "DiscoverEbooks" },
 ];
+
+const LEVEL_LABELS: Record<string, string> = {
+  baslangic: "Baslangic", beginner: "Baslangic",
+  orta: "Orta", intermediate: "Orta",
+  ileri: "Ileri", advanced: "Ileri",
+};
+
+const JOURNEY_COLORS = ["#FFDDC1", "#D1FAE5", "#E9D5FF", "#FDE68A"];
+const JOURNEY_EMOJIS = ["🎯", "🙏", "🌿", "🧘"];
+const EBOOK_COLORS = ["#B2EBF2", "#D1FAE5", "#E9D5FF", "#FDE68A"];
+const EBOOK_EMOJIS = ["📖", "📘", "📕", "📗"];
 
 const DiscoverReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
   const navigation = useNavigation<any>();
+  const [activeTab, setActiveTab] = React.useState<string>("journeys");
   const user = getPrimaryUser();
   const subscription = getSubscriptionForUser(user?.id);
-  const requiresSubscription = subscription?.status !== "active" && subscription?.status !== "trial";
+  const isGuest = !user;
+  const requiresSubscription =
+    !isGuest && subscription?.status !== "active" && subscription?.status !== "trial";
   const journeys = getJourneys();
-  const journeyDays = getJourneyDays();
-  const workshops = getWorkshops();
   const ebooks = getEbooks();
-  const featuredJourneys = journeys.filter((journey) => journey.featured);
-  const featuredEbooks = ebooks.filter((ebook) => ebook.featured);
-  const journeyItems = featuredJourneys.length ? featuredJourneys : journeys;
-  const ebookItems = featuredEbooks.length ? featuredEbooks : ebooks;
-  const featuredItems = [
-    ...journeyItems,
-    ...ebookItems.filter((ebook) => !journeyItems.some((journey) => journey.id === ebook.id)),
-  ].slice(0, 10);
+  const workshops = getWorkshops();
+  const modules = getModules();
+  const featuredJourneys = journeys.filter((j) => j.featured).slice(0, 3);
+  const featuredEbooks = ebooks.filter((e) => e.featured).slice(0, 4);
 
   const handlePaywall = () => navigation.navigate("Content", { screen: "ContentPaywall" });
 
-  const handleDiscoverRoute = (screen: string) => {
-    if (requiresSubscription) {
-      handlePaywall();
-      return;
-    }
-    navigation.navigate("Discover", { screen });
+  const handleTabPress = (tab: typeof CONTENT_TABS[number]) => {
+    if (requiresSubscription) { handlePaywall(); return; }
+    setActiveTab(tab.key);
+    navigation.navigate(tab.screen);
   };
 
-  const handleDetailRoute = (screen: string, id?: string) => {
-    if (requiresSubscription) {
-      handlePaywall();
-      return;
-    }
-    navigation.navigate("Content", { screen, params: { id } });
+  const handleJourneyPress = (id: string) => {
+    if (requiresSubscription) { handlePaywall(); return; }
+    navigation.navigate("Content", { screen: "ContentJourneyDetail", params: { id } });
   };
+
+  const handleEbookPress = (id: string) => {
+    if (requiresSubscription) { handlePaywall(); return; }
+    navigation.navigate("Content", { screen: "ContentEbookDetail", params: { id } });
+  };
+
+  const handleAssistantPress = () => {
+    if (requiresSubscription) { handlePaywall(); return; }
+    navigation.navigate("DiscoverAssistantIntro");
+  };
+
+  const stats = [
+    { count: journeys.length, label: "Yolculuk" },
+    { count: workshops.length, label: "Atolye" },
+    { count: modules.length, label: "Modul" },
+    { count: ebooks.length, label: "e-Kitap" },
+  ];
 
   return (
     <View>
-      <PText style={styles.title}>Keşfet</PText>
-
-      <PCard
-        style={styles.assistantCard}
-        onPress={() => handleDiscoverRoute("DiscoverAssistantQuestions")}
-      >
-        <View style={styles.assistantRow}>
-          <PText style={styles.assistantEmoji}>🤖</PText>
-          <View style={styles.assistantInfo}>
-            <PText style={styles.assistantTitle}>İçerik Asistanı</PText>
-            <PText style={styles.assistantSubtitle}>Size özel içerik önerisi alalım</PText>
+      {/* Header */}
+      <View style={styles.header}>
+        <View>
+          <PText style={styles.greeting}>Merhaba 👋</PText>
+          <PText style={styles.title}>Kesfedin</PText>
+        </View>
+        {isGuest && (
+          <View style={styles.guestBadge}>
+            <PText style={styles.guestBadgeText}>Misafir</PText>
           </View>
-          <PText style={styles.assistantArrow}>→</PText>
+        )}
+      </View>
+
+      {/* Assistant CTA */}
+      <PCard style={styles.assistantCard} onPress={handleAssistantPress}>
+        <View style={styles.assistantRow}>
+          <View style={styles.assistantIconWrap}>
+            <PText style={styles.assistantEmoji}>🤖</PText>
+          </View>
+          <View style={styles.assistantInfo}>
+            <PText style={styles.assistantTitle}>Icerik Asistani</PText>
+            <PText style={styles.assistantSubtitle}>Size ozel oneri alalim</PText>
+          </View>
+          <View style={styles.assistantArrowWrap}>
+            <PText style={styles.assistantArrow}>›</PText>
+          </View>
         </View>
       </PCard>
 
-      <ScrollView contentContainerStyle={styles.tabsRow}>
-        {contentTabs.map((tab, index) => (
-          <PButton
-            key={tab.key}
-            mode="contained"
-            compact
-            onPress={() => handleDiscoverRoute(tab.screen)}
-            disabled={isOffline}
-            style={styles.tabButton}
-            labelStyle={styles.tabLabel}
-            contentStyle={styles.tabContent}
-            buttonColor={index === 0 ? "#00B4D8" : "#F5F5F5"}
-            textColor={index === 0 ? "#FFFFFF" : "#525252"}
-          >
-            {tab.label}
-          </PButton>
-        ))}
+      {/* Content Type Tabs */}
+      <PText style={styles.sectionLabel}>Icerik Turleri</PText>
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.tabsRow}
+      >
+        {CONTENT_TABS.map((tab) => {
+          const isActive = activeTab === tab.key;
+          return (
+            <PButton
+              key={tab.key}
+              mode="contained"
+              compact
+              onPress={() => handleTabPress(tab)}
+              disabled={isOffline}
+              style={[styles.tabButton, isActive && styles.tabButtonActive]}
+              labelStyle={styles.tabLabel}
+              contentStyle={styles.tabContent}
+              buttonColor={isActive ? "#2B1B5D" : "#F5F5F5"}
+              textColor={isActive ? "#FFFFFF" : "#525252"}
+            >
+              {tab.emoji} {tab.label}
+            </PButton>
+          );
+        })}
       </ScrollView>
 
+      {/* Stats Row */}
+      <View style={styles.statsRow}>
+        {stats.map((stat, i) => (
+          <React.Fragment key={stat.label}>
+            <View style={styles.statItem}>
+              <PText style={styles.statCount}>{stat.count}</PText>
+              <PText style={styles.statLabel}>{stat.label}</PText>
+            </View>
+            {i < stats.length - 1 && <View style={styles.statDivider} />}
+          </React.Fragment>
+        ))}
+      </View>
 
-      <View style={styles.section}>
-        <PText style={styles.sectionTitle}>Öne Çıkanlar</PText>
-
-        {featuredItems.map((item) => {
-            const isJourney = "duration_days" in item;
-            if (isJourney) {
-              const journey = item as typeof journeys[number];
-              const dayCount =
-                journeyDays.filter((day) => day.journey_id === journey?.id).length ||
-                journey?.duration_days ||
-                0;
-              const moduleCount = journey?.featured_modules?.length ?? getModules().length;
-              const workshopCount = journey?.featured_workshops?.length ?? workshops.length;
-              return (
-                <PCard
-                  key={`journey-${journey.id}`}
-                  style={styles.featureCard}
-                  onPress={() => handleDetailRoute("ContentJourneyDetail", journey?.id)}
+      {/* Featured Journeys */}
+      {featuredJourneys.length > 0 && (
+        <View style={styles.section}>
+          <PText style={styles.sectionTitle}>One Cikan Yolculuklar</PText>
+          {featuredJourneys.map((journey, index) => (
+            <PCard
+              key={journey.id}
+              style={styles.journeyCard}
+              onPress={() => handleJourneyPress(journey.id)}
+            >
+              <View style={styles.journeyCardRow}>
+                <View
+                  style={[
+                    styles.journeyIcon,
+                    { backgroundColor: JOURNEY_COLORS[index % JOURNEY_COLORS.length] },
+                  ]}
                 >
-                  <View style={styles.featureRow}>
-                    <View style={styles.featureIcon}>
-                      <PText style={styles.featureEmoji}>🎯</PText>
-                    </View>
-                    <View style={styles.featureInfo}>
-                      <PText style={styles.featureTitle}>{journey?.title}</PText>
-                      <PText style={styles.featureMeta}>
-                        {dayCount} gün • {journey?.level ?? "Başlangıç"}
-                      </PText>
-                      <PText style={styles.featureSubMeta}>
-                        📦 {moduleCount} Modül • 🎨 {workshopCount} Atölye
-                      </PText>
-                    </View>
+                  <PText style={styles.journeyEmoji}>
+                    {JOURNEY_EMOJIS[index % JOURNEY_EMOJIS.length]}
+                  </PText>
+                </View>
+                <View style={styles.journeyInfo}>
+                  <View style={styles.journeyTitleRow}>
+                    <PText style={styles.journeyTitle} numberOfLines={2}>
+                      {journey.title}
+                    </PText>
+                    {!requiresSubscription && (
+                      <View style={styles.freeBadge}>
+                        <PText style={styles.freeBadgeText}>Ucretsiz</PText>
+                      </View>
+                    )}
                   </View>
-                </PCard>
-              );
-            }
-
-            const ebook = item as typeof ebooks[number];
-            const category = ebook?.category ?? "kategori";
-            const pages = ebook?.total_pages ?? 0;
-            const hours = pages ? Math.max(1, Math.round(pages / 60)) : 0;
-            return (
-              <PCard
-                key={`ebook-${ebook.id}`}
-                style={styles.featureCard}
-                onPress={() => handleDetailRoute("ContentEbookDetail", ebook?.id)}
-              >
-                <View style={styles.featureRow}>
-                  <View style={styles.ebookCover}>
-                    <PText style={styles.featureEmoji}>📖</PText>
-                  </View>
-                  <View style={styles.featureInfo}>
-                    <PText style={styles.featureTitle}>{ebook?.title}</PText>
-                    <PText style={styles.featureMeta}>PST Coaching • {category}</PText>
-                    <PText style={styles.featureSubMeta}>
-                      {pages} sayfa • ~{hours} saat okuma
+                  <View style={styles.journeyMetaRow}>
+                    <PText style={styles.journeyMetaText}>⏱ {journey.duration_days} gun</PText>
+                    <PText style={styles.journeyMetaDot}>·</PText>
+                    <PText style={styles.journeyMetaText}>
+                      📊 {LEVEL_LABELS[journey.level] ?? journey.level}
                     </PText>
                   </View>
+                  <PText style={styles.journeyDailyTarget}>
+                    {journey.daily_target ?? "10 dk/gun"}
+                  </PText>
                 </View>
+              </View>
+            </PCard>
+          ))}
+        </View>
+      )}
+
+      {/* Featured eBooks */}
+      {featuredEbooks.length > 0 && (
+        <View style={styles.section}>
+          <PText style={styles.sectionTitle}>Populer e-Kitaplar</PText>
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.ebookRow}
+          >
+            {featuredEbooks.map((ebook, index) => (
+              <PCard
+                key={ebook.id}
+                style={styles.ebookCard}
+                onPress={() => handleEbookPress(ebook.id)}
+              >
+                <View
+                  style={[
+                    styles.ebookCover,
+                    { backgroundColor: EBOOK_COLORS[index % EBOOK_COLORS.length] },
+                  ]}
+                >
+                  <PText style={styles.ebookEmoji}>
+                    {EBOOK_EMOJIS[index % EBOOK_EMOJIS.length]}
+                  </PText>
+                </View>
+                <PText style={styles.ebookTitle} numberOfLines={2}>{ebook.title}</PText>
+                <PText style={styles.ebookMeta}>{ebook.total_pages ?? 180} s.</PText>
               </PCard>
-            );
-          })}
-      </View>
+            ))}
+          </ScrollView>
+        </View>
+      )}
 
       <View style={styles.bottomSpacer} />
     </View>
   );
 };
 
-export const DiscoverCatalogScreen = ({ route }: { route?: { params?: { state?: ScreenState } } }) => {
+export const DiscoverCatalogScreen = ({
+  route,
+}: {
+  route?: { params?: { state?: ScreenState } };
+}) => {
   const state = resolveScreenState(route);
 
   if (state === "loading") {
     return (
       <SafeAreaView style={styles.root}>
         <ScrollView contentContainerStyle={styles.content}>
+          <SkeletonBlock height={24} />
+          <SkeletonBlock height={72} />
+          <SkeletonBlock height={40} />
+          <SkeletonBlock height={100} />
+          <SkeletonBlock height={100} />
           <PActivityIndicator animating />
-          <SkeletonBlock height={20} />
-          <SkeletonBlock height={20} />
-          <SkeletonBlock height={120} />
-          <SkeletonBlock height={120} />
         </ScrollView>
       </SafeAreaView>
     );
@@ -189,9 +265,9 @@ export const DiscoverCatalogScreen = ({ route }: { route?: { params?: { state?: 
       <SafeAreaView style={styles.root}>
         <ScrollView contentContainerStyle={styles.content}>
           <StateMessage
-            title="Henüz içerik yok"
-            description="Yakında yeni yolculuklar ve atölyeler eklenecek."
-            actionLabel="Bildirimleri Aç"
+            title="Henuz icerik yok"
+            description="Yakinda yeni yolculuklar ve atolyeler eklenecek."
+            actionLabel="Bildirimleri Ac"
             icon="bell-outline"
           />
         </ScrollView>
@@ -204,8 +280,8 @@ export const DiscoverCatalogScreen = ({ route }: { route?: { params?: { state?: 
       <SafeAreaView style={styles.root}>
         <ScrollView contentContainerStyle={styles.content}>
           <StateMessage
-            title="Keşfet yüklenemedi"
-            description="Sunucuya bağlanamadık. Lütfen tekrar dene."
+            title="Icerik yuklenemedi"
+            description="Baglantini kontrol edip tekrar dene."
             actionLabel="Tekrar Dene"
             icon="alert-circle-outline"
             tone="error"
@@ -236,131 +312,128 @@ export const DiscoverCatalogScreen = ({ route }: { route?: { params?: { state?: 
 };
 
 const styles = StyleSheet.create({
-  root: {
-    flex: 1,
-    backgroundColor: "#FAFAFA",
-  },
-  content: {
-    padding: 16,
-  },
-  title: {
-    fontSize: 32,
-    fontWeight: "800",
-    color: "#2B1B5D",
-    marginBottom: 24,
-  },
-  assistantCard: {
-    padding: 16,
-    borderRadius: 16,
-    borderWidth: 2,
-    borderColor: "#00B4D8",
-    backgroundColor: "#E0F7FA",
+  root: { flex: 1, backgroundColor: "#FAFAFA" },
+  content: { paddingHorizontal: 20, paddingTop: 20, paddingBottom: 96 },
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "flex-start",
     marginBottom: 20,
   },
-  assistantRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 12,
-    marginBottom: 12,
-  },
-  assistantEmoji: {
-    fontSize: 32,
-  },
-  assistantInfo: {
-    flex: 1,
-  },
-  assistantTitle: {
-    fontSize: 18,
-    fontWeight: "700",
-    color: "#2B1B5D",
-    marginBottom: 4,
-  },
-  assistantSubtitle: {
-    fontSize: 14,
-    color: "#404040",
-  },
-  assistantArrow: {
-    fontSize: 20,
-    color: "#00B4D8",
-  },
-  tabsRow: {
-    flexDirection: "column",
-    gap: 8,
-    paddingBottom: 8,
-    marginBottom: 16,
-  },
-  tabButton: {
-    borderRadius: 10,
-  },
-  tabLabel: {
-    fontSize: 12,
-    fontWeight: "600",
-    textAlign: "center",
-    alignSelf: "center",
-  },
-  tabContent: {
-    height: 82,
-    paddingHorizontal: 12,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  section: {
-    marginBottom: 24,
-  },
-  sectionTitle: {
-    fontSize: 16,
-    fontWeight: "700",
-    color: "#171717",
-    marginBottom: 12,
-  },
-  featureCard: {
-    padding: 16,
-    borderRadius: 16,
-    marginBottom: 16,
-  },
-  featureRow: {
-    flexDirection: "row",
-    gap: 12,
-    marginBottom: 12,
-  },
-  featureIcon: {
-    width: 80,
-    height: 80,
+  greeting: { fontSize: 14, color: "#737373", fontWeight: "500", marginBottom: 2 },
+  title: { fontSize: 32, fontWeight: "800", color: "#2B1B5D", letterSpacing: -0.5 },
+  guestBadge: {
+    backgroundColor: "#FDE68A",
+    paddingHorizontal: 10,
+    paddingVertical: 4,
     borderRadius: 12,
-    backgroundColor: "#FFDDC1",
+    alignSelf: "flex-start",
+    marginTop: 4,
+  },
+  guestBadgeText: { fontSize: 12, fontWeight: "700", color: "#92400E" },
+  assistantCard: { marginBottom: 20, borderRadius: 16, backgroundColor: "#2B1B5D" },
+  assistantRow: { flexDirection: "row", alignItems: "center", gap: 12, padding: 16 },
+  assistantIconWrap: {
+    width: 48,
+    height: 48,
+    borderRadius: 12,
+    backgroundColor: "rgba(255,255,255,0.15)",
     alignItems: "center",
     justifyContent: "center",
   },
-  ebookCover: {
-    width: 60,
-    height: 90,
-    borderRadius: 10,
-    backgroundColor: "#D1FAE5",
+  assistantEmoji: { fontSize: 24 },
+  assistantInfo: { flex: 1 },
+  assistantTitle: { fontSize: 16, fontWeight: "700", color: "#FFFFFF", marginBottom: 2 },
+  assistantSubtitle: { fontSize: 13, color: "rgba(255,255,255,0.7)" },
+  assistantArrowWrap: {
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    backgroundColor: "rgba(255,255,255,0.2)",
     alignItems: "center",
     justifyContent: "center",
   },
-  featureEmoji: {
-    fontSize: 28,
-  },
-  featureInfo: {
-    flex: 1,
-  },
-  featureTitle: {
-    fontSize: 15,
+  assistantArrow: { fontSize: 18, color: "#FFFFFF", lineHeight: 22 },
+  sectionLabel: {
+    fontSize: 11,
     fontWeight: "700",
-    color: "#171717",
+    color: "#9CA3AF",
+    marginBottom: 8,
+    textTransform: "uppercase",
+    letterSpacing: 0.8,
+  },
+  tabsRow: { gap: 8, paddingBottom: 4, marginBottom: 20 },
+  tabButton: { borderRadius: 20, elevation: 0 },
+  tabButtonActive: { elevation: 2 },
+  tabContent: { height: 36, paddingHorizontal: 4 },
+  tabLabel: { fontSize: 13, fontWeight: "600" },
+  statsRow: {
+    flexDirection: "row",
+    backgroundColor: "#FFFFFF",
+    borderRadius: 16,
+    paddingVertical: 16,
+    marginBottom: 24,
+    shadowColor: "#000",
+    shadowOpacity: 0.06,
+    shadowRadius: 8,
+    shadowOffset: { width: 0, height: 2 },
+    elevation: 2,
+  },
+  statItem: { flex: 1, alignItems: "center" },
+  statCount: { fontSize: 20, fontWeight: "800", color: "#2B1B5D" },
+  statLabel: { fontSize: 11, color: "#737373", marginTop: 2 },
+  statDivider: { width: 1, backgroundColor: "#E5E5E5", marginVertical: 4 },
+  section: { marginBottom: 24 },
+  sectionTitle: { fontSize: 18, fontWeight: "700", color: "#171717", marginBottom: 12 },
+  journeyCard: { borderRadius: 16, marginBottom: 12 },
+  journeyCardRow: { flexDirection: "row", gap: 12, padding: 12 },
+  journeyIcon: {
+    width: 64,
+    height: 64,
+    borderRadius: 12,
+    alignItems: "center",
+    justifyContent: "center",
+    flexShrink: 0,
+  },
+  journeyEmoji: { fontSize: 28 },
+  journeyInfo: { flex: 1 },
+  journeyTitleRow: {
+    flexDirection: "row",
+    alignItems: "flex-start",
+    justifyContent: "space-between",
+    gap: 8,
     marginBottom: 4,
   },
-  featureMeta: {
-    fontSize: 13,
-    color: "#525252",
-    marginBottom: 6,
+  journeyTitle: { fontSize: 15, fontWeight: "700", color: "#171717", flex: 1 },
+  freeBadge: {
+    backgroundColor: "#D1FAE5",
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: 6,
   },
-  featureSubMeta: {
+  freeBadgeText: { fontSize: 10, fontWeight: "700", color: "#065F46" },
+  journeyMetaRow: { flexDirection: "row", alignItems: "center", gap: 6, marginBottom: 2 },
+  journeyMetaText: { fontSize: 12, color: "#737373" },
+  journeyMetaDot: { fontSize: 12, color: "#D4D4D4" },
+  journeyDailyTarget: { fontSize: 11, color: "#00758C", fontWeight: "600" },
+  ebookRow: { gap: 12, paddingBottom: 4 },
+  ebookCard: { width: 130, borderRadius: 12 },
+  ebookCover: {
+    height: 160,
+    borderRadius: 12,
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 8,
+  },
+  ebookEmoji: { fontSize: 40 },
+  ebookTitle: {
     fontSize: 12,
-    color: "#525252",
+    fontWeight: "700",
+    color: "#171717",
+    lineHeight: 16,
+    paddingHorizontal: 4,
+    marginBottom: 2,
   },
-  bottomSpacer: {
-    height: 24,
-  },
+  ebookMeta: { fontSize: 11, color: "#9CA3AF", paddingHorizontal: 4, marginBottom: 4 },
+  bottomSpacer: { height: 24 },
 });

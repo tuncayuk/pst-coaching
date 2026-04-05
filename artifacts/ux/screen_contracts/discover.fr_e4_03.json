@@ -1,22 +1,22 @@
 {
   "id": "discover.fr_e4_03",
-  "title": "Yolculuk kataloğu ve detayı",
-  "route": "/epic-4/fr-e4-03",
-  "purpose": "Implements FR-E4-03: Yolculuk kataloğu ve detayı.",
+  "title": "Yolculuk Katalogu ve Detayi",
+  "route": "/discover/journeys",
+  "purpose": "Implements FR-E4-03: Journey catalog with sort (Tumu/Onerilen/Populer/Yeni), level filter (Baslangic/Orta/Ileri), favorites toggle, and Yolculugu Baslat CTA.",
   "entryPoints": [
-    "discover.catalog"
+    "discover.fr_e4_01"
   ],
   "inputs": [
     {
       "name": "userId",
       "type": "uuid",
-      "required": true,
+      "required": false,
       "source": "session"
     },
     {
       "name": "subscriptionStatus",
       "type": "SubscriptionStatus",
-      "required": true,
+      "required": false,
       "source": "entitlement_cache"
     },
     {
@@ -28,32 +28,34 @@
   ],
   "dataDependencies": [
     "Journey",
-    "Workshop",
-    "Module",
-    "Ebook",
-    "Subscription"
+    "Package"
   ],
   "uiStates": {
     "loading": {
-      "description": "Skeleton placeholders are shown while loading FR-E4-03 data."
+      "description": "Skeleton cards while loading journeys."
     },
     "ready": {
-      "description": "FR-E4-03 flows are fully interactive with primary CTA available when prerequisites are met."
+      "description": "Sort chips + level filter chips + journey cards. Card shows: title, duration, level, daily_target, content count chips (Modul/Atolye/Kitap), heart-favorites toggle, 'Yolculugu Baslat' CTA. Empty-filter state shown when filter yields 0 results."
     },
     "empty": {
-      "description": "Empty state explains why no data is available and points to next best action."
+      "description": "Empty state with notification opt-in CTA."
     },
     "error": {
-      "description": "Error state is recoverable with user-safe messaging and a retry action."
+      "description": "Error state with retry action."
     },
     "offline": {
-      "description": "Offline state shows last synchronized data and queues write actions for later sync."
+      "description": "Cached journeys shown with sort/filter disabled."
     }
   },
   "analytics": {
-    "screenView": "discover_fr_e4_03_viewed",
+    "screenView": "discover_journeys_viewed",
     "events": [
-      "discover_fr_e4_03_viewed"
+      "discover_journeys_viewed",
+      "discover_journeys_sort_changed",
+      "discover_journeys_level_filtered",
+      "discover_journey_favorite_toggled",
+      "discover_journey_start_tapped",
+      "discover_journey_card_tapped"
     ]
   },
   "acceptanceCriteriaRefs": [

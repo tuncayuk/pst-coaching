@@ -9,65 +9,147 @@ import { resolveScreenState, ScreenState } from "../components/ScreenState";
 import { getEbooks } from "../../data/mockSelectors";
 import { PActivityIndicator, PButton, PIconButton, PText } from "../../components";
 
+const SORT_OPTIONS = ["Tumu", "Onerilen", "Populer", "Yeni"];
+const COVER_COLORS = ["#B2EBF2", "#D1FAE5", "#E9D5FF", "#FDE68A"];
+const COVER_EMOJIS = ["📖", "📘", "📕", "📗"];
+
 const DiscoverEbooksContent = ({ isOffline }: { isOffline?: boolean }) => {
   const navigation = useNavigation<any>();
   const ebooks = getEbooks();
+  const [selectedSort, setSelectedSort] = React.useState("Tumu");
+  const [selectedCategory, setSelectedCategory] = React.useState("Tumu");
+
+  const categories = [
+    "Tumu",
+    ...Array.from(new Set(ebooks.map((e) => e.category ?? "Diger"))),
+  ];
+
+  const filtered = ebooks.filter((e) =>
+    selectedCategory === "Tumu" ? true : (e.category ?? "Diger") === selectedCategory
+  );
+
+  const sorted = [...filtered].sort((a, b) => {
+    if (selectedSort === "Populer") return (b.total_pages ?? 0) - (a.total_pages ?? 0);
+    if (selectedSort === "Yeni") return b.id.localeCompare(a.id);
+    if (selectedSort === "Onerilen") return (b.featured ? 1 : 0) - (a.featured ? 1 : 0);
+    return 0;
+  });
 
   return (
     <View>
       <View style={styles.headerRow}>
         <View style={styles.headerLeft}>
-          <PIconButton icon="arrow-left" onPress={() => navigation.goBack()} />
+          <PIconButton
+            icon="arrow-left"
+            size={24}
+            onPress={() => navigation.goBack()}
+            accessibilityLabel="Geri"
+          />
           <PText style={styles.title}>e-Kitaplar</PText>
         </View>
-        <PButton
-          mode="contained"
-          disabled={isOffline}
-          buttonColor="#F5F5F5"
-          textColor="#525252"
-          style={styles.filterButton}
-          contentStyle={styles.filterButtonContent}
-          labelStyle={styles.filterButtonLabel}
-        >
-          🔍 Filtrele
-        </PButton>
+        <View style={styles.countBadge}>
+          <PText style={styles.countBadgeText}>{sorted.length}</PText>
+        </View>
       </View>
 
-      <View style={styles.grid}>
-        {ebooks.map((item, index) => (
-          <Pressable
-            key={item.id}
-            style={styles.gridItem}
+      {/* Sort chips */}
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.chipsRow}
+      >
+        {SORT_OPTIONS.map((label) => (
+          <PButton
+            key={label}
+            mode="contained"
+            compact
             disabled={isOffline}
-            onPress={() =>
-              navigation.navigate("Content", {
-                screen: "ContentEbookDetail",
-                params: { id: item.id },
-              })
-            }
+            style={styles.chip}
+            contentStyle={styles.chipContent}
+            labelStyle={styles.chipLabel}
+            buttonColor={selectedSort === label ? "#2B1B5D" : "#F5F5F5"}
+            textColor={selectedSort === label ? "#FFFFFF" : "#525252"}
+            onPress={() => setSelectedSort(label)}
           >
-            <View
-              style={[
-                styles.cover,
-                index % 4 === 0 && styles.coverSuccess,
-                index % 4 === 1 && styles.coverPrimary,
-                index % 4 === 2 && styles.coverSecondary,
-                index % 4 === 3 && styles.coverWarning,
-              ]}
-            >
-              <PText style={styles.coverEmoji}>
-                {index % 4 === 0 ? "📖" : index % 4 === 1 ? "📘" : index % 4 === 2 ? "📕" : "📗"}
-              </PText>
-            </View>
-            <PText style={styles.bookTitle}>{item.title}</PText>
-            <PText style={styles.bookAuthor}>PST Coaching</PText>
-            <PText style={styles.bookMeta}>
-              {item.total_pages ?? 184} sayfa • ~{Math.max(3, Math.round((item.total_pages ?? 180) / 60))}h
-            </PText>
-          </Pressable>
+            {label}
+          </PButton>
         ))}
-      </View>
+      </ScrollView>
 
+      {/* Category filter */}
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.chipsRow}
+      >
+        {categories.map((cat) => (
+          <PButton
+            key={cat}
+            mode={selectedCategory === cat ? "contained" : "outlined"}
+            compact
+            disabled={isOffline}
+            style={styles.chip}
+            contentStyle={styles.chipContent}
+            labelStyle={styles.chipLabel}
+            buttonColor={selectedCategory === cat ? "#00B4D8" : "transparent"}
+            textColor={selectedCategory === cat ? "#FFFFFF" : "#2B1B5D"}
+            onPress={() => setSelectedCategory(cat)}
+          >
+            {cat}
+          </PButton>
+        ))}
+      </ScrollView>
+
+      {sorted.length === 0 ? (
+        <StateMessage
+          title="Sonuc bulunamadi"
+          description="Baska bir kategori filtresi deneyin."
+          actionLabel="Tumu Goster"
+          icon="filter-remove-outline"
+        />
+      ) : (
+        <View style={styles.grid}>
+          {sorted.map((item) => {
+            const origIndex = ebooks.findIndex((e) => e.id === item.id);
+            const pages = item.total_pages ?? 180;
+            const readHours = Math.max(1, Math.round(pages / 60));
+            return (
+              <Pressable
+                key={item.id}
+                style={styles.gridItem}
+                disabled={isOffline}
+                accessibilityRole="button"
+                accessibilityLabel={item.title}
+                onPress={() =>
+                  navigation.navigate("Content", {
+                    screen: "ContentEbookDetail",
+                    params: { id: item.id },
+                  })
+                }
+              >
+                <View
+                  style={[
+                    styles.cover,
+                    { backgroundColor: COVER_COLORS[origIndex % COVER_COLORS.length] },
+                  ]}
+                >
+                  <PText style={styles.coverEmoji}>
+                    {COVER_EMOJIS[origIndex % COVER_EMOJIS.length]}
+                  </PText>
+                  {item.featured && (
+                    <View style={styles.featuredBadge}>
+                      <PText style={styles.featuredBadgeText}>One Cikan</PText>
+                    </View>
+                  )}
+                </View>
+                <PText style={styles.bookTitle} numberOfLines={2}>{item.title}</PText>
+                <PText style={styles.bookCategory}>{item.category ?? "Genel"}</PText>
+                <PText style={styles.bookMeta}>{pages} s. · ~{readHours}s</PText>
+              </Pressable>
+            );
+          })}
+        </View>
+      )}
       <View style={styles.bottomSpacer} />
     </View>
   );
@@ -86,9 +168,9 @@ export const DiscoverEbooksScreen = ({
         <ScrollView contentContainerStyle={styles.content}>
           <PActivityIndicator animating />
           <SkeletonBlock height={18} />
-          <SkeletonBlock height={18} />
-          <SkeletonBlock height={120} />
-          <SkeletonBlock height={120} />
+          <SkeletonBlock height={36} />
+          <SkeletonBlock height={200} />
+          <SkeletonBlock height={200} />
         </ScrollView>
       </SafeAreaView>
     );
@@ -99,9 +181,9 @@ export const DiscoverEbooksScreen = ({
       <SafeAreaView style={styles.root}>
         <ScrollView contentContainerStyle={styles.content}>
           <StateMessage
-            title="e-Kitap bulunamadı"
-            description="Yakında yeni e-Kitaplar eklenecek."
-            actionLabel="Bildirimleri Aç"
+            title="e-Kitap bulunamadi"
+            description="Yakinda yeni e-Kitaplar eklenecek."
+            actionLabel="Bildirimleri Ac"
             icon="bell-outline"
           />
         </ScrollView>
@@ -114,8 +196,8 @@ export const DiscoverEbooksScreen = ({
       <SafeAreaView style={styles.root}>
         <ScrollView contentContainerStyle={styles.content}>
           <StateMessage
-            title="e-Kitaplar yüklenemedi"
-            description="Bağlantını kontrol edip tekrar dene."
+            title="e-Kitaplar yuklenemedi"
+            description="Baglantini kontrol edip tekrar dene."
             actionLabel="Tekrar Dene"
             icon="alert-circle-outline"
             tone="error"
@@ -146,98 +228,59 @@ export const DiscoverEbooksScreen = ({
 };
 
 const styles = StyleSheet.create({
-  root: {
-    flex: 1,
-    backgroundColor: "#FAFAFA",
-  },
-  content: {
-    paddingHorizontal: 24,
-    paddingTop: 24,
-    paddingBottom: 96,
-  },
+  root: { flex: 1, backgroundColor: "#FAFAFA" },
+  content: { paddingHorizontal: 20, paddingTop: 20, paddingBottom: 96 },
   headerRow: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     marginBottom: 16,
   },
-  headerLeft: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8,
+  headerLeft: { flexDirection: "row", alignItems: "center", gap: 4 },
+  title: { fontSize: 26, fontWeight: "800", color: "#2B1B5D" },
+  countBadge: {
+    backgroundColor: "#EDE7F6",
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 12,
   },
-  title: {
-    fontSize: 28,
-    fontWeight: "800",
-    color: "#2B1B5D",
-  },
-  filterButton: {
-    borderRadius: 8,
-    elevation: 0,
-  },
-  filterButtonContent: {
-    height: 36,
-    paddingHorizontal: 12,
-  },
-  filterButtonLabel: {
-    fontSize: 13,
-    fontWeight: "600",
-  },
+  countBadgeText: { fontSize: 12, fontWeight: "700", color: "#4C1D95" },
+  chipsRow: { gap: 8, paddingBottom: 4, marginBottom: 12 },
+  chip: { borderRadius: 20, elevation: 0 },
+  chipContent: { height: 34, paddingHorizontal: 4 },
+  chipLabel: { fontSize: 12, fontWeight: "600" },
   grid: {
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "space-between",
-    rowGap: 16,
+    rowGap: 20,
   },
-  gridItem: {
-    flexBasis: "48%",
-  },
+  gridItem: { flexBasis: "48%" },
   cover: {
     height: 180,
-    borderRadius: 12,
+    borderRadius: 14,
     alignItems: "center",
     justifyContent: "center",
-    marginBottom: 12,
-    backgroundColor: "#D1FAE5",
-    shadowColor: "#000000",
-    shadowOpacity: 0.1,
-    shadowRadius: 12,
-    shadowOffset: { width: 0, height: 4 },
-    elevation: 4,
+    marginBottom: 10,
+    shadowColor: "#000",
+    shadowOpacity: 0.08,
+    shadowRadius: 8,
+    shadowOffset: { width: 0, height: 3 },
+    elevation: 3,
   },
-  coverSuccess: {
-    backgroundColor: "#D1FAE5",
+  coverEmoji: { fontSize: 48 },
+  featuredBadge: {
+    position: "absolute",
+    top: 8,
+    left: 8,
+    backgroundColor: "#2B1B5D",
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: 6,
   },
-  coverPrimary: {
-    backgroundColor: "#B2EBF2",
-  },
-  coverSecondary: {
-    backgroundColor: "#E9D5FF",
-  },
-  coverWarning: {
-    backgroundColor: "#FDE68A",
-  },
-  coverEmoji: {
-    fontSize: 48,
-  },
-  bookTitle: {
-    fontSize: 14,
-    fontWeight: "700",
-    color: "#171717",
-    marginBottom: 4,
-    lineHeight: 18,
-  },
-  bookAuthor: {
-    fontSize: 12,
-    color: "#525252",
-    marginBottom: 2,
-  },
-  bookMeta: {
-    fontSize: 12,
-    color: "#9CA3AF",
-    marginBottom: 4,
-  },
-  bottomSpacer: {
-    height: 24,
-  },
+  featuredBadgeText: { fontSize: 9, fontWeight: "700", color: "#FFFFFF" },
+  bookTitle: { fontSize: 13, fontWeight: "700", color: "#171717", lineHeight: 17, marginBottom: 3 },
+  bookCategory: { fontSize: 11, color: "#00758C", fontWeight: "600", marginBottom: 2 },
+  bookMeta: { fontSize: 11, color: "#9CA3AF", marginBottom: 4 },
+  bottomSpacer: { height: 24 },
 });

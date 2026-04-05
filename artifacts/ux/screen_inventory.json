@@ -521,8 +521,8 @@
     },
     {
       "id": "discover.fr_e4_01",
-      "route": "/epic-4/fr-e4-01",
-      "title": "Keşfet ana ekranı",
+      "route": "/discover",
+      "title": "Kesfet Ana Ekrani",
       "type": "stack",
       "states": [
         "loading",
@@ -537,8 +537,8 @@
     },
     {
       "id": "discover.fr_e4_02",
-      "route": "/epic-4/fr-e4-02",
-      "title": "İçerik belirleme asistanı",
+      "route": "/discover/assistant",
+      "title": "Icerik Belirleme Asistani",
       "type": "stack",
       "states": [
         "loading",
@@ -553,8 +553,8 @@
     },
     {
       "id": "discover.fr_e4_03",
-      "route": "/epic-4/fr-e4-03",
-      "title": "Yolculuk kataloğu ve detayı",
+      "route": "/discover/journeys",
+      "title": "Yolculuk Katalogu ve Detayi",
       "type": "stack",
       "states": [
         "loading",
@@ -569,8 +569,8 @@
     },
     {
       "id": "discover.fr_e4_04",
-      "route": "/epic-4/fr-e4-04",
-      "title": "Atölye kataloğu ve detayı",
+      "route": "/discover/workshops",
+      "title": "Atolye Katalogu ve Detayi",
       "type": "stack",
       "states": [
         "loading",
@@ -585,8 +585,8 @@
     },
     {
       "id": "discover.fr_e4_05",
-      "route": "/epic-4/fr-e4-05",
-      "title": "Modül kataloğu ve detayı",
+      "route": "/discover/modules",
+      "title": "Modul Katalogu ve Detayi",
       "type": "stack",
       "states": [
         "loading",
@@ -601,8 +601,8 @@
     },
     {
       "id": "discover.fr_e4_06",
-      "route": "/epic-4/fr-e4-06",
-      "title": "e-Kitap kataloğu ve detayı",
+      "route": "/discover/ebooks",
+      "title": "e-Kitap Katalogu ve Detayi",
       "type": "stack",
       "states": [
         "loading",
@@ -617,8 +617,8 @@
     },
     {
       "id": "discover.fr_e4_07",
-      "route": "/epic-4/fr-e4-07",
-      "title": "İçerik başlatma (ortak akış)",
+      "route": "/content/launch",
+      "title": "Icerik Baslatma (Ortak Akis)",
       "type": "stack",
       "states": [
         "loading",
@@ -633,8 +633,8 @@
     },
     {
       "id": "discover.fr_e4_08",
-      "route": "/epic-4/fr-e4-08",
-      "title": "Misafir görüntüleme ve kayıt zorunluluğu",
+      "route": "/discover/guest",
+      "title": "Misafir Goruntuleme ve Kayit Zorunlulugu",
       "type": "stack",
       "states": [
         "loading",
@@ -649,8 +649,8 @@
     },
     {
       "id": "discover.fr_e4_09",
-      "route": "/epic-4/fr-e4-09",
-      "title": "İçerik türüne özel demografi giriş noktaları",
+      "route": "/discover/demographics-gate",
+      "title": "Icerik Turune Ozel Demografi Giris Noktalari",
       "type": "stack",
       "states": [
         "loading",
@@ -667,8 +667,8 @@
     },
     {
       "id": "discover.fr_e4_10",
-      "route": "/epic-4/fr-e4-10",
-      "title": "İlk yolculukta DDL testi",
+      "route": "/discover/ddl-test",
+      "title": "Ilk Yolculukta DDL Testi",
       "type": "stack",
       "states": [
         "loading",

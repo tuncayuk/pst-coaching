@@ -1,22 +1,22 @@
 {
   "id": "discover.fr_e4_04",
-  "title": "Atölye kataloğu ve detayı",
-  "route": "/epic-4/fr-e4-04",
-  "purpose": "Implements FR-E4-04: Atölye kataloğu ve detayı.",
+  "title": "Atolye Katalogu ve Detayi",
+  "route": "/discover/workshops",
+  "purpose": "Implements FR-E4-04: Workshop catalog with sort, type filter (Kamp/Rehber/Calisma-Kitabi), showing tema, hedef kitle, sure, oturum sayisi, and type badges.",
   "entryPoints": [
-    "discover.catalog"
+    "discover.fr_e4_01"
   ],
   "inputs": [
     {
       "name": "userId",
       "type": "uuid",
-      "required": true,
+      "required": false,
       "source": "session"
     },
     {
       "name": "subscriptionStatus",
       "type": "SubscriptionStatus",
-      "required": true,
+      "required": false,
       "source": "entitlement_cache"
     },
     {
@@ -27,33 +27,33 @@
     }
   ],
   "dataDependencies": [
-    "Journey",
-    "Workshop",
-    "Module",
-    "Ebook",
-    "Subscription"
+    "Workshop"
   ],
   "uiStates": {
     "loading": {
-      "description": "Skeleton placeholders are shown while loading FR-E4-04 data."
+      "description": "Skeleton cards while loading workshops."
     },
     "ready": {
-      "description": "FR-E4-04 flows are fully interactive with primary CTA available when prerequisites are met."
+      "description": "Sort chips + type filter chips + workshop cards. Card shows: title, duration, age target, session count, type badge (Kamp/Rehber/Calisma Kitabi), 'Detaylari Gor' button. Empty-filter state when filter yields 0."
     },
     "empty": {
-      "description": "Empty state explains why no data is available and points to next best action."
+      "description": "Empty state with notification opt-in."
     },
     "error": {
-      "description": "Error state is recoverable with user-safe messaging and a retry action."
+      "description": "Error state with retry action."
     },
     "offline": {
-      "description": "Offline state shows last synchronized data and queues write actions for later sync."
+      "description": "Cached workshops shown with filters disabled."
     }
   },
   "analytics": {
-    "screenView": "discover_fr_e4_04_viewed",
+    "screenView": "discover_workshops_viewed",
     "events": [
-      "discover_fr_e4_04_viewed"
+      "discover_workshops_viewed",
+      "discover_workshops_sort_changed",
+      "discover_workshops_type_filtered",
+      "discover_workshop_card_tapped",
+      "discover_workshop_detail_tapped"
     ]
   },
   "acceptanceCriteriaRefs": [

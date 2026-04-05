@@ -1,22 +1,25 @@
 {
   "id": "discover.fr_e4_07",
-  "title": "İçerik başlatma (ortak akış)",
-  "route": "/epic-4/fr-e4-07",
-  "purpose": "Implements FR-E4-07: İçerik başlatma (ortak akış).",
+  "title": "Icerik Baslatma (Ortak Akis)",
+  "route": "/content/launch",
+  "purpose": "Implements FR-E4-07: Content launch gate sequence (Auth → Subscription → Add-on → Demographics → DDL), planning options, time rules, psychological safety notice, and activation.",
   "entryPoints": [
-    "discover.catalog"
+    "discover.fr_e4_03",
+    "discover.fr_e4_04",
+    "discover.fr_e4_05",
+    "discover.fr_e4_06"
   ],
   "inputs": [
     {
       "name": "userId",
       "type": "uuid",
-      "required": true,
+      "required": false,
       "source": "session"
     },
     {
       "name": "subscriptionStatus",
       "type": "SubscriptionStatus",
-      "required": true,
+      "required": false,
       "source": "entitlement_cache"
     },
     {
@@ -29,31 +32,35 @@
   "dataDependencies": [
     "Journey",
     "Workshop",
-    "Module",
-    "Ebook",
-    "Subscription"
+    "Subscription",
+    "UserProfile"
   ],
   "uiStates": {
     "loading": {
-      "description": "Skeleton placeholders are shown while loading FR-E4-07 data."
+      "description": "Gate check in progress — spinner shown."
     },
     "ready": {
-      "description": "FR-E4-07 flows are fully interactive with primary CTA available when prerequisites are met."
+      "description": "Gate sequence evaluated. Planning options presented per content type. Time rules shown. Psychological safety notice (BR-11) shown. 'Basla' activates content."
     },
     "empty": {
-      "description": "Empty state explains why no data is available and points to next best action."
+      "description": "No content to launch."
     },
     "error": {
-      "description": "Error state is recoverable with user-safe messaging and a retry action."
+      "description": "Error state with retry action."
     },
     "offline": {
-      "description": "Offline state shows last synchronized data and queues write actions for later sync."
+      "description": "Launch blocked offline with informative message."
     }
   },
   "analytics": {
-    "screenView": "discover_fr_e4_07_viewed",
+    "screenView": "content_launch_viewed",
     "events": [
-      "discover_fr_e4_07_viewed"
+      "content_launch_viewed",
+      "content_launch_gate_auth_triggered",
+      "content_launch_gate_subscription_triggered",
+      "content_launch_gate_demographics_triggered",
+      "content_launch_gate_ddl_triggered",
+      "content_launch_confirmed"
     ]
   },
   "acceptanceCriteriaRefs": [
@@ -63,5 +70,10 @@
     "AC-FR-E4-07-04",
     "AC-FR-E4-07-05"
   ],
-  "gates": []
+  "gates": [
+    "auth",
+    "subscription",
+    "demographics",
+    "ddl_test"
+  ]
 }

@@ -1,22 +1,22 @@
 {
   "id": "discover.fr_e4_05",
-  "title": "Modül kataloğu ve detayı",
-  "route": "/epic-4/fr-e4-05",
-  "purpose": "Implements FR-E4-05: Modül kataloğu ve detayı.",
+  "title": "Modul Katalogu ve Detayi",
+  "route": "/discover/modules",
+  "purpose": "Implements FR-E4-05: Module catalog with sort, topic filter (Gelisim/Maneviyat/Denge), package count, preview package list with descriptions, and Modulu Baslat CTA.",
   "entryPoints": [
-    "discover.catalog"
+    "discover.fr_e4_01"
   ],
   "inputs": [
     {
       "name": "userId",
       "type": "uuid",
-      "required": true,
+      "required": false,
       "source": "session"
     },
     {
       "name": "subscriptionStatus",
       "type": "SubscriptionStatus",
-      "required": true,
+      "required": false,
       "source": "entitlement_cache"
     },
     {
@@ -27,33 +27,34 @@
     }
   ],
   "dataDependencies": [
-    "Journey",
-    "Workshop",
     "Module",
-    "Ebook",
-    "Subscription"
+    "Package"
   ],
   "uiStates": {
     "loading": {
-      "description": "Skeleton placeholders are shown while loading FR-E4-05 data."
+      "description": "Skeleton cards while loading modules."
     },
     "ready": {
-      "description": "FR-E4-05 flows are fully interactive with primary CTA available when prerequisites are met."
+      "description": "Sort chips + topic filter chips + module cards. Card shows: title, description, package count chip, top-2 package preview with index badges and short descriptions, 'Modulu Baslat' CTA. Empty-filter state when filter yields 0."
     },
     "empty": {
-      "description": "Empty state explains why no data is available and points to next best action."
+      "description": "Empty state with notification opt-in."
     },
     "error": {
-      "description": "Error state is recoverable with user-safe messaging and a retry action."
+      "description": "Error state with retry action."
     },
     "offline": {
-      "description": "Offline state shows last synchronized data and queues write actions for later sync."
+      "description": "Cached modules shown with filters disabled."
     }
   },
   "analytics": {
-    "screenView": "discover_fr_e4_05_viewed",
+    "screenView": "discover_modules_viewed",
     "events": [
-      "discover_fr_e4_05_viewed"
+      "discover_modules_viewed",
+      "discover_modules_sort_changed",
+      "discover_modules_topic_filtered",
+      "discover_module_card_tapped",
+      "discover_module_start_tapped"
     ]
   },
   "acceptanceCriteriaRefs": [

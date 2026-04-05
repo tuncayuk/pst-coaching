@@ -16,43 +16,61 @@ import {
   PText,
 } from "../../components";
 
-const goalOptions = [
-  { label: "Kişisel gelişim", value: "personal" },
+const GOAL_OPTIONS = [
+  { label: "Kisisel gelisim", value: "personal" },
   { label: "Maneviyat", value: "spiritual" },
   { label: "Duygusal denge", value: "balance" },
 ];
 
-const durationOptions = [
+const DURATION_OPTIONS = [
   { label: "10 dk", value: "10" },
   { label: "20 dk", value: "20" },
   { label: "30+ dk", value: "30" },
+];
+
+const PREFERENCE_OPTIONS = [
+  { label: "Okuma", value: "reading", emoji: "📖" },
+  { label: "Uygulama / Egzersiz", value: "exercise", emoji: "🧘" },
+  { label: "Video / Ses", value: "media", emoji: "🎧" },
 ];
 
 const DiscoverAssistantQuestionsContent = ({ isOffline }: { isOffline?: boolean }) => {
   const navigation = useNavigation<any>();
   const [goal, setGoal] = React.useState("personal");
   const [duration, setDuration] = React.useState("20");
+  const [preference, setPreference] = React.useState("reading");
+
+  const completedSteps = (goal ? 1 : 0) + (duration ? 1 : 0) + (preference ? 1 : 0);
 
   return (
     <SafeAreaView style={styles.root}>
       <View style={styles.header}>
         <View style={styles.headerRow}>
-          <PIconButton icon="arrow-left" onPress={() => navigation.goBack()} />
-          <PText style={styles.headerTitle}>İçerik Asistanı</PText>
+          <PIconButton
+            icon="arrow-left"
+            size={24}
+            onPress={() => navigation.goBack()}
+            accessibilityLabel="Geri"
+          />
+          <PText style={styles.headerTitle}>Icerik Asistani</PText>
+          <View style={styles.progressPill}>
+            <PText style={styles.progressPillText}>{completedSteps}/3</PText>
+          </View>
         </View>
       </View>
 
       <ScrollView contentContainerStyle={styles.content}>
         <View style={styles.hero}>
           <PText style={styles.heroEmoji}>🤖</PText>
-          <PText style={styles.heroTitle}>Size En Uygun İçeriği Bulalım</PText>
-          <PText style={styles.heroSubtitle}>Birkaç soruyla başlayalım</PText>
+          <PText style={styles.heroTitle}>Size En Uygun Icerigi Bulalim</PText>
+          <PText style={styles.heroSubtitle}>Birkas soruyla baslayalim</PText>
         </View>
 
+        {/* Q1: Goal */}
         <PCard style={styles.card}>
           <PText style={styles.cardLabel}>1️⃣ Ana hedefiniz nedir?</PText>
           <PRadioButtonGroup value={goal} onValueChange={setGoal}>
-            {goalOptions.map((option) => (
+            {GOAL_OPTIONS.map((option) => (
               <PRadioButtonItem
                 key={option.value}
                 label={option.label}
@@ -67,16 +85,18 @@ const DiscoverAssistantQuestionsContent = ({ isOffline }: { isOffline?: boolean 
           </PRadioButtonGroup>
         </PCard>
 
+        {/* Q2: Duration */}
         <PCard style={styles.card}>
-          <PText style={styles.cardLabel}>2️⃣ Ne kadar zaman ayırabilirsiniz?</PText>
+          <PText style={styles.cardLabel}>2️⃣ Ne kadar zaman ayirabilirsiniz?</PText>
           <View style={styles.durationGrid}>
-            {durationOptions.map((option) => (
+            {DURATION_OPTIONS.map((option) => (
               <PButton
                 key={option.value}
                 mode={duration === option.value ? "contained" : "outlined"}
                 disabled={isOffline}
                 onPress={() => setDuration(option.value)}
                 style={styles.durationButton}
+                buttonColor={duration === option.value ? "#2B1B5D" : "transparent"}
               >
                 {option.label}
               </PButton>
@@ -84,17 +104,45 @@ const DiscoverAssistantQuestionsContent = ({ isOffline }: { isOffline?: boolean 
           </View>
         </PCard>
 
+        {/* Q3: Content preference */}
+        <PCard style={styles.card}>
+          <PText style={styles.cardLabel}>3️⃣ Hangi tur icerigi tercih edersiniz?</PText>
+          <View style={styles.prefGrid}>
+            {PREFERENCE_OPTIONS.map((option) => {
+              const isActive = preference === option.value;
+              return (
+                <PButton
+                  key={option.value}
+                  mode={isActive ? "contained" : "outlined"}
+                  disabled={isOffline}
+                  onPress={() => setPreference(option.value)}
+                  style={styles.prefButton}
+                  contentStyle={styles.prefButtonContent}
+                  buttonColor={isActive ? "#2B1B5D" : "transparent"}
+                >
+                  {option.emoji} {option.label}
+                </PButton>
+              );
+            })}
+          </View>
+        </PCard>
+
         <PButton
           mode="contained"
           style={styles.primaryButton}
+          buttonColor="#2B1B5D"
           disabled={isOffline}
           onPress={() => navigation.navigate("DiscoverAssistantResults")}
         >
-          Öneri Al
+          Oneri Al
         </PButton>
 
-        <PButton mode="text" disabled={isOffline} onPress={() => navigation.navigate("DiscoverCatalog")}>
-          Atla, Kataloğa Git
+        <PButton
+          mode="text"
+          disabled={isOffline}
+          onPress={() => navigation.navigate("DiscoverCatalog")}
+        >
+          Atla, Kataloga Git
         </PButton>
       </ScrollView>
     </SafeAreaView>
@@ -114,7 +162,8 @@ export const DiscoverAssistantQuestionsScreen = ({
         <ScrollView contentContainerStyle={styles.content}>
           <PActivityIndicator animating />
           <SkeletonBlock height={18} />
-          <SkeletonBlock height={18} />
+          <SkeletonBlock height={80} />
+          <SkeletonBlock height={80} />
           <SkeletonBlock height={80} />
         </ScrollView>
       </SafeAreaView>
@@ -126,8 +175,8 @@ export const DiscoverAssistantQuestionsScreen = ({
       <SafeAreaView style={styles.root}>
         <ScrollView contentContainerStyle={styles.content}>
           <StateMessage
-            title="Sorular bulunamadı"
-            description="Şu anda soru listesi yüklenemiyor."
+            title="Sorular bulunamadi"
+            description="Su anda soru listesi yuklenemiyor."
             actionLabel="Tekrar Dene"
             icon="help-circle-outline"
           />
@@ -141,8 +190,8 @@ export const DiscoverAssistantQuestionsScreen = ({
       <SafeAreaView style={styles.root}>
         <ScrollView contentContainerStyle={styles.content}>
           <StateMessage
-            title="Sorular yüklenemedi"
-            description="Bağlantını kontrol edip tekrar dene."
+            title="Sorular yuklenemedi"
+            description="Baglantini kontrol edip tekrar dene."
             actionLabel="Tekrar Dene"
             icon="alert-circle-outline"
             tone="error"
@@ -165,82 +214,43 @@ export const DiscoverAssistantQuestionsScreen = ({
 };
 
 const styles = StyleSheet.create({
-  root: {
-    flex: 1,
-    backgroundColor: "#FAFAFA",
-  },
+  root: { flex: 1, backgroundColor: "#FAFAFA" },
   header: {
     backgroundColor: "#FFFFFF",
-    paddingHorizontal: 16,
+    paddingHorizontal: 12,
     paddingVertical: 12,
     borderBottomWidth: 1,
     borderBottomColor: "#E5E5E5",
   },
-  headerRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8,
+  headerRow: { flexDirection: "row", alignItems: "center", gap: 8 },
+  headerTitle: { fontSize: 18, fontWeight: "800", color: "#2B1B5D", flex: 1 },
+  progressPill: {
+    backgroundColor: "#E0F7FA",
+    paddingHorizontal: 10,
+    paddingVertical: 3,
+    borderRadius: 10,
   },
-  headerTitle: {
-    fontSize: 18,
-    fontWeight: "800",
-    color: "#2B1B5D",
-  },
-  content: {
-    padding: 16,
-  },
-  hero: {
-    alignItems: "center",
-    marginBottom: 24,
-  },
-  heroEmoji: {
-    fontSize: 48,
-    marginBottom: 12,
-  },
+  progressPillText: { fontSize: 12, fontWeight: "700", color: "#00758C" },
+  content: { padding: 16 },
+  hero: { alignItems: "center", marginBottom: 20 },
+  heroEmoji: { fontSize: 48, marginBottom: 10 },
   heroTitle: {
     fontSize: 20,
     fontWeight: "700",
     color: "#2B1B5D",
     textAlign: "center",
-    marginBottom: 6,
+    marginBottom: 4,
   },
-  heroSubtitle: {
-    fontSize: 15,
-    color: "#525252",
-    textAlign: "center",
-  },
-  card: {
-    padding: 16,
-    borderRadius: 16,
-    marginBottom: 16,
-  },
-  cardLabel: {
-    fontSize: 15,
-    fontWeight: "600",
-    color: "#171717",
-    marginBottom: 12,
-  },
-  radioItem: {
-    borderWidth: 2,
-    borderRadius: 12,
-    marginBottom: 12,
-  },
-  radioItemActive: {
-    borderColor: "#00B4D8",
-    backgroundColor: "#E0F7FA",
-  },
-  radioItemIdle: {
-    borderColor: "#D4D4D4",
-    backgroundColor: "#FFFFFF",
-  },
-  durationGrid: {
-    flexDirection: "row",
-    gap: 8,
-  },
-  durationButton: {
-    flex: 1,
-  },
-  primaryButton: {
-    marginBottom: 8,
-  },
+  heroSubtitle: { fontSize: 14, color: "#525252", textAlign: "center" },
+  card: { padding: 16, borderRadius: 16, marginBottom: 16 },
+  cardLabel: { fontSize: 15, fontWeight: "600", color: "#171717", marginBottom: 12 },
+  radioItem: { borderWidth: 2, borderRadius: 12, marginBottom: 8 },
+  radioItemActive: { borderColor: "#2B1B5D", backgroundColor: "#EDE7F6" },
+  radioItemIdle: { borderColor: "#E5E5E5", backgroundColor: "#FFFFFF" },
+  durationGrid: { flexDirection: "row", gap: 8 },
+  durationButton: { flex: 1 },
+  prefGrid: { gap: 8 },
+  prefButton: { borderRadius: 12 },
+  prefButtonContent: { height: 40 },
+  primaryButton: { marginBottom: 8, borderRadius: 12 },
 });

@@ -9,80 +9,190 @@ import { resolveScreenState, ScreenState } from "../components/ScreenState";
 import { getWorkshops } from "../../data/mockSelectors";
 import { PActivityIndicator, PButton, PCard, PIconButton, PText } from "../../components";
 
-const sortOptions = ["Önerilen", "Popüler", "Yeni"];
-const cardEmojis = ["🎨", "🧠", "🗣️", "🕊️"];
-const cardColors = ["#FFE4E6", "#D1FAE5", "#E0F2FE", "#FDE68A"];
+const SORT_OPTIONS = ["Tumu", "Onerilen", "Populer", "Yeni"];
+const TYPE_OPTIONS = [
+  { key: "tumu", label: "Tumu" },
+  { key: "kamp", label: "Kamp" },
+  { key: "rehber", label: "Rehber" },
+  { key: "calisma_kitabi", label: "Calisma Kitabi" },
+];
+const WORKSHOP_TYPES = ["kamp", "rehber", "calisma_kitabi"];
+const TYPE_LABELS: Record<string, string> = {
+  kamp: "Kamp",
+  rehber: "Rehber",
+  calisma_kitabi: "Calisma Kitabi",
+};
+const TYPE_BG: Record<string, string> = {
+  kamp: "#FEE2E2",
+  rehber: "#D1FAE5",
+  calisma_kitabi: "#EDE7F6",
+};
+const TYPE_FG: Record<string, string> = {
+  kamp: "#B91C1C",
+  rehber: "#065F46",
+  calisma_kitabi: "#4C1D95",
+};
+const CARD_EMOJIS = ["🎨", "🧠", "🗣️", "🕊️"];
+const CARD_COLORS = ["#FFE4E6", "#D1FAE5", "#E0F2FE", "#FDE68A"];
+const SESSION_COUNTS = [3, 5, 4, 6, 3, 5];
+const DURATIONS = ["90 dk", "120 dk", "60 dk", "150 dk", "90 dk", "120 dk"];
+const AGE_TARGETS = ["14-18", "18+", "Yetiskin", "Aile", "14+", "18-35"];
 
 const DiscoverWorkshopsContent = ({ isOffline }: { isOffline?: boolean }) => {
   const navigation = useNavigation<any>();
   const workshops = getWorkshops();
+  const [selectedSort, setSelectedSort] = React.useState("Tumu");
+  const [selectedType, setSelectedType] = React.useState("tumu");
+
+  const workshopType = (index: number) => WORKSHOP_TYPES[index % WORKSHOP_TYPES.length];
+
+  const filtered = workshops.filter((_w, i) =>
+    selectedType === "tumu" ? true : workshopType(i) === selectedType
+  );
+
+  const sorted = [...filtered].sort((a, b) => {
+    if (selectedSort === "Populer") return b.id.localeCompare(a.id);
+    if (selectedSort === "Yeni") return a.id.localeCompare(b.id);
+    return 0;
+  });
 
   return (
     <View>
       <View style={styles.headerRow}>
         <View style={styles.headerLeft}>
-          <PIconButton icon="arrow-left" onPress={() => navigation.goBack()} />
-          <PText style={styles.title}>Atölyeler</PText>
+          <PIconButton
+            icon="arrow-left"
+            size={24}
+            onPress={() => navigation.goBack()}
+            accessibilityLabel="Geri"
+          />
+          <PText style={styles.title}>Atolyeler</PText>
         </View>
-        <PButton
-          mode="contained"
-          disabled={isOffline}
-          buttonColor="#F5F5F5"
-          textColor="#525252"
-          style={styles.filterButton}
-          contentStyle={styles.filterButtonContent}
-          labelStyle={styles.filterButtonLabel}
-        >
-          🔍 Filtrele
-        </PButton>
+        <View style={styles.countBadge}>
+          <PText style={styles.countBadgeText}>{sorted.length}</PText>
+        </View>
       </View>
 
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.sortRow}>
-        {sortOptions.map((label, index) => (
+      {/* Sort chips */}
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.chipsRow}
+      >
+        {SORT_OPTIONS.map((label) => (
           <PButton
             key={label}
             mode="contained"
+            compact
             disabled={isOffline}
-            style={styles.sortButton}
-            contentStyle={styles.sortButtonContent}
-            labelStyle={styles.sortButtonLabel}
-            buttonColor={index === 0 ? "#00B4D8" : "#F5F5F5"}
-            textColor={index === 0 ? "#FFFFFF" : "#525252"}
+            style={styles.chip}
+            contentStyle={styles.chipContent}
+            labelStyle={styles.chipLabel}
+            buttonColor={selectedSort === label ? "#2B1B5D" : "#F5F5F5"}
+            textColor={selectedSort === label ? "#FFFFFF" : "#525252"}
+            onPress={() => setSelectedSort(label)}
           >
             {label}
           </PButton>
         ))}
       </ScrollView>
 
-      {workshops.map((item, index) => {
-        const readingCount = 8 + index;
-        const practiceCount = 4 + (index % 3);
-        return (
-          <PCard
-            key={item.id}
-            style={styles.card}
-            onPress={() =>
-              navigation.navigate("Content", {
-                screen: "ContentWorkshopDetail",
-                params: { id: item.id },
-              })
-            }
+      {/* Type filter */}
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.chipsRow}
+      >
+        {TYPE_OPTIONS.map((opt) => (
+          <PButton
+            key={opt.key}
+            mode={selectedType === opt.key ? "contained" : "outlined"}
+            compact
+            disabled={isOffline}
+            style={styles.chip}
+            contentStyle={styles.chipContent}
+            labelStyle={styles.chipLabel}
+            buttonColor={selectedType === opt.key ? "#00B4D8" : "transparent"}
+            textColor={selectedType === opt.key ? "#FFFFFF" : "#2B1B5D"}
+            onPress={() => setSelectedType(opt.key)}
           >
-            <View style={styles.cardRow}>
-              <View style={[styles.cardIcon, { backgroundColor: cardColors[index % cardColors.length] }]}>
-                <PText style={styles.cardEmoji}>{cardEmojis[index % cardEmojis.length]}</PText>
-              </View>
-              <View style={styles.cardInfo}>
-                <PText style={styles.cardTitle}>{item.title}</PText>
-                <PText style={styles.cardMeta}>
-                  {readingCount} okuma • {practiceCount} uygulama
-                </PText>
-              </View>
-            </View>
-          </PCard>
-        );
-      })}
+            {opt.label}
+          </PButton>
+        ))}
+      </ScrollView>
 
+      {sorted.length === 0 ? (
+        <StateMessage
+          title="Sonuc bulunamadi"
+          description="Baska bir tur filtresi deneyin."
+          actionLabel="Tumu Goster"
+          icon="filter-remove-outline"
+        />
+      ) : (
+        sorted.map((item) => {
+          const origIndex = workshops.findIndex((w) => w.id === item.id);
+          const wType = workshopType(origIndex);
+          const sessions = SESSION_COUNTS[origIndex % SESSION_COUNTS.length];
+          const duration = DURATIONS[origIndex % DURATIONS.length];
+          const ageTarget = AGE_TARGETS[origIndex % AGE_TARGETS.length];
+          const color = CARD_COLORS[origIndex % CARD_COLORS.length];
+          const emoji = CARD_EMOJIS[origIndex % CARD_EMOJIS.length];
+
+          return (
+            <PCard
+              key={item.id}
+              style={styles.card}
+              onPress={() =>
+                navigation.navigate("Content", {
+                  screen: "ContentWorkshopDetail",
+                  params: { id: item.id },
+                })
+              }
+            >
+              <View style={styles.cardTop}>
+                <View style={[styles.cardIcon, { backgroundColor: color }]}>
+                  <PText style={styles.cardEmoji}>{emoji}</PText>
+                </View>
+                <View style={styles.cardInfo}>
+                  <PText style={styles.cardTitle}>{item.title}</PText>
+                  <View style={styles.cardMetaRow}>
+                    <PText style={styles.cardMeta}>⏱ {duration}</PText>
+                    <PText style={styles.cardMetaSep}>·</PText>
+                    <PText style={styles.cardMeta}>👥 {ageTarget}</PText>
+                    <PText style={styles.cardMetaSep}>·</PText>
+                    <PText style={styles.cardMeta}>📋 {sessions} oturum</PText>
+                  </View>
+                  <View style={styles.typeChipRow}>
+                    <View style={[styles.typeChip, { backgroundColor: TYPE_BG[wType] }]}>
+                      <PText style={[styles.typeChipText, { color: TYPE_FG[wType] }]}>
+                        {TYPE_LABELS[wType]}
+                      </PText>
+                    </View>
+                  </View>
+                </View>
+              </View>
+              <View style={styles.cardFooter}>
+                <PButton
+                  mode="outlined"
+                  compact
+                  disabled={isOffline}
+                  style={styles.detailButton}
+                  contentStyle={styles.detailButtonContent}
+                  labelStyle={styles.detailButtonLabel}
+                  onPress={() =>
+                    navigation.navigate("Content", {
+                      screen: "ContentWorkshopDetail",
+                      params: { id: item.id },
+                    })
+                  }
+                >
+                  Detaylari Gor
+                </PButton>
+              </View>
+            </PCard>
+          );
+        })
+      )}
       <View style={styles.bottomSpacer} />
     </View>
   );
@@ -101,9 +211,9 @@ export const DiscoverWorkshopsScreen = ({
         <ScrollView contentContainerStyle={styles.content}>
           <PActivityIndicator animating />
           <SkeletonBlock height={18} />
-          <SkeletonBlock height={18} />
-          <SkeletonBlock height={100} />
-          <SkeletonBlock height={100} />
+          <SkeletonBlock height={36} />
+          <SkeletonBlock height={120} />
+          <SkeletonBlock height={120} />
         </ScrollView>
       </SafeAreaView>
     );
@@ -114,9 +224,9 @@ export const DiscoverWorkshopsScreen = ({
       <SafeAreaView style={styles.root}>
         <ScrollView contentContainerStyle={styles.content}>
           <StateMessage
-            title="Atölye bulunamadı"
-            description="Yeni atölyeler kısa süre içinde eklenecek."
-            actionLabel="Bildirimleri Aç"
+            title="Atolye bulunamadi"
+            description="Yeni atolyeler kisa sure icinde eklenecek."
+            actionLabel="Bildirimleri Ac"
             icon="bell-outline"
           />
         </ScrollView>
@@ -129,8 +239,8 @@ export const DiscoverWorkshopsScreen = ({
       <SafeAreaView style={styles.root}>
         <ScrollView contentContainerStyle={styles.content}>
           <StateMessage
-            title="Atölyeler yüklenemedi"
-            description="Bağlantını kontrol edip tekrar dene."
+            title="Atolyeler yuklenemedi"
+            description="Baglantini kontrol edip tekrar dene."
             actionLabel="Tekrar Dene"
             icon="alert-circle-outline"
             tone="error"
@@ -161,73 +271,29 @@ export const DiscoverWorkshopsScreen = ({
 };
 
 const styles = StyleSheet.create({
-  root: {
-    flex: 1,
-    backgroundColor: "#FAFAFA",
-  },
-  content: {
-    paddingHorizontal: 24,
-    paddingTop: 24,
-    paddingBottom: 96,
-  },
+  root: { flex: 1, backgroundColor: "#FAFAFA" },
+  content: { paddingHorizontal: 20, paddingTop: 20, paddingBottom: 96 },
   headerRow: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     marginBottom: 16,
   },
-  headerLeft: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8,
+  headerLeft: { flexDirection: "row", alignItems: "center", gap: 4 },
+  title: { fontSize: 26, fontWeight: "800", color: "#2B1B5D" },
+  countBadge: {
+    backgroundColor: "#FFE4E6",
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 12,
   },
-  title: {
-    fontSize: 28,
-    fontWeight: "800",
-    color: "#2B1B5D",
-  },
-  filterButton: {
-    borderRadius: 8,
-    elevation: 0,
-  },
-  filterButtonContent: {
-    height: 36,
-    paddingHorizontal: 12,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  filterButtonLabel: {
-    fontSize: 13,
-    fontWeight: "600",
-    lineHeight: 16,
-  },
-  sortRow: {
-    gap: 8,
-    paddingBottom: 8,
-    marginBottom: 16,
-  },
-  sortButton: {
-    borderRadius: 8,
-  },
-  sortButtonContent: {
-    height: 36,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  sortButtonLabel: {
-    fontSize: 12,
-    fontWeight: "600",
-    lineHeight: 16,
-  },
-  card: {
-    padding: 16,
-    borderRadius: 16,
-    marginBottom: 16,
-  },
-  cardRow: {
-    flexDirection: "row",
-    gap: 12,
-  },
+  countBadgeText: { fontSize: 12, fontWeight: "700", color: "#9F1239" },
+  chipsRow: { gap: 8, paddingBottom: 4, marginBottom: 12 },
+  chip: { borderRadius: 20, elevation: 0 },
+  chipContent: { height: 34, paddingHorizontal: 4 },
+  chipLabel: { fontSize: 12, fontWeight: "600" },
+  card: { borderRadius: 16, marginBottom: 16, overflow: "hidden" },
+  cardTop: { flexDirection: "row", gap: 12, padding: 16 },
   cardIcon: {
     width: 64,
     height: 64,
@@ -236,23 +302,24 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     flexShrink: 0,
   },
-  cardEmoji: {
-    fontSize: 28,
+  cardEmoji: { fontSize: 28 },
+  cardInfo: { flex: 1 },
+  cardTitle: { fontSize: 16, fontWeight: "700", color: "#171717", marginBottom: 4 },
+  cardMetaRow: { flexDirection: "row", alignItems: "center", gap: 4, flexWrap: "wrap", marginBottom: 6 },
+  cardMeta: { fontSize: 12, color: "#737373" },
+  cardMetaSep: { fontSize: 12, color: "#D4D4D4" },
+  typeChipRow: { flexDirection: "row", gap: 4 },
+  typeChip: { paddingHorizontal: 8, paddingVertical: 3, borderRadius: 6 },
+  typeChipText: { fontSize: 11, fontWeight: "700" },
+  cardFooter: {
+    borderTopWidth: 1,
+    borderTopColor: "#F5F5F5",
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+    alignItems: "flex-start",
   },
-  cardInfo: {
-    flex: 1,
-  },
-  cardTitle: {
-    fontSize: 16,
-    fontWeight: "700",
-    color: "#171717",
-    marginBottom: 6,
-  },
-  cardMeta: {
-    fontSize: 13,
-    color: "#737373",
-  },
-  bottomSpacer: {
-    height: 24,
-  },
+  detailButton: { borderRadius: 8 },
+  detailButtonContent: { height: 36, paddingHorizontal: 12 },
+  detailButtonLabel: { fontSize: 13, fontWeight: "700" },
+  bottomSpacer: { height: 24 },
 });
