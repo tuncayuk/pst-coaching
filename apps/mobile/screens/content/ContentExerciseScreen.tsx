@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
@@ -6,35 +6,46 @@ import { OfflineNotice } from "../components/OfflineNotice";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
-import { PActivityIndicator, PIconButton, PText, PCard } from "../../components";
+import { PActivityIndicator, PButton, PCard, PIconButton, PText } from "../../components";
 
 type RouteParams = { state?: ScreenState; id?: string };
 
-const exerciseSteps = [
+const exerciseStepDefs = [
   {
-    status: "completed",
-    title: "Adım 1: Durumu Tanimlayin",
+    title: "Adim 1: Durumu Tanimlayin",
     description: "Hangi durum sizi rahatsiz etti? Ne oldu?",
   },
   {
-    status: "active",
-    title: "Adım 2: Otomatik Dusunceyi Yazin",
+    title: "Adim 2: Otomatik Dusunceyi Yazin",
     description: "O anda akliniza gelen ilk dusunce neydi?",
   },
   {
-    status: "locked",
-    title: "Adım 3: Kanitlari Degerlendirin",
+    title: "Adim 3: Kanitlari Degerlendirin",
     description: "Bu dusunceyi destekleyen ve curuten kanitlar neler?",
   },
   {
-    status: "locked",
-    title: "Adım 4: Alternatif Dusunce Olusturun",
+    title: "Adim 4: Alternatif Dusunce Olusturun",
     description: "Daha dengeli bir dusunce nasil olabilir?",
   },
 ];
 
-const ContentExerciseContent = ({ isOffline }: { isOffline?: boolean }) => {
+const ContentExerciseContent = ({
+  isOffline,
+  id,
+}: {
+  isOffline?: boolean;
+  id?: string;
+}) => {
   const navigation = useNavigation<any>();
+  // AC-FR-E5-06-02: Track completed step count
+  const [completedCount, setCompletedCount] = useState(0);
+  const allDone = completedCount >= exerciseStepDefs.length;
+
+  // AC-FR-E5-06-01: Ordered step unlock
+  const handleCompleteStep = () => {
+    if (isOffline) return;
+    setCompletedCount((prev) => Math.min(prev + 1, exerciseStepDefs.length));
+  };
 
   return (
     <View>
@@ -43,14 +54,27 @@ const ContentExerciseContent = ({ isOffline }: { isOffline?: boolean }) => {
           <PIconButton icon="arrow-left" onPress={() => navigation.goBack()} />
           <View style={styles.headerCenter}>
             <PText style={styles.headerTitle}>Uygulama: Kaliplarimi Kesfetmek</PText>
-            <PText style={styles.headerSubtitle}>Bölüm 2 • Paket 3</PText>
+            <PText style={styles.headerSubtitle}>Bolum 2 - Paket 3</PText>
+          </View>
+        </View>
+        <View style={styles.progressRow}>
+          <PText style={styles.progressLabel}>
+            {completedCount}/{exerciseStepDefs.length} adim tamamlandi
+          </PText>
+          <View style={styles.progressTrack}>
+            <View
+              style={[
+                styles.progressFill,
+                { width: `${(completedCount / exerciseStepDefs.length) * 100}%` },
+              ]}
+            />
           </View>
         </View>
       </View>
 
       <View style={styles.body}>
         <PCard style={styles.instructionCard}>
-          <PText style={styles.instructionTitle}>📝 Uygulama Talimatlari</PText>
+          <PText style={styles.instructionTitle}>Uygulama Talimatlari</PText>
           <PText style={styles.instructionText}>
             Son bir haftada yasadiginiz zorlayici bir durumu dusunun ve o andaki otomatik
             dusuncelerinizi belirleyin.
@@ -58,64 +82,104 @@ const ContentExerciseContent = ({ isOffline }: { isOffline?: boolean }) => {
         </PCard>
 
         <View style={styles.steps}>
-          {exerciseSteps.map((step, index) => (
-            <PCard
-              key={step.title}
-              style={[
-                styles.stepCard,
-                step.status === "completed" && styles.stepCompleted,
-                step.status === "active" && styles.stepActive,
-                step.status === "locked" && styles.stepLocked,
-              ]}
-            >
-              <View style={styles.stepRow}>
-                <View
-                  style={[
-                    styles.stepBadge,
-                    step.status === "completed" && styles.stepBadgeCompleted,
-                    step.status === "active" && styles.stepBadgeActive,
-                    step.status === "locked" && styles.stepBadgeLocked,
-                  ]}
-                >
-                  <PText
+          {exerciseStepDefs.map((step, index) => {
+            const isDone = index < completedCount;
+            const isActive = index === completedCount;
+            const isLocked = index > completedCount;
+
+            return (
+              <PCard
+                key={step.title}
+                style={[
+                  styles.stepCard,
+                  isDone && styles.stepCompleted,
+                  isActive && styles.stepActive,
+                  isLocked && styles.stepLocked,
+                ]}
+              >
+                <View style={styles.stepRow}>
+                  <View
                     style={[
-                      styles.stepBadgeText,
-                      step.status === "completed" && styles.stepBadgeTextCompleted,
-                      step.status === "active" && styles.stepBadgeTextActive,
-                      step.status === "locked" && styles.stepBadgeTextLocked,
+                      styles.stepBadge,
+                      isDone && styles.stepBadgeCompleted,
+                      isActive && styles.stepBadgeActive,
+                      isLocked && styles.stepBadgeLocked,
                     ]}
                   >
-                    {step.status === "completed" ? "✓" : index + 1}
-                  </PText>
+                    <PText
+                      style={[
+                        styles.stepBadgeText,
+                        isDone && styles.stepBadgeTextCompleted,
+                        isActive && styles.stepBadgeTextActive,
+                        isLocked && styles.stepBadgeTextLocked,
+                      ]}
+                    >
+                      {isDone ? "+" : index + 1}
+                    </PText>
+                  </View>
+                  <View style={styles.stepInfo}>
+                    <PText
+                      style={[
+                        styles.stepTitle,
+                        isActive && styles.stepTitleActive,
+                        isLocked && styles.stepTitleLocked,
+                      ]}
+                    >
+                      {step.title}
+                    </PText>
+                    <PText
+                      style={[
+                        styles.stepDescription,
+                        isActive && styles.stepDescriptionActive,
+                        isLocked && styles.stepDescriptionLocked,
+                      ]}
+                    >
+                      {step.description}
+                    </PText>
+                    {/* AC-FR-E5-06-01: "Complete step" button on active step */}
+                    {isActive && (
+                      <PButton
+                        mode="contained"
+                        compact
+                        disabled={isOffline}
+                        style={styles.completeBtn}
+                        onPress={handleCompleteStep}
+                      >
+                        Bu Adimi Tamamla
+                      </PButton>
+                    )}
+                  </View>
                 </View>
-                <View style={styles.stepInfo}>
-                  <PText
-                    style={[
-                      styles.stepTitle,
-                      step.status === "active" && styles.stepTitleActive,
-                      step.status === "locked" && styles.stepTitleLocked,
-                    ]}
-                  >
-                    {step.title}
-                  </PText>
-                  <PText
-                    style={[
-                      styles.stepDescription,
-                      step.status === "active" && styles.stepDescriptionActive,
-                      step.status === "locked" && styles.stepDescriptionLocked,
-                    ]}
-                  >
-                    {step.description}
-                  </PText>
-                </View>
-              </View>
-            </PCard>
-          ))}
+              </PCard>
+            );
+          })}
         </View>
+
+        {/* AC-FR-E5-06-03: All-done state saves progress + CTA to comment */}
+        {allDone && (
+          <PCard style={styles.celebrationCard}>
+            <PText style={styles.celebrationTitle}>Tebrikler! Tum adimlar tamamlandi.</PText>
+            <PText style={styles.celebrationSub}>
+              Ilerlemeniz kaydedildi. Yorumunuzu yazabilirsiniz.
+            </PText>
+            <PButton
+              mode="contained"
+              style={styles.nextBtn}
+              disabled={isOffline}
+              onPress={() =>
+                navigation.navigate("ContentComment", {
+                  contentItemId: id ?? "c1c1c1c1-0000-0000-0000-000000000103",
+                })
+              }
+            >
+              Yoruma Gec
+            </PButton>
+          </PCard>
+        )}
 
         <PCard style={styles.tipCard}>
           <PText style={styles.tipText}>
-            <PText style={styles.tipLabel}>💡 İpucu:</PText> Dusuncelerinizi yargilamadan
+            <PText style={styles.tipLabel}>Ipucu:</PText> Dusuncelerinizi yargilamadan
             gozlemleyin.
           </PText>
         </PCard>
@@ -126,6 +190,7 @@ const ContentExerciseContent = ({ isOffline }: { isOffline?: boolean }) => {
 
 export const ContentExerciseScreen = ({ route }: { route?: { params?: RouteParams } }) => {
   const state = resolveScreenState(route);
+  const id = route?.params?.id;
 
   if (state === "loading") {
     return (
@@ -145,9 +210,9 @@ export const ContentExerciseScreen = ({ route }: { route?: { params?: RouteParam
       <SafeAreaView style={styles.root}>
         <ScrollView contentContainerStyle={styles.page}>
           <StateMessage
-            title="Uygulama bulunamadı"
-            description="Egzersiz adımları şu anda erişilebilir değil."
-            actionLabel="Geri Dön"
+            title="Uygulama bulunamadi"
+            description="Egzersiz adimlari su anda erisilebilir degil."
+            actionLabel="Geri Don"
             icon="arm-flex-outline"
           />
         </ScrollView>
@@ -160,8 +225,8 @@ export const ContentExerciseScreen = ({ route }: { route?: { params?: RouteParam
       <SafeAreaView style={styles.root}>
         <ScrollView contentContainerStyle={styles.page}>
           <StateMessage
-            title="Uygulama yüklenemedi"
-            description="Bağlantını kontrol edip tekrar dene."
+            title="Uygulama yuklenemedi"
+            description="Baglantini kontrol edip tekrar dene."
             actionLabel="Tekrar Dene"
             icon="alert-circle-outline"
             tone="error"
@@ -176,7 +241,7 @@ export const ContentExerciseScreen = ({ route }: { route?: { params?: RouteParam
       <SafeAreaView style={styles.root}>
         <OfflineNotice />
         <ScrollView contentContainerStyle={styles.page}>
-          <ContentExerciseContent isOffline />
+          <ContentExerciseContent isOffline id={id} />
         </ScrollView>
       </SafeAreaView>
     );
@@ -185,7 +250,7 @@ export const ContentExerciseScreen = ({ route }: { route?: { params?: RouteParam
   return (
     <SafeAreaView style={styles.root}>
       <ScrollView contentContainerStyle={styles.page}>
-        <ContentExerciseContent />
+        <ContentExerciseContent id={id} />
       </ScrollView>
     </SafeAreaView>
   );
@@ -224,6 +289,25 @@ const styles = StyleSheet.create({
     fontSize: 11,
     color: "#737373",
     marginTop: 2,
+  },
+  progressRow: {
+    marginTop: 10,
+    gap: 4,
+  },
+  progressLabel: {
+    fontSize: 11,
+    color: "#737373",
+    marginBottom: 4,
+  },
+  progressTrack: {
+    height: 4,
+    backgroundColor: "#E5E5E5",
+    borderRadius: 2,
+  },
+  progressFill: {
+    height: 4,
+    backgroundColor: "#6B46C1",
+    borderRadius: 2,
   },
   body: {
     paddingHorizontal: 24,
@@ -338,6 +422,35 @@ const styles = StyleSheet.create({
   stepDescriptionLocked: {
     color: "#737373",
   },
+  completeBtn: {
+    marginTop: 10,
+    alignSelf: "flex-start",
+  },
+  celebrationCard: {
+    padding: 16,
+    borderRadius: 16,
+    backgroundColor: "#D1FAE5",
+    borderWidth: 2,
+    borderColor: "#16A34A",
+    marginBottom: 16,
+    alignItems: "center",
+  },
+  celebrationTitle: {
+    fontSize: 15,
+    fontWeight: "700",
+    color: "#15803D",
+    marginBottom: 6,
+    textAlign: "center",
+  },
+  celebrationSub: {
+    fontSize: 13,
+    color: "#166534",
+    textAlign: "center",
+    marginBottom: 12,
+  },
+  nextBtn: {
+    width: "100%",
+  },
   tipCard: {
     padding: 12,
     borderRadius: 12,
@@ -352,3 +465,4 @@ const styles = StyleSheet.create({
     color: "#2B1B5D",
   },
 });
+

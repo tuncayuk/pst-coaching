@@ -685,8 +685,8 @@
     },
     {
       "id": "reading.fr_e5_01",
-      "route": "/epic-5/fr-e5-01",
-      "title": "Günün içeriğini okuma",
+      "route": "/content/reading",
+      "title": "Gunun icerigini okuma",
       "type": "stack",
       "states": [
         "loading",
@@ -703,7 +703,7 @@
     },
     {
       "id": "reading.fr_e5_02",
-      "route": "/epic-5/fr-e5-02",
+      "route": "/content/audio",
       "title": "Sesli okuma",
       "type": "stack",
       "states": [
@@ -721,8 +721,8 @@
     },
     {
       "id": "reading.fr_e5_03",
-      "route": "/epic-5/fr-e5-03",
-      "title": "Altını çizme ve not alma",
+      "route": "/content/highlights",
+      "title": "Altini cizme ve not alma",
       "type": "stack",
       "states": [
         "loading",
@@ -739,7 +739,7 @@
     },
     {
       "id": "reading.fr_e5_04",
-      "route": "/epic-5/fr-e5-04",
+      "route": "/content/comment",
       "title": "Yorum yazma ve teslim",
       "type": "stack",
       "states": [
@@ -757,8 +757,8 @@
     },
     {
       "id": "reading.fr_e5_05",
-      "route": "/epic-5/fr-e5-05",
-      "title": "Kilitli ilerleme (08:00 kuralı)",
+      "route": "/content/locked",
+      "title": "Kilitli ilerleme (08:00 kurali)",
       "type": "stack",
       "states": [
         "loading",
@@ -775,7 +775,7 @@
     },
     {
       "id": "reading.fr_e5_06",
-      "route": "/epic-5/fr-e5-06",
+      "route": "/content/exercise",
       "title": "Uygulama/egzersiz tamamlama",
       "type": "stack",
       "states": [

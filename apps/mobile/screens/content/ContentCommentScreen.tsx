@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState, useCallback, useEffect, useRef } from "react";
 import { StyleSheet, View } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
@@ -8,39 +9,147 @@ import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
 import { PActivityIndicator, PButton, PChip, PText, PTextInput } from "../../components";
 
+const emotionTags = ["Sakin", "Merakli", "Huzurlu", "Zorlanmis"];
 
-const emotionTags = ["Sakin", "Meraklı", "Huzurlu", "Zorlanmış"];
+type RouteParams = {
+  state?: ScreenState;
+  contentItemId?: string;
+};
 
-const ContentCommentContent = ({ isOffline }: { isOffline?: boolean }) => {
+const ContentCommentContent = ({
+  isOffline,
+  contentItemId,
+}: {
+  isOffline?: boolean;
+  contentItemId?: string;
+}) => {
+  const navigation = useNavigation<any>();
+  const [answer1, setAnswer1] = useState("");
+  const [answer2, setAnswer2] = useState("");
+  const [selectedEmotion, setSelectedEmotion] = useState<string | null>(null);
+  const [draftSaved, setDraftSaved] = useState(false);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const now = new Date();
+  const hour = now.getHours();
+  const minute = now.getMinutes();
+  // AC-FR-E5-04-04: Warn after 23:00
+  const isLateWarning = hour >= 23;
+  // AC-FR-E5-04-07: Block submit at 23:59
+  const isAfterDeadline = hour === 23 && minute >= 59;
+
+  const wordCount =
+    [...answer1.trim().split(/\s+/), ...answer2.trim().split(/\s+/)].filter(Boolean).length;
+
+  // AC-FR-E5-04-02: Auto-save draft indicator after 1.5s of inactivity
+  const triggerAutoSave = useCallback(() => {
+    if (timerRef.current) clearTimeout(timerRef.current);
+    timerRef.current = setTimeout(() => {
+      setDraftSaved(true);
+      setTimeout(() => setDraftSaved(false), 2000);
+    }, 1500);
+  }, []);
+
+  const handleAnswer1 = useCallback(
+    (v: string) => {
+      setAnswer1(v);
+      triggerAutoSave();
+    },
+    [triggerAutoSave]
+  );
+
+  const handleAnswer2 = useCallback(
+    (v: string) => {
+      setAnswer2(v);
+      triggerAutoSave();
+    },
+    [triggerAutoSave]
+  );
+
+  useEffect(() => {
+    return () => {
+      if (timerRef.current) clearTimeout(timerRef.current);
+    };
+  }, []);
+
+  // AC-FR-E5-04-01: Both answers required before proceeding; deadline not passed
+  const canProceed = answer1.trim().length > 0 && answer2.trim().length > 0 && !isAfterDeadline;
+
   return (
     <>
-      <SectionCard title="Yansıtma Soruları">
-        <PText variant="bodySmall">Bu bölüm seni nasıl etkiledi?</PText>
+      {/* AC-FR-E5-04-04: Late warning banner at 23:00 */}
+      {isLateWarning && (
+        <View style={styles.warningBanner}>
+          <PText style={styles.warningText}>
+            Teslim suresi dolmak uzere! Yorumunu 23:59&apos;a kadar gonder.
+          </PText>
+        </View>
+      )}
+
+      {/* AC-FR-E5-04-02: Draft auto-save indicator */}
+      {draftSaved && (
+        <View style={styles.draftBanner}>
+          <PText style={styles.draftText}>Taslak kaydedildi</PText>
+        </View>
+      )}
+
+      <SectionCard title="Yansitma Sorulari">
+        <PText variant="bodySmall">Bu bolum seni nasil etkiledi?</PText>
         <PTextInput
           mode="outlined"
-          placeholder="Düşüncelerini yaz"
+          placeholder="Dusuncelerini yaz"
           style={styles.input}
+          multiline
+          numberOfLines={3}
+          value={answer1}
+          onChangeText={handleAnswer1}
           editable={!isOffline}
         />
-        <PText variant="bodySmall">Günlük hayatına nasıl taşıyabilirsin?</PText>
+        <PText variant="bodySmall">Gunluk hayatina nasil tasiyabilirsin?</PText>
         <PTextInput
           mode="outlined"
-          placeholder="Örnekler paylaş"
+          placeholder="Ornekler paylas"
           style={styles.input}
+          multiline
+          numberOfLines={3}
+          value={answer2}
+          onChangeText={handleAnswer2}
           editable={!isOffline}
         />
+        {/* AC-FR-E5-04-03: Word counter */}
+        <View style={styles.wordCountRow}>
+          <PText style={styles.wordCount}>{wordCount} kelime</PText>
+        </View>
       </SectionCard>
 
-      <SectionCard title="Duygu Seç">
+      <SectionCard title="Duygu Sec">
         <View style={styles.chipRow}>
           {emotionTags.map((tag) => (
-            <PChip key={tag} style={styles.chip} disabled={isOffline}>
+            <PChip
+              key={tag}
+              selected={selectedEmotion === tag}
+              style={styles.chip}
+              disabled={isOffline}
+              onPress={() => setSelectedEmotion(selectedEmotion === tag ? null : tag)}
+            >
               {tag}
             </PChip>
           ))}
         </View>
-        <PButton mode="contained" disabled={isOffline}>
-          Önizlemeye Geç
+        {/* AC-FR-E5-04-05: Navigate to preview with answers */}
+        <PButton
+          mode="contained"
+          disabled={isOffline || !canProceed}
+          onPress={() =>
+            navigation.navigate("ContentCommentPreview", {
+              contentItemId: contentItemId ?? "",
+              answer1,
+              answer2,
+              emotion: selectedEmotion ?? "",
+            })
+          }
+        >
+          Onizlemeye Gec
         </PButton>
       </SectionCard>
     </>
@@ -50,14 +159,15 @@ const ContentCommentContent = ({ isOffline }: { isOffline?: boolean }) => {
 export const ContentCommentScreen = ({
   route,
 }: {
-  route?: { params?: { state?: ScreenState; contentItemId?: string } };
+  route?: { params?: RouteParams };
 }) => {
   const state = resolveScreenState(route);
+  const contentItemId = route?.params?.contentItemId;
 
   if (state === "loading") {
     return (
-      <ScreenLayout title="Yorum" subtitle="Yorum hazırlanıyor">
-        <SectionCard title="Yükleniyor">
+      <ScreenLayout title="Yorum" subtitle="Yorum hazirlaniyor">
+        <SectionCard title="Yukleniyor">
           <PActivityIndicator animating />
           <SkeletonBlock height={18} />
           <SkeletonBlock height={18} />
@@ -72,11 +182,11 @@ export const ContentCommentScreen = ({
 
   if (state === "empty") {
     return (
-      <ScreenLayout title="Yorum" subtitle="İçerik bulunamadı">
+      <ScreenLayout title="Yorum" subtitle="Icerik bulunamadi">
         <StateMessage
-          title="Yorum şablonu yok"
-          description="Henüz yorum için soru hazırlanmadı."
-          actionLabel="İçeriğe Dön"
+          title="Yorum sablonu yok"
+          description="Henuz yorum icin soru hazirlanmadi."
+          actionLabel="Iceriye Don"
           icon="comment-text-outline"
         />
       </ScreenLayout>
@@ -85,10 +195,10 @@ export const ContentCommentScreen = ({
 
   if (state === "error") {
     return (
-      <ScreenLayout title="Yorum" subtitle="Bir sorun oluştu">
+      <ScreenLayout title="Yorum" subtitle="Bir sorun olustu">
         <StateMessage
-          title="Yorum alanı yüklenemedi"
-          description="Bağlantını kontrol edip tekrar dene."
+          title="Yorum alani yuklenemedi"
+          description="Baglantini kontrol edip tekrar dene."
           actionLabel="Tekrar Dene"
           icon="alert-circle-outline"
           tone="error"
@@ -99,24 +209,58 @@ export const ContentCommentScreen = ({
 
   if (state === "offline") {
     return (
-      <ScreenLayout title="Yorum" subtitle="Önbellekteki içerik">
+      <ScreenLayout title="Yorum" subtitle="Onbellekteki icerik">
         <OfflineNotice />
-        <ContentCommentContent isOffline />
+        <ContentCommentContent isOffline contentItemId={contentItemId} />
       </ScreenLayout>
     );
   }
 
   return (
-    <ScreenLayout title="Yorum" subtitle="Yorumunu paylaş">
-      <ContentCommentContent />
+    <ScreenLayout title="Yorum" subtitle="Yorumunu paylas">
+      <ContentCommentContent contentItemId={contentItemId} />
     </ScreenLayout>
   );
 };
 
 const styles = StyleSheet.create({
+  warningBanner: {
+    backgroundColor: "#FEF9C3",
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+    borderLeftWidth: 4,
+    borderLeftColor: "#CA8A04",
+    marginBottom: 4,
+  },
+  warningText: {
+    fontSize: 13,
+    color: "#A16207",
+    fontWeight: "600",
+  },
+  draftBanner: {
+    backgroundColor: "#DCFCE7",
+    paddingHorizontal: 16,
+    paddingVertical: 6,
+    borderLeftWidth: 4,
+    borderLeftColor: "#16A34A",
+    marginBottom: 4,
+  },
+  draftText: {
+    fontSize: 12,
+    color: "#15803D",
+    fontWeight: "600",
+  },
   input: {
     marginTop: 8,
-    marginBottom: 12,
+    marginBottom: 4,
+  },
+  wordCountRow: {
+    alignItems: "flex-end",
+    marginBottom: 8,
+  },
+  wordCount: {
+    fontSize: 11,
+    color: "#737373",
   },
   chipRow: {
     flexDirection: "row",

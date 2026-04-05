@@ -1,11 +1,10 @@
 {
   "id": "reading.fr_e5_05",
-  "title": "Kilitli ilerleme (08:00 kuralı)",
-  "route": "/epic-5/fr-e5-05",
-  "purpose": "Implements FR-E5-05: Kilitli ilerleme (08:00 kuralı).",
+  "title": "Kilitli ilerleme (08:00 kurali)",
+  "route": "/content/locked",
+  "purpose": "Implements FR-E5-05: 08:00 lock gate with countdown and auto-unlock for daily content.",
   "entryPoints": [
-    "home.dashboard",
-    "library.overview"
+    "content.journey_day"
   ],
   "inputs": [
     {
@@ -15,44 +14,46 @@
       "source": "session"
     },
     {
-      "name": "subscriptionStatus",
-      "type": "SubscriptionStatus",
+      "name": "journeyId",
+      "type": "string",
       "required": true,
-      "source": "entitlement_cache"
+      "source": "route_params"
     },
     {
-      "name": "locale",
-      "type": "LanguageCode",
-      "required": true,
-      "source": "profile"
+      "name": "dayNumber",
+      "type": "number",
+      "required": false,
+      "source": "route_params"
     }
   ],
   "dataDependencies": [
-    "ContentProgress",
-    "CommentSubmission",
-    "FavoriteItem"
+    "JourneyDay",
+    "ContentProgress"
   ],
   "uiStates": {
     "loading": {
-      "description": "Skeleton placeholders are shown while loading FR-E5-05 data."
+      "description": "Loading day schedule and lock status."
     },
     "ready": {
-      "description": "FR-E5-05 flows are fully interactive with primary CTA available when prerequisites are met."
+      "description": "Content items listed with navigation. 08:00 and 23:59 deadline chips shown. Today completed banner displayed when all items done. When current hour < 8, locked state shows countdown to 08:00 and hides content list."
     },
     "empty": {
-      "description": "Empty state explains why no data is available and points to next best action."
+      "description": "No content scheduled for this day."
     },
     "error": {
-      "description": "Error state is recoverable with user-safe messaging and a retry action."
+      "description": "Load error with retry."
     },
     "offline": {
-      "description": "Offline state shows last synchronized data and queues write actions for later sync."
+      "description": "Last-synced day content shown; lock state evaluated from device clock."
     }
   },
   "analytics": {
-    "screenView": "reading_fr_e5_05_viewed",
+    "screenView": "content_locked_viewed",
     "events": [
-      "reading_fr_e5_05_viewed"
+      "content_locked_viewed",
+      "content_locked_shown",
+      "content_locked_countdown_displayed",
+      "content_day_completed"
     ]
   },
   "acceptanceCriteriaRefs": [

@@ -1,11 +1,10 @@
 {
   "id": "reading.fr_e5_03",
-  "title": "Altını çizme ve not alma",
-  "route": "/epic-5/fr-e5-03",
-  "purpose": "Implements FR-E5-03: Altını çizme ve not alma.",
+  "title": "Altini cizme ve not alma",
+  "route": "/content/highlights",
+  "purpose": "Implements FR-E5-03: Text highlighting, note taking, and favorites within reading.",
   "entryPoints": [
-    "home.dashboard",
-    "library.overview"
+    "content.reading"
   ],
   "inputs": [
     {
@@ -15,44 +14,42 @@
       "source": "session"
     },
     {
-      "name": "subscriptionStatus",
-      "type": "SubscriptionStatus",
+      "name": "contentItemId",
+      "type": "string",
       "required": true,
-      "source": "entitlement_cache"
-    },
-    {
-      "name": "locale",
-      "type": "LanguageCode",
-      "required": true,
-      "source": "profile"
+      "source": "route_params"
     }
   ],
   "dataDependencies": [
-    "ContentProgress",
-    "CommentSubmission",
+    "Highlight",
+    "Note",
     "FavoriteItem"
   ],
   "uiStates": {
     "loading": {
-      "description": "Skeleton placeholders are shown while loading FR-E5-03 data."
+      "description": "Loading existing highlights and notes."
     },
     "ready": {
-      "description": "FR-E5-03 flows are fully interactive with primary CTA available when prerequisites are met."
+      "description": "Long-press or toolbar tap reveals Vurgula/Not Ekle/Favoriye Kaydet options. Highlights persist per BR-12 offline storage rule. Source attribution shown on each highlight card."
     },
     "empty": {
-      "description": "Empty state explains why no data is available and points to next best action."
+      "description": "No highlights yet; prompt user to long-press text."
     },
     "error": {
-      "description": "Error state is recoverable with user-safe messaging and a retry action."
+      "description": "Save error with retry."
     },
     "offline": {
-      "description": "Offline state shows last synchronized data and queues write actions for later sync."
+      "description": "New highlights queued for sync; existing highlights shown from cache."
     }
   },
   "analytics": {
-    "screenView": "reading_fr_e5_03_viewed",
+    "screenView": "content_highlights_viewed",
     "events": [
-      "reading_fr_e5_03_viewed"
+      "content_highlights_viewed",
+      "content_highlight_created",
+      "content_highlight_deleted",
+      "content_note_created",
+      "content_favorited"
     ]
   },
   "acceptanceCriteriaRefs": [

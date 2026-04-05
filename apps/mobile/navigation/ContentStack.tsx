@@ -45,7 +45,13 @@ export type ContentStackParamList = {
   ContentReading: ContentIdParam;
   ContentExercise: ContentIdParam;
   ContentComment: ContentItemParam;
-  ContentCommentPreview: ContentItemParam;
+  ContentCommentPreview: {
+    contentItemId: string;
+    state?: ScreenState;
+    answer1?: string;
+    answer2?: string;
+    emotion?: string;
+  };
   ContentAchievement: ContentIdParam;
   ContentReviewPrompt: ReviewPromptParam;
   ContentPaywall: ScreenStateParam;

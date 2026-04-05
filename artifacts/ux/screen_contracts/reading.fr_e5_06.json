@@ -1,11 +1,10 @@
 {
   "id": "reading.fr_e5_06",
   "title": "Uygulama/egzersiz tamamlama",
-  "route": "/epic-5/fr-e5-06",
-  "purpose": "Implements FR-E5-06: Uygulama/egzersiz tamamlama.",
+  "route": "/content/exercise",
+  "purpose": "Implements FR-E5-06: Step-by-step exercise with ordered unlock and progress save.",
   "entryPoints": [
-    "home.dashboard",
-    "library.overview"
+    "content.reading"
   ],
   "inputs": [
     {
@@ -15,45 +14,40 @@
       "source": "session"
     },
     {
-      "name": "subscriptionStatus",
-      "type": "SubscriptionStatus",
+      "name": "contentItemId",
+      "type": "string",
       "required": true,
-      "source": "entitlement_cache"
-    },
-    {
-      "name": "locale",
-      "type": "LanguageCode",
-      "required": true,
-      "source": "profile"
+      "source": "route_params"
     }
   ],
   "dataDependencies": [
-    "ContentProgress",
-    "CommentSubmission",
-    "FavoriteItem"
+    "ExerciseProgress",
+    "ContentProgress"
   ],
   "uiStates": {
     "loading": {
-      "description": "Skeleton placeholders are shown while loading FR-E5-06 data."
+      "description": "Exercise steps loading."
     },
     "ready": {
-      "description": "FR-E5-06 flows are fully interactive with primary CTA available when prerequisites are met."
+      "description": "Steps displayed in ordered list. Only the active step has a 'Bu Adimi Tamamla' button. Completing a step unlocks the next. Progress fraction shown in header bar. When all steps done, celebration card appears with progress-saved message and CTA to comment screen."
     },
     "empty": {
-      "description": "Empty state explains why no data is available and points to next best action."
+      "description": "No exercise steps for this item; back CTA."
     },
     "error": {
-      "description": "Error state is recoverable with user-safe messaging and a retry action."
+      "description": "Load error with retry."
     },
     "offline": {
-      "description": "Offline state shows last synchronized data and queues write actions for later sync."
+      "description": "Steps shown from cache; completion queued for sync."
     }
   },
   "analytics": {
-    "screenView": "reading_fr_e5_06_viewed",
+    "screenView": "content_exercise_viewed",
     "events": [
-      "content_completed",
-      "reading_fr_e5_06_viewed"
+      "content_exercise_viewed",
+      "content_exercise_step_completed",
+      "content_exercise_all_steps_completed",
+      "content_exercise_progress_saved"
     ]
   },
   "acceptanceCriteriaRefs": [

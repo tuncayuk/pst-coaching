@@ -1,11 +1,10 @@
 {
   "id": "reading.fr_e5_02",
   "title": "Sesli okuma",
-  "route": "/epic-5/fr-e5-02",
-  "purpose": "Implements FR-E5-02: Sesli okuma.",
+  "route": "/content/audio",
+  "purpose": "Implements FR-E5-02: Audio reading mode with speed controls and text highlight sync.",
   "entryPoints": [
-    "home.dashboard",
-    "library.overview"
+    "content.reading"
   ],
   "inputs": [
     {
@@ -15,44 +14,41 @@
       "source": "session"
     },
     {
-      "name": "subscriptionStatus",
-      "type": "SubscriptionStatus",
+      "name": "contentItemId",
+      "type": "string",
       "required": true,
-      "source": "entitlement_cache"
-    },
-    {
-      "name": "locale",
-      "type": "LanguageCode",
-      "required": true,
-      "source": "profile"
+      "source": "route_params"
     }
   ],
   "dataDependencies": [
-    "ContentProgress",
-    "CommentSubmission",
-    "FavoriteItem"
+    "ContentItem",
+    "AudioTrack"
   ],
   "uiStates": {
     "loading": {
-      "description": "Skeleton placeholders are shown while loading FR-E5-02 data."
+      "description": "Audio player initializing; spinner shown."
     },
     "ready": {
-      "description": "FR-E5-02 flows are fully interactive with primary CTA available when prerequisites are met."
+      "description": "Play/pause button active. Speed selector shows 0.75x/1x/1.25x options. Current-word highlight syncs with playback position. Background audio continues when app is backgrounded."
     },
     "empty": {
-      "description": "Empty state explains why no data is available and points to next best action."
+      "description": "No audio track available; fallback to reading mode."
     },
     "error": {
-      "description": "Error state is recoverable with user-safe messaging and a retry action."
+      "description": "Audio load error with retry."
     },
     "offline": {
-      "description": "Offline state shows last synchronized data and queues write actions for later sync."
+      "description": "Audio disabled offline; reading mode available from cache."
     }
   },
   "analytics": {
-    "screenView": "reading_fr_e5_02_viewed",
+    "screenView": "content_audio_viewed",
     "events": [
-      "reading_fr_e5_02_viewed"
+      "content_audio_viewed",
+      "content_audio_play_started",
+      "content_audio_paused",
+      "content_audio_speed_changed",
+      "content_audio_completed"
     ]
   },
   "acceptanceCriteriaRefs": [
