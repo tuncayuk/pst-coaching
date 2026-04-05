@@ -1841,7 +1841,7 @@
     },
     {
       "id": "notifications.fr_e17_01",
-      "route": "/epic-17/fr-e17-01",
+      "route": "/notifications",
       "title": "Bildirim listesi ve okunma yonetimi",
       "type": "stack",
       "states": [
@@ -1860,7 +1860,7 @@
     },
     {
       "id": "notifications.fr_e17_02",
-      "route": "/epic-17/fr-e17-02",
+      "route": "/notifications/detail",
       "title": "Bildirim detayi ve hedefe gecis",
       "type": "stack",
       "states": [
@@ -1879,7 +1879,7 @@
     },
     {
       "id": "notifications.fr_e17_03",
-      "route": "/epic-17/fr-e17-03",
+      "route": "/notifications/settings",
       "title": "Bildirim ayarlari ve sessiz saatler",
       "type": "stack",
       "states": [
@@ -1898,7 +1898,7 @@
     },
     {
       "id": "notifications.fr_e17_04",
-      "route": "/epic-17/fr-e17-04",
+      "route": "/notifications/reminders",
       "title": "Hatirlatici planlama ve tip bazli zamanlama",
       "type": "stack",
       "states": [

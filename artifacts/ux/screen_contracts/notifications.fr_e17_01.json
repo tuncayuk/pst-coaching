@@ -1,7 +1,7 @@
 {
   "id": "notifications.fr_e17_01",
   "title": "Bildirim listesi ve okunma yonetimi",
-  "route": "/epic-17/fr-e17-01",
+  "route": "/notifications",
   "purpose": "Implements FR-E17-01: Bildirim listesi ve okunma yonetimi.",
   "entryPoints": [
     "home.dashboard"
@@ -28,15 +28,14 @@
   ],
   "dataDependencies": [
     "Notification",
-    "NotificationPreference",
     "NotificationBadge"
   ],
   "uiStates": {
     "loading": {
-      "description": "Skeleton placeholders are shown while loading FR-E17-01 data."
+      "description": "Skeleton placeholders are shown while loading data."
     },
     "ready": {
-      "description": "FR-E17-01 flows are fully interactive with primary CTA available when prerequisites are met."
+      "description": "Screen is fully interactive with all actions enabled."
     },
     "empty": {
       "description": "Empty state explains why no data is available and points to next best action."
@@ -49,9 +48,12 @@
     }
   },
   "analytics": {
-    "screenView": "notifications_fr_e17_01_viewed",
+    "screenView": "notification_list_viewed",
     "events": [
-      "notifications_fr_e17_01_viewed"
+      "notification_list_viewed",
+      "notification_mark_read",
+      "notification_bulk_read",
+      "notification_cleared"
     ]
   },
   "acceptanceCriteriaRefs": [

@@ -1,23 +1,23 @@
 {
   "id": "notifications.fr_e17_02",
   "title": "Bildirim detayi ve hedefe gecis",
-  "route": "/epic-17/fr-e17-02",
+  "route": "/notifications/detail",
   "purpose": "Implements FR-E17-02: Bildirim detayi ve hedefe gecis.",
   "entryPoints": [
-    "home.dashboard"
+    "notifications.fr_e17_01"
   ],
   "inputs": [
-    {
-      "name": "notificationId",
-      "type": "uuid",
-      "required": true,
-      "source": "navigation"
-    },
     {
       "name": "userId",
       "type": "uuid",
       "required": true,
       "source": "session"
+    },
+    {
+      "name": "subscriptionStatus",
+      "type": "SubscriptionStatus",
+      "required": true,
+      "source": "entitlement_cache"
     },
     {
       "name": "locale",
@@ -28,15 +28,14 @@
   ],
   "dataDependencies": [
     "Notification",
-    "NotificationAction",
-    "LinkedContentRef"
+    "Content"
   ],
   "uiStates": {
     "loading": {
-      "description": "Skeleton placeholders are shown while loading FR-E17-02 data."
+      "description": "Skeleton placeholders are shown while loading data."
     },
     "ready": {
-      "description": "FR-E17-02 flows are fully interactive with primary CTA available when prerequisites are met."
+      "description": "Screen is fully interactive with all actions enabled."
     },
     "empty": {
       "description": "Empty state explains why no data is available and points to next best action."
@@ -49,9 +48,11 @@
     }
   },
   "analytics": {
-    "screenView": "notifications_fr_e17_02_viewed",
+    "screenView": "notification_detail_viewed",
     "events": [
-      "notifications_fr_e17_02_viewed"
+      "notification_detail_viewed",
+      "notification_cta_tapped",
+      "notification_deep_linked"
     ]
   },
   "acceptanceCriteriaRefs": [

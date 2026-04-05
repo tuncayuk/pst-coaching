@@ -1,7 +1,7 @@
 {
   "id": "notifications.fr_e17_03",
   "title": "Bildirim ayarlari ve sessiz saatler",
-  "route": "/epic-17/fr-e17-03",
+  "route": "/notifications/settings",
   "purpose": "Implements FR-E17-03: Bildirim ayarlari ve sessiz saatler.",
   "entryPoints": [
     "profile.settings"
@@ -14,10 +14,10 @@
       "source": "session"
     },
     {
-      "name": "preferenceVersion",
-      "type": "string",
+      "name": "subscriptionStatus",
+      "type": "SubscriptionStatus",
       "required": true,
-      "source": "notification_pref_cache"
+      "source": "entitlement_cache"
     },
     {
       "name": "locale",
@@ -27,16 +27,14 @@
     }
   ],
   "dataDependencies": [
-    "NotificationPreference",
-    "QuietHours",
-    "DeliveryFrequency"
+    "NotificationPreference"
   ],
   "uiStates": {
     "loading": {
-      "description": "Skeleton placeholders are shown while loading FR-E17-03 data."
+      "description": "Skeleton placeholders are shown while loading data."
     },
     "ready": {
-      "description": "FR-E17-03 flows are fully interactive with primary CTA available when prerequisites are met."
+      "description": "Screen is fully interactive with all actions enabled."
     },
     "empty": {
       "description": "Empty state explains why no data is available and points to next best action."
@@ -49,9 +47,13 @@
     }
   },
   "analytics": {
-    "screenView": "notifications_fr_e17_03_viewed",
+    "screenView": "notification_settings_viewed",
     "events": [
-      "notifications_fr_e17_03_viewed"
+      "notification_settings_viewed",
+      "notification_type_toggled",
+      "quiet_hours_updated",
+      "notification_frequency_changed",
+      "notification_sound_toggled"
     ]
   },
   "acceptanceCriteriaRefs": [

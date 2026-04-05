@@ -125,3 +125,79 @@ export const getUserSessions = () => getList(getData()?.user_sessions as any[]);
 
 export const getSessionsForUser = (userId?: string) =>
   getUserSessions().filter((s: any) => s.user_id === userId);
+
+// --- EPIC-17: Notification + Reminder selectors ---
+
+export type MockNotification = {
+  id: string;
+  user_id: string;
+  type: "journey" | "workshop" | "reading" | "social" | "achievement";
+  title: string;
+  description: string;
+  content_id?: string;
+  content_type?: string;
+  is_read: boolean;
+  created_at: string;
+};
+
+/** FR-E17-01/02: Simulate notifications from achievements, completed progress, and comments. */
+export const getNotificationsForUser = (userId?: string): MockNotification[] => {
+  const uid = userId ?? getPrimaryUser()?.id;
+  const results: MockNotification[] = [];
+
+  getAchievements()
+    .filter((a: any) => a.user_id === uid)
+    .forEach((a: any) => {
+      results.push({
+        id: "notif-ach-" + a.id,
+        user_id: a.user_id,
+        type: "achievement",
+        title: "Rozet Kazanildi",
+        description: "Yeni bir basarim rozeti kazandiniz.",
+        content_id: a.source_id,
+        content_type: a.source_type,
+        is_read: false,
+        created_at: a.issued_at,
+      });
+    });
+
+  getContentProgress()
+    .filter((p: any) => p.user_id === uid && p.status === "completed")
+    .forEach((p: any) => {
+      results.push({
+        id: "notif-prog-" + p.id,
+        user_id: p.user_id,
+        type: "journey",
+        title: "Icerik Tamamlandi",
+        description: "Bir icerik basariyla tamamlandi.",
+        content_id: p.content_id,
+        content_type: p.content_type,
+        is_read: false,
+        created_at: p.completed_at ?? p.started_at,
+      });
+    });
+
+  getComments()
+    .filter((c: any) => c.user_id === uid && c.status === "submitted")
+    .forEach((c: any) => {
+      results.push({
+        id: "notif-cmt-" + c.id,
+        user_id: c.user_id,
+        type: "social",
+        title: "Yorum Gonderildi",
+        description: "Yorumunuz basariyla gonderildi.",
+        content_id: c.content_item_id,
+        content_type: "content_item",
+        is_read: false,
+        created_at: c.submitted_at ?? c.updated_at,
+      });
+    });
+
+  return results;
+};
+
+/** FR-E17-04: Get reminder settings for a specific user. */
+export const getReminderSettingsForUser = (userId?: string) => {
+  const uid = userId ?? getPrimaryUser()?.id;
+  return getReminderSettings().find((r: any) => r.user_id === uid) ?? null;
+};

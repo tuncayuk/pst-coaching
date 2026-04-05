@@ -1,44 +1,96 @@
+/**
+ * ProfileRemindersScreen: Hub screen for EPIC-17 notification + reminder settings.
+ * Navigates to NotificationStack screens (FR-E17-01..04).
+ */
 import React from "react";
 import { StyleSheet, View } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
-import { getPrimaryUser, getReminderSettings } from "../../data/mockSelectors";
-import { PActivityIndicator, PButton, PCard, PSwitch, PText } from "../../components";
+import { getPrimaryUser, getReminderSettingsForUser } from "../../data/mockSelectors";
+import {
+  PActivityIndicator,
+  PListIcon,
+  PListItem,
+  PDivider,
+  PText,
+} from "../../components";
 
 
 const ProfileRemindersContent = ({ isOffline }: { isOffline?: boolean }) => {
+  const navigation = useNavigation<any>();
   const user = getPrimaryUser();
-  const reminder = getReminderSettings().find((item) => item.user_id === user?.id);
+  const reminder = getReminderSettingsForUser(user?.id);
+
+  const goToNotificationList = () => {
+    if (isOffline) return;
+    navigation.navigate("Notifications");
+  };
+
+  const goToNotificationSettings = () => {
+    if (isOffline) return;
+    navigation.navigate("Notifications", { screen: "NotificationSettings" });
+  };
+
+  const goToReminderPlanner = () => {
+    if (isOffline) return;
+    navigation.navigate("Notifications", { screen: "ReminderPlanner" });
+  };
 
   return (
     <>
-      <SectionCard title="Günlük Hatırlatıcı">
-        <PCard style={styles.card}>
-          <PCard.Content style={styles.row}>
-            <View style={styles.rowText}>
-              <PText variant="bodyMedium">Hatırlatıcıyı Aç</PText>
-              <PText variant="bodySmall" style={styles.subtleText}>
-                Varsayılan saat: {reminder?.time_local ?? "20:00"}
-              </PText>
-            </View>
-            <PSwitch value={reminder?.enabled ?? false} disabled={isOffline} />
-          </PCard.Content>
-        </PCard>
-        <PButton mode="outlined" disabled={isOffline}>
-          Saat Seç
-        </PButton>
+      <SectionCard title="Bildirimler">
+        <PListItem
+          title="Bildirim Listesi"
+          description="Gecmis ve yeni bildirimler"
+          left={() => <PListIcon icon="bell-outline" />}
+          right={() => <PListIcon icon="chevron-right" />}
+          onPress={goToNotificationList}
+          disabled={isOffline}
+          accessibilityLabel="Bildirim listesine git"
+          accessibilityRole="button"
+        />
+        <PDivider />
+        <PListItem
+          title="Bildirim Ayarlari"
+          description="Tur, sessiz saatler, siklik, ses"
+          left={() => <PListIcon icon="bell-cog-outline" />}
+          right={() => <PListIcon icon="chevron-right" />}
+          onPress={goToNotificationSettings}
+          disabled={isOffline}
+          accessibilityLabel="Bildirim ayarlarina git"
+          accessibilityRole="button"
+        />
       </SectionCard>
 
-      <SectionCard title="Bildirim Politikası">
-        <PText variant="bodySmall" style={styles.subtleText}>
-          Bildirim izni alınmadan önce açıklama gösterilir. Yorum gönderildiğinde tekrar
-          hatırlatma yapılmaz.
-        </PText>
+      <SectionCard title="Hatirlaticilar">
+        <PListItem
+          title="Hatirlatici Planlayici"
+          description={
+            reminder?.enabled
+              ? `Aktif -- ${reminder.time_local}`
+              : "Kapali"
+          }
+          left={() => <PListIcon icon="clock-outline" />}
+          right={() => <PListIcon icon="chevron-right" />}
+          onPress={goToReminderPlanner}
+          disabled={isOffline}
+          accessibilityLabel="Hatirlatici planlayiciya git"
+          accessibilityRole="button"
+        />
       </SectionCard>
+
+      {isOffline && (
+        <View style={styles.offlineNote}>
+          <PText style={styles.offlineText}>
+            Cevrimdisi modda ayarlar degistirilemez.
+          </PText>
+        </View>
+      )}
     </>
   );
 };
@@ -52,38 +104,22 @@ export const ProfileRemindersScreen = ({
 
   if (state === "loading") {
     return (
-      <ScreenLayout title="Hatırlatmalar" subtitle="Ayarlar hazırlanıyor">
-        <SectionCard title="Yükleniyor">
-          <PActivityIndicator animating />
-          <SkeletonBlock height={20} />
-          <SkeletonBlock height={20} />
-        </SectionCard>
-      </ScreenLayout>
-    );
-  }
-
-  if (state === "empty") {
-    return (
-      <ScreenLayout title="Hatırlatmalar" subtitle="Ayar bulunamadı">
-        <StateMessage
-          title="Hatırlatıcı bulunamadı"
-          description="Henüz bir hatırlatıcı ayarın yok."
-          actionLabel="Hatırlatıcı Kur"
-          icon="bell-outline"
-        />
+      <ScreenLayout title="Hatirlatmalar">
+        <PActivityIndicator />
+        <SkeletonBlock height={56} />
+        <SkeletonBlock height={56} />
       </ScreenLayout>
     );
   }
 
   if (state === "error") {
     return (
-      <ScreenLayout title="Hatırlatmalar" subtitle="Bir sorun oluştu">
+      <ScreenLayout title="Hatirlatmalar">
         <StateMessage
-          title="Hatırlatıcı yüklenemedi"
-          description="Bağlantını kontrol edip tekrar dene."
-          actionLabel="Tekrar Dene"
-          icon="alert-circle-outline"
           tone="error"
+          title="Ayarlar yuklenemedi"
+          description="Bir sorun olustu. Lutfen tekrar deneyin."
+          actionLabel="Tekrar Dene"
         />
       </ScreenLayout>
     );
@@ -91,34 +127,33 @@ export const ProfileRemindersScreen = ({
 
   if (state === "offline") {
     return (
-      <ScreenLayout title="Hatırlatmalar" subtitle="Önbellekteki ayarlar">
+      <ScreenLayout title="Hatirlatmalar">
         <OfflineNotice />
         <ProfileRemindersContent isOffline />
       </ScreenLayout>
     );
   }
 
+  if (state === "empty") {
+    return (
+      <ScreenLayout title="Hatirlatmalar">
+        <StateMessage
+          title="Ayar bulunamadi"
+          description="Henuz hatirlatici ayari olusturulmamis."
+        />
+      </ScreenLayout>
+    );
+  }
+
   return (
-    <ScreenLayout title="Hatırlatmalar" subtitle="Günlük hatırlatıcı">
+    <ScreenLayout title="Hatirlatmalar">
       <ProfileRemindersContent />
     </ScreenLayout>
   );
 };
 
 const styles = StyleSheet.create({
-  card: {
-    marginBottom: 12,
-  },
-  row: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  rowText: {
-    flex: 1,
-    marginRight: 12,
-  },
-  subtleText: {
-    opacity: 0.7,
-  },
+  skeleton: { marginHorizontal: 16, marginBottom: 12 },
+  offlineNote: { paddingHorizontal: 16, paddingTop: 8 },
+  offlineText: { fontSize: 12, color: "#A3A3A3", fontStyle: "italic" },
 });

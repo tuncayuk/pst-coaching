@@ -1,7 +1,7 @@
 {
   "id": "notifications.fr_e17_04",
   "title": "Hatirlatici planlama ve tip bazli zamanlama",
-  "route": "/epic-17/fr-e17-04",
+  "route": "/notifications/reminders",
   "purpose": "Implements FR-E17-04: Hatirlatici planlama ve tip bazli zamanlama.",
   "entryPoints": [
     "profile.settings"
@@ -14,10 +14,10 @@
       "source": "session"
     },
     {
-      "name": "timezone",
-      "type": "iana_timezone",
+      "name": "subscriptionStatus",
+      "type": "SubscriptionStatus",
       "required": true,
-      "source": "device"
+      "source": "entitlement_cache"
     },
     {
       "name": "locale",
@@ -27,16 +27,14 @@
     }
   ],
   "dataDependencies": [
-    "ReminderPlan",
-    "ReminderType",
-    "ReminderSchedule"
+    "ReminderSetting"
   ],
   "uiStates": {
     "loading": {
-      "description": "Skeleton placeholders are shown while loading FR-E17-04 data."
+      "description": "Skeleton placeholders are shown while loading data."
     },
     "ready": {
-      "description": "FR-E17-04 flows are fully interactive with primary CTA available when prerequisites are met."
+      "description": "Screen is fully interactive with all actions enabled."
     },
     "empty": {
       "description": "Empty state explains why no data is available and points to next best action."
@@ -49,9 +47,12 @@
     }
   },
   "analytics": {
-    "screenView": "notifications_fr_e17_04_viewed",
+    "screenView": "reminder_planner_viewed",
     "events": [
-      "notifications_fr_e17_04_viewed"
+      "reminder_planner_viewed",
+      "reminder_time_added",
+      "reminder_time_removed",
+      "reminder_type_toggled"
     ]
   },
   "acceptanceCriteriaRefs": [
