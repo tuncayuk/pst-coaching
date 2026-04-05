@@ -1,59 +1,52 @@
 {
   "id": "reader.fr_e7_06",
-  "title": "Sesli kitap desteği",
-  "route": "/epic-7/fr-e7-06",
-  "purpose": "Implements FR-E7-06: Sesli kitap desteği.",
+  "title": "Sesli kitap destegi",
+  "route": "/ebook/audio",
+  "purpose": "Implements FR-E7-06: Sesli versiyon Play butonu (varsa), metin senkron takip, hiz ayari, arka planda calisma.",
   "entryPoints": [
-    "library.ebooks",
-    "discover.ebooks"
+    "ebook.reader"
   ],
   "inputs": [
     {
-      "name": "userId",
-      "type": "uuid",
+      "name": "ebookId",
+      "type": "string",
       "required": true,
-      "source": "session"
+      "source": "route_param"
     },
     {
-      "name": "subscriptionStatus",
-      "type": "SubscriptionStatus",
-      "required": true,
-      "source": "entitlement_cache"
-    },
-    {
-      "name": "locale",
-      "type": "LanguageCode",
-      "required": true,
-      "source": "profile"
+      "name": "chapterId",
+      "type": "string",
+      "required": false,
+      "source": "route_param"
     }
   ],
   "dataDependencies": [
     "Ebook",
-    "EbookChapter",
-    "FavoriteItem",
-    "ContentProgress"
+    "EbookChapter"
   ],
   "uiStates": {
     "loading": {
-      "description": "Skeleton placeholders are shown while loading FR-E7-06 data."
+      "description": "Audio player skeleton."
     },
     "ready": {
-      "description": "FR-E7-06 flows are fully interactive with primary CTA available when prerequisites are met."
+      "description": "Play button visible when has_audio=true; hidden otherwise (AC-FR-E7-06-01). Current sentence/paragraph highlighted in sync (AC-FR-E7-06-02). Speed chips: 0.75x/1x/1.25x (AC-FR-E7-06-03). Background play session hint (AC-FR-E7-06-04)."
     },
     "empty": {
-      "description": "Empty state explains why no data is available and points to next best action."
+      "description": "Audio not available message."
     },
     "error": {
-      "description": "Error state is recoverable with user-safe messaging and a retry action."
+      "description": "Playback error with retry."
     },
     "offline": {
-      "description": "Offline state shows last synchronized data and queues write actions for later sync."
+      "description": "Downloaded audio plays; non-downloaded shows locked."
     }
   },
   "analytics": {
-    "screenView": "reader_fr_e7_06_viewed",
+    "screenView": "ebook_audio_viewed",
     "events": [
-      "reader_fr_e7_06_viewed"
+      "ebook_audio_play_tapped",
+      "ebook_audio_speed_changed",
+      "ebook_audio_background_started"
     ]
   },
   "acceptanceCriteriaRefs": [
@@ -63,6 +56,7 @@
     "AC-FR-E7-06-04"
   ],
   "gates": [
-    "auth"
+    "auth",
+    "subscription"
   ]
 }

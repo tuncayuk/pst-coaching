@@ -901,8 +901,8 @@
     },
     {
       "id": "reader.fr_e7_01",
-      "route": "/epic-7/fr-e7-01",
-      "title": "e-Kitap okuyucu açılışı",
+      "route": "/ebook/reader",
+      "title": "e-Kitap okuyucu acilisi",
       "type": "stack",
       "states": [
         "loading",
@@ -919,7 +919,7 @@
     },
     {
       "id": "reader.fr_e7_02",
-      "route": "/epic-7/fr-e7-02",
+      "route": "/ebook/navigation",
       "title": "Sayfa navigasyonu",
       "type": "stack",
       "states": [
@@ -937,8 +937,8 @@
     },
     {
       "id": "reader.fr_e7_03",
-      "route": "/epic-7/fr-e7-03",
-      "title": "Okuma ayarları",
+      "route": "/ebook/settings",
+      "title": "Okuma ayarlari",
       "type": "stack",
       "states": [
         "loading",
@@ -955,7 +955,7 @@
     },
     {
       "id": "reader.fr_e7_04",
-      "route": "/epic-7/fr-e7-04",
+      "route": "/ebook/highlight-create",
       "title": "Metin vurgulama ve not",
       "type": "stack",
       "states": [
@@ -973,8 +973,8 @@
     },
     {
       "id": "reader.fr_e7_05",
-      "route": "/epic-7/fr-e7-05",
-      "title": "Vurgularım ve notlarım listesi",
+      "route": "/ebook/highlights",
+      "title": "Vurgularim ve notlarim",
       "type": "stack",
       "states": [
         "loading",
@@ -991,8 +991,8 @@
     },
     {
       "id": "reader.fr_e7_06",
-      "route": "/epic-7/fr-e7-06",
-      "title": "Sesli kitap desteği",
+      "route": "/ebook/audio",
+      "title": "Sesli kitap destegi",
       "type": "stack",
       "states": [
         "loading",
@@ -1009,7 +1009,7 @@
     },
     {
       "id": "reader.fr_e7_07",
-      "route": "/epic-7/fr-e7-07",
+      "route": "/ebook/progress",
       "title": "Okuma ilerlemesi",
       "type": "stack",
       "states": [
@@ -1027,8 +1027,8 @@
     },
     {
       "id": "reader.fr_e7_08",
-      "route": "/epic-7/fr-e7-08",
-      "title": "Çevrimdışı indirme",
+      "route": "/ebook/download",
+      "title": "Cevrimdisi indirme",
       "type": "stack",
       "states": [
         "loading",

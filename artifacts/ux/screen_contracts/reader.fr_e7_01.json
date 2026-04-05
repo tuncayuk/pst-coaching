@@ -1,59 +1,66 @@
 {
   "id": "reader.fr_e7_01",
-  "title": "e-Kitap okuyucu açılışı",
-  "route": "/epic-7/fr-e7-01",
-  "purpose": "Implements FR-E7-01: e-Kitap okuyucu açılışı.",
+  "title": "e-Kitap okuyucu acilisi",
+  "route": "/ebook/reader",
+  "purpose": "Implements FR-E7-01: Son okunan sayfa otomatik acilis, kitap basligı ve sayfa bilgisi, TOC erisim, cevrimdisi okuma.",
   "entryPoints": [
     "library.ebooks",
-    "discover.ebooks"
+    "discover.ebooks",
+    "content.ebook_detail"
   ],
   "inputs": [
     {
-      "name": "userId",
-      "type": "uuid",
+      "name": "ebookId",
+      "type": "string",
       "required": true,
-      "source": "session"
+      "source": "route_param"
+    },
+    {
+      "name": "chapterId",
+      "type": "string",
+      "required": false,
+      "source": "route_param"
     },
     {
       "name": "subscriptionStatus",
       "type": "SubscriptionStatus",
       "required": true,
       "source": "entitlement_cache"
-    },
-    {
-      "name": "locale",
-      "type": "LanguageCode",
-      "required": true,
-      "source": "profile"
     }
   ],
   "dataDependencies": [
     "Ebook",
     "EbookChapter",
-    "FavoriteItem",
-    "ContentProgress"
+    "ContentProgress",
+    "EbookProgress",
+    "ReadingSettings"
   ],
   "uiStates": {
     "loading": {
-      "description": "Skeleton placeholders are shown while loading FR-E7-01 data."
+      "description": "Skeleton placeholder for chapter content while loading."
     },
     "ready": {
-      "description": "FR-E7-01 flows are fully interactive with primary CTA available when prerequisites are met."
+      "description": "Reader shows chapter title, page range, reading progress bar. Last-read chapter auto-opens (AC-FR-E7-01-01). Chapter title + current page / total pages visible (AC-FR-E7-01-02). TOC button in floating toolbar (AC-FR-E7-01-03). Offline badge when downloaded (AC-FR-E7-01-04)."
     },
     "empty": {
-      "description": "Empty state explains why no data is available and points to next best action."
+      "description": "Empty state if no chapters available; CTA back to ebook detail."
     },
     "error": {
-      "description": "Error state is recoverable with user-safe messaging and a retry action."
+      "description": "Error card with retry; last cached chapter shown if available."
     },
     "offline": {
-      "description": "Offline state shows last synchronized data and queues write actions for later sync."
+      "description": "Downloaded content shown; OfflineNotice banner; write queued."
     }
   },
   "analytics": {
-    "screenView": "reader_fr_e7_01_viewed",
+    "screenView": "ebook_reader_viewed",
     "events": [
-      "reader_fr_e7_01_viewed"
+      "ebook_reader_viewed",
+      "ebook_chapter_opened",
+      "ebook_toc_opened",
+      "ebook_settings_opened",
+      "ebook_highlight_created",
+      "ebook_audio_started"
     ]
   },
   "acceptanceCriteriaRefs": [
@@ -63,6 +70,7 @@
     "AC-FR-E7-01-04"
   ],
   "gates": [
-    "auth"
+    "auth",
+    "subscription"
   ]
 }

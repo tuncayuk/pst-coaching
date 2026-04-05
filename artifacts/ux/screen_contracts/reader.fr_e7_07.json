@@ -1,59 +1,54 @@
 {
   "id": "reader.fr_e7_07",
   "title": "Okuma ilerlemesi",
-  "route": "/epic-7/fr-e7-07",
-  "purpose": "Implements FR-E7-07: Okuma ilerlemesi.",
+  "route": "/ebook/progress",
+  "purpose": "Implements FR-E7-07: Ilerleme yüzdesi, kalan süre tahmini, tamamlanma rozeti/sertifikasi, Gelisim paneli yansimasi.",
   "entryPoints": [
     "library.ebooks",
-    "discover.ebooks"
+    "ebook.detail"
   ],
   "inputs": [
+    {
+      "name": "ebookId",
+      "type": "string",
+      "required": true,
+      "source": "route_param"
+    },
     {
       "name": "userId",
       "type": "uuid",
       "required": true,
       "source": "session"
-    },
-    {
-      "name": "subscriptionStatus",
-      "type": "SubscriptionStatus",
-      "required": true,
-      "source": "entitlement_cache"
-    },
-    {
-      "name": "locale",
-      "type": "LanguageCode",
-      "required": true,
-      "source": "profile"
     }
   ],
   "dataDependencies": [
-    "Ebook",
-    "EbookChapter",
-    "FavoriteItem",
-    "ContentProgress"
+    "ContentProgress",
+    "EbookProgress",
+    "Achievement"
   ],
   "uiStates": {
     "loading": {
-      "description": "Skeleton placeholders are shown while loading FR-E7-07 data."
+      "description": "Skeleton progress bars."
     },
     "ready": {
-      "description": "FR-E7-07 flows are fully interactive with primary CTA available when prerequisites are met."
+      "description": "Progress percentage (AC-FR-E7-07-01). Estimated remaining time (AC-FR-E7-07-02). Completion badge/certificate CTA when finished (AC-FR-E7-07-03). Progress reflected in ProgressDashboard (AC-FR-E7-07-04)."
     },
     "empty": {
-      "description": "Empty state explains why no data is available and points to next best action."
+      "description": "No reading started yet; CTA to begin reading."
     },
     "error": {
-      "description": "Error state is recoverable with user-safe messaging and a retry action."
+      "description": "Error loading progress; retry."
     },
     "offline": {
-      "description": "Offline state shows last synchronized data and queues write actions for later sync."
+      "description": "Last synced progress shown."
     }
   },
   "analytics": {
-    "screenView": "reader_fr_e7_07_viewed",
+    "screenView": "ebook_progress_viewed",
     "events": [
-      "reader_fr_e7_07_viewed"
+      "ebook_progress_viewed",
+      "ebook_completion_badge_claimed",
+      "ebook_reading_started"
     ]
   },
   "acceptanceCriteriaRefs": [

@@ -1,59 +1,53 @@
 {
   "id": "reader.fr_e7_04",
   "title": "Metin vurgulama ve not",
-  "route": "/epic-7/fr-e7-04",
-  "purpose": "Implements FR-E7-04: Metin vurgulama ve not.",
+  "route": "/ebook/highlight-create",
+  "purpose": "Implements FR-E7-04: Metin seciminde renk secenekleri, not ekleme otomatik kaydetme (BR-12), vurgu favorilere ekleme.",
   "entryPoints": [
-    "library.ebooks",
-    "discover.ebooks"
+    "ebook.reader"
   ],
   "inputs": [
     {
-      "name": "userId",
-      "type": "uuid",
+      "name": "ebookId",
+      "type": "string",
       "required": true,
-      "source": "session"
+      "source": "route_param"
     },
     {
-      "name": "subscriptionStatus",
-      "type": "SubscriptionStatus",
-      "required": true,
-      "source": "entitlement_cache"
-    },
-    {
-      "name": "locale",
-      "type": "LanguageCode",
-      "required": true,
-      "source": "profile"
+      "name": "chapterId",
+      "type": "string",
+      "required": false,
+      "source": "route_param"
     }
   ],
   "dataDependencies": [
-    "Ebook",
-    "EbookChapter",
-    "FavoriteItem",
-    "ContentProgress"
+    "Highlight",
+    "Note",
+    "FavoriteItem"
   ],
   "uiStates": {
     "loading": {
-      "description": "Skeleton placeholders are shown while loading FR-E7-04 data."
+      "description": "Overlay loading while saving."
     },
     "ready": {
-      "description": "FR-E7-04 flows are fully interactive with primary CTA available when prerequisites are met."
+      "description": "Color picker shows on (simulated) text selection (AC-FR-E7-04-01). Note field with auto-save (AC-FR-E7-04-02, BR-12). Add-to-favorites toggle (AC-FR-E7-04-03)."
     },
     "empty": {
-      "description": "Empty state explains why no data is available and points to next best action."
+      "description": "No selection active; idle state."
     },
     "error": {
-      "description": "Error state is recoverable with user-safe messaging and a retry action."
+      "description": "Save error with retry."
     },
     "offline": {
-      "description": "Offline state shows last synchronized data and queues write actions for later sync."
+      "description": "Highlight queued for sync; visual indicator shown."
     }
   },
   "analytics": {
-    "screenView": "reader_fr_e7_04_viewed",
+    "screenView": "ebook_highlight_panel_viewed",
     "events": [
-      "reader_fr_e7_04_viewed"
+      "ebook_highlight_color_selected",
+      "ebook_note_added",
+      "ebook_highlight_favorited"
     ]
   },
   "acceptanceCriteriaRefs": [

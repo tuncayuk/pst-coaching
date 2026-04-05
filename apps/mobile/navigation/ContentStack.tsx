@@ -13,6 +13,7 @@ import { ContentEbookDetailScreen } from "../screens/content/ContentEbookDetailS
 import { ContentEbookReaderScreen } from "../screens/content/ContentEbookReaderScreen";
 import { ContentEbookTocScreen } from "../screens/content/ContentEbookTocScreen";
 import { ContentEbookHighlightsScreen } from "../screens/content/ContentEbookHighlightsScreen";
+import { ContentEbookSettingsScreen } from "../screens/content/ContentEbookSettingsScreen";
 import { ContentReadingScreen } from "../screens/content/ContentReadingScreen";
 import { ContentExerciseScreen } from "../screens/content/ContentExerciseScreen";
 import { ContentCommentScreen } from "../screens/content/ContentCommentScreen";
@@ -40,8 +41,9 @@ export type ContentStackParamList = {
   ContentPackageDetail: ContentIdParam;
   ContentEbookDetail: ContentIdParam;
   ContentEbookReader: { id: string; state?: ScreenState; chapterId?: string };
-  ContentEbookToc: ContentIdParam;
+  ContentEbookToc: { id: string; state?: ScreenState; chapterId?: string };
   ContentEbookHighlights: ContentIdParam;
+  ContentEbookSettings: ContentIdParam;
   ContentReading: ContentIdParam;
   ContentExercise: ContentIdParam;
   ContentComment: ContentItemParam;
@@ -58,11 +60,12 @@ export type ContentStackParamList = {
 };
 
 export const contentSheetScreenOptions: Record<
-  "ContentPaywall" | "ContentEbookToc" | "ContentReviewPrompt",
+  "ContentPaywall" | "ContentEbookToc" | "ContentEbookSettings" | "ContentReviewPrompt",
   NativeStackNavigationOptions
 > = {
   ContentPaywall: { presentation: "modal" },
   ContentEbookToc: { presentation: "modal" },
+  ContentEbookSettings: { presentation: "modal" },
   ContentReviewPrompt: { presentation: "modal" },
 };
 
@@ -89,6 +92,11 @@ export const contentStackScreens: ContentStackScreen[] = [
     options: contentSheetScreenOptions.ContentEbookToc,
   },
   { name: "ContentEbookHighlights", component: ContentEbookHighlightsScreen },
+  {
+    name: "ContentEbookSettings",
+    component: ContentEbookSettingsScreen,
+    options: contentSheetScreenOptions.ContentEbookSettings,
+  },
   { name: "ContentReading", component: ContentReadingScreen },
   { name: "ContentExercise", component: ContentExerciseScreen },
   { name: "ContentComment", component: ContentCommentScreen },

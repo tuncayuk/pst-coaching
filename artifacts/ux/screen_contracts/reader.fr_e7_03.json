@@ -1,11 +1,10 @@
 {
   "id": "reader.fr_e7_03",
-  "title": "Okuma ayarları",
-  "route": "/epic-7/fr-e7-03",
-  "purpose": "Implements FR-E7-03: Okuma ayarları.",
+  "title": "Okuma ayarlari",
+  "route": "/ebook/settings",
+  "purpose": "Implements FR-E7-03: Font boyutu slider, arka plan rengi secimi (Beyaz/Sepia/Koyu), satir araligi, ayarlar saklama.",
   "entryPoints": [
-    "library.ebooks",
-    "discover.ebooks"
+    "ebook.reader"
   ],
   "inputs": [
     {
@@ -13,47 +12,35 @@
       "type": "uuid",
       "required": true,
       "source": "session"
-    },
-    {
-      "name": "subscriptionStatus",
-      "type": "SubscriptionStatus",
-      "required": true,
-      "source": "entitlement_cache"
-    },
-    {
-      "name": "locale",
-      "type": "LanguageCode",
-      "required": true,
-      "source": "profile"
     }
   ],
   "dataDependencies": [
-    "Ebook",
-    "EbookChapter",
-    "FavoriteItem",
-    "ContentProgress"
+    "ReadingSettings"
   ],
   "uiStates": {
     "loading": {
-      "description": "Skeleton placeholders are shown while loading FR-E7-03 data."
+      "description": "Skeleton for settings panel."
     },
     "ready": {
-      "description": "FR-E7-03 flows are fully interactive with primary CTA available when prerequisites are met."
+      "description": "Font size slider (AC-FR-E7-03-01). Background: Beyaz/Sepia/Koyu chips (AC-FR-E7-03-02). Line height selector (AC-FR-E7-03-03). Preview text paragraph updates live. Settings auto-save (AC-FR-E7-03-04)."
     },
     "empty": {
-      "description": "Empty state explains why no data is available and points to next best action."
+      "description": "Default settings applied if none found."
     },
     "error": {
-      "description": "Error state is recoverable with user-safe messaging and a retry action."
+      "description": "Error loading settings; defaults applied."
     },
     "offline": {
-      "description": "Offline state shows last synchronized data and queues write actions for later sync."
+      "description": "Last saved settings shown; save queued."
     }
   },
   "analytics": {
-    "screenView": "reader_fr_e7_03_viewed",
+    "screenView": "ebook_settings_viewed",
     "events": [
-      "reader_fr_e7_03_viewed"
+      "ebook_settings_viewed",
+      "ebook_font_changed",
+      "ebook_bg_changed",
+      "ebook_line_height_changed"
     ]
   },
   "acceptanceCriteriaRefs": [
