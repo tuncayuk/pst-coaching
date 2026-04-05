@@ -1,59 +1,54 @@
 {
   "id": "modules.fr_e11_02",
-  "title": "Paket detayı ve başlatma",
-  "route": "/epic-11/fr-e11-02",
-  "purpose": "Implements FR-E11-02: Paket detayı ve başlatma.",
+  "title": "Paket detayi ve baslatma",
+  "route": "/modules/package",
+  "purpose": "Implements FR-E11-02: Package detail with description, objectives, section list (reading+exercise), start CTA, and prereq lock (BR-04).",
   "entryPoints": [
-    "discover.modules",
-    "content.module_detail"
+    "modules.fr_e11_01"
   ],
   "inputs": [
     {
-      "name": "userId",
+      "name": "id",
       "type": "uuid",
       "required": true,
-      "source": "session"
+      "source": "route"
     },
     {
-      "name": "subscriptionStatus",
-      "type": "SubscriptionStatus",
-      "required": true,
-      "source": "entitlement_cache"
-    },
-    {
-      "name": "locale",
-      "type": "LanguageCode",
-      "required": true,
-      "source": "profile"
+      "name": "state",
+      "type": "ScreenState",
+      "required": false,
+      "source": "route"
     }
   ],
   "dataDependencies": [
-    "Module",
     "Package",
+    "ContentItem",
     "ContentProgress",
-    "CommentSubmission"
+    "User"
   ],
   "uiStates": {
     "loading": {
-      "description": "Skeleton placeholders are shown while loading FR-E11-02 data."
+      "description": "Skeletons for header and section list."
     },
     "ready": {
-      "description": "FR-E11-02 flows are fully interactive with primary CTA available when prerequisites are met."
+      "description": "Package description, objectives, section list with type badges, 'Paketi Basla' CTA."
     },
     "empty": {
-      "description": "Empty state explains why no data is available and points to next best action."
+      "description": "No sections found. CTA back to module."
     },
     "error": {
-      "description": "Error state is recoverable with user-safe messaging and a retry action."
+      "description": "Error with retry CTA."
     },
     "offline": {
-      "description": "Offline state shows last synchronized data and queues write actions for later sync."
+      "description": "Cached package shown; start CTA disabled."
     }
   },
   "analytics": {
-    "screenView": "modules_fr_e11_02_viewed",
+    "screenView": "package_detail_viewed",
     "events": [
-      "modules_fr_e11_02_viewed"
+      "package_detail_viewed",
+      "package_started",
+      "locked_package_viewed"
     ]
   },
   "acceptanceCriteriaRefs": [

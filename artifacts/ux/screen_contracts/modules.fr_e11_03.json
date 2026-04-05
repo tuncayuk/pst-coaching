@@ -1,59 +1,54 @@
 {
   "id": "modules.fr_e11_03",
-  "title": "Paket içi okuma ve uygulama",
-  "route": "/epic-11/fr-e11-03",
-  "purpose": "Implements FR-E11-03: Paket içi okuma ve uygulama.",
+  "title": "Paket ici okuma ve uygulama",
+  "route": "/modules/package/exercise",
+  "purpose": "Implements FR-E11-03: In-package exercise with sequential steps, note-taking, and next-section CTA on completion.",
   "entryPoints": [
-    "discover.modules",
-    "content.module_detail"
+    "modules.fr_e11_02"
   ],
   "inputs": [
     {
-      "name": "userId",
+      "name": "id",
       "type": "uuid",
       "required": true,
-      "source": "session"
+      "source": "route"
     },
     {
-      "name": "subscriptionStatus",
-      "type": "SubscriptionStatus",
-      "required": true,
-      "source": "entitlement_cache"
-    },
-    {
-      "name": "locale",
-      "type": "LanguageCode",
-      "required": true,
-      "source": "profile"
+      "name": "state",
+      "type": "ScreenState",
+      "required": false,
+      "source": "route"
     }
   ],
   "dataDependencies": [
-    "Module",
-    "Package",
+    "ContentItem",
+    "ExerciseStep",
     "ContentProgress",
-    "CommentSubmission"
+    "User"
   ],
   "uiStates": {
     "loading": {
-      "description": "Skeleton placeholders are shown while loading FR-E11-03 data."
+      "description": "Skeleton for exercise steps."
     },
     "ready": {
-      "description": "FR-E11-03 flows are fully interactive with primary CTA available when prerequisites are met."
+      "description": "Exercise title, sequential step cards with check-off, per-step note input, progress bar, 'Sonraki Bolum' CTA on completion."
     },
     "empty": {
-      "description": "Empty state explains why no data is available and points to next best action."
+      "description": "No steps. CTA back to package."
     },
     "error": {
-      "description": "Error state is recoverable with user-safe messaging and a retry action."
+      "description": "Error with retry CTA."
     },
     "offline": {
-      "description": "Offline state shows last synchronized data and queues write actions for later sync."
+      "description": "Steps shown; note saving queued."
     }
   },
   "analytics": {
-    "screenView": "modules_fr_e11_03_viewed",
+    "screenView": "exercise_viewed",
     "events": [
-      "modules_fr_e11_03_viewed"
+      "exercise_viewed",
+      "exercise_step_completed",
+      "exercise_completed"
     ]
   },
   "acceptanceCriteriaRefs": [

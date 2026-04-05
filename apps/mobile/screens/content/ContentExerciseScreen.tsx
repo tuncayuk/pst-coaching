@@ -1,468 +1,443 @@
 import React, { useState } from "react";
-import { ScrollView, StyleSheet, View } from "react-native";
+import { ScrollView, StyleSheet, TextInput, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
-import { PActivityIndicator, PButton, PCard, PIconButton, PText } from "../../components";
+import { getContentItemsForParent, getExerciseSteps, getPrimaryUser } from "../../data/mockSelectors";
+import {
+  PActivityIndicator,
+  PAvatar,
+  PButton,
+  PCard,
+  PDivider,
+  PIconButton,
+  PProgressBar,
+  PText,
+} from "../../components";
 
 type RouteParams = { state?: ScreenState; id?: string };
 
-const exerciseStepDefs = [
+// Fallback exercise steps when no real data
+const FALLBACK_STEPS = [
   {
+    id: "s1",
     title: "Adim 1: Durumu Tanimlayin",
-    description: "Hangi durum sizi rahatsiz etti? Ne oldu?",
+    description: "Hangi durum sizi etkiledi? Ne oldu? Kisa ve net sekilde yazin.",
   },
   {
-    title: "Adim 2: Otomatik Dusunceyi Yazin",
-    description: "O anda akliniza gelen ilk dusunce neydi?",
+    id: "s2",
+    title: "Adim 2: Duygu ve Dusunceler",
+    description: "O anda ne hissettiniz? Akliniza gelen ilk dusunce neydi?",
   },
   {
+    id: "s3",
     title: "Adim 3: Kanitlari Degerlendirin",
-    description: "Bu dusunceyi destekleyen ve curuten kanitlar neler?",
+    description: "Bu dusunceyi destekleyen ve curutenler neler? Her ikisini de listeleyin.",
   },
   {
-    title: "Adim 4: Alternatif Dusunce Olusturun",
-    description: "Daha dengeli bir dusunce nasil olabilir?",
+    id: "s4",
+    title: "Adim 4: Denge Kurumun",
+    description: "Daha dengeli, gercekci bir bakis acisi nasil olabilir?",
   },
 ];
 
+type StepStatus = "done" | "active" | "locked";
+
 const ContentExerciseContent = ({
+  contentItemId,
   isOffline,
-  id,
 }: {
+  contentItemId?: string;
   isOffline?: boolean;
-  id?: string;
 }) => {
   const navigation = useNavigation<any>();
-  // AC-FR-E5-06-02: Track completed step count
-  const [completedCount, setCompletedCount] = useState(0);
-  const allDone = completedCount >= exerciseStepDefs.length;
 
-  // AC-FR-E5-06-01: Ordered step unlock
-  const handleCompleteStep = () => {
+  // Load steps: prefer ExerciseStep records; fallback to static list
+  const rawSteps = getExerciseSteps().filter(
+    (s: any) => s.content_item_id === contentItemId
+  );
+  const steps =
+    rawSteps.length > 0
+      ? rawSteps.map((s: any) => ({
+          id: s.id,
+          title: s.title ?? "Adim",
+          description: s.instruction ?? s.description ?? "",
+        }))
+      : FALLBACK_STEPS;
+
+  // AC-FR-E11-03-02: step completion state
+  const [completedCount, setCompletedCount] = useState(0);
+  // AC-FR-E11-03-01: per-step notes
+  const [notes, setNotes] = useState<Record<string, string>>({});
+  const [savedSteps, setSavedSteps] = useState<Set<string>>(new Set());
+
+  const allDone = completedCount >= steps.length;
+
+  const handleComplete = () => {
     if (isOffline) return;
-    setCompletedCount((prev) => Math.min(prev + 1, exerciseStepDefs.length));
+    setCompletedCount((prev) => Math.min(prev + 1, steps.length));
   };
 
+  const handleSaveNote = (stepId: string) => {
+    setSavedSteps((prev) => new Set(prev).add(stepId));
+    setTimeout(
+      () => setSavedSteps((prev) => { const s = new Set(prev); s.delete(stepId); return s; }),
+      2000
+    );
+  };
+
+  // AC-FR-E11-03-03: next section navigation
+  const handleNextSection = () => {
+    navigation.goBack();
+  };
+
+  const progressFraction = steps.length > 0 ? completedCount / steps.length : 0;
+
   return (
-    <View>
+    <View style={styles.wrapper}>
+      {/* Sticky progress header */}
       <View style={styles.header}>
         <View style={styles.headerRow}>
-          <PIconButton icon="arrow-left" onPress={() => navigation.goBack()} />
+          <PIconButton
+            icon="arrow-left"
+            onPress={() => navigation.goBack()}
+            accessibilityLabel="Geri don"
+            accessibilityRole="button"
+          />
           <View style={styles.headerCenter}>
-            <PText style={styles.headerTitle}>Uygulama: Kaliplarimi Kesfetmek</PText>
-            <PText style={styles.headerSubtitle}>Bolum 2 - Paket 3</PText>
+            <PText style={styles.headerTitle} numberOfLines={1}>
+              Uygulama Alistirmasi
+            </PText>
+            <PText style={styles.headerSubtitle}>
+              {completedCount}/{steps.length} adim tamamlandi
+            </PText>
           </View>
         </View>
-        <View style={styles.progressRow}>
-          <PText style={styles.progressLabel}>
-            {completedCount}/{exerciseStepDefs.length} adim tamamlandi
-          </PText>
-          <View style={styles.progressTrack}>
-            <View
-              style={[
-                styles.progressFill,
-                { width: `${(completedCount / exerciseStepDefs.length) * 100}%` },
-              ]}
-            />
-          </View>
-        </View>
+        <PProgressBar
+          progress={progressFraction}
+          style={styles.progressBar}
+          color="#0EA5E9"
+          accessible
+          accessibilityRole="progressbar"
+          accessibilityValue={{ min: 0, max: 100, now: Math.round(progressFraction * 100) }}
+          accessibilityLabel={"Ilerleme: yuzde " + Math.round(progressFraction * 100)}
+        />
       </View>
 
-      <View style={styles.body}>
+      {isOffline && <OfflineNotice />}
+
+      <ScrollView contentContainerStyle={styles.body}>
+        {/* AC-FR-E11-03-01: Instructions (reading text full screen context) */}
         <PCard style={styles.instructionCard}>
-          <PText style={styles.instructionTitle}>Uygulama Talimatlari</PText>
+          <View style={styles.instructionHeader}>
+            <PAvatar.Icon size={28} icon="lightbulb-outline" color="#7C4DFF" style={styles.lightbulb} accessible={false} />
+            <PText style={styles.instructionTitle}>Talimatlar</PText>
+          </View>
           <PText style={styles.instructionText}>
-            Son bir haftada yasadiginiz zorlayici bir durumu dusunun ve o andaki otomatik
-            dusuncelerinizi belirleyin.
+            Son bir haftanizda yasadiginiz zorlayici bir durumu dusunun. Asagidaki adimlari
+            sirasiyla tamamlayin ve her bolume notlarinizi ekleyin.
           </PText>
         </PCard>
 
-        <View style={styles.steps}>
-          {exerciseStepDefs.map((step, index) => {
+        {/* AC-FR-E11-03-02: sequential steps */}
+        <View style={styles.stepList}>
+          {steps.map((step, index) => {
             const isDone = index < completedCount;
             const isActive = index === completedCount;
             const isLocked = index > completedCount;
+            const statusColor = isDone ? "#16A34A" : isActive ? "#0EA5E9" : "#9CA3AF";
+            const noteText = notes[step.id] ?? "";
+            const noteSaved = savedSteps.has(step.id);
 
             return (
               <PCard
-                key={step.title}
+                key={step.id}
                 style={[
                   styles.stepCard,
-                  isDone && styles.stepCompleted,
-                  isActive && styles.stepActive,
-                  isLocked && styles.stepLocked,
+                  isDone && styles.stepCardDone,
+                  isActive && styles.stepCardActive,
+                  isLocked && styles.stepCardLocked,
                 ]}
               >
-                <View style={styles.stepRow}>
+                <View style={styles.stepHeader}>
                   <View
-                    style={[
-                      styles.stepBadge,
-                      isDone && styles.stepBadgeCompleted,
-                      isActive && styles.stepBadgeActive,
-                      isLocked && styles.stepBadgeLocked,
-                    ]}
+                    style={[styles.stepBadge, { backgroundColor: statusColor + "22" }]}
+                    accessibilityRole="none"
+                    accessible={false}
                   >
-                    <PText
-                      style={[
-                        styles.stepBadgeText,
-                        isDone && styles.stepBadgeTextCompleted,
-                        isActive && styles.stepBadgeTextActive,
-                        isLocked && styles.stepBadgeTextLocked,
-                      ]}
-                    >
+                    <PText style={[styles.stepBadgeText, { color: statusColor }]}>
                       {isDone ? "+" : index + 1}
                     </PText>
                   </View>
                   <View style={styles.stepInfo}>
                     <PText
-                      style={[
-                        styles.stepTitle,
-                        isActive && styles.stepTitleActive,
-                        isLocked && styles.stepTitleLocked,
-                      ]}
+                      style={[styles.stepTitle, isLocked && styles.stepTitleLocked]}
+                      accessibilityRole="header"
                     >
                       {step.title}
                     </PText>
-                    <PText
-                      style={[
-                        styles.stepDescription,
-                        isActive && styles.stepDescriptionActive,
-                        isLocked && styles.stepDescriptionLocked,
-                      ]}
-                    >
-                      {step.description}
-                    </PText>
-                    {/* AC-FR-E5-06-01: "Complete step" button on active step */}
-                    {isActive && (
-                      <PButton
-                        mode="contained"
-                        compact
-                        disabled={isOffline}
-                        style={styles.completeBtn}
-                        onPress={handleCompleteStep}
-                      >
-                        Bu Adimi Tamamla
-                      </PButton>
+                    {!isLocked && (
+                      <PText style={styles.stepDesc}>{step.description}</PText>
+                    )}
+                    {isLocked && (
+                      <PText style={styles.stepLockedHint}>
+                        Onceki adimi tamamlayin
+                      </PText>
                     )}
                   </View>
                 </View>
+
+                {/* AC-FR-E11-03-01: per-step note input */}
+                {(isDone || isActive) && !isOffline && (
+                  <View style={styles.noteArea}>
+                    <PDivider style={styles.noteDivider} />
+                    <PText style={styles.noteLabel}>Notunuz</PText>
+                    <TextInput
+                      style={styles.noteInput}
+                      multiline
+                      value={noteText}
+                      onChangeText={(t) => setNotes((prev) => ({ ...prev, [step.id]: t }))}
+                      placeholder="Dusuncelerinizi buraya yazin..."
+                      editable={!isOffline}
+                      accessibilityLabel={"Adim " + (index + 1) + " notu"}
+                      accessibilityHint="Bu adim icin dusuncelerinizi yazin"
+                    />
+                    {noteSaved && (
+                      <PText
+                        style={styles.noteSavedText}
+                        accessibilityLiveRegion="polite"
+                        accessibilityLabel="Not kaydedildi"
+                      >
+                        Kaydedildi
+                      </PText>
+                    )}
+                    <View style={styles.stepActions}>
+                      <PButton
+                        mode="text"
+                        compact
+                        onPress={() => handleSaveNote(step.id)}
+                        disabled={!noteText}
+                        accessibilityLabel={"Adim " + (index + 1) + " notunu kaydet"}
+                      >
+                        Notu Kaydet
+                      </PButton>
+                      {isActive && (
+                        <PButton
+                          mode="contained"
+                          compact
+                          disabled={isOffline}
+                          onPress={handleComplete}
+                          accessibilityLabel={"Adim " + (index + 1) + " tamamla"}
+                        >
+                          Adimi Tamamla
+                        </PButton>
+                      )}
+                    </View>
+                  </View>
+                )}
               </PCard>
             );
           })}
         </View>
 
-        {/* AC-FR-E5-06-03: All-done state saves progress + CTA to comment */}
+        {/* AC-FR-E11-03-03: next section CTA on completion */}
         {allDone && (
-          <PCard style={styles.celebrationCard}>
-            <PText style={styles.celebrationTitle}>Tebrikler! Tum adimlar tamamlandi.</PText>
-            <PText style={styles.celebrationSub}>
-              Ilerlemeniz kaydedildi. Yorumunuzu yazabilirsiniz.
+          <PCard style={styles.completionCard}>
+            <PAvatar.Icon
+              size={56}
+              icon="check-circle"
+              color="#16A34A"
+              style={styles.completionIcon}
+              accessible={false}
+            />
+            <PText
+              style={styles.completionTitle}
+              accessibilityLiveRegion="polite"
+              accessibilityLabel="Tebrikler! Alistirmayi tamamladiniz."
+            >
+              Tebrikler!
+            </PText>
+            <PText style={styles.completionDesc}>
+              Bu alistirmayi basariyla tamamladiniz. Bir sonraki bolume gecebilirsiniz.
             </PText>
             <PButton
               mode="contained"
-              style={styles.nextBtn}
-              disabled={isOffline}
-              onPress={() =>
-                navigation.navigate("ContentComment", {
-                  contentItemId: id ?? "c1c1c1c1-0000-0000-0000-000000000103",
-                })
-              }
+              style={styles.nextSectionBtn}
+              onPress={handleNextSection}
+              accessibilityLabel="Sonraki bolume gec"
             >
-              Yoruma Gec
+              Sonraki Bolum
             </PButton>
           </PCard>
         )}
-
-        <PCard style={styles.tipCard}>
-          <PText style={styles.tipText}>
-            <PText style={styles.tipLabel}>Ipucu:</PText> Dusuncelerinizi yargilamadan
-            gozlemleyin.
-          </PText>
-        </PCard>
-      </View>
+      </ScrollView>
     </View>
   );
 };
 
-export const ContentExerciseScreen = ({ route }: { route?: { params?: RouteParams } }) => {
+export const ContentExerciseScreen = ({
+  route,
+}: {
+  route?: { params?: RouteParams };
+}) => {
   const state = resolveScreenState(route);
   const id = route?.params?.id;
 
   if (state === "loading") {
     return (
-      <SafeAreaView style={styles.root}>
-        <ScrollView contentContainerStyle={styles.page}>
-          <PActivityIndicator animating />
-          <SkeletonBlock height={20} />
-          <SkeletonBlock height={20} />
-          <SkeletonBlock height={120} />
-        </ScrollView>
+      <SafeAreaView style={styles.rootSafe}>
+        <PActivityIndicator animating accessibilityLabel="Alistirma yukleniyor" />
+        <SkeletonBlock height={72} />
+        <SkeletonBlock height={120} />
+        <SkeletonBlock height={120} />
       </SafeAreaView>
     );
   }
 
   if (state === "empty") {
     return (
-      <SafeAreaView style={styles.root}>
-        <ScrollView contentContainerStyle={styles.page}>
-          <StateMessage
-            title="Uygulama bulunamadi"
-            description="Egzersiz adimlari su anda erisilebilir degil."
-            actionLabel="Geri Don"
-            icon="arm-flex-outline"
-          />
-        </ScrollView>
+      <SafeAreaView style={styles.rootSafe}>
+        <StateMessage
+          title="Alistirma bulunamadi"
+          description="Bu alistirma icin icerik bulunamadi."
+          actionLabel="Pakete Don"
+          icon="pencil-outline"
+        />
       </SafeAreaView>
     );
   }
 
   if (state === "error") {
     return (
-      <SafeAreaView style={styles.root}>
-        <ScrollView contentContainerStyle={styles.page}>
-          <StateMessage
-            title="Uygulama yuklenemedi"
-            description="Baglantini kontrol edip tekrar dene."
-            actionLabel="Tekrar Dene"
-            icon="alert-circle-outline"
-            tone="error"
-          />
-        </ScrollView>
+      <SafeAreaView style={styles.rootSafe}>
+        <StateMessage
+          title="Alistirma yuklenemedi"
+          description="Baglantini kontrol edip tekrar dene."
+          actionLabel="Tekrar Dene"
+          icon="alert-circle-outline"
+          tone="error"
+        />
       </SafeAreaView>
     );
   }
 
   if (state === "offline") {
     return (
-      <SafeAreaView style={styles.root}>
-        <OfflineNotice />
-        <ScrollView contentContainerStyle={styles.page}>
-          <ContentExerciseContent isOffline id={id} />
-        </ScrollView>
+      <SafeAreaView style={styles.rootSafe}>
+        <ContentExerciseContent contentItemId={id} isOffline />
       </SafeAreaView>
     );
   }
 
   return (
-    <SafeAreaView style={styles.root}>
-      <ScrollView contentContainerStyle={styles.page}>
-        <ContentExerciseContent id={id} />
-      </ScrollView>
+    <SafeAreaView style={styles.rootSafe}>
+      <ContentExerciseContent contentItemId={id} />
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  root: {
-    flex: 1,
-    backgroundColor: "#FAFAFA",
-  },
-  page: {
-    paddingBottom: 24,
-  },
+  rootSafe: { flex: 1, backgroundColor: "#F8FAFC" },
+  wrapper: { flex: 1, backgroundColor: "#F8FAFC" },
   header: {
     backgroundColor: "#FFFFFF",
-    paddingHorizontal: 20,
-    paddingTop: 12,
-    paddingBottom: 12,
     borderBottomWidth: 1,
-    borderBottomColor: "#E5E5E5",
+    borderBottomColor: "#E2E8F0",
+    paddingHorizontal: 4,
+    paddingTop: 4,
+    paddingBottom: 8,
   },
-  headerRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 12,
-  },
-  headerCenter: {
-    flex: 1,
-  },
-  headerTitle: {
-    fontSize: 14,
-    fontWeight: "700",
-    color: "#2B1B5D",
-  },
-  headerSubtitle: {
-    fontSize: 11,
-    color: "#737373",
-    marginTop: 2,
-  },
-  progressRow: {
-    marginTop: 10,
-    gap: 4,
-  },
-  progressLabel: {
-    fontSize: 11,
-    color: "#737373",
-    marginBottom: 4,
-  },
-  progressTrack: {
-    height: 4,
-    backgroundColor: "#E5E5E5",
-    borderRadius: 2,
-  },
-  progressFill: {
-    height: 4,
-    backgroundColor: "#6B46C1",
-    borderRadius: 2,
-  },
-  body: {
-    paddingHorizontal: 24,
-    paddingTop: 20,
-  },
+  headerRow: { flexDirection: "row", alignItems: "center" },
+  headerCenter: { flex: 1, paddingRight: 8 },
+  headerTitle: { fontSize: 14, fontWeight: "700", color: "#1E3A5F" },
+  headerSubtitle: { fontSize: 11, color: "#64748B", marginTop: 1 },
+  progressBar: { height: 4, borderRadius: 0, marginTop: 6, marginHorizontal: 16 },
+  body: { paddingHorizontal: 16, paddingTop: 16, paddingBottom: 40 },
   instructionCard: {
-    padding: 16,
-    borderRadius: 16,
-    backgroundColor: "#DBEAFE",
-    borderLeftWidth: 4,
-    borderLeftColor: "#1D4ED8",
-    marginBottom: 16,
-  },
-  instructionTitle: {
-    fontSize: 15,
-    fontWeight: "700",
-    color: "#1D4ED8",
-    marginBottom: 8,
-  },
-  instructionText: {
-    fontSize: 14,
-    color: "#1F2937",
-    lineHeight: 20,
-  },
-  steps: {
-    gap: 12,
-    marginBottom: 16,
-  },
-  stepCard: {
     padding: 14,
-    borderRadius: 16,
-    backgroundColor: "#F5F5F5",
+    borderRadius: 12,
+    marginBottom: 16,
+    backgroundColor: "#F5F3FF",
+    borderLeftWidth: 3,
+    borderLeftColor: "#7C4DFF",
   },
-  stepCompleted: {
-    backgroundColor: "#D1FAE5",
-    borderWidth: 2,
-    borderColor: "#16A34A",
+  instructionHeader: { flexDirection: "row", alignItems: "center", gap: 8, marginBottom: 6 },
+  lightbulb: { backgroundColor: "#EDE9FE" },
+  instructionTitle: { fontSize: 13, fontWeight: "700", color: "#4C1D95" },
+  instructionText: { fontSize: 13, color: "#4C1D95", lineHeight: 20 },
+  stepList: { gap: 10 },
+  stepCard: {
+    borderRadius: 12,
+    padding: 14,
+    backgroundColor: "#FFFFFF",
+    borderWidth: 1,
+    borderColor: "#E2E8F0",
   },
-  stepActive: {
-    backgroundColor: "#E0F7FA",
-    borderWidth: 2,
-    borderColor: "#00B4D8",
+  stepCardDone: {
+    backgroundColor: "#F0FDF4",
+    borderColor: "#86EFAC",
   },
-  stepLocked: {
-    backgroundColor: "#F5F5F5",
-    borderWidth: 2,
-    borderColor: "#D4D4D4",
-    borderStyle: "dashed",
+  stepCardActive: {
+    backgroundColor: "#F0F9FF",
+    borderColor: "#7DD3FC",
+    shadowColor: "#0EA5E9",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.08,
+    shadowRadius: 6,
+    elevation: 2,
   },
-  stepRow: {
-    flexDirection: "row",
-    gap: 12,
+  stepCardLocked: {
+    backgroundColor: "#FAFAFA",
+    borderColor: "#E5E7EB",
+    opacity: 0.7,
   },
+  stepHeader: { flexDirection: "row", alignItems: "flex-start", gap: 10 },
   stepBadge: {
-    width: 28,
-    height: 28,
-    borderRadius: 999,
+    width: 32,
+    height: 32,
+    borderRadius: 16,
     alignItems: "center",
     justifyContent: "center",
-    borderWidth: 2,
-    borderColor: "#D4D4D4",
-    backgroundColor: "#FFFFFF",
   },
-  stepBadgeCompleted: {
-    backgroundColor: "#16A34A",
-    borderColor: "#16A34A",
-  },
-  stepBadgeActive: {
-    backgroundColor: "#FFFFFF",
-    borderColor: "#00B4D8",
-  },
-  stepBadgeLocked: {
-    borderColor: "#A1A1AA",
-  },
-  stepBadgeText: {
-    fontSize: 12,
-    fontWeight: "700",
-    color: "#525252",
-  },
-  stepBadgeTextCompleted: {
-    color: "#FFFFFF",
-  },
-  stepBadgeTextActive: {
-    color: "#00B4D8",
-  },
-  stepBadgeTextLocked: {
-    color: "#A1A1AA",
-  },
-  stepInfo: {
-    flex: 1,
-  },
-  stepTitle: {
-    fontSize: 14,
-    fontWeight: "700",
-    color: "#525252",
-    marginBottom: 4,
-  },
-  stepTitleActive: {
-    color: "#00758C",
-  },
-  stepTitleLocked: {
-    color: "#737373",
-  },
-  stepDescription: {
+  stepBadgeText: { fontSize: 14, fontWeight: "700" },
+  stepInfo: { flex: 1 },
+  stepTitle: { fontSize: 14, fontWeight: "700", color: "#1E293B", marginBottom: 4 },
+  stepTitleLocked: { color: "#9CA3AF" },
+  stepDesc: { fontSize: 13, color: "#475569", lineHeight: 20 },
+  stepLockedHint: { fontSize: 12, color: "#9CA3AF", fontStyle: "italic" },
+  noteDivider: { marginVertical: 10 },
+  noteLabel: { fontSize: 11, color: "#94A3B8", marginBottom: 4, fontWeight: "600" },
+  noteInput: {
+    borderWidth: 1,
+    borderColor: "#CBD5E1",
+    borderRadius: 8,
+    padding: 10,
+    minHeight: 72,
     fontSize: 13,
-    color: "#525252",
-    lineHeight: 18,
+    textAlignVertical: "top",
+    color: "#1E293B",
+    marginBottom: 6,
   },
-  stepDescriptionActive: {
-    color: "#1F2937",
-  },
-  stepDescriptionLocked: {
-    color: "#737373",
-  },
-  completeBtn: {
-    marginTop: 10,
-    alignSelf: "flex-start",
-  },
-  celebrationCard: {
-    padding: 16,
-    borderRadius: 16,
-    backgroundColor: "#D1FAE5",
-    borderWidth: 2,
-    borderColor: "#16A34A",
-    marginBottom: 16,
+  noteSavedText: { fontSize: 11, color: "#16A34A", marginBottom: 4 },
+  stepActions: {
+    flexDirection: "row",
+    justifyContent: "space-between",
     alignItems: "center",
   },
-  celebrationTitle: {
-    fontSize: 15,
-    fontWeight: "700",
-    color: "#15803D",
-    marginBottom: 6,
-    textAlign: "center",
+  completionCard: {
+    padding: 24,
+    borderRadius: 16,
+    marginTop: 16,
+    backgroundColor: "#F0FDF4",
+    alignItems: "center",
+    borderColor: "#86EFAC",
+    borderWidth: 1.5,
   },
-  celebrationSub: {
-    fontSize: 13,
-    color: "#166534",
-    textAlign: "center",
-    marginBottom: 12,
-  },
-  nextBtn: {
-    width: "100%",
-  },
-  tipCard: {
-    padding: 12,
-    borderRadius: 12,
-    backgroundColor: "#EDE7F6",
-  },
-  tipText: {
-    fontSize: 12,
-    color: "#525252",
-  },
-  tipLabel: {
-    fontWeight: "700",
-    color: "#2B1B5D",
-  },
+  completionIcon: { backgroundColor: "#D1FAE5", marginBottom: 12 },
+  completionTitle: { fontSize: 20, fontWeight: "800", color: "#15803D", marginBottom: 6 },
+  completionDesc: { fontSize: 14, color: "#166534", lineHeight: 20, textAlign: "center", marginBottom: 16 },
+  nextSectionBtn: { alignSelf: "stretch", borderRadius: 12 },
 });
-

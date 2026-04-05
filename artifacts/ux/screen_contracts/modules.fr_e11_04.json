@@ -1,59 +1,51 @@
 {
   "id": "modules.fr_e11_04",
   "title": "Kilitli ilerleme (paket seviyesi)",
-  "route": "/epic-11/fr-e11-04",
-  "purpose": "Implements FR-E11-04: Kilitli ilerleme (paket seviyesi).",
+  "route": "/modules/package/locked",
+  "purpose": "Implements FR-E11-04: Locked package view with prerequisite explanation (BR-04) and 08:00 countdown (BR-01) within ContentPackageDetailScreen.",
   "entryPoints": [
-    "discover.modules",
-    "content.module_detail"
+    "modules.fr_e11_01"
   ],
   "inputs": [
     {
-      "name": "userId",
+      "name": "id",
       "type": "uuid",
       "required": true,
-      "source": "session"
+      "source": "route"
     },
     {
-      "name": "subscriptionStatus",
-      "type": "SubscriptionStatus",
-      "required": true,
-      "source": "entitlement_cache"
-    },
-    {
-      "name": "locale",
-      "type": "LanguageCode",
-      "required": true,
-      "source": "profile"
+      "name": "state",
+      "type": "ScreenState",
+      "required": false,
+      "source": "route"
     }
   ],
   "dataDependencies": [
-    "Module",
     "Package",
-    "ContentProgress",
-    "CommentSubmission"
+    "ContentProgress"
   ],
   "uiStates": {
     "loading": {
-      "description": "Skeleton placeholders are shown while loading FR-E11-04 data."
+      "description": "Skeleton for locked state."
     },
     "ready": {
-      "description": "FR-E11-04 flows are fully interactive with primary CTA available when prerequisites are met."
+      "description": "Lock icon, prerequisite package name, lock reason, countdown to 08:00 if BR-01 applies."
     },
     "empty": {
-      "description": "Empty state explains why no data is available and points to next best action."
+      "description": "Lock data unavailable. Back CTA."
     },
     "error": {
-      "description": "Error state is recoverable with user-safe messaging and a retry action."
+      "description": "Error with retry CTA."
     },
     "offline": {
-      "description": "Offline state shows last synchronized data and queues write actions for later sync."
+      "description": "Locked state shown offline."
     }
   },
   "analytics": {
-    "screenView": "modules_fr_e11_04_viewed",
+    "screenView": "locked_package_viewed",
     "events": [
-      "modules_fr_e11_04_viewed"
+      "locked_package_viewed",
+      "go_to_prerequisite_tapped"
     ]
   },
   "acceptanceCriteriaRefs": [

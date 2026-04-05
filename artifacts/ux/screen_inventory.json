@@ -1371,7 +1371,7 @@
     },
     {
       "id": "modules.fr_e11_01",
-      "route": "/epic-11/fr-e11-01",
+      "route": "/modules",
       "title": "Modül ana ekranı",
       "type": "stack",
       "states": [
@@ -1389,7 +1389,7 @@
     },
     {
       "id": "modules.fr_e11_02",
-      "route": "/epic-11/fr-e11-02",
+      "route": "/modules/package",
       "title": "Paket detayı ve başlatma",
       "type": "stack",
       "states": [
@@ -1407,7 +1407,7 @@
     },
     {
       "id": "modules.fr_e11_03",
-      "route": "/epic-11/fr-e11-03",
+      "route": "/modules/package/exercise",
       "title": "Paket içi okuma ve uygulama",
       "type": "stack",
       "states": [
@@ -1425,7 +1425,7 @@
     },
     {
       "id": "modules.fr_e11_04",
-      "route": "/epic-11/fr-e11-04",
+      "route": "/modules/package/locked",
       "title": "Kilitli ilerleme (paket seviyesi)",
       "type": "stack",
       "states": [
@@ -1443,7 +1443,7 @@
     },
     {
       "id": "modules.fr_e11_05",
-      "route": "/epic-11/fr-e11-05",
+      "route": "/modules/completion",
       "title": "Modül tamamlama ve sertifika",
       "type": "stack",
       "states": [
