@@ -1,11 +1,11 @@
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import React from "react";
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import React from 'react';
 
-import { AuthSplashScreen } from "../screens/auth/AuthSplashScreen";
-import { ScreenState } from "../screens/components/ScreenState";
-import { OnboardingCarouselScreen } from "../screens/onboarding/OnboardingCarouselScreen";
-import { OnboardingLanguageSelectScreen } from "../screens/onboarding/OnboardingLanguageSelectScreen";
-import { OnboardingWelcomeScreen } from "../screens/onboarding/OnboardingWelcomeScreen";
+import { AuthSplashScreen } from '../screens/auth/AuthSplashScreen';
+import { ScreenState } from '../screens/components/ScreenState';
+import { OnboardingCarouselScreen } from '../screens/onboarding/OnboardingCarouselScreen';
+import { OnboardingLanguageSelectScreen } from '../screens/onboarding/OnboardingLanguageSelectScreen';
+import { OnboardingWelcomeScreen } from '../screens/onboarding/OnboardingWelcomeScreen';
 
 type ScreenStateParam = { state?: ScreenState } | undefined;
 
@@ -22,7 +22,7 @@ type OnboardingStackProps = {
 
 const Stack = createNativeStackNavigator<OnboardingStackParamList>();
 
-export const OnboardingStack = ({ initialRouteName = "AuthSplash" }: OnboardingStackProps) => {
+export const OnboardingStack = ({ initialRouteName = 'AuthSplash' }: OnboardingStackProps) => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName={initialRouteName}>
       <Stack.Screen name="AuthSplash" component={AuthSplashScreen} />

@@ -1,8 +1,8 @@
-import React from "react";
-import { StyleSheet, View } from "react-native";
-import { useTheme } from "react-native-paper";
+import React from 'react';
+import { StyleSheet, View } from 'react-native';
+import { useTheme } from 'react-native-paper';
 
-import { PAvatar, PButton, PText } from "../../components";
+import { PAvatar, PButton, PText } from '../../components';
 
 type StateMessageProps = {
   title: string;
@@ -10,7 +10,7 @@ type StateMessageProps = {
   actionLabel?: string;
   onAction?: () => void;
   icon?: string;
-  tone?: "neutral" | "error" | "success" | "offline";
+  tone?: 'neutral' | 'error' | 'success' | 'offline';
 };
 
 export const StateMessage = ({
@@ -18,12 +18,12 @@ export const StateMessage = ({
   description,
   actionLabel,
   onAction,
-  icon = "information-outline",
-  tone = "neutral",
+  icon = 'information-outline',
+  tone = 'neutral'
 }: StateMessageProps) => {
   const theme = useTheme();
-  const background = tone === "error" ? theme.colors.errorContainer : theme.colors.elevation.level1;
-  const onBackground = tone === "error" ? theme.colors.onErrorContainer : theme.colors.onSurface;
+  const background = tone === 'error' ? theme.colors.errorContainer : theme.colors.elevation.level1;
+  const onBackground = tone === 'error' ? theme.colors.onErrorContainer : theme.colors.onSurface;
 
   return (
     <View style={[styles.container, { backgroundColor: background }]}>
@@ -31,7 +31,7 @@ export const StateMessage = ({
       <PText variant="titleLarge" style={{ color: onBackground, marginBottom: 4 }}>
         {title}
       </PText>
-      <PText variant="bodyMedium" style={{ color: onBackground, textAlign: "center" }}>
+      <PText variant="bodyMedium" style={{ color: onBackground, textAlign: 'center' }}>
         {description}
       </PText>
       {actionLabel ? (
@@ -47,12 +47,12 @@ const styles = StyleSheet.create({
   container: {
     padding: 20,
     borderRadius: 24,
-    alignItems: "center",
+    alignItems: 'center'
   },
   avatar: {
-    marginBottom: 12,
+    marginBottom: 12
   },
   button: {
-    marginTop: 16,
-  },
+    marginTop: 16
+  }
 });

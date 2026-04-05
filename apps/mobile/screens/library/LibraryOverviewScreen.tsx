@@ -1,18 +1,9 @@
-import { useNavigation } from "@react-navigation/native";
-import React from "react";
-import { StyleSheet, View } from "react-native";
-import { useTheme } from "react-native-paper";
+import { useNavigation } from '@react-navigation/native';
+import React from 'react';
+import { StyleSheet, View } from 'react-native';
+import { useTheme } from 'react-native-paper';
 
-import {
-  PActivityIndicator,
-  PButton,
-  PCard,
-  PChip,
-  PListIcon,
-  PListItem,
-  PProgressBar,
-  PText,
-} from "../../components";
+import { PActivityIndicator, PButton, PCard, PChip, PListIcon, PListItem, PProgressBar, PText } from '../../components';
 import {
   getCollectionsForUser,
   getDownloadsForUser,
@@ -20,14 +11,14 @@ import {
   getEbookProgressForUser,
   getFavoritesForUser,
   getHighlightsForUser,
-  getPrimaryUser,
-} from "../../data/mockSelectors";
-import { OfflineNotice } from "../components/OfflineNotice";
-import { ScreenLayout } from "../components/ScreenLayout";
-import { ScreenState, resolveScreenState } from "../components/ScreenState";
-import { SectionCard } from "../components/SectionCard";
-import { SkeletonBlock } from "../components/SkeletonBlock";
-import { StateMessage } from "../components/StateMessage";
+  getPrimaryUser
+} from '../../data/mockSelectors';
+import { OfflineNotice } from '../components/OfflineNotice';
+import { ScreenLayout } from '../components/ScreenLayout';
+import { ScreenState, resolveScreenState } from '../components/ScreenState';
+import { SectionCard } from '../components/SectionCard';
+import { SkeletonBlock } from '../components/SkeletonBlock';
+import { StateMessage } from '../components/StateMessage';
 
 const LibraryReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
   const theme = useTheme();
@@ -38,9 +29,9 @@ const LibraryReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
   const ebookProgress = getEbookProgressForUser(user?.id);
   const downloads = getDownloadsForUser(user?.id);
   const highlights = getHighlightsForUser(user?.id);
-  const readingProgress = ebookProgress.slice(0, 2).map((item) => ({
-    title: getEbookById(item.ebook_id)?.title ?? "e-Kitap",
-    progress: (item.progress_percent ?? 0) / 100,
+  const readingProgress = ebookProgress.slice(0, 2).map(item => ({
+    title: getEbookById(item.ebook_id)?.title ?? 'e-Kitap',
+    progress: (item.progress_percent ?? 0) / 100
   }));
 
   return (
@@ -49,7 +40,7 @@ const LibraryReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
         <PListItem
           title="Favoriler"
           description={`${favorites.length} içerik`}
-          left={(props) => <PListIcon {...props} icon="bookmark-outline" />}
+          left={props => <PListIcon {...props} icon="bookmark-outline" />}
           accessibilityLabel={`Favoriler: ${favorites.length} içerik`}
           accessibilityHint="Favori içerikleri görüntüler"
           onPress={() => navigation.navigate('LibraryFavorites')}
@@ -73,7 +64,7 @@ const LibraryReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
       </SectionCard>
 
       <SectionCard title="Devam Edenler" actionLabel="Tümü">
-        {readingProgress.map((item) => (
+        {readingProgress.map(item => (
           <View key={item.title} style={styles.progressRow}>
             <View style={styles.progressHeader}>
               <PText variant="titleSmall">{item.title}</PText>
@@ -85,7 +76,7 @@ const LibraryReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
       </SectionCard>
 
       <SectionCard title="İndirilenler" actionLabel="Yönet">
-        {downloads.slice(0, 2).map((download) => (
+        {downloads.slice(0, 2).map(download => (
           <PCard key={download.id} style={styles.card}>
             <PCard.Title
               title={`İndirilen ${download.content_type}`}
@@ -103,10 +94,10 @@ const LibraryReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
       <SectionCard title="Vurgular & Notlar" actionLabel="Tümü">
         <View style={styles.noteBox}>
           <PText variant="bodyMedium" style={{ color: theme.colors.onSurfaceVariant }}>
-            “{highlights[0]?.quote ?? "Kendine karşı nazik olmak, dönüşümün ilk adımıdır."}”
+            “{highlights[0]?.quote ?? 'Kendine karşı nazik olmak, dönüşümün ilk adımıdır.'}”
           </PText>
           <PText variant="labelSmall" style={{ color: theme.colors.primary }}>
-            {getEbookById(highlights[0]?.source_id)?.title ?? "Kişisel Notlar"}
+            {getEbookById(highlights[0]?.source_id)?.title ?? 'Kişisel Notlar'}
           </PText>
         </View>
       </SectionCard>
@@ -114,15 +105,11 @@ const LibraryReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
   );
 };
 
-export const LibraryOverviewScreen = ({
-  route,
-}: {
-  route?: { params?: { state?: ScreenState } };
-}) => {
+export const LibraryOverviewScreen = ({ route }: { route?: { params?: { state?: ScreenState } } }) => {
   const state = resolveScreenState(route);
   const navigation = useNavigation<any>();
 
-  if (state === "loading") {
+  if (state === 'loading') {
     return (
       <ScreenLayout title="Kütüphane" subtitle="İçerikler hazırlanıyor">
         <SectionCard title="Yükleniyor">
@@ -139,21 +126,21 @@ export const LibraryOverviewScreen = ({
     );
   }
 
-  if (state === "empty") {
+  if (state === 'empty') {
     return (
       <ScreenLayout title="Kütüphane" subtitle="Kişisel arşivin hazır">
         <StateMessage
           title="Kütüphanen boş"
           description="Favorilerine eklediğin içerikler burada görünecek. Şimdi bir içerik keşfet."
           actionLabel="Keşfet"
-          onAction={() => navigation.navigate("Discover")}
+          onAction={() => navigation.navigate('Discover')}
           icon="bookmark-outline"
         />
       </ScreenLayout>
     );
   }
 
-  if (state === "error") {
+  if (state === 'error') {
     return (
       <ScreenLayout title="Kütüphane" subtitle="Bir sorun oluştu">
         <StateMessage
@@ -168,7 +155,7 @@ export const LibraryOverviewScreen = ({
     );
   }
 
-  if (state === "offline") {
+  if (state === 'offline') {
     return (
       <ScreenLayout title="Kütüphane" subtitle="Önbellekteki içerikler">
         <OfflineNotice />
@@ -187,23 +174,23 @@ export const LibraryOverviewScreen = ({
 const styles = StyleSheet.create({
   actionButton: {
     marginTop: 8,
-    alignSelf: "flex-start",
+    alignSelf: 'flex-start'
   },
   progressRow: {
-    marginBottom: 12,
+    marginBottom: 12
   },
   progressHeader: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 8,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 8
   },
   card: {
-    marginBottom: 12,
+    marginBottom: 12
   },
   noteBox: {
     padding: 12,
     borderRadius: 16,
-    backgroundColor: "rgba(0,0,0,0.04)",
-  },
+    backgroundColor: 'rgba(0,0,0,0.04)'
+  }
 });

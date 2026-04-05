@@ -4,3 +4,7 @@ coverage
 .expo
 pnpm-lock.yaml
 ios
+mockups
+android
+scripts
+artifacts

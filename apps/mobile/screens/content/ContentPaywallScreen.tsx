@@ -1,18 +1,17 @@
-import React from "react";
-import { StyleSheet } from "react-native";
+import { useNavigation } from '@react-navigation/native';
+import React from 'react';
+import { StyleSheet } from 'react-native';
 
-import { useNavigation } from "@react-navigation/native";
+import { trackCtaTap } from '../../analytics';
+import { PActivityIndicator, PButton, PCard, PDivider, PText } from '../../components';
+import { OfflineNotice } from '../components/OfflineNotice';
+import { ScreenLayout } from '../components/ScreenLayout';
+import { ScreenState, resolveScreenState } from '../components/ScreenState';
+import { SectionCard } from '../components/SectionCard';
+import { SkeletonBlock } from '../components/SkeletonBlock';
+import { StateMessage } from '../components/StateMessage';
 
-import { PActivityIndicator, PButton, PCard, PDivider, PText } from "../../components";
-import { trackCtaTap } from "../../analytics";
-import { OfflineNotice } from "../components/OfflineNotice";
-import { ScreenLayout } from "../components/ScreenLayout";
-import { ScreenState, resolveScreenState } from "../components/ScreenState";
-import { SectionCard } from "../components/SectionCard";
-import { SkeletonBlock } from "../components/SkeletonBlock";
-import { StateMessage } from "../components/StateMessage";
-
-const planBenefits = ["Sınırsız içerik erişimi", "Yeni içerik bildirimleri", "Çevrimdışı indirme"];
+const planBenefits = ['Sınırsız içerik erişimi', 'Yeni içerik bildirimleri', 'Çevrimdışı indirme'];
 
 const ContentPaywallContent = ({ isOffline }: { isOffline?: boolean }) => {
   const navigation = useNavigation<any>();
@@ -20,8 +19,7 @@ const ContentPaywallContent = ({ isOffline }: { isOffline?: boolean }) => {
     <>
       <SectionCard title="Abonelik Gerekli">
         <PText variant="bodyMedium" style={styles.paragraph}>
-          Bu içeriği görüntülemek için aktif bir abonelik gerekiyor. Sana uygun planı seçerek hemen
-          devam edebilirsin.
+          Bu içeriği görüntülemek için aktif bir abonelik gerekiyor. Sana uygun planı seçerek hemen devam edebilirsin.
         </PText>
       </SectionCard>
 
@@ -29,7 +27,7 @@ const ContentPaywallContent = ({ isOffline }: { isOffline?: boolean }) => {
         <PCard style={styles.card}>
           <PCard.Title title="Aylık Plan" subtitle="149 ₺ / ay" />
           <PCard.Content>
-            {planBenefits.map((benefit) => (
+            {planBenefits.map(benefit => (
               <PText key={benefit} variant="bodySmall" style={styles.bullet}>
                 • {benefit}
               </PText>
@@ -40,13 +38,11 @@ const ContentPaywallContent = ({ isOffline }: { isOffline?: boolean }) => {
               mode="contained"
               disabled={isOffline}
               onPress={() => {
-                trackCtaTap("content.paywall", "monthly_plan_tapped");
-                navigation
-                  .getParent()
-                  ?.navigate("MainTabs", {
-                    screen: "Profile",
-                    params: { screen: "ProfileSubscription" },
-                  });
+                trackCtaTap('content.paywall', 'monthly_plan_tapped');
+                navigation.getParent()?.navigate('MainTabs', {
+                  screen: 'Profile',
+                  params: { screen: 'ProfileSubscription' }
+                });
               }}
             >
               Aboneliği Başlat
@@ -64,13 +60,11 @@ const ContentPaywallContent = ({ isOffline }: { isOffline?: boolean }) => {
               mode="outlined"
               disabled={isOffline}
               onPress={() => {
-                trackCtaTap("content.paywall", "annual_plan_tapped");
-                navigation
-                  .getParent()
-                  ?.navigate("MainTabs", {
-                    screen: "Profile",
-                    params: { screen: "ProfileSubscription" },
-                  });
+                trackCtaTap('content.paywall', 'annual_plan_tapped');
+                navigation.getParent()?.navigate('MainTabs', {
+                  screen: 'Profile',
+                  params: { screen: 'ProfileSubscription' }
+                });
               }}
             >
               Yıllık Planı Seç
@@ -82,14 +76,10 @@ const ContentPaywallContent = ({ isOffline }: { isOffline?: boolean }) => {
   );
 };
 
-export const ContentPaywallScreen = ({
-  route,
-}: {
-  route?: { params?: { state?: ScreenState } };
-}) => {
+export const ContentPaywallScreen = ({ route }: { route?: { params?: { state?: ScreenState } } }) => {
   const state = resolveScreenState(route);
 
-  if (state === "loading") {
+  if (state === 'loading') {
     return (
       <ScreenLayout title="Abonelik Gerekli" subtitle="Abonelik seçenekleri hazırlanıyor">
         <SectionCard title="Yükleniyor">
@@ -105,7 +95,7 @@ export const ContentPaywallScreen = ({
     );
   }
 
-  if (state === "empty") {
+  if (state === 'empty') {
     return (
       <ScreenLayout title="Abonelik Gerekli" subtitle="İçerik bulunamadı">
         <StateMessage
@@ -118,7 +108,7 @@ export const ContentPaywallScreen = ({
     );
   }
 
-  if (state === "error") {
+  if (state === 'error') {
     return (
       <ScreenLayout title="Abonelik Gerekli" subtitle="Bir sorun oluştu">
         <StateMessage
@@ -132,7 +122,7 @@ export const ContentPaywallScreen = ({
     );
   }
 
-  if (state === "offline") {
+  if (state === 'offline') {
     return (
       <ScreenLayout title="Abonelik Gerekli" subtitle="Önbellekteki içerik">
         <OfflineNotice />
@@ -150,15 +140,15 @@ export const ContentPaywallScreen = ({
 
 const styles = StyleSheet.create({
   paragraph: {
-    marginBottom: 8,
+    marginBottom: 8
   },
   card: {
-    marginTop: 4,
+    marginTop: 4
   },
   bullet: {
-    marginBottom: 6,
+    marginBottom: 6
   },
   divider: {
-    marginVertical: 12,
-  },
+    marginVertical: 12
+  }
 });
