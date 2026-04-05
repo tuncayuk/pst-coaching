@@ -7,6 +7,11 @@ import { ContentJourneyDayScreen } from "../screens/content/ContentJourneyDayScr
 import { ContentWorkshopDetailScreen } from "../screens/content/ContentWorkshopDetailScreen";
 import { ContentWorkshopHomeScreen } from "../screens/content/ContentWorkshopHomeScreen";
 import { ContentWorkshopSectionScreen } from "../screens/content/ContentWorkshopSectionScreen";
+import { ContentWorkshopCampScreen } from "../screens/content/ContentWorkshopCampScreen";
+import { ContentWorkshopGuideScreen } from "../screens/content/ContentWorkshopGuideScreen";
+import { ContentWorkshopWorkbookScreen } from "../screens/content/ContentWorkshopWorkbookScreen";
+import { ContentWorkshopFollowUpScreen } from "../screens/content/ContentWorkshopFollowUpScreen";
+import { ContentWorkshopCompletionScreen } from "../screens/content/ContentWorkshopCompletionScreen";
 import { ContentModuleHomeScreen } from "../screens/content/ContentModuleHomeScreen";
 import { ContentPackageDetailScreen } from "../screens/content/ContentPackageDetailScreen";
 import { ContentEbookDetailScreen } from "../screens/content/ContentEbookDetailScreen";
@@ -37,6 +42,11 @@ export type ContentStackParamList = {
   ContentWorkshopHome: ContentIdParam;
   ContentWorkshopSection: { id: string; sectionId: string; state?: ScreenState };
   ContentWorkshopDetail: ContentIdParam;
+  ContentWorkshopCamp: ContentIdParam;
+  ContentWorkshopGuide: ContentIdParam;
+  ContentWorkshopWorkbook: ContentIdParam;
+  ContentWorkshopFollowUp: ContentIdParam;
+  ContentWorkshopCompletion: ContentIdParam;
   ContentModuleHome: ContentIdParam;
   ContentPackageDetail: ContentIdParam;
   ContentEbookDetail: ContentIdParam;
@@ -82,6 +92,11 @@ export const contentStackScreens: ContentStackScreen[] = [
   { name: "ContentWorkshopHome", component: ContentWorkshopHomeScreen },
   { name: "ContentWorkshopSection", component: ContentWorkshopSectionScreen },
   { name: "ContentWorkshopDetail", component: ContentWorkshopDetailScreen },
+  { name: "ContentWorkshopCamp", component: ContentWorkshopCampScreen },
+  { name: "ContentWorkshopGuide", component: ContentWorkshopGuideScreen },
+  { name: "ContentWorkshopWorkbook", component: ContentWorkshopWorkbookScreen },
+  { name: "ContentWorkshopFollowUp", component: ContentWorkshopFollowUpScreen },
+  { name: "ContentWorkshopCompletion", component: ContentWorkshopCompletionScreen },
   { name: "ContentModuleHome", component: ContentModuleHomeScreen },
   { name: "ContentPackageDetail", component: ContentPackageDetailScreen },
   { name: "ContentEbookDetail", component: ContentEbookDetailScreen },

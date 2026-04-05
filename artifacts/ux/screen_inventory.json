@@ -1045,7 +1045,7 @@
     },
     {
       "id": "workshop.fr_e8_01",
-      "route": "/epic-8/fr-e8-01",
+      "route": "/workshop/landing",
       "title": "Atölye landing ve yapı özeti",
       "type": "stack",
       "states": [
@@ -1063,7 +1063,7 @@
     },
     {
       "id": "workshop.fr_e8_02",
-      "route": "/epic-8/fr-e8-02",
+      "route": "/workshop/phases",
       "title": "Aşama navigasyonu ve ilerleme modeli",
       "type": "stack",
       "states": [
@@ -1081,7 +1081,7 @@
     },
     {
       "id": "workshop.fr_e8_03",
-      "route": "/epic-8/fr-e8-03",
+      "route": "/workshop/section",
       "title": "Aşama içerik ekranı",
       "type": "stack",
       "states": [
@@ -1099,7 +1099,7 @@
     },
     {
       "id": "workshop.fr_e8_04",
-      "route": "/epic-8/fr-e8-04",
+      "route": "/workshop/camp",
       "title": "3 günlük kamp ve oturum planı",
       "type": "stack",
       "states": [
@@ -1118,7 +1118,7 @@
     },
     {
       "id": "workshop.fr_e8_05",
-      "route": "/epic-8/fr-e8-05",
+      "route": "/workshop/guide",
       "title": "Eğitmen rehberi ve facilitator mode",
       "type": "stack",
       "states": [
@@ -1136,7 +1136,7 @@
     },
     {
       "id": "workshop.fr_e8_06",
-      "route": "/epic-8/fr-e8-06",
+      "route": "/workshop/workbook",
       "title": "Katılımcı defteri ve çalışma kağıtları",
       "type": "stack",
       "states": [
@@ -1154,7 +1154,7 @@
     },
     {
       "id": "workshop.fr_e8_07",
-      "route": "/epic-8/fr-e8-07",
+      "route": "/workshop/followup",
       "title": "Takip planı ve davranış sürekliliği",
       "type": "stack",
       "states": [
@@ -1173,7 +1173,7 @@
     },
     {
       "id": "workshop.fr_e8_08",
-      "route": "/epic-8/fr-e8-08",
+      "route": "/workshop/completion",
       "title": "Atölye tamamlama ve arşivleme",
       "type": "stack",
       "states": [

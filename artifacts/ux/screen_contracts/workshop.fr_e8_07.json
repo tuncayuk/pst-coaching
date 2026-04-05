@@ -1,11 +1,11 @@
 {
   "id": "workshop.fr_e8_07",
-  "title": "Takip planı ve davranış sürekliliği",
-  "route": "/epic-8/fr-e8-07",
-  "purpose": "Implements FR-E8-07: Takip planı ve davranış sürekliliği.",
+  "title": "Takip plani ve davranis surekliligi",
+  "route": "/workshop/followup",
+  "purpose": "Implements FR-E8-07: 72 saatlik toparlanma, 3 haftalik takip, 30 gunluk plan, niyet/cumleler/adimlar ve hatirlatici.",
   "entryPoints": [
-    "discover.workshops",
-    "library.workshops"
+    "workshop.completion",
+    "workshop.phases"
   ],
   "inputs": [
     {
@@ -13,6 +13,12 @@
       "type": "uuid",
       "required": true,
       "source": "session"
+    },
+    {
+      "name": "workshopId",
+      "type": "uuid",
+      "required": true,
+      "source": "route_param"
     },
     {
       "name": "subscriptionStatus",
@@ -29,35 +35,33 @@
   ],
   "dataDependencies": [
     "Workshop",
-    "WorkshopStage",
-    "WorkshopSession",
-    "WorkshopContentBlock",
-    "WorkshopArtifact",
-    "WorkbookEntry",
-    "WorkshopFollowUpPlan",
+    "FollowUpPlan",
+    "Reminder",
     "ContentProgress"
   ],
   "uiStates": {
     "loading": {
-      "description": "Skeleton placeholders are shown while loading FR-E8-07 data."
+      "description": "Skeleton placeholders shown while loading FR-E8-07 data."
     },
     "ready": {
-      "description": "FR-E8-07 flows are fully interactive with primary CTA available when prerequisites are met."
+      "description": "FR-E8-07 flows fully interactive; primary CTA available when prerequisites met."
     },
     "empty": {
-      "description": "Empty state explains why no data is available and points to next best action."
+      "description": "Empty state explains why no data is available and offers next best action."
     },
     "error": {
-      "description": "Error state is recoverable with user-safe messaging and a retry action."
+      "description": "Error state is recoverable with user-safe messaging and retry action."
     },
     "offline": {
-      "description": "Offline state shows last synchronized data and queues write actions for later sync."
+      "description": "Offline state shows last synchronized data; write actions queued for later sync."
     }
   },
   "analytics": {
-    "screenView": "workshop_fr_e8_07_viewed",
+    "screenView": "workshop_followup_viewed",
     "events": [
-      "workshop_fr_e8_07_viewed"
+      "workshop_followup_viewed",
+      "followup_plan_saved",
+      "followup_reminder_set"
     ]
   },
   "acceptanceCriteriaRefs": [

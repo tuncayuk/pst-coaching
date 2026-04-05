@@ -1,29 +1,38 @@
 import React from "react";
-import { ScrollView, StyleSheet, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { StyleSheet, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
+import { ScreenLayout } from "../components/ScreenLayout";
+import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
-import { getWorkshops } from "../../data/mockSelectors";
+import {
+  getContentItemsForParent,
+  getContentProgressForUser,
+  getPrimaryUser,
+  getWorkshopById,
+  getWorkshops,
+} from "../../data/mockSelectors";
 import {
   PActivityIndicator,
   PButton,
-  PCard,
   PChip,
   PDivider,
-  PIconButton,
   PText,
 } from "../../components";
 
-const sessionItems = [
-  { title: "Nefes ve Regülasyon", time: "20 dk" },
-  { title: "Grup Paylaşımı", time: "35 dk" },
-  { title: "Kapanış Ritüeli", time: "15 dk" },
-];
+type RouteParams = { state?: ScreenState; id?: string };
 
-const prepChecklist = ["Rahat bir alan oluştur", "Su ve not defteri hazırla", "Kulaklık kullan"];
+const STAGE_COUNT = 11;
+const CAMP_DAYS = 3;
+
+// Simulated stage type labels for display (AC-FR-E8-02-02)
+const STAGE_LABELS: Record<number, string> = {
+  1: "Referans", 2: "Icgoru", 3: "Referans", 4: "Icgoru",
+  5: "Referans", 6: "Icgoru", 7: "Entegrasyon",
+  8: "Kamp", 9: "Rehber", 10: "Calisma Kitabi", 11: "Kapanis",
+};
 
 const ContentWorkshopDetailContent = ({
   workshopId,
@@ -33,259 +42,272 @@ const ContentWorkshopDetailContent = ({
   isOffline?: boolean;
 }) => {
   const navigation = useNavigation<any>();
-  const workshops = getWorkshops();
-  const workshop = workshops.find((item) => item.id === workshopId) ?? workshops[0];
+  const user = getPrimaryUser();
+  // AC-FR-E8-01-03: role-based CTA -- "facilitator" role triggers guide CTA
+  const isFacilitator = user?.role === "facilitator";
+  const workshop = getWorkshopById(workshopId) ?? getWorkshops()[0];
+  const sections = getContentItemsForParent("workshop", workshop?.id);
+  const progressList = getContentProgressForUser(user?.id);
+  // AC-FR-E8-01-04: show last synced stage/session
+  const workshopProgress = progressList.find(
+    (p: any) => p.content_id === workshop?.id
+  );
+  const isStarted = !!workshopProgress?.started_at;
+  const isCompleted = !!workshopProgress?.completed_at;
+  const completedCount = sections.filter(
+    (s: any) =>
+      progressList.find((p: any) => p.content_id === s.id)?.status === "completed"
+  ).length;
+  const lastSection =
+    completedCount > 0 ? sections[completedCount - 1] : null;
+
+  const handlePrimary = () => {
+    if (isFacilitator) {
+      // AC-FR-E8-01-03: facilitator opens guide
+      navigation.navigate("Content", {
+        screen: "ContentWorkshopGuide",
+        params: { id: workshop?.id },
+      });
+    } else {
+      navigation.navigate("Content", {
+        screen: "ContentWorkshopHome",
+        params: { id: workshop?.id },
+      });
+    }
+  };
 
   return (
-    <View>
+    <>
+      {/* AC-FR-E8-01-01: title, theme, conversion goal, target audience, duration, references */}
       <View style={styles.hero}>
-        <PText style={styles.heroEmoji}>🎨</PText>
-        <PIconButton icon="arrow-left" style={styles.heroBack} onPress={() => navigation.goBack()} />
-        <PIconButton icon="heart-outline" style={styles.heroFav} />
+        <PText style={styles.heroEmoji}>{"\uD83C\uDFDB"}</PText>
+        <PText variant="headlineMedium" style={styles.heroTitle}>
+          {workshop?.title ?? "Atolye"}
+        </PText>
+        <PText variant="bodyMedium" style={styles.heroDesc}>
+          {workshop?.description ?? "Canli uygulamalar, paylasim ve destekleyici egzersizlerle ilerleyen bir atolye."}
+        </PText>
       </View>
 
-      <View style={styles.content}>
-        <PText style={styles.title}>{workshop?.title ?? "Duygusal Dayaniklilik Atolyesi"}</PText>
-        <View style={styles.tagRow}>
-          <PChip style={styles.tagChip}>Canlı</PChip>
-          <PChip style={styles.tagChip}>24 Ocak · 20:00</PChip>
-          <PChip style={styles.tagChip}>8 okuma • 4 uygulama</PChip>
+      {/* AC-FR-E8-01-02: stage count, camp days, workbook, guide labels */}
+      <SectionCard title="Yapi Ozeti">
+        <View style={styles.chipRow}>
+          <PChip style={styles.chip}>{STAGE_COUNT} asama</PChip>
+          <PChip style={styles.chip}>{CAMP_DAYS} gun kamp</PChip>
+          <PChip style={styles.chip}>Calisma kitabi var</PChip>
+          <PChip style={styles.chip}>Egitmen rehberi var</PChip>
         </View>
+        <PDivider style={styles.divider} />
+        <View style={styles.metaRow}>
+          <PText variant="labelMedium" style={styles.metaLabel}>Hedef kitle</PText>
+          <PText variant="bodySmall">Kisisel gelisim arayanlar</PText>
+        </View>
+        <View style={styles.metaRow}>
+          <PText variant="labelMedium" style={styles.metaLabel}>Toplam sure</PText>
+          <PText variant="bodySmall">3 gun + 7 oncesi asama</PText>
+        </View>
+        <View style={styles.metaRow}>
+          <PText variant="labelMedium" style={styles.metaLabel}>Referans</PText>
+          <PText variant="bodySmall">Kuran ve sunnet destekli icerik</PText>
+        </View>
+      </SectionCard>
 
-        <PCard style={styles.sectionCard}>
-          <PText style={styles.sectionTitle}>Atölye Hakkında</PText>
-          <PText style={styles.paragraph}>
-            {workshop?.description ??
-              "Canli uygulamalar, paylasim ve destekleyici egzersizlerle ilerleyen bir atölye."}
+      {/* AC-FR-E8-01-04: last visited stage summary */}
+      {isStarted && lastSection ? (
+        <SectionCard title="Kaldigin Yer">
+          <PText variant="bodySmall" style={styles.subtleText}>
+            Son asama: {lastSection.title ?? "Asama " + completedCount}
           </PText>
-        </PCard>
-
-        <PCard style={styles.sectionCard}>
-          <PText style={styles.sectionTitle}>Eğitmen</PText>
-          <PText style={styles.paragraph}>Uzm. Psk. Aylin K.</PText>
-          <PText style={styles.metaText}>
-            Zoom bağlantısı etkinlikten 15 dk önce paylaşılır.
+          <PText variant="bodySmall" style={styles.subtleText}>
+            {completedCount}/{sections.length} bolum tamamlandi
           </PText>
-          <PButton
-            mode="contained"
-            disabled={isOffline}
-            style={styles.primaryButton}
-            onPress={() =>
-              navigation.navigate("Content", {
-                screen: "ContentWorkshopHome",
-                params: { id: workshopId },
-              })
-            }
-          >
-            Yerini Ayirt
-          </PButton>
-        </PCard>
-
-        <PCard style={styles.sectionCard}>
-          <PText style={styles.sectionTitle}>Oturum Akışı</PText>
-          {sessionItems.map((session, index) => (
-            <View key={session.title} style={styles.rowItem}>
-              <View style={styles.rowHeader}>
-                <PText style={styles.rowTitle}>{session.title}</PText>
-                <PText style={styles.rowMeta}>{session.time}</PText>
-              </View>
-              {index < sessionItems.length - 1 ? <PDivider style={styles.divider} /> : null}
-            </View>
-          ))}
-        </PCard>
-
-        <PCard style={styles.sectionCard}>
-          <PText style={styles.sectionTitle}>Hazırlık Listesi</PText>
-          {prepChecklist.map((item) => (
-            <PText key={item} style={styles.bullet}>
-              • {item}
+          {isOffline && (
+            <PText variant="labelSmall" style={styles.offlineNote}>
+              Son senkronize edilmis veri gosteriliyor.
             </PText>
-          ))}
+          )}
+        </SectionCard>
+      ) : null}
+
+      {/* Stage type preview */}
+      <SectionCard title="Asama Plani">
+        {Object.entries(STAGE_LABELS).map(([num, label]) => (
+          <View key={num} style={styles.stageRow}>
+            <PText variant="labelMedium" style={styles.stageNum}>
+              {num}.
+            </PText>
+            <PText variant="bodySmall" style={styles.stageLabel}>
+              {label}
+            </PText>
+          </View>
+        ))}
+      </SectionCard>
+
+      {/* AC-FR-E8-01-03: role-based primary CTA */}
+      <SectionCard title="">
+        <PButton
+          mode="contained"
+          disabled={isOffline}
+          style={styles.primaryButton}
+          onPress={handlePrimary}
+          accessibilityLabel={
+            isFacilitator ? "Rehberi Ac" : isStarted ? "Devam Et" : "Basla"
+          }
+        >
+          {isFacilitator ? "Rehberi Ac" : isStarted ? "Devam Et" : "Basla"}
+        </PButton>
+        {!isFacilitator && (
           <PButton
             mode="outlined"
-            style={styles.secondaryButton}
             disabled={isOffline}
+            style={styles.secondaryButton}
             onPress={() =>
               navigation.navigate("Content", {
-                screen: "ContentWorkshopHome",
-                params: { id: workshopId },
+                screen: "ContentWorkshopCompletion",
+                params: { id: workshop?.id },
               })
             }
           >
-            Not Al
+            {isCompleted ? "Arsivi Gor" : "Tamamlama Ekrani"}
           </PButton>
-        </PCard>
-      </View>
-    </View>
+        )}
+      </SectionCard>
+    </>
   );
 };
 
 export const ContentWorkshopDetailScreen = ({
   route,
 }: {
-  route?: { params?: { state?: ScreenState; id?: string } };
+  route?: { params?: RouteParams };
 }) => {
   const state = resolveScreenState(route);
   const workshopId = route?.params?.id;
 
   if (state === "loading") {
     return (
-      <SafeAreaView style={styles.root}>
-        <ScrollView contentContainerStyle={styles.page}>
+      <ScreenLayout title="Atolye" subtitle="Yukleniyor">
+        <SectionCard title="Atolye Bilgisi">
           <PActivityIndicator animating />
-          <SkeletonBlock height={18} />
-          <SkeletonBlock height={18} />
-          <SkeletonBlock height={120} />
-        </ScrollView>
-      </SafeAreaView>
+          <SkeletonBlock height={24} />
+          <SkeletonBlock height={16} />
+        </SectionCard>
+        <SectionCard title="Yapi Ozeti">
+          <SkeletonBlock height={36} />
+          <SkeletonBlock height={20} />
+        </SectionCard>
+      </ScreenLayout>
     );
   }
 
   if (state === "empty") {
     return (
-      <SafeAreaView style={styles.root}>
-        <ScrollView contentContainerStyle={styles.page}>
-          <StateMessage
-            title="Atölye bulunamadı"
-            description="Bu atölye şu anda erişilebilir değil."
-            actionLabel="Keşfe Dön"
-            icon="calendar-remove"
-          />
-        </ScrollView>
-      </SafeAreaView>
+      <ScreenLayout title="Atolye" subtitle="Icerik bulunamadi">
+        <StateMessage
+          title="Atolye bulunamadi"
+          description="Bu atolye su anda erisebilir degil."
+          actionLabel="Kesfet"
+          icon="account-group-outline"
+        />
+      </ScreenLayout>
     );
   }
 
   if (state === "error") {
     return (
-      <SafeAreaView style={styles.root}>
-        <ScrollView contentContainerStyle={styles.page}>
-          <StateMessage
-            title="Atölye yüklenemedi"
-            description="Bağlantını kontrol edip tekrar dene."
-            actionLabel="Tekrar Dene"
-            icon="alert-circle-outline"
-            tone="error"
-          />
-        </ScrollView>
-      </SafeAreaView>
+      <ScreenLayout title="Atolye" subtitle="Bir sorun olustu">
+        <StateMessage
+          title="Atolye yuklenemedi"
+          description="Baglantini kontrol edip tekrar dene."
+          actionLabel="Tekrar Dene"
+          icon="alert-circle-outline"
+          tone="error"
+        />
+      </ScreenLayout>
     );
   }
 
   if (state === "offline") {
     return (
-      <SafeAreaView style={styles.root}>
+      <ScreenLayout title="Atolye" subtitle="Onbellekteki icerik">
         <OfflineNotice />
-        <ScrollView contentContainerStyle={styles.page}>
-          <ContentWorkshopDetailContent workshopId={workshopId} isOffline />
-        </ScrollView>
-      </SafeAreaView>
+        <ContentWorkshopDetailContent workshopId={workshopId} isOffline />
+      </ScreenLayout>
     );
   }
 
   return (
-    <SafeAreaView style={styles.root}>
-      <ScrollView contentContainerStyle={styles.page}>
-        <ContentWorkshopDetailContent workshopId={workshopId} />
-      </ScrollView>
-    </SafeAreaView>
+    <ScreenLayout title="Atolye" subtitle="Atolye detayi">
+      <ContentWorkshopDetailContent workshopId={workshopId} />
+    </ScreenLayout>
   );
 };
 
 const styles = StyleSheet.create({
-  root: {
-    flex: 1,
-    backgroundColor: "#FAFAFA",
-  },
-  page: {
-    paddingBottom: 32,
-  },
   hero: {
-    height: 240,
-    backgroundColor: "#FFE4E6",
     alignItems: "center",
-    justifyContent: "center",
+    paddingVertical: 24,
+    paddingHorizontal: 16,
   },
   heroEmoji: {
-    fontSize: 72,
-  },
-  heroBack: {
-    position: "absolute",
-    top: 12,
-    left: 12,
-  },
-  heroFav: {
-    position: "absolute",
-    top: 12,
-    right: 12,
-  },
-  content: {
-    paddingHorizontal: 24,
-    paddingTop: 24,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: "800",
-    color: "#2B1B5D",
+    fontSize: 48,
     marginBottom: 12,
   },
-  tagRow: {
+  heroTitle: {
+    textAlign: "center",
+    fontWeight: "700",
+    marginBottom: 8,
+  },
+  heroDesc: {
+    textAlign: "center",
+    opacity: 0.75,
+    lineHeight: 22,
+  },
+  chipRow: {
     flexDirection: "row",
     flexWrap: "wrap",
     gap: 8,
-    marginBottom: 16,
-  },
-  tagChip: {
-    backgroundColor: "#F5F5F5",
-  },
-  sectionCard: {
-    padding: 16,
-    borderRadius: 16,
-    marginBottom: 16,
-  },
-  sectionTitle: {
-    fontSize: 16,
-    fontWeight: "700",
-    color: "#171717",
-    marginBottom: 8,
-  },
-  paragraph: {
-    fontSize: 14,
-    color: "#525252",
-    marginBottom: 8,
-  },
-  metaText: {
-    fontSize: 13,
-    color: "#737373",
     marginBottom: 12,
   },
-  primaryButton: {
-    alignSelf: "flex-start",
-  },
-  rowItem: {
-    paddingVertical: 8,
-  },
-  rowHeader: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  rowTitle: {
-    fontSize: 14,
-    fontWeight: "600",
-    color: "#171717",
-  },
-  rowMeta: {
-    fontSize: 12,
-    color: "#737373",
+  chip: {
+    marginBottom: 4,
   },
   divider: {
+    marginVertical: 10,
+  },
+  metaRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: 6,
+  },
+  metaLabel: {
+    opacity: 0.6,
+  },
+  subtleText: {
+    opacity: 0.7,
+    marginTop: 4,
+  },
+  offlineNote: {
+    marginTop: 8,
+    opacity: 0.55,
+    fontStyle: "italic",
+  },
+  stageRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingVertical: 4,
+  },
+  stageNum: {
+    width: 28,
+    opacity: 0.5,
+  },
+  stageLabel: {
+    flex: 1,
+  },
+  primaryButton: {
     marginTop: 8,
   },
-  bullet: {
-    marginBottom: 6,
-  },
   secondaryButton: {
-    marginTop: 12,
-    alignSelf: "flex-start",
+    marginTop: 10,
   },
 });
