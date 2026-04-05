@@ -39,7 +39,7 @@ export type ContentStackParamList = {
   ContentModuleHome: ContentIdParam;
   ContentPackageDetail: ContentIdParam;
   ContentEbookDetail: ContentIdParam;
-  ContentEbookReader: ContentIdParam;
+  ContentEbookReader: { id: string; state?: ScreenState; chapterId?: string };
   ContentEbookToc: ContentIdParam;
   ContentEbookHighlights: ContentIdParam;
   ContentReading: ContentIdParam;

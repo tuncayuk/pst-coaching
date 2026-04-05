@@ -137,6 +137,7 @@ const HomeActiveContentListContent = ({ isOffline }: { isOffline?: boolean }) =>
           style={styles.secondaryButton}
           disabled={isOffline}
           accessibilityLabel="Haftalik hedef belirle"
+          onPress={() => navigation.navigate("HomeReminderSetting")}
         >
           Hedef Belirle
         </PButton>

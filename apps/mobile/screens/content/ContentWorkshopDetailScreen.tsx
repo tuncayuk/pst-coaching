@@ -66,8 +66,18 @@ const ContentWorkshopDetailContent = ({
           <PText style={styles.metaText}>
             Zoom bağlantısı etkinlikten 15 dk önce paylaşılır.
           </PText>
-          <PButton mode="contained" disabled={isOffline} style={styles.primaryButton}>
-            Yerini Ayırt
+          <PButton
+            mode="contained"
+            disabled={isOffline}
+            style={styles.primaryButton}
+            onPress={() =>
+              navigation.navigate("Content", {
+                screen: "ContentWorkshopHome",
+                params: { id: workshopId },
+              })
+            }
+          >
+            Yerini Ayirt
           </PButton>
         </PCard>
 
@@ -91,7 +101,17 @@ const ContentWorkshopDetailContent = ({
               • {item}
             </PText>
           ))}
-          <PButton mode="outlined" style={styles.secondaryButton} disabled={isOffline}>
+          <PButton
+            mode="outlined"
+            style={styles.secondaryButton}
+            disabled={isOffline}
+            onPress={() =>
+              navigation.navigate("Content", {
+                screen: "ContentWorkshopHome",
+                params: { id: workshopId },
+              })
+            }
+          >
             Not Al
           </PButton>
         </PCard>

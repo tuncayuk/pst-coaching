@@ -87,8 +87,17 @@ const ContentJourneyDetailContent = ({ journeyId, isOffline }: { journeyId?: str
           </View>
         </PCard>
 
-        <PButton mode="contained" disabled={isOffline}>
-          Yolculuğu Başlat
+        <PButton
+          mode="contained"
+          disabled={isOffline}
+          onPress={() =>
+            navigation.navigate("Content", {
+              screen: "ContentJourneyHome",
+              params: { id: journey?.id },
+            })
+          }
+        >
+          Yolculugu Baslat
         </PButton>
       </View>
     </View>

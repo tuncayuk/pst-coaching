@@ -64,8 +64,14 @@ const ContentEbookDetailContent = ({ ebookId, isOffline }: { ebookId?: string; i
           ))}
         </PCard>
 
-        <PButton mode="contained" disabled={isOffline}>
-          Okumaya Başla
+        <PButton
+          mode="contained"
+          disabled={isOffline}
+          onPress={() =>
+            navigation.navigate("ContentEbookReader", { id: ebook.id })
+          }
+        >
+          Okumaya Basla
         </PButton>
       </View>
     </View>

@@ -51,6 +51,12 @@ const HomeVicdandanKaraktereContent = ({ isOffline }: { isOffline?: boolean }) =
               disabled={isOffline}
               accessibilityLabel="Kaldigin yerden devam et"
               accessibilityHint="Programi son biraktigin noktadan devam eder"
+              onPress={() =>
+                navigation.navigate("Content", {
+                  screen: "ContentJourneyHome",
+                  params: { id: "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa" },
+                })
+              }
             >
               Kaldigin Yerden Devam Et
             </PButton>
@@ -85,6 +91,7 @@ const HomeVicdandanKaraktereContent = ({ isOffline }: { isOffline?: boolean }) =
           disabled={isOffline}
           accessibilityLabel="Programi okunacaklara ekle"
           accessibilityHint="Programi kutuphane listenize ekler"
+          onPress={() => navigation.navigate("Library")}
         >
           Programi Kaydet
         </PButton>
