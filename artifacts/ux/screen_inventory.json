@@ -1191,7 +1191,7 @@
     },
     {
       "id": "favorites.fr_e9_01",
-      "route": "/epic-9/fr-e9-01",
+      "route": "/favorites",
       "title": "Favoriler ana ekranı",
       "type": "stack",
       "states": [
@@ -1209,7 +1209,7 @@
     },
     {
       "id": "favorites.fr_e9_02",
-      "route": "/epic-9/fr-e9-02",
+      "route": "/favorites/detail",
       "title": "Favori detayı",
       "type": "stack",
       "states": [
@@ -1227,7 +1227,7 @@
     },
     {
       "id": "favorites.fr_e9_03",
-      "route": "/epic-9/fr-e9-03",
+      "route": "/favorites/collections",
       "title": "Koleksiyonlar",
       "type": "stack",
       "states": [
@@ -1245,7 +1245,7 @@
     },
     {
       "id": "favorites.fr_e9_04",
-      "route": "/epic-9/fr-e9-04",
+      "route": "/favorites/collection-detail",
       "title": "Arama ve filtreleme",
       "type": "stack",
       "states": [
@@ -1263,7 +1263,7 @@
     },
     {
       "id": "favorites.fr_e9_05",
-      "route": "/epic-9/fr-e9-05",
+      "route": "/favorites/export",
       "title": "Paylaşım ve dışa aktarma",
       "type": "stack",
       "states": [
@@ -1281,7 +1281,7 @@
     },
     {
       "id": "favorites.fr_e9_06",
-      "route": "/epic-9/fr-e9-06",
+      "route": "/favorites/downloads",
       "title": "Çevrimdışı erişim",
       "type": "stack",
       "states": [

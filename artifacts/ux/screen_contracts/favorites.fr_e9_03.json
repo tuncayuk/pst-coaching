@@ -1,10 +1,11 @@
 {
   "id": "favorites.fr_e9_03",
   "title": "Koleksiyonlar",
-  "route": "/epic-9/fr-e9-03",
-  "purpose": "Implements FR-E9-03: Koleksiyonlar.",
+  "route": "/favorites/collections",
+  "purpose": "Implements FR-E9-03: Koleksiyon olusturma/adlandirma, favorileri ekleme, geri alinabilir silme.",
   "entryPoints": [
-    "library.favorites"
+    "library.overview",
+    "favorites.list"
   ],
   "inputs": [
     {
@@ -27,32 +28,34 @@
     }
   ],
   "dataDependencies": [
-    "FavoriteItem",
-    "WorkbookEntry",
-    "Ebook",
-    "Workshop"
+    "Collection",
+    "CollectionItem",
+    "Favorite"
   ],
   "uiStates": {
     "loading": {
-      "description": "Skeleton placeholders are shown while loading FR-E9-03 data."
+      "description": "Skeleton placeholders shown while loading FR-E9-03 data."
     },
     "ready": {
-      "description": "FR-E9-03 flows are fully interactive with primary CTA available when prerequisites are met."
+      "description": "FR-E9-03 flows fully interactive; primary CTA available."
     },
     "empty": {
-      "description": "Empty state explains why no data is available and points to next best action."
+      "description": "Empty state explains why no data is available and offers next best action."
     },
     "error": {
-      "description": "Error state is recoverable with user-safe messaging and a retry action."
+      "description": "Error state is recoverable with user-safe messaging and retry action."
     },
     "offline": {
-      "description": "Offline state shows last synchronized data and queues write actions for later sync."
+      "description": "Offline state shows last synchronized data; write actions queued."
     }
   },
   "analytics": {
-    "screenView": "favorites_fr_e9_03_viewed",
+    "screenView": "collections_viewed",
     "events": [
-      "favorites_fr_e9_03_viewed"
+      "collections_viewed",
+      "collection_created",
+      "collection_deleted",
+      "collection_delete_undone"
     ]
   },
   "acceptanceCriteriaRefs": [
@@ -61,6 +64,7 @@
     "AC-FR-E9-03-03"
   ],
   "gates": [
-    "auth"
+    "auth",
+    "subscription"
   ]
 }

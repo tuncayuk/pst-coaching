@@ -1,10 +1,11 @@
 {
   "id": "favorites.fr_e9_01",
-  "title": "Favoriler ana ekranı",
-  "route": "/epic-9/fr-e9-01",
-  "purpose": "Implements FR-E9-01: Favoriler ana ekranı.",
+  "title": "Favoriler ana ekrani",
+  "route": "/favorites",
+  "purpose": "Implements FR-E9-01: Favoriler ana listesi — icerik turu etiketleri, arama ve filtreleme, bos durum.",
   "entryPoints": [
-    "library.favorites"
+    "library.overview",
+    "home.dashboard"
   ],
   "inputs": [
     {
@@ -27,32 +28,35 @@
     }
   ],
   "dataDependencies": [
-    "FavoriteItem",
-    "WorkbookEntry",
-    "Ebook",
-    "Workshop"
+    "Favorite",
+    "Journey",
+    "Workshop",
+    "Module",
+    "Ebook"
   ],
   "uiStates": {
     "loading": {
-      "description": "Skeleton placeholders are shown while loading FR-E9-01 data."
+      "description": "Skeleton placeholders shown while loading FR-E9-01 data."
     },
     "ready": {
-      "description": "FR-E9-01 flows are fully interactive with primary CTA available when prerequisites are met."
+      "description": "FR-E9-01 flows fully interactive; primary CTA available."
     },
     "empty": {
-      "description": "Empty state explains why no data is available and points to next best action."
+      "description": "Empty state explains why no data is available and offers next best action."
     },
     "error": {
-      "description": "Error state is recoverable with user-safe messaging and a retry action."
+      "description": "Error state is recoverable with user-safe messaging and retry action."
     },
     "offline": {
-      "description": "Offline state shows last synchronized data and queues write actions for later sync."
+      "description": "Offline state shows last synchronized data; write actions queued."
     }
   },
   "analytics": {
-    "screenView": "favorites_fr_e9_01_viewed",
+    "screenView": "favorites_viewed",
     "events": [
-      "favorites_fr_e9_01_viewed"
+      "favorites_viewed",
+      "favorite_opened",
+      "favorite_filter_applied"
     ]
   },
   "acceptanceCriteriaRefs": [
@@ -61,6 +65,7 @@
     "AC-FR-E9-01-03"
   ],
   "gates": [
-    "auth"
+    "auth",
+    "subscription"
   ]
 }

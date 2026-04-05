@@ -11,6 +11,7 @@ import { LibraryFavoriteDetailScreen } from "../screens/library/LibraryFavoriteD
 import { LibraryCollectionsScreen } from "../screens/library/LibraryCollectionsScreen";
 import { LibraryCollectionDetailScreen } from "../screens/library/LibraryCollectionDetailScreen";
 import { LibraryDownloadsScreen } from "../screens/library/LibraryDownloadsScreen";
+import { LibraryShareExportScreen } from "../screens/library/LibraryShareExportScreen";
 import { ContentPaywallScreen } from "../screens/content/ContentPaywallScreen";
 import { withSubscriptionGate } from "./guards";
 
@@ -29,6 +30,7 @@ export type LibraryStackParamList = {
   LibraryCollections: ScreenStateParam;
   LibraryCollectionDetail: DetailParam;
   LibraryDownloads: ScreenStateParam;
+  LibraryShareExport: DetailParam;
   ContentPaywall: ScreenStateParam;
 };
 
@@ -51,6 +53,7 @@ export const libraryStackScreens: LibraryStackScreen[] = [
   { name: "LibraryCollections", component: withSubscriptionGate(LibraryCollectionsScreen) },
   { name: "LibraryCollectionDetail", component: withSubscriptionGate(LibraryCollectionDetailScreen) },
   { name: "LibraryDownloads", component: withSubscriptionGate(LibraryDownloadsScreen) },
+  { name: "LibraryShareExport", component: withSubscriptionGate(LibraryShareExportScreen), options: modalOptions },
   { name: "ContentPaywall", component: ContentPaywallScreen, options: modalOptions },
 ];
 

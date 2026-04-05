@@ -1,10 +1,10 @@
 {
   "id": "favorites.fr_e9_04",
-  "title": "Arama ve filtreleme",
-  "route": "/epic-9/fr-e9-04",
-  "purpose": "Implements FR-E9-04: Arama ve filtreleme.",
+  "title": "Koleksiyon detayi ve arama",
+  "route": "/favorites/collection-detail",
+  "purpose": "Implements FR-E9-04: Favorilerde ve koleksiyonda arama (baslik/not/kaynak), icerik turu filtresi, filtre temizleme.",
   "entryPoints": [
-    "library.favorites"
+    "favorites.collections"
   ],
   "inputs": [
     {
@@ -27,32 +27,39 @@
     }
   ],
   "dataDependencies": [
-    "FavoriteItem",
-    "WorkbookEntry",
+    "Collection",
+    "CollectionItem",
+    "Favorite",
+    "Journey",
+    "Workshop",
+    "Module",
     "Ebook",
-    "Workshop"
+    "Note"
   ],
   "uiStates": {
     "loading": {
-      "description": "Skeleton placeholders are shown while loading FR-E9-04 data."
+      "description": "Skeleton placeholders shown while loading FR-E9-04 data."
     },
     "ready": {
-      "description": "FR-E9-04 flows are fully interactive with primary CTA available when prerequisites are met."
+      "description": "FR-E9-04 flows fully interactive; primary CTA available."
     },
     "empty": {
-      "description": "Empty state explains why no data is available and points to next best action."
+      "description": "Empty state explains why no data is available and offers next best action."
     },
     "error": {
-      "description": "Error state is recoverable with user-safe messaging and a retry action."
+      "description": "Error state is recoverable with user-safe messaging and retry action."
     },
     "offline": {
-      "description": "Offline state shows last synchronized data and queues write actions for later sync."
+      "description": "Offline state shows last synchronized data; write actions queued."
     }
   },
   "analytics": {
-    "screenView": "favorites_fr_e9_04_viewed",
+    "screenView": "collection_detail_viewed",
     "events": [
-      "favorites_fr_e9_04_viewed"
+      "collection_detail_viewed",
+      "favorites_searched",
+      "favorites_filter_applied",
+      "favorites_filter_cleared"
     ]
   },
   "acceptanceCriteriaRefs": [
@@ -61,6 +68,7 @@
     "AC-FR-E9-04-03"
   ],
   "gates": [
-    "auth"
+    "auth",
+    "subscription"
   ]
 }
