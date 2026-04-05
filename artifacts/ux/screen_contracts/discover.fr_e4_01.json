@@ -3,9 +3,7 @@
   "title": "Kesfet Ana Ekrani",
   "route": "/discover",
   "purpose": "Implements FR-E4-01: Content discovery hub with content-type tabs, assistant CTA, and featured content sections.",
-  "entryPoints": [
-    "bottom_tab.discover"
-  ],
+  "entryPoints": ["bottom_tab.discover"],
   "inputs": [
     {
       "name": "userId",
@@ -26,13 +24,7 @@
       "source": "profile"
     }
   ],
-  "dataDependencies": [
-    "Journey",
-    "Workshop",
-    "Module",
-    "Ebook",
-    "Subscription"
-  ],
+  "dataDependencies": ["Journey", "Workshop", "Module", "Ebook", "Subscription"],
   "uiStates": {
     "loading": {
       "description": "Skeleton placeholders shown while loading catalog data."
@@ -61,10 +53,6 @@
       "discover_paywall_triggered"
     ]
   },
-  "acceptanceCriteriaRefs": [
-    "AC-FR-E4-01-01",
-    "AC-FR-E4-01-02",
-    "AC-FR-E4-01-03"
-  ],
+  "acceptanceCriteriaRefs": ["AC-FR-E4-01-01", "AC-FR-E4-01-02", "AC-FR-E4-01-03"],
   "gates": []
 }

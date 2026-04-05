@@ -1,4 +1,4 @@
-import { List } from "react-native-paper";
+import { List } from 'react-native-paper';
 
 export const PListItem = List.Item;
 export const PListIcon = List.Icon;

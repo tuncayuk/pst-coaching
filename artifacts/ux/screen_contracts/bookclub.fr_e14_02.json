@@ -3,9 +3,7 @@
   "title": "Kulup olusturma ve kitap secimi",
   "route": "/epic-14/fr-e14-02",
   "purpose": "Implements FR-E14-02: Kulup olusturma ve kitap secimi.",
-  "entryPoints": [
-    "community.book_club"
-  ],
+  "entryPoints": ["community.book_club"],
   "inputs": [
     {
       "name": "userId",
@@ -26,11 +24,7 @@
       "source": "profile"
     }
   ],
-  "dataDependencies": [
-    "BookClub",
-    "BookClubInvite",
-    "Ebook"
-  ],
+  "dataDependencies": ["BookClub", "BookClubInvite", "Ebook"],
   "uiStates": {
     "loading": {
       "description": "Skeleton placeholders are shown while loading FR-E14-02 data."
@@ -50,18 +44,8 @@
   },
   "analytics": {
     "screenView": "bookclub_fr_e14_02_viewed",
-    "events": [
-      "bookclub_fr_e14_02_viewed"
-    ]
+    "events": ["bookclub_fr_e14_02_viewed"]
   },
-  "acceptanceCriteriaRefs": [
-    "AC-FR-E14-02-01",
-    "AC-FR-E14-02-02",
-    "AC-FR-E14-02-03",
-    "AC-FR-E14-02-04"
-  ],
-  "gates": [
-    "auth",
-    "subscription"
-  ]
+  "acceptanceCriteriaRefs": ["AC-FR-E14-02-01", "AC-FR-E14-02-02", "AC-FR-E14-02-03", "AC-FR-E14-02-04"],
+  "gates": ["auth", "subscription"]
 }

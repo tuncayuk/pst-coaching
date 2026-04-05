@@ -3,9 +3,7 @@
   "title": "Guclu ve gelisim alanlari",
   "route": "/progress/strengths",
   "purpose": "Implements FR-E6-03: Guclu ve gelisim alanlari — separate cards, concrete suggestions, navigation to content.",
-  "entryPoints": [
-    "progress.dashboard"
-  ],
+  "entryPoints": ["progress.dashboard"],
   "inputs": [
     {
       "name": "userId",
@@ -14,10 +12,7 @@
       "source": "session"
     }
   ],
-  "dataDependencies": [
-    "ContentProgress",
-    "Achievement"
-  ],
+  "dataDependencies": ["ContentProgress", "Achievement"],
   "uiStates": {
     "loading": {
       "description": "Skeleton cards for Guclu Alanlar and Gelisim Alanlari."
@@ -37,18 +32,8 @@
   },
   "analytics": {
     "screenView": "progress_strengths_viewed",
-    "events": [
-      "progress_strengths_viewed",
-      "progress_strength_suggestion_applied",
-      "progress_personal_plan_created"
-    ]
+    "events": ["progress_strengths_viewed", "progress_strength_suggestion_applied", "progress_personal_plan_created"]
   },
-  "acceptanceCriteriaRefs": [
-    "AC-FR-E6-03-01",
-    "AC-FR-E6-03-02",
-    "AC-FR-E6-03-03"
-  ],
-  "gates": [
-    "auth"
-  ]
+  "acceptanceCriteriaRefs": ["AC-FR-E6-03-01", "AC-FR-E6-03-02", "AC-FR-E6-03-03"],
+  "gates": ["auth"]
 }

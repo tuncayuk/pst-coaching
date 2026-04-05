@@ -3,9 +3,7 @@
   "title": "e-Kitap Katalogu ve Detayi",
   "route": "/discover/ebooks",
   "purpose": "Implements FR-E4-06: eBook catalog with sort, category filter, cover grid, page count + reading time, featured badge, and Okumaya Basla CTA in detail.",
-  "entryPoints": [
-    "discover.fr_e4_01"
-  ],
+  "entryPoints": ["discover.fr_e4_01"],
   "inputs": [
     {
       "name": "userId",
@@ -26,9 +24,7 @@
       "source": "profile"
     }
   ],
-  "dataDependencies": [
-    "Ebook"
-  ],
+  "dataDependencies": ["Ebook"],
   "uiStates": {
     "loading": {
       "description": "Skeleton placeholders shown while loading ebooks."
@@ -55,11 +51,6 @@
       "discover_ebook_card_tapped"
     ]
   },
-  "acceptanceCriteriaRefs": [
-    "AC-FR-E4-06-01",
-    "AC-FR-E4-06-02",
-    "AC-FR-E4-06-03",
-    "AC-FR-E4-06-04"
-  ],
+  "acceptanceCriteriaRefs": ["AC-FR-E4-06-01", "AC-FR-E4-06-02", "AC-FR-E4-06-03", "AC-FR-E4-06-04"],
   "gates": []
 }

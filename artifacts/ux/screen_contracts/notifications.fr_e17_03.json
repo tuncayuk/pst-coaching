@@ -3,9 +3,7 @@
   "title": "Bildirim ayarlari ve sessiz saatler",
   "route": "/notifications/settings",
   "purpose": "Implements FR-E17-03: Bildirim ayarlari ve sessiz saatler.",
-  "entryPoints": [
-    "profile.settings"
-  ],
+  "entryPoints": ["profile.settings"],
   "inputs": [
     {
       "name": "userId",
@@ -26,9 +24,7 @@
       "source": "profile"
     }
   ],
-  "dataDependencies": [
-    "NotificationPreference"
-  ],
+  "dataDependencies": ["NotificationPreference"],
   "uiStates": {
     "loading": {
       "description": "Skeleton placeholders are shown while loading data."
@@ -56,14 +52,6 @@
       "notification_sound_toggled"
     ]
   },
-  "acceptanceCriteriaRefs": [
-    "AC-FR-E17-03-01",
-    "AC-FR-E17-03-02",
-    "AC-FR-E17-03-03",
-    "AC-FR-E17-03-04"
-  ],
-  "gates": [
-    "auth",
-    "subscription"
-  ]
+  "acceptanceCriteriaRefs": ["AC-FR-E17-03-01", "AC-FR-E17-03-02", "AC-FR-E17-03-03", "AC-FR-E17-03-04"],
+  "gates": ["auth", "subscription"]
 }

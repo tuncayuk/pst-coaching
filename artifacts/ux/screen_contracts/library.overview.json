@@ -3,9 +3,7 @@
   "title": "Kutuphane",
   "route": "/library",
   "purpose": "Tab root screen for Kutuphane.",
-  "entryPoints": [
-    "app.launch"
-  ],
+  "entryPoints": ["app.launch"],
   "inputs": [
     {
       "name": "locale",
@@ -20,11 +18,7 @@
       "source": "entitlement_cache"
     }
   ],
-  "dataDependencies": [
-    "User",
-    "Subscription",
-    "ContentProgress"
-  ],
+  "dataDependencies": ["User", "Subscription", "ContentProgress"],
   "uiStates": {
     "loading": {
       "description": "Tab shows skeleton cards while initial data is loading."
@@ -44,12 +38,8 @@
   },
   "analytics": {
     "screenView": "library_overview_viewed",
-    "events": [
-      "library_overview_viewed"
-    ]
+    "events": ["library_overview_viewed"]
   },
   "acceptanceCriteriaRefs": [],
-  "gates": [
-    "subscription"
-  ]
+  "gates": ["subscription"]
 }

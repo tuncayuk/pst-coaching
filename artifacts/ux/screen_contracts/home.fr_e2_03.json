@@ -3,9 +3,7 @@
   "title": "Icerik alanlari navigasyonu",
   "route": "/home/content-nav",
   "purpose": "HomeContentNavScreen shows 4 entry cards for content types: Yolculuklar, Atolyeler, e-Kitaplar, Kocluk Okulu. Single tap navigates to catalog (AC-FR-E2-03-01/02). Locked/restricted content shows paywall (AC-FR-E2-03-03).",
-  "entryPoints": [
-    "home.dashboard"
-  ],
+  "entryPoints": ["home.dashboard"],
   "inputs": [
     {
       "name": "userId",
@@ -26,12 +24,7 @@
       "source": "profile"
     }
   ],
-  "dataDependencies": [
-    "User",
-    "Subscription",
-    "ContentProgress",
-    "ReminderSetting"
-  ],
+  "dataDependencies": ["User", "Subscription", "ContentProgress", "ReminderSetting"],
   "uiStates": {
     "loading": {
       "description": "2x2 grid of skeleton cards with shimmer. Section title shown immediately."
@@ -51,16 +44,8 @@
   },
   "analytics": {
     "screenView": "home_content_nav_viewed",
-    "events": [
-      "home_content_area_card_tapped",
-      "home_paywall_shown",
-      "home_paywall_upgrade_tapped"
-    ]
+    "events": ["home_content_area_card_tapped", "home_paywall_shown", "home_paywall_upgrade_tapped"]
   },
-  "acceptanceCriteriaRefs": [
-    "AC-FR-E2-03-01",
-    "AC-FR-E2-03-02",
-    "AC-FR-E2-03-03"
-  ],
+  "acceptanceCriteriaRefs": ["AC-FR-E2-03-01", "AC-FR-E2-03-02", "AC-FR-E2-03-03"],
   "gates": []
 }

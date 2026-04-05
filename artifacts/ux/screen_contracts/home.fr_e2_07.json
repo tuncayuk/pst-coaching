@@ -3,9 +3,7 @@
   "title": "Son gorutulen icerikler",
   "route": "/home/search-results",
   "purpose": "HomeSearchResultsScreen shows recently viewed + search results, max 5 cards each with type label, last-viewed time, chapter/position (AC-FR-E2-07-01/02). Empty: recommended content shown (AC-FR-E2-07-03). Analytics: recent_content_viewed, recent_content_item_clicked (AC-FR-E2-07-04).",
-  "entryPoints": [
-    "home.fr_e2_05"
-  ],
+  "entryPoints": ["home.fr_e2_05"],
   "inputs": [
     {
       "name": "userId",
@@ -38,12 +36,7 @@
       "source": "profile"
     }
   ],
-  "dataDependencies": [
-    "User",
-    "Subscription",
-    "ContentProgress",
-    "ReminderSetting"
-  ],
+  "dataDependencies": ["User", "Subscription", "ContentProgress", "ReminderSetting"],
   "uiStates": {
     "loading": {
       "description": "Skeleton result rows (height 72) for each content group while search executes."
@@ -71,11 +64,6 @@
       "home_search_result_item_tapped"
     ]
   },
-  "acceptanceCriteriaRefs": [
-    "AC-FR-E2-07-01",
-    "AC-FR-E2-07-02",
-    "AC-FR-E2-07-03",
-    "AC-FR-E2-07-04"
-  ],
+  "acceptanceCriteriaRefs": ["AC-FR-E2-07-01", "AC-FR-E2-07-02", "AC-FR-E2-07-03", "AC-FR-E2-07-04"],
   "gates": []
 }

@@ -1,31 +1,26 @@
-import React, { useState, useCallback, useEffect, useRef } from "react";
-import { StyleSheet, View } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { OfflineNotice } from "../components/OfflineNotice";
-import { ScreenLayout } from "../components/ScreenLayout";
-import { SectionCard } from "../components/SectionCard";
-import { SkeletonBlock } from "../components/SkeletonBlock";
-import { StateMessage } from "../components/StateMessage";
-import { resolveScreenState, ScreenState } from "../components/ScreenState";
-import { PActivityIndicator, PButton, PChip, PText, PTextInput } from "../../components";
+import { useNavigation } from '@react-navigation/native';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { StyleSheet, View } from 'react-native';
 
-const emotionTags = ["Sakin", "Merakli", "Huzurlu", "Zorlanmis"];
+import { PActivityIndicator, PButton, PChip, PText, PTextInput } from '../../components';
+import { OfflineNotice } from '../components/OfflineNotice';
+import { ScreenLayout } from '../components/ScreenLayout';
+import { ScreenState, resolveScreenState } from '../components/ScreenState';
+import { SectionCard } from '../components/SectionCard';
+import { SkeletonBlock } from '../components/SkeletonBlock';
+import { StateMessage } from '../components/StateMessage';
+
+const emotionTags = ['Sakin', 'Merakli', 'Huzurlu', 'Zorlanmis'];
 
 type RouteParams = {
   state?: ScreenState;
   contentItemId?: string;
 };
 
-const ContentCommentContent = ({
-  isOffline,
-  contentItemId,
-}: {
-  isOffline?: boolean;
-  contentItemId?: string;
-}) => {
+const ContentCommentContent = ({ isOffline, contentItemId }: { isOffline?: boolean; contentItemId?: string }) => {
   const navigation = useNavigation<any>();
-  const [answer1, setAnswer1] = useState("");
-  const [answer2, setAnswer2] = useState("");
+  const [answer1, setAnswer1] = useState('');
+  const [answer2, setAnswer2] = useState('');
   const [selectedEmotion, setSelectedEmotion] = useState<string | null>(null);
   const [draftSaved, setDraftSaved] = useState(false);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -38,8 +33,7 @@ const ContentCommentContent = ({
   // AC-FR-E5-04-07: Block submit at 23:59
   const isAfterDeadline = hour === 23 && minute >= 59;
 
-  const wordCount =
-    [...answer1.trim().split(/\s+/), ...answer2.trim().split(/\s+/)].filter(Boolean).length;
+  const wordCount = [...answer1.trim().split(/\s+/), ...answer2.trim().split(/\s+/)].filter(Boolean).length;
 
   // AC-FR-E5-04-02: Auto-save draft indicator after 1.5s of inactivity
   const triggerAutoSave = useCallback(() => {
@@ -80,9 +74,7 @@ const ContentCommentContent = ({
       {/* AC-FR-E5-04-04: Late warning banner at 23:00 */}
       {isLateWarning && (
         <View style={styles.warningBanner}>
-          <PText style={styles.warningText}>
-            Teslim suresi dolmak uzere! Yorumunu 23:59&apos;a kadar gonder.
-          </PText>
+          <PText style={styles.warningText}>Teslim suresi dolmak uzere! Yorumunu 23:59&apos;a kadar gonder.</PText>
         </View>
       )}
 
@@ -124,7 +116,7 @@ const ContentCommentContent = ({
 
       <SectionCard title="Duygu Sec">
         <View style={styles.chipRow}>
-          {emotionTags.map((tag) => (
+          {emotionTags.map(tag => (
             <PChip
               key={tag}
               selected={selectedEmotion === tag}
@@ -141,11 +133,11 @@ const ContentCommentContent = ({
           mode="contained"
           disabled={isOffline || !canProceed}
           onPress={() =>
-            navigation.navigate("ContentCommentPreview", {
-              contentItemId: contentItemId ?? "",
+            navigation.navigate('ContentCommentPreview', {
+              contentItemId: contentItemId ?? '',
               answer1,
               answer2,
-              emotion: selectedEmotion ?? "",
+              emotion: selectedEmotion ?? ''
             })
           }
         >
@@ -156,15 +148,11 @@ const ContentCommentContent = ({
   );
 };
 
-export const ContentCommentScreen = ({
-  route,
-}: {
-  route?: { params?: RouteParams };
-}) => {
+export const ContentCommentScreen = ({ route }: { route?: { params?: RouteParams } }) => {
   const state = resolveScreenState(route);
   const contentItemId = route?.params?.contentItemId;
 
-  if (state === "loading") {
+  if (state === 'loading') {
     return (
       <ScreenLayout title="Yorum" subtitle="Yorum hazirlaniyor">
         <SectionCard title="Yukleniyor">
@@ -180,7 +168,7 @@ export const ContentCommentScreen = ({
     );
   }
 
-  if (state === "empty") {
+  if (state === 'empty') {
     return (
       <ScreenLayout title="Yorum" subtitle="Icerik bulunamadi">
         <StateMessage
@@ -193,7 +181,7 @@ export const ContentCommentScreen = ({
     );
   }
 
-  if (state === "error") {
+  if (state === 'error') {
     return (
       <ScreenLayout title="Yorum" subtitle="Bir sorun olustu">
         <StateMessage
@@ -207,7 +195,7 @@ export const ContentCommentScreen = ({
     );
   }
 
-  if (state === "offline") {
+  if (state === 'offline') {
     return (
       <ScreenLayout title="Yorum" subtitle="Onbellekteki icerik">
         <OfflineNotice />
@@ -225,50 +213,50 @@ export const ContentCommentScreen = ({
 
 const styles = StyleSheet.create({
   warningBanner: {
-    backgroundColor: "#FEF9C3",
+    backgroundColor: '#FEF9C3',
     paddingHorizontal: 16,
     paddingVertical: 10,
     borderLeftWidth: 4,
-    borderLeftColor: "#CA8A04",
-    marginBottom: 4,
+    borderLeftColor: '#CA8A04',
+    marginBottom: 4
   },
   warningText: {
     fontSize: 13,
-    color: "#A16207",
-    fontWeight: "600",
+    color: '#A16207',
+    fontWeight: '600'
   },
   draftBanner: {
-    backgroundColor: "#DCFCE7",
+    backgroundColor: '#DCFCE7',
     paddingHorizontal: 16,
     paddingVertical: 6,
     borderLeftWidth: 4,
-    borderLeftColor: "#16A34A",
-    marginBottom: 4,
+    borderLeftColor: '#16A34A',
+    marginBottom: 4
   },
   draftText: {
     fontSize: 12,
-    color: "#15803D",
-    fontWeight: "600",
+    color: '#15803D',
+    fontWeight: '600'
   },
   input: {
     marginTop: 8,
-    marginBottom: 4,
+    marginBottom: 4
   },
   wordCountRow: {
-    alignItems: "flex-end",
-    marginBottom: 8,
+    alignItems: 'flex-end',
+    marginBottom: 8
   },
   wordCount: {
     fontSize: 11,
-    color: "#737373",
+    color: '#737373'
   },
   chipRow: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    marginBottom: 12,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginBottom: 12
   },
   chip: {
     marginRight: 8,
-    marginBottom: 8,
-  },
+    marginBottom: 8
+  }
 });

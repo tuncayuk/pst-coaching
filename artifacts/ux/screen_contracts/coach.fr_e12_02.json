@@ -3,9 +3,7 @@
   "title": "Danisan profili ve metrikler",
   "route": "/coach/client",
   "purpose": "Implements FR-E12-02: Danisan profili ve metrikler.",
-  "entryPoints": [
-    "coach.dashboard"
-  ],
+  "entryPoints": ["coach.dashboard"],
   "inputs": [
     {
       "name": "userId",
@@ -26,13 +24,7 @@
       "source": "navigation"
     }
   ],
-  "dataDependencies": [
-    "User",
-    "ContentProgress",
-    "CoachAssignment",
-    "UserSession",
-    "Achievement"
-  ],
+  "dataDependencies": ["User", "ContentProgress", "CoachAssignment", "UserSession", "Achievement"],
   "uiStates": {
     "loading": {
       "description": "Skeleton placeholders shown while loading FR-E12-02 data."
@@ -52,20 +44,8 @@
   },
   "analytics": {
     "screenView": "coach_fr_e12_02_viewed",
-    "events": [
-      "coach_client_profile_viewed",
-      "content_tracking_opened",
-      "feedback_compose_opened"
-    ]
+    "events": ["coach_client_profile_viewed", "content_tracking_opened", "feedback_compose_opened"]
   },
-  "acceptanceCriteriaRefs": [
-    "AC-FR-E12-02-01",
-    "AC-FR-E12-02-02",
-    "AC-FR-E12-02-03",
-    "AC-FR-E12-02-04"
-  ],
-  "gates": [
-    "auth",
-    "coach_role"
-  ]
+  "acceptanceCriteriaRefs": ["AC-FR-E12-02-01", "AC-FR-E12-02-02", "AC-FR-E12-02-03", "AC-FR-E12-02-04"],
+  "gates": ["auth", "coach_role"]
 }

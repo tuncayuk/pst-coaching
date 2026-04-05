@@ -1,11 +1,8 @@
-import React, { useEffect, useRef, useState } from "react";
-import { ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { useNavigation } from "@react-navigation/native";
-import { OfflineNotice } from "./components/OfflineNotice";
-import { SkeletonBlock } from "./components/SkeletonBlock";
-import { StateMessage } from "./components/StateMessage";
-import { resolveScreenState, ScreenState } from "./components/ScreenState";
+import { useNavigation } from '@react-navigation/native';
+import React, { useEffect, useRef, useState } from 'react';
+import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+
 import {
   PActivityIndicator,
   PButton,
@@ -15,14 +12,13 @@ import {
   PProgressBar,
   PText,
   PTextInput,
-  PTextInputIcon,
-} from "../components";
-import {
-  getContentProgressForUser,
-  getJourneyById,
-  getJourneyDays,
-  getPrimaryUser,
-} from "../data/mockSelectors";
+  PTextInputIcon
+} from '../components';
+import { getContentProgressForUser, getJourneyById, getJourneyDays, getPrimaryUser } from '../data/mockSelectors';
+import { OfflineNotice } from './components/OfflineNotice';
+import { ScreenState, resolveScreenState } from './components/ScreenState';
+import { SkeletonBlock } from './components/SkeletonBlock';
+import { StateMessage } from './components/StateMessage';
 
 /** Returns seconds remaining until 23:59:59 of today (local time). */
 function secondsUntilMidnight(): number {
@@ -36,30 +32,30 @@ function secondsUntilMidnight(): number {
 function formatCountdown(secs: number): string {
   const h = Math.floor(secs / 3600);
   const m = Math.floor((secs % 3600) / 60);
-  return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`;
+  return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
 }
 
 const CONTENT_AREAS = [
-  { label: "Yolculuklar", icon: "map-marker-path", route: "DiscoverJourneys", count: "12 program" },
-  { label: "Atolyeler", icon: "school-outline", route: "DiscoverWorkshops", count: "8 atolye" },
-  { label: "e-Kitaplar", icon: "book-open-variant", route: "DiscoverEbooks", count: "24 kitap" },
-  { label: "Kocluk Okulu", icon: "account-school", route: "DiscoverCatalog", count: "5 kurs" },
+  { label: 'Yolculuklar', icon: 'map-marker-path', route: 'DiscoverJourneys', count: '12 program' },
+  { label: 'Atolyeler', icon: 'school-outline', route: 'DiscoverWorkshops', count: '8 atolye' },
+  { label: 'e-Kitaplar', icon: 'book-open-variant', route: 'DiscoverEbooks', count: '24 kitap' },
+  { label: 'Kocluk Okulu', icon: 'account-school', route: 'DiscoverCatalog', count: '5 kurs' }
 ] as const;
 
 const SUBSCRIPTION_BADGE_CONFIG = {
-  active: { label: "Aktif", bg: "#D1FAE5", text: "#065F46" },
-  trial: { label: "Deneme", bg: "#FEF3C7", text: "#92400E" },
-  cancelled: { label: "Iptal", bg: "#FEE2E2", text: "#991B1B" },
+  active: { label: 'Aktif', bg: '#D1FAE5', text: '#065F46' },
+  trial: { label: 'Deneme', bg: '#FEF3C7', text: '#92400E' },
+  cancelled: { label: 'Iptal', bg: '#FEE2E2', text: '#991B1B' }
 } as const;
 
 const HomeReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
   const navigation = useNavigation<any>();
   const user = getPrimaryUser();
-  const displayName = user?.email ? user.email.split("@")[0] : "Ahmet";
+  const displayName = user?.email ? user.email.split('@')[0] : 'Ahmet';
   const journeyDays = getJourneyDays();
   const progressItems = getContentProgressForUser(user?.id);
-  const nextStep = progressItems.find((item) => item.status === "in_progress") ?? progressItems[0];
-  const nextJourneyDay = journeyDays.find((day) => day.id === nextStep?.content_id);
+  const nextStep = progressItems.find(item => item.status === 'in_progress') ?? progressItems[0];
+  const nextJourneyDay = journeyDays.find(day => day.id === nextStep?.content_id);
   const nextJourney = getJourneyById(nextJourneyDay?.journey_id);
 
   // AC-FR-E2-01-01: countdown timer to 23:59
@@ -74,38 +70,38 @@ const HomeReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
     };
   }, []);
 
-  const subscriptionStatus: keyof typeof SUBSCRIPTION_BADGE_CONFIG = "active";
+  const subscriptionStatus: keyof typeof SUBSCRIPTION_BADGE_CONFIG = 'active';
   const badge = SUBSCRIPTION_BADGE_CONFIG[subscriptionStatus];
 
   const stats = [
-    { label: "Gun Serisi", value: 12, icon: "fire", tone: "primary" as const },
-    { label: "Tamamlanan", value: 28, icon: "check-circle", tone: "success" as const },
-    { label: "Rozetler", value: 8, icon: "trophy", tone: "warning" as const },
+    { label: 'Gun Serisi', value: 12, icon: 'fire', tone: 'primary' as const },
+    { label: 'Tamamlanan', value: 28, icon: 'check-circle', tone: 'success' as const },
+    { label: 'Rozetler', value: 8, icon: 'trophy', tone: 'warning' as const }
   ];
 
   const activities = [
-    { title: "Modul 3 tamamlandi", time: "2 saat once", icon: "check-circle-outline" },
-    { title: "Yeni rozet kazandiniz!", time: "1 gun once", icon: "trophy-outline" },
+    { title: 'Modul 3 tamamlandi', time: '2 saat once', icon: 'check-circle-outline' },
+    { title: 'Yeni rozet kazandiniz!', time: '1 gun once', icon: 'trophy-outline' }
   ];
 
   const handleContinue = () => {
     if (!nextStep) {
-      navigation.navigate("Discover");
+      navigation.navigate('Discover');
       return;
     }
-    if (nextStep.content_type === "journey_day") {
-      navigation.navigate("Content", {
-        screen: "ContentJourneyDay",
+    if (nextStep.content_type === 'journey_day') {
+      navigation.navigate('Content', {
+        screen: 'ContentJourneyDay',
         params: {
           id: nextJourney?.id,
-          day: String(nextJourneyDay?.day_number ?? 1),
-        },
+          day: String(nextJourneyDay?.day_number ?? 1)
+        }
       });
       return;
     }
-    navigation.navigate("Content", {
-      screen: "ContentWorkshopHome",
-      params: { id: nextStep.content_id },
+    navigation.navigate('Content', {
+      screen: 'ContentWorkshopHome',
+      params: { id: nextStep.content_id }
     });
   };
 
@@ -123,9 +119,7 @@ const HomeReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
               accessibilityLabel={`Abonelik durumu: ${badge.label}`}
               accessibilityRole="text"
             >
-              <PText style={[styles.subscriptionBadgeText, { color: badge.text }]}>
-                {badge.label}
-              </PText>
+              <PText style={[styles.subscriptionBadgeText, { color: badge.text }]}>{badge.label}</PText>
             </View>
           </View>
         </View>
@@ -137,19 +131,15 @@ const HomeReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
             accessibilityLabel="Bildirimler"
             accessibilityRole="button"
             accessibilityHint="Bildirimlerinizi goruntuler"
-            onPress={() => navigation.navigate("HomeSubscription")}
+            onPress={() => navigation.navigate('HomeSubscription')}
           />
-          <View
-            style={styles.notificationDot}
-            accessibilityLabel="Okunmamis bildirim var"
-            accessibilityRole="image"
-          />
+          <View style={styles.notificationDot} accessibilityLabel="Okunmamis bildirim var" accessibilityRole="image" />
         </View>
       </View>
 
       {/* Search bar - AC-FR-E2-05-01: tap opens search screen */}
       <TouchableOpacity
-        onPress={() => !isOffline && navigation.navigate("HomeSearch")}
+        onPress={() => !isOffline && navigation.navigate('HomeSearch')}
         activeOpacity={0.7}
         accessibilityLabel="Icerik ara"
         accessibilityRole="search"
@@ -170,14 +160,14 @@ const HomeReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
 
       {/* Stats row */}
       <View style={styles.statsRow}>
-        {stats.map((stat) => (
+        {stats.map(stat => (
           <View
             key={stat.label}
             style={[
               styles.statCard,
-              stat.tone === "primary" && styles.statPrimary,
-              stat.tone === "success" && styles.statSuccess,
-              stat.tone === "warning" && styles.statWarning,
+              stat.tone === 'primary' && styles.statPrimary,
+              stat.tone === 'success' && styles.statSuccess,
+              stat.tone === 'warning' && styles.statWarning
             ]}
             accessibilityLabel={`${stat.label}: ${stat.value}`}
             accessibilityRole="text"
@@ -203,7 +193,7 @@ const HomeReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
                 <PText style={styles.continueIconText}>H</PText>
               </View>
               <View style={styles.continueInfo}>
-                <PText style={styles.continueTitle}>{nextJourney?.title ?? "Hedef Belirleme"}</PText>
+                <PText style={styles.continueTitle}>{nextJourney?.title ?? 'Hedef Belirleme'}</PText>
                 <PText style={styles.continueSubtitle}>Coaching Programi -- Modul 3/8</PText>
               </View>
             </View>
@@ -229,7 +219,7 @@ const HomeReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
             <PText style={styles.continueEmptyText}>Bugunki hedefini secmedin.</PText>
             <PButton
               mode="outlined"
-              onPress={() => navigation.navigate("Discover")}
+              onPress={() => navigation.navigate('Discover')}
               accessibilityLabel="Kesfe cik ve icerik sec"
             >
               Kesfe Cik
@@ -242,7 +232,7 @@ const HomeReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
       <View style={styles.section}>
         <PText style={styles.sectionTitle}>Icerik Alanlari</PText>
         <View style={styles.contentNavGrid}>
-          {CONTENT_AREAS.map((area) => (
+          {CONTENT_AREAS.map(area => (
             <TouchableOpacity
               key={area.label}
               style={styles.contentNavCard}
@@ -265,16 +255,14 @@ const HomeReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
           <PText style={styles.sectionTitle}>Vicdandan Karaktere</PText>
           <PButton
             mode="text"
-            onPress={() => navigation.navigate("HomeVicdandanKaraktereDetail")}
+            onPress={() => navigation.navigate('HomeVicdandanKaraktereDetail')}
             accessibilityLabel="Vicdandan Karaktere programi detaylari"
           >
             Detaylar
           </PButton>
         </View>
         <PCard style={styles.programCard}>
-          <PText style={styles.programDescription}>
-            Ic sesini guclendir ve degerlerinle uyumlu kararlar al.
-          </PText>
+          <PText style={styles.programDescription}>Ic sesini guclendir ve degerlerinle uyumlu kararlar al.</PText>
           <View style={styles.progressRow}>
             <View style={styles.progressHeader}>
               <PText style={styles.progressLabel}>3/8 bolum</PText>
@@ -291,7 +279,7 @@ const HomeReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
           <PText style={styles.sectionTitle}>Aktif Iceriklerim</PText>
           <PButton
             mode="text"
-            onPress={() => navigation.navigate("HomeActiveContentList")}
+            onPress={() => navigation.navigate('HomeActiveContentList')}
             accessibilityLabel="Tum aktif icerikleri gor"
           >
             Tumunu Gor
@@ -299,7 +287,9 @@ const HomeReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
         </View>
         <PCard style={styles.activeContentCard}>
           <View style={styles.activeContentRow}>
-            <PChip compact accessibilityLabel="Icerik turu: Yolculuk">Yolculuk</PChip>
+            <PChip compact accessibilityLabel="Icerik turu: Yolculuk">
+              Yolculuk
+            </PChip>
             <View style={styles.activeContentInfo}>
               <PText style={styles.activeContentTitle}>Hedef Belirleme</PText>
               <PText style={styles.activeContentMeta}>Gun 3 -- 12 dk</PText>
@@ -313,7 +303,7 @@ const HomeReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
       {/* Son Aktiviteler */}
       <View style={styles.section}>
         <PText style={styles.sectionTitle}>Son Aktiviteler</PText>
-        {activities.map((activity) => (
+        {activities.map(activity => (
           <PCard key={activity.title} style={styles.activityCard}>
             <View style={styles.activityRow}>
               <View style={styles.activityInfo}>
@@ -328,7 +318,7 @@ const HomeReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
       {/* Reminder nudge - AC-FR-E2-08-01 */}
       <TouchableOpacity
         style={styles.reminderNudge}
-        onPress={() => !isOffline && navigation.navigate("HomeReminderSetting")}
+        onPress={() => !isOffline && navigation.navigate('HomeReminderSetting')}
         accessibilityLabel="Gunluk hatirlatici ayarla"
         accessibilityRole="button"
         accessibilityHint="Hatirlatici ayarlari ekranini acar"
@@ -345,7 +335,7 @@ const HomeReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
 export const HomeDashboardScreen = ({ route }: { route?: { params?: { state?: ScreenState } } }) => {
   const state = resolveScreenState(route);
 
-  if (state === "loading") {
+  if (state === 'loading') {
     return (
       <SafeAreaView style={styles.root}>
         <ScrollView contentContainerStyle={styles.content}>
@@ -365,7 +355,7 @@ export const HomeDashboardScreen = ({ route }: { route?: { params?: { state?: Sc
     );
   }
 
-  if (state === "empty") {
+  if (state === 'empty') {
     return (
       <SafeAreaView style={styles.root}>
         <ScrollView contentContainerStyle={styles.content}>
@@ -380,7 +370,7 @@ export const HomeDashboardScreen = ({ route }: { route?: { params?: { state?: Sc
     );
   }
 
-  if (state === "error") {
+  if (state === 'error') {
     return (
       <SafeAreaView style={styles.root}>
         <ScrollView contentContainerStyle={styles.content}>
@@ -396,7 +386,7 @@ export const HomeDashboardScreen = ({ route }: { route?: { params?: { state?: Sc
     );
   }
 
-  if (state === "offline") {
+  if (state === 'offline') {
     return (
       <SafeAreaView style={styles.root}>
         <ScrollView contentContainerStyle={styles.content}>
@@ -419,315 +409,315 @@ export const HomeDashboardScreen = ({ route }: { route?: { params?: { state?: Sc
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    backgroundColor: "#FAFAFA",
+    backgroundColor: '#FAFAFA'
   },
   content: {
-    padding: 16,
+    padding: 16
   },
   headerRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "flex-start",
-    marginBottom: 20,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    marginBottom: 20
   },
   headerLeft: {
-    flex: 1,
+    flex: 1
   },
   greeting: {
     fontSize: 14,
-    color: "#525252",
-    marginBottom: 2,
+    color: '#525252',
+    marginBottom: 2
   },
   nameRow: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     gap: 8,
-    flexWrap: "wrap",
+    flexWrap: 'wrap'
   },
   nameText: {
     fontSize: 26,
-    fontWeight: "800",
-    color: "#2B1B5D",
+    fontWeight: '800',
+    color: '#2B1B5D'
   },
   subscriptionBadge: {
     paddingHorizontal: 10,
     paddingVertical: 3,
     borderRadius: 999,
-    alignSelf: "center",
+    alignSelf: 'center'
   },
   subscriptionBadgeText: {
     fontSize: 11,
-    fontWeight: "700",
+    fontWeight: '700'
   },
   notificationWrapper: {
-    position: "relative",
-    marginTop: 4,
+    position: 'relative',
+    marginTop: 4
   },
   notificationButton: {
-    backgroundColor: "#F5F5F5",
+    backgroundColor: '#F5F5F5',
     minWidth: 48,
-    minHeight: 48,
+    minHeight: 48
   },
   notificationDot: {
-    position: "absolute",
+    position: 'absolute',
     top: 8,
     right: 8,
     width: 10,
     height: 10,
     borderRadius: 999,
     borderWidth: 2,
-    borderColor: "#FFFFFF",
-    backgroundColor: "#EF4444",
-    pointerEvents: "none",
+    borderColor: '#FFFFFF',
+    backgroundColor: '#EF4444',
+    pointerEvents: 'none'
   },
   searchWrapper: {
     marginBottom: 20,
-    minHeight: 48,
+    minHeight: 48
   },
   searchInput: {
-    backgroundColor: "#FFFFFF",
+    backgroundColor: '#FFFFFF'
   },
   searchOutline: {
     borderWidth: 2,
     borderRadius: 16,
-    borderColor: "#D4D4D4",
+    borderColor: '#D4D4D4'
   },
   searchContent: {
-    paddingVertical: 10,
+    paddingVertical: 10
   },
   statsRow: {
-    flexDirection: "row",
+    flexDirection: 'row',
     gap: 10,
-    marginBottom: 24,
+    marginBottom: 24
   },
   statCard: {
     flex: 1,
     borderRadius: 14,
     padding: 12,
-    alignItems: "center",
+    alignItems: 'center',
     minHeight: 80,
-    justifyContent: "center",
+    justifyContent: 'center'
   },
   statPrimary: {
-    backgroundColor: "#E0F7FA",
+    backgroundColor: '#E0F7FA'
   },
   statSuccess: {
-    backgroundColor: "#D1FAE5",
+    backgroundColor: '#D1FAE5'
   },
   statWarning: {
-    backgroundColor: "#FEF3C7",
+    backgroundColor: '#FEF3C7'
   },
   statValue: {
     fontSize: 22,
-    fontWeight: "800",
-    color: "#2B1B5D",
-    marginBottom: 4,
+    fontWeight: '800',
+    color: '#2B1B5D',
+    marginBottom: 4
   },
   statLabel: {
     fontSize: 11,
-    fontWeight: "600",
-    color: "#525252",
-    textAlign: "center",
+    fontWeight: '600',
+    color: '#525252',
+    textAlign: 'center'
   },
   section: {
-    marginBottom: 24,
+    marginBottom: 24
   },
   sectionHeaderRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 10
   },
   sectionTitle: {
     fontSize: 18,
-    fontWeight: "700",
-    color: "#171717",
-    marginBottom: 10,
+    fontWeight: '700',
+    color: '#171717',
+    marginBottom: 10
   },
   countdownBadge: {
-    backgroundColor: "#FEF3C7",
+    backgroundColor: '#FEF3C7',
     paddingHorizontal: 10,
     paddingVertical: 4,
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: "#FCD34D",
+    borderColor: '#FCD34D'
   },
   countdownText: {
     fontSize: 13,
-    fontWeight: "700",
-    color: "#92400E",
+    fontWeight: '700',
+    color: '#92400E'
   },
   continueCard: {
     borderLeftWidth: 4,
-    borderLeftColor: "#00B4D8",
-    padding: 16,
+    borderLeftColor: '#00B4D8',
+    padding: 16
   },
   continueCardEmpty: {
     padding: 16,
-    alignItems: "center",
-    gap: 12,
+    alignItems: 'center',
+    gap: 12
   },
   continueEmptyText: {
     fontSize: 14,
-    color: "#525252",
-    marginBottom: 8,
+    color: '#525252',
+    marginBottom: 8
   },
   continueRow: {
-    flexDirection: "row",
+    flexDirection: 'row',
     gap: 12,
-    marginBottom: 12,
+    marginBottom: 12
   },
   continueIcon: {
     width: 56,
     height: 56,
     borderRadius: 12,
-    backgroundColor: "#E0F7FA",
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: '#E0F7FA',
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   continueIconText: {
     fontSize: 22,
-    fontWeight: "800",
-    color: "#00B4D8",
+    fontWeight: '800',
+    color: '#00B4D8'
   },
   continueInfo: {
     flex: 1,
-    justifyContent: "center",
+    justifyContent: 'center'
   },
   continueTitle: {
     fontSize: 15,
-    fontWeight: "700",
-    color: "#171717",
-    marginBottom: 4,
+    fontWeight: '700',
+    color: '#171717',
+    marginBottom: 4
   },
   continueSubtitle: {
     fontSize: 12,
-    color: "#525252",
+    color: '#525252'
   },
   progressRow: {
-    marginBottom: 12,
+    marginBottom: 12
   },
   progressHeader: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginBottom: 6,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 6
   },
   progressLabel: {
     fontSize: 13,
-    fontWeight: "600",
-    color: "#404040",
+    fontWeight: '600',
+    color: '#404040'
   },
   progressValue: {
     fontSize: 13,
-    fontWeight: "700",
-    color: "#00B4D8",
+    fontWeight: '700',
+    color: '#00B4D8'
   },
   progressBar: {
     height: 8,
-    borderRadius: 999,
+    borderRadius: 999
   },
   contentNavGrid: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    gap: 10,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 10
   },
   contentNavCard: {
-    width: "47%",
-    backgroundColor: "#FFFFFF",
+    width: '47%',
+    backgroundColor: '#FFFFFF',
     borderRadius: 14,
     padding: 16,
     borderWidth: 1.5,
-    borderColor: "#E5E5E5",
+    borderColor: '#E5E5E5',
     minHeight: 72,
-    justifyContent: "center",
+    justifyContent: 'center'
   },
   contentNavLabel: {
     fontSize: 14,
-    fontWeight: "700",
-    color: "#2B1B5D",
-    marginBottom: 4,
+    fontWeight: '700',
+    color: '#2B1B5D',
+    marginBottom: 4
   },
   contentNavCount: {
     fontSize: 12,
-    color: "#525252",
+    color: '#525252'
   },
   programCard: {
     padding: 14,
     borderLeftWidth: 4,
-    borderLeftColor: "#10B981",
+    borderLeftColor: '#10B981'
   },
   programDescription: {
     fontSize: 13,
-    color: "#404040",
+    color: '#404040',
     marginBottom: 12,
-    lineHeight: 20,
+    lineHeight: 20
   },
   activeContentCard: {
     padding: 14,
-    marginBottom: 0,
+    marginBottom: 0
   },
   activeContentRow: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     gap: 10,
-    marginBottom: 10,
+    marginBottom: 10
   },
   activeContentInfo: {
-    flex: 1,
+    flex: 1
   },
   activeContentTitle: {
     fontSize: 14,
-    fontWeight: "700",
-    color: "#171717",
+    fontWeight: '700',
+    color: '#171717'
   },
   activeContentMeta: {
     fontSize: 12,
-    color: "#525252",
+    color: '#525252'
   },
   activeContentPct: {
     fontSize: 13,
-    fontWeight: "700",
-    color: "#00B4D8",
+    fontWeight: '700',
+    color: '#00B4D8'
   },
   activityCard: {
     marginBottom: 10,
-    padding: 12,
+    padding: 12
   },
   activityRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 12,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12
   },
   activityInfo: {
-    flex: 1,
+    flex: 1
   },
   activityTitle: {
     fontSize: 14,
-    fontWeight: "600",
-    color: "#171717",
-    marginBottom: 2,
+    fontWeight: '600',
+    color: '#171717',
+    marginBottom: 2
   },
   activityTime: {
     fontSize: 12,
-    color: "#525252",
+    color: '#525252'
   },
   reminderNudge: {
-    backgroundColor: "#EDE9FE",
+    backgroundColor: '#EDE9FE',
     borderRadius: 12,
     paddingVertical: 14,
     paddingHorizontal: 16,
     marginBottom: 16,
     borderWidth: 1,
-    borderColor: "#DDD6FE",
+    borderColor: '#DDD6FE',
     minHeight: 48,
-    justifyContent: "center",
+    justifyContent: 'center'
   },
   reminderNudgeText: {
     fontSize: 13,
-    color: "#5B21B6",
-    fontWeight: "600",
+    color: '#5B21B6',
+    fontWeight: '600'
   },
   bottomSpacer: {
-    height: 24,
-  },
+    height: 24
+  }
 });

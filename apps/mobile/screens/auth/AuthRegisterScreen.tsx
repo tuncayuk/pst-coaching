@@ -1,45 +1,45 @@
-import React from "react";
-import { StyleSheet, View, TouchableOpacity, ScrollView } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { OfflineNotice } from "../components/OfflineNotice";
-import { ScreenLayout } from "../components/ScreenLayout";
-import { SectionCard } from "../components/SectionCard";
-import { SkeletonBlock } from "../components/SkeletonBlock";
-import { StateMessage } from "../components/StateMessage";
-import { resolveScreenState, ScreenState } from "../components/ScreenState";
-import { PActivityIndicator, PButton, PIconButton, PText, PTextInput } from "../../components";
+import { useNavigation } from '@react-navigation/native';
+import React from 'react';
+import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { PActivityIndicator, PButton, PIconButton, PText, PTextInput } from '../../components';
+import { OfflineNotice } from '../components/OfflineNotice';
+import { ScreenLayout } from '../components/ScreenLayout';
+import { ScreenState, resolveScreenState } from '../components/ScreenState';
+import { SectionCard } from '../components/SectionCard';
+import { SkeletonBlock } from '../components/SkeletonBlock';
+import { StateMessage } from '../components/StateMessage';
 
 const RegisterContent = ({ isOffline }: { isOffline?: boolean }) => {
   const [accepted, setAccepted] = React.useState(false);
   const [showPassword, setShowPassword] = React.useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
-  const [fullName, setFullName] = React.useState("");
-  const [email, setEmail] = React.useState("");
-  const [phone, setPhone] = React.useState("");
-  const [password, setPassword] = React.useState("");
-  const [confirmPassword, setConfirmPassword] = React.useState("");
+  const [fullName, setFullName] = React.useState('');
+  const [email, setEmail] = React.useState('');
+  const [phone, setPhone] = React.useState('');
+  const [password, setPassword] = React.useState('');
+  const [confirmPassword, setConfirmPassword] = React.useState('');
   const navigation = useNavigation<any>();
 
   // Password strength: consistent 4-level algorithm (same as PasswordResetScreen)
   const getPasswordStrength = () => {
-    if (password.length === 0) return { strength: 0, label: "", color: "" };
+    if (password.length === 0) return { strength: 0, label: '', color: '' };
     let score = 0;
     if (password.length >= 8) score++;
     if (/[A-Z]/.test(password) && /[a-z]/.test(password)) score++;
     if (/\d/.test(password)) score++;
     if (/[^A-Za-z0-9]/.test(password)) score++;
-    if (score <= 1) return { strength: 1, label: "Zayif", color: "#EF4444" };
-    if (score === 2) return { strength: 2, label: "Orta", color: "#F59E0B" };
-    if (score === 3) return { strength: 3, label: "Iyi", color: "#10B981" };
-    return { strength: 4, label: "Guclu", color: "#10B981" };
+    if (score <= 1) return { strength: 1, label: 'Zayif', color: '#EF4444' };
+    if (score === 2) return { strength: 2, label: 'Orta', color: '#F59E0B' };
+    if (score === 3) return { strength: 3, label: 'Iyi', color: '#10B981' };
+    return { strength: 4, label: 'Guclu', color: '#10B981' };
   };
 
   const passwordStrength = getPasswordStrength();
   const passwordsMatch = password === confirmPassword && password.length > 0;
-  const isFormValid = fullName.length > 0 && email.length > 0 && phone.length > 0 && 
-                      password.length >= 8 && passwordsMatch && accepted;
+  const isFormValid =
+    fullName.length > 0 && email.length > 0 && phone.length > 0 && password.length >= 8 && passwordsMatch && accepted;
 
   return (
     <SafeAreaView style={styles.container}>
@@ -126,7 +126,7 @@ const RegisterContent = ({ isOffline }: { isOffline?: boolean }) => {
               placeholder="Min. 8 karakter"
             />
             <PIconButton
-              icon={showPassword ? "eye-off" : "eye"}
+              icon={showPassword ? 'eye-off' : 'eye'}
               size={20}
               onPress={() => setShowPassword(!showPassword)}
               style={styles.eyeIcon}
@@ -135,12 +135,12 @@ const RegisterContent = ({ isOffline }: { isOffline?: boolean }) => {
           {password.length > 0 && (
             <View style={styles.strengthContainer}>
               <View style={styles.strengthBars}>
-                {[1, 2, 3, 4].map((i) => (
+                {[1, 2, 3, 4].map(i => (
                   <View
                     key={i}
                     style={[
                       styles.strengthBar,
-                      i <= passwordStrength.strength && { backgroundColor: passwordStrength.color },
+                      i <= passwordStrength.strength && { backgroundColor: passwordStrength.color }
                     ]}
                   />
                 ))}
@@ -169,20 +169,18 @@ const RegisterContent = ({ isOffline }: { isOffline?: boolean }) => {
               placeholder="Şifrenizi tekrar girin"
             />
             <PIconButton
-              icon={showConfirmPassword ? "eye-off" : "eye"}
+              icon={showConfirmPassword ? 'eye-off' : 'eye'}
               size={20}
               onPress={() => setShowConfirmPassword(!showConfirmPassword)}
               style={styles.eyeIcon}
             />
           </View>
-          {confirmPassword.length > 0 && !passwordsMatch && (
-            <PText style={styles.errorText}>Şifreler eşleşmiyor</PText>
-          )}
+          {confirmPassword.length > 0 && !passwordsMatch && <PText style={styles.errorText}>Şifreler eşleşmiyor</PText>}
         </View>
 
         <TouchableOpacity
           style={styles.checkboxRow}
-          onPress={() => setAccepted((prev) => !prev)}
+          onPress={() => setAccepted(prev => !prev)}
           disabled={isOffline}
           accessibilityRole="checkbox"
           accessibilityState={{ checked: accepted }}
@@ -207,7 +205,7 @@ const RegisterContent = ({ isOffline }: { isOffline?: boolean }) => {
         <PButton
           mode="contained"
           disabled={isOffline || !isFormValid}
-          onPress={() => navigation.navigate("AuthOtpVerify", { source: "register" })}
+          onPress={() => navigation.navigate('AuthOtpVerify', { source: 'register' })}
           style={styles.button}
         >
           Kaydol
@@ -215,7 +213,7 @@ const RegisterContent = ({ isOffline }: { isOffline?: boolean }) => {
 
         <View style={styles.signupRow}>
           <PText style={styles.signupText}>Zaten hesabınız var mı? </PText>
-          <TouchableOpacity onPress={() => navigation.navigate("AuthLogin")} disabled={isOffline}>
+          <TouchableOpacity onPress={() => navigation.navigate('AuthLogin')} disabled={isOffline}>
             <PText style={styles.signupLink}>Giriş Yap</PText>
           </TouchableOpacity>
         </View>
@@ -227,7 +225,7 @@ const RegisterContent = ({ isOffline }: { isOffline?: boolean }) => {
 export const AuthRegisterScreen = ({ route }: { route?: { params?: { state?: ScreenState } } }) => {
   const state = resolveScreenState(route);
 
-  if (state === "loading") {
+  if (state === 'loading') {
     return (
       <ScreenLayout title="Kayıt Ol" subtitle="Kayıt formu hazırlanıyor">
         <SectionCard title="Yükleniyor">
@@ -239,7 +237,7 @@ export const AuthRegisterScreen = ({ route }: { route?: { params?: { state?: Scr
     );
   }
 
-  if (state === "empty") {
+  if (state === 'empty') {
     return (
       <ScreenLayout title="Kayıt Ol" subtitle="Kayıt seçenekleri bulunamadı">
         <StateMessage
@@ -252,7 +250,7 @@ export const AuthRegisterScreen = ({ route }: { route?: { params?: { state?: Scr
     );
   }
 
-  if (state === "error") {
+  if (state === 'error') {
     return (
       <ScreenLayout title="Kayıt Ol" subtitle="Bir sorun oluştu">
         <StateMessage
@@ -266,7 +264,7 @@ export const AuthRegisterScreen = ({ route }: { route?: { params?: { state?: Scr
     );
   }
 
-  if (state === "offline") {
+  if (state === 'offline') {
     return (
       <>
         <OfflineNotice />
@@ -281,177 +279,177 @@ export const AuthRegisterScreen = ({ route }: { route?: { params?: { state?: Scr
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FAFAFA",
+    backgroundColor: '#FAFAFA'
   },
   scrollContent: {
     paddingHorizontal: 24,
     paddingTop: 24,
-    paddingBottom: 32,
+    paddingBottom: 32
   },
   backButton: {
     width: 40,
     height: 40,
-    alignItems: "center",
-    justifyContent: "center",
-    marginBottom: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 8
   },
   backButtonText: {
     fontSize: 24,
-    color: "#171717",
+    color: '#171717'
   },
   header: {
-    alignItems: "center",
-    marginBottom: 24,
+    alignItems: 'center',
+    marginBottom: 24
   },
   title: {
     fontSize: 24,
-    fontWeight: "700",
-    color: "#2B1B5D",
+    fontWeight: '700',
+    color: '#2B1B5D',
     marginBottom: 8,
-    textAlign: "center",
+    textAlign: 'center'
   },
   subtitle: {
     fontSize: 15,
-    color: "#525252",
+    color: '#525252',
     marginBottom: 24,
-    textAlign: "center",
+    textAlign: 'center'
   },
   inputGroup: {
-    marginBottom: 16,
+    marginBottom: 16
   },
   label: {
     fontSize: 14,
-    fontWeight: "600",
-    color: "#404040",
-    marginBottom: 8,
+    fontWeight: '600',
+    color: '#404040',
+    marginBottom: 8
   },
   input: {
-    backgroundColor: "#FFFFFF",
+    backgroundColor: '#FFFFFF'
   },
   inputContent: {
-    paddingVertical: 14,
+    paddingVertical: 14
   },
   inputOutline: {
     borderWidth: 2,
     borderRadius: 12,
-    borderColor: "#D4D4D4",
+    borderColor: '#D4D4D4'
   },
   phoneRow: {
-    flexDirection: "row",
-    gap: 8,
+    flexDirection: 'row',
+    gap: 8
   },
   countryCode: {
     width: 100,
-    justifyContent: "center",
-    alignItems: "center",
-    flexDirection: "row",
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
     gap: 4,
     borderWidth: 2,
-    borderColor: "#E5E5E5",
+    borderColor: '#E5E5E5',
     borderRadius: 12,
     paddingVertical: 14,
     paddingHorizontal: 12,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: '#FFFFFF'
   },
   countryCodeText: {
     fontSize: 14,
-    color: "#404040",
+    color: '#404040'
   },
   countryCodeChevron: {
     fontSize: 12,
-    color: "#525252",
+    color: '#525252'
   },
   phoneInput: {
-    flex: 1,
+    flex: 1
   },
   passwordContainer: {
-    position: "relative",
+    position: 'relative'
   },
   passwordInput: {
-    paddingRight: 48,
+    paddingRight: 48
   },
   eyeIcon: {
-    position: "absolute",
+    position: 'absolute',
     right: 8,
-    top: 8,
+    top: 8
   },
   strengthContainer: {
-    marginTop: 8,
+    marginTop: 8
   },
   strengthBars: {
-    flexDirection: "row",
+    flexDirection: 'row',
     gap: 4,
-    marginBottom: 4,
+    marginBottom: 4
   },
   strengthBar: {
     flex: 1,
     height: 4,
     borderRadius: 2,
-    backgroundColor: "#E5E5E5",
+    backgroundColor: '#E5E5E5'
   },
   strengthLabel: {
     fontSize: 12,
-    fontWeight: "600",
+    fontWeight: '600'
   },
   errorText: {
-    color: "#EF4444",
+    color: '#EF4444',
     fontSize: 12,
-    marginTop: 8,
+    marginTop: 8
   },
   checkboxRow: {
-    flexDirection: "row",
-    alignItems: "flex-start",
+    flexDirection: 'row',
+    alignItems: 'flex-start',
     gap: 8,
-    marginBottom: 16,
+    marginBottom: 16
   },
   checkboxText: {
     flex: 1,
     fontSize: 13,
-    color: "#404040",
-    lineHeight: 18,
+    color: '#404040',
+    lineHeight: 18
   },
   linkText: {
-    color: "#00B4D8",
-    fontSize: 13,
+    color: '#00B4D8',
+    fontSize: 13
   },
   checkboxBox: {
     width: 24,
     height: 24,
     borderRadius: 6,
     borderWidth: 2,
-    borderColor: "#D4D4D4",
-    backgroundColor: "#FFFFFF",
-    alignItems: "center",
-    justifyContent: "center",
-    marginTop: 2,
+    borderColor: '#D4D4D4',
+    backgroundColor: '#FFFFFF',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 2
   },
   checkboxBoxChecked: {
-    borderColor: "#00B4D8",
-    backgroundColor: "#00B4D8",
+    borderColor: '#00B4D8',
+    backgroundColor: '#00B4D8'
   },
   checkboxCheck: {
-    color: "#FFFFFF",
+    color: '#FFFFFF',
     fontSize: 12,
-    fontWeight: "700",
-    lineHeight: 12,
+    fontWeight: '700',
+    lineHeight: 12
   },
   button: {
     marginBottom: 16,
-    borderRadius: 12,
+    borderRadius: 12
   },
   signupRow: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 8,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 8
   },
   signupText: {
-    color: "#525252",
-    fontSize: 15,
+    color: '#525252',
+    fontSize: 15
   },
   signupLink: {
-    color: "#00B4D8",
-    fontWeight: "600",
-    fontSize: 15,
-  },
+    color: '#00B4D8',
+    fontWeight: '600',
+    fontSize: 15
+  }
 });

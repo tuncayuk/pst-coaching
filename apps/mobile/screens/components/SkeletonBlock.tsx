@@ -1,6 +1,6 @@
-import React from "react";
-import { StyleSheet, View } from "react-native";
-import { useTheme } from "react-native-paper";
+import React from 'react';
+import { StyleSheet, View } from 'react-native';
+import { useTheme } from 'react-native-paper';
 
 type SkeletonBlockProps = {
   height?: number;
@@ -15,8 +15,8 @@ export const SkeletonBlock = ({ height = 16 }: SkeletonBlockProps) => {
         styles.block,
         {
           height,
-          backgroundColor: theme.colors.surfaceVariant,
-        },
+          backgroundColor: theme.colors.surfaceVariant
+        }
       ]}
     />
   );
@@ -25,6 +25,6 @@ export const SkeletonBlock = ({ height = 16 }: SkeletonBlockProps) => {
 const styles = StyleSheet.create({
   block: {
     borderRadius: 12,
-    marginBottom: 12,
-  },
+    marginBottom: 12
+  }
 });

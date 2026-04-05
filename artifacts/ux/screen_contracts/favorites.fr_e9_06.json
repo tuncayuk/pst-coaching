@@ -3,10 +3,7 @@
   "title": "Cevrimdisi erisim",
   "route": "/favorites/downloads",
   "purpose": "Implements FR-E9-06: Indirilen favorileri cevrimdisi goruntuleme, otomatik senkronizasyon, depolama uyarisi.",
-  "entryPoints": [
-    "library.overview",
-    "favorites.list"
-  ],
+  "entryPoints": ["library.overview", "favorites.list"],
   "inputs": [
     {
       "name": "userId",
@@ -27,11 +24,7 @@
       "source": "profile"
     }
   ],
-  "dataDependencies": [
-    "Download",
-    "Ebook",
-    "Workshop"
-  ],
+  "dataDependencies": ["Download", "Ebook", "Workshop"],
   "uiStates": {
     "loading": {
       "description": "Skeleton placeholders shown while loading FR-E9-06 data."
@@ -51,20 +44,8 @@
   },
   "analytics": {
     "screenView": "downloads_viewed",
-    "events": [
-      "downloads_viewed",
-      "download_opened",
-      "download_deleted",
-      "download_sync_triggered"
-    ]
+    "events": ["downloads_viewed", "download_opened", "download_deleted", "download_sync_triggered"]
   },
-  "acceptanceCriteriaRefs": [
-    "AC-FR-E9-06-01",
-    "AC-FR-E9-06-02",
-    "AC-FR-E9-06-03"
-  ],
-  "gates": [
-    "auth",
-    "subscription"
-  ]
+  "acceptanceCriteriaRefs": ["AC-FR-E9-06-01", "AC-FR-E9-06-02", "AC-FR-E9-06-03"],
+  "gates": ["auth", "subscription"]
 }

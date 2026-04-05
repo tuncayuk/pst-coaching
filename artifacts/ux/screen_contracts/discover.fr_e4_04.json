@@ -3,9 +3,7 @@
   "title": "Atolye Katalogu ve Detayi",
   "route": "/discover/workshops",
   "purpose": "Implements FR-E4-04: Workshop catalog with sort, type filter (Kamp/Rehber/Calisma-Kitabi), showing tema, hedef kitle, sure, oturum sayisi, and type badges.",
-  "entryPoints": [
-    "discover.fr_e4_01"
-  ],
+  "entryPoints": ["discover.fr_e4_01"],
   "inputs": [
     {
       "name": "userId",
@@ -26,9 +24,7 @@
       "source": "profile"
     }
   ],
-  "dataDependencies": [
-    "Workshop"
-  ],
+  "dataDependencies": ["Workshop"],
   "uiStates": {
     "loading": {
       "description": "Skeleton cards while loading workshops."
@@ -56,11 +52,6 @@
       "discover_workshop_detail_tapped"
     ]
   },
-  "acceptanceCriteriaRefs": [
-    "AC-FR-E4-04-01",
-    "AC-FR-E4-04-02",
-    "AC-FR-E4-04-03",
-    "AC-FR-E4-04-04"
-  ],
+  "acceptanceCriteriaRefs": ["AC-FR-E4-04-01", "AC-FR-E4-04-02", "AC-FR-E4-04-03", "AC-FR-E4-04-04"],
   "gates": []
 }

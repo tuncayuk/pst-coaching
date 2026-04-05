@@ -3,9 +3,7 @@
   "title": "Paket detayi ve baslatma",
   "route": "/modules/package",
   "purpose": "Implements FR-E11-02: Package detail with description, objectives, section list (reading+exercise), start CTA, and prereq lock (BR-04).",
-  "entryPoints": [
-    "modules.fr_e11_01"
-  ],
+  "entryPoints": ["modules.fr_e11_01"],
   "inputs": [
     {
       "name": "id",
@@ -20,12 +18,7 @@
       "source": "route"
     }
   ],
-  "dataDependencies": [
-    "Package",
-    "ContentItem",
-    "ContentProgress",
-    "User"
-  ],
+  "dataDependencies": ["Package", "ContentItem", "ContentProgress", "User"],
   "uiStates": {
     "loading": {
       "description": "Skeletons for header and section list."
@@ -45,19 +38,8 @@
   },
   "analytics": {
     "screenView": "package_detail_viewed",
-    "events": [
-      "package_detail_viewed",
-      "package_started",
-      "locked_package_viewed"
-    ]
+    "events": ["package_detail_viewed", "package_started", "locked_package_viewed"]
   },
-  "acceptanceCriteriaRefs": [
-    "AC-FR-E11-02-01",
-    "AC-FR-E11-02-02",
-    "AC-FR-E11-02-03",
-    "AC-FR-E11-02-04"
-  ],
-  "gates": [
-    "auth"
-  ]
+  "acceptanceCriteriaRefs": ["AC-FR-E11-02-01", "AC-FR-E11-02-02", "AC-FR-E11-02-03", "AC-FR-E11-02-04"],
+  "gates": ["auth"]
 }

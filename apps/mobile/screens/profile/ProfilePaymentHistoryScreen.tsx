@@ -1,24 +1,20 @@
-import React from "react";
-import { Alert, StyleSheet, View } from "react-native";
-import { OfflineNotice } from "../components/OfflineNotice";
-import { ScreenLayout } from "../components/ScreenLayout";
-import { SectionCard } from "../components/SectionCard";
-import { SkeletonBlock } from "../components/SkeletonBlock";
-import { StateMessage } from "../components/StateMessage";
-import { resolveScreenState, ScreenState } from "../components/ScreenState";
+import React from 'react';
+import { Alert, StyleSheet, View } from 'react-native';
 
-import { PButton, PCard, PChip, PText } from "../../components";
-import {
-  getPrimaryUser,
-  getSubscriptionForUser,
-  getPaymentsForSubscription,
-} from "../../data/mockSelectors";
+import { PButton, PCard, PChip, PText } from '../../components';
+import { getPaymentsForSubscription, getPrimaryUser, getSubscriptionForUser } from '../../data/mockSelectors';
+import { OfflineNotice } from '../components/OfflineNotice';
+import { ScreenLayout } from '../components/ScreenLayout';
+import { ScreenState, resolveScreenState } from '../components/ScreenState';
+import { SectionCard } from '../components/SectionCard';
+import { SkeletonBlock } from '../components/SkeletonBlock';
+import { StateMessage } from '../components/StateMessage';
 
 const TX_STATUS_CONFIG: Record<string, { label: string; bg: string; text: string }> = {
-  completed: { label: "Basarili",  bg: "#D1FAE5", text: "#065F46" },
-  pending:   { label: "Bekliyor", bg: "#FEF3C7", text: "#92400E" },
-  failed:    { label: "Basarisiz", bg: "#FEE2E2", text: "#991B1B" },
-  refunded:  { label: "Iade",     bg: "#EDE9FE", text: "#4C1D95" },
+  completed: { label: 'Basarili', bg: '#D1FAE5', text: '#065F46' },
+  pending: { label: 'Bekliyor', bg: '#FEF3C7', text: '#92400E' },
+  failed: { label: 'Basarisiz', bg: '#FEE2E2', text: '#991B1B' },
+  refunded: { label: 'Iade', bg: '#EDE9FE', text: '#4C1D95' }
 };
 
 const ProfilePaymentHistoryContent = ({ isOffline }: { isOffline?: boolean }) => {
@@ -30,9 +26,9 @@ const ProfilePaymentHistoryContent = ({ isOffline }: { isOffline?: boolean }) =>
   // AC-FR-E3-07-03: view receipt detail
   const handleReceipt = (id: string, amount: number, currency: string, date: string) => {
     Alert.alert(
-      "Makbuz Detayi",
+      'Makbuz Detayi',
       `Islem No: ${id.slice(0, 8)}\nTutar: ${amount} ${currency}\nTarih: ${date}\nDurum: Tamamlandi`,
-      [{ text: "Kapat" }]
+      [{ text: 'Kapat' }]
     );
   };
 
@@ -44,16 +40,18 @@ const ProfilePaymentHistoryContent = ({ isOffline }: { isOffline?: boolean }) =>
             Henuz kayitli bir odeme bulunamadi.
           </PText>
         ) : (
-          transactions.map((tx) => {
-            const statusKey = (tx as any).status ?? "completed";
+          transactions.map(tx => {
+            const statusKey = (tx as any).status ?? 'completed';
             const statusCfg = TX_STATUS_CONFIG[statusKey] ?? TX_STATUS_CONFIG.completed;
-            const dateStr = tx.purchased_at?.slice(0, 10) ?? "-";
+            const dateStr = tx.purchased_at?.slice(0, 10) ?? '-';
 
             return (
               <PCard key={tx.id} style={styles.card}>
                 <PCard.Content style={styles.cardRow}>
                   <View style={styles.txInfo}>
-                    <PText variant="bodyMedium" style={styles.txDate}>{dateStr}</PText>
+                    <PText variant="bodyMedium" style={styles.txDate}>
+                      {dateStr}
+                    </PText>
                     <PText variant="bodySmall" style={styles.txAmount}>
                       {tx.amount} {tx.currency}
                     </PText>
@@ -88,7 +86,7 @@ const ProfilePaymentHistoryContent = ({ isOffline }: { isOffline?: boolean }) =>
           mode="outlined"
           style={styles.actionButton}
           disabled={isOffline}
-          onPress={() => Alert.alert("Fatura", "Fatura bilgileri guncelleme akisi. (Sahte ortamda simule edildi)")}
+          onPress={() => Alert.alert('Fatura', 'Fatura bilgileri guncelleme akisi. (Sahte ortamda simule edildi)')}
           accessibilityLabel="Fatura bilgilerini guncelle"
           accessibilityRole="button"
         >
@@ -99,14 +97,10 @@ const ProfilePaymentHistoryContent = ({ isOffline }: { isOffline?: boolean }) =>
   );
 };
 
-export const ProfilePaymentHistoryScreen = ({
-  route,
-}: {
-  route?: { params?: { state?: ScreenState } };
-}) => {
+export const ProfilePaymentHistoryScreen = ({ route }: { route?: { params?: { state?: ScreenState } } }) => {
   const state = resolveScreenState(route);
 
-  if (state === "loading") {
+  if (state === 'loading') {
     return (
       <ScreenLayout title="Odeme Gecmisi" subtitle="Odeme gecmisi hazirlaniyor">
         <SectionCard title="Gecmis">
@@ -117,7 +111,7 @@ export const ProfilePaymentHistoryScreen = ({
     );
   }
 
-  if (state === "empty") {
+  if (state === 'empty') {
     return (
       <ScreenLayout title="Odeme Gecmisi" subtitle="Islem bilgileri">
         <StateMessage
@@ -130,7 +124,7 @@ export const ProfilePaymentHistoryScreen = ({
     );
   }
 
-  if (state === "error") {
+  if (state === 'error') {
     return (
       <ScreenLayout title="Odeme Gecmisi" subtitle="Bir sorun olustu">
         <StateMessage
@@ -144,7 +138,7 @@ export const ProfilePaymentHistoryScreen = ({
     );
   }
 
-  if (state === "offline") {
+  if (state === 'offline') {
     return (
       <ScreenLayout title="Odeme Gecmisi" subtitle="Onbellekteki odemeler">
         <OfflineNotice />
@@ -162,35 +156,35 @@ export const ProfilePaymentHistoryScreen = ({
 
 const styles = StyleSheet.create({
   card: {
-    marginBottom: 10,
+    marginBottom: 10
   },
   cardRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center'
   },
   txInfo: {
-    flex: 1,
+    flex: 1
   },
   txDate: {
-    fontWeight: "600",
-    color: "#1F2937",
+    fontWeight: '600',
+    color: '#1F2937'
   },
   txAmount: {
-    color: "#2B1B5D",
-    fontWeight: "700",
-    marginTop: 2,
+    color: '#2B1B5D',
+    fontWeight: '700',
+    marginTop: 2
   },
   emptyText: {
-    color: "#6B7280",
-    textAlign: "center",
-    paddingVertical: 16,
+    color: '#6B7280',
+    textAlign: 'center',
+    paddingVertical: 16
   },
   infoText: {
-    color: "#6B7280",
-    marginBottom: 8,
+    color: '#6B7280',
+    marginBottom: 8
   },
   actionButton: {
-    minHeight: 44,
-  },
+    minHeight: 44
+  }
 });

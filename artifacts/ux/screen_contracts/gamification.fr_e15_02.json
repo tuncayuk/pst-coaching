@@ -3,9 +3,7 @@
   "title": "Rozet detayi ve kilit kosullari",
   "route": "/epic-15/fr-e15-02",
   "purpose": "Implements FR-E15-02: Rozet detayi ve kilit kosullari.",
-  "entryPoints": [
-    "progress.dashboard"
-  ],
+  "entryPoints": ["progress.dashboard"],
   "inputs": [
     {
       "name": "badgeId",
@@ -26,11 +24,7 @@
       "source": "profile"
     }
   ],
-  "dataDependencies": [
-    "Badge",
-    "BadgeRequirement",
-    "BadgeProgress"
-  ],
+  "dataDependencies": ["Badge", "BadgeRequirement", "BadgeProgress"],
   "uiStates": {
     "loading": {
       "description": "Skeleton placeholders are shown while loading FR-E15-02 data."
@@ -50,18 +44,8 @@
   },
   "analytics": {
     "screenView": "gamification_fr_e15_02_viewed",
-    "events": [
-      "gamification_fr_e15_02_viewed"
-    ]
+    "events": ["gamification_fr_e15_02_viewed"]
   },
-  "acceptanceCriteriaRefs": [
-    "AC-FR-E15-02-01",
-    "AC-FR-E15-02-02",
-    "AC-FR-E15-02-03",
-    "AC-FR-E15-02-04"
-  ],
-  "gates": [
-    "auth",
-    "subscription"
-  ]
+  "acceptanceCriteriaRefs": ["AC-FR-E15-02-01", "AC-FR-E15-02-02", "AC-FR-E15-02-03", "AC-FR-E15-02-04"],
+  "gates": ["auth", "subscription"]
 }

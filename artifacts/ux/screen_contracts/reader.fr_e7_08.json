@@ -3,11 +3,7 @@
   "title": "Cevrimdisi indirme",
   "route": "/ebook/download",
   "purpose": "Implements FR-E7-08: Indirme butonu detayda, indirme durumu (ilerleme/tamamlandi/hata), depolama uyarisi, gorsel isaretleme.",
-  "entryPoints": [
-    "library.ebooks",
-    "ebook.detail",
-    "discover.ebooks"
-  ],
+  "entryPoints": ["library.ebooks", "ebook.detail", "discover.ebooks"],
   "inputs": [
     {
       "name": "ebookId",
@@ -22,10 +18,7 @@
       "source": "session"
     }
   ],
-  "dataDependencies": [
-    "Ebook",
-    "Download"
-  ],
+  "dataDependencies": ["Ebook", "Download"],
   "uiStates": {
     "loading": {
       "description": "Download status checking."
@@ -45,19 +38,8 @@
   },
   "analytics": {
     "screenView": "ebook_download_viewed",
-    "events": [
-      "ebook_download_started",
-      "ebook_download_completed",
-      "ebook_download_error"
-    ]
+    "events": ["ebook_download_started", "ebook_download_completed", "ebook_download_error"]
   },
-  "acceptanceCriteriaRefs": [
-    "AC-FR-E7-08-01",
-    "AC-FR-E7-08-02",
-    "AC-FR-E7-08-03",
-    "AC-FR-E7-08-04"
-  ],
-  "gates": [
-    "auth"
-  ]
+  "acceptanceCriteriaRefs": ["AC-FR-E7-08-01", "AC-FR-E7-08-02", "AC-FR-E7-08-03", "AC-FR-E7-08-04"],
+  "gates": ["auth"]
 }

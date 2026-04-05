@@ -3,9 +3,7 @@
   "title": "Icerik Belirleme Asistani",
   "route": "/discover/assistant",
   "purpose": "Implements FR-E4-02: Step-by-step content assistant with 3 questions (goal, duration, preference) producing 1 primary + 2 alternative recommendations.",
-  "entryPoints": [
-    "discover.fr_e4_01"
-  ],
+  "entryPoints": ["discover.fr_e4_01"],
   "inputs": [
     {
       "name": "userId",
@@ -26,12 +24,7 @@
       "source": "profile"
     }
   ],
-  "dataDependencies": [
-    "Journey",
-    "Workshop",
-    "Module",
-    "Ebook"
-  ],
+  "dataDependencies": ["Journey", "Workshop", "Module", "Ebook"],
   "uiStates": {
     "loading": {
       "description": "Skeleton cards while loading question set."
@@ -60,10 +53,6 @@
       "discover_assistant_skipped"
     ]
   },
-  "acceptanceCriteriaRefs": [
-    "AC-FR-E4-02-01",
-    "AC-FR-E4-02-02",
-    "AC-FR-E4-02-03"
-  ],
+  "acceptanceCriteriaRefs": ["AC-FR-E4-02-01", "AC-FR-E4-02-02", "AC-FR-E4-02-03"],
   "gates": []
 }

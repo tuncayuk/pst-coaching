@@ -1,5 +1,5 @@
-import mockDataJson from "../../../artifacts/mock/mock_data.json";
-import { getMockData } from "../config/mockData";
+import mockDataJson from '../../../artifacts/mock/mock_data.json';
+import { getMockData } from '../config/mockData';
 
 export type MockData = typeof mockDataJson;
 
@@ -43,79 +43,69 @@ export const getReadingSettings = () => getList(getData()?.reading_settings);
 export const getReminderSettings = () => getList(getData()?.reminder_settings);
 
 export const getSubscriptionForUser = (userId?: string) =>
-  getSubscriptions().find((subscription) => subscription.owner_user_id === userId);
+  getSubscriptions().find(subscription => subscription.owner_user_id === userId);
 
-export const getPlanForSubscription = (planId?: string) =>
-  getSubscriptionPlans().find((plan) => plan.id === planId);
+export const getPlanForSubscription = (planId?: string) => getSubscriptionPlans().find(plan => plan.id === planId);
 
 export const getAddOnsForSubscription = (subscriptionId?: string) => {
   const activeAddOnIds = new Set(
     getSubscriptionAddOns()
-      .filter((item) => item.subscription_id === subscriptionId)
-      .map((item) => item.addon_id)
+      .filter(item => item.subscription_id === subscriptionId)
+      .map(item => item.addon_id)
   );
-  return getAddOns().filter((addon) => activeAddOnIds.has(addon.id));
+  return getAddOns().filter(addon => activeAddOnIds.has(addon.id));
 };
 
 export const getSeatsForSubscription = (subscriptionId?: string) =>
-  getSeats().filter((seat) => seat.subscription_id === subscriptionId);
+  getSeats().filter(seat => seat.subscription_id === subscriptionId);
 
 export const getInvitesForSubscription = (subscriptionId?: string) =>
-  getInvitations().filter((invite) => invite.subscription_id === subscriptionId);
+  getInvitations().filter(invite => invite.subscription_id === subscriptionId);
 
 export const getPaymentsForSubscription = (subscriptionId?: string) =>
-  getPaymentTransactions().filter((tx) => tx.subscription_id === subscriptionId);
+  getPaymentTransactions().filter(tx => tx.subscription_id === subscriptionId);
 
-export const getJourneyById = (id?: string) => getJourneys().find((journey) => journey.id === id);
+export const getJourneyById = (id?: string) => getJourneys().find(journey => journey.id === id);
 export const getJourneyDaysForJourney = (journeyId?: string) =>
-  getJourneyDays().filter((day) => day.journey_id === journeyId);
-export const getModuleById = (id?: string) => getModules().find((module) => module.id === id);
-export const getPackagesForModule = (moduleId?: string) =>
-  getPackages().filter((pkg) => pkg.module_id === moduleId);
-export const getWorkshopById = (id?: string) =>
-  getWorkshops().find((workshop) => workshop.id === id);
-export const getEbookById = (id?: string) => getEbooks().find((ebook) => ebook.id === id);
+  getJourneyDays().filter(day => day.journey_id === journeyId);
+export const getModuleById = (id?: string) => getModules().find(module => module.id === id);
+export const getPackagesForModule = (moduleId?: string) => getPackages().filter(pkg => pkg.module_id === moduleId);
+export const getWorkshopById = (id?: string) => getWorkshops().find(workshop => workshop.id === id);
+export const getEbookById = (id?: string) => getEbooks().find(ebook => ebook.id === id);
 export const getEbookChaptersForEbook = (ebookId?: string) =>
-  getEbookChapters().filter((chapter) => chapter.ebook_id === ebookId);
+  getEbookChapters().filter(chapter => chapter.ebook_id === ebookId);
 
 export const getContentItemsForParent = (parentType: string, parentId?: string) =>
-  getContentItems().filter(
-    (item) => item.parent_type === parentType && item.parent_id === parentId
-  );
+  getContentItems().filter(item => item.parent_type === parentType && item.parent_id === parentId);
 
 export const getContentProgressForUser = (userId?: string) =>
-  getContentProgress().filter((progress) => progress.user_id === userId);
+  getContentProgress().filter(progress => progress.user_id === userId);
 
 export const getEbookProgressForUser = (userId?: string) =>
-  getEbookProgress().filter((progress) => progress.user_id === userId);
+  getEbookProgress().filter(progress => progress.user_id === userId);
 
 export const getHighlightsForUser = (userId?: string) =>
-  getHighlights().filter((highlight) => highlight.user_id === userId);
+  getHighlights().filter(highlight => highlight.user_id === userId);
 
-export const getNotesForUser = (userId?: string) =>
-  getNotes().filter((note) => note.user_id === userId);
+export const getNotesForUser = (userId?: string) => getNotes().filter(note => note.user_id === userId);
 
-export const getFavoritesForUser = (userId?: string) =>
-  getFavorites().filter((favorite) => favorite.user_id === userId);
+export const getFavoritesForUser = (userId?: string) => getFavorites().filter(favorite => favorite.user_id === userId);
 
 export const getCollectionsForUser = (userId?: string) =>
-  getCollections().filter((collection) => collection.user_id === userId);
+  getCollections().filter(collection => collection.user_id === userId);
 
-export const getDownloadsForUser = (userId?: string) =>
-  getDownloads().filter((download) => download.user_id === userId);
+export const getDownloadsForUser = (userId?: string) => getDownloads().filter(download => download.user_id === userId);
 
 export const getCoachAssignments = () => getList(getData()?.coach_assignments as any[]);
 
 export const getClientsForCoach = (coachUserId?: string) => {
-  const assignments = getCoachAssignments().filter(
-    (a: any) => a.coach_user_id === coachUserId
-  );
+  const assignments = getCoachAssignments().filter((a: any) => a.coach_user_id === coachUserId);
   const clientIds = new Set(assignments.map((a: any) => a.client_user_id));
   // Mock: if no specific assignments, return all non-primary users for demo
   if (clientIds.size === 0) {
-    return getUsers().filter((u) => u.id !== coachUserId);
+    return getUsers().filter(u => u.id !== coachUserId);
   }
-  return getUsers().filter((u) => clientIds.has(u.id));
+  return getUsers().filter(u => clientIds.has(u.id));
 };
 
 export const getCommentsForClient = (clientUserId?: string) =>
@@ -123,15 +113,14 @@ export const getCommentsForClient = (clientUserId?: string) =>
 
 export const getUserSessions = () => getList(getData()?.user_sessions as any[]);
 
-export const getSessionsForUser = (userId?: string) =>
-  getUserSessions().filter((s: any) => s.user_id === userId);
+export const getSessionsForUser = (userId?: string) => getUserSessions().filter((s: any) => s.user_id === userId);
 
 // --- EPIC-17: Notification + Reminder selectors ---
 
 export type MockNotification = {
   id: string;
   user_id: string;
-  type: "journey" | "workshop" | "reading" | "social" | "achievement";
+  type: 'journey' | 'workshop' | 'reading' | 'social' | 'achievement';
   title: string;
   description: string;
   content_id?: string;
@@ -149,47 +138,47 @@ export const getNotificationsForUser = (userId?: string): MockNotification[] => 
     .filter((a: any) => a.user_id === uid)
     .forEach((a: any) => {
       results.push({
-        id: "notif-ach-" + a.id,
+        id: 'notif-ach-' + a.id,
         user_id: a.user_id,
-        type: "achievement",
-        title: "Rozet Kazanildi",
-        description: "Yeni bir basarim rozeti kazandiniz.",
+        type: 'achievement',
+        title: 'Rozet Kazanildi',
+        description: 'Yeni bir basarim rozeti kazandiniz.',
         content_id: a.source_id,
         content_type: a.source_type,
         is_read: false,
-        created_at: a.issued_at,
+        created_at: a.issued_at
       });
     });
 
   getContentProgress()
-    .filter((p: any) => p.user_id === uid && p.status === "completed")
+    .filter((p: any) => p.user_id === uid && p.status === 'completed')
     .forEach((p: any) => {
       results.push({
-        id: "notif-prog-" + p.id,
+        id: 'notif-prog-' + p.id,
         user_id: p.user_id,
-        type: "journey",
-        title: "Icerik Tamamlandi",
-        description: "Bir icerik basariyla tamamlandi.",
+        type: 'journey',
+        title: 'Icerik Tamamlandi',
+        description: 'Bir icerik basariyla tamamlandi.',
         content_id: p.content_id,
         content_type: p.content_type,
         is_read: false,
-        created_at: p.completed_at ?? p.started_at,
+        created_at: p.completed_at ?? p.started_at
       });
     });
 
   getComments()
-    .filter((c: any) => c.user_id === uid && c.status === "submitted")
+    .filter((c: any) => c.user_id === uid && c.status === 'submitted')
     .forEach((c: any) => {
       results.push({
-        id: "notif-cmt-" + c.id,
+        id: 'notif-cmt-' + c.id,
         user_id: c.user_id,
-        type: "social",
-        title: "Yorum Gonderildi",
-        description: "Yorumunuz basariyla gonderildi.",
+        type: 'social',
+        title: 'Yorum Gonderildi',
+        description: 'Yorumunuz basariyla gonderildi.',
         content_id: c.content_item_id,
-        content_type: "content_item",
+        content_type: 'content_item',
         is_read: false,
-        created_at: c.submitted_at ?? c.updated_at,
+        created_at: c.submitted_at ?? c.updated_at
       });
     });
 

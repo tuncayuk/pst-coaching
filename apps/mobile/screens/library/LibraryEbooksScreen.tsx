@@ -1,28 +1,28 @@
-import React from "react";
-import { StyleSheet, View } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { OfflineNotice } from "../components/OfflineNotice";
-import { ScreenLayout } from "../components/ScreenLayout";
-import { SectionCard } from "../components/SectionCard";
-import { SkeletonBlock } from "../components/SkeletonBlock";
-import { StateMessage } from "../components/StateMessage";
-import { resolveScreenState, ScreenState } from "../components/ScreenState";
-import { getEbookProgressForUser, getEbooks, getPrimaryUser } from "../../data/mockSelectors";
-import { PActivityIndicator, PButton, PCard, PChip, PProgressBar, PText } from "../../components";
+import { useNavigation } from '@react-navigation/native';
+import React from 'react';
+import { StyleSheet, View } from 'react-native';
 
+import { PActivityIndicator, PButton, PCard, PChip, PProgressBar, PText } from '../../components';
+import { getEbookProgressForUser, getEbooks, getPrimaryUser } from '../../data/mockSelectors';
+import { OfflineNotice } from '../components/OfflineNotice';
+import { ScreenLayout } from '../components/ScreenLayout';
+import { ScreenState, resolveScreenState } from '../components/ScreenState';
+import { SectionCard } from '../components/SectionCard';
+import { SkeletonBlock } from '../components/SkeletonBlock';
+import { StateMessage } from '../components/StateMessage';
 
-const filters = ["Yeni", "Devam Eden", "Tamamlanan", "İndirilen"];
+const filters = ['Yeni', 'Devam Eden', 'Tamamlanan', 'İndirilen'];
 
 const LibraryEbooksContent = ({ isOffline }: { isOffline?: boolean }) => {
   const navigation = useNavigation<any>();
   const user = getPrimaryUser();
   const ebooks = getEbooks();
   const progress = getEbookProgressForUser(user?.id);
-  const ebooksWithProgress = ebooks.map((book) => {
-    const found = progress.find((item) => item.ebook_id === book.id);
+  const ebooksWithProgress = ebooks.map(book => {
+    const found = progress.find(item => item.ebook_id === book.id);
     return {
       ...book,
-      progress: (found?.progress_percent ?? 0) / 100,
+      progress: (found?.progress_percent ?? 0) / 100
     };
   });
 
@@ -30,7 +30,7 @@ const LibraryEbooksContent = ({ isOffline }: { isOffline?: boolean }) => {
     <>
       <SectionCard title="Filtre" actionLabel="Sırala">
         <View style={styles.chipRow}>
-          {filters.map((label) => (
+          {filters.map(label => (
             <PChip key={label} style={styles.chip} disabled={isOffline}>
               {label}
             </PChip>
@@ -39,7 +39,7 @@ const LibraryEbooksContent = ({ isOffline }: { isOffline?: boolean }) => {
       </SectionCard>
 
       <SectionCard title="e-Kitaplar" actionLabel="Tümü">
-        {ebooksWithProgress.map((book) => (
+        {ebooksWithProgress.map(book => (
           <PCard key={book.id} style={styles.card}>
             <PCard.Title title={book.title} subtitle={`${book.total_pages ?? 0} sayfa`} />
             <PCard.Content>
@@ -53,9 +53,9 @@ const LibraryEbooksContent = ({ isOffline }: { isOffline?: boolean }) => {
                 mode="outlined"
                 disabled={isOffline}
                 onPress={() =>
-                  navigation.navigate("Content", {
-                    screen: "ContentEbookReader",
-                    params: { id: book.id },
+                  navigation.navigate('Content', {
+                    screen: 'ContentEbookReader',
+                    params: { id: book.id }
                   })
                 }
               >
@@ -72,7 +72,7 @@ const LibraryEbooksContent = ({ isOffline }: { isOffline?: boolean }) => {
 export const LibraryEbooksScreen = ({ route }: { route?: { params?: { state?: ScreenState } } }) => {
   const state = resolveScreenState(route);
 
-  if (state === "loading") {
+  if (state === 'loading') {
     return (
       <ScreenLayout title="e-Kitaplar" subtitle="e-Kitaplar hazırlanıyor">
         <SectionCard title="Yükleniyor">
@@ -88,7 +88,7 @@ export const LibraryEbooksScreen = ({ route }: { route?: { params?: { state?: Sc
     );
   }
 
-  if (state === "empty") {
+  if (state === 'empty') {
     return (
       <ScreenLayout title="e-Kitaplar" subtitle="Kütüphane gelişiyor">
         <StateMessage
@@ -101,7 +101,7 @@ export const LibraryEbooksScreen = ({ route }: { route?: { params?: { state?: Sc
     );
   }
 
-  if (state === "error") {
+  if (state === 'error') {
     return (
       <ScreenLayout title="e-Kitaplar" subtitle="Bir sorun oluştu">
         <StateMessage
@@ -115,7 +115,7 @@ export const LibraryEbooksScreen = ({ route }: { route?: { params?: { state?: Sc
     );
   }
 
-  if (state === "offline") {
+  if (state === 'offline') {
     return (
       <ScreenLayout title="e-Kitaplar" subtitle="Önbellekteki içerikler">
         <OfflineNotice />
@@ -133,17 +133,17 @@ export const LibraryEbooksScreen = ({ route }: { route?: { params?: { state?: Sc
 
 const styles = StyleSheet.create({
   chipRow: {
-    flexDirection: "row",
-    flexWrap: "wrap",
+    flexDirection: 'row',
+    flexWrap: 'wrap'
   },
   chip: {
     marginRight: 8,
-    marginBottom: 8,
+    marginBottom: 8
   },
   card: {
-    marginBottom: 12,
+    marginBottom: 12
   },
   progressLabel: {
-    marginBottom: 8,
-  },
+    marginBottom: 8
+  }
 });

@@ -3,9 +3,7 @@
   "title": "Sesli kitap destegi",
   "route": "/ebook/audio",
   "purpose": "Implements FR-E7-06: Sesli versiyon Play butonu (varsa), metin senkron takip, hiz ayari, arka planda calisma.",
-  "entryPoints": [
-    "ebook.reader"
-  ],
+  "entryPoints": ["ebook.reader"],
   "inputs": [
     {
       "name": "ebookId",
@@ -20,10 +18,7 @@
       "source": "route_param"
     }
   ],
-  "dataDependencies": [
-    "Ebook",
-    "EbookChapter"
-  ],
+  "dataDependencies": ["Ebook", "EbookChapter"],
   "uiStates": {
     "loading": {
       "description": "Audio player skeleton."
@@ -43,20 +38,8 @@
   },
   "analytics": {
     "screenView": "ebook_audio_viewed",
-    "events": [
-      "ebook_audio_play_tapped",
-      "ebook_audio_speed_changed",
-      "ebook_audio_background_started"
-    ]
+    "events": ["ebook_audio_play_tapped", "ebook_audio_speed_changed", "ebook_audio_background_started"]
   },
-  "acceptanceCriteriaRefs": [
-    "AC-FR-E7-06-01",
-    "AC-FR-E7-06-02",
-    "AC-FR-E7-06-03",
-    "AC-FR-E7-06-04"
-  ],
-  "gates": [
-    "auth",
-    "subscription"
-  ]
+  "acceptanceCriteriaRefs": ["AC-FR-E7-06-01", "AC-FR-E7-06-02", "AC-FR-E7-06-03", "AC-FR-E7-06-04"],
+  "gates": ["auth", "subscription"]
 }

@@ -4,7 +4,7 @@
   "type": "object",
   "required": ["appName", "navigation", "screens"],
   "properties": {
-    "appName": {"type": "string"},
+    "appName": { "type": "string" },
     "navigation": {
       "type": "object",
       "required": ["tabs"],
@@ -13,7 +13,7 @@
           "type": "array",
           "minItems": 5,
           "uniqueItems": true,
-          "items": {"type": "string"}
+          "items": { "type": "string" }
         }
       },
       "additionalProperties": true
@@ -32,30 +32,22 @@
             "type": "string",
             "pattern": "^/[a-z0-9\\-/:]*$"
           },
-          "title": {"type": "string"},
-          "type": {"type": "string", "enum": ["tab", "stack", "modal", "sheet"]},
+          "title": { "type": "string" },
+          "type": { "type": "string", "enum": ["tab", "stack", "modal", "sheet"] },
           "states": {
             "type": "array",
             "minItems": 5,
             "uniqueItems": true,
             "items": {
               "type": "string",
-              "enum": [
-                "loading",
-                "ready",
-                "empty",
-                "error",
-                "offline",
-                "skeleton",
-                "disabled"
-              ]
+              "enum": ["loading", "ready", "empty", "error", "offline", "skeleton", "disabled"]
             },
             "allOf": [
-              {"contains": {"const": "loading"}},
-              {"contains": {"const": "ready"}},
-              {"contains": {"const": "empty"}},
-              {"contains": {"const": "error"}},
-              {"contains": {"const": "offline"}}
+              { "contains": { "const": "loading" } },
+              { "contains": { "const": "ready" } },
+              { "contains": { "const": "empty" } },
+              { "contains": { "const": "error" } },
+              { "contains": { "const": "offline" } }
             ]
           },
           "gates": {

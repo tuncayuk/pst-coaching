@@ -3,9 +3,7 @@
   "title": "Aktif iceriklerim ozeti",
   "route": "/home/active-content",
   "purpose": "HomeActiveContentListScreen. Shows max 3 active content cards each with progress %, type label (Yolculuk/Atolye/e-Kitap), Devam Et button (AC-FR-E2-06-01). Tumunu Gor navigates to Library (AC-FR-E2-06-02). Locked items show Kilitli chip (AC-FR-E2-06-03).",
-  "entryPoints": [
-    "home.dashboard"
-  ],
+  "entryPoints": ["home.dashboard"],
   "inputs": [
     {
       "name": "userId",
@@ -26,12 +24,7 @@
       "source": "profile"
     }
   ],
-  "dataDependencies": [
-    "User",
-    "Subscription",
-    "ContentProgress",
-    "ReminderSetting"
-  ],
+  "dataDependencies": ["User", "Subscription", "ContentProgress", "ReminderSetting"],
   "uiStates": {
     "loading": {
       "description": "Three card skeletons (height 96) stacked vertically with shimmer."
@@ -58,10 +51,6 @@
       "home_active_content_locked_item_tapped"
     ]
   },
-  "acceptanceCriteriaRefs": [
-    "AC-FR-E2-06-01",
-    "AC-FR-E2-06-02",
-    "AC-FR-E2-06-03"
-  ],
+  "acceptanceCriteriaRefs": ["AC-FR-E2-06-01", "AC-FR-E2-06-02", "AC-FR-E2-06-03"],
   "gates": []
 }

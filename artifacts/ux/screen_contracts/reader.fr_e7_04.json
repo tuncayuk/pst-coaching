@@ -3,9 +3,7 @@
   "title": "Metin vurgulama ve not",
   "route": "/ebook/highlight-create",
   "purpose": "Implements FR-E7-04: Metin seciminde renk secenekleri, not ekleme otomatik kaydetme (BR-12), vurgu favorilere ekleme.",
-  "entryPoints": [
-    "ebook.reader"
-  ],
+  "entryPoints": ["ebook.reader"],
   "inputs": [
     {
       "name": "ebookId",
@@ -20,11 +18,7 @@
       "source": "route_param"
     }
   ],
-  "dataDependencies": [
-    "Highlight",
-    "Note",
-    "FavoriteItem"
-  ],
+  "dataDependencies": ["Highlight", "Note", "FavoriteItem"],
   "uiStates": {
     "loading": {
       "description": "Overlay loading while saving."
@@ -44,18 +38,8 @@
   },
   "analytics": {
     "screenView": "ebook_highlight_panel_viewed",
-    "events": [
-      "ebook_highlight_color_selected",
-      "ebook_note_added",
-      "ebook_highlight_favorited"
-    ]
+    "events": ["ebook_highlight_color_selected", "ebook_note_added", "ebook_highlight_favorited"]
   },
-  "acceptanceCriteriaRefs": [
-    "AC-FR-E7-04-01",
-    "AC-FR-E7-04-02",
-    "AC-FR-E7-04-03"
-  ],
-  "gates": [
-    "auth"
-  ]
+  "acceptanceCriteriaRefs": ["AC-FR-E7-04-01", "AC-FR-E7-04-02", "AC-FR-E7-04-03"],
+  "gates": ["auth"]
 }

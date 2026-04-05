@@ -2,13 +2,14 @@
  * NotificationStack: FR-E17-01..04
  * Route: /notifications (list), /notifications/detail, /notifications/settings, /notifications/reminders
  */
-import React from "react";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { ScreenState } from "../screens/components/ScreenState";
-import { NotificationListScreen } from "../screens/notifications/NotificationListScreen";
-import { NotificationDetailScreen } from "../screens/notifications/NotificationDetailScreen";
-import { NotificationSettingsScreen } from "../screens/notifications/NotificationSettingsScreen";
-import { ReminderPlannerScreen } from "../screens/notifications/ReminderPlannerScreen";
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import React from 'react';
+
+import { ScreenState } from '../screens/components/ScreenState';
+import { NotificationDetailScreen } from '../screens/notifications/NotificationDetailScreen';
+import { NotificationListScreen } from '../screens/notifications/NotificationListScreen';
+import { NotificationSettingsScreen } from '../screens/notifications/NotificationSettingsScreen';
+import { ReminderPlannerScreen } from '../screens/notifications/ReminderPlannerScreen';
 
 type ScreenStateParam = { state?: ScreenState } | undefined;
 

@@ -3,9 +3,7 @@
   "title": "Abonelik ve rol dogrulama",
   "route": "/epic-1/fr-e1-06",
   "purpose": "Implements FR-E1-06: Post-login subscription status sync, plan_owner/plan_member role assignment, and paywall display for non-subscribers on Library/Progress tabs.",
-  "entryPoints": [
-    "auth.fr_e1_03"
-  ],
+  "entryPoints": ["auth.fr_e1_03"],
   "inputs": [
     {
       "name": "userId",
@@ -20,10 +18,7 @@
       "source": "entitlement_cache"
     }
   ],
-  "dataDependencies": [
-    "User",
-    "UserSession"
-  ],
+  "dataDependencies": ["User", "UserSession"],
   "uiStates": {
     "loading": {
       "description": "Spinner with 'Abonelik durumu kontrol ediliyor...' while syncing subscription from server."
@@ -43,19 +38,8 @@
   },
   "analytics": {
     "screenView": "auth_fr_e1_06_viewed",
-    "events": [
-      "auth_fr_e1_06_viewed",
-      "auth_subscription_synced",
-      "auth_paywall_shown",
-      "auth_role_assigned"
-    ]
+    "events": ["auth_fr_e1_06_viewed", "auth_subscription_synced", "auth_paywall_shown", "auth_role_assigned"]
   },
-  "acceptanceCriteriaRefs": [
-    "AC-FR-E1-06-01",
-    "AC-FR-E1-06-02",
-    "AC-FR-E1-06-03"
-  ],
-  "gates": [
-    "auth"
-  ]
+  "acceptanceCriteriaRefs": ["AC-FR-E1-06-01", "AC-FR-E1-06-02", "AC-FR-E1-06-03"],
+  "gates": ["auth"]
 }

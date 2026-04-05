@@ -1,16 +1,16 @@
 #!/usr/bin/env node
 // write-e9-screens.js — Writes all 6 EPIC-9 screen files.
-const fs = require("fs");
-const path = require("path");
+const fs = require('fs');
+const path = require('path');
 
-const LIBRARY_DIR = path.join(__dirname, "../apps/mobile/screens/library");
+const LIBRARY_DIR = path.join(__dirname, '../apps/mobile/screens/library');
 
 const files = {};
 
 // ─────────────────────────────────────────────────────────────────────────
 // LibraryFavoritesScreen  (FR-E9-01 + FR-E9-04 search/filter)
 // ─────────────────────────────────────────────────────────────────────────
-files["LibraryFavoritesScreen.tsx"] = `import React, { useState } from "react";
+files['LibraryFavoritesScreen.tsx'] = `import React, { useState } from "react";
 import { StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
@@ -379,7 +379,7 @@ const styles = StyleSheet.create({
 // ─────────────────────────────────────────────────────────────────────────
 // LibraryFavoriteDetailScreen  (FR-E9-02)
 // ─────────────────────────────────────────────────────────────────────────
-files["LibraryFavoriteDetailScreen.tsx"] = `import React, { useState } from "react";
+files['LibraryFavoriteDetailScreen.tsx'] = `import React, { useState } from "react";
 import { StyleSheet, TextInput, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
@@ -712,7 +712,7 @@ const styles = StyleSheet.create({
 // ─────────────────────────────────────────────────────────────────────────
 // LibraryCollectionsScreen  (FR-E9-03)
 // ─────────────────────────────────────────────────────────────────────────
-files["LibraryCollectionsScreen.tsx"] = `import React, { useState } from "react";
+files['LibraryCollectionsScreen.tsx'] = `import React, { useState } from "react";
 import { Modal, StyleSheet, TextInput, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
@@ -1050,7 +1050,7 @@ const styles = StyleSheet.create({
 // ─────────────────────────────────────────────────────────────────────────
 // LibraryCollectionDetailScreen  (FR-E9-03 detail + FR-E9-04 search)
 // ─────────────────────────────────────────────────────────────────────────
-files["LibraryCollectionDetailScreen.tsx"] = `import React, { useState } from "react";
+files['LibraryCollectionDetailScreen.tsx'] = `import React, { useState } from "react";
 import { StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
@@ -1316,7 +1316,7 @@ const styles = StyleSheet.create({
 // ─────────────────────────────────────────────────────────────────────────
 // LibraryShareExportScreen  (FR-E9-05) — NEW SCREEN
 // ─────────────────────────────────────────────────────────────────────────
-files["LibraryShareExportScreen.tsx"] = `import React, { useState } from "react";
+files['LibraryShareExportScreen.tsx'] = `import React, { useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
@@ -1593,7 +1593,7 @@ const styles = StyleSheet.create({
 // ─────────────────────────────────────────────────────────────────────────
 // LibraryDownloadsScreen  (FR-E9-06)
 // ─────────────────────────────────────────────────────────────────────────
-files["LibraryDownloadsScreen.tsx"] = `import React, { useState } from "react";
+files['LibraryDownloadsScreen.tsx'] = `import React, { useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
@@ -1867,7 +1867,7 @@ const styles = StyleSheet.create({
 let written = 0;
 for (const [filename, content] of Object.entries(files)) {
   const filePath = path.join(LIBRARY_DIR, filename);
-  fs.writeFileSync(filePath, content, "utf8");
+  fs.writeFileSync(filePath, content, 'utf8');
   written++;
   console.log(`Wrote ${filename}`);
 }

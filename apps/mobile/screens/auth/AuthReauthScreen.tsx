@@ -1,14 +1,14 @@
-import React from "react";
-import { StyleSheet } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { OfflineNotice } from "../components/OfflineNotice";
-import { ScreenLayout } from "../components/ScreenLayout";
-import { SectionCard } from "../components/SectionCard";
-import { SkeletonBlock } from "../components/SkeletonBlock";
-import { StateMessage } from "../components/StateMessage";
-import { resolveScreenState, ScreenState } from "../components/ScreenState";
-import { PActivityIndicator, PButton, PText, PTextInput } from "../../components";
+import { useNavigation } from '@react-navigation/native';
+import React from 'react';
+import { StyleSheet } from 'react-native';
 
+import { PActivityIndicator, PButton, PText, PTextInput } from '../../components';
+import { OfflineNotice } from '../components/OfflineNotice';
+import { ScreenLayout } from '../components/ScreenLayout';
+import { ScreenState, resolveScreenState } from '../components/ScreenState';
+import { SectionCard } from '../components/SectionCard';
+import { SkeletonBlock } from '../components/SkeletonBlock';
+import { StateMessage } from '../components/StateMessage';
 
 const AuthReauthContent = ({ isOffline }: { isOffline?: boolean }) => {
   const navigation = useNavigation<any>();
@@ -36,10 +36,20 @@ const AuthReauthContent = ({ isOffline }: { isOffline?: boolean }) => {
           editable={!isOffline}
           accessibilityLabel="Sifre"
         />
-        <PButton mode="contained" disabled={isOffline} onPress={() => navigation.getParent()?.navigate("MainTabs")} accessibilityLabel="Dogrula ve devam et">
+        <PButton
+          mode="contained"
+          disabled={isOffline}
+          onPress={() => navigation.getParent()?.navigate('MainTabs')}
+          accessibilityLabel="Dogrula ve devam et"
+        >
           Dogrula ve Devam Et
         </PButton>
-        <PButton mode="text" disabled={isOffline} onPress={() => navigation.navigate("AuthForgotPassword")} accessibilityLabel="Sifremi unuttum">
+        <PButton
+          mode="text"
+          disabled={isOffline}
+          onPress={() => navigation.navigate('AuthForgotPassword')}
+          accessibilityLabel="Sifremi unuttum"
+        >
           Sifremi Unuttum
         </PButton>
       </SectionCard>
@@ -50,7 +60,7 @@ const AuthReauthContent = ({ isOffline }: { isOffline?: boolean }) => {
 export const AuthReauthScreen = ({ route }: { route?: { params?: { state?: ScreenState } } }) => {
   const state = resolveScreenState(route);
 
-  if (state === "loading") {
+  if (state === 'loading') {
     return (
       <ScreenLayout title="Yeniden Doğrulama" subtitle="Doğrulama hazırlanıyor">
         <SectionCard title="Yükleniyor">
@@ -62,7 +72,7 @@ export const AuthReauthScreen = ({ route }: { route?: { params?: { state?: Scree
     );
   }
 
-  if (state === "empty") {
+  if (state === 'empty') {
     return (
       <ScreenLayout title="Yeniden Doğrulama" subtitle="Doğrulama bilgisi yok">
         <StateMessage
@@ -75,7 +85,7 @@ export const AuthReauthScreen = ({ route }: { route?: { params?: { state?: Scree
     );
   }
 
-  if (state === "error") {
+  if (state === 'error') {
     return (
       <ScreenLayout title="Yeniden Doğrulama" subtitle="Bir sorun oluştu">
         <StateMessage
@@ -89,7 +99,7 @@ export const AuthReauthScreen = ({ route }: { route?: { params?: { state?: Scree
     );
   }
 
-  if (state === "offline") {
+  if (state === 'offline') {
     return (
       <ScreenLayout title="Yeniden Doğrulama" subtitle="Önbellekteki bilgiler">
         <OfflineNotice />
@@ -107,9 +117,9 @@ export const AuthReauthScreen = ({ route }: { route?: { params?: { state?: Scree
 
 const styles = StyleSheet.create({
   body: {
-    marginBottom: 12,
+    marginBottom: 12
   },
   input: {
-    marginBottom: 12,
-  },
+    marginBottom: 12
+  }
 });

@@ -3,10 +3,7 @@
   "title": "Atolye landing ve yapi ozeti",
   "route": "/workshop/landing",
   "purpose": "Implements FR-E8-01: Atolye landing ekrani, baslik, tema, donusum hedefi, hedef kitle, sure, referanslar ve rol bazli CTA.",
-  "entryPoints": [
-    "discover.workshops",
-    "library.workshops"
-  ],
+  "entryPoints": ["discover.workshops", "library.workshops"],
   "inputs": [
     {
       "name": "userId",
@@ -33,11 +30,7 @@
       "source": "profile"
     }
   ],
-  "dataDependencies": [
-    "Workshop",
-    "ContentProgress",
-    "UserRole"
-  ],
+  "dataDependencies": ["Workshop", "ContentProgress", "UserRole"],
   "uiStates": {
     "loading": {
       "description": "Skeleton placeholders shown while loading FR-E8-01 data."
@@ -57,19 +50,8 @@
   },
   "analytics": {
     "screenView": "workshop_landing_viewed",
-    "events": [
-      "workshop_landing_viewed",
-      "workshop_started",
-      "workshop_resumed"
-    ]
+    "events": ["workshop_landing_viewed", "workshop_started", "workshop_resumed"]
   },
-  "acceptanceCriteriaRefs": [
-    "AC-FR-E8-01-01",
-    "AC-FR-E8-01-02",
-    "AC-FR-E8-01-03",
-    "AC-FR-E8-01-04"
-  ],
-  "gates": [
-    "auth"
-  ]
+  "acceptanceCriteriaRefs": ["AC-FR-E8-01-01", "AC-FR-E8-01-02", "AC-FR-E8-01-03", "AC-FR-E8-01-04"],
+  "gates": ["auth"]
 }

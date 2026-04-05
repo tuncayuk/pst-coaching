@@ -3,9 +3,7 @@
   "title": "Gelisim",
   "route": "/progress",
   "purpose": "Tab root screen for Gelisim.",
-  "entryPoints": [
-    "app.launch"
-  ],
+  "entryPoints": ["app.launch"],
   "inputs": [
     {
       "name": "locale",
@@ -20,11 +18,7 @@
       "source": "entitlement_cache"
     }
   ],
-  "dataDependencies": [
-    "User",
-    "Subscription",
-    "ContentProgress"
-  ],
+  "dataDependencies": ["User", "Subscription", "ContentProgress"],
   "uiStates": {
     "loading": {
       "description": "Tab shows skeleton cards while initial data is loading."
@@ -44,12 +38,8 @@
   },
   "analytics": {
     "screenView": "progress_dashboard_viewed",
-    "events": [
-      "progress_dashboard_viewed"
-    ]
+    "events": ["progress_dashboard_viewed"]
   },
   "acceptanceCriteriaRefs": [],
-  "gates": [
-    "subscription"
-  ]
+  "gates": ["subscription"]
 }

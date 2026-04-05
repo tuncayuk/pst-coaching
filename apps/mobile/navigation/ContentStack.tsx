@@ -1,31 +1,32 @@
-import React from "react";
-import { createNativeStackNavigator, NativeStackNavigationOptions } from "@react-navigation/native-stack";
-import { ScreenState } from "../screens/components/ScreenState";
-import { ContentJourneyDetailScreen } from "../screens/content/ContentJourneyDetailScreen";
-import { ContentJourneyHomeScreen } from "../screens/content/ContentJourneyHomeScreen";
-import { ContentJourneyDayScreen } from "../screens/content/ContentJourneyDayScreen";
-import { ContentWorkshopDetailScreen } from "../screens/content/ContentWorkshopDetailScreen";
-import { ContentWorkshopHomeScreen } from "../screens/content/ContentWorkshopHomeScreen";
-import { ContentWorkshopSectionScreen } from "../screens/content/ContentWorkshopSectionScreen";
-import { ContentWorkshopCampScreen } from "../screens/content/ContentWorkshopCampScreen";
-import { ContentWorkshopGuideScreen } from "../screens/content/ContentWorkshopGuideScreen";
-import { ContentWorkshopWorkbookScreen } from "../screens/content/ContentWorkshopWorkbookScreen";
-import { ContentWorkshopFollowUpScreen } from "../screens/content/ContentWorkshopFollowUpScreen";
-import { ContentWorkshopCompletionScreen } from "../screens/content/ContentWorkshopCompletionScreen";
-import { ContentModuleHomeScreen } from "../screens/content/ContentModuleHomeScreen";
-import { ContentPackageDetailScreen } from "../screens/content/ContentPackageDetailScreen";
-import { ContentEbookDetailScreen } from "../screens/content/ContentEbookDetailScreen";
-import { ContentEbookReaderScreen } from "../screens/content/ContentEbookReaderScreen";
-import { ContentEbookTocScreen } from "../screens/content/ContentEbookTocScreen";
-import { ContentEbookHighlightsScreen } from "../screens/content/ContentEbookHighlightsScreen";
-import { ContentEbookSettingsScreen } from "../screens/content/ContentEbookSettingsScreen";
-import { ContentReadingScreen } from "../screens/content/ContentReadingScreen";
-import { ContentExerciseScreen } from "../screens/content/ContentExerciseScreen";
-import { ContentCommentScreen } from "../screens/content/ContentCommentScreen";
-import { ContentCommentPreviewScreen } from "../screens/content/ContentCommentPreviewScreen";
-import { ContentAchievementScreen } from "../screens/content/ContentAchievementScreen";
-import { ContentReviewPromptScreen } from "../screens/content/ContentReviewPromptScreen";
-import { ContentPaywallScreen } from "../screens/content/ContentPaywallScreen";
+import { NativeStackNavigationOptions, createNativeStackNavigator } from '@react-navigation/native-stack';
+import React from 'react';
+
+import { ScreenState } from '../screens/components/ScreenState';
+import { ContentAchievementScreen } from '../screens/content/ContentAchievementScreen';
+import { ContentCommentPreviewScreen } from '../screens/content/ContentCommentPreviewScreen';
+import { ContentCommentScreen } from '../screens/content/ContentCommentScreen';
+import { ContentEbookDetailScreen } from '../screens/content/ContentEbookDetailScreen';
+import { ContentEbookHighlightsScreen } from '../screens/content/ContentEbookHighlightsScreen';
+import { ContentEbookReaderScreen } from '../screens/content/ContentEbookReaderScreen';
+import { ContentEbookSettingsScreen } from '../screens/content/ContentEbookSettingsScreen';
+import { ContentEbookTocScreen } from '../screens/content/ContentEbookTocScreen';
+import { ContentExerciseScreen } from '../screens/content/ContentExerciseScreen';
+import { ContentJourneyDayScreen } from '../screens/content/ContentJourneyDayScreen';
+import { ContentJourneyDetailScreen } from '../screens/content/ContentJourneyDetailScreen';
+import { ContentJourneyHomeScreen } from '../screens/content/ContentJourneyHomeScreen';
+import { ContentModuleHomeScreen } from '../screens/content/ContentModuleHomeScreen';
+import { ContentPackageDetailScreen } from '../screens/content/ContentPackageDetailScreen';
+import { ContentPaywallScreen } from '../screens/content/ContentPaywallScreen';
+import { ContentReadingScreen } from '../screens/content/ContentReadingScreen';
+import { ContentReviewPromptScreen } from '../screens/content/ContentReviewPromptScreen';
+import { ContentWorkshopCampScreen } from '../screens/content/ContentWorkshopCampScreen';
+import { ContentWorkshopCompletionScreen } from '../screens/content/ContentWorkshopCompletionScreen';
+import { ContentWorkshopDetailScreen } from '../screens/content/ContentWorkshopDetailScreen';
+import { ContentWorkshopFollowUpScreen } from '../screens/content/ContentWorkshopFollowUpScreen';
+import { ContentWorkshopGuideScreen } from '../screens/content/ContentWorkshopGuideScreen';
+import { ContentWorkshopHomeScreen } from '../screens/content/ContentWorkshopHomeScreen';
+import { ContentWorkshopSectionScreen } from '../screens/content/ContentWorkshopSectionScreen';
+import { ContentWorkshopWorkbookScreen } from '../screens/content/ContentWorkshopWorkbookScreen';
 
 type ScreenStateParam = { state?: ScreenState } | undefined;
 
@@ -70,13 +71,13 @@ export type ContentStackParamList = {
 };
 
 export const contentSheetScreenOptions: Record<
-  "ContentPaywall" | "ContentEbookToc" | "ContentEbookSettings" | "ContentReviewPrompt",
+  'ContentPaywall' | 'ContentEbookToc' | 'ContentEbookSettings' | 'ContentReviewPrompt',
   NativeStackNavigationOptions
 > = {
-  ContentPaywall: { presentation: "modal" },
-  ContentEbookToc: { presentation: "modal" },
-  ContentEbookSettings: { presentation: "modal" },
-  ContentReviewPrompt: { presentation: "modal" },
+  ContentPaywall: { presentation: 'modal' },
+  ContentEbookToc: { presentation: 'modal' },
+  ContentEbookSettings: { presentation: 'modal' },
+  ContentReviewPrompt: { presentation: 'modal' }
 };
 
 type ContentStackScreen = {
@@ -86,47 +87,47 @@ type ContentStackScreen = {
 };
 
 export const contentStackScreens: ContentStackScreen[] = [
-  { name: "ContentJourneyHome", component: ContentJourneyHomeScreen },
-  { name: "ContentJourneyDay", component: ContentJourneyDayScreen },
-  { name: "ContentJourneyDetail", component: ContentJourneyDetailScreen },
-  { name: "ContentWorkshopHome", component: ContentWorkshopHomeScreen },
-  { name: "ContentWorkshopSection", component: ContentWorkshopSectionScreen },
-  { name: "ContentWorkshopDetail", component: ContentWorkshopDetailScreen },
-  { name: "ContentWorkshopCamp", component: ContentWorkshopCampScreen },
-  { name: "ContentWorkshopGuide", component: ContentWorkshopGuideScreen },
-  { name: "ContentWorkshopWorkbook", component: ContentWorkshopWorkbookScreen },
-  { name: "ContentWorkshopFollowUp", component: ContentWorkshopFollowUpScreen },
-  { name: "ContentWorkshopCompletion", component: ContentWorkshopCompletionScreen },
-  { name: "ContentModuleHome", component: ContentModuleHomeScreen },
-  { name: "ContentPackageDetail", component: ContentPackageDetailScreen },
-  { name: "ContentEbookDetail", component: ContentEbookDetailScreen },
-  { name: "ContentEbookReader", component: ContentEbookReaderScreen },
+  { name: 'ContentJourneyHome', component: ContentJourneyHomeScreen },
+  { name: 'ContentJourneyDay', component: ContentJourneyDayScreen },
+  { name: 'ContentJourneyDetail', component: ContentJourneyDetailScreen },
+  { name: 'ContentWorkshopHome', component: ContentWorkshopHomeScreen },
+  { name: 'ContentWorkshopSection', component: ContentWorkshopSectionScreen },
+  { name: 'ContentWorkshopDetail', component: ContentWorkshopDetailScreen },
+  { name: 'ContentWorkshopCamp', component: ContentWorkshopCampScreen },
+  { name: 'ContentWorkshopGuide', component: ContentWorkshopGuideScreen },
+  { name: 'ContentWorkshopWorkbook', component: ContentWorkshopWorkbookScreen },
+  { name: 'ContentWorkshopFollowUp', component: ContentWorkshopFollowUpScreen },
+  { name: 'ContentWorkshopCompletion', component: ContentWorkshopCompletionScreen },
+  { name: 'ContentModuleHome', component: ContentModuleHomeScreen },
+  { name: 'ContentPackageDetail', component: ContentPackageDetailScreen },
+  { name: 'ContentEbookDetail', component: ContentEbookDetailScreen },
+  { name: 'ContentEbookReader', component: ContentEbookReaderScreen },
   {
-    name: "ContentEbookToc",
+    name: 'ContentEbookToc',
     component: ContentEbookTocScreen,
-    options: contentSheetScreenOptions.ContentEbookToc,
+    options: contentSheetScreenOptions.ContentEbookToc
   },
-  { name: "ContentEbookHighlights", component: ContentEbookHighlightsScreen },
+  { name: 'ContentEbookHighlights', component: ContentEbookHighlightsScreen },
   {
-    name: "ContentEbookSettings",
+    name: 'ContentEbookSettings',
     component: ContentEbookSettingsScreen,
-    options: contentSheetScreenOptions.ContentEbookSettings,
+    options: contentSheetScreenOptions.ContentEbookSettings
   },
-  { name: "ContentReading", component: ContentReadingScreen },
-  { name: "ContentExercise", component: ContentExerciseScreen },
-  { name: "ContentComment", component: ContentCommentScreen },
-  { name: "ContentCommentPreview", component: ContentCommentPreviewScreen },
-  { name: "ContentAchievement", component: ContentAchievementScreen },
+  { name: 'ContentReading', component: ContentReadingScreen },
+  { name: 'ContentExercise', component: ContentExerciseScreen },
+  { name: 'ContentComment', component: ContentCommentScreen },
+  { name: 'ContentCommentPreview', component: ContentCommentPreviewScreen },
+  { name: 'ContentAchievement', component: ContentAchievementScreen },
   {
-    name: "ContentReviewPrompt",
+    name: 'ContentReviewPrompt',
     component: ContentReviewPromptScreen,
-    options: contentSheetScreenOptions.ContentReviewPrompt,
+    options: contentSheetScreenOptions.ContentReviewPrompt
   },
   {
-    name: "ContentPaywall",
+    name: 'ContentPaywall',
     component: ContentPaywallScreen,
-    options: contentSheetScreenOptions.ContentPaywall,
-  },
+    options: contentSheetScreenOptions.ContentPaywall
+  }
 ];
 
 type ContentStackProps = {
@@ -135,16 +136,11 @@ type ContentStackProps = {
 
 const Stack = createNativeStackNavigator<ContentStackParamList>();
 
-export const ContentStack = ({ initialRouteName = "ContentEbookDetail" }: ContentStackProps) => {
+export const ContentStack = ({ initialRouteName = 'ContentEbookDetail' }: ContentStackProps) => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName={initialRouteName}>
-      {contentStackScreens.map((screen) => (
-        <Stack.Screen
-          key={screen.name}
-          name={screen.name}
-          component={screen.component}
-          options={screen.options}
-        />
+      {contentStackScreens.map(screen => (
+        <Stack.Screen key={screen.name} name={screen.name} component={screen.component} options={screen.options} />
       ))}
     </Stack.Navigator>
   );

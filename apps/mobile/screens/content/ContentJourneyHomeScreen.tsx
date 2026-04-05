@@ -1,60 +1,49 @@
-import React from "react";
-import { StyleSheet, View } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { OfflineNotice } from "../components/OfflineNotice";
-import { ScreenLayout } from "../components/ScreenLayout";
-import { SectionCard } from "../components/SectionCard";
-import { SkeletonBlock } from "../components/SkeletonBlock";
-import { StateMessage } from "../components/StateMessage";
-import { resolveScreenState, ScreenState } from "../components/ScreenState";
+import { useNavigation } from '@react-navigation/native';
+import React from 'react';
+import { StyleSheet, View } from 'react-native';
 
-import { PActivityIndicator, PButton, PCard, PChip, PDivider, PProgressBar, PText } from "../../components";
+import { PActivityIndicator, PButton, PCard, PChip, PDivider, PProgressBar, PText } from '../../components';
 import {
   getContentProgressForUser,
   getJourneyById,
   getJourneyDaysForJourney,
-  getPrimaryUser,
   getJourneys,
-} from "../../data/mockSelectors";
-
+  getPrimaryUser
+} from '../../data/mockSelectors';
+import { OfflineNotice } from '../components/OfflineNotice';
+import { ScreenLayout } from '../components/ScreenLayout';
+import { ScreenState, resolveScreenState } from '../components/ScreenState';
+import { SectionCard } from '../components/SectionCard';
+import { SkeletonBlock } from '../components/SkeletonBlock';
+import { StateMessage } from '../components/StateMessage';
 
 type RouteParams = { state?: ScreenState; id?: string };
 
-const ContentJourneyHomeContent = ({
-  journeyId,
-  isOffline,
-}: {
-  journeyId?: string;
-  isOffline?: boolean;
-}) => {
+const ContentJourneyHomeContent = ({ journeyId, isOffline }: { journeyId?: string; isOffline?: boolean }) => {
   const navigation = useNavigation<any>();
   const user = getPrimaryUser();
   const journey = getJourneyById(journeyId) ?? getJourneys()[0];
   const days = getJourneyDaysForJourney(journey?.id);
-  const progressItems = getContentProgressForUser(user?.id).filter(
-    (item) => item.content_type === "journey_day"
-  );
-  const completedCount = days.filter((day) =>
-    progressItems.some((item) => item.content_id === day.id)
-  ).length;
+  const progressItems = getContentProgressForUser(user?.id).filter(item => item.content_type === 'journey_day');
+  const completedCount = days.filter(day => progressItems.some(item => item.content_id === day.id)).length;
   const progress = days.length > 0 ? completedCount / days.length : 0;
 
   return (
     <>
       <SectionCard title="Yolculuk Özeti" actionLabel="Paylaş">
-        <PText variant="titleMedium">{journey?.title ?? "Yolculuk"}</PText>
+        <PText variant="titleMedium">{journey?.title ?? 'Yolculuk'}</PText>
         <PText variant="bodySmall" style={styles.subtleText}>
-          {journey?.description ?? "Yolculuğun kısa açıklaması burada yer alır."}
+          {journey?.description ?? 'Yolculuğun kısa açıklaması burada yer alır.'}
         </PText>
         <View style={styles.chipRow}>
           <PChip style={styles.chip} disabled={isOffline}>
-            {journey?.level ?? "başlangıç"}
+            {journey?.level ?? 'başlangıç'}
           </PChip>
           <PChip style={styles.chip} disabled={isOffline}>
             {journey?.duration_days ?? 0} gün
           </PChip>
           <PChip style={styles.chip} disabled={isOffline}>
-            {journey?.daily_target ?? "10 dk"}
+            {journey?.daily_target ?? '10 dk'}
           </PChip>
         </View>
         <PProgressBar progress={progress} style={styles.progress} />
@@ -67,9 +56,9 @@ const ContentJourneyHomeContent = ({
           disabled={isOffline || days.length === 0}
           onPress={() => {
             if (days[0]) {
-              navigation.navigate("Content", {
-                screen: "ContentJourneyDay",
-                params: { id: journey?.id, day: String(days[0].day_number) },
+              navigation.navigate('Content', {
+                screen: 'ContentJourneyDay',
+                params: { id: journey?.id, day: String(days[0].day_number) }
               });
             }
           }}
@@ -92,9 +81,9 @@ const ContentJourneyHomeContent = ({
                 mode="outlined"
                 disabled={isOffline}
                 onPress={() =>
-                  navigation.navigate("Content", {
-                    screen: "ContentJourneyDay",
-                    params: { id: journey?.id, day: String(day.day_number) },
+                  navigation.navigate('Content', {
+                    screen: 'ContentJourneyDay',
+                    params: { id: journey?.id, day: String(day.day_number) }
                   })
                 }
               >
@@ -109,15 +98,11 @@ const ContentJourneyHomeContent = ({
   );
 };
 
-export const ContentJourneyHomeScreen = ({
-  route,
-}: {
-  route?: { params?: RouteParams };
-}) => {
+export const ContentJourneyHomeScreen = ({ route }: { route?: { params?: RouteParams } }) => {
   const state = resolveScreenState(route);
   const journeyId = route?.params?.id;
 
-  if (state === "loading") {
+  if (state === 'loading') {
     return (
       <ScreenLayout title="Yolculuk" subtitle="Yolculuk yükleniyor">
         <SectionCard title="Yükleniyor">
@@ -133,7 +118,7 @@ export const ContentJourneyHomeScreen = ({
     );
   }
 
-  if (state === "empty") {
+  if (state === 'empty') {
     return (
       <ScreenLayout title="Yolculuk" subtitle="Yolculuk bulunamadı">
         <StateMessage
@@ -146,7 +131,7 @@ export const ContentJourneyHomeScreen = ({
     );
   }
 
-  if (state === "error") {
+  if (state === 'error') {
     return (
       <ScreenLayout title="Yolculuk" subtitle="Bir sorun oluştu">
         <StateMessage
@@ -160,7 +145,7 @@ export const ContentJourneyHomeScreen = ({
     );
   }
 
-  if (state === "offline") {
+  if (state === 'offline') {
     return (
       <ScreenLayout title="Yolculuk" subtitle="Önbellekteki içerikler">
         <OfflineNotice />
@@ -178,29 +163,29 @@ export const ContentJourneyHomeScreen = ({
 
 const styles = StyleSheet.create({
   chipRow: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    marginTop: 8,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginTop: 8
   },
   chip: {
     marginRight: 8,
-    marginBottom: 8,
+    marginBottom: 8
   },
   subtleText: {
     opacity: 0.7,
-    marginTop: 4,
+    marginTop: 4
   },
   progress: {
-    marginTop: 12,
+    marginTop: 12
   },
   primaryButton: {
     marginTop: 12,
-    alignSelf: "flex-start",
+    alignSelf: 'flex-start'
   },
   card: {
-    marginBottom: 12,
+    marginBottom: 12
   },
   divider: {
-    marginTop: 8,
-  },
+    marginTop: 8
+  }
 });

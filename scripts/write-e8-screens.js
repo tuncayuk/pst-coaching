@@ -1,16 +1,16 @@
 #!/usr/bin/env node
 // write-e8-screens.js — Writes all 8 EPIC-8 screen files.
-const fs = require("fs");
-const path = require("path");
+const fs = require('fs');
+const path = require('path');
 
-const SCREENS_DIR = path.join(__dirname, "../apps/mobile/screens/content");
+const SCREENS_DIR = path.join(__dirname, '../apps/mobile/screens/content');
 
 const files = {};
 
 // ─────────────────────────────────────────────────────────────────────────
 // ContentWorkshopDetailScreen  (FR-E8-01)
 // ─────────────────────────────────────────────────────────────────────────
-files["ContentWorkshopDetailScreen.tsx"] = `import React from "react";
+files['ContentWorkshopDetailScreen.tsx'] = `import React from "react";
 import { StyleSheet, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
@@ -328,7 +328,7 @@ const styles = StyleSheet.create({
 // ─────────────────────────────────────────────────────────────────────────
 // ContentWorkshopHomeScreen  (FR-E8-02)
 // ─────────────────────────────────────────────────────────────────────────
-files["ContentWorkshopHomeScreen.tsx"] = `import React from "react";
+files['ContentWorkshopHomeScreen.tsx'] = `import React from "react";
 import { StyleSheet, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
@@ -646,7 +646,7 @@ const styles = StyleSheet.create({
 // ─────────────────────────────────────────────────────────────────────────
 // ContentWorkshopSectionScreen  (FR-E8-03)
 // ─────────────────────────────────────────────────────────────────────────
-files["ContentWorkshopSectionScreen.tsx"] = `import React, { useState } from "react";
+files['ContentWorkshopSectionScreen.tsx'] = `import React, { useState } from "react";
 import { StyleSheet, TextInput, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
@@ -1007,7 +1007,7 @@ const styles = StyleSheet.create({
 // ─────────────────────────────────────────────────────────────────────────
 // ContentWorkshopCampScreen  (FR-E8-04)
 // ─────────────────────────────────────────────────────────────────────────
-files["ContentWorkshopCampScreen.tsx"] = `import React, { useState } from "react";
+files['ContentWorkshopCampScreen.tsx'] = `import React, { useState } from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
@@ -1507,7 +1507,7 @@ const styles = StyleSheet.create({
 // ─────────────────────────────────────────────────────────────────────────
 // ContentWorkshopGuideScreen  (FR-E8-05)
 // ─────────────────────────────────────────────────────────────────────────
-files["ContentWorkshopGuideScreen.tsx"] = `import React, { useState } from "react";
+files['ContentWorkshopGuideScreen.tsx'] = `import React, { useState } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
@@ -1833,7 +1833,7 @@ const styles = StyleSheet.create({
 // ─────────────────────────────────────────────────────────────────────────
 // ContentWorkshopWorkbookScreen  (FR-E8-06)
 // ─────────────────────────────────────────────────────────────────────────
-files["ContentWorkshopWorkbookScreen.tsx"] = `import React, { useState } from "react";
+files['ContentWorkshopWorkbookScreen.tsx'] = `import React, { useState } from "react";
 import { Modal, StyleSheet, TextInput, View } from "react-native";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
@@ -2248,7 +2248,7 @@ const styles = StyleSheet.create({
 // ─────────────────────────────────────────────────────────────────────────
 // ContentWorkshopFollowUpScreen  (FR-E8-07)
 // ─────────────────────────────────────────────────────────────────────────
-files["ContentWorkshopFollowUpScreen.tsx"] = `import React, { useState } from "react";
+files['ContentWorkshopFollowUpScreen.tsx'] = `import React, { useState } from "react";
 import { StyleSheet, TextInput, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
@@ -2582,7 +2582,7 @@ const styles = StyleSheet.create({
 // ─────────────────────────────────────────────────────────────────────────
 // ContentWorkshopCompletionScreen  (FR-E8-08)
 // ─────────────────────────────────────────────────────────────────────────
-files["ContentWorkshopCompletionScreen.tsx"] = `import React from "react";
+files['ContentWorkshopCompletionScreen.tsx'] = `import React from "react";
 import { StyleSheet, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
@@ -2956,7 +2956,7 @@ const styles = StyleSheet.create({
 let written = 0;
 for (const [filename, content] of Object.entries(files)) {
   const filePath = path.join(SCREENS_DIR, filename);
-  fs.writeFileSync(filePath, content, "utf8");
+  fs.writeFileSync(filePath, content, 'utf8');
   written++;
   console.log(`Wrote ${filename}`);
 }

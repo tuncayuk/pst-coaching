@@ -3,9 +3,7 @@
   "title": "Grup olusturma ve uye daveti",
   "route": "/epic-13/fr-e13-02",
   "purpose": "Implements FR-E13-02: Grup olusturma ve uye daveti.",
-  "entryPoints": [
-    "community.collaborative_reading"
-  ],
+  "entryPoints": ["community.collaborative_reading"],
   "inputs": [
     {
       "name": "userId",
@@ -26,13 +24,7 @@
       "source": "profile"
     }
   ],
-  "dataDependencies": [
-    "ReadingGroup",
-    "ReadingGroupMember",
-    "Journey",
-    "Workshop",
-    "Ebook"
-  ],
+  "dataDependencies": ["ReadingGroup", "ReadingGroupMember", "Journey", "Workshop", "Ebook"],
   "uiStates": {
     "loading": {
       "description": "Skeleton placeholders are shown while loading FR-E13-02 data."
@@ -52,18 +44,8 @@
   },
   "analytics": {
     "screenView": "collab_fr_e13_02_viewed",
-    "events": [
-      "collab_fr_e13_02_viewed"
-    ]
+    "events": ["collab_fr_e13_02_viewed"]
   },
-  "acceptanceCriteriaRefs": [
-    "AC-FR-E13-02-01",
-    "AC-FR-E13-02-02",
-    "AC-FR-E13-02-03",
-    "AC-FR-E13-02-04"
-  ],
-  "gates": [
-    "auth",
-    "subscription"
-  ]
+  "acceptanceCriteriaRefs": ["AC-FR-E13-02-01", "AC-FR-E13-02-02", "AC-FR-E13-02-03", "AC-FR-E13-02-04"],
+  "gates": ["auth", "subscription"]
 }

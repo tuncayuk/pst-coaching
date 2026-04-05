@@ -1,15 +1,15 @@
 #!/usr/bin/env node
 // write-e10-screens.js — Writes all 4 EPIC-10 screen files
-const fs = require("fs");
-const path = require("path");
+const fs = require('fs');
+const path = require('path');
 
-const PROFILE_DIR = path.join(__dirname, "../apps/mobile/screens/profile");
+const PROFILE_DIR = path.join(__dirname, '../apps/mobile/screens/profile');
 const files = {};
 
 // ─────────────────────────────────────────────────────────────────────────
 // ProfileAccessibilityScreen  (FR-E10-01)  — HUB + quick toggles
 // ─────────────────────────────────────────────────────────────────────────
-files["ProfileAccessibilityScreen.tsx"] = `import React, { useState } from "react";
+files['ProfileAccessibilityScreen.tsx'] = `import React, { useState } from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
@@ -316,7 +316,7 @@ const styles = StyleSheet.create({
 // ─────────────────────────────────────────────────────────────────────────
 // ProfileTextScaleScreen  (FR-E10-02)
 // ─────────────────────────────────────────────────────────────────────────
-files["ProfileTextScaleScreen.tsx"] = `import React, { useState } from "react";
+files['ProfileTextScaleScreen.tsx'] = `import React, { useState } from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
@@ -605,7 +605,7 @@ const styles = StyleSheet.create({
 // ─────────────────────────────────────────────────────────────────────────
 // ProfileThemeScreen  (FR-E10-03)
 // ─────────────────────────────────────────────────────────────────────────
-files["ProfileThemeScreen.tsx"] = `import React, { useState } from "react";
+files['ProfileThemeScreen.tsx'] = `import React, { useState } from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
@@ -1022,7 +1022,7 @@ const styles = StyleSheet.create({
 // ─────────────────────────────────────────────────────────────────────────
 // ProfileScreenReaderScreen  (FR-E10-04)
 // ─────────────────────────────────────────────────────────────────────────
-files["ProfileScreenReaderScreen.tsx"] = `import React, { useState } from "react";
+files['ProfileScreenReaderScreen.tsx'] = `import React, { useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
@@ -1358,7 +1358,7 @@ const styles = StyleSheet.create({
 let written = 0;
 for (const [filename, content] of Object.entries(files)) {
   const filePath = path.join(PROFILE_DIR, filename);
-  fs.writeFileSync(filePath, content, "utf8");
+  fs.writeFileSync(filePath, content, 'utf8');
   written++;
   console.log(`Wrote ${filename}`);
 }

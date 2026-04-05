@@ -3,9 +3,7 @@
   "title": "Satin alma ve aktivasyon",
   "route": "/profile/subscription/checkout",
   "purpose": "FR-E3-02: Opens platform (Apple/Google) IAP sheet. Server-side validation grants entitlement immediately (BR-08). Shows order summary with plan, price, coupon field. Handles purchase error with clear user message (AC-FR-E3-02-01/02/03/04). Offline: purchase disabled, show offline notice.",
-  "entryPoints": [
-    "subscription.fr_e3_01"
-  ],
+  "entryPoints": ["subscription.fr_e3_01"],
   "inputs": [
     {
       "name": "userId",
@@ -26,10 +24,7 @@
       "source": "device_info"
     }
   ],
-  "dataDependencies": [
-    "SubscriptionPlan",
-    "Subscription"
-  ],
+  "dataDependencies": ["SubscriptionPlan", "Subscription"],
   "uiStates": {
     "loading": {
       "description": "Skeleton order summary and payment method rows"
@@ -57,14 +52,6 @@
       "checkout_purchase_error"
     ]
   },
-  "acceptanceCriteriaRefs": [
-    "AC-FR-E3-02-01",
-    "AC-FR-E3-02-02",
-    "AC-FR-E3-02-03",
-    "AC-FR-E3-02-04"
-  ],
-  "gates": [
-    "auth",
-    "subscription"
-  ]
+  "acceptanceCriteriaRefs": ["AC-FR-E3-02-01", "AC-FR-E3-02-02", "AC-FR-E3-02-03", "AC-FR-E3-02-04"],
+  "gates": ["auth", "subscription"]
 }

@@ -3,9 +3,7 @@
   "title": "Erisilebilirlik ayarlari",
   "route": "/accessibility",
   "purpose": "Implements FR-E10-01: Erisilebilirlik ayarlari hub - metin boyutu, yuksek kontrast, hareket azaltma.",
-  "entryPoints": [
-    "profile.accessibility"
-  ],
+  "entryPoints": ["profile.accessibility"],
   "inputs": [
     {
       "name": "userId",
@@ -26,10 +24,7 @@
       "source": "profile"
     }
   ],
-  "dataDependencies": [
-    "AccessibilitySettings",
-    "User"
-  ],
+  "dataDependencies": ["AccessibilitySettings", "User"],
   "uiStates": {
     "loading": {
       "description": "Skeleton placeholders shown while loading accessibility settings."
@@ -49,17 +44,8 @@
   },
   "analytics": {
     "screenView": "accessibility_settings_viewed",
-    "events": [
-      "accessibility_settings_viewed",
-      "accessibility_toggle_changed"
-    ]
+    "events": ["accessibility_settings_viewed", "accessibility_toggle_changed"]
   },
-  "acceptanceCriteriaRefs": [
-    "AC-FR-E10-01-01",
-    "AC-FR-E10-01-02",
-    "AC-FR-E10-01-03"
-  ],
-  "gates": [
-    "auth"
-  ]
+  "acceptanceCriteriaRefs": ["AC-FR-E10-01-01", "AC-FR-E10-01-02", "AC-FR-E10-01-03"],
+  "gates": ["auth"]
 }

@@ -1,33 +1,34 @@
-import React, { useState } from "react";
-import { StyleSheet, TouchableOpacity, View } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { OfflineNotice } from "../components/OfflineNotice";
-import { ScreenLayout } from "../components/ScreenLayout";
-import { SectionCard } from "../components/SectionCard";
-import { SkeletonBlock } from "../components/SkeletonBlock";
-import { StateMessage } from "../components/StateMessage";
-import { resolveScreenState, ScreenState } from "../components/ScreenState";
-import { getSubscriptionForUser, getPrimaryUser, getSubscriptionPlans } from "../../data/mockSelectors";
-import { PButton, PCard, PChip, PDivider, PText } from "../../components";
+import { useNavigation } from '@react-navigation/native';
+import React, { useState } from 'react';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
+
+import { PButton, PCard, PChip, PDivider, PText } from '../../components';
+import { getPrimaryUser, getSubscriptionForUser, getSubscriptionPlans } from '../../data/mockSelectors';
+import { OfflineNotice } from '../components/OfflineNotice';
+import { ScreenLayout } from '../components/ScreenLayout';
+import { ScreenState, resolveScreenState } from '../components/ScreenState';
+import { SectionCard } from '../components/SectionCard';
+import { SkeletonBlock } from '../components/SkeletonBlock';
+import { StateMessage } from '../components/StateMessage';
 
 /** Mock plan pricing - in real app from subscription plan entity */
 const PLAN_PRICES: Record<string, { monthly: string; yearly: string }> = {
-  individual: { monthly: "19,99 TL / ay", yearly: "199,99 TL / yil" },
-  family:     { monthly: "29,99 TL / ay", yearly: "249,99 TL / yil" },
-  group:      { monthly: "39,99 TL / ay", yearly: "449,99 TL / yil" },
+  individual: { monthly: '19,99 TL / ay', yearly: '199,99 TL / yil' },
+  family: { monthly: '29,99 TL / ay', yearly: '249,99 TL / yil' },
+  group: { monthly: '39,99 TL / ay', yearly: '449,99 TL / yil' }
 };
 
 /** AC-FR-E3-01-02: feature comparison for each plan */
 const PLAN_FEATURES: Record<string, string[]> = {
-  individual: ["Tum iceriklere erisim", "Offline indirme", "Kisisel ilerleme takibi"],
-  family:     ["Tum iceriklere erisim", "Offline indirme", "5 kullanici hesabi", "Aile paylasim ekrani"],
-  group:      ["Tum iceriklere erisim", "Offline indirme", "10 kullanici hesabi", "Takim raporu", "Koc paneli"],
+  individual: ['Tum iceriklere erisim', 'Offline indirme', 'Kisisel ilerleme takibi'],
+  family: ['Tum iceriklere erisim', 'Offline indirme', '5 kullanici hesabi', 'Aile paylasim ekrani'],
+  group: ['Tum iceriklere erisim', 'Offline indirme', '10 kullanici hesabi', 'Takim raporu', 'Koc paneli']
 };
 
 const PLAN_TYPE_LABELS: Record<string, string> = {
-  individual: "Bireysel",
-  family: "Aile",
-  group: "Grup",
+  individual: 'Bireysel',
+  family: 'Aile',
+  group: 'Grup'
 };
 
 const ProfilePlanComparisonContent = ({ isOffline }: { isOffline?: boolean }) => {
@@ -36,7 +37,7 @@ const ProfilePlanComparisonContent = ({ isOffline }: { isOffline?: boolean }) =>
   const user = getPrimaryUser();
   const currentSubscription = getSubscriptionForUser(user?.id);
   const [selectedPlanId, setSelectedPlanId] = useState<string | null>(
-    currentSubscription?.plan_id ?? (plans[0]?.id ?? null)
+    currentSubscription?.plan_id ?? plans[0]?.id ?? null
   );
 
   const handleSelectPlan = (planId: string) => {
@@ -48,17 +49,17 @@ const ProfilePlanComparisonContent = ({ isOffline }: { isOffline?: boolean }) =>
   const handleContinue = () => {
     if (!selectedPlanId || isOffline) return;
     // analytics: plan_comparison_continue_tapped
-    navigation.navigate("ProfileCheckout");
+    navigation.navigate('ProfileCheckout');
   };
 
   return (
     <>
       <SectionCard title="Planlari Karsilastir">
         {/* AC-FR-E3-01-01: Bireysel/Aile/Grup with seat limits */}
-        {plans.map((plan) => {
+        {plans.map(plan => {
           const isSelected = plan.id === selectedPlanId;
           const isCurrent = plan.id === currentSubscription?.plan_id;
-          const prices = PLAN_PRICES[plan.plan_type] ?? { monthly: "-", yearly: "-" };
+          const prices = PLAN_PRICES[plan.plan_type] ?? { monthly: '-', yearly: '-' };
           const features = PLAN_FEATURES[plan.plan_type] ?? [];
 
           return (
@@ -74,7 +75,9 @@ const ProfilePlanComparisonContent = ({ isOffline }: { isOffline?: boolean }) =>
               {/* AC-FR-E3-01-03: selected plan visually highlighted */}
               <View style={styles.planHeader}>
                 <View>
-                  <PText variant="titleMedium" style={styles.planName}>{plan.name}</PText>
+                  <PText variant="titleMedium" style={styles.planName}>
+                    {plan.name}
+                  </PText>
                   <PText variant="bodySmall" style={styles.planType}>
                     {PLAN_TYPE_LABELS[plan.plan_type] ?? plan.plan_type} - {plan.seat_limit} kisi
                   </PText>
@@ -95,10 +98,14 @@ const ProfilePlanComparisonContent = ({ isOffline }: { isOffline?: boolean }) =>
 
               {/* AC-FR-E3-01-02: feature differences */}
               <PDivider style={styles.planDivider} />
-              <PText variant="bodyMedium" style={styles.priceText}>{prices.monthly}</PText>
-              <PText variant="bodySmall" style={styles.priceAlt}>{prices.yearly}</PText>
+              <PText variant="bodyMedium" style={styles.priceText}>
+                {prices.monthly}
+              </PText>
+              <PText variant="bodySmall" style={styles.priceAlt}>
+                {prices.yearly}
+              </PText>
               <View style={styles.featureList}>
-                {features.map((f) => (
+                {features.map(f => (
                   <PText key={f} variant="bodySmall" style={styles.featureItem}>
                     {f}
                   </PText>
@@ -106,14 +113,14 @@ const ProfilePlanComparisonContent = ({ isOffline }: { isOffline?: boolean }) =>
               </View>
 
               <PButton
-                mode={isSelected ? "contained" : "outlined"}
+                mode={isSelected ? 'contained' : 'outlined'}
                 disabled={isOffline}
                 onPress={() => handleSelectPlan(plan.id)}
                 style={styles.selectButton}
                 accessibilityLabel={isSelected ? `${plan.name} secildi` : `${plan.name} planini sec`}
                 accessibilityRole="button"
               >
-                {isSelected ? "Secildi" : "Bu Plani Sec"}
+                {isSelected ? 'Secildi' : 'Bu Plani Sec'}
               </PButton>
             </TouchableOpacity>
           );
@@ -136,14 +143,10 @@ const ProfilePlanComparisonContent = ({ isOffline }: { isOffline?: boolean }) =>
   );
 };
 
-export const ProfilePlanComparisonScreen = ({
-  route,
-}: {
-  route?: { params?: { state?: ScreenState } };
-}) => {
+export const ProfilePlanComparisonScreen = ({ route }: { route?: { params?: { state?: ScreenState } } }) => {
   const state = resolveScreenState(route);
 
-  if (state === "loading") {
+  if (state === 'loading') {
     return (
       <ScreenLayout title="Plan Karsilastirma" subtitle="Planlar hazirlaniyor">
         <SectionCard title="Planlar">
@@ -155,7 +158,7 @@ export const ProfilePlanComparisonScreen = ({
     );
   }
 
-  if (state === "empty") {
+  if (state === 'empty') {
     return (
       <ScreenLayout title="Plan Karsilastirma" subtitle="Plan bulunamadi">
         <StateMessage
@@ -168,7 +171,7 @@ export const ProfilePlanComparisonScreen = ({
     );
   }
 
-  if (state === "error") {
+  if (state === 'error') {
     return (
       <ScreenLayout title="Plan Karsilastirma" subtitle="Bir sorun olustu">
         <StateMessage
@@ -182,7 +185,7 @@ export const ProfilePlanComparisonScreen = ({
     );
   }
 
-  if (state === "offline") {
+  if (state === 'offline') {
     return (
       <ScreenLayout title="Plan Karsilastirma" subtitle="Onbellekteki planlar">
         <OfflineNotice />
@@ -201,71 +204,71 @@ export const ProfilePlanComparisonScreen = ({
 const styles = StyleSheet.create({
   planCard: {
     borderWidth: 2,
-    borderColor: "#D4D4D4",
+    borderColor: '#D4D4D4',
     borderRadius: 12,
     padding: 16,
     marginBottom: 12,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: '#FFFFFF'
   },
   planCardSelected: {
-    borderColor: "#7C3AED",
-    backgroundColor: "#FAF5FF",
+    borderColor: '#7C3AED',
+    backgroundColor: '#FAF5FF'
   },
   planHeader: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "flex-start",
-    marginBottom: 4,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    marginBottom: 4
   },
   planName: {
-    fontWeight: "700",
-    color: "#1F2937",
+    fontWeight: '700',
+    color: '#1F2937'
   },
   planType: {
-    color: "#6B7280",
-    marginTop: 2,
+    color: '#6B7280',
+    marginTop: 2
   },
   planBadges: {
-    alignItems: "flex-end",
-    gap: 4,
+    alignItems: 'flex-end',
+    gap: 4
   },
   currentChip: {
-    backgroundColor: "#EDE9FE",
+    backgroundColor: '#EDE9FE'
   },
   checkBadge: {
-    backgroundColor: "#7C3AED",
+    backgroundColor: '#7C3AED',
     borderRadius: 10,
     paddingHorizontal: 8,
-    paddingVertical: 2,
+    paddingVertical: 2
   },
   checkText: {
-    color: "#FFFFFF",
+    color: '#FFFFFF',
     fontSize: 11,
-    fontWeight: "700",
+    fontWeight: '700'
   },
   planDivider: {
-    marginVertical: 8,
+    marginVertical: 8
   },
   priceText: {
-    fontWeight: "700",
-    color: "#2B1B5D",
-    marginBottom: 2,
+    fontWeight: '700',
+    color: '#2B1B5D',
+    marginBottom: 2
   },
   priceAlt: {
-    color: "#6B7280",
-    marginBottom: 8,
+    color: '#6B7280',
+    marginBottom: 8
   },
   featureList: {
     gap: 4,
-    marginBottom: 12,
+    marginBottom: 12
   },
   featureItem: {
-    color: "#374151",
+    color: '#374151'
   },
   selectButton: {
-    minHeight: 44,
+    minHeight: 44
   },
   continueButton: {
-    minHeight: 48,
-  },
+    minHeight: 48
+  }
 });

@@ -1,52 +1,53 @@
-import React from "react";
-import { NavigationContainer } from "@react-navigation/native";
-import { render } from "@testing-library/react-native";
-import { AuthStack, AuthStackParamList } from "../AuthStack";
+import { NavigationContainer } from '@react-navigation/native';
+import { render } from '@testing-library/react-native';
+import React from 'react';
 
-vi.mock("react-native-safe-area-context", () => ({
-  SafeAreaView: ({ children }: { children: React.ReactNode }) => children,
+import { AuthStack, AuthStackParamList } from '../AuthStack';
+
+vi.mock('react-native-safe-area-context', () => ({
+  SafeAreaView: ({ children }: { children: React.ReactNode }) => children
 }));
 
 const cases: { name: keyof AuthStackParamList; text: string }[] = [
   {
-    name: "OnboardingLanguageSelect",
-    text: "Dilini seç",
+    name: 'OnboardingLanguageSelect',
+    text: 'Dilini seç'
   },
   {
-    name: "OnboardingWelcome",
-    text: "Yeni bir yolculuğa hoş geldin",
+    name: 'OnboardingWelcome',
+    text: 'Yeni bir yolculuğa hoş geldin'
   },
   {
-    name: "AuthLogin",
-    text: "Hesabına giriş yap",
+    name: 'AuthLogin',
+    text: 'Hesabına giriş yap'
   },
   {
-    name: "AuthRegister",
-    text: "Yeni hesap oluştur",
+    name: 'AuthRegister',
+    text: 'Yeni hesap oluştur'
   },
   {
-    name: "AuthOtpVerify",
-    text: "Doğrulama kodunu gir",
+    name: 'AuthOtpVerify',
+    text: 'Doğrulama kodunu gir'
   },
   {
-    name: "AuthPasswordReset",
-    text: "Şifre sıfırlama bağlantısı gönder",
+    name: 'AuthPasswordReset',
+    text: 'Şifre sıfırlama bağlantısı gönder'
   },
   {
-    name: "AuthSessionTimeout",
-    text: "Oturum süren doldu",
+    name: 'AuthSessionTimeout',
+    text: 'Oturum süren doldu'
   },
   {
-    name: "AuthLockout",
-    text: "Geçici Kilit",
+    name: 'AuthLockout',
+    text: 'Geçici Kilit'
   },
   {
-    name: "AuthReauth",
-    text: "Yeniden Doğrulama",
-  },
+    name: 'AuthReauth',
+    text: 'Yeniden Doğrulama'
+  }
 ];
 
-describe("Auth stack routes", () => {
+describe('Auth stack routes', () => {
   cases.forEach(({ name, text }) => {
     it(`renders ${name} route`, () => {
       const { getByText } = render(

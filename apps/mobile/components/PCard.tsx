@@ -1,5 +1,5 @@
-import React from "react";
-import { Card } from "react-native-paper";
+import React from 'react';
+import { Card } from 'react-native-paper';
 
 type PCardProps = React.ComponentProps<typeof Card>;
 
@@ -16,5 +16,5 @@ export const PCard = Object.assign(BasePCard, {
   Title: Card.Title,
   Content: Card.Content,
   Actions: Card.Actions,
-  Cover: Card.Cover,
+  Cover: Card.Cover
 }) as PCardComponent;

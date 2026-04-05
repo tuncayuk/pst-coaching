@@ -1,56 +1,42 @@
-import React, { useState, useCallback } from "react";
-import {
-  NativeScrollEvent,
-  NativeSyntheticEvent,
-  ScrollView,
-  StyleSheet,
-  View,
-} from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { useNavigation } from "@react-navigation/native";
-import { OfflineNotice } from "../components/OfflineNotice";
-import { SkeletonBlock } from "../components/SkeletonBlock";
-import { StateMessage } from "../components/StateMessage";
-import { resolveScreenState, ScreenState } from "../components/ScreenState";
-import { PActivityIndicator, PButton, PCard, PIconButton, PText } from "../../components";
+import { useNavigation } from '@react-navigation/native';
+import React, { useCallback, useState } from 'react';
+import { NativeScrollEvent, NativeSyntheticEvent, ScrollView, StyleSheet, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+
+import { PActivityIndicator, PButton, PCard, PIconButton, PText } from '../../components';
+import { OfflineNotice } from '../components/OfflineNotice';
+import { ScreenState, resolveScreenState } from '../components/ScreenState';
+import { SkeletonBlock } from '../components/SkeletonBlock';
+import { StateMessage } from '../components/StateMessage';
 
 type RouteParams = { state?: ScreenState; id?: string };
-type FontSizeKey = "small" | "medium" | "large";
+type FontSizeKey = 'small' | 'medium' | 'large';
 
 const FONT_SIZES: Record<FontSizeKey, number> = { small: 13, medium: 15, large: 18 };
-const AUDIO_SPEEDS = ["0.75x", "1x", "1.25x"];
-const FONT_ORDER: FontSizeKey[] = ["small", "medium", "large"];
+const AUDIO_SPEEDS = ['0.75x', '1x', '1.25x'];
+const FONT_ORDER: FontSizeKey[] = ['small', 'medium', 'large'];
 
-const ContentReadingContent = ({
-  isOffline,
-  id,
-}: {
-  isOffline?: boolean;
-  id?: string;
-}) => {
+const ContentReadingContent = ({ isOffline, id }: { isOffline?: boolean; id?: string }) => {
   const navigation = useNavigation<any>();
   const [readingProgress, setReadingProgress] = useState(0);
   const [audioPlaying, setAudioPlaying] = useState(false);
   const [speedIndex, setSpeedIndex] = useState(1);
-  const [fontSizeKey, setFontSizeKey] = useState<FontSizeKey>("medium");
+  const [fontSizeKey, setFontSizeKey] = useState<FontSizeKey>('medium');
 
   const now = new Date();
   const isPastWarning = now.getHours() >= 23;
   const fontSize = FONT_SIZES[fontSizeKey];
 
-  const handleScroll = useCallback(
-    (e: NativeSyntheticEvent<NativeScrollEvent>) => {
-      const { contentOffset, contentSize, layoutMeasurement } = e.nativeEvent;
-      const scrollable = contentSize.height - layoutMeasurement.height;
-      if (scrollable > 0) {
-        setReadingProgress(Math.min(1, contentOffset.y / scrollable));
-      }
-    },
-    []
-  );
+  const handleScroll = useCallback((e: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const { contentOffset, contentSize, layoutMeasurement } = e.nativeEvent;
+    const scrollable = contentSize.height - layoutMeasurement.height;
+    if (scrollable > 0) {
+      setReadingProgress(Math.min(1, contentOffset.y / scrollable));
+    }
+  }, []);
 
   const cycleFontSize = useCallback(() => {
-    setFontSizeKey((prev) => {
+    setFontSizeKey(prev => {
       const i = FONT_ORDER.indexOf(prev);
       return FONT_ORDER[(i + 1) % FONT_ORDER.length];
     });
@@ -79,10 +65,8 @@ const ContentReadingContent = ({
         <View style={styles.headerMetaRow}>
           <PText style={[styles.chip, styles.chipReading]}>Okuma</PText>
           <PText style={styles.headerMeta}>~12 dakika</PText>
-          <PText
-            style={[styles.chip, isPastWarning ? styles.chipWarning : styles.chipDeadline]}
-          >
-            {isPastWarning ? "Son teslim: 23:59" : "Teslim: 23:59"}
+          <PText style={[styles.chip, isPastWarning ? styles.chipWarning : styles.chipDeadline]}>
+            {isPastWarning ? 'Son teslim: 23:59' : 'Teslim: 23:59'}
           </PText>
         </View>
       </View>
@@ -90,17 +74,15 @@ const ContentReadingContent = ({
       {/* AC-FR-E5-02-01,02,03: Audio playback bar with speed selector */}
       <View style={styles.audioBar}>
         <PIconButton
-          icon={audioPlaying ? "pause-circle" : "play-circle"}
-          onPress={() => !isOffline && setAudioPlaying((p) => !p)}
+          icon={audioPlaying ? 'pause-circle' : 'play-circle'}
+          onPress={() => !isOffline && setAudioPlaying(p => !p)}
         />
-        <PText style={styles.audioLabel}>
-          {audioPlaying ? "Dinleniyor..." : "Sesli Dinle"}
-        </PText>
+        <PText style={styles.audioLabel}>{audioPlaying ? 'Dinleniyor...' : 'Sesli Dinle'}</PText>
         <View style={styles.speedRow}>
           {AUDIO_SPEEDS.map((s, i) => (
             <PButton
               key={s}
-              mode={speedIndex === i ? "contained" : "outlined"}
+              mode={speedIndex === i ? 'contained' : 'outlined'}
               compact
               disabled={isOffline}
               onPress={() => setSpeedIndex(i)}
@@ -134,18 +116,15 @@ const ContentReadingContent = ({
         style={styles.scroll}
       >
         <View style={styles.body}>
-          <PText style={[styles.bodyTitle, { fontSize: fontSize + 7 }]}>
-            Otomatik Dusunceler
+          <PText style={[styles.bodyTitle, { fontSize: fontSize + 7 }]}>Otomatik Dusunceler</PText>
+          <PText style={[styles.bodyParagraph, { fontSize, lineHeight: fontSize * 1.75 }]}>
+            Zihnimiz her gun binlerce dusunce uretir. Bunlarin cogu otomatiktir ve farkinda bile olmadigimiz hizda akar
+            gider. Bu <PText style={[styles.bodyHighlight, { fontSize }]}>otomatik dusunceler</PText>, yasadigimiz
+            deneyimleri yorumlamamizi saglar.
           </PText>
           <PText style={[styles.bodyParagraph, { fontSize, lineHeight: fontSize * 1.75 }]}>
-            Zihnimiz her gun binlerce dusunce uretir. Bunlarin cogu otomatiktir ve farkinda
-            bile olmadigimiz hizda akar gider. Bu{" "}
-            <PText style={[styles.bodyHighlight, { fontSize }]}>otomatik dusunceler</PText>,
-            yasadigimiz deneyimleri yorumlamamizi saglar.
-          </PText>
-          <PText style={[styles.bodyParagraph, { fontSize, lineHeight: fontSize * 1.75 }]}>
-            Ancak bu dusuncelerin hepsi gercegi yansitmaz. Bazen gecmis deneyimlerimize,
-            korkularimiza ya da cevremizden aldigimiz mesajlara dayanir.
+            Ancak bu dusuncelerin hepsi gercegi yansitmaz. Bazen gecmis deneyimlerimize, korkularimiza ya da cevremizden
+            aldigimiz mesajlara dayanir.
           </PText>
 
           <PCard style={styles.calloutCard}>
@@ -156,8 +135,7 @@ const ContentReadingContent = ({
           </PCard>
 
           <PText style={[styles.bodyParagraph, { fontSize, lineHeight: fontSize * 1.75 }]}>
-            Bu dusunceleri fark ettigimizde, onlari sorgulamaya ve daha gercekci alternatifler
-            bulmaya baslayabiliriz.
+            Bu dusunceleri fark ettigimizde, onlari sorgulamaya ve daha gercekci alternatifler bulmaya baslayabiliriz.
           </PText>
         </View>
 
@@ -167,8 +145,8 @@ const ContentReadingContent = ({
             disabled={isOffline}
             style={styles.footerButton}
             onPress={() =>
-              navigation.navigate("ContentExercise", {
-                id: id ?? "c1c1c1c1-0000-0000-0000-000000000102",
+              navigation.navigate('ContentExercise', {
+                id: id ?? 'c1c1c1c1-0000-0000-0000-000000000102'
               })
             }
           >
@@ -184,7 +162,7 @@ export const ContentReadingScreen = ({ route }: { route?: { params?: RouteParams
   const state = resolveScreenState(route);
   const id = route?.params?.id;
 
-  if (state === "loading") {
+  if (state === 'loading') {
     return (
       <SafeAreaView style={styles.root}>
         <ScrollView contentContainerStyle={styles.page}>
@@ -197,7 +175,7 @@ export const ContentReadingScreen = ({ route }: { route?: { params?: RouteParams
     );
   }
 
-  if (state === "empty") {
+  if (state === 'empty') {
     return (
       <SafeAreaView style={styles.root}>
         <ScrollView contentContainerStyle={styles.page}>
@@ -212,7 +190,7 @@ export const ContentReadingScreen = ({ route }: { route?: { params?: RouteParams
     );
   }
 
-  if (state === "error") {
+  if (state === 'error') {
     return (
       <SafeAreaView style={styles.root}>
         <ScrollView contentContainerStyle={styles.page}>
@@ -228,7 +206,7 @@ export const ContentReadingScreen = ({ route }: { route?: { params?: RouteParams
     );
   }
 
-  if (state === "offline") {
+  if (state === 'offline') {
     return (
       <SafeAreaView style={styles.root}>
         <OfflineNotice />
@@ -247,171 +225,171 @@ export const ContentReadingScreen = ({ route }: { route?: { params?: RouteParams
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: '#FFFFFF'
   },
   wrapper: {
-    flex: 1,
+    flex: 1
   },
   scroll: {
-    flex: 1,
+    flex: 1
   },
   page: {
-    paddingBottom: 32,
+    paddingBottom: 32
   },
   // Progress bar
   progressTrack: {
     height: 4,
-    backgroundColor: "#E5E5E5",
+    backgroundColor: '#E5E5E5'
   },
   progressFill: {
     height: 4,
-    backgroundColor: "#6B46C1",
+    backgroundColor: '#6B46C1'
   },
   // Header
   header: {
-    backgroundColor: "#FFFFFF",
+    backgroundColor: '#FFFFFF',
     paddingHorizontal: 20,
     paddingTop: 10,
     paddingBottom: 10,
     borderBottomWidth: 1,
-    borderBottomColor: "#E5E5E5",
+    borderBottomColor: '#E5E5E5'
   },
   headerRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    marginBottom: 6,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 6
   },
   headerCenter: {
     flex: 1,
-    alignItems: "center",
-    paddingHorizontal: 8,
+    alignItems: 'center',
+    paddingHorizontal: 8
   },
   headerTitle: {
     fontSize: 13,
-    fontWeight: "700",
-    color: "#2B1B5D",
+    fontWeight: '700',
+    color: '#2B1B5D'
   },
   headerSubtitle: {
     fontSize: 11,
-    color: "#737373",
-    marginTop: 2,
+    color: '#737373',
+    marginTop: 2
   },
   headerMetaRow: {
-    flexDirection: "row",
+    flexDirection: 'row',
     gap: 6,
-    alignItems: "center",
-    flexWrap: "wrap",
+    alignItems: 'center',
+    flexWrap: 'wrap'
   },
   chip: {
     fontSize: 10,
-    fontWeight: "600",
+    fontWeight: '600',
     paddingHorizontal: 8,
     paddingVertical: 3,
     borderRadius: 8,
-    overflow: "hidden",
+    overflow: 'hidden'
   },
   chipReading: {
-    backgroundColor: "#DBEAFE",
-    color: "#1D4ED8",
+    backgroundColor: '#DBEAFE',
+    color: '#1D4ED8'
   },
   chipDeadline: {
-    backgroundColor: "#DCFCE7",
-    color: "#15803D",
+    backgroundColor: '#DCFCE7',
+    color: '#15803D'
   },
   chipWarning: {
-    backgroundColor: "#FEF9C3",
-    color: "#A16207",
+    backgroundColor: '#FEF9C3',
+    color: '#A16207'
   },
   headerMeta: {
     fontSize: 11,
-    color: "#737373",
+    color: '#737373'
   },
   // Audio bar
   audioBar: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     paddingHorizontal: 12,
     paddingVertical: 6,
-    backgroundColor: "#F5F3FF",
+    backgroundColor: '#F5F3FF',
     borderBottomWidth: 1,
-    borderBottomColor: "#E5E5E5",
-    gap: 8,
+    borderBottomColor: '#E5E5E5',
+    gap: 8
   },
   audioLabel: {
     fontSize: 12,
-    color: "#2B1B5D",
-    flex: 1,
+    color: '#2B1B5D',
+    flex: 1
   },
   speedRow: {
-    flexDirection: "row",
-    gap: 4,
+    flexDirection: 'row',
+    gap: 4
   },
   speedBtn: {
-    minWidth: 44,
+    minWidth: 44
   },
   // Highlight toolbar
   highlightBar: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     paddingHorizontal: 12,
     paddingVertical: 6,
     gap: 6,
-    backgroundColor: "#FFFBEB",
+    backgroundColor: '#FFFBEB',
     borderBottomWidth: 1,
-    borderBottomColor: "#E5E5E5",
+    borderBottomColor: '#E5E5E5'
   },
   highlightBarLabel: {
     fontSize: 11,
-    color: "#737373",
+    color: '#737373'
   },
   hlBtn: {
-    minWidth: 60,
+    minWidth: 60
   },
   // Body
   body: {
     paddingHorizontal: 24,
-    paddingTop: 20,
+    paddingTop: 20
   },
   bodyTitle: {
-    fontWeight: "700",
-    color: "#2B1B5D",
-    marginBottom: 16,
+    fontWeight: '700',
+    color: '#2B1B5D',
+    marginBottom: 16
   },
   bodyParagraph: {
-    color: "#171717",
+    color: '#171717',
     marginBottom: 16,
-    textAlign: "justify",
+    textAlign: 'justify'
   },
   bodyHighlight: {
-    backgroundColor: "#FDE68A",
-    color: "#111827",
+    backgroundColor: '#FDE68A',
+    color: '#111827'
   },
   calloutCard: {
     padding: 16,
     borderRadius: 16,
-    backgroundColor: "#DBEAFE",
+    backgroundColor: '#DBEAFE',
     borderLeftWidth: 4,
-    borderLeftColor: "#1D4ED8",
-    marginVertical: 12,
+    borderLeftColor: '#1D4ED8',
+    marginVertical: 12
   },
   calloutTitle: {
     fontSize: 14,
-    fontWeight: "700",
-    color: "#1D4ED8",
-    marginBottom: 8,
+    fontWeight: '700',
+    color: '#1D4ED8',
+    marginBottom: 8
   },
   calloutItem: {
     fontSize: 14,
-    color: "#1F2937",
-    marginBottom: 6,
+    color: '#1F2937',
+    marginBottom: 6
   },
   // Footer
   footer: {
     paddingHorizontal: 24,
-    paddingTop: 16,
+    paddingTop: 16
   },
   footerButton: {
-    width: "100%",
-  },
+    width: '100%'
+  }
 });

@@ -1,22 +1,31 @@
-import React from "react";
-import { StyleSheet, View } from "react-native";
-import { useTheme } from "react-native-paper";
-import { useNavigation } from "@react-navigation/native";
-import { OfflineNotice } from "./components/OfflineNotice";
-import { ScreenLayout } from "./components/ScreenLayout";
-import { SectionCard } from "./components/SectionCard";
-import { SkeletonBlock } from "./components/SkeletonBlock";
-import { StateMessage } from "./components/StateMessage";
-import { resolveScreenState, ScreenState } from "./components/ScreenState";
+import { useNavigation } from '@react-navigation/native';
+import React from 'react';
+import { StyleSheet, View } from 'react-native';
+import { useTheme } from 'react-native-paper';
 
-import { PActivityIndicator, PAvatar, PButton, PCard, PChip, PDivider, PListIcon, PListItem, PText } from "../components";
+import {
+  PActivityIndicator,
+  PAvatar,
+  PButton,
+  PCard,
+  PChip,
+  PDivider,
+  PListIcon,
+  PListItem,
+  PText
+} from '../components';
 import {
   getPaymentTransactions,
-  getPrimaryUser,
-  getSubscriptionForUser,
   getPlanForSubscription,
-} from "../data/mockSelectors";
-
+  getPrimaryUser,
+  getSubscriptionForUser
+} from '../data/mockSelectors';
+import { OfflineNotice } from './components/OfflineNotice';
+import { ScreenLayout } from './components/ScreenLayout';
+import { ScreenState, resolveScreenState } from './components/ScreenState';
+import { SectionCard } from './components/SectionCard';
+import { SkeletonBlock } from './components/SkeletonBlock';
+import { StateMessage } from './components/StateMessage';
 
 const ProfileReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
   const theme = useTheme();
@@ -25,27 +34,27 @@ const ProfileReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
   const subscription = getSubscriptionForUser(user?.id);
   const plan = getPlanForSubscription(subscription?.plan_id);
   const payments = getPaymentTransactions()
-    .filter((item) => item.subscription_id === subscription?.id)
+    .filter(item => item.subscription_id === subscription?.id)
     .slice(0, 2);
 
   return (
     <>
       <SectionCard title="Hesap" actionLabel="Düzenle">
         <View style={styles.profileHeader}>
-          <PAvatar.Text size={56} label={(user?.email ?? "EA").slice(0, 2).toUpperCase()} />
+          <PAvatar.Text size={56} label={(user?.email ?? 'EA').slice(0, 2).toUpperCase()} />
           <View style={styles.profileInfo}>
-            <PText variant="titleMedium">{user?.email ?? "Kullanıcı"}</PText>
+            <PText variant="titleMedium">{user?.email ?? 'Kullanıcı'}</PText>
             <PText variant="bodySmall" style={{ color: theme.colors.onSurfaceVariant }}>
-              {user?.email ?? "demo@pstcoaching.app"}
+              {user?.email ?? 'demo@pstcoaching.app'}
             </PText>
           </View>
-          <PChip compact>{subscription?.status ?? "aktif"}</PChip>
+          <PChip compact>{subscription?.status ?? 'aktif'}</PChip>
         </View>
         <PButton
           mode="outlined"
           style={styles.actionButton}
           disabled={isOffline}
-          onPress={() => navigation.navigate("ProfileAccount")}
+          onPress={() => navigation.navigate('ProfileAccount')}
         >
           Hesap Bilgileri
         </PButton>
@@ -53,18 +62,14 @@ const ProfileReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
 
       <SectionCard title="Abonelik" actionLabel="Planlar">
         <PCard style={styles.card}>
-          <PCard.Title title={plan?.name ?? "Plan"} subtitle={subscription?.renewal_at?.slice(0, 10)} />
+          <PCard.Title title={plan?.name ?? 'Plan'} subtitle={subscription?.renewal_at?.slice(0, 10)} />
           <PCard.Content>
             <PText variant="bodySmall" style={{ color: theme.colors.onSurfaceVariant }}>
               {plan?.seat_limit ?? 1} koltuk · Premium içerikler açık
             </PText>
           </PCard.Content>
           <PCard.Actions>
-            <PButton
-              mode="contained"
-              disabled={isOffline}
-              onPress={() => navigation.navigate("ProfileSubscription")}
-            >
+            <PButton mode="contained" disabled={isOffline} onPress={() => navigation.navigate('ProfileSubscription')}>
               Planı Yönet
             </PButton>
           </PCard.Actions>
@@ -74,28 +79,28 @@ const ProfileReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
       <SectionCard title="Hızlı Ayarlar" actionLabel="">
         <PListItem
           title="Dil"
-          description={user?.language?.toUpperCase() ?? "TR"}
-          left={(props) => <PListIcon {...props} icon="translate" />}
-          onPress={() => navigation.navigate("ProfileLanguage")}
+          description={user?.language?.toUpperCase() ?? 'TR'}
+          left={props => <PListIcon {...props} icon="translate" />}
+          onPress={() => navigation.navigate('ProfileLanguage')}
         />
         <PDivider />
         <PListItem
           title="Hatırlatmalar"
           description="Haftada 3 gün"
-          left={(props) => <PListIcon {...props} icon="bell-outline" />}
-          onPress={() => navigation.navigate("ProfileReminders")}
+          left={props => <PListIcon {...props} icon="bell-outline" />}
+          onPress={() => navigation.navigate('ProfileReminders')}
         />
         <PDivider />
         <PListItem
           title="Erişilebilirlik"
           description="Dinamik yazı tipi"
-          left={(props) => <PListIcon {...props} icon="human-handsup" />}
-          onPress={() => navigation.navigate("ProfileAccessibility")}
+          left={props => <PListIcon {...props} icon="human-handsup" />}
+          onPress={() => navigation.navigate('ProfileAccessibility')}
         />
       </SectionCard>
 
       <SectionCard title="Ödeme Geçmişi" actionLabel="Tümü">
-        {payments.map((payment) => (
+        {payments.map(payment => (
           <View key={payment.id} style={styles.paymentRow}>
             <PText variant="bodyMedium">{payment.purchased_at.slice(0, 10)}</PText>
             <PText variant="bodyMedium" style={{ color: theme.colors.onSurfaceVariant }}>
@@ -103,7 +108,7 @@ const ProfileReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
             </PText>
           </View>
         ))}
-        <PButton mode="text" disabled={isOffline} onPress={() => navigation.navigate("ProfilePaymentHistory")}>
+        <PButton mode="text" disabled={isOffline} onPress={() => navigation.navigate('ProfilePaymentHistory')}>
           Tümünü Gör
         </PButton>
       </SectionCard>
@@ -114,7 +119,7 @@ const ProfileReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
 export const ProfileOverviewScreen = ({ route }: { route?: { params?: { state?: ScreenState } } }) => {
   const state = resolveScreenState(route);
 
-  if (state === "loading") {
+  if (state === 'loading') {
     return (
       <ScreenLayout title="Profil" subtitle="Bilgiler hazırlanıyor">
         <SectionCard title="Yükleniyor">
@@ -131,7 +136,7 @@ export const ProfileOverviewScreen = ({ route }: { route?: { params?: { state?: 
     );
   }
 
-  if (state === "empty") {
+  if (state === 'empty') {
     return (
       <ScreenLayout title="Profil" subtitle="Kişisel bilgilerin">
         <StateMessage
@@ -144,7 +149,7 @@ export const ProfileOverviewScreen = ({ route }: { route?: { params?: { state?: 
     );
   }
 
-  if (state === "error") {
+  if (state === 'error') {
     return (
       <ScreenLayout title="Profil" subtitle="Bir sorun oluştu">
         <StateMessage
@@ -158,7 +163,7 @@ export const ProfileOverviewScreen = ({ route }: { route?: { params?: { state?: 
     );
   }
 
-  if (state === "offline") {
+  if (state === 'offline') {
     return (
       <ScreenLayout title="Profil" subtitle="Önbellekteki bilgiler">
         <OfflineNotice />
@@ -176,23 +181,23 @@ export const ProfileOverviewScreen = ({ route }: { route?: { params?: { state?: 
 
 const styles = StyleSheet.create({
   profileHeader: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center'
   },
   profileInfo: {
     flex: 1,
-    marginLeft: 12,
+    marginLeft: 12
   },
   actionButton: {
     marginTop: 12,
-    alignSelf: "flex-start",
+    alignSelf: 'flex-start'
   },
   card: {
-    marginBottom: 8,
+    marginBottom: 8
   },
   paymentRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginBottom: 8,
-  },
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 8
+  }
 });

@@ -1,15 +1,15 @@
-import React from "react";
-import { StyleSheet, View } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { OfflineNotice } from "../components/OfflineNotice";
-import { ScreenLayout } from "../components/ScreenLayout";
-import { SectionCard } from "../components/SectionCard";
-import { SkeletonBlock } from "../components/SkeletonBlock";
-import { StateMessage } from "../components/StateMessage";
-import { resolveScreenState, ScreenState } from "../components/ScreenState";
-import { getPrimaryUser } from "../../data/mockSelectors";
-import { PActivityIndicator, PAvatar, PButton, PDivider, PListIcon, PListItem, PText } from "../../components";
+import { useNavigation } from '@react-navigation/native';
+import React from 'react';
+import { StyleSheet, View } from 'react-native';
 
+import { PActivityIndicator, PAvatar, PButton, PDivider, PListIcon, PListItem, PText } from '../../components';
+import { getPrimaryUser } from '../../data/mockSelectors';
+import { OfflineNotice } from '../components/OfflineNotice';
+import { ScreenLayout } from '../components/ScreenLayout';
+import { ScreenState, resolveScreenState } from '../components/ScreenState';
+import { SectionCard } from '../components/SectionCard';
+import { SkeletonBlock } from '../components/SkeletonBlock';
+import { StateMessage } from '../components/StateMessage';
 
 const ProfileAccountContent = ({ isOffline }: { isOffline?: boolean }) => {
   const navigation = useNavigation<any>();
@@ -19,11 +19,11 @@ const ProfileAccountContent = ({ isOffline }: { isOffline?: boolean }) => {
     <>
       <SectionCard title="Profil Bilgileri" actionLabel="Düzenle">
         <View style={styles.profileHeader}>
-          <PAvatar.Text size={64} label={(user?.email ?? "EA").slice(0, 2).toUpperCase()} />
+          <PAvatar.Text size={64} label={(user?.email ?? 'EA').slice(0, 2).toUpperCase()} />
           <View style={styles.profileInfo}>
-            <PText variant="titleMedium">{user?.email ?? "Kullanıcı"}</PText>
-            <PText variant="bodySmall">{user?.email ?? "demo@pstcoaching.app"}</PText>
-            <PText variant="bodySmall">{user?.phone ?? "+90 555 123 45 67"}</PText>
+            <PText variant="titleMedium">{user?.email ?? 'Kullanıcı'}</PText>
+            <PText variant="bodySmall">{user?.email ?? 'demo@pstcoaching.app'}</PText>
+            <PText variant="bodySmall">{user?.phone ?? '+90 555 123 45 67'}</PText>
           </View>
         </View>
         <PButton mode="outlined" style={styles.actionButton} disabled={isOffline}>
@@ -35,14 +35,14 @@ const ProfileAccountContent = ({ isOffline }: { isOffline?: boolean }) => {
         <PListItem
           title="Şifre Değiştir"
           description="Son güncelleme 2 ay önce"
-          left={(props) => <PListIcon {...props} icon="lock-outline" />}
-          onPress={() => navigation.navigate("ProfileChangePassword")}
+          left={props => <PListIcon {...props} icon="lock-outline" />}
+          onPress={() => navigation.navigate('ProfileChangePassword')}
         />
         <PDivider />
         <PListItem
           title="Giriş Yapılan Cihazlar"
           description="2 aktif oturum"
-          left={(props) => <PListIcon {...props} icon="cellphone" />}
+          left={props => <PListIcon {...props} icon="cellphone" />}
         />
         <PButton mode="contained-tonal" style={styles.actionButton} disabled={isOffline}>
           Güvenlik Ayarları
@@ -53,28 +53,24 @@ const ProfileAccountContent = ({ isOffline }: { isOffline?: boolean }) => {
         <PListItem
           title="Verilerimi İndir"
           description="CSV ve PDF"
-          left={(props) => <PListIcon {...props} icon="download" />}
+          left={props => <PListIcon {...props} icon="download" />}
         />
         <PDivider />
         <PListItem
           title="Çıkış Yap"
           description="Hesabından güvenli çıkış"
-          left={(props) => <PListIcon {...props} icon="logout" />}
-          onPress={() => navigation.navigate("ProfileLogoutConfirm")}
+          left={props => <PListIcon {...props} icon="logout" />}
+          onPress={() => navigation.navigate('ProfileLogoutConfirm')}
         />
       </SectionCard>
     </>
   );
 };
 
-export const ProfileAccountScreen = ({
-  route,
-}: {
-  route?: { params?: { state?: ScreenState } };
-}) => {
+export const ProfileAccountScreen = ({ route }: { route?: { params?: { state?: ScreenState } } }) => {
   const state = resolveScreenState(route);
 
-  if (state === "loading") {
+  if (state === 'loading') {
     return (
       <ScreenLayout title="Hesap" subtitle="Hesap hazırlanıyor">
         <SectionCard title="Yükleniyor">
@@ -90,7 +86,7 @@ export const ProfileAccountScreen = ({
     );
   }
 
-  if (state === "empty") {
+  if (state === 'empty') {
     return (
       <ScreenLayout title="Hesap" subtitle="Bilgilerini tamamla">
         <StateMessage
@@ -103,7 +99,7 @@ export const ProfileAccountScreen = ({
     );
   }
 
-  if (state === "error") {
+  if (state === 'error') {
     return (
       <ScreenLayout title="Hesap" subtitle="Bir sorun oluştu">
         <StateMessage
@@ -117,7 +113,7 @@ export const ProfileAccountScreen = ({
     );
   }
 
-  if (state === "offline") {
+  if (state === 'offline') {
     return (
       <ScreenLayout title="Hesap" subtitle="Önbellekteki bilgiler">
         <OfflineNotice />
@@ -135,15 +131,15 @@ export const ProfileAccountScreen = ({
 
 const styles = StyleSheet.create({
   profileHeader: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center'
   },
   profileInfo: {
     marginLeft: 12,
-    flex: 1,
+    flex: 1
   },
   actionButton: {
     marginTop: 12,
-    alignSelf: "flex-start",
-  },
+    alignSelf: 'flex-start'
+  }
 });

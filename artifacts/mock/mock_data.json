@@ -132,11 +132,7 @@
       "id": "55555555-5555-5555-5555-555555555555",
       "code": "ai_package",
       "name": "AI Paketi",
-      "eligible_plan_types": [
-        "individual",
-        "family",
-        "group"
-      ]
+      "eligible_plan_types": ["individual", "family", "group"]
     }
   ],
   "subscription_add_ons": [
@@ -204,13 +200,8 @@
         "cccccccc-0000-0000-0000-000000000001",
         "cccccccc-0000-0000-0000-000000000002"
       ],
-      "featured_workshops": [
-        "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee",
-        "eeeeeeee-0000-0000-0000-000000000001"
-      ],
-      "featured_ebooks": [
-        "eeeeeeee-1111-2222-3333-444444444444"
-      ]
+      "featured_workshops": ["eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee", "eeeeeeee-0000-0000-0000-000000000001"],
+      "featured_ebooks": ["eeeeeeee-1111-2222-3333-444444444444"]
     },
     {
       "id": "abababab-0000-0000-0000-000000000001",
@@ -226,13 +217,8 @@
         "cccccccc-0000-0000-0000-000000000003",
         "cccccccc-0000-0000-0000-000000000004"
       ],
-      "featured_workshops": [
-        "eeeeeeee-0000-0000-0000-000000000002",
-        "eeeeeeee-0000-0000-0000-000000000003"
-      ],
-      "featured_ebooks": [
-        "eeeeeeee-5555-6666-7777-888888888888"
-      ]
+      "featured_workshops": ["eeeeeeee-0000-0000-0000-000000000002", "eeeeeeee-0000-0000-0000-000000000003"],
+      "featured_ebooks": ["eeeeeeee-5555-6666-7777-888888888888"]
     },
     {
       "id": "abababab-0000-0000-0000-000000000002",
@@ -248,13 +234,8 @@
         "cccccccc-0000-0000-0000-000000000005",
         "cccccccc-0000-0000-0000-000000000006"
       ],
-      "featured_workshops": [
-        "eeeeeeee-0000-0000-0000-000000000004",
-        "eeeeeeee-0000-0000-0000-000000000005"
-      ],
-      "featured_ebooks": [
-        "eeeeeeee-9999-aaaa-bbbb-cccccccccccc"
-      ]
+      "featured_workshops": ["eeeeeeee-0000-0000-0000-000000000004", "eeeeeeee-0000-0000-0000-000000000005"],
+      "featured_ebooks": ["eeeeeeee-9999-aaaa-bbbb-cccccccccccc"]
     },
     {
       "id": "abababab-0000-0000-0000-000000000003",
@@ -270,13 +251,8 @@
         "cccccccc-0000-0000-0000-000000000007",
         "cccccccc-0000-0000-0000-000000000008"
       ],
-      "featured_workshops": [
-        "eeeeeeee-0000-0000-0000-000000000006",
-        "eeeeeeee-0000-0000-0000-000000000007"
-      ],
-      "featured_ebooks": [
-        "eeeeeeee-dddd-eeee-ffff-000000000000"
-      ]
+      "featured_workshops": ["eeeeeeee-0000-0000-0000-000000000006", "eeeeeeee-0000-0000-0000-000000000007"],
+      "featured_ebooks": ["eeeeeeee-dddd-eeee-ffff-000000000000"]
     },
     {
       "id": "abababab-0000-0000-0000-000000000004",
@@ -292,13 +268,8 @@
         "cccccccc-0000-0000-0000-000000000009",
         "cccccccc-0000-0000-0000-000000000010"
       ],
-      "featured_workshops": [
-        "eeeeeeee-0000-0000-0000-000000000008",
-        "eeeeeeee-0000-0000-0000-000000000009"
-      ],
-      "featured_ebooks": [
-        "ffffffff-ffff-ffff-ffff-ffffffffffff"
-      ]
+      "featured_workshops": ["eeeeeeee-0000-0000-0000-000000000008", "eeeeeeee-0000-0000-0000-000000000009"],
+      "featured_ebooks": ["ffffffff-ffff-ffff-ffff-ffffffffffff"]
     }
   ],
   "journey_days": [

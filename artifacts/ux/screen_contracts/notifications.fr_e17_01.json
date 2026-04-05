@@ -3,9 +3,7 @@
   "title": "Bildirim listesi ve okunma yonetimi",
   "route": "/notifications",
   "purpose": "Implements FR-E17-01: Bildirim listesi ve okunma yonetimi.",
-  "entryPoints": [
-    "home.dashboard"
-  ],
+  "entryPoints": ["home.dashboard"],
   "inputs": [
     {
       "name": "userId",
@@ -26,10 +24,7 @@
       "source": "profile"
     }
   ],
-  "dataDependencies": [
-    "Notification",
-    "NotificationBadge"
-  ],
+  "dataDependencies": ["Notification", "NotificationBadge"],
   "uiStates": {
     "loading": {
       "description": "Skeleton placeholders are shown while loading data."
@@ -49,21 +44,8 @@
   },
   "analytics": {
     "screenView": "notification_list_viewed",
-    "events": [
-      "notification_list_viewed",
-      "notification_mark_read",
-      "notification_bulk_read",
-      "notification_cleared"
-    ]
+    "events": ["notification_list_viewed", "notification_mark_read", "notification_bulk_read", "notification_cleared"]
   },
-  "acceptanceCriteriaRefs": [
-    "AC-FR-E17-01-01",
-    "AC-FR-E17-01-02",
-    "AC-FR-E17-01-03",
-    "AC-FR-E17-01-04"
-  ],
-  "gates": [
-    "auth",
-    "subscription"
-  ]
+  "acceptanceCriteriaRefs": ["AC-FR-E17-01-01", "AC-FR-E17-01-02", "AC-FR-E17-01-03", "AC-FR-E17-01-04"],
+  "gates": ["auth", "subscription"]
 }

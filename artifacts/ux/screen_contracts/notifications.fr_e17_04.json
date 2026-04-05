@@ -3,9 +3,7 @@
   "title": "Hatirlatici planlama ve tip bazli zamanlama",
   "route": "/notifications/reminders",
   "purpose": "Implements FR-E17-04: Hatirlatici planlama ve tip bazli zamanlama.",
-  "entryPoints": [
-    "profile.settings"
-  ],
+  "entryPoints": ["profile.settings"],
   "inputs": [
     {
       "name": "userId",
@@ -26,9 +24,7 @@
       "source": "profile"
     }
   ],
-  "dataDependencies": [
-    "ReminderSetting"
-  ],
+  "dataDependencies": ["ReminderSetting"],
   "uiStates": {
     "loading": {
       "description": "Skeleton placeholders are shown while loading data."
@@ -48,21 +44,8 @@
   },
   "analytics": {
     "screenView": "reminder_planner_viewed",
-    "events": [
-      "reminder_planner_viewed",
-      "reminder_time_added",
-      "reminder_time_removed",
-      "reminder_type_toggled"
-    ]
+    "events": ["reminder_planner_viewed", "reminder_time_added", "reminder_time_removed", "reminder_type_toggled"]
   },
-  "acceptanceCriteriaRefs": [
-    "AC-FR-E17-04-01",
-    "AC-FR-E17-04-02",
-    "AC-FR-E17-04-03",
-    "AC-FR-E17-04-04"
-  ],
-  "gates": [
-    "auth",
-    "subscription"
-  ]
+  "acceptanceCriteriaRefs": ["AC-FR-E17-04-01", "AC-FR-E17-04-02", "AC-FR-E17-04-03", "AC-FR-E17-04-04"],
+  "gates": ["auth", "subscription"]
 }

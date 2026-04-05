@@ -1,15 +1,16 @@
-import React from "react";
-import { ScreenState } from "../screens/components/ScreenState";
+import React from 'react';
 
-export type SubscriptionStatus = "trial" | "active" | "none" | "expired";
-export type SubscriptionGate = "subscription:trial_or_active";
+import { ScreenState } from '../screens/components/ScreenState';
+
+export type SubscriptionStatus = 'trial' | 'active' | 'none' | 'expired';
+export type SubscriptionGate = 'subscription:trial_or_active';
 
 export const hasTrialOrActiveEntitlement = (status: SubscriptionStatus) => {
-  return status === "trial" || status === "active";
+  return status === 'trial' || status === 'active';
 };
 
 export const getSubscriptionGateOutcome = (status: SubscriptionStatus, gate: SubscriptionGate) => {
-  if (gate === "subscription:trial_or_active") {
+  if (gate === 'subscription:trial_or_active') {
     return { allowed: hasTrialOrActiveEntitlement(status), status };
   }
 
@@ -28,11 +29,11 @@ type NavigationLike = {
 
 export const withSubscriptionGate = <P extends { navigation?: NavigationLike; route?: { params?: GateRouteParams } }>(
   ScreenComponent: React.ComponentType<P>,
-  fallbackRoute: string = "ContentPaywall",
-  requiredGate: SubscriptionGate = "subscription:trial_or_active",
+  fallbackRoute: string = 'ContentPaywall',
+  requiredGate: SubscriptionGate = 'subscription:trial_or_active'
 ) => {
   const GatedScreen = (props: P) => {
-    const entitlement = props.route?.params?.entitlement ?? "active";
+    const entitlement = props.route?.params?.entitlement ?? 'active';
     const { allowed } = getSubscriptionGateOutcome(entitlement, requiredGate);
 
     React.useEffect(() => {
@@ -55,7 +56,7 @@ export const withSubscriptionGate = <P extends { navigation?: NavigationLike; ro
     return <ScreenComponent {...props} />;
   };
 
-  GatedScreen.displayName = `SubscriptionGate(${ScreenComponent.displayName ?? ScreenComponent.name ?? "Screen"})`;
+  GatedScreen.displayName = `SubscriptionGate(${ScreenComponent.displayName ?? ScreenComponent.name ?? 'Screen'})`;
 
   return GatedScreen;
 };

@@ -1,36 +1,24 @@
-import React from "react";
-import { ScrollView, StyleSheet, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { useNavigation } from "@react-navigation/native";
-import { OfflineNotice } from "../components/OfflineNotice";
-import { SkeletonBlock } from "../components/SkeletonBlock";
-import { StateMessage } from "../components/StateMessage";
-import { resolveScreenState, ScreenState } from "../components/ScreenState";
+import { useNavigation } from '@react-navigation/native';
+import React from 'react';
+import { ScrollView, StyleSheet, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+
+import { PActivityIndicator, PAvatar, PButton, PCard, PDivider, PText } from '../../components';
 import {
   getAchievements,
+  getContentItemsForParent,
   getModules,
   getPackagesForModule,
-  getContentItemsForParent,
-  getPrimaryUser,
-} from "../../data/mockSelectors";
-import {
-  PActivityIndicator,
-  PAvatar,
-  PButton,
-  PCard,
-  PDivider,
-  PText,
-} from "../../components";
+  getPrimaryUser
+} from '../../data/mockSelectors';
+import { OfflineNotice } from '../components/OfflineNotice';
+import { ScreenState, resolveScreenState } from '../components/ScreenState';
+import { SkeletonBlock } from '../components/SkeletonBlock';
+import { StateMessage } from '../components/StateMessage';
 
 type RouteParams = { state?: ScreenState; id?: string };
 
-const ContentAchievementContent = ({
-  achievementId,
-  isOffline,
-}: {
-  achievementId?: string;
-  isOffline?: boolean;
-}) => {
+const ContentAchievementContent = ({ achievementId, isOffline }: { achievementId?: string; isOffline?: boolean }) => {
   const navigation = useNavigation<any>();
   const user = getPrimaryUser();
 
@@ -40,24 +28,21 @@ const ContentAchievementContent = ({
     getAchievements().find((a: any) => a.user_id === user?.id);
 
   // Resolve completed module info
-  const completedModule =
-    getModules().find((m) => m.id === achievement?.source_id) ?? getModules()[0];
+  const completedModule = getModules().find(m => m.id === achievement?.source_id) ?? getModules()[0];
 
   // Derive stats from real data
-  const modulePackages = completedModule
-    ? getPackagesForModule(completedModule.id)
-    : [];
+  const modulePackages = completedModule ? getPackagesForModule(completedModule.id) : [];
   const totalSections = modulePackages.reduce((acc, pkg) => {
-    return acc + getContentItemsForParent("package", pkg.id).length;
+    return acc + getContentItemsForParent('package', pkg.id).length;
   }, 0);
   // Estimated reading time: 5 min per section
   const estMinutes = totalSections * 5;
   const estHours = Math.floor(estMinutes / 60);
-  const timeLabel = estHours > 0 ? estHours + "s" : estMinutes + "dk";
+  const timeLabel = estHours > 0 ? estHours + 's' : estMinutes + 'dk';
 
   // Next module recommendation
   const allModules = getModules();
-  const currentIndex = allModules.findIndex((m) => m.id === completedModule?.id);
+  const currentIndex = allModules.findIndex(m => m.id === completedModule?.id);
   const nextModule = allModules[currentIndex + 1] ?? null;
 
   return (
@@ -67,16 +52,12 @@ const ContentAchievementContent = ({
         style={styles.celebrationHeader}
         accessibilityRole="header"
         accessible
-        accessibilityLabel={
-          "Tebrikler! " + (completedModule?.title ?? "Modul") + " tamamlandi."
-        }
+        accessibilityLabel={'Tebrikler! ' + (completedModule?.title ?? 'Modul') + ' tamamlandi.'}
       >
         {/* Certificate badge */}
         <PAvatar.Icon size={96} icon="medal" color="#FFFFFF" style={styles.medalIcon} accessible={false} />
         <PText style={styles.celebrationTitle}>Tebrikler!</PText>
-        <PText style={styles.celebrationSubtitle}>
-          {completedModule?.title ?? "Modul"} tamamlandi
-        </PText>
+        <PText style={styles.celebrationSubtitle}>{completedModule?.title ?? 'Modul'} tamamlandi</PText>
       </View>
 
       <View style={styles.content}>
@@ -85,15 +66,21 @@ const ContentAchievementContent = ({
           style={styles.certCard}
           accessible
           accessibilityLabel={
-            "Sertifika: " + (completedModule?.title ?? "Modul") + " Uzmani." +
-            " " + modulePackages.length + " paket, " + totalSections + " bolum, " + timeLabel + " egitim."
+            'Sertifika: ' +
+            (completedModule?.title ?? 'Modul') +
+            ' Uzmani.' +
+            ' ' +
+            modulePackages.length +
+            ' paket, ' +
+            totalSections +
+            ' bolum, ' +
+            timeLabel +
+            ' egitim.'
           }
         >
           <View style={styles.certHeader}>
             <PAvatar.Icon size={36} icon="certificate" color="#F59E0B" style={styles.certIconBg} accessible={false} />
-            <PText style={styles.certTitle}>
-              {(completedModule?.title ?? "Modul") + " Uzmani"}
-            </PText>
+            <PText style={styles.certTitle}>{(completedModule?.title ?? 'Modul') + ' Uzmani'}</PText>
           </View>
           <PDivider style={styles.certDivider} />
           <View style={styles.statsRow} accessibilityRole="none">
@@ -139,7 +126,13 @@ const ContentAchievementContent = ({
         {nextModule && (
           <PCard style={styles.nextCard}>
             <View style={styles.nextHeader}>
-              <PAvatar.Icon size={28} icon="layers-outline" color="#7C4DFF" style={styles.nextIcon} accessible={false} />
+              <PAvatar.Icon
+                size={28}
+                icon="layers-outline"
+                color="#7C4DFF"
+                style={styles.nextIcon}
+                accessible={false}
+              />
               <PText style={styles.nextTitle}>Onerilen Sonraki Modul</PText>
             </View>
             <PText style={styles.nextModuleName}>{nextModule.title}</PText>
@@ -151,10 +144,8 @@ const ContentAchievementContent = ({
               compact
               disabled={isOffline}
               style={styles.goNextBtn}
-              onPress={() =>
-                navigation.navigate("ContentModuleHome", { id: nextModule.id })
-              }
-              accessibilityLabel={"Bir sonraki module git: " + nextModule.title}
+              onPress={() => navigation.navigate('ContentModuleHome', { id: nextModule.id })}
+              accessibilityLabel={'Bir sonraki module git: ' + nextModule.title}
             >
               Module Git
             </PButton>
@@ -175,7 +166,7 @@ const ContentAchievementContent = ({
           mode="text"
           style={styles.actionBtn}
           accessibilityLabel="Ana sayfaya don"
-          onPress={() => navigation.getParent()?.navigate("MainTabs")}
+          onPress={() => navigation.getParent()?.navigate('MainTabs')}
         >
           Ana Sayfaya Don
         </PButton>
@@ -184,15 +175,11 @@ const ContentAchievementContent = ({
   );
 };
 
-export const ContentAchievementScreen = ({
-  route,
-}: {
-  route?: { params?: RouteParams };
-}) => {
+export const ContentAchievementScreen = ({ route }: { route?: { params?: RouteParams } }) => {
   const state = resolveScreenState(route);
   const achievementId = route?.params?.id;
 
-  if (state === "loading") {
+  if (state === 'loading') {
     return (
       <SafeAreaView style={styles.root}>
         <ScrollView contentContainerStyle={styles.page}>
@@ -204,7 +191,7 @@ export const ContentAchievementScreen = ({
     );
   }
 
-  if (state === "empty") {
+  if (state === 'empty') {
     return (
       <SafeAreaView style={styles.root}>
         <ScrollView contentContainerStyle={styles.page}>
@@ -219,7 +206,7 @@ export const ContentAchievementScreen = ({
     );
   }
 
-  if (state === "error") {
+  if (state === 'error') {
     return (
       <SafeAreaView style={styles.root}>
         <ScrollView contentContainerStyle={styles.page}>
@@ -235,7 +222,7 @@ export const ContentAchievementScreen = ({
     );
   }
 
-  if (state === "offline") {
+  if (state === 'offline') {
     return (
       <SafeAreaView style={styles.root}>
         <OfflineNotice />
@@ -256,105 +243,111 @@ export const ContentAchievementScreen = ({
 };
 
 const styles = StyleSheet.create({
-  root: { flex: 1, backgroundColor: "#F8FAFC" },
+  root: { flex: 1, backgroundColor: '#F8FAFC' },
   page: { paddingBottom: 40 },
   body: { flex: 1 },
   celebrationHeader: {
-    backgroundColor: "#1E3A5F",
+    backgroundColor: '#1E3A5F',
     paddingTop: 36,
     paddingBottom: 40,
-    alignItems: "center",
+    alignItems: 'center'
   },
   medalIcon: {
-    backgroundColor: "#F59E0B",
+    backgroundColor: '#F59E0B',
     marginBottom: 16,
     width: 96,
     height: 96,
-    borderRadius: 48,
+    borderRadius: 48
   },
   celebrationTitle: {
     fontSize: 28,
-    fontWeight: "900",
-    color: "#FFFFFF",
-    marginBottom: 6,
+    fontWeight: '900',
+    color: '#FFFFFF',
+    marginBottom: 6
   },
   celebrationSubtitle: {
     fontSize: 15,
-    color: "rgba(255,255,255,0.8)",
-    textAlign: "center",
-    paddingHorizontal: 32,
+    color: 'rgba(255,255,255,0.8)',
+    textAlign: 'center',
+    paddingHorizontal: 32
   },
   content: { paddingHorizontal: 16, paddingTop: 20 },
   certCard: {
     padding: 16,
     borderRadius: 16,
     marginBottom: 12,
-    backgroundColor: "#FFFBEB",
+    backgroundColor: '#FFFBEB',
     borderWidth: 1,
-    borderColor: "#FCD34D",
+    borderColor: '#FCD34D'
   },
-  certHeader: { flexDirection: "row", alignItems: "center", gap: 10, marginBottom: 10 },
-  certIconBg: { backgroundColor: "#FEF3C7" },
-  certTitle: { fontSize: 16, fontWeight: "800", color: "#92400E" },
+  certHeader: { flexDirection: 'row', alignItems: 'center', gap: 10, marginBottom: 10 },
+  certIconBg: { backgroundColor: '#FEF3C7' },
+  certTitle: { fontSize: 16, fontWeight: '800', color: '#92400E' },
   certDivider: { marginBottom: 12 },
-  statsRow: { flexDirection: "row", justifyContent: "space-around", marginBottom: 12 },
-  statItem: { alignItems: "center", flex: 1 },
+  statsRow: { flexDirection: 'row', justifyContent: 'space-around', marginBottom: 12 },
+  statItem: { alignItems: 'center', flex: 1 },
   statBorder: {
     borderLeftWidth: 1,
     borderRightWidth: 1,
-    borderColor: "#FCD34D",
+    borderColor: '#FCD34D'
   },
-  statValue: { fontSize: 22, fontWeight: "800", color: "#92400E" },
-  statLabel: { fontSize: 11, color: "#B45309", marginTop: 2 },
-  xpRow: { flexDirection: "row", gap: 10, justifyContent: "center" },
+  statValue: { fontSize: 22, fontWeight: '800', color: '#92400E' },
+  statLabel: { fontSize: 11, color: '#B45309', marginTop: 2 },
+  xpRow: { flexDirection: 'row', gap: 10, justifyContent: 'center' },
   xpBadge: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     gap: 4,
-    backgroundColor: "#FEF9C3",
+    backgroundColor: '#FEF9C3',
     borderRadius: 8,
     paddingHorizontal: 10,
-    paddingVertical: 4,
+    paddingVertical: 4
   },
-  xpIcon: { backgroundColor: "transparent" },
-  xpText: { fontSize: 12, fontWeight: "700", color: "#92400E" },
+  xpIcon: { backgroundColor: 'transparent' },
+  xpText: { fontSize: 12, fontWeight: '700', color: '#92400E' },
   rozetBadge: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     gap: 4,
-    backgroundColor: "#EDE9FE",
+    backgroundColor: '#EDE9FE',
     borderRadius: 8,
     paddingHorizontal: 10,
-    paddingVertical: 4,
+    paddingVertical: 4
   },
-  rozetIcon: { backgroundColor: "transparent" },
-  rozetText: { fontSize: 12, fontWeight: "700", color: "#4C1D95" },
+  rozetIcon: { backgroundColor: 'transparent' },
+  rozetText: { fontSize: 12, fontWeight: '700', color: '#4C1D95' },
   dashboardCard: {
     padding: 14,
     borderRadius: 12,
     marginBottom: 12,
-    backgroundColor: "#F0F9FF",
+    backgroundColor: '#F0F9FF',
     borderLeftWidth: 3,
-    borderLeftColor: "#0EA5E9",
+    borderLeftColor: '#0EA5E9'
   },
-  dashboardRow: { flexDirection: "row", alignItems: "flex-start", gap: 10 },
-  dashIcon: { backgroundColor: "#E0F2FE" },
+  dashboardRow: { flexDirection: 'row', alignItems: 'flex-start', gap: 10 },
+  dashIcon: { backgroundColor: '#E0F2FE' },
   dashInfo: { flex: 1 },
-  dashTitle: { fontSize: 13, fontWeight: "700", color: "#0369A1", marginBottom: 4 },
-  dashDesc: { fontSize: 12, color: "#0C4A6E", lineHeight: 18 },
+  dashTitle: { fontSize: 13, fontWeight: '700', color: '#0369A1', marginBottom: 4 },
+  dashDesc: { fontSize: 12, color: '#0C4A6E', lineHeight: 18 },
   nextCard: {
     padding: 16,
     borderRadius: 12,
     marginBottom: 16,
-    backgroundColor: "#F5F3FF",
+    backgroundColor: '#F5F3FF',
     borderLeftWidth: 3,
-    borderLeftColor: "#7C4DFF",
+    borderLeftColor: '#7C4DFF'
   },
-  nextHeader: { flexDirection: "row", alignItems: "center", gap: 8, marginBottom: 8 },
-  nextIcon: { backgroundColor: "#EDE9FE" },
-  nextTitle: { fontSize: 12, fontWeight: "700", color: "#6D28D9" },
-  nextModuleName: { fontSize: 15, fontWeight: "700", color: "#1E3A5F", marginBottom: 4 },
-  nextModuleDesc: { fontSize: 13, color: "#4C1D95", lineHeight: 18, marginBottom: 12, opacity: 0.85 },
-  goNextBtn: { alignSelf: "flex-start", borderRadius: 10 },
-  actionBtn: { marginBottom: 8 },
+  nextHeader: { flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 8 },
+  nextIcon: { backgroundColor: '#EDE9FE' },
+  nextTitle: { fontSize: 12, fontWeight: '700', color: '#6D28D9' },
+  nextModuleName: { fontSize: 15, fontWeight: '700', color: '#1E3A5F', marginBottom: 4 },
+  nextModuleDesc: {
+    fontSize: 13,
+    color: '#4C1D95',
+    lineHeight: 18,
+    marginBottom: 12,
+    opacity: 0.85
+  },
+  goNextBtn: { alignSelf: 'flex-start', borderRadius: 10 },
+  actionBtn: { marginBottom: 8 }
 });

@@ -1,5 +1,5 @@
-import React from "react";
-import { Text } from "react-native-paper";
+import React from 'react';
+import { Text } from 'react-native-paper';
 
 type PTextProps = React.ComponentProps<typeof Text>;
 

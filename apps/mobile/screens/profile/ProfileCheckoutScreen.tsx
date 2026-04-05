@@ -1,50 +1,47 @@
-import React, { useState } from "react";
-import { Alert, Platform, StyleSheet, View } from "react-native";
-import { OfflineNotice } from "../components/OfflineNotice";
-import { ScreenLayout } from "../components/ScreenLayout";
-import { SectionCard } from "../components/SectionCard";
-import { SkeletonBlock } from "../components/SkeletonBlock";
-import { StateMessage } from "../components/StateMessage";
-import { resolveScreenState, ScreenState } from "../components/ScreenState";
-import { PButton, PCard, PDivider, PListIcon, PListItem, PText, PTextInput } from "../../components";
+import React, { useState } from 'react';
+import { Alert, Platform, StyleSheet, View } from 'react-native';
 
-const PLATFORM_LABEL = Platform.OS === "ios" ? "Apple Uygulama Magazasi" : "Google Play Magazasi";
-const PLATFORM_ICON = Platform.OS === "ios" ? "apple" : "google-play";
+import { PButton, PCard, PDivider, PListIcon, PListItem, PText, PTextInput } from '../../components';
+import { OfflineNotice } from '../components/OfflineNotice';
+import { ScreenLayout } from '../components/ScreenLayout';
+import { ScreenState, resolveScreenState } from '../components/ScreenState';
+import { SectionCard } from '../components/SectionCard';
+import { SkeletonBlock } from '../components/SkeletonBlock';
+import { StateMessage } from '../components/StateMessage';
+
+const PLATFORM_LABEL = Platform.OS === 'ios' ? 'Apple Uygulama Magazasi' : 'Google Play Magazasi';
+const PLATFORM_ICON = Platform.OS === 'ios' ? 'apple' : 'google-play';
 
 const ProfileCheckoutContent = ({ isOffline }: { isOffline?: boolean }) => {
-  const [couponCode, setCouponCode] = useState("");
+  const [couponCode, setCouponCode] = useState('');
   const [couponApplied, setCouponApplied] = useState(false);
   const [purchaseError, setPurchaseError] = useState<string | null>(null);
 
   const handleApplyCoupon = () => {
     if (!couponCode.trim()) return;
     // analytics: checkout_coupon_applied (stub)
-    Alert.alert("Kupon", `"${couponCode}" kodu uygulanacak. (Sahte ortamda simule edildi)`);
+    Alert.alert('Kupon', `"${couponCode}" kodu uygulanacak. (Sahte ortamda simule edildi)`);
     setCouponApplied(true);
   };
 
   // AC-FR-E3-02-01: platform IAP sheet; AC-FR-E3-02-04: error message on failure
   const handlePurchase = () => {
     if (isOffline) {
-      setPurchaseError("Satin alma icin internet baglantisi gereklidir.");
+      setPurchaseError('Satin alma icin internet baglantisi gereklidir.');
       return;
     }
     setPurchaseError(null);
     // analytics: checkout_purchase_tapped (stub)
-    Alert.alert(
-      PLATFORM_LABEL + " ile Satin Al",
-      "Magaza odeme akisi acilacak. (Sahte ortamda simule edildi)",
-      [
-        { text: "Iptal", style: "cancel" },
-        {
-          text: "Onayla",
-          onPress: () => {
-            // analytics: checkout_purchase_success (stub)
-            Alert.alert("Basarili", "Aboneliginiz aktiflestirildi. (AC-FR-E3-02-02)");
-          },
-        },
-      ]
-    );
+    Alert.alert(PLATFORM_LABEL + ' ile Satin Al', 'Magaza odeme akisi acilacak. (Sahte ortamda simule edildi)', [
+      { text: 'Iptal', style: 'cancel' },
+      {
+        text: 'Onayla',
+        onPress: () => {
+          // analytics: checkout_purchase_success (stub)
+          Alert.alert('Basarili', 'Aboneliginiz aktiflestirildi. (AC-FR-E3-02-02)');
+        }
+      }
+    ]);
   };
 
   return (
@@ -63,15 +60,21 @@ const ProfileCheckoutContent = ({ isOffline }: { isOffline?: boolean }) => {
             </View>
             {couponApplied && (
               <View style={styles.priceRow}>
-                <PText variant="bodyMedium" style={styles.discountText}>Kupon Indirimi</PText>
-                <PText variant="bodyMedium" style={styles.discountText}>-9,99 TL</PText>
+                <PText variant="bodyMedium" style={styles.discountText}>
+                  Kupon Indirimi
+                </PText>
+                <PText variant="bodyMedium" style={styles.discountText}>
+                  -9,99 TL
+                </PText>
               </View>
             )}
             <PDivider style={styles.divider} />
             <View style={styles.priceRow}>
-              <PText variant="titleMedium" style={styles.totalText}>Toplam</PText>
               <PText variant="titleMedium" style={styles.totalText}>
-                {couponApplied ? "70,00 TL" : "99,99 TL"}
+                Toplam
+              </PText>
+              <PText variant="titleMedium" style={styles.totalText}>
+                {couponApplied ? '70,00 TL' : '99,99 TL'}
               </PText>
             </View>
           </PCard.Content>
@@ -96,7 +99,7 @@ const ProfileCheckoutContent = ({ isOffline }: { isOffline?: boolean }) => {
             accessibilityLabel="Kupon kodunu uygula"
             accessibilityRole="button"
           >
-            {couponApplied ? "Uygulandi" : "Uygula"}
+            {couponApplied ? 'Uygulandi' : 'Uygula'}
           </PButton>
         </View>
 
@@ -122,8 +125,8 @@ const ProfileCheckoutContent = ({ isOffline }: { isOffline?: boolean }) => {
           {PLATFORM_LABEL} ile Satin Al
         </PButton>
         <PText variant="bodySmall" style={styles.platformNote}>
-          Odeme {PLATFORM_LABEL} hesabiniz uzerinden gerceklestirilir.
-          AC-FR-E3-02-03: Farkli bir cihazda giris yaptiginizda abonelik senkronlanir.
+          Odeme {PLATFORM_LABEL} hesabiniz uzerinden gerceklestirilir. AC-FR-E3-02-03: Farkli bir cihazda giris
+          yaptiginizda abonelik senkronlanir.
         </PText>
       </SectionCard>
 
@@ -131,14 +134,14 @@ const ProfileCheckoutContent = ({ isOffline }: { isOffline?: boolean }) => {
         <PListItem
           title="Visa 4242"
           description="Son kullanim 08/26"
-          left={(props) => <PListIcon {...props} icon="credit-card-outline" />}
+          left={props => <PListIcon {...props} icon="credit-card-outline" />}
           accessibilityLabel="Kayitli kart: Visa 4242"
         />
         <PDivider />
         <PListItem
           title="Fatura Bilgileri"
           description="Kisisel"
-          left={(props) => <PListIcon {...props} icon="file-document-outline" />}
+          left={props => <PListIcon {...props} icon="file-document-outline" />}
           accessibilityLabel="Fatura bilgilerini goruntule"
         />
       </SectionCard>
@@ -146,14 +149,10 @@ const ProfileCheckoutContent = ({ isOffline }: { isOffline?: boolean }) => {
   );
 };
 
-export const ProfileCheckoutScreen = ({
-  route,
-}: {
-  route?: { params?: { state?: ScreenState } };
-}) => {
+export const ProfileCheckoutScreen = ({ route }: { route?: { params?: { state?: ScreenState } } }) => {
   const state = resolveScreenState(route);
 
-  if (state === "loading") {
+  if (state === 'loading') {
     return (
       <ScreenLayout title="Satin Alma" subtitle="Satin alma hazirlaniyor">
         <SectionCard title="Ozet">
@@ -167,7 +166,7 @@ export const ProfileCheckoutScreen = ({
     );
   }
 
-  if (state === "empty") {
+  if (state === 'empty') {
     return (
       <ScreenLayout title="Satin Alma" subtitle="Sepet bos">
         <StateMessage
@@ -180,7 +179,7 @@ export const ProfileCheckoutScreen = ({
     );
   }
 
-  if (state === "error") {
+  if (state === 'error') {
     return (
       <ScreenLayout title="Satin Alma" subtitle="Bir sorun olustu">
         <StateMessage
@@ -194,7 +193,7 @@ export const ProfileCheckoutScreen = ({
     );
   }
 
-  if (state === "offline") {
+  if (state === 'offline') {
     return (
       <ScreenLayout title="Satin Alma" subtitle="Cevrimdisi">
         <OfflineNotice />
@@ -212,53 +211,53 @@ export const ProfileCheckoutScreen = ({
 
 const styles = StyleSheet.create({
   card: {
-    marginBottom: 12,
+    marginBottom: 12
   },
   priceRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginBottom: 8,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 8
   },
   discountText: {
-    color: "#059669",
+    color: '#059669'
   },
   divider: {
-    marginVertical: 8,
+    marginVertical: 8
   },
   totalText: {
-    fontWeight: "700",
-    color: "#2B1B5D",
+    fontWeight: '700',
+    color: '#2B1B5D'
   },
   couponRow: {
-    flexDirection: "row",
+    flexDirection: 'row',
     gap: 8,
     marginBottom: 8,
-    alignItems: "flex-end",
+    alignItems: 'flex-end'
   },
   couponInput: {
-    flex: 1,
+    flex: 1
   },
   couponButton: {
     minHeight: 48,
-    alignSelf: "flex-end",
+    alignSelf: 'flex-end'
   },
   errorBanner: {
-    backgroundColor: "#FEE2E2",
+    backgroundColor: '#FEE2E2',
     borderRadius: 8,
     padding: 10,
-    marginBottom: 8,
+    marginBottom: 8
   },
   errorText: {
-    color: "#991B1B",
+    color: '#991B1B'
   },
   purchaseButton: {
     minHeight: 52,
     marginTop: 4,
-    marginBottom: 4,
+    marginBottom: 4
   },
   platformNote: {
-    color: "#6B7280",
-    textAlign: "center",
-    lineHeight: 16,
-  },
+    color: '#6B7280',
+    textAlign: 'center',
+    lineHeight: 16
+  }
 });

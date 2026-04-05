@@ -3,10 +3,7 @@
   "title": "Ekran okuyucu uyumu",
   "route": "/accessibility/screen-reader",
   "purpose": "Implements FR-E10-04: Ekran okuyucu uyumu - etiket durumu, odak sirasi, form etiketleri, gorsel alternatifleri.",
-  "entryPoints": [
-    "profile.accessibility",
-    "accessibility.fr_e10_01"
-  ],
+  "entryPoints": ["profile.accessibility", "accessibility.fr_e10_01"],
   "inputs": [
     {
       "name": "userId",
@@ -15,9 +12,7 @@
       "source": "session"
     }
   ],
-  "dataDependencies": [
-    "AccessibilitySettings"
-  ],
+  "dataDependencies": ["AccessibilitySettings"],
   "uiStates": {
     "loading": {
       "description": "Skeleton shown while loading screen reader compatibility status."
@@ -37,18 +32,8 @@
   },
   "analytics": {
     "screenView": "screen_reader_settings_viewed",
-    "events": [
-      "screen_reader_settings_viewed",
-      "screen_reader_mode_toggled"
-    ]
+    "events": ["screen_reader_settings_viewed", "screen_reader_mode_toggled"]
   },
-  "acceptanceCriteriaRefs": [
-    "AC-FR-E10-04-01",
-    "AC-FR-E10-04-02",
-    "AC-FR-E10-04-03",
-    "AC-FR-E10-04-04"
-  ],
-  "gates": [
-    "auth"
-  ]
+  "acceptanceCriteriaRefs": ["AC-FR-E10-04-01", "AC-FR-E10-04-02", "AC-FR-E10-04-03", "AC-FR-E10-04-04"],
+  "gates": ["auth"]
 }

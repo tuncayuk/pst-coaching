@@ -3,9 +3,7 @@
   "title": "Uygulama/egzersiz tamamlama",
   "route": "/content/exercise",
   "purpose": "Implements FR-E5-06: Step-by-step exercise with ordered unlock and progress save.",
-  "entryPoints": [
-    "content.reading"
-  ],
+  "entryPoints": ["content.reading"],
   "inputs": [
     {
       "name": "userId",
@@ -20,10 +18,7 @@
       "source": "route_params"
     }
   ],
-  "dataDependencies": [
-    "ExerciseProgress",
-    "ContentProgress"
-  ],
+  "dataDependencies": ["ExerciseProgress", "ContentProgress"],
   "uiStates": {
     "loading": {
       "description": "Exercise steps loading."
@@ -50,12 +45,6 @@
       "content_exercise_progress_saved"
     ]
   },
-  "acceptanceCriteriaRefs": [
-    "AC-FR-E5-06-01",
-    "AC-FR-E5-06-02",
-    "AC-FR-E5-06-03"
-  ],
-  "gates": [
-    "auth"
-  ]
+  "acceptanceCriteriaRefs": ["AC-FR-E5-06-01", "AC-FR-E5-06-02", "AC-FR-E5-06-03"],
+  "gates": ["auth"]
 }

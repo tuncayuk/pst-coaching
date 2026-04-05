@@ -1,15 +1,15 @@
-import React from "react";
-import { StyleSheet, View, TouchableOpacity, ScrollView } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { OfflineNotice } from "../components/OfflineNotice";
-import { ScreenLayout } from "../components/ScreenLayout";
-import { SectionCard } from "../components/SectionCard";
-import { SkeletonBlock } from "../components/SkeletonBlock";
-import { StateMessage } from "../components/StateMessage";
-import { resolveScreenState, ScreenState } from "../components/ScreenState";
-import { PActivityIndicator, PButton, PText } from "../../components";
+import { useNavigation } from '@react-navigation/native';
+import React from 'react';
+import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { PActivityIndicator, PButton, PText } from '../../components';
+import { OfflineNotice } from '../components/OfflineNotice';
+import { ScreenLayout } from '../components/ScreenLayout';
+import { ScreenState, resolveScreenState } from '../components/ScreenState';
+import { SectionCard } from '../components/SectionCard';
+import { SkeletonBlock } from '../components/SkeletonBlock';
+import { StateMessage } from '../components/StateMessage';
 
 const FaceIdSetupContent = ({ isOffline }: { isOffline?: boolean }) => {
   const navigation = useNavigation<any>();
@@ -23,9 +23,7 @@ const FaceIdSetupContent = ({ isOffline }: { isOffline?: boolean }) => {
           </View>
         </View>
         <PText style={styles.title}>FaceID ile Hızlı Giriş</PText>
-        <PText style={styles.description}>
-          Sonraki girişlerinizde FaceID kullanmak ister misiniz?
-        </PText>
+        <PText style={styles.description}>Sonraki girişlerinizde FaceID kullanmak ister misiniz?</PText>
         <View style={styles.infoCard}>
           <PText style={styles.infoTitle}>✓ FaceID Avantajları</PText>
           <View style={styles.list}>
@@ -39,7 +37,7 @@ const FaceIdSetupContent = ({ isOffline }: { isOffline?: boolean }) => {
           mode="contained"
           disabled={isOffline}
           onPress={() => {
-            navigation.navigate("AuthDemographics");
+            navigation.navigate('AuthDemographics');
           }}
           style={styles.button}
           accessibilityLabel="FaceID etkinlestir"
@@ -48,7 +46,7 @@ const FaceIdSetupContent = ({ isOffline }: { isOffline?: boolean }) => {
         </PButton>
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate("AuthDemographics");
+            navigation.navigate('AuthDemographics');
           }}
           style={styles.skipButton}
           disabled={isOffline}
@@ -66,14 +64,10 @@ const FaceIdSetupContent = ({ isOffline }: { isOffline?: boolean }) => {
   );
 };
 
-export const AuthFaceIdSetupScreen = ({
-  route,
-}: {
-  route?: { params?: { state?: ScreenState } };
-}) => {
+export const AuthFaceIdSetupScreen = ({ route }: { route?: { params?: { state?: ScreenState } } }) => {
   const state = resolveScreenState(route);
 
-  if (state === "loading") {
+  if (state === 'loading') {
     return (
       <ScreenLayout title="FaceID Kurulumu" subtitle="Yükleniyor">
         <SectionCard title="Yükleniyor">
@@ -84,7 +78,7 @@ export const AuthFaceIdSetupScreen = ({
     );
   }
 
-  if (state === "empty") {
+  if (state === 'empty') {
     return (
       <ScreenLayout title="FaceID Kurulumu" subtitle="Bilgi bulunamadı">
         <StateMessage
@@ -97,7 +91,7 @@ export const AuthFaceIdSetupScreen = ({
     );
   }
 
-  if (state === "error") {
+  if (state === 'error') {
     return (
       <ScreenLayout title="FaceID Kurulumu" subtitle="Bir sorun oluştu">
         <StateMessage
@@ -111,7 +105,7 @@ export const AuthFaceIdSetupScreen = ({
     );
   }
 
-  if (state === "offline") {
+  if (state === 'offline') {
     return (
       <>
         <OfflineNotice />
@@ -126,94 +120,94 @@ export const AuthFaceIdSetupScreen = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FAFAFA",
+    backgroundColor: '#FAFAFA'
   },
   scrollContent: {
     paddingHorizontal: 24,
     paddingTop: 32,
     paddingBottom: 32,
-    alignItems: "center",
+    alignItems: 'center'
   },
   iconContainer: {
-    alignItems: "center",
-    marginBottom: 24,
+    alignItems: 'center',
+    marginBottom: 24
   },
   iconCircle: {
     width: 120,
     height: 120,
     borderRadius: 60,
-    backgroundColor: "#8B5CF6",
-    justifyContent: "center",
-    alignItems: "center",
-    shadowColor: "#8B5CF6",
+    backgroundColor: '#8B5CF6',
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: '#8B5CF6',
     shadowOpacity: 0.4,
     shadowRadius: 30,
-    elevation: 10,
+    elevation: 10
   },
   icon: {
-    fontSize: 64,
+    fontSize: 64
   },
   title: {
     fontSize: 24,
-    fontWeight: "700",
-    color: "#2B1B5D",
+    fontWeight: '700',
+    color: '#2B1B5D',
     marginBottom: 12,
-    textAlign: "center",
+    textAlign: 'center'
   },
   description: {
     fontSize: 16,
-    color: "#404040",
+    color: '#404040',
     marginBottom: 32,
-    textAlign: "center",
+    textAlign: 'center',
     maxWidth: 300,
-    alignSelf: "center",
+    alignSelf: 'center'
   },
   infoCard: {
-    backgroundColor: "#EDE9FE",
+    backgroundColor: '#EDE9FE',
     padding: 16,
     borderRadius: 12,
     marginBottom: 24,
     borderWidth: 2,
-    borderColor: "#8B5CF6",
+    borderColor: '#8B5CF6',
     maxWidth: 320,
-    alignSelf: "center",
+    alignSelf: 'center'
   },
   infoTitle: {
-    fontWeight: "700",
-    color: "#8B5CF6",
-    marginBottom: 12,
+    fontWeight: '700',
+    color: '#8B5CF6',
+    marginBottom: 12
   },
   list: {
-    gap: 8,
+    gap: 8
   },
   listItem: {
     fontSize: 14,
-    color: "#171717",
+    color: '#171717',
     lineHeight: 24,
-    marginLeft: 20,
+    marginLeft: 20
   },
   button: {
     marginBottom: 12,
     maxWidth: 320,
-    alignSelf: "center",
-    borderRadius: 12,
+    alignSelf: 'center',
+    borderRadius: 12
   },
   skipButton: {
-    alignItems: "center",
-    marginTop: 8,
+    alignItems: 'center',
+    marginTop: 8
   },
   skipText: {
-    color: "#525252",
-    fontWeight: "600",
-    fontSize: 15,
+    color: '#525252',
+    fontWeight: '600',
+    fontSize: 15
   },
   hint: {
-    textAlign: "center",
-    color: "#525252",
+    textAlign: 'center',
+    color: '#525252',
     marginTop: 24,
     maxWidth: 280,
-    alignSelf: "center",
+    alignSelf: 'center',
     lineHeight: 18,
-    fontSize: 12,
-  },
+    fontSize: 12
+  }
 });

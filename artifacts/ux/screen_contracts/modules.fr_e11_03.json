@@ -3,9 +3,7 @@
   "title": "Paket ici okuma ve uygulama",
   "route": "/modules/package/exercise",
   "purpose": "Implements FR-E11-03: In-package exercise with sequential steps, note-taking, and next-section CTA on completion.",
-  "entryPoints": [
-    "modules.fr_e11_02"
-  ],
+  "entryPoints": ["modules.fr_e11_02"],
   "inputs": [
     {
       "name": "id",
@@ -20,12 +18,7 @@
       "source": "route"
     }
   ],
-  "dataDependencies": [
-    "ContentItem",
-    "ExerciseStep",
-    "ContentProgress",
-    "User"
-  ],
+  "dataDependencies": ["ContentItem", "ExerciseStep", "ContentProgress", "User"],
   "uiStates": {
     "loading": {
       "description": "Skeleton for exercise steps."
@@ -45,18 +38,8 @@
   },
   "analytics": {
     "screenView": "exercise_viewed",
-    "events": [
-      "exercise_viewed",
-      "exercise_step_completed",
-      "exercise_completed"
-    ]
+    "events": ["exercise_viewed", "exercise_step_completed", "exercise_completed"]
   },
-  "acceptanceCriteriaRefs": [
-    "AC-FR-E11-03-01",
-    "AC-FR-E11-03-02",
-    "AC-FR-E11-03-03"
-  ],
-  "gates": [
-    "auth"
-  ]
+  "acceptanceCriteriaRefs": ["AC-FR-E11-03-01", "AC-FR-E11-03-02", "AC-FR-E11-03-03"],
+  "gates": ["auth"]
 }

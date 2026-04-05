@@ -3,9 +3,7 @@
   "title": "Gunluk hatirlatici",
   "route": "/home/reminder",
   "purpose": "HomeReminderSettingScreen. Explains why notifications are needed before requesting permission (AC-FR-E2-08-01). Default reminder time 20:00, user-editable (AC-FR-E2-08-02). Skips repeat if comment already submitted today (AC-FR-E2-08-03). Phase 1: single daily reminder only (AC-FR-E2-08-04).",
-  "entryPoints": [
-    "home.dashboard"
-  ],
+  "entryPoints": ["home.dashboard"],
   "inputs": [
     {
       "name": "userId",
@@ -26,12 +24,7 @@
       "source": "profile"
     }
   ],
-  "dataDependencies": [
-    "User",
-    "Subscription",
-    "ContentProgress",
-    "ReminderSetting"
-  ],
+  "dataDependencies": ["User", "Subscription", "ContentProgress", "ReminderSetting"],
   "uiStates": {
     "loading": {
       "description": "Skeleton: explanation text block, time picker placeholder, CTA button skeleton."
@@ -60,11 +53,6 @@
       "home_reminder_saved"
     ]
   },
-  "acceptanceCriteriaRefs": [
-    "AC-FR-E2-08-01",
-    "AC-FR-E2-08-02",
-    "AC-FR-E2-08-03",
-    "AC-FR-E2-08-04"
-  ],
+  "acceptanceCriteriaRefs": ["AC-FR-E2-08-01", "AC-FR-E2-08-02", "AC-FR-E2-08-03", "AC-FR-E2-08-04"],
   "gates": []
 }

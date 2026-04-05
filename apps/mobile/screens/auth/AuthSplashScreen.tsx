@@ -1,8 +1,8 @@
-import React, { useEffect } from "react";
-import { StyleSheet, View, Animated, Image } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { PText } from "../../components";
+import { useNavigation } from '@react-navigation/native';
+import React, { useEffect } from 'react';
+import { Animated, Image, StyleSheet, View } from 'react-native';
 
+import { PText } from '../../components';
 
 export const AuthSplashScreen = () => {
   const navigation = useNavigation<any>();
@@ -16,7 +16,7 @@ export const AuthSplashScreen = () => {
       // Check if user has seen onboarding before
       // For now, always route to onboarding (first time users)
       // TODO: Check AsyncStorage for onboarding completion
-      navigation.replace("OnboardingCarousel");
+      navigation.replace('OnboardingCarousel');
     }, 3000);
 
     // Pulse animation for loading dots
@@ -27,13 +27,13 @@ export const AuthSplashScreen = () => {
           Animated.timing(anim, {
             toValue: 1,
             duration: 500,
-            useNativeDriver: true,
+            useNativeDriver: true
           }),
           Animated.timing(anim, {
             toValue: 0.4,
             duration: 500,
-            useNativeDriver: true,
-          }),
+            useNativeDriver: true
+          })
         ])
       );
     };
@@ -58,7 +58,7 @@ export const AuthSplashScreen = () => {
     <View style={styles.container}>
       <View style={styles.content}>
         <View style={styles.logoContainer}>
-          <Image source={require("../../assets/logo/pst_logo_384w.png")} style={styles.logoImage} />
+          <Image source={require('../../assets/logo/pst_logo_384w.png')} style={styles.logoImage} />
         </View>
         <PText style={styles.tagline}>Profesyonel Coaching Yolculuğunuz</PText>
         <View style={styles.loadingContainer}>
@@ -74,44 +74,44 @@ export const AuthSplashScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     // Gradient background - using primary color, can be enhanced with LinearGradient if needed
-    backgroundColor: "#00B4D8", // Primary color from mockup
+    backgroundColor: '#00B4D8' // Primary color from mockup
   },
   content: {
-    alignItems: "center",
-    justifyContent: "center",
-    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    flex: 1
   },
   logoContainer: {
     marginBottom: 32,
-    alignItems: "center",
+    alignItems: 'center'
   },
   logoImage: {
     width: 128,
     height: 75,
-    resizeMode: "contain",
+    resizeMode: 'contain'
   },
   tagline: {
     fontSize: 18,
-    fontWeight: "600",
-    textAlign: "center",
+    fontWeight: '600',
+    textAlign: 'center',
     maxWidth: 280,
     lineHeight: 28,
     marginBottom: 64,
-    color: "rgba(255,255,255,0.95)",
+    color: 'rgba(255,255,255,0.95)'
   },
   loadingContainer: {
-    flexDirection: "row",
+    flexDirection: 'row',
     gap: 8,
-    position: "absolute",
-    bottom: 64,
+    position: 'absolute',
+    bottom: 64
   },
   dot: {
     width: 8,
     height: 8,
     borderRadius: 4,
-    backgroundColor: "rgba(255,255,255,0.5)",
-  },
+    backgroundColor: 'rgba(255,255,255,0.5)'
+  }
 });

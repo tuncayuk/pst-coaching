@@ -3,10 +3,7 @@
   "title": "Favoriler ana ekrani",
   "route": "/favorites",
   "purpose": "Implements FR-E9-01: Favoriler ana listesi — icerik turu etiketleri, arama ve filtreleme, bos durum.",
-  "entryPoints": [
-    "library.overview",
-    "home.dashboard"
-  ],
+  "entryPoints": ["library.overview", "home.dashboard"],
   "inputs": [
     {
       "name": "userId",
@@ -27,13 +24,7 @@
       "source": "profile"
     }
   ],
-  "dataDependencies": [
-    "Favorite",
-    "Journey",
-    "Workshop",
-    "Module",
-    "Ebook"
-  ],
+  "dataDependencies": ["Favorite", "Journey", "Workshop", "Module", "Ebook"],
   "uiStates": {
     "loading": {
       "description": "Skeleton placeholders shown while loading FR-E9-01 data."
@@ -53,19 +44,8 @@
   },
   "analytics": {
     "screenView": "favorites_viewed",
-    "events": [
-      "favorites_viewed",
-      "favorite_opened",
-      "favorite_filter_applied"
-    ]
+    "events": ["favorites_viewed", "favorite_opened", "favorite_filter_applied"]
   },
-  "acceptanceCriteriaRefs": [
-    "AC-FR-E9-01-01",
-    "AC-FR-E9-01-02",
-    "AC-FR-E9-01-03"
-  ],
-  "gates": [
-    "auth",
-    "subscription"
-  ]
+  "acceptanceCriteriaRefs": ["AC-FR-E9-01-01", "AC-FR-E9-01-02", "AC-FR-E9-01-03"],
+  "gates": ["auth", "subscription"]
 }

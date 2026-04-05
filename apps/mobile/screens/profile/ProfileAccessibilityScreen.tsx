@@ -1,20 +1,15 @@
-import React, { useState } from "react";
-import { StyleSheet, TouchableOpacity, View } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { OfflineNotice } from "../components/OfflineNotice";
-import { ScreenLayout } from "../components/ScreenLayout";
-import { SectionCard } from "../components/SectionCard";
-import { SkeletonBlock } from "../components/SkeletonBlock";
-import { StateMessage } from "../components/StateMessage";
-import { resolveScreenState, ScreenState } from "../components/ScreenState";
-import { getAccessibilitySettings, getPrimaryUser } from "../../data/mockSelectors";
-import {
-  PActivityIndicator,
-  PButton,
-  PDivider,
-  PText,
-  PSwitch,
-} from "../../components";
+import { useNavigation } from '@react-navigation/native';
+import React, { useState } from 'react';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
+
+import { PActivityIndicator, PButton, PDivider, PSwitch, PText } from '../../components';
+import { getAccessibilitySettings, getPrimaryUser } from '../../data/mockSelectors';
+import { OfflineNotice } from '../components/OfflineNotice';
+import { ScreenLayout } from '../components/ScreenLayout';
+import { ScreenState, resolveScreenState } from '../components/ScreenState';
+import { SectionCard } from '../components/SectionCard';
+import { SkeletonBlock } from '../components/SkeletonBlock';
+import { StateMessage } from '../components/StateMessage';
 
 // Nav arrow pill
 const NavCard = ({
@@ -22,7 +17,7 @@ const NavCard = ({
   subtitle,
   onPress,
   disabled,
-  accessibilityLabel,
+  accessibilityLabel
 }: {
   title: string;
   subtitle: string;
@@ -39,10 +34,16 @@ const NavCard = ({
     accessibilityHint="Bu erisilebilirlik bolumunu acmak icin dokunun"
   >
     <View style={styles.navCardBody}>
-      <PText variant="titleSmall" style={styles.navCardTitle}>{title}</PText>
-      <PText variant="bodySmall" style={styles.navCardSub}>{subtitle}</PText>
+      <PText variant="titleSmall" style={styles.navCardTitle}>
+        {title}
+      </PText>
+      <PText variant="bodySmall" style={styles.navCardSub}>
+        {subtitle}
+      </PText>
     </View>
-    <PText style={styles.navArrow} accessibilityElementsHidden>{'>'}</PText>
+    <PText style={styles.navArrow} accessibilityElementsHidden>
+      {'>'}
+    </PText>
   </TouchableOpacity>
 );
 
@@ -53,7 +54,7 @@ const ToggleRow = ({
   value,
   onValueChange,
   disabled,
-  accessibilityLabel,
+  accessibilityLabel
 }: {
   label: string;
   description: string;
@@ -69,15 +70,14 @@ const ToggleRow = ({
     accessibilityState={{ checked: value, disabled }}
   >
     <View style={styles.toggleText}>
-      <PText variant="bodyMedium" style={styles.toggleLabel}>{label}</PText>
-      <PText variant="bodySmall" style={styles.toggleDesc}>{description}</PText>
+      <PText variant="bodyMedium" style={styles.toggleLabel}>
+        {label}
+      </PText>
+      <PText variant="bodySmall" style={styles.toggleDesc}>
+        {description}
+      </PText>
     </View>
-    <PSwitch
-      value={value}
-      onValueChange={onValueChange}
-      disabled={disabled}
-      accessibilityLabel={accessibilityLabel}
-    />
+    <PSwitch value={value} onValueChange={onValueChange} disabled={disabled} accessibilityLabel={accessibilityLabel} />
   </View>
 );
 
@@ -91,8 +91,8 @@ const ProfileAccessibilityContent = ({ isOffline }: { isOffline?: boolean }) => 
   const [reduceMotion, setReduceMotion] = useState(settings?.reduce_motion ?? false);
 
   // Summary for nav cards
-  const textSizeLabel = settings?.text_size ?? "normal";
-  const themeLabel = settings?.theme ?? "system";
+  const textSizeLabel = settings?.text_size ?? 'normal';
+  const themeLabel = settings?.theme ?? 'system';
 
   return (
     <>
@@ -105,18 +105,18 @@ const ProfileAccessibilityContent = ({ isOffline }: { isOffline?: boolean }) => 
           label="Yuksek Kontrast"
           description="Metin ve arka plan kontrastini arttirir (min 7:1)"
           value={highContrast}
-          onValueChange={(v) => setHighContrast(v)}
+          onValueChange={v => setHighContrast(v)}
           disabled={isOffline}
-          accessibilityLabel={"Yuksek kontrast: " + (highContrast ? "acik" : "kapali")}
+          accessibilityLabel={'Yuksek kontrast: ' + (highContrast ? 'acik' : 'kapali')}
         />
         <PDivider style={styles.divider} />
         <ToggleRow
           label="Hareketi Azalt"
           description="Animasyonlari ve gecis efektlerini minimize eder"
           value={reduceMotion}
-          onValueChange={(v) => setReduceMotion(v)}
+          onValueChange={v => setReduceMotion(v)}
           disabled={isOffline}
-          accessibilityLabel={"Hareket azaltma: " + (reduceMotion ? "acik" : "kapali")}
+          accessibilityLabel={'Hareket azaltma: ' + (reduceMotion ? 'acik' : 'kapali')}
         />
       </SectionCard>
 
@@ -124,24 +124,24 @@ const ProfileAccessibilityContent = ({ isOffline }: { isOffline?: boolean }) => 
       <SectionCard title="Detayli Ayarlar">
         <NavCard
           title="Metin Buyutme"
-          subtitle={"Mevcut: " + textSizeLabel + " - Adim secici + onizleme"}
-          onPress={() => navigation.navigate("ProfileTextScale")}
+          subtitle={'Mevcut: ' + textSizeLabel + ' - Adim secici + onizleme'}
+          onPress={() => navigation.navigate('ProfileTextScale')}
           disabled={isOffline}
-          accessibilityLabel={"Metin buyutme ayarina git. Mevcut: " + textSizeLabel}
+          accessibilityLabel={'Metin buyutme ayarina git. Mevcut: ' + textSizeLabel}
         />
         <PDivider style={styles.divider} />
         <NavCard
           title="Tema ve Yuksek Kontrast"
-          subtitle={"Tema: " + themeLabel + " - Acik / Koyu / Sistem"}
-          onPress={() => navigation.navigate("ProfileTheme")}
+          subtitle={'Tema: ' + themeLabel + ' - Acik / Koyu / Sistem'}
+          onPress={() => navigation.navigate('ProfileTheme')}
           disabled={isOffline}
-          accessibilityLabel={"Tema ve kontrast ayarina git. Mevcut: " + themeLabel}
+          accessibilityLabel={'Tema ve kontrast ayarina git. Mevcut: ' + themeLabel}
         />
         <PDivider style={styles.divider} />
         <NavCard
           title="Ekran Okuyucu Uyumu"
           subtitle="VoiceOver ve TalkBack destegi durumu"
-          onPress={() => navigation.navigate("ProfileScreenReader")}
+          onPress={() => navigation.navigate('ProfileScreenReader')}
           disabled={false}
           accessibilityLabel="Ekran okuyucu uyumu ayarina git"
         />
@@ -171,14 +171,10 @@ const ProfileAccessibilityContent = ({ isOffline }: { isOffline?: boolean }) => 
   );
 };
 
-export const ProfileAccessibilityScreen = ({
-  route,
-}: {
-  route?: { params?: { state?: ScreenState } };
-}) => {
+export const ProfileAccessibilityScreen = ({ route }: { route?: { params?: { state?: ScreenState } } }) => {
   const state = resolveScreenState(route);
 
-  if (state === "loading") {
+  if (state === 'loading') {
     return (
       <ScreenLayout title="Erisilebilirlik" subtitle="Ayarlar hazirlaniyor">
         <SectionCard title="Hizli Ayarlar">
@@ -195,7 +191,7 @@ export const ProfileAccessibilityScreen = ({
     );
   }
 
-  if (state === "empty") {
+  if (state === 'empty') {
     return (
       <ScreenLayout title="Erisilebilirlik" subtitle="Varsayilan ayarlar">
         <StateMessage
@@ -208,7 +204,7 @@ export const ProfileAccessibilityScreen = ({
     );
   }
 
-  if (state === "error") {
+  if (state === 'error') {
     return (
       <ScreenLayout title="Erisilebilirlik" subtitle="Bir sorun olustu">
         <StateMessage
@@ -222,7 +218,7 @@ export const ProfileAccessibilityScreen = ({
     );
   }
 
-  if (state === "offline") {
+  if (state === 'offline') {
     return (
       <ScreenLayout title="Erisilebilirlik" subtitle="Onbellekteki ayarlar">
         <OfflineNotice />
@@ -242,61 +238,61 @@ const styles = StyleSheet.create({
   sectionHint: {
     opacity: 0.6,
     marginBottom: 12,
-    lineHeight: 18,
+    lineHeight: 18
   },
   toggleRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     paddingVertical: 10,
-    gap: 12,
+    gap: 12
   },
   toggleText: {
-    flex: 1,
+    flex: 1
   },
   toggleLabel: {
-    fontWeight: "600",
+    fontWeight: '600'
   },
   toggleDesc: {
     opacity: 0.65,
     marginTop: 2,
-    lineHeight: 18,
+    lineHeight: 18
   },
   divider: {
-    marginVertical: 2,
+    marginVertical: 2
   },
   navCard: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     paddingVertical: 14,
-    paddingHorizontal: 4,
+    paddingHorizontal: 4
   },
   navCardDisabled: {
-    opacity: 0.5,
+    opacity: 0.5
   },
   navCardBody: {
-    flex: 1,
+    flex: 1
   },
   navCardTitle: {
-    fontWeight: "600",
-    marginBottom: 2,
+    fontWeight: '600',
+    marginBottom: 2
   },
   navCardSub: {
     opacity: 0.65,
-    lineHeight: 18,
+    lineHeight: 18
   },
   navArrow: {
     fontSize: 22,
     opacity: 0.4,
-    paddingLeft: 8,
+    paddingLeft: 8
   },
   offlineNote: {
     opacity: 0.65,
     lineHeight: 20,
-    fontStyle: "italic",
+    fontStyle: 'italic'
   },
   saveBtn: {
-    marginTop: 4,
-  },
+    marginTop: 4
+  }
 });

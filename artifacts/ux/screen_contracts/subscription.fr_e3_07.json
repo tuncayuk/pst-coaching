@@ -3,9 +3,7 @@
   "title": "Odeme gecmisi ve geri yukleme",
   "route": "/profile/subscription/payments",
   "purpose": "FR-E3-07: Shows payment transactions with date, amount, currency, status. Receipt detail viewable per transaction (AC-FR-E3-07-03). Restore Purchases triggers platform IAP restore (AC-FR-E3-07-02). Offline: cached transaction list, restore disabled.",
-  "entryPoints": [
-    "subscription.overview"
-  ],
+  "entryPoints": ["subscription.overview"],
   "inputs": [
     {
       "name": "userId",
@@ -20,10 +18,7 @@
       "source": "subscription_entity"
     }
   ],
-  "dataDependencies": [
-    "PaymentTransaction",
-    "Subscription"
-  ],
+  "dataDependencies": ["PaymentTransaction", "Subscription"],
   "uiStates": {
     "loading": {
       "description": "Skeleton transaction rows"
@@ -51,13 +46,6 @@
       "restore_purchases_error"
     ]
   },
-  "acceptanceCriteriaRefs": [
-    "AC-FR-E3-07-01",
-    "AC-FR-E3-07-02",
-    "AC-FR-E3-07-03"
-  ],
-  "gates": [
-    "auth",
-    "subscription"
-  ]
+  "acceptanceCriteriaRefs": ["AC-FR-E3-07-01", "AC-FR-E3-07-02", "AC-FR-E3-07-03"],
+  "gates": ["auth", "subscription"]
 }

@@ -1,36 +1,58 @@
-import React from "react";
-import { StyleSheet, View, ScrollView, TouchableOpacity } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { OfflineNotice } from "../components/OfflineNotice";
-import { ScreenLayout } from "../components/ScreenLayout";
-import { SectionCard } from "../components/SectionCard";
-import { SkeletonBlock } from "../components/SkeletonBlock";
-import { StateMessage } from "../components/StateMessage";
-import { resolveScreenState, ScreenState } from "../components/ScreenState";
-import { PActivityIndicator, PButton, PText, PTextInput } from "../../components";
+import { useNavigation } from '@react-navigation/native';
+import React from 'react';
+import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+
+import { PActivityIndicator, PButton, PText, PTextInput } from '../../components';
+import { OfflineNotice } from '../components/OfflineNotice';
+import { ScreenLayout } from '../components/ScreenLayout';
+import { ScreenState, resolveScreenState } from '../components/ScreenState';
+import { SectionCard } from '../components/SectionCard';
+import { SkeletonBlock } from '../components/SkeletonBlock';
+import { StateMessage } from '../components/StateMessage';
 
 const COUNTRIES = [
-  "Turkiye", "Almanya", "Amerika Birlesik Devletleri", "Avustralya",
-  "Avusturya", "Azerbaycan", "Belcika", "Birlesik Krallik", "Fransa",
-  "Hollanda", "Irak", "Iran", "Ispanya", "Isvec", "Isvicre", "Italya",
-  "Japonya", "Kanada", "Kazakistan", "Kirgizistan", "Kuzey Kibris",
-  "Misir", "Ozbekistan", "Polonya", "Romanya", "Rusya", "Suudi Arabistan",
-  "Turkmenistan", "Ukrayna", "Yunanistan",
+  'Turkiye',
+  'Almanya',
+  'Amerika Birlesik Devletleri',
+  'Avustralya',
+  'Avusturya',
+  'Azerbaycan',
+  'Belcika',
+  'Birlesik Krallik',
+  'Fransa',
+  'Hollanda',
+  'Irak',
+  'Iran',
+  'Ispanya',
+  'Isvec',
+  'Isvicre',
+  'Italya',
+  'Japonya',
+  'Kanada',
+  'Kazakistan',
+  'Kirgizistan',
+  'Kuzey Kibris',
+  'Misir',
+  'Ozbekistan',
+  'Polonya',
+  'Romanya',
+  'Rusya',
+  'Suudi Arabistan',
+  'Turkmenistan',
+  'Ukrayna',
+  'Yunanistan'
 ];
 
-
 const DemographicsContent = ({ isOffline }: { isOffline?: boolean }) => {
-  const [age, setAge] = React.useState("");
+  const [age, setAge] = React.useState('');
   const [gender, setGender] = React.useState<string | null>(null);
-  const [country, setCountry] = React.useState("");
-  const [countrySearch, setCountrySearch] = React.useState("");
+  const [country, setCountry] = React.useState('');
+  const [countrySearch, setCountrySearch] = React.useState('');
   const [showCountryDropdown, setShowCountryDropdown] = React.useState(false);
   const navigation = useNavigation<any>();
 
-  const filteredCountries = COUNTRIES.filter((c) =>
-    c.toLowerCase().includes(countrySearch.toLowerCase())
-  );
+  const filteredCountries = COUNTRIES.filter(c => c.toLowerCase().includes(countrySearch.toLowerCase()));
 
   const ageNum = parseInt(age);
   const isFormValid = age.length > 0 && ageNum >= 13 && ageNum <= 120 && country.length > 0;
@@ -43,13 +65,12 @@ const DemographicsContent = ({ isOffline }: { isOffline?: boolean }) => {
           <PText style={styles.icon}>📊</PText>
         </View>
         <PText style={styles.title}>Demografi Bilgileri</PText>
-        <PText style={styles.subtitle}>
-          İçeriğe başlamadan önce lütfen bilgilerinizi tamamlayın
-        </PText>
+        <PText style={styles.subtitle}>İçeriğe başlamadan önce lütfen bilgilerinizi tamamlayın</PText>
         <View style={styles.infoCard}>
           <PText style={styles.infoText}>
             <PText style={styles.infoBold}>💡 Neden soruluyor?</PText>
-            {"\n"}Bu bilgiler size daha uygun içerik önerileri sunmamıza yardımcı olur. Verileriniz güvenli şekilde saklanır.
+            {'\n'}Bu bilgiler size daha uygun içerik önerileri sunmamıza yardımcı olur. Verileriniz güvenli şekilde
+            saklanır.
           </PText>
         </View>
         <View style={styles.inputGroup}>
@@ -75,29 +96,29 @@ const DemographicsContent = ({ isOffline }: { isOffline?: boolean }) => {
         <PText style={styles.label}>Cinsiyet</PText>
         <View style={styles.genderRow}>
           <PButton
-            mode={gender === "Kadin" ? "contained" : "outlined"}
-            onPress={() => setGender("Kadin")}
+            mode={gender === 'Kadin' ? 'contained' : 'outlined'}
+            onPress={() => setGender('Kadin')}
             style={styles.genderButton}
             disabled={isOffline}
             accessibilityLabel="Kadin"
-            accessibilityState={{ selected: gender === "Kadin" }}
+            accessibilityState={{ selected: gender === 'Kadin' }}
           >
             Kadin
           </PButton>
           <PButton
-            mode={gender === "Erkek" ? "contained" : "outlined"}
-            onPress={() => setGender("Erkek")}
+            mode={gender === 'Erkek' ? 'contained' : 'outlined'}
+            onPress={() => setGender('Erkek')}
             style={styles.genderButton}
             disabled={isOffline}
             accessibilityLabel="Erkek"
-            accessibilityState={{ selected: gender === "Erkek" }}
+            accessibilityState={{ selected: gender === 'Erkek' }}
           >
             Erkek
           </PButton>
         </View>
         <PButton
           mode="outlined"
-          onPress={() => setGender("Belirtmek istemiyorum")}
+          onPress={() => setGender('Belirtmek istemiyorum')}
           style={styles.genderButtonFull}
           disabled={isOffline}
           accessibilityLabel="Belirtmek istemiyorum"
@@ -114,9 +135,9 @@ const DemographicsContent = ({ isOffline }: { isOffline?: boolean }) => {
           >
             <View style={[styles.countrySelector, !country && styles.countrySelectorEmpty]}>
               <PText style={[styles.countryText, !country && styles.countryPlaceholder]}>
-                {country || "Ulke secin"}
+                {country || 'Ulke secin'}
               </PText>
-              <PText style={styles.countryChevron}>{showCountryDropdown ? "\u25B4" : "\u25BE"}</PText>
+              <PText style={styles.countryChevron}>{showCountryDropdown ? '\u25B4' : '\u25BE'}</PText>
             </View>
           </TouchableOpacity>
           {showCountryDropdown && (
@@ -132,13 +153,13 @@ const DemographicsContent = ({ isOffline }: { isOffline?: boolean }) => {
                 accessibilityLabel="Ulke ara"
               />
               <ScrollView style={styles.dropdownList} keyboardShouldPersistTaps="handled" nestedScrollEnabled>
-                {filteredCountries.map((item) => (
+                {filteredCountries.map(item => (
                   <TouchableOpacity
                     key={item}
                     style={[styles.dropdownItem, item === country && styles.dropdownItemSelected]}
                     onPress={() => {
                       setCountry(item);
-                      setCountrySearch("");
+                      setCountrySearch('');
                       setShowCountryDropdown(false);
                     }}
                     accessibilityRole="button"
@@ -157,7 +178,7 @@ const DemographicsContent = ({ isOffline }: { isOffline?: boolean }) => {
           mode="contained"
           disabled={isOffline || !isFormValid}
           onPress={() => {
-            navigation.getParent()?.navigate("MainTabs");
+            navigation.getParent()?.navigate('MainTabs');
           }}
           style={styles.button}
         >
@@ -169,14 +190,10 @@ const DemographicsContent = ({ isOffline }: { isOffline?: boolean }) => {
   );
 };
 
-export const AuthDemographicsScreen = ({
-  route,
-}: {
-  route?: { params?: { state?: ScreenState } };
-}) => {
+export const AuthDemographicsScreen = ({ route }: { route?: { params?: { state?: ScreenState } } }) => {
   const state = resolveScreenState(route);
 
-  if (state === "loading") {
+  if (state === 'loading') {
     return (
       <ScreenLayout title="Demografi Bilgileri" subtitle="Yükleniyor">
         <SectionCard title="Yükleniyor">
@@ -187,7 +204,7 @@ export const AuthDemographicsScreen = ({
     );
   }
 
-  if (state === "empty") {
+  if (state === 'empty') {
     return (
       <ScreenLayout title="Demografi Bilgileri" subtitle="Bilgi bulunamadı">
         <StateMessage
@@ -200,7 +217,7 @@ export const AuthDemographicsScreen = ({
     );
   }
 
-  if (state === "error") {
+  if (state === 'error') {
     return (
       <ScreenLayout title="Demografi Bilgileri" subtitle="Bir sorun oluştu">
         <StateMessage
@@ -214,7 +231,7 @@ export const AuthDemographicsScreen = ({
     );
   }
 
-  if (state === "offline") {
+  if (state === 'offline') {
     return (
       <>
         <OfflineNotice />
@@ -229,161 +246,161 @@ export const AuthDemographicsScreen = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FAFAFA",
+    backgroundColor: '#FAFAFA'
   },
   scrollContent: {
     paddingHorizontal: 24,
     paddingTop: 32,
-    paddingBottom: 32,
+    paddingBottom: 32
   },
   iconContainer: {
-    alignItems: "center",
-    marginBottom: 16,
+    alignItems: 'center',
+    marginBottom: 16
   },
   icon: {
-    fontSize: 56,
+    fontSize: 56
   },
   title: {
     fontSize: 24,
-    fontWeight: "700",
-    color: "#2B1B5D",
+    fontWeight: '700',
+    color: '#2B1B5D',
     marginBottom: 8,
-    textAlign: "center",
+    textAlign: 'center'
   },
   subtitle: {
-    color: "#404040",
+    color: '#404040',
     marginBottom: 24,
-    textAlign: "center",
+    textAlign: 'center'
   },
   infoCard: {
-    backgroundColor: "#E0F7FA",
+    backgroundColor: '#E0F7FA',
     padding: 16,
     borderRadius: 12,
     marginBottom: 24,
     borderLeftWidth: 4,
-    borderLeftColor: "#00B4D8",
+    borderLeftColor: '#00B4D8'
   },
   infoText: {
-    color: "#171717",
-    lineHeight: 24,
+    color: '#171717',
+    lineHeight: 24
   },
   infoBold: {
-    fontWeight: "700",
+    fontWeight: '700'
   },
   inputGroup: {
-    marginBottom: 16,
+    marginBottom: 16
   },
   input: {
-    backgroundColor: "#FFFFFF",
+    backgroundColor: '#FFFFFF'
   },
   inputContent: {
-    paddingVertical: 16,
+    paddingVertical: 16
   },
   inputOutline: {
     borderWidth: 2,
     borderRadius: 12,
-    borderColor: "#D4D4D4",
+    borderColor: '#D4D4D4'
   },
   helperText: {
-    color: "#525252",
+    color: '#525252',
     marginTop: 6,
-    fontSize: 12,
+    fontSize: 12
   },
   errorText: {
-    color: "#DC2626",
+    color: '#DC2626',
     marginTop: 6,
-    fontSize: 12,
+    fontSize: 12
   },
   inputOutlineError: {
-    borderColor: "#EF4444",
+    borderColor: '#EF4444'
   },
   label: {
-    fontWeight: "600",
-    color: "#171717",
+    fontWeight: '600',
+    color: '#171717',
     marginBottom: 8,
-    marginTop: 8,
+    marginTop: 8
   },
   genderRow: {
-    flexDirection: "row",
+    flexDirection: 'row',
     gap: 12,
-    marginBottom: 12,
+    marginBottom: 12
   },
   genderButton: {
-    flex: 1,
+    flex: 1
   },
   genderButtonFull: {
-    marginBottom: 16,
+    marginBottom: 16
   },
   countrySelector: {
     borderWidth: 2,
-    borderColor: "#D4D4D4",
+    borderColor: '#D4D4D4',
     borderRadius: 12,
     padding: 16,
-    backgroundColor: "#FFFFFF",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    backgroundColor: '#FFFFFF',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center'
   },
   countrySelectorEmpty: {
-    borderColor: "#D4D4D4",
+    borderColor: '#D4D4D4'
   },
   countryText: {
     fontSize: 16,
-    color: "#171717",
+    color: '#171717'
   },
   countryPlaceholder: {
-    color: "#9CA3AF",
+    color: '#9CA3AF'
   },
   countryChevron: {
     fontSize: 14,
-    color: "#525252",
+    color: '#525252'
   },
   dropdownContainer: {
     marginTop: 4,
     borderWidth: 1,
-    borderColor: "#D4D4D4",
+    borderColor: '#D4D4D4',
     borderRadius: 12,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: '#FFFFFF',
     maxHeight: 240,
-    overflow: "hidden",
+    overflow: 'hidden'
   },
   searchInput: {
-    backgroundColor: "#FFFFFF",
-    margin: 8,
+    backgroundColor: '#FFFFFF',
+    margin: 8
   },
   searchOutline: {
     borderWidth: 1,
     borderRadius: 8,
-    borderColor: "#D4D4D4",
+    borderColor: '#D4D4D4'
   },
   dropdownList: {
-    maxHeight: 180,
+    maxHeight: 180
   },
   dropdownItem: {
     paddingVertical: 12,
     paddingHorizontal: 16,
     borderBottomWidth: 1,
-    borderBottomColor: "#F5F5F5",
+    borderBottomColor: '#F5F5F5'
   },
   dropdownItemSelected: {
-    backgroundColor: "#E0F7FA",
+    backgroundColor: '#E0F7FA'
   },
   dropdownItemText: {
     fontSize: 15,
-    color: "#171717",
+    color: '#171717'
   },
   dropdownItemTextSelected: {
-    color: "#00B4D8",
-    fontWeight: "600",
+    color: '#00B4D8',
+    fontWeight: '600'
   },
   button: {
     marginBottom: 12,
-    borderRadius: 12,
+    borderRadius: 12
   },
   requiredText: {
-    textAlign: "center",
-    color: "#525252",
+    textAlign: 'center',
+    color: '#525252',
     marginTop: 8,
-    fontSize: 12,
-  },
+    fontSize: 12
+  }
 });

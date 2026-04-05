@@ -1,9 +1,10 @@
-import React from "react";
-import { StyleSheet } from "react-native";
-import { useTheme } from "react-native-paper";
-import { PSurface, PText } from "./index";
-import { useAppSelector } from "../state/hooks";
-import { selectIsOnline } from "../state/selectors";
+import React from 'react';
+import { StyleSheet } from 'react-native';
+import { useTheme } from 'react-native-paper';
+
+import { useAppSelector } from '../state/hooks';
+import { selectIsOnline } from '../state/selectors';
+import { PSurface, PText } from './index';
 
 export const OfflineBanner = () => {
   const theme = useTheme();
@@ -31,6 +32,6 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     marginHorizontal: 16,
     marginTop: 8,
-    marginBottom: 8,
-  },
+    marginBottom: 8
+  }
 });

@@ -1,5 +1,5 @@
-import { getAnalyticsOptIn } from "./consent";
-import { scrubPayload } from "./scrub";
+import { getAnalyticsOptIn } from './consent';
+import { scrubPayload } from './scrub';
 
 export type AnalyticsEvent = {
   name: string;
@@ -25,7 +25,7 @@ export const trackEvent = (name: string, params: Record<string, unknown> = {}) =
   const event: AnalyticsEvent = {
     name,
     timestamp: new Date().toISOString(),
-    params: scrubPayload(params),
+    params: scrubPayload(params)
   };
 
   sink(event);

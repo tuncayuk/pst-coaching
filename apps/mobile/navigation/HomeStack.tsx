@@ -1,14 +1,15 @@
-import React from "react";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { HomeDashboardScreen } from "../screens/HomeDashboardScreen";
-import { HomeSearchScreen } from "../screens/home/HomeSearchScreen";
-import { HomeSearchResultsScreen } from "../screens/home/HomeSearchResultsScreen";
-import { HomeVicdandanKaraktereDetailScreen } from "../screens/home/HomeVicdandanKaraktereDetailScreen";
-import { HomeActiveContentListScreen } from "../screens/home/HomeActiveContentListScreen";
-import { HomeSubscriptionScreen } from "../screens/home/HomeSubscriptionScreen";
-import { HomeContentNavScreen } from "../screens/home/HomeContentNavScreen";
-import { HomeReminderSettingScreen } from "../screens/home/HomeReminderSettingScreen";
-import { ScreenState } from "../screens/components/ScreenState";
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import React from 'react';
+
+import { HomeDashboardScreen } from '../screens/HomeDashboardScreen';
+import { ScreenState } from '../screens/components/ScreenState';
+import { HomeActiveContentListScreen } from '../screens/home/HomeActiveContentListScreen';
+import { HomeContentNavScreen } from '../screens/home/HomeContentNavScreen';
+import { HomeReminderSettingScreen } from '../screens/home/HomeReminderSettingScreen';
+import { HomeSearchResultsScreen } from '../screens/home/HomeSearchResultsScreen';
+import { HomeSearchScreen } from '../screens/home/HomeSearchScreen';
+import { HomeSubscriptionScreen } from '../screens/home/HomeSubscriptionScreen';
+import { HomeVicdandanKaraktereDetailScreen } from '../screens/home/HomeVicdandanKaraktereDetailScreen';
 
 type ScreenStateParam = { state?: ScreenState } | undefined;
 
@@ -33,16 +34,13 @@ type HomeStackProps = {
 
 const Stack = createNativeStackNavigator<HomeStackParamList>();
 
-export const HomeStack = ({ initialRouteName = "HomeDashboard" }: HomeStackProps) => {
+export const HomeStack = ({ initialRouteName = 'HomeDashboard' }: HomeStackProps) => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName={initialRouteName}>
       <Stack.Screen name="HomeDashboard" component={HomeDashboardScreen} />
       <Stack.Screen name="HomeSearch" component={HomeSearchScreen} />
       <Stack.Screen name="HomeSearchResults" component={HomeSearchResultsScreen} />
-      <Stack.Screen
-        name="HomeVicdandanKaraktereDetail"
-        component={HomeVicdandanKaraktereDetailScreen}
-      />
+      <Stack.Screen name="HomeVicdandanKaraktereDetail" component={HomeVicdandanKaraktereDetailScreen} />
       <Stack.Screen name="HomeActiveContentList" component={HomeActiveContentListScreen} />
       <Stack.Screen name="HomeSubscription" component={HomeSubscriptionScreen} />
       <Stack.Screen name="HomeContentNav" component={HomeContentNavScreen} />

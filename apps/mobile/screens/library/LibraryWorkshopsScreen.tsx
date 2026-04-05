@@ -1,17 +1,17 @@
-import React from "react";
-import { StyleSheet, View } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { OfflineNotice } from "../components/OfflineNotice";
-import { ScreenLayout } from "../components/ScreenLayout";
-import { SectionCard } from "../components/SectionCard";
-import { SkeletonBlock } from "../components/SkeletonBlock";
-import { StateMessage } from "../components/StateMessage";
-import { resolveScreenState, ScreenState } from "../components/ScreenState";
-import { getWorkshops } from "../../data/mockSelectors";
-import { PActivityIndicator, PButton, PCard, PChip, PText } from "../../components";
+import { useNavigation } from '@react-navigation/native';
+import React from 'react';
+import { StyleSheet, View } from 'react-native';
 
+import { PActivityIndicator, PButton, PCard, PChip, PText } from '../../components';
+import { getWorkshops } from '../../data/mockSelectors';
+import { OfflineNotice } from '../components/OfflineNotice';
+import { ScreenLayout } from '../components/ScreenLayout';
+import { ScreenState, resolveScreenState } from '../components/ScreenState';
+import { SectionCard } from '../components/SectionCard';
+import { SkeletonBlock } from '../components/SkeletonBlock';
+import { StateMessage } from '../components/StateMessage';
 
-const categories = ["Canlı", "Kayıt", "Mini", "Toplu"];
+const categories = ['Canlı', 'Kayıt', 'Mini', 'Toplu'];
 
 const LibraryWorkshopsContent = ({ isOffline }: { isOffline?: boolean }) => {
   const navigation = useNavigation<any>();
@@ -21,7 +21,7 @@ const LibraryWorkshopsContent = ({ isOffline }: { isOffline?: boolean }) => {
     <>
       <SectionCard title="Kategoriler" actionLabel="Filtre">
         <View style={styles.chipRow}>
-          {categories.map((label) => (
+          {categories.map(label => (
             <PChip key={label} style={styles.chip} disabled={isOffline}>
               {label}
             </PChip>
@@ -30,7 +30,7 @@ const LibraryWorkshopsContent = ({ isOffline }: { isOffline?: boolean }) => {
       </SectionCard>
 
       <SectionCard title="Yaklaşan Atölyeler" actionLabel="Takvim">
-        {upcomingWorkshops.map((workshop) => (
+        {upcomingWorkshops.map(workshop => (
           <PCard key={workshop.id} style={styles.card}>
             <PCard.Title title={workshop.title} subtitle={workshop.description} />
             <PCard.Content>
@@ -41,9 +41,9 @@ const LibraryWorkshopsContent = ({ isOffline }: { isOffline?: boolean }) => {
                 mode="outlined"
                 disabled={isOffline}
                 onPress={() =>
-                  navigation.navigate("Content", {
-                    screen: "ContentWorkshopHome",
-                    params: { id: workshop.id },
+                  navigation.navigate('Content', {
+                    screen: 'ContentWorkshopHome',
+                    params: { id: workshop.id }
                   })
                 }
               >
@@ -60,7 +60,7 @@ const LibraryWorkshopsContent = ({ isOffline }: { isOffline?: boolean }) => {
 export const LibraryWorkshopsScreen = ({ route }: { route?: { params?: { state?: ScreenState } } }) => {
   const state = resolveScreenState(route);
 
-  if (state === "loading") {
+  if (state === 'loading') {
     return (
       <ScreenLayout title="Atölyeler" subtitle="Atölyeler hazırlanıyor">
         <SectionCard title="Yükleniyor">
@@ -76,7 +76,7 @@ export const LibraryWorkshopsScreen = ({ route }: { route?: { params?: { state?:
     );
   }
 
-  if (state === "empty") {
+  if (state === 'empty') {
     return (
       <ScreenLayout title="Atölyeler" subtitle="Yeni etkinlikler eklenecek">
         <StateMessage
@@ -89,7 +89,7 @@ export const LibraryWorkshopsScreen = ({ route }: { route?: { params?: { state?:
     );
   }
 
-  if (state === "error") {
+  if (state === 'error') {
     return (
       <ScreenLayout title="Atölyeler" subtitle="Bir sorun oluştu">
         <StateMessage
@@ -103,7 +103,7 @@ export const LibraryWorkshopsScreen = ({ route }: { route?: { params?: { state?:
     );
   }
 
-  if (state === "offline") {
+  if (state === 'offline') {
     return (
       <ScreenLayout title="Atölyeler" subtitle="Önbellekteki içerikler">
         <OfflineNotice />
@@ -121,14 +121,14 @@ export const LibraryWorkshopsScreen = ({ route }: { route?: { params?: { state?:
 
 const styles = StyleSheet.create({
   chipRow: {
-    flexDirection: "row",
-    flexWrap: "wrap",
+    flexDirection: 'row',
+    flexWrap: 'wrap'
   },
   chip: {
     marginRight: 8,
-    marginBottom: 8,
+    marginBottom: 8
   },
   card: {
-    marginBottom: 12,
-  },
+    marginBottom: 12
+  }
 });

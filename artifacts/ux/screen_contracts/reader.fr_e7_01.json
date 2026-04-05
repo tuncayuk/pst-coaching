@@ -3,11 +3,7 @@
   "title": "e-Kitap okuyucu acilisi",
   "route": "/ebook/reader",
   "purpose": "Implements FR-E7-01: Son okunan sayfa otomatik acilis, kitap basligı ve sayfa bilgisi, TOC erisim, cevrimdisi okuma.",
-  "entryPoints": [
-    "library.ebooks",
-    "discover.ebooks",
-    "content.ebook_detail"
-  ],
+  "entryPoints": ["library.ebooks", "discover.ebooks", "content.ebook_detail"],
   "inputs": [
     {
       "name": "ebookId",
@@ -28,13 +24,7 @@
       "source": "entitlement_cache"
     }
   ],
-  "dataDependencies": [
-    "Ebook",
-    "EbookChapter",
-    "ContentProgress",
-    "EbookProgress",
-    "ReadingSettings"
-  ],
+  "dataDependencies": ["Ebook", "EbookChapter", "ContentProgress", "EbookProgress", "ReadingSettings"],
   "uiStates": {
     "loading": {
       "description": "Skeleton placeholder for chapter content while loading."
@@ -63,14 +53,6 @@
       "ebook_audio_started"
     ]
   },
-  "acceptanceCriteriaRefs": [
-    "AC-FR-E7-01-01",
-    "AC-FR-E7-01-02",
-    "AC-FR-E7-01-03",
-    "AC-FR-E7-01-04"
-  ],
-  "gates": [
-    "auth",
-    "subscription"
-  ]
+  "acceptanceCriteriaRefs": ["AC-FR-E7-01-01", "AC-FR-E7-01-02", "AC-FR-E7-01-03", "AC-FR-E7-01-04"],
+  "gates": ["auth", "subscription"]
 }

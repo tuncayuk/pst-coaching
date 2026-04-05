@@ -1,56 +1,49 @@
-import React from "react";
-import { StyleSheet, View } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { OfflineNotice } from "../components/OfflineNotice";
-import { ScreenLayout } from "../components/ScreenLayout";
-import { SectionCard } from "../components/SectionCard";
-import { SkeletonBlock } from "../components/SkeletonBlock";
-import { StateMessage } from "../components/StateMessage";
-import { resolveScreenState, ScreenState } from "../components/ScreenState";
+import { useNavigation } from '@react-navigation/native';
+import React from 'react';
+import { StyleSheet, View } from 'react-native';
+
+import { PActivityIndicator, PButton, PChip, PDivider, PProgressBar, PText } from '../../components';
 import {
   getAchievements,
   getContentItemsForParent,
   getContentProgressForUser,
   getPrimaryUser,
   getWorkshopById,
-  getWorkshops,
-} from "../../data/mockSelectors";
-import {
-  PActivityIndicator,
-  PButton,
-  PChip,
-  PDivider,
-  PProgressBar,
-  PText,
-} from "../../components";
+  getWorkshops
+} from '../../data/mockSelectors';
+import { OfflineNotice } from '../components/OfflineNotice';
+import { ScreenLayout } from '../components/ScreenLayout';
+import { ScreenState, resolveScreenState } from '../components/ScreenState';
+import { SectionCard } from '../components/SectionCard';
+import { SkeletonBlock } from '../components/SkeletonBlock';
+import { StateMessage } from '../components/StateMessage';
 
 type RouteParams = { state?: ScreenState; id?: string };
 
 const STAGE_LABELS: Record<number, string> = {
-  1: "Referans", 2: "Icgoru", 3: "Referans", 4: "Icgoru",
-  5: "Referans", 6: "Icgoru", 7: "Entegrasyon",
-  8: "3-Gun Kamp", 9: "Egitmen Rehberi", 10: "Calisma Kitabi", 11: "Kapanis",
+  1: 'Referans',
+  2: 'Icgoru',
+  3: 'Referans',
+  4: 'Icgoru',
+  5: 'Referans',
+  6: 'Icgoru',
+  7: 'Entegrasyon',
+  8: '3-Gun Kamp',
+  9: 'Egitmen Rehberi',
+  10: 'Calisma Kitabi',
+  11: 'Kapanis'
 };
 
-const ContentWorkshopCompletionContent = ({
-  workshopId,
-  isOffline,
-}: {
-  workshopId?: string;
-  isOffline?: boolean;
-}) => {
+const ContentWorkshopCompletionContent = ({ workshopId, isOffline }: { workshopId?: string; isOffline?: boolean }) => {
   const navigation = useNavigation<any>();
   const user = getPrimaryUser();
   const workshop = getWorkshopById(workshopId) ?? getWorkshops()[0];
-  const sections = getContentItemsForParent("workshop", workshop?.id);
+  const sections = getContentItemsForParent('workshop', workshop?.id);
   const progressList = getContentProgressForUser(user?.id);
-  const achievements = getAchievements().filter(
-    (a: any) => a.user_id === user?.id
-  );
+  const achievements = getAchievements().filter((a: any) => a.user_id === user?.id);
 
   const completedSections = sections.filter(
-    (s: any) =>
-      progressList.find((p: any) => p.content_id === s.id)?.status === "completed"
+    (s: any) => progressList.find((p: any) => p.content_id === s.id)?.status === 'completed'
   ).length;
   const totalSections = sections.length;
   const progressRatio = totalSections > 0 ? completedSections / totalSections : 0;
@@ -64,36 +57,40 @@ const ContentWorkshopCompletionContent = ({
     <>
       {/* Celebration header */}
       <View style={styles.celebrationBlock}>
-        <PText style={styles.celebrationEmoji}>
-          {workshopCompleted ? "[Kupa]" : "[Filiz]"}
-        </PText>
+        <PText style={styles.celebrationEmoji}>{workshopCompleted ? '[Kupa]' : '[Filiz]'}</PText>
         <PText variant="headlineMedium" style={styles.celebrationTitle}>
-          {workshopCompleted
-            ? "Atolye Tamamlandi!"
-            : "Atolye Devam Ediyor"}
+          {workshopCompleted ? 'Atolye Tamamlandi!' : 'Atolye Devam Ediyor'}
         </PText>
         <PText variant="bodyMedium" style={styles.celebrationDesc}>
           {workshopCompleted
-            ? "Mukemmel bir yolculugu tamamladin. Arsivinde her zaman erisebilirsin."
-            : "Kalan asamalari tamamlaman otalye sertifikani aciklayacak."}
+            ? 'Mukemmel bir yolculugu tamamladin. Arsivinde her zaman erisebilirsin.'
+            : 'Kalan asamalari tamamlaman otalye sertifikani aciklayacak.'}
         </PText>
       </View>
 
       {/* AC-FR-E8-08-02: stage/session completion summary */}
       <SectionCard title="Tamamlanma Ozeti">
         <View style={styles.metaRow}>
-          <PText variant="labelMedium" style={styles.metaLabel}>Tamamlanan Asama</PText>
-          <PText variant="bodyMedium">{completedSections} / {totalSections}</PText>
+          <PText variant="labelMedium" style={styles.metaLabel}>
+            Tamamlanan Asama
+          </PText>
+          <PText variant="bodyMedium">
+            {completedSections} / {totalSections}
+          </PText>
         </View>
         <PProgressBar progress={progressRatio} style={styles.progressBar} />
         <PDivider style={styles.divider} />
         <View style={styles.metaRow}>
-          <PText variant="labelMedium" style={styles.metaLabel}>Uretilen Artefact</PText>
+          <PText variant="labelMedium" style={styles.metaLabel}>
+            Uretilen Artefact
+          </PText>
           <PText variant="bodyMedium">{artifactCount} belge</PText>
         </View>
         <View style={styles.metaRow}>
-          <PText variant="labelMedium" style={styles.metaLabel}>Secili Takip Plani</PText>
-          <PText variant="bodyMedium">{hasFollowUpPlan ? "Olusturuldu" : "Henuz olusturulmadi"}</PText>
+          <PText variant="labelMedium" style={styles.metaLabel}>
+            Secili Takip Plani
+          </PText>
+          <PText variant="bodyMedium">{hasFollowUpPlan ? 'Olusturuldu' : 'Henuz olusturulmadi'}</PText>
         </View>
         {!hasFollowUpPlan && (
           <PButton
@@ -101,9 +98,9 @@ const ContentWorkshopCompletionContent = ({
             compact
             style={styles.createPlanBtn}
             onPress={() =>
-              navigation.navigate("Content", {
-                screen: "ContentWorkshopFollowUp",
-                params: { id: workshopId },
+              navigation.navigate('Content', {
+                screen: 'ContentWorkshopFollowUp',
+                params: { id: workshopId }
               })
             }
           >
@@ -119,14 +116,10 @@ const ContentWorkshopCompletionContent = ({
           const section = sections[stageNum - 1];
           const isDone =
             stageNum <= completedSections ||
-            progressList.some(
-              (p: any) => p.content_id === section?.id && p.status === "completed"
-            );
+            progressList.some((p: any) => p.content_id === section?.id && p.status === 'completed');
           return (
             <View key={num} style={styles.stageRow}>
-              <PText style={[styles.stageNum, isDone && styles.stageNumDone]}>
-                {isDone ? "OK" : String(num)}
-              </PText>
+              <PText style={[styles.stageNum, isDone && styles.stageNumDone]}>{isDone ? 'OK' : String(num)}</PText>
               <PText variant="bodySmall" style={[styles.stageLabel, !isDone && styles.stagePending]}>
                 {label}
               </PText>
@@ -143,17 +136,12 @@ const ContentWorkshopCompletionContent = ({
             <View style={styles.badgeInfo}>
               <PText variant="titleSmall">Atolye Tamamlama Rozeti</PText>
               <PText variant="bodySmall" style={styles.badgeDesc}>
-                {workshop?.title ?? "Atolye"} basariyla tamamlandi.
+                {workshop?.title ?? 'Atolye'} basariyla tamamlandi.
               </PText>
             </View>
           </View>
           <PChip style={styles.certChip}>Ucretsiz Sertifika</PChip>
-          <PButton
-            mode="outlined"
-            style={styles.shareBtn}
-            disabled={isOffline}
-            onPress={() => {}}
-          >
+          <PButton mode="outlined" style={styles.shareBtn} disabled={isOffline} onPress={() => {}}>
             Sertifikayi Paylas
           </PButton>
         </SectionCard>
@@ -175,9 +163,7 @@ const ContentWorkshopCompletionContent = ({
             mode="contained"
             disabled={isOffline}
             style={styles.archiveBtn}
-            onPress={() =>
-              navigation.navigate("Library", { screen: "LibraryWorkshops" })
-            }
+            onPress={() => navigation.navigate('Library', { screen: 'LibraryWorkshops' })}
           >
             Kutuphanede Gor
           </PButton>
@@ -186,9 +172,9 @@ const ContentWorkshopCompletionContent = ({
             disabled={isOffline}
             style={styles.archiveBtn}
             onPress={() =>
-              navigation.navigate("Content", {
-                screen: "ContentWorkshopHome",
-                params: { id: workshopId },
+              navigation.navigate('Content', {
+                screen: 'ContentWorkshopHome',
+                params: { id: workshopId }
               })
             }
           >
@@ -200,15 +186,11 @@ const ContentWorkshopCompletionContent = ({
   );
 };
 
-export const ContentWorkshopCompletionScreen = ({
-  route,
-}: {
-  route?: { params?: RouteParams };
-}) => {
+export const ContentWorkshopCompletionScreen = ({ route }: { route?: { params?: RouteParams } }) => {
   const state = resolveScreenState(route);
   const workshopId = route?.params?.id;
 
-  if (state === "loading") {
+  if (state === 'loading') {
     return (
       <ScreenLayout title="Atolye Tamamlama" subtitle="Yukleniyor">
         <SectionCard title="Ozet">
@@ -221,7 +203,7 @@ export const ContentWorkshopCompletionScreen = ({
     );
   }
 
-  if (state === "empty") {
+  if (state === 'empty') {
     return (
       <ScreenLayout title="Atolye Tamamlama" subtitle="Icerik bulunamadi">
         <StateMessage
@@ -234,7 +216,7 @@ export const ContentWorkshopCompletionScreen = ({
     );
   }
 
-  if (state === "error") {
+  if (state === 'error') {
     return (
       <ScreenLayout title="Atolye Tamamlama" subtitle="Bir sorun olustu">
         <StateMessage
@@ -248,7 +230,7 @@ export const ContentWorkshopCompletionScreen = ({
     );
   }
 
-  if (state === "offline") {
+  if (state === 'offline') {
     return (
       <ScreenLayout title="Atolye Tamamlama" subtitle="Onbellekteki icerik">
         <OfflineNotice />
@@ -266,101 +248,101 @@ export const ContentWorkshopCompletionScreen = ({
 
 const styles = StyleSheet.create({
   celebrationBlock: {
-    alignItems: "center",
+    alignItems: 'center',
     paddingVertical: 24,
-    paddingHorizontal: 16,
+    paddingHorizontal: 16
   },
   celebrationEmoji: {
     fontSize: 48,
-    marginBottom: 12,
+    marginBottom: 12
   },
   celebrationTitle: {
-    textAlign: "center",
-    fontWeight: "700",
-    marginBottom: 8,
+    textAlign: 'center',
+    fontWeight: '700',
+    marginBottom: 8
   },
   celebrationDesc: {
-    textAlign: "center",
+    textAlign: 'center',
     opacity: 0.75,
-    lineHeight: 22,
+    lineHeight: 22
   },
   metaRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginBottom: 8,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 8
   },
   metaLabel: {
-    opacity: 0.6,
+    opacity: 0.6
   },
   progressBar: {
     marginVertical: 6,
-    borderRadius: 4,
+    borderRadius: 4
   },
   divider: {
-    marginVertical: 8,
+    marginVertical: 8
   },
   createPlanBtn: {
-    alignSelf: "flex-start",
-    marginTop: 4,
+    alignSelf: 'flex-start',
+    marginTop: 4
   },
   stageRow: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     paddingVertical: 4,
-    gap: 10,
+    gap: 10
   },
   stageNum: {
     width: 24,
-    textAlign: "center",
+    textAlign: 'center',
     opacity: 0.4,
-    fontWeight: "700",
+    fontWeight: '700'
   },
   stageNumDone: {
-    color: "#4CAF50",
-    opacity: 1,
+    color: '#4CAF50',
+    opacity: 1
   },
   stageLabel: {
-    flex: 1,
+    flex: 1
   },
   stagePending: {
-    opacity: 0.45,
+    opacity: 0.45
   },
   badgeRow: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     gap: 12,
-    marginBottom: 10,
+    marginBottom: 10
   },
   badgeEmoji: {
-    fontSize: 36,
+    fontSize: 36
   },
   badgeInfo: {
-    flex: 1,
+    flex: 1
   },
   badgeDesc: {
     opacity: 0.65,
-    marginTop: 2,
+    marginTop: 2
   },
   certChip: {
-    alignSelf: "flex-start",
-    marginBottom: 10,
+    alignSelf: 'flex-start',
+    marginBottom: 10
   },
   shareBtn: {
-    alignSelf: "flex-start",
+    alignSelf: 'flex-start'
   },
   pendingBadge: {
     opacity: 0.6,
-    lineHeight: 20,
+    lineHeight: 20
   },
   archiveDesc: {
     opacity: 0.7,
     lineHeight: 20,
-    marginBottom: 12,
+    marginBottom: 12
   },
   archiveButtons: {
-    gap: 10,
+    gap: 10
   },
   archiveBtn: {
-    width: "100%",
-  },
+    width: '100%'
+  }
 });

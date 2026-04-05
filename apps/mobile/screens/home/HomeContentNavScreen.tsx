@@ -1,13 +1,14 @@
-import React from "react";
-import { StyleSheet, TouchableOpacity, View } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { OfflineNotice } from "../components/OfflineNotice";
-import { ScreenLayout } from "../components/ScreenLayout";
-import { SectionCard } from "../components/SectionCard";
-import { SkeletonBlock } from "../components/SkeletonBlock";
-import { StateMessage } from "../components/StateMessage";
-import { resolveScreenState, ScreenState } from "../components/ScreenState";
-import { PActivityIndicator, PText } from "../../components";
+import { useNavigation } from '@react-navigation/native';
+import React from 'react';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
+
+import { PActivityIndicator, PText } from '../../components';
+import { OfflineNotice } from '../components/OfflineNotice';
+import { ScreenLayout } from '../components/ScreenLayout';
+import { ScreenState, resolveScreenState } from '../components/ScreenState';
+import { SectionCard } from '../components/SectionCard';
+import { SkeletonBlock } from '../components/SkeletonBlock';
+import { StateMessage } from '../components/StateMessage';
 
 type ContentAreaConfig = {
   label: string;
@@ -22,38 +23,38 @@ type ContentAreaConfig = {
 /** AC-FR-E2-03-01: 4 content type entry cards */
 const CONTENT_AREAS: ContentAreaConfig[] = [
   {
-    label: "Yolculuklar",
-    description: "Gunluk adimlarla buyume",
-    count: "12 program",
-    accentColor: "#00B4D8",
-    bg: "#E0F7FA",
-    route: "DiscoverJourneys",
+    label: 'Yolculuklar',
+    description: 'Gunluk adimlarla buyume',
+    count: '12 program',
+    accentColor: '#00B4D8',
+    bg: '#E0F7FA',
+    route: 'DiscoverJourneys'
   },
   {
-    label: "Atolyeler",
-    description: "Odakli pratik seanslar",
-    count: "8 atolye",
-    accentColor: "#7C3AED",
-    bg: "#EDE9FE",
-    route: "DiscoverWorkshops",
+    label: 'Atolyeler',
+    description: 'Odakli pratik seanslar',
+    count: '8 atolye',
+    accentColor: '#7C3AED',
+    bg: '#EDE9FE',
+    route: 'DiscoverWorkshops'
   },
   {
-    label: "e-Kitaplar",
-    description: "Derinlemesine okuma",
-    count: "24 kitap",
-    accentColor: "#F59E0B",
-    bg: "#FEF3C7",
-    route: "DiscoverEbooks",
+    label: 'e-Kitaplar',
+    description: 'Derinlemesine okuma',
+    count: '24 kitap',
+    accentColor: '#F59E0B',
+    bg: '#FEF3C7',
+    route: 'DiscoverEbooks'
   },
   {
-    label: "Kocluk Okulu",
-    description: "Sertifika programlari",
-    count: "5 kurs",
-    accentColor: "#10B981",
-    bg: "#D1FAE5",
-    route: "DiscoverCatalog",
-    requiresSubscription: true,
-  },
+    label: 'Kocluk Okulu',
+    description: 'Sertifika programlari',
+    count: '5 kurs',
+    accentColor: '#10B981',
+    bg: '#D1FAE5',
+    route: 'DiscoverCatalog',
+    requiresSubscription: true
+  }
 ];
 
 const HomeContentNavGrid = ({ isOffline }: { isOffline?: boolean }) => {
@@ -69,7 +70,7 @@ const HomeContentNavGrid = ({ isOffline }: { isOffline?: boolean }) => {
   return (
     <SectionCard title="Icerik Alanlari">
       <View style={styles.grid}>
-        {CONTENT_AREAS.map((area) => (
+        {CONTENT_AREAS.map(area => (
           <TouchableOpacity
             key={area.label}
             style={[styles.card, { backgroundColor: area.bg, borderColor: area.accentColor }]}
@@ -98,14 +99,10 @@ const HomeContentNavGrid = ({ isOffline }: { isOffline?: boolean }) => {
   );
 };
 
-export const HomeContentNavScreen = ({
-  route,
-}: {
-  route?: { params?: { state?: ScreenState } };
-}) => {
+export const HomeContentNavScreen = ({ route }: { route?: { params?: { state?: ScreenState } } }) => {
   const state = resolveScreenState(route);
 
-  if (state === "loading") {
+  if (state === 'loading') {
     return (
       <ScreenLayout title="Icerik Alanlari" subtitle="Alanlar yukleniyor">
         <SectionCard title="Yukleniyor">
@@ -123,7 +120,7 @@ export const HomeContentNavScreen = ({
     );
   }
 
-  if (state === "empty") {
+  if (state === 'empty') {
     return (
       <ScreenLayout title="Icerik Alanlari" subtitle="Icerik bulunamadi">
         <StateMessage
@@ -136,7 +133,7 @@ export const HomeContentNavScreen = ({
     );
   }
 
-  if (state === "error") {
+  if (state === 'error') {
     return (
       <ScreenLayout title="Icerik Alanlari" subtitle="Bir sorun olustu">
         <StateMessage
@@ -150,7 +147,7 @@ export const HomeContentNavScreen = ({
     );
   }
 
-  if (state === "offline") {
+  if (state === 'offline') {
     return (
       <ScreenLayout title="Icerik Alanlari" subtitle="Onbellekteki kataloglar">
         <OfflineNotice />
@@ -168,57 +165,57 @@ export const HomeContentNavScreen = ({
 
 const styles = StyleSheet.create({
   grid: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    gap: 12,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 12
   },
   skeletonGrid: {
-    flexDirection: "row",
+    flexDirection: 'row',
     gap: 12,
-    marginBottom: 12,
+    marginBottom: 12
   },
   card: {
-    width: "47%",
+    width: '47%',
     borderRadius: 14,
     borderWidth: 1.5,
-    overflow: "hidden",
+    overflow: 'hidden',
     minHeight: 100,
-    position: "relative",
+    position: 'relative'
   },
   accentBar: {
     height: 4,
-    width: "100%",
+    width: '100%'
   },
   cardBody: {
-    padding: 12,
+    padding: 12
   },
   cardLabel: {
     fontSize: 15,
-    fontWeight: "800",
-    marginBottom: 4,
+    fontWeight: '800',
+    marginBottom: 4
   },
   cardDescription: {
     fontSize: 12,
-    color: "#525252",
-    marginBottom: 6,
+    color: '#525252',
+    marginBottom: 6
   },
   cardCount: {
     fontSize: 12,
-    fontWeight: "700",
-    color: "#404040",
+    fontWeight: '700',
+    color: '#404040'
   },
   lockBadge: {
-    position: "absolute",
+    position: 'absolute',
     top: 10,
     right: 8,
-    backgroundColor: "#2B1B5D",
+    backgroundColor: '#2B1B5D',
     paddingHorizontal: 6,
     paddingVertical: 2,
-    borderRadius: 999,
+    borderRadius: 999
   },
   lockBadgeText: {
     fontSize: 10,
-    fontWeight: "700",
-    color: "#FFFFFF",
-  },
+    fontWeight: '700',
+    color: '#FFFFFF'
+  }
 });

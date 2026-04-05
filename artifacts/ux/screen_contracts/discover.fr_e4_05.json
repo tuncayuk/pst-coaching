@@ -3,9 +3,7 @@
   "title": "Modul Katalogu ve Detayi",
   "route": "/discover/modules",
   "purpose": "Implements FR-E4-05: Module catalog with sort, topic filter (Gelisim/Maneviyat/Denge), package count, preview package list with descriptions, and Modulu Baslat CTA.",
-  "entryPoints": [
-    "discover.fr_e4_01"
-  ],
+  "entryPoints": ["discover.fr_e4_01"],
   "inputs": [
     {
       "name": "userId",
@@ -26,10 +24,7 @@
       "source": "profile"
     }
   ],
-  "dataDependencies": [
-    "Module",
-    "Package"
-  ],
+  "dataDependencies": ["Module", "Package"],
   "uiStates": {
     "loading": {
       "description": "Skeleton cards while loading modules."
@@ -57,11 +52,6 @@
       "discover_module_start_tapped"
     ]
   },
-  "acceptanceCriteriaRefs": [
-    "AC-FR-E4-05-01",
-    "AC-FR-E4-05-02",
-    "AC-FR-E4-05-03",
-    "AC-FR-E4-05-04"
-  ],
+  "acceptanceCriteriaRefs": ["AC-FR-E4-05-01", "AC-FR-E4-05-02", "AC-FR-E4-05-03", "AC-FR-E4-05-04"],
   "gates": []
 }

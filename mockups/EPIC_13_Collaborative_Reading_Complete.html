@@ -1,1246 +1,1430 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="tr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>PST Coaching Mobile - EPIC 13: Birlikte Okuma</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap"
+      rel="stylesheet"
+    />
     <style>
-        :root {
-            --primary: #0f766e;
-            --primary-dark: #115e59;
-            --primary-light: #ccfbf1;
-            --secondary: #1f2937;
-            --success: #16a34a;
-            --success-light: #dcfce7;
-            --warning: #d97706;
-            --warning-light: #fffbeb;
-            --error: #dc2626;
-            --error-light: #fee2e2;
-            --violet: #7c3aed;
-            --violet-light: #f5f3ff;
-            --gray-50: #fafafa;
-            --gray-100: #f5f5f5;
-            --gray-200: #e5e5e5;
-            --gray-300: #d4d4d4;
-            --gray-400: #a3a3a3;
-            --gray-600: #525252;
-            --gray-700: #404040;
-            --gray-900: #171717;
-        }
+      :root {
+        --primary: #0f766e;
+        --primary-dark: #115e59;
+        --primary-light: #ccfbf1;
+        --secondary: #1f2937;
+        --success: #16a34a;
+        --success-light: #dcfce7;
+        --warning: #d97706;
+        --warning-light: #fffbeb;
+        --error: #dc2626;
+        --error-light: #fee2e2;
+        --violet: #7c3aed;
+        --violet-light: #f5f3ff;
+        --gray-50: #fafafa;
+        --gray-100: #f5f5f5;
+        --gray-200: #e5e5e5;
+        --gray-300: #d4d4d4;
+        --gray-400: #a3a3a3;
+        --gray-600: #525252;
+        --gray-700: #404040;
+        --gray-900: #171717;
+      }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
+      body {
+        font-family: 'Inter', sans-serif;
+        color: var(--gray-900);
+        background: radial-gradient(circle at 14% 0%, #d1fae5 0%, #e2e8f0 44%, #f8fafc 100%);
+        overflow: hidden;
+      }
+
+      .app {
+        height: 100vh;
+        display: flex;
+      }
+
+      .sidebar {
+        width: 430px;
+        background: #fff;
+        border-right: 1px solid var(--gray-200);
+        box-shadow: 2px 0 14px rgba(0, 0, 0, 0.06);
+        overflow-y: auto;
+      }
+
+      .main {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .logo {
+        font-family: 'Poppins', sans-serif;
+        font-size: 1.85rem;
+        font-weight: 800;
+        color: var(--primary-dark);
+        padding: 1.85rem;
+        border-bottom: 1px solid var(--gray-200);
+        background: linear-gradient(135deg, var(--primary-light), #fff);
+      }
+
+      .subtitle {
+        margin-top: 0.35rem;
+        font-size: 0.82rem;
+        color: var(--gray-600);
+        font-weight: 600;
+      }
+
+      .epic-header {
+        margin: 1rem 1.2rem;
+        border: 1px solid #99f6e4;
+        border-radius: 0.85rem;
+        padding: 1rem;
+        background: linear-gradient(140deg, #f0fdfa, #f8fafc);
+      }
+
+      .epic-title {
+        font-family: 'Poppins', sans-serif;
+        font-size: 1.03rem;
+        font-weight: 700;
+        margin-bottom: 0.35rem;
+      }
+
+      .epic-meta {
+        font-size: 0.76rem;
+        color: var(--gray-700);
+        line-height: 1.45;
+      }
+
+      .flow-map {
+        margin: 0 1.2rem 1rem;
+        border-radius: 0.85rem;
+        border: 1px solid #ddd6fe;
+        background: #f8f9ff;
+        padding: 0.75rem;
+      }
+
+      .flow-title {
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        color: var(--gray-600);
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+      }
+
+      .flow-list {
+        display: grid;
+        gap: 0.35rem;
+      }
+
+      .flow-step {
+        border: 1px solid var(--gray-300);
+        border-radius: 0.5rem;
+        background: #fff;
+        padding: 0.34rem 0.52rem;
+        font-size: 0.69rem;
+        font-weight: 600;
+        color: var(--gray-700);
+      }
+
+      .flow-step.active {
+        border-color: var(--violet);
+        background: var(--violet-light);
+        color: #4c1d95;
+      }
+
+      .gate-note {
+        margin-top: 0.55rem;
+        border-top: 1px solid #ddd6fe;
+        padding-top: 0.5rem;
+        font-size: 0.68rem;
+        color: var(--gray-600);
+        line-height: 1.45;
+      }
+
+      .nav-group {
+        border-bottom: 1px solid var(--gray-100);
+        padding: 0.28rem 0 0.72rem;
+      }
+
+      .nav-group-title {
+        padding: 0.66rem 1.2rem;
+        font-size: 0.68rem;
+        color: var(--gray-600);
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        font-weight: 700;
+      }
+
+      .nav-item {
+        display: flex;
+        align-items: center;
+        gap: 0.62rem;
+        padding: 0.7rem 1.2rem;
+        border-left: 3px solid transparent;
+        color: var(--gray-700);
+        cursor: pointer;
+        transition: background 0.18s ease;
+      }
+
+      .nav-item:hover {
+        background: var(--gray-50);
+      }
+
+      .nav-item.active {
+        border-left-color: var(--primary);
+        background: #ecfeff;
+        color: var(--primary-dark);
+      }
+
+      .nav-icon {
+        font-size: 0.72rem;
+        font-weight: 800;
+        width: 28px;
+        text-align: center;
+        border: 1px solid var(--gray-300);
+        border-radius: 0.35rem;
+        padding: 0.1rem 0.2rem;
+        background: #fff;
+      }
+
+      .nav-text {
+        flex: 1;
+        font-size: 0.83rem;
+        font-weight: 600;
+      }
+
+      .nav-badge {
+        font-size: 0.66rem;
+        font-weight: 700;
+        border-radius: 999px;
+        padding: 0.14rem 0.45rem;
+        background: #e2e8f0;
+        color: var(--gray-700);
+      }
+
+      .topbar {
+        background: #fff;
+        border-bottom: 1px solid var(--gray-200);
+        padding: 1.45rem 2rem;
+      }
+
+      .screen-title {
+        font-family: 'Poppins', sans-serif;
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--secondary);
+      }
+
+      .screen-meta {
+        margin-top: 0.4rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        color: var(--gray-600);
+        font-size: 0.9rem;
+        flex-wrap: wrap;
+      }
+
+      .fr-badge {
+        border: 1px solid #99f6e4;
+        background: #ecfeff;
+        color: #0f766e;
+        border-radius: 0.52rem;
+        padding: 0.2rem 0.58rem;
+        font-size: 0.78rem;
+        font-weight: 700;
+      }
+
+      .route-badge {
+        border: 1px solid #c4b5fd;
+        background: #f5f3ff;
+        color: #5b21b6;
+        border-radius: 0.52rem;
+        padding: 0.2rem 0.58rem;
+        font-size: 0.74rem;
+        font-weight: 700;
+      }
+
+      .viewer {
+        flex: 1;
+        overflow-y: auto;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        padding: 2rem;
+      }
+
+      .iphone {
+        width: 393px;
+        height: 852px;
+        background: #1d1d1f;
+        border-radius: 54px;
+        padding: 12px;
+        box-shadow: 0 44px 94px rgba(0, 0, 0, 0.45);
+        position: relative;
+      }
+
+      .island {
+        position: absolute;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 120px;
+        height: 30px;
+        border-radius: 20px;
+        background: #000;
+        z-index: 12;
+      }
+
+      .screen {
+        width: 100%;
+        height: 100%;
+        background: #fff;
+        border-radius: 42px;
+        overflow: hidden;
+      }
+
+      .content {
+        width: 100%;
+        height: 100%;
+        overflow-y: auto;
+        background: var(--gray-50);
+        padding-bottom: 1.6rem;
+      }
+
+      .content::-webkit-scrollbar {
+        width: 4px;
+      }
+
+      .content::-webkit-scrollbar-thumb {
+        background: rgba(0, 0, 0, 0.3);
+        border-radius: 12px;
+      }
+
+      .status {
+        height: 54px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 1.3rem;
+        font-size: 0.8rem;
+        font-weight: 700;
+        background: #fff;
+      }
+
+      .mobile-header {
+        position: sticky;
+        top: 0;
+        z-index: 3;
+        background: rgba(255, 255, 255, 0.94);
+        backdrop-filter: blur(6px);
+        border-bottom: 1px solid var(--gray-200);
+        padding: 0.75rem 0.9rem;
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+      }
+
+      .mobile-title {
+        font-weight: 700;
+        font-size: 0.95rem;
+        color: var(--secondary);
+      }
+
+      .mobile-body {
+        padding: 0.9rem;
+        display: grid;
+        gap: 0.75rem;
+      }
+
+      .icon-btn {
+        border: 1px solid var(--gray-300);
+        background: #fff;
+        border-radius: 0.5rem;
+        width: 34px;
+        height: 34px;
+        cursor: pointer;
+        font-size: 0.9rem;
+        font-weight: 700;
+        color: var(--gray-700);
+      }
+
+      .card {
+        background: #fff;
+        border: 1px solid var(--gray-200);
+        border-radius: 0.8rem;
+        padding: 0.75rem;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+      }
+
+      .card-title {
+        font-size: 0.82rem;
+        font-weight: 700;
+        color: var(--secondary);
+        margin-bottom: 0.45rem;
+      }
+
+      .muted {
+        color: var(--gray-600);
+        font-size: 0.73rem;
+        line-height: 1.45;
+      }
+
+      .chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.38rem;
+      }
+
+      .chip {
+        border-radius: 999px;
+        border: 1px solid var(--gray-300);
+        background: #fff;
+        color: var(--gray-700);
+        padding: 0.2rem 0.48rem;
+        font-size: 0.66rem;
+        font-weight: 700;
+      }
+
+      .chip.success {
+        border-color: #86efac;
+        background: var(--success-light);
+        color: #14532d;
+      }
+
+      .chip.warn {
+        border-color: #fcd34d;
+        background: var(--warning-light);
+        color: #92400e;
+      }
+
+      .chip.error {
+        border-color: #fca5a5;
+        background: var(--error-light);
+        color: #7f1d1d;
+      }
+
+      .btn {
+        border-radius: 0.55rem;
+        border: 1px solid transparent;
+        padding: 0.36rem 0.62rem;
+        font-size: 0.68rem;
+        font-weight: 700;
+        cursor: pointer;
+        font-family: inherit;
+      }
+
+      .btn-primary {
+        background: var(--primary);
+        color: #fff;
+        border-color: var(--primary);
+      }
+
+      .btn-outline {
+        border-color: var(--gray-300);
+        color: var(--gray-700);
+        background: #fff;
+      }
+
+      .field {
+        width: 100%;
+        border: 1px solid var(--gray-300);
+        border-radius: 0.55rem;
+        padding: 0.5rem 0.58rem;
+        font-size: 0.74rem;
+        background: #fff;
+        font-family: inherit;
+      }
+
+      textarea.field {
+        resize: vertical;
+      }
+
+      .list {
+        display: grid;
+        gap: 0.52rem;
+      }
+
+      .list-item {
+        border: 1px solid var(--gray-200);
+        background: #fff;
+        border-radius: 0.68rem;
+        padding: 0.56rem;
+      }
+
+      .row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.5rem;
+      }
+
+      .item-title {
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: var(--secondary);
+      }
+
+      .item-meta {
+        margin-top: 0.22rem;
+        font-size: 0.68rem;
+        color: var(--gray-600);
+        line-height: 1.4;
+      }
+
+      .progress {
+        width: 100%;
+        height: 7px;
+        border-radius: 999px;
+        background: var(--gray-200);
+        overflow: hidden;
+        margin-top: 0.34rem;
+      }
+
+      .progress > span {
+        display: block;
+        height: 100%;
+        background: linear-gradient(90deg, var(--primary), #14b8a6);
+      }
+
+      .state-switcher {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.35rem;
+        margin-bottom: 0.35rem;
+      }
+
+      .state-btn {
+        border: 1px solid var(--gray-300);
+        border-radius: 999px;
+        background: #fff;
+        color: var(--gray-700);
+        font-size: 0.63rem;
+        font-weight: 700;
+        padding: 0.16rem 0.45rem;
+        cursor: pointer;
+      }
+
+      .state-btn.active {
+        border-color: var(--violet);
+        background: var(--violet-light);
+        color: #5b21b6;
+      }
+
+      .state-panel {
+        border-radius: 0.68rem;
+        border: 1px solid var(--gray-300);
+        background: #fff;
+        padding: 0.62rem;
+        margin-bottom: 0.58rem;
+        display: grid;
+        gap: 0.3rem;
+        font-size: 0.72rem;
+        color: var(--gray-700);
+      }
+
+      .state-panel.loading {
+        border-color: #93c5fd;
+        background: #eff6ff;
+      }
+
+      .state-panel.empty {
+        border-color: #fde68a;
+        background: #fffbeb;
+      }
+
+      .state-panel.error {
+        border-color: #fca5a5;
+        background: #fef2f2;
+      }
+
+      .state-panel.offline {
+        border-color: #c4b5fd;
+        background: #f5f3ff;
+      }
+
+      .toast {
+        position: fixed;
+        right: 1.2rem;
+        bottom: 1.2rem;
+        padding: 0.65rem 0.85rem;
+        border-radius: 0.62rem;
+        color: #fff;
+        font-weight: 700;
+        font-size: 0.74rem;
+        background: #0f766e;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+        opacity: 0;
+        transform: translateY(8px);
+        pointer-events: none;
+        transition: all 0.22s ease;
+        z-index: 50;
+      }
+
+      .toast.show {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .toast.success {
+        background: #065f46;
+      }
+
+      .toast.error {
+        background: #7f1d1d;
+      }
+
+      .nav-item:focus-visible,
+      button:focus-visible,
+      textarea:focus-visible,
+      input:focus-visible {
+        outline: 3px solid #5eead4;
+        outline-offset: 2px;
+      }
+
+      @media (max-width: 1200px) {
         body {
-            font-family: 'Inter', sans-serif;
-            color: var(--gray-900);
-            background: radial-gradient(circle at 14% 0%, #d1fae5 0%, #e2e8f0 44%, #f8fafc 100%);
-            overflow: hidden;
+          overflow: auto;
         }
 
         .app {
-            height: 100vh;
-            display: flex;
+          flex-direction: column;
+          height: auto;
+          min-height: 100vh;
         }
 
         .sidebar {
-            width: 430px;
-            background: #fff;
-            border-right: 1px solid var(--gray-200);
-            box-shadow: 2px 0 14px rgba(0, 0, 0, 0.06);
-            overflow-y: auto;
-        }
-
-        .main {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .logo {
-            font-family: 'Poppins', sans-serif;
-            font-size: 1.85rem;
-            font-weight: 800;
-            color: var(--primary-dark);
-            padding: 1.85rem;
-            border-bottom: 1px solid var(--gray-200);
-            background: linear-gradient(135deg, var(--primary-light), #fff);
-        }
-
-        .subtitle {
-            margin-top: 0.35rem;
-            font-size: 0.82rem;
-            color: var(--gray-600);
-            font-weight: 600;
-        }
-
-        .epic-header {
-            margin: 1rem 1.2rem;
-            border: 1px solid #99f6e4;
-            border-radius: 0.85rem;
-            padding: 1rem;
-            background: linear-gradient(140deg, #f0fdfa, #f8fafc);
-        }
-
-        .epic-title {
-            font-family: 'Poppins', sans-serif;
-            font-size: 1.03rem;
-            font-weight: 700;
-            margin-bottom: 0.35rem;
-        }
-
-        .epic-meta {
-            font-size: 0.76rem;
-            color: var(--gray-700);
-            line-height: 1.45;
-        }
-
-        .flow-map {
-            margin: 0 1.2rem 1rem;
-            border-radius: 0.85rem;
-            border: 1px solid #ddd6fe;
-            background: #f8f9ff;
-            padding: 0.75rem;
-        }
-
-        .flow-title {
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 0.04em;
-            color: var(--gray-600);
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-
-        .flow-list {
-            display: grid;
-            gap: 0.35rem;
-        }
-
-        .flow-step {
-            border: 1px solid var(--gray-300);
-            border-radius: 0.5rem;
-            background: #fff;
-            padding: 0.34rem 0.52rem;
-            font-size: 0.69rem;
-            font-weight: 600;
-            color: var(--gray-700);
-        }
-
-        .flow-step.active {
-            border-color: var(--violet);
-            background: var(--violet-light);
-            color: #4c1d95;
-        }
-
-        .gate-note {
-            margin-top: 0.55rem;
-            border-top: 1px solid #ddd6fe;
-            padding-top: 0.5rem;
-            font-size: 0.68rem;
-            color: var(--gray-600);
-            line-height: 1.45;
-        }
-
-        .nav-group {
-            border-bottom: 1px solid var(--gray-100);
-            padding: 0.28rem 0 0.72rem;
-        }
-
-        .nav-group-title {
-            padding: 0.66rem 1.2rem;
-            font-size: 0.68rem;
-            color: var(--gray-600);
-            text-transform: uppercase;
-            letter-spacing: 0.04em;
-            font-weight: 700;
-        }
-
-        .nav-item {
-            display: flex;
-            align-items: center;
-            gap: 0.62rem;
-            padding: 0.7rem 1.2rem;
-            border-left: 3px solid transparent;
-            color: var(--gray-700);
-            cursor: pointer;
-            transition: background 0.18s ease;
-        }
-
-        .nav-item:hover {
-            background: var(--gray-50);
-        }
-
-        .nav-item.active {
-            border-left-color: var(--primary);
-            background: #ecfeff;
-            color: var(--primary-dark);
-        }
-
-        .nav-icon {
-            font-size: 0.72rem;
-            font-weight: 800;
-            width: 28px;
-            text-align: center;
-            border: 1px solid var(--gray-300);
-            border-radius: 0.35rem;
-            padding: 0.1rem 0.2rem;
-            background: #fff;
-        }
-
-        .nav-text {
-            flex: 1;
-            font-size: 0.83rem;
-            font-weight: 600;
-        }
-
-        .nav-badge {
-            font-size: 0.66rem;
-            font-weight: 700;
-            border-radius: 999px;
-            padding: 0.14rem 0.45rem;
-            background: #e2e8f0;
-            color: var(--gray-700);
-        }
-
-        .topbar {
-            background: #fff;
-            border-bottom: 1px solid var(--gray-200);
-            padding: 1.45rem 2rem;
-        }
-
-        .screen-title {
-            font-family: 'Poppins', sans-serif;
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--secondary);
-        }
-
-        .screen-meta {
-            margin-top: 0.4rem;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            color: var(--gray-600);
-            font-size: 0.9rem;
-            flex-wrap: wrap;
-        }
-
-        .fr-badge {
-            border: 1px solid #99f6e4;
-            background: #ecfeff;
-            color: #0f766e;
-            border-radius: 0.52rem;
-            padding: 0.2rem 0.58rem;
-            font-size: 0.78rem;
-            font-weight: 700;
-        }
-
-        .route-badge {
-            border: 1px solid #c4b5fd;
-            background: #f5f3ff;
-            color: #5b21b6;
-            border-radius: 0.52rem;
-            padding: 0.2rem 0.58rem;
-            font-size: 0.74rem;
-            font-weight: 700;
+          width: 100%;
+          max-height: 52vh;
         }
 
         .viewer {
-            flex: 1;
-            overflow-y: auto;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            padding: 2rem;
+          padding: 1.2rem;
         }
-
-        .iphone {
-            width: 393px;
-            height: 852px;
-            background: #1d1d1f;
-            border-radius: 54px;
-            padding: 12px;
-            box-shadow: 0 44px 94px rgba(0, 0, 0, 0.45);
-            position: relative;
-        }
-
-        .island {
-            position: absolute;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 120px;
-            height: 30px;
-            border-radius: 20px;
-            background: #000;
-            z-index: 12;
-        }
-
-        .screen {
-            width: 100%;
-            height: 100%;
-            background: #fff;
-            border-radius: 42px;
-            overflow: hidden;
-        }
-
-        .content {
-            width: 100%;
-            height: 100%;
-            overflow-y: auto;
-            background: var(--gray-50);
-            padding-bottom: 1.6rem;
-        }
-
-        .content::-webkit-scrollbar {
-            width: 4px;
-        }
-
-        .content::-webkit-scrollbar-thumb {
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 12px;
-        }
-
-        .status {
-            height: 54px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 1.3rem;
-            font-size: 0.8rem;
-            font-weight: 700;
-            background: #fff;
-        }
-
-        .mobile-header {
-            position: sticky;
-            top: 0;
-            z-index: 3;
-            background: rgba(255, 255, 255, 0.94);
-            backdrop-filter: blur(6px);
-            border-bottom: 1px solid var(--gray-200);
-            padding: 0.75rem 0.9rem;
-            display: flex;
-            align-items: center;
-            gap: 0.6rem;
-        }
-
-        .mobile-title {
-            font-weight: 700;
-            font-size: 0.95rem;
-            color: var(--secondary);
-        }
-
-        .mobile-body {
-            padding: 0.9rem;
-            display: grid;
-            gap: 0.75rem;
-        }
-
-        .icon-btn {
-            border: 1px solid var(--gray-300);
-            background: #fff;
-            border-radius: 0.5rem;
-            width: 34px;
-            height: 34px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            font-weight: 700;
-            color: var(--gray-700);
-        }
-
-        .card {
-            background: #fff;
-            border: 1px solid var(--gray-200);
-            border-radius: 0.8rem;
-            padding: 0.75rem;
-            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
-        }
-
-        .card-title {
-            font-size: 0.82rem;
-            font-weight: 700;
-            color: var(--secondary);
-            margin-bottom: 0.45rem;
-        }
-
-        .muted {
-            color: var(--gray-600);
-            font-size: 0.73rem;
-            line-height: 1.45;
-        }
-
-        .chips {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.38rem;
-        }
-
-        .chip {
-            border-radius: 999px;
-            border: 1px solid var(--gray-300);
-            background: #fff;
-            color: var(--gray-700);
-            padding: 0.2rem 0.48rem;
-            font-size: 0.66rem;
-            font-weight: 700;
-        }
-
-        .chip.success {
-            border-color: #86efac;
-            background: var(--success-light);
-            color: #14532d;
-        }
-
-        .chip.warn {
-            border-color: #fcd34d;
-            background: var(--warning-light);
-            color: #92400e;
-        }
-
-        .chip.error {
-            border-color: #fca5a5;
-            background: var(--error-light);
-            color: #7f1d1d;
-        }
-
-        .btn {
-            border-radius: 0.55rem;
-            border: 1px solid transparent;
-            padding: 0.36rem 0.62rem;
-            font-size: 0.68rem;
-            font-weight: 700;
-            cursor: pointer;
-            font-family: inherit;
-        }
-
-        .btn-primary {
-            background: var(--primary);
-            color: #fff;
-            border-color: var(--primary);
-        }
-
-        .btn-outline {
-            border-color: var(--gray-300);
-            color: var(--gray-700);
-            background: #fff;
-        }
-
-        .field {
-            width: 100%;
-            border: 1px solid var(--gray-300);
-            border-radius: 0.55rem;
-            padding: 0.5rem 0.58rem;
-            font-size: 0.74rem;
-            background: #fff;
-            font-family: inherit;
-        }
-
-        textarea.field {
-            resize: vertical;
-        }
-
-        .list {
-            display: grid;
-            gap: 0.52rem;
-        }
-
-        .list-item {
-            border: 1px solid var(--gray-200);
-            background: #fff;
-            border-radius: 0.68rem;
-            padding: 0.56rem;
-        }
-
-        .row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 0.5rem;
-        }
-
-        .item-title {
-            font-size: 0.75rem;
-            font-weight: 700;
-            color: var(--secondary);
-        }
-
-        .item-meta {
-            margin-top: 0.22rem;
-            font-size: 0.68rem;
-            color: var(--gray-600);
-            line-height: 1.4;
-        }
-
-        .progress {
-            width: 100%;
-            height: 7px;
-            border-radius: 999px;
-            background: var(--gray-200);
-            overflow: hidden;
-            margin-top: 0.34rem;
-        }
-
-        .progress > span {
-            display: block;
-            height: 100%;
-            background: linear-gradient(90deg, var(--primary), #14b8a6);
-        }
-
-        .state-switcher {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.35rem;
-            margin-bottom: 0.35rem;
-        }
-
-        .state-btn {
-            border: 1px solid var(--gray-300);
-            border-radius: 999px;
-            background: #fff;
-            color: var(--gray-700);
-            font-size: 0.63rem;
-            font-weight: 700;
-            padding: 0.16rem 0.45rem;
-            cursor: pointer;
-        }
-
-        .state-btn.active {
-            border-color: var(--violet);
-            background: var(--violet-light);
-            color: #5b21b6;
-        }
-
-        .state-panel {
-            border-radius: 0.68rem;
-            border: 1px solid var(--gray-300);
-            background: #fff;
-            padding: 0.62rem;
-            margin-bottom: 0.58rem;
-            display: grid;
-            gap: 0.3rem;
-            font-size: 0.72rem;
-            color: var(--gray-700);
-        }
-
-        .state-panel.loading {
-            border-color: #93c5fd;
-            background: #eff6ff;
-        }
-
-        .state-panel.empty {
-            border-color: #fde68a;
-            background: #fffbeb;
-        }
-
-        .state-panel.error {
-            border-color: #fca5a5;
-            background: #fef2f2;
-        }
-
-        .state-panel.offline {
-            border-color: #c4b5fd;
-            background: #f5f3ff;
-        }
-
-        .toast {
-            position: fixed;
-            right: 1.2rem;
-            bottom: 1.2rem;
-            padding: 0.65rem 0.85rem;
-            border-radius: 0.62rem;
-            color: #fff;
-            font-weight: 700;
-            font-size: 0.74rem;
-            background: #0f766e;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-            opacity: 0;
-            transform: translateY(8px);
-            pointer-events: none;
-            transition: all 0.22s ease;
-            z-index: 50;
-        }
-
-        .toast.show {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .toast.success {
-            background: #065f46;
-        }
-
-        .toast.error {
-            background: #7f1d1d;
-        }
-
-        .nav-item:focus-visible,
-        button:focus-visible,
-        textarea:focus-visible,
-        input:focus-visible {
-            outline: 3px solid #5eead4;
-            outline-offset: 2px;
-        }
-
-        @media (max-width: 1200px) {
-            body {
-                overflow: auto;
-            }
-
-            .app {
-                flex-direction: column;
-                height: auto;
-                min-height: 100vh;
-            }
-
-            .sidebar {
-                width: 100%;
-                max-height: 52vh;
-            }
-
-            .viewer {
-                padding: 1.2rem;
-            }
-        }
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="app">
-        <aside class="sidebar">
-            <div class="logo">
-                PST Coaching
-                <div class="subtitle">EPIC 13 - Birlikte Okuma</div>
-            </div>
+      <aside class="sidebar">
+        <div class="logo">
+          PST Coaching
+          <div class="subtitle">EPIC 13 - Birlikte Okuma</div>
+        </div>
 
-            <div class="epic-header">
-                <div class="epic-title">EPIC-13 Sync Pack</div>
-                <div class="epic-meta">4 FR Screen | 16 AC | Requirements + UX artifacts + mockup sync</div>
-            </div>
+        <div class="epic-header">
+          <div class="epic-title">EPIC-13 Sync Pack</div>
+          <div class="epic-meta">4 FR Screen | 16 AC | Requirements + UX artifacts + mockup sync</div>
+        </div>
 
-            <div class="flow-map">
-                <div class="flow-title">Birlikte okuma akis haritasi</div>
-                <div class="flow-list">
-                    <div class="flow-step active" id="flow-1">FR-E13-01 Grup listesi ve durum ozeti</div>
-                    <div class="flow-step" id="flow-2">FR-E13-02 Grup olusturma ve uye daveti</div>
-                    <div class="flow-step" id="flow-3">FR-E13-03 Grup detayi ve tartisma</div>
-                    <div class="flow-step" id="flow-4">FR-E13-04 Ilerleme ve karsilastirma</div>
-                </div>
-                <div class="gate-note">
-                    Gates: auth + subscription | Tum ekranlar loading, ready, empty, error, offline durumlarini destekler.
-                </div>
-            </div>
+        <div class="flow-map">
+          <div class="flow-title">Birlikte okuma akis haritasi</div>
+          <div class="flow-list">
+            <div class="flow-step active" id="flow-1">FR-E13-01 Grup listesi ve durum ozeti</div>
+            <div class="flow-step" id="flow-2">FR-E13-02 Grup olusturma ve uye daveti</div>
+            <div class="flow-step" id="flow-3">FR-E13-03 Grup detayi ve tartisma</div>
+            <div class="flow-step" id="flow-4">FR-E13-04 Ilerleme ve karsilastirma</div>
+          </div>
+          <div class="gate-note">
+            Gates: auth + subscription | Tum ekranlar loading, ready, empty, error, offline durumlarini destekler.
+          </div>
+        </div>
 
-            <section class="nav-group">
-                <div class="nav-group-title">Grup kurulum ekranlari</div>
-                <div class="nav-item active" data-screen="1" role="button" tabindex="0"><span class="nav-icon">G1</span><span class="nav-text">Grup Listesi ve Ozet</span><span class="nav-badge">4 AC</span></div>
-                <div class="nav-item" data-screen="2" role="button" tabindex="0"><span class="nav-icon">G2</span><span class="nav-text">Grup Olusturma ve Davet</span><span class="nav-badge">4 AC</span></div>
-            </section>
+        <section class="nav-group">
+          <div class="nav-group-title">Grup kurulum ekranlari</div>
+          <div class="nav-item active" data-screen="1" role="button" tabindex="0">
+            <span class="nav-icon">G1</span><span class="nav-text">Grup Listesi ve Ozet</span
+            ><span class="nav-badge">4 AC</span>
+          </div>
+          <div class="nav-item" data-screen="2" role="button" tabindex="0">
+            <span class="nav-icon">G2</span><span class="nav-text">Grup Olusturma ve Davet</span
+            ><span class="nav-badge">4 AC</span>
+          </div>
+        </section>
 
-            <section class="nav-group">
-                <div class="nav-group-title">Isbirligi ve takip</div>
-                <div class="nav-item" data-screen="3" role="button" tabindex="0"><span class="nav-icon">G3</span><span class="nav-text">Grup Detayi ve Tartisma</span><span class="nav-badge">4 AC</span></div>
-                <div class="nav-item" data-screen="4" role="button" tabindex="0"><span class="nav-icon">G4</span><span class="nav-text">Ilerleme Karsilastirma</span><span class="nav-badge">4 AC</span></div>
-            </section>
-        </aside>
+        <section class="nav-group">
+          <div class="nav-group-title">Isbirligi ve takip</div>
+          <div class="nav-item" data-screen="3" role="button" tabindex="0">
+            <span class="nav-icon">G3</span><span class="nav-text">Grup Detayi ve Tartisma</span
+            ><span class="nav-badge">4 AC</span>
+          </div>
+          <div class="nav-item" data-screen="4" role="button" tabindex="0">
+            <span class="nav-icon">G4</span><span class="nav-text">Ilerleme Karsilastirma</span
+            ><span class="nav-badge">4 AC</span>
+          </div>
+        </section>
+      </aside>
 
-        <main class="main">
-            <div class="topbar">
-                <h1 class="screen-title" id="screenTitle">Okuma gruplari listesi ve durum ozeti</h1>
-                <div class="screen-meta">
-                    <span class="fr-badge" id="screenFr">FR-E13-01</span>
-                    <span class="route-badge" id="screenRoute">/epic-13/fr-e13-01</span>
-                    <span id="screenMeta">Uyelik listesi, grup kart ozeti ve filtreleme</span>
-                </div>
-            </div>
-            <div class="viewer" id="viewer"></div>
-        </main>
+      <main class="main">
+        <div class="topbar">
+          <h1 class="screen-title" id="screenTitle">Okuma gruplari listesi ve durum ozeti</h1>
+          <div class="screen-meta">
+            <span class="fr-badge" id="screenFr">FR-E13-01</span>
+            <span class="route-badge" id="screenRoute">/epic-13/fr-e13-01</span>
+            <span id="screenMeta">Uyelik listesi, grup kart ozeti ve filtreleme</span>
+          </div>
+        </div>
+        <div class="viewer" id="viewer"></div>
+      </main>
     </div>
 
     <div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
 
     <script>
-        const screenData = {
-            1: {
-                title: 'Okuma gruplari listesi ve durum ozeti',
-                fr: 'FR-E13-01',
-                route: '/epic-13/fr-e13-01',
-                event: 'collab_fr_e13_01_viewed',
-                meta: 'Uyelik listesi, grup kart ozeti ve filtreleme'
-            },
-            2: {
-                title: 'Grup olusturma ve uye daveti',
-                fr: 'FR-E13-02',
-                route: '/epic-13/fr-e13-02',
-                event: 'collab_fr_e13_02_viewed',
-                meta: 'Zorunlu grup adi, materyal secimi, gizlilik ve davet akisi'
-            },
-            3: {
-                title: 'Grup detayi ve tartisma alani',
-                fr: 'FR-E13-03',
-                route: '/epic-13/fr-e13-03',
-                event: 'collab_fr_e13_03_viewed',
-                meta: 'Materyal ozeti, uye listesi, tartisma gecmisi ve takvim'
-            },
-            4: {
-                title: 'Grup ilerleme ve karsilastirma',
-                fr: 'FR-E13-04',
-                route: '/epic-13/fr-e13-04',
-                event: 'collab_fr_e13_04_viewed',
-                meta: 'Bireysel yuzdeler, grup ortalama trendi ve karsilastirma'
-            }
-        };
+      const screenData = {
+        1: {
+          title: 'Okuma gruplari listesi ve durum ozeti',
+          fr: 'FR-E13-01',
+          route: '/epic-13/fr-e13-01',
+          event: 'collab_fr_e13_01_viewed',
+          meta: 'Uyelik listesi, grup kart ozeti ve filtreleme'
+        },
+        2: {
+          title: 'Grup olusturma ve uye daveti',
+          fr: 'FR-E13-02',
+          route: '/epic-13/fr-e13-02',
+          event: 'collab_fr_e13_02_viewed',
+          meta: 'Zorunlu grup adi, materyal secimi, gizlilik ve davet akisi'
+        },
+        3: {
+          title: 'Grup detayi ve tartisma alani',
+          fr: 'FR-E13-03',
+          route: '/epic-13/fr-e13-03',
+          event: 'collab_fr_e13_03_viewed',
+          meta: 'Materyal ozeti, uye listesi, tartisma gecmisi ve takvim'
+        },
+        4: {
+          title: 'Grup ilerleme ve karsilastirma',
+          fr: 'FR-E13-04',
+          route: '/epic-13/fr-e13-04',
+          event: 'collab_fr_e13_04_viewed',
+          meta: 'Bireysel yuzdeler, grup ortalama trendi ve karsilastirma'
+        }
+      };
 
-        const ui = {
-            currentScreen: 1,
-            screenStates: {
-                1: 'ready',
-                2: 'ready',
-                3: 'ready',
-                4: 'ready'
+      const ui = {
+        currentScreen: 1,
+        screenStates: {
+          1: 'ready',
+          2: 'ready',
+          3: 'ready',
+          4: 'ready'
+        },
+        lastAnalyticsEvent: 'collab_fr_e13_01_viewed',
+        privacyFilter: 'all',
+        selectedGroupId: 101,
+        groups: [
+          {
+            id: 101,
+            name: 'Sukur Cemberi',
+            members: 8,
+            material: 'Sukur Sifresi - Bolum 3',
+            materialType: 'eBook',
+            progress: 62,
+            privacy: 'private',
+            lastActivity: '2 saat once',
+            nextSession: 'Cumartesi 20:30'
+          },
+          {
+            id: 102,
+            name: 'Sidk Yolculugu Takimi',
+            members: 5,
+            material: 'Sidk Yolculugu - Gun 14',
+            materialType: 'Journey',
+            progress: 67,
+            privacy: 'public',
+            lastActivity: '1 gun once',
+            nextSession: 'Pazar 21:00'
+          },
+          {
+            id: 103,
+            name: 'Atolye Eslik Grubu',
+            members: 12,
+            material: 'Mutlak Muhtaclik Atolyesi - Asama 4',
+            materialType: 'Workshop',
+            progress: 45,
+            privacy: 'private',
+            lastActivity: '3 saat once',
+            nextSession: 'Pazartesi 20:00'
+          }
+        ],
+        groupMembers: {
+          101: [
+            { name: 'Aylin', role: 'owner', completion: 74, delta: '+8' },
+            { name: 'Mert', role: 'member', completion: 60, delta: '+5' },
+            { name: 'Esra', role: 'member', completion: 58, delta: '+3' },
+            { name: 'Can', role: 'member', completion: 56, delta: '+2' }
+          ],
+          102: [
+            { name: 'Deniz', role: 'owner', completion: 79, delta: '+6' },
+            { name: 'Seda', role: 'member', completion: 71, delta: '+9' },
+            { name: 'Baris', role: 'member', completion: 65, delta: '+4' }
+          ],
+          103: [
+            { name: 'Derya', role: 'owner', completion: 58, delta: '+2' },
+            { name: 'Irem', role: 'member', completion: 47, delta: '+1' },
+            { name: 'Efe', role: 'member', completion: 43, delta: '+1' }
+          ]
+        },
+        discussions: {
+          101: [
+            {
+              time: '20:15',
+              author: 'Aylin',
+              text: 'Bugun 3. bolumdeki soru uzerine notlarimi paylastim.'
             },
-            lastAnalyticsEvent: 'collab_fr_e13_01_viewed',
-            privacyFilter: 'all',
-            selectedGroupId: 101,
-            groups: [
-                {
-                    id: 101,
-                    name: 'Sukur Cemberi',
-                    members: 8,
-                    material: 'Sukur Sifresi - Bolum 3',
-                    materialType: 'eBook',
-                    progress: 62,
-                    privacy: 'private',
-                    lastActivity: '2 saat once',
-                    nextSession: 'Cumartesi 20:30'
-                },
-                {
-                    id: 102,
-                    name: 'Sidk Yolculugu Takimi',
-                    members: 5,
-                    material: 'Sidk Yolculugu - Gun 14',
-                    materialType: 'Journey',
-                    progress: 67,
-                    privacy: 'public',
-                    lastActivity: '1 gun once',
-                    nextSession: 'Pazar 21:00'
-                },
-                {
-                    id: 103,
-                    name: 'Atolye Eslik Grubu',
-                    members: 12,
-                    material: 'Mutlak Muhtaclik Atolyesi - Asama 4',
-                    materialType: 'Workshop',
-                    progress: 45,
-                    privacy: 'private',
-                    lastActivity: '3 saat once',
-                    nextSession: 'Pazartesi 20:00'
-                }
-            ],
-            groupMembers: {
-                101: [
-                    { name: 'Aylin', role: 'owner', completion: 74, delta: '+8' },
-                    { name: 'Mert', role: 'member', completion: 60, delta: '+5' },
-                    { name: 'Esra', role: 'member', completion: 58, delta: '+3' },
-                    { name: 'Can', role: 'member', completion: 56, delta: '+2' }
-                ],
-                102: [
-                    { name: 'Deniz', role: 'owner', completion: 79, delta: '+6' },
-                    { name: 'Seda', role: 'member', completion: 71, delta: '+9' },
-                    { name: 'Baris', role: 'member', completion: 65, delta: '+4' }
-                ],
-                103: [
-                    { name: 'Derya', role: 'owner', completion: 58, delta: '+2' },
-                    { name: 'Irem', role: 'member', completion: 47, delta: '+1' },
-                    { name: 'Efe', role: 'member', completion: 43, delta: '+1' }
-                ]
+            {
+              time: '20:28',
+              author: 'Mert',
+              text: 'Yarin teslimden once kisa bir ozet gecelim mi?'
             },
-            discussions: {
-                101: [
-                    { time: '20:15', author: 'Aylin', text: 'Bugun 3. bolumdeki soru uzerine notlarimi paylastim.' },
-                    { time: '20:28', author: 'Mert', text: 'Yarin teslimden once kisa bir ozet gecelim mi?' },
-                    { time: '20:35', author: 'Esra', text: 'Takvimdeki mini oturumu 20:30da sabitledim.' }
-                ],
-                102: [
-                    { time: '21:05', author: 'Deniz', text: 'Gun 14 yorumlarini pazar toplantisinda toplayalim.' },
-                    { time: '21:12', author: 'Seda', text: 'Tamamlama yuzdem bu hafta ciddi artti.' }
-                ],
-                103: [
-                    { time: '19:52', author: 'Derya', text: 'Asama 4 icin kaynak notlari yukledim.' },
-                    { time: '20:06', author: 'Irem', text: 'Bir sonraki oturumda soru-cevap bolumu ekleyelim.' }
-                ]
+            { time: '20:35', author: 'Esra', text: 'Takvimdeki mini oturumu 20:30da sabitledim.' }
+          ],
+          102: [
+            {
+              time: '21:05',
+              author: 'Deniz',
+              text: 'Gun 14 yorumlarini pazar toplantisinda toplayalim.'
             },
-            schedules: {
-                101: [
-                    { label: 'Bolum 3 ortak okuma', target: 'Cumartesi 20:30' },
-                    { label: 'Yorum teslim takip', target: 'Pazar 18:00' }
-                ],
-                102: [
-                    { label: 'Gun 14 grup toplantisi', target: 'Pazar 21:00' },
-                    { label: 'Haftalik degerlendirme', target: 'Pazartesi 20:00' }
-                ],
-                103: [
-                    { label: 'Asama 4 tekrar oturumu', target: 'Pazartesi 20:00' },
-                    { label: 'Ozet teslim kontrolu', target: 'Sali 19:30' }
-                ]
-            },
-            createDraft: {
-                name: '',
-                materialType: 'journey',
-                materialName: '',
-                privacy: 'private',
-                invites: '',
-                created: false
+            { time: '21:12', author: 'Seda', text: 'Tamamlama yuzdem bu hafta ciddi artti.' }
+          ],
+          103: [
+            { time: '19:52', author: 'Derya', text: 'Asama 4 icin kaynak notlari yukledim.' },
+            {
+              time: '20:06',
+              author: 'Irem',
+              text: 'Bir sonraki oturumda soru-cevap bolumu ekleyelim.'
             }
-        };
+          ]
+        },
+        schedules: {
+          101: [
+            { label: 'Bolum 3 ortak okuma', target: 'Cumartesi 20:30' },
+            { label: 'Yorum teslim takip', target: 'Pazar 18:00' }
+          ],
+          102: [
+            { label: 'Gun 14 grup toplantisi', target: 'Pazar 21:00' },
+            { label: 'Haftalik degerlendirme', target: 'Pazartesi 20:00' }
+          ],
+          103: [
+            { label: 'Asama 4 tekrar oturumu', target: 'Pazartesi 20:00' },
+            { label: 'Ozet teslim kontrolu', target: 'Sali 19:30' }
+          ]
+        },
+        createDraft: {
+          name: '',
+          materialType: 'journey',
+          materialName: '',
+          privacy: 'private',
+          invites: '',
+          created: false
+        }
+      };
 
-        let toastTimer = null;
+      let toastTimer = null;
 
-        function showToast(message, tone) {
-            const toast = document.getElementById('toast');
-            toast.textContent = message;
-            toast.className = 'toast show' + (tone ? ' ' + tone : '');
-            if (toastTimer) {
-                clearTimeout(toastTimer);
-            }
-            toastTimer = setTimeout(() => {
-                toast.className = 'toast';
-            }, 2200);
+      function showToast(message, tone) {
+        const toast = document.getElementById('toast');
+        toast.textContent = message;
+        toast.className = 'toast show' + (tone ? ' ' + tone : '');
+        if (toastTimer) {
+          clearTimeout(toastTimer);
+        }
+        toastTimer = setTimeout(() => {
+          toast.className = 'toast';
+        }, 2200);
+      }
+
+      function phoneShell(title, body, backScreen) {
+        const back = backScreen
+          ? '<button class="icon-btn" onclick="showScreen(' + backScreen + ')" aria-label="Geri">&lt;</button>'
+          : '<span style="width:34px;"></span>';
+
+        return (
+          '<div class="iphone">' +
+          '<div class="island"></div>' +
+          '<div class="screen">' +
+          '<div class="content">' +
+          '<div class="status"><span>9:41</span><span>5G 91%</span></div>' +
+          '<div class="mobile-header">' +
+          back +
+          '<div class="mobile-title">' +
+          title +
+          '</div>' +
+          '</div>' +
+          '<div class="mobile-body">' +
+          body +
+          '</div>' +
+          '</div>' +
+          '</div>' +
+          '</div>'
+        );
+      }
+
+      function setCurrentScreen(screenNo) {
+        ui.currentScreen = screenNo;
+        ui.lastAnalyticsEvent = screenData[screenNo].event;
+        render();
+      }
+
+      function showScreen(screenNo) {
+        setCurrentScreen(screenNo);
+      }
+
+      function setScreenState(screenNo, state) {
+        ui.screenStates[screenNo] = state;
+        render();
+      }
+
+      function stateControls(screenNo) {
+        const states = ['ready', 'loading', 'empty', 'error', 'offline'];
+        return (
+          '<div class="state-switcher">' +
+          states
+            .map(
+              s =>
+                '<button class="state-btn ' +
+                (ui.screenStates[screenNo] === s ? 'active' : '') +
+                '" ' +
+                'onclick="setScreenState(' +
+                screenNo +
+                ", '" +
+                s +
+                '\')" aria-label="Ekran durumu ' +
+                s +
+                '" ' +
+                'aria-pressed="' +
+                (ui.screenStates[screenNo] === s) +
+                '">' +
+                s +
+                '</button>'
+            )
+            .join('') +
+          '</div>'
+        );
+      }
+
+      function statePanel(screenNo) {
+        const state = ui.screenStates[screenNo];
+        if (state === 'ready') {
+          return '';
+        }
+        if (state === 'loading') {
+          return '<div class="state-panel loading" role="status"><strong>Loading</strong><span>Grup verileri yukleniyor.</span></div>';
+        }
+        if (state === 'empty') {
+          return '<div class="state-panel empty"><strong>Empty</strong><span>Bu gorunumde listelenecek kayit yok.</span><button class="btn btn-outline" onclick="resetDemo()" aria-label="Demo verisini sifirla">Varsayilan veriye don</button></div>';
+        }
+        if (state === 'error') {
+          return (
+            '<div class="state-panel error" role="alert"><strong>Error</strong><span>Kurtarilabilir hata olustu.</span><button class="btn btn-primary" onclick="setScreenState(' +
+            screenNo +
+            ', \'ready\')" aria-label="Tekrar dene">Tekrar Dene</button></div>'
+          );
+        }
+        return '<div class="state-panel offline" role="status"><strong>Offline</strong><span>Son senkronize kayitlar gosterilir, yazma islemleri kuyruga alinmistir.</span></div>';
+      }
+
+      function filteredGroups() {
+        if (ui.privacyFilter === 'all') {
+          return ui.groups;
+        }
+        return ui.groups.filter(g => g.privacy === ui.privacyFilter);
+      }
+
+      function setPrivacyFilter(filter) {
+        ui.privacyFilter = filter;
+        render();
+      }
+
+      function selectGroup(groupId) {
+        ui.selectedGroupId = groupId;
+        showScreen(3);
+        showToast('Grup detay ekranina gecildi.', 'success');
+      }
+
+      function selectedGroup() {
+        return ui.groups.find(g => g.id === ui.selectedGroupId) || ui.groups[0];
+      }
+
+      function selectedMembers() {
+        const group = selectedGroup();
+        return ui.groupMembers[group.id] || [];
+      }
+
+      function groupAverage(list) {
+        if (!list.length) {
+          return 0;
+        }
+        return Math.round(list.reduce((sum, item) => sum + item.completion, 0) / list.length);
+      }
+
+      function trendLabel(avg) {
+        if (avg >= 70) {
+          return 'Yukseliyor';
+        }
+        if (avg >= 50) {
+          return 'Dengeli';
+        }
+        return 'Destek gerekiyor';
+      }
+
+      function updateDraft(field, value) {
+        ui.createDraft[field] = value;
+        render();
+      }
+
+      function createGroup() {
+        if (!ui.createDraft.name.trim()) {
+          showToast('Grup adi zorunludur.', 'error');
+          return;
+        }
+        if (!ui.createDraft.materialName.trim()) {
+          showToast('Materyal secimi zorunludur.', 'error');
+          return;
         }
 
-        function phoneShell(title, body, backScreen) {
-            const back = backScreen
-                ? '<button class="icon-btn" onclick="showScreen(' + backScreen + ')" aria-label="Geri">&lt;</button>'
-                : '<span style="width:34px;"></span>';
+        const newId = Date.now();
+        ui.groups.unshift({
+          id: newId,
+          name: ui.createDraft.name.trim(),
+          members: ui.createDraft.invites.trim()
+            ? ui.createDraft.invites
+                .split(',')
+                .map(x => x.trim())
+                .filter(Boolean).length + 1
+            : 1,
+          material: ui.createDraft.materialName.trim(),
+          materialType:
+            ui.createDraft.materialType === 'journey'
+              ? 'Journey'
+              : ui.createDraft.materialType === 'workshop'
+                ? 'Workshop'
+                : 'eBook',
+          progress: 0,
+          privacy: ui.createDraft.privacy,
+          lastActivity: 'simdi',
+          nextSession: 'Planlanmadi'
+        });
+        ui.groupMembers[newId] = [{ name: 'Siz', role: 'owner', completion: 0, delta: '+0' }];
+        ui.discussions[newId] = [
+          {
+            time: 'simdi',
+            author: 'Sistem',
+            text: 'Grup olusturuldu. Ilk tartisma mesaji icin hazir.'
+          }
+        ];
+        ui.schedules[newId] = [{ label: 'Ilk grup tanisma oturumu', target: 'Planlanmadi' }];
+        ui.selectedGroupId = newId;
+        ui.createDraft.created = true;
+        showToast('Grup olusturuldu, detay ekranina yonlendirildiniz.', 'success');
+        showScreen(3);
+      }
 
-            return (
-                '<div class="iphone">' +
-                    '<div class="island"></div>' +
-                    '<div class="screen">' +
-                        '<div class="content">' +
-                            '<div class="status"><span>9:41</span><span>5G 91%</span></div>' +
-                            '<div class="mobile-header">' +
-                                back +
-                                '<div class="mobile-title">' + title + '</div>' +
-                            '</div>' +
-                            '<div class="mobile-body">' + body + '</div>' +
-                        '</div>' +
+      function resetDemo() {
+        ui.privacyFilter = 'all';
+        ui.selectedGroupId = 101;
+        ui.createDraft.name = '';
+        ui.createDraft.materialType = 'journey';
+        ui.createDraft.materialName = '';
+        ui.createDraft.privacy = 'private';
+        ui.createDraft.invites = '';
+        ui.createDraft.created = false;
+        render();
+      }
+
+      function screenOne() {
+        const groups = filteredGroups();
+        const body =
+          stateControls(1) +
+          statePanel(1) +
+          (ui.screenStates[1] !== 'ready'
+            ? ''
+            : '<div class="card">' +
+              '<div class="card-title">Dahil oldugunuz gruplar</div>' +
+              '<div class="chips">' +
+              '<span class="chip">Toplam grup: ' +
+              ui.groups.length +
+              '</span>' +
+              '<span class="chip success">Acik: ' +
+              ui.groups.filter(g => g.privacy === 'public').length +
+              '</span>' +
+              '<span class="chip warn">Ozel: ' +
+              ui.groups.filter(g => g.privacy === 'private').length +
+              '</span>' +
+              '<button class="btn btn-primary" onclick="showScreen(2)" aria-label="Yeni grup olustur">+ Grup Olustur</button>' +
+              '</div>' +
+              '<div class="muted" style="margin-top:0.45rem;">AC-FR-E13-01-01</div>' +
+              '</div>' +
+              '<div class="card">' +
+              '<div class="card-title">Gizlilik filtresi</div>' +
+              '<div class="chips">' +
+              '<button class="btn ' +
+              (ui.privacyFilter === 'all' ? 'btn-primary' : 'btn-outline') +
+              '" onclick="setPrivacyFilter(\'all\')" aria-label="Tum gruplar" aria-pressed="' +
+              (ui.privacyFilter === 'all') +
+              '">Tum</button>' +
+              '<button class="btn ' +
+              (ui.privacyFilter === 'public' ? 'btn-primary' : 'btn-outline') +
+              '" onclick="setPrivacyFilter(\'public\')" aria-label="Acik gruplar" aria-pressed="' +
+              (ui.privacyFilter === 'public') +
+              '">Acik</button>' +
+              '<button class="btn ' +
+              (ui.privacyFilter === 'private' ? 'btn-primary' : 'btn-outline') +
+              '" onclick="setPrivacyFilter(\'private\')" aria-label="Ozel gruplar" aria-pressed="' +
+              (ui.privacyFilter === 'private') +
+              '">Ozel</button>' +
+              '</div>' +
+              '<div class="muted" style="margin-top:0.45rem;">AC-FR-E13-01-04</div>' +
+              '</div>' +
+              '<div class="card">' +
+              '<div class="card-title">Grup kartlari</div>' +
+              '<div class="list">' +
+              groups
+                .map(
+                  g =>
+                    '<button class="list-item" onclick="selectGroup(' +
+                    g.id +
+                    ')" aria-label="' +
+                    g.name +
+                    ' detayini ac" style="text-align:left; cursor:pointer;">' +
+                    '<div class="row">' +
+                    '<div class="item-title">' +
+                    g.name +
                     '</div>' +
-                '</div>'
-            );
-        }
-
-        function setCurrentScreen(screenNo) {
-            ui.currentScreen = screenNo;
-            ui.lastAnalyticsEvent = screenData[screenNo].event;
-            render();
-        }
-
-        function showScreen(screenNo) {
-            setCurrentScreen(screenNo);
-        }
-
-        function setScreenState(screenNo, state) {
-            ui.screenStates[screenNo] = state;
-            render();
-        }
-
-        function stateControls(screenNo) {
-            const states = ['ready', 'loading', 'empty', 'error', 'offline'];
-            return (
-                '<div class="state-switcher">' +
-                    states.map((s) => (
-                        '<button class="state-btn ' + (ui.screenStates[screenNo] === s ? 'active' : '') + '" ' +
-                        'onclick="setScreenState(' + screenNo + ', \'' + s + '\')" aria-label="Ekran durumu ' + s + '" ' +
-                        'aria-pressed="' + (ui.screenStates[screenNo] === s) + '">' + s + '</button>'
-                    )).join('') +
-                '</div>'
-            );
-        }
-
-        function statePanel(screenNo) {
-            const state = ui.screenStates[screenNo];
-            if (state === 'ready') {
-                return '';
-            }
-            if (state === 'loading') {
-                return '<div class="state-panel loading" role="status"><strong>Loading</strong><span>Grup verileri yukleniyor.</span></div>';
-            }
-            if (state === 'empty') {
-                return '<div class="state-panel empty"><strong>Empty</strong><span>Bu gorunumde listelenecek kayit yok.</span><button class="btn btn-outline" onclick="resetDemo()" aria-label="Demo verisini sifirla">Varsayilan veriye don</button></div>';
-            }
-            if (state === 'error') {
-                return '<div class="state-panel error" role="alert"><strong>Error</strong><span>Kurtarilabilir hata olustu.</span><button class="btn btn-primary" onclick="setScreenState(' + screenNo + ', \'ready\')" aria-label="Tekrar dene">Tekrar Dene</button></div>';
-            }
-            return '<div class="state-panel offline" role="status"><strong>Offline</strong><span>Son senkronize kayitlar gosterilir, yazma islemleri kuyruga alinmistir.</span></div>';
-        }
-
-        function filteredGroups() {
-            if (ui.privacyFilter === 'all') {
-                return ui.groups;
-            }
-            return ui.groups.filter((g) => g.privacy === ui.privacyFilter);
-        }
-
-        function setPrivacyFilter(filter) {
-            ui.privacyFilter = filter;
-            render();
-        }
-
-        function selectGroup(groupId) {
-            ui.selectedGroupId = groupId;
-            showScreen(3);
-            showToast('Grup detay ekranina gecildi.', 'success');
-        }
-
-        function selectedGroup() {
-            return ui.groups.find((g) => g.id === ui.selectedGroupId) || ui.groups[0];
-        }
-
-        function selectedMembers() {
-            const group = selectedGroup();
-            return ui.groupMembers[group.id] || [];
-        }
-
-        function groupAverage(list) {
-            if (!list.length) {
-                return 0;
-            }
-            return Math.round(list.reduce((sum, item) => sum + item.completion, 0) / list.length);
-        }
-
-        function trendLabel(avg) {
-            if (avg >= 70) {
-                return 'Yukseliyor';
-            }
-            if (avg >= 50) {
-                return 'Dengeli';
-            }
-            return 'Destek gerekiyor';
-        }
-
-        function updateDraft(field, value) {
-            ui.createDraft[field] = value;
-            render();
-        }
-
-        function createGroup() {
-            if (!ui.createDraft.name.trim()) {
-                showToast('Grup adi zorunludur.', 'error');
-                return;
-            }
-            if (!ui.createDraft.materialName.trim()) {
-                showToast('Materyal secimi zorunludur.', 'error');
-                return;
-            }
-
-            const newId = Date.now();
-            ui.groups.unshift({
-                id: newId,
-                name: ui.createDraft.name.trim(),
-                members: ui.createDraft.invites.trim() ? ui.createDraft.invites.split(',').map((x) => x.trim()).filter(Boolean).length + 1 : 1,
-                material: ui.createDraft.materialName.trim(),
-                materialType: ui.createDraft.materialType === 'journey' ? 'Journey' : ui.createDraft.materialType === 'workshop' ? 'Workshop' : 'eBook',
-                progress: 0,
-                privacy: ui.createDraft.privacy,
-                lastActivity: 'simdi',
-                nextSession: 'Planlanmadi'
-            });
-            ui.groupMembers[newId] = [{ name: 'Siz', role: 'owner', completion: 0, delta: '+0' }];
-            ui.discussions[newId] = [{ time: 'simdi', author: 'Sistem', text: 'Grup olusturuldu. Ilk tartisma mesaji icin hazir.' }];
-            ui.schedules[newId] = [{ label: 'Ilk grup tanisma oturumu', target: 'Planlanmadi' }];
-            ui.selectedGroupId = newId;
-            ui.createDraft.created = true;
-            showToast('Grup olusturuldu, detay ekranina yonlendirildiniz.', 'success');
-            showScreen(3);
-        }
-
-        function resetDemo() {
-            ui.privacyFilter = 'all';
-            ui.selectedGroupId = 101;
-            ui.createDraft.name = '';
-            ui.createDraft.materialType = 'journey';
-            ui.createDraft.materialName = '';
-            ui.createDraft.privacy = 'private';
-            ui.createDraft.invites = '';
-            ui.createDraft.created = false;
-            render();
-        }
-
-        function screenOne() {
-            const groups = filteredGroups();
-            const body = (
-                stateControls(1) +
-                statePanel(1) +
-                (ui.screenStates[1] !== 'ready' ? '' : (
-                    '<div class="card">' +
-                        '<div class="card-title">Dahil oldugunuz gruplar</div>' +
-                        '<div class="chips">' +
-                            '<span class="chip">Toplam grup: ' + ui.groups.length + '</span>' +
-                            '<span class="chip success">Acik: ' + ui.groups.filter((g) => g.privacy === 'public').length + '</span>' +
-                            '<span class="chip warn">Ozel: ' + ui.groups.filter((g) => g.privacy === 'private').length + '</span>' +
-                            '<button class="btn btn-primary" onclick="showScreen(2)" aria-label="Yeni grup olustur">+ Grup Olustur</button>' +
-                        '</div>' +
-                        '<div class="muted" style="margin-top:0.45rem;">AC-FR-E13-01-01</div>' +
+                    '<span class="chip ' +
+                    (g.privacy === 'public' ? 'success' : 'warn') +
+                    '">' +
+                    (g.privacy === 'public' ? 'acik' : 'ozel') +
+                    '</span>' +
                     '</div>' +
-
-                    '<div class="card">' +
-                        '<div class="card-title">Gizlilik filtresi</div>' +
-                        '<div class="chips">' +
-                            '<button class="btn ' + (ui.privacyFilter === 'all' ? 'btn-primary' : 'btn-outline') + '" onclick="setPrivacyFilter(\'all\')" aria-label="Tum gruplar" aria-pressed="' + (ui.privacyFilter === 'all') + '">Tum</button>' +
-                            '<button class="btn ' + (ui.privacyFilter === 'public' ? 'btn-primary' : 'btn-outline') + '" onclick="setPrivacyFilter(\'public\')" aria-label="Acik gruplar" aria-pressed="' + (ui.privacyFilter === 'public') + '">Acik</button>' +
-                            '<button class="btn ' + (ui.privacyFilter === 'private' ? 'btn-primary' : 'btn-outline') + '" onclick="setPrivacyFilter(\'private\')" aria-label="Ozel gruplar" aria-pressed="' + (ui.privacyFilter === 'private') + '">Ozel</button>' +
-                        '</div>' +
-                        '<div class="muted" style="margin-top:0.45rem;">AC-FR-E13-01-04</div>' +
+                    '<div class="item-meta">Uye: ' +
+                    g.members +
+                    ' | Materyal: ' +
+                    g.material +
                     '</div>' +
+                    '<div class="item-meta">Son aktivite: ' +
+                    g.lastActivity +
+                    '</div>' +
+                    '<div class="progress"><span style="width:' +
+                    g.progress +
+                    '%;"></span></div>' +
+                    '</button>'
+                )
+                .join('') +
+              '</div>' +
+              '<div class="muted" style="margin-top:0.45rem;">AC-FR-E13-01-02</div>' +
+              '<div class="muted">AC-FR-E13-01-03</div>' +
+              '</div>');
 
-                    '<div class="card">' +
-                        '<div class="card-title">Grup kartlari</div>' +
-                        '<div class="list">' +
-                            groups.map((g) => (
-                                '<button class="list-item" onclick="selectGroup(' + g.id + ')" aria-label="' + g.name + ' detayini ac" style="text-align:left; cursor:pointer;">' +
-                                    '<div class="row">' +
-                                        '<div class="item-title">' + g.name + '</div>' +
-                                        '<span class="chip ' + (g.privacy === 'public' ? 'success' : 'warn') + '">' + (g.privacy === 'public' ? 'acik' : 'ozel') + '</span>' +
-                                    '</div>' +
-                                    '<div class="item-meta">Uye: ' + g.members + ' | Materyal: ' + g.material + '</div>' +
-                                    '<div class="item-meta">Son aktivite: ' + g.lastActivity + '</div>' +
-                                    '<div class="progress"><span style="width:' + g.progress + '%;"></span></div>' +
-                                '</button>'
-                            )).join('') +
-                        '</div>' +
-                        '<div class="muted" style="margin-top:0.45rem;">AC-FR-E13-01-02</div>' +
-                        '<div class="muted">AC-FR-E13-01-03</div>' +
+        return phoneShell('Grup listesi ve durum ozeti', body, null);
+      }
+
+      function screenTwo() {
+        const draft = ui.createDraft;
+        const body =
+          stateControls(2) +
+          statePanel(2) +
+          (ui.screenStates[2] !== 'ready'
+            ? ''
+            : '<div class="card">' +
+              '<div class="card-title">Temel grup bilgisi</div>' +
+              '<input class="field" type="text" placeholder="Grup adini girin" value="' +
+              draft.name.replace(/"/g, '&quot;') +
+              '" oninput="updateDraft(\'name\', this.value)" aria-label="Grup adi" />' +
+              '<div class="muted" style="margin-top:0.4rem;">Grup adi bos birakilamaz.</div>' +
+              '<div class="muted" style="margin-top:0.45rem;">AC-FR-E13-02-01</div>' +
+              '</div>' +
+              '<div class="card">' +
+              '<div class="card-title">Okuma materyali secimi</div>' +
+              '<div class="chips">' +
+              '<button class="btn ' +
+              (draft.materialType === 'journey' ? 'btn-primary' : 'btn-outline') +
+              '" onclick="updateDraft(\'materialType\', \'journey\')" aria-label="Yolculuk sec" aria-pressed="' +
+              (draft.materialType === 'journey') +
+              '">Journey</button>' +
+              '<button class="btn ' +
+              (draft.materialType === 'workshop' ? 'btn-primary' : 'btn-outline') +
+              '" onclick="updateDraft(\'materialType\', \'workshop\')" aria-label="Atolye sec" aria-pressed="' +
+              (draft.materialType === 'workshop') +
+              '">Workshop</button>' +
+              '<button class="btn ' +
+              (draft.materialType === 'ebook' ? 'btn-primary' : 'btn-outline') +
+              '" onclick="updateDraft(\'materialType\', \'ebook\')" aria-label="eBook sec" aria-pressed="' +
+              (draft.materialType === 'ebook') +
+              '">eBook</button>' +
+              '</div>' +
+              '<input class="field" style="margin-top:0.45rem;" type="text" placeholder="Materyal adini girin" value="' +
+              draft.materialName.replace(/"/g, '&quot;') +
+              '" oninput="updateDraft(\'materialName\', this.value)" aria-label="Materyal adi" />' +
+              '<div class="muted" style="margin-top:0.45rem;">AC-FR-E13-02-02</div>' +
+              '</div>' +
+              '<div class="card">' +
+              '<div class="card-title">Gizlilik ve davet</div>' +
+              '<div class="chips">' +
+              '<button class="btn ' +
+              (draft.privacy === 'public' ? 'btn-primary' : 'btn-outline') +
+              '" onclick="updateDraft(\'privacy\', \'public\')" aria-label="Acik grup" aria-pressed="' +
+              (draft.privacy === 'public') +
+              '">Acik</button>' +
+              '<button class="btn ' +
+              (draft.privacy === 'private' ? 'btn-primary' : 'btn-outline') +
+              '" onclick="updateDraft(\'privacy\', \'private\')" aria-label="Ozel grup" aria-pressed="' +
+              (draft.privacy === 'private') +
+              '">Ozel</button>' +
+              '</div>' +
+              '<textarea class="field" style="margin-top:0.45rem; min-height:72px;" placeholder="Davet e-postalari (virgulle ayirin)" oninput="updateDraft(\'invites\', this.value)" aria-label="Davet e-postalari">' +
+              draft.invites +
+              '</textarea>' +
+              '<div class="chips" style="margin-top:0.45rem;">' +
+              '<button class="btn btn-primary" onclick="createGroup()" aria-label="Grubu olustur">Grubu Olustur</button>' +
+              '<button class="btn btn-outline" onclick="showScreen(1)" aria-label="Listeye geri don">Listeye Don</button>' +
+              '</div>' +
+              '<div class="muted" style="margin-top:0.45rem;">AC-FR-E13-02-03</div>' +
+              '<div class="muted">AC-FR-E13-02-04</div>' +
+              '</div>');
+
+        return phoneShell('Grup olusturma ve davet', body, 1);
+      }
+
+      function screenThree() {
+        const group = selectedGroup();
+        const members = selectedMembers();
+        const discussion = ui.discussions[group.id] || [];
+        const schedule = ui.schedules[group.id] || [];
+
+        const body =
+          stateControls(3) +
+          statePanel(3) +
+          (ui.screenStates[3] !== 'ready'
+            ? ''
+            : '<div class="card">' +
+              '<div class="card-title">Grup ve materyal ozeti</div>' +
+              '<div class="muted"><strong>Grup:</strong> ' +
+              group.name +
+              '</div>' +
+              '<div class="muted"><strong>Materyal:</strong> ' +
+              group.material +
+              '</div>' +
+              '<div class="muted"><strong>Siradaki oturum:</strong> ' +
+              group.nextSession +
+              '</div>' +
+              '<div class="muted" style="margin-top:0.45rem;">AC-FR-E13-03-01</div>' +
+              '</div>' +
+              '<div class="card">' +
+              '<div class="card-title">Uye listesi ve roller</div>' +
+              '<div class="list">' +
+              members
+                .map(
+                  m =>
+                    '<div class="list-item">' +
+                    '<div class="row">' +
+                    '<div class="item-title">' +
+                    m.name +
+                    '</div>' +
+                    '<span class="chip ' +
+                    (m.role === 'owner' ? 'success' : '') +
+                    '">' +
+                    m.role +
+                    '</span>' +
+                    '</div>' +
+                    '<div class="item-meta">Tamamlanma: %' +
+                    m.completion +
+                    ' | Haftalik fark: ' +
+                    m.delta +
+                    '</div>' +
                     '</div>'
-                ))
-            );
-
-            return phoneShell('Grup listesi ve durum ozeti', body, null);
-        }
-
-        function screenTwo() {
-            const draft = ui.createDraft;
-            const body = (
-                stateControls(2) +
-                statePanel(2) +
-                (ui.screenStates[2] !== 'ready' ? '' : (
-                    '<div class="card">' +
-                        '<div class="card-title">Temel grup bilgisi</div>' +
-                        '<input class="field" type="text" placeholder="Grup adini girin" value="' + draft.name.replace(/"/g, '&quot;') + '" oninput="updateDraft(\'name\', this.value)" aria-label="Grup adi" />' +
-                        '<div class="muted" style="margin-top:0.4rem;">Grup adi bos birakilamaz.</div>' +
-                        '<div class="muted" style="margin-top:0.45rem;">AC-FR-E13-02-01</div>' +
+                )
+                .join('') +
+              '</div>' +
+              '<div class="muted" style="margin-top:0.45rem;">AC-FR-E13-03-02</div>' +
+              '</div>' +
+              '<div class="card">' +
+              '<div class="card-title">Tartisma akisi</div>' +
+              '<div class="list">' +
+              discussion
+                .map(
+                  d =>
+                    '<div class="list-item">' +
+                    '<div class="row"><div class="item-title">' +
+                    d.author +
+                    '</div><span class="chip">' +
+                    d.time +
+                    '</span></div>' +
+                    '<div class="item-meta">' +
+                    d.text +
                     '</div>' +
-
-                    '<div class="card">' +
-                        '<div class="card-title">Okuma materyali secimi</div>' +
-                        '<div class="chips">' +
-                            '<button class="btn ' + (draft.materialType === 'journey' ? 'btn-primary' : 'btn-outline') + '" onclick="updateDraft(\'materialType\', \'journey\')" aria-label="Yolculuk sec" aria-pressed="' + (draft.materialType === 'journey') + '">Journey</button>' +
-                            '<button class="btn ' + (draft.materialType === 'workshop' ? 'btn-primary' : 'btn-outline') + '" onclick="updateDraft(\'materialType\', \'workshop\')" aria-label="Atolye sec" aria-pressed="' + (draft.materialType === 'workshop') + '">Workshop</button>' +
-                            '<button class="btn ' + (draft.materialType === 'ebook' ? 'btn-primary' : 'btn-outline') + '" onclick="updateDraft(\'materialType\', \'ebook\')" aria-label="eBook sec" aria-pressed="' + (draft.materialType === 'ebook') + '">eBook</button>' +
-                        '</div>' +
-                        '<input class="field" style="margin-top:0.45rem;" type="text" placeholder="Materyal adini girin" value="' + draft.materialName.replace(/"/g, '&quot;') + '" oninput="updateDraft(\'materialName\', this.value)" aria-label="Materyal adi" />' +
-                        '<div class="muted" style="margin-top:0.45rem;">AC-FR-E13-02-02</div>' +
-                    '</div>' +
-
-                    '<div class="card">' +
-                        '<div class="card-title">Gizlilik ve davet</div>' +
-                        '<div class="chips">' +
-                            '<button class="btn ' + (draft.privacy === 'public' ? 'btn-primary' : 'btn-outline') + '" onclick="updateDraft(\'privacy\', \'public\')" aria-label="Acik grup" aria-pressed="' + (draft.privacy === 'public') + '">Acik</button>' +
-                            '<button class="btn ' + (draft.privacy === 'private' ? 'btn-primary' : 'btn-outline') + '" onclick="updateDraft(\'privacy\', \'private\')" aria-label="Ozel grup" aria-pressed="' + (draft.privacy === 'private') + '">Ozel</button>' +
-                        '</div>' +
-                        '<textarea class="field" style="margin-top:0.45rem; min-height:72px;" placeholder="Davet e-postalari (virgulle ayirin)" oninput="updateDraft(\'invites\', this.value)" aria-label="Davet e-postalari">' + draft.invites + '</textarea>' +
-                        '<div class="chips" style="margin-top:0.45rem;">' +
-                            '<button class="btn btn-primary" onclick="createGroup()" aria-label="Grubu olustur">Grubu Olustur</button>' +
-                            '<button class="btn btn-outline" onclick="showScreen(1)" aria-label="Listeye geri don">Listeye Don</button>' +
-                        '</div>' +
-                        '<div class="muted" style="margin-top:0.45rem;">AC-FR-E13-02-03</div>' +
-                        '<div class="muted">AC-FR-E13-02-04</div>' +
                     '</div>'
-                ))
-            );
-
-            return phoneShell('Grup olusturma ve davet', body, 1);
-        }
-
-        function screenThree() {
-            const group = selectedGroup();
-            const members = selectedMembers();
-            const discussion = ui.discussions[group.id] || [];
-            const schedule = ui.schedules[group.id] || [];
-
-            const body = (
-                stateControls(3) +
-                statePanel(3) +
-                (ui.screenStates[3] !== 'ready' ? '' : (
-                    '<div class="card">' +
-                        '<div class="card-title">Grup ve materyal ozeti</div>' +
-                        '<div class="muted"><strong>Grup:</strong> ' + group.name + '</div>' +
-                        '<div class="muted"><strong>Materyal:</strong> ' + group.material + '</div>' +
-                        '<div class="muted"><strong>Siradaki oturum:</strong> ' + group.nextSession + '</div>' +
-                        '<div class="muted" style="margin-top:0.45rem;">AC-FR-E13-03-01</div>' +
-                    '</div>' +
-
-                    '<div class="card">' +
-                        '<div class="card-title">Uye listesi ve roller</div>' +
-                        '<div class="list">' +
-                            members.map((m) => (
-                                '<div class="list-item">' +
-                                    '<div class="row">' +
-                                        '<div class="item-title">' + m.name + '</div>' +
-                                        '<span class="chip ' + (m.role === 'owner' ? 'success' : '') + '">' + m.role + '</span>' +
-                                    '</div>' +
-                                    '<div class="item-meta">Tamamlanma: %' + m.completion + ' | Haftalik fark: ' + m.delta + '</div>' +
-                                '</div>'
-                            )).join('') +
-                        '</div>' +
-                        '<div class="muted" style="margin-top:0.45rem;">AC-FR-E13-03-02</div>' +
-                    '</div>' +
-
-                    '<div class="card">' +
-                        '<div class="card-title">Tartisma akisi</div>' +
-                        '<div class="list">' +
-                            discussion.map((d) => (
-                                '<div class="list-item">' +
-                                    '<div class="row"><div class="item-title">' + d.author + '</div><span class="chip">' + d.time + '</span></div>' +
-                                    '<div class="item-meta">' + d.text + '</div>' +
-                                '</div>'
-                            )).join('') +
-                        '</div>' +
-                        '<div class="muted" style="margin-top:0.45rem;">AC-FR-E13-03-03</div>' +
-                    '</div>' +
-
-                    '<div class="card">' +
-                        '<div class="card-title">Okuma takvimi</div>' +
-                        '<div class="list">' +
-                            schedule.map((s) => (
-                                '<div class="list-item">' +
-                                    '<div class="row"><div class="item-title">' + s.label + '</div><span class="chip warn">' + s.target + '</span></div>' +
-                                '</div>'
-                            )).join('') +
-                        '</div>' +
-                        '<div class="chips" style="margin-top:0.5rem;">' +
-                            '<button class="btn btn-primary" onclick="showScreen(4)" aria-label="Ilerleme ekranini ac">Ilerlemeye Gec</button>' +
-                        '</div>' +
-                        '<div class="muted" style="margin-top:0.45rem;">AC-FR-E13-03-04</div>' +
+                )
+                .join('') +
+              '</div>' +
+              '<div class="muted" style="margin-top:0.45rem;">AC-FR-E13-03-03</div>' +
+              '</div>' +
+              '<div class="card">' +
+              '<div class="card-title">Okuma takvimi</div>' +
+              '<div class="list">' +
+              schedule
+                .map(
+                  s =>
+                    '<div class="list-item">' +
+                    '<div class="row"><div class="item-title">' +
+                    s.label +
+                    '</div><span class="chip warn">' +
+                    s.target +
+                    '</span></div>' +
                     '</div>'
-                ))
-            );
+                )
+                .join('') +
+              '</div>' +
+              '<div class="chips" style="margin-top:0.5rem;">' +
+              '<button class="btn btn-primary" onclick="showScreen(4)" aria-label="Ilerleme ekranini ac">Ilerlemeye Gec</button>' +
+              '</div>' +
+              '<div class="muted" style="margin-top:0.45rem;">AC-FR-E13-03-04</div>' +
+              '</div>');
 
-            return phoneShell('Grup detayi ve tartisma', body, 1);
-        }
+        return phoneShell('Grup detayi ve tartisma', body, 1);
+      }
 
-        function screenFour() {
-            const group = selectedGroup();
-            const members = selectedMembers();
-            const avg = groupAverage(members);
-            const trend = trendLabel(avg);
-            const sorted = [...members].sort((a, b) => b.completion - a.completion);
+      function screenFour() {
+        const group = selectedGroup();
+        const members = selectedMembers();
+        const avg = groupAverage(members);
+        const trend = trendLabel(avg);
+        const sorted = [...members].sort((a, b) => b.completion - a.completion);
 
-            const body = (
-                stateControls(4) +
-                statePanel(4) +
-                (ui.screenStates[4] !== 'ready' ? '' : (
-                    '<div class="card">' +
-                        '<div class="card-title">Bireysel tamamlanma yuzdeleri</div>' +
-                        '<div class="list">' +
-                            members.map((m) => (
-                                '<div class="list-item">' +
-                                    '<div class="row"><div class="item-title">' + m.name + '</div><span class="chip">%' + m.completion + '</span></div>' +
-                                    '<div class="progress"><span style="width:' + m.completion + '%;"></span></div>' +
-                                '</div>'
-                            )).join('') +
-                        '</div>' +
-                        '<div class="muted" style="margin-top:0.45rem;">AC-FR-E13-04-01</div>' +
-                    '</div>' +
-
-                    '<div class="card">' +
-                        '<div class="card-title">Grup ortalama ve trend</div>' +
-                        '<div class="chips">' +
-                            '<span class="chip success">Ortalama: %' + avg + '</span>' +
-                            '<span class="chip ' + (trend === 'Yukseliyor' ? 'success' : trend === 'Dengeli' ? 'warn' : 'error') + '">Trend: ' + trend + '</span>' +
-                            '<span class="chip">Grup: ' + group.name + '</span>' +
-                        '</div>' +
-                        '<div class="muted" style="margin-top:0.45rem;">AC-FR-E13-04-02</div>' +
-                    '</div>' +
-
-                    '<div class="card">' +
-                        '<div class="card-title">Uye karsilastirma siralamasi</div>' +
-                        '<div class="list">' +
-                            sorted.map((m, i) => (
-                                '<div class="list-item">' +
-                                    '<div class="row">' +
-                                        '<div class="item-title">' + (i + 1) + '. ' + m.name + '</div>' +
-                                        '<span class="chip">%' + m.completion + '</span>' +
-                                    '</div>' +
-                                    '<div class="item-meta">Haftalik fark: ' + m.delta + '</div>' +
-                                '</div>'
-                            )).join('') +
-                        '</div>' +
-                        '<div class="muted" style="margin-top:0.45rem;">AC-FR-E13-04-03</div>' +
-                    '</div>' +
-
-                    '<div class="card">' +
-                        '<div class="card-title">Nudge onerileri</div>' +
-                        '<div class="list">' +
-                            '<div class="list-item"><div class="item-meta">Tamamlanmasi %50 altinda kalan uyelere 24 saatlik mini hatirlatma gonder.</div></div>' +
-                            '<div class="list-item"><div class="item-meta">Son 3 gundur aktivite gostermeyen uyeler icin kisa ozet mesaji olustur.</div></div>' +
-                        '</div>' +
-                        '<div class="muted" style="margin-top:0.45rem;">AC-FR-E13-04-04</div>' +
+        const body =
+          stateControls(4) +
+          statePanel(4) +
+          (ui.screenStates[4] !== 'ready'
+            ? ''
+            : '<div class="card">' +
+              '<div class="card-title">Bireysel tamamlanma yuzdeleri</div>' +
+              '<div class="list">' +
+              members
+                .map(
+                  m =>
+                    '<div class="list-item">' +
+                    '<div class="row"><div class="item-title">' +
+                    m.name +
+                    '</div><span class="chip">%' +
+                    m.completion +
+                    '</span></div>' +
+                    '<div class="progress"><span style="width:' +
+                    m.completion +
+                    '%;"></span></div>' +
                     '</div>'
-                ))
-            );
+                )
+                .join('') +
+              '</div>' +
+              '<div class="muted" style="margin-top:0.45rem;">AC-FR-E13-04-01</div>' +
+              '</div>' +
+              '<div class="card">' +
+              '<div class="card-title">Grup ortalama ve trend</div>' +
+              '<div class="chips">' +
+              '<span class="chip success">Ortalama: %' +
+              avg +
+              '</span>' +
+              '<span class="chip ' +
+              (trend === 'Yukseliyor' ? 'success' : trend === 'Dengeli' ? 'warn' : 'error') +
+              '">Trend: ' +
+              trend +
+              '</span>' +
+              '<span class="chip">Grup: ' +
+              group.name +
+              '</span>' +
+              '</div>' +
+              '<div class="muted" style="margin-top:0.45rem;">AC-FR-E13-04-02</div>' +
+              '</div>' +
+              '<div class="card">' +
+              '<div class="card-title">Uye karsilastirma siralamasi</div>' +
+              '<div class="list">' +
+              sorted
+                .map(
+                  (m, i) =>
+                    '<div class="list-item">' +
+                    '<div class="row">' +
+                    '<div class="item-title">' +
+                    (i + 1) +
+                    '. ' +
+                    m.name +
+                    '</div>' +
+                    '<span class="chip">%' +
+                    m.completion +
+                    '</span>' +
+                    '</div>' +
+                    '<div class="item-meta">Haftalik fark: ' +
+                    m.delta +
+                    '</div>' +
+                    '</div>'
+                )
+                .join('') +
+              '</div>' +
+              '<div class="muted" style="margin-top:0.45rem;">AC-FR-E13-04-03</div>' +
+              '</div>' +
+              '<div class="card">' +
+              '<div class="card-title">Nudge onerileri</div>' +
+              '<div class="list">' +
+              '<div class="list-item"><div class="item-meta">Tamamlanmasi %50 altinda kalan uyelere 24 saatlik mini hatirlatma gonder.</div></div>' +
+              '<div class="list-item"><div class="item-meta">Son 3 gundur aktivite gostermeyen uyeler icin kisa ozet mesaji olustur.</div></div>' +
+              '</div>' +
+              '<div class="muted" style="margin-top:0.45rem;">AC-FR-E13-04-04</div>' +
+              '</div>');
 
-            return phoneShell('Grup ilerleme ve karsilastirma', body, 3);
+        return phoneShell('Grup ilerleme ve karsilastirma', body, 3);
+      }
+
+      function renderScreen(screenNo) {
+        if (screenNo === 1) {
+          return screenOne();
         }
-
-        function renderScreen(screenNo) {
-            if (screenNo === 1) {
-                return screenOne();
-            }
-            if (screenNo === 2) {
-                return screenTwo();
-            }
-            if (screenNo === 3) {
-                return screenThree();
-            }
-            return screenFour();
+        if (screenNo === 2) {
+          return screenTwo();
         }
-
-        function render() {
-            const current = screenData[ui.currentScreen];
-            document.getElementById('screenTitle').textContent = current.title;
-            document.getElementById('screenFr').textContent = current.fr;
-            document.getElementById('screenRoute').textContent = current.route;
-            document.getElementById('screenMeta').textContent = current.meta + ' | event: ' + ui.lastAnalyticsEvent;
-
-            document.querySelectorAll('.nav-item').forEach((item) => {
-                item.classList.toggle('active', Number(item.dataset.screen) === ui.currentScreen);
-            });
-
-            document.querySelectorAll('[id^="flow-"]').forEach((step, index) => {
-                step.classList.toggle('active', index + 1 === ui.currentScreen);
-            });
-
-            document.getElementById('viewer').innerHTML = renderScreen(ui.currentScreen);
+        if (screenNo === 3) {
+          return screenThree();
         }
+        return screenFour();
+      }
 
-        document.querySelectorAll('.nav-item').forEach((item) => {
-            item.addEventListener('click', () => {
-                setCurrentScreen(Number(item.dataset.screen));
-            });
-            item.addEventListener('keydown', (event) => {
-                if (event.key === 'Enter' || event.key === ' ') {
-                    event.preventDefault();
-                    setCurrentScreen(Number(item.dataset.screen));
-                }
-            });
+      function render() {
+        const current = screenData[ui.currentScreen];
+        document.getElementById('screenTitle').textContent = current.title;
+        document.getElementById('screenFr').textContent = current.fr;
+        document.getElementById('screenRoute').textContent = current.route;
+        document.getElementById('screenMeta').textContent = current.meta + ' | event: ' + ui.lastAnalyticsEvent;
+
+        document.querySelectorAll('.nav-item').forEach(item => {
+          item.classList.toggle('active', Number(item.dataset.screen) === ui.currentScreen);
         });
 
-        render();
+        document.querySelectorAll('[id^="flow-"]').forEach((step, index) => {
+          step.classList.toggle('active', index + 1 === ui.currentScreen);
+        });
+
+        document.getElementById('viewer').innerHTML = renderScreen(ui.currentScreen);
+      }
+
+      document.querySelectorAll('.nav-item').forEach(item => {
+        item.addEventListener('click', () => {
+          setCurrentScreen(Number(item.dataset.screen));
+        });
+        item.addEventListener('keydown', event => {
+          if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            setCurrentScreen(Number(item.dataset.screen));
+          }
+        });
+      });
+
+      render();
     </script>
-</body>
+  </body>
 </html>

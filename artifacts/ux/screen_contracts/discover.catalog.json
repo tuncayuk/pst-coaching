@@ -3,9 +3,7 @@
   "title": "Kesfet",
   "route": "/discover",
   "purpose": "Tab root screen for Kesfet.",
-  "entryPoints": [
-    "app.launch"
-  ],
+  "entryPoints": ["app.launch"],
   "inputs": [
     {
       "name": "locale",
@@ -20,11 +18,7 @@
       "source": "entitlement_cache"
     }
   ],
-  "dataDependencies": [
-    "User",
-    "Subscription",
-    "ContentProgress"
-  ],
+  "dataDependencies": ["User", "Subscription", "ContentProgress"],
   "uiStates": {
     "loading": {
       "description": "Tab shows skeleton cards while initial data is loading."
@@ -44,9 +38,7 @@
   },
   "analytics": {
     "screenView": "discover_catalog_viewed",
-    "events": [
-      "discover_catalog_viewed"
-    ]
+    "events": ["discover_catalog_viewed"]
   },
   "acceptanceCriteriaRefs": [],
   "gates": []

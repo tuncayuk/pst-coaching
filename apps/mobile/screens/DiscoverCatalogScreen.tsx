@@ -1,76 +1,91 @@
-import React from "react";
-import { ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { useNavigation } from "@react-navigation/native";
-import { OfflineNotice } from "./components/OfflineNotice";
-import { SkeletonBlock } from "./components/SkeletonBlock";
-import { StateMessage } from "./components/StateMessage";
-import { resolveScreenState, ScreenState } from "./components/ScreenState";
+import { useNavigation } from '@react-navigation/native';
+import React from 'react';
+import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+
+import { PActivityIndicator, PCard, PText } from '../components';
 import {
   getEbooks,
   getJourneys,
   getModules,
   getPrimaryUser,
   getSubscriptionForUser,
-  getWorkshops,
-} from "../data/mockSelectors";
-import { PActivityIndicator, PCard, PText } from "../components";
+  getWorkshops
+} from '../data/mockSelectors';
+import { OfflineNotice } from './components/OfflineNotice';
+import { ScreenState, resolveScreenState } from './components/ScreenState';
+import { SkeletonBlock } from './components/SkeletonBlock';
+import { StateMessage } from './components/StateMessage';
 
 const CONTENT_TABS = [
-  { key: "journeys", label: "Yolculuklar", emoji: "🎯", screen: "DiscoverJourneys" },
-  { key: "workshops", label: "Atolyeler", emoji: "🎨", screen: "DiscoverWorkshops" },
-  { key: "modules", label: "Moduller", emoji: "📦", screen: "DiscoverModules" },
-  { key: "ebooks", label: "e-Kitaplar", emoji: "📖", screen: "DiscoverEbooks" },
+  { key: 'journeys', label: 'Yolculuklar', emoji: '🎯', screen: 'DiscoverJourneys' },
+  { key: 'workshops', label: 'Atolyeler', emoji: '🎨', screen: 'DiscoverWorkshops' },
+  { key: 'modules', label: 'Moduller', emoji: '📦', screen: 'DiscoverModules' },
+  { key: 'ebooks', label: 'e-Kitaplar', emoji: '📖', screen: 'DiscoverEbooks' }
 ];
 
 const LEVEL_LABELS: Record<string, string> = {
-  baslangic: "Baslangic", beginner: "Baslangic",
-  orta: "Orta", intermediate: "Orta",
-  ileri: "Ileri", advanced: "Ileri",
+  baslangic: 'Baslangic',
+  beginner: 'Baslangic',
+  orta: 'Orta',
+  intermediate: 'Orta',
+  ileri: 'Ileri',
+  advanced: 'Ileri'
 };
 
-const JOURNEY_COLORS = ["#FFDDC1", "#D1FAE5", "#E9D5FF", "#FDE68A"];
-const JOURNEY_EMOJIS = ["🎯", "🙏", "🌿", "🧘"];
-const EBOOK_COLORS = ["#B2EBF2", "#D1FAE5", "#E9D5FF", "#FDE68A"];
-const EBOOK_EMOJIS = ["📖", "📘", "📕", "📗"];
-const MOSAIC_COLORS = ["#E9D5FF", "#D1FAE5", "#FDE68A", "#B2EBF2"];
+const JOURNEY_COLORS = ['#FFDDC1', '#D1FAE5', '#E9D5FF', '#FDE68A'];
+const JOURNEY_EMOJIS = ['🎯', '🙏', '🌿', '🧘'];
+const EBOOK_COLORS = ['#B2EBF2', '#D1FAE5', '#E9D5FF', '#FDE68A'];
+const EBOOK_EMOJIS = ['📖', '📘', '📕', '📗'];
+const MOSAIC_COLORS = ['#E9D5FF', '#D1FAE5', '#FDE68A', '#B2EBF2'];
 
 const DiscoverReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
   const navigation = useNavigation<any>();
-  const [activeTab, setActiveTab] = React.useState<string>("journeys");
+  const [activeTab, setActiveTab] = React.useState<string>('journeys');
   const user = getPrimaryUser();
   const subscription = getSubscriptionForUser(user?.id);
   const isGuest = !user;
-  const requiresSubscription =
-    !isGuest && subscription?.status !== "active" && subscription?.status !== "trial";
+  const requiresSubscription = !isGuest && subscription?.status !== 'active' && subscription?.status !== 'trial';
   const journeys = getJourneys();
   const ebooks = getEbooks();
   const workshops = getWorkshops();
   const modules = getModules();
-  const featuredJourneys = journeys.filter((j) => j.featured).slice(0, 3);
-  const featuredEbooks = ebooks.filter((e) => e.featured).slice(0, 4);
+  const featuredJourneys = journeys.filter(j => j.featured).slice(0, 3);
+  const featuredEbooks = ebooks.filter(e => e.featured).slice(0, 4);
 
-  const handlePaywall = () => navigation.navigate("Content", { screen: "ContentPaywall" });
+  const handlePaywall = () => navigation.navigate('Content', { screen: 'ContentPaywall' });
 
-  const handleTabPress = (tab: typeof CONTENT_TABS[number]) => {
-    if (requiresSubscription) { handlePaywall(); return; }
+  const handleTabPress = (tab: (typeof CONTENT_TABS)[number]) => {
+    if (requiresSubscription) {
+      handlePaywall();
+      return;
+    }
     setActiveTab(tab.key);
     navigation.navigate(tab.screen);
   };
 
   const handleJourneyPress = (id: string) => {
-    if (requiresSubscription) { handlePaywall(); return; }
-    navigation.navigate("Content", { screen: "ContentJourneyDetail", params: { id } });
+    if (requiresSubscription) {
+      handlePaywall();
+      return;
+    }
+    navigation.navigate('Content', { screen: 'ContentJourneyDetail', params: { id } });
   };
 
   const handleEbookPress = (id: string) => {
-    if (requiresSubscription) { handlePaywall(); return; }
-    navigation.navigate("Content", { screen: "ContentEbookDetail", params: { id } });
+    if (requiresSubscription) {
+      handlePaywall();
+      return;
+    }
+    navigation.navigate('Content', { screen: 'ContentEbookDetail', params: { id } });
   };
 
   const handleAssistantPress = () => {
-    if (requiresSubscription) { handlePaywall(); return; }
-    navigation.navigate("DiscoverAssistantIntro");
+    if (requiresSubscription) {
+      handlePaywall();
+      return;
+    }
+    navigation.navigate('DiscoverAssistantIntro');
   };
 
   return (
@@ -107,7 +122,7 @@ const DiscoverReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
       {/* Content Mosaic */}
       <PText style={styles.sectionTitle}>Icerik Turleri</PText>
       <View style={styles.mosaicGrid}>
-        {[0, 1].map((row) => (
+        {[0, 1].map(row => (
           <View key={row} style={styles.mosaicRow}>
             {CONTENT_TABS.slice(row * 2, row * 2 + 2).map((tab, col) => {
               const idx = row * 2 + col;
@@ -119,7 +134,7 @@ const DiscoverReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
                   style={[
                     styles.mosaicTile,
                     { backgroundColor: MOSAIC_COLORS[idx] },
-                    isActive && styles.mosaicTileActive,
+                    isActive && styles.mosaicTileActive
                   ]}
                   onPress={() => handleTabPress(tab)}
                   disabled={isOffline}
@@ -146,21 +161,10 @@ const DiscoverReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
         <View style={styles.section}>
           <PText style={styles.sectionTitle}>One Cikan Yolculuklar</PText>
           {featuredJourneys.map((journey, index) => (
-            <PCard
-              key={journey.id}
-              style={styles.journeyCard}
-              onPress={() => handleJourneyPress(journey.id)}
-            >
+            <PCard key={journey.id} style={styles.journeyCard} onPress={() => handleJourneyPress(journey.id)}>
               <View style={styles.journeyCardRow}>
-                <View
-                  style={[
-                    styles.journeyIcon,
-                    { backgroundColor: JOURNEY_COLORS[index % JOURNEY_COLORS.length] },
-                  ]}
-                >
-                  <PText style={styles.journeyEmoji}>
-                    {JOURNEY_EMOJIS[index % JOURNEY_EMOJIS.length]}
-                  </PText>
+                <View style={[styles.journeyIcon, { backgroundColor: JOURNEY_COLORS[index % JOURNEY_COLORS.length] }]}>
+                  <PText style={styles.journeyEmoji}>{JOURNEY_EMOJIS[index % JOURNEY_EMOJIS.length]}</PText>
                 </View>
                 <View style={styles.journeyInfo}>
                   <View style={styles.journeyTitleRow}>
@@ -176,13 +180,9 @@ const DiscoverReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
                   <View style={styles.journeyMetaRow}>
                     <PText style={styles.journeyMetaText}>⏱ {journey.duration_days} gun</PText>
                     <PText style={styles.journeyMetaDot}>·</PText>
-                    <PText style={styles.journeyMetaText}>
-                      📊 {LEVEL_LABELS[journey.level] ?? journey.level}
-                    </PText>
+                    <PText style={styles.journeyMetaText}>📊 {LEVEL_LABELS[journey.level] ?? journey.level}</PText>
                   </View>
-                  <PText style={styles.journeyDailyTarget}>
-                    {journey.daily_target ?? "10 dk/gun"}
-                  </PText>
+                  <PText style={styles.journeyDailyTarget}>{journey.daily_target ?? '10 dk/gun'}</PText>
                 </View>
               </View>
             </PCard>
@@ -194,28 +194,15 @@ const DiscoverReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
       {featuredEbooks.length > 0 && (
         <View style={styles.section}>
           <PText style={styles.sectionTitle}>Populer e-Kitaplar</PText>
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={styles.ebookRow}
-          >
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.ebookRow}>
             {featuredEbooks.map((ebook, index) => (
-              <PCard
-                key={ebook.id}
-                style={styles.ebookCard}
-                onPress={() => handleEbookPress(ebook.id)}
-              >
-                <View
-                  style={[
-                    styles.ebookCover,
-                    { backgroundColor: EBOOK_COLORS[index % EBOOK_COLORS.length] },
-                  ]}
-                >
-                  <PText style={styles.ebookEmoji}>
-                    {EBOOK_EMOJIS[index % EBOOK_EMOJIS.length]}
-                  </PText>
+              <PCard key={ebook.id} style={styles.ebookCard} onPress={() => handleEbookPress(ebook.id)}>
+                <View style={[styles.ebookCover, { backgroundColor: EBOOK_COLORS[index % EBOOK_COLORS.length] }]}>
+                  <PText style={styles.ebookEmoji}>{EBOOK_EMOJIS[index % EBOOK_EMOJIS.length]}</PText>
                 </View>
-                <PText style={styles.ebookTitle} numberOfLines={2}>{ebook.title}</PText>
+                <PText style={styles.ebookTitle} numberOfLines={2}>
+                  {ebook.title}
+                </PText>
                 <PText style={styles.ebookMeta}>{ebook.total_pages ?? 180} s.</PText>
               </PCard>
             ))}
@@ -228,14 +215,10 @@ const DiscoverReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
   );
 };
 
-export const DiscoverCatalogScreen = ({
-  route,
-}: {
-  route?: { params?: { state?: ScreenState } };
-}) => {
+export const DiscoverCatalogScreen = ({ route }: { route?: { params?: { state?: ScreenState } } }) => {
   const state = resolveScreenState(route);
 
-  if (state === "loading") {
+  if (state === 'loading') {
     return (
       <SafeAreaView style={styles.root}>
         <ScrollView contentContainerStyle={styles.content}>
@@ -250,7 +233,7 @@ export const DiscoverCatalogScreen = ({
     );
   }
 
-  if (state === "empty") {
+  if (state === 'empty') {
     return (
       <SafeAreaView style={styles.root}>
         <ScrollView contentContainerStyle={styles.content}>
@@ -265,7 +248,7 @@ export const DiscoverCatalogScreen = ({
     );
   }
 
-  if (state === "error") {
+  if (state === 'error') {
     return (
       <SafeAreaView style={styles.root}>
         <ScrollView contentContainerStyle={styles.content}>
@@ -281,7 +264,7 @@ export const DiscoverCatalogScreen = ({
     );
   }
 
-  if (state === "offline") {
+  if (state === 'offline') {
     return (
       <SafeAreaView style={styles.root}>
         <ScrollView contentContainerStyle={styles.content}>
@@ -302,139 +285,139 @@ export const DiscoverCatalogScreen = ({
 };
 
 const styles = StyleSheet.create({
-  root: { flex: 1, backgroundColor: "#FAFAFA" },
+  root: { flex: 1, backgroundColor: '#FAFAFA' },
   content: { paddingHorizontal: 20, paddingTop: 20, paddingBottom: 96 },
   header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "flex-start",
-    marginBottom: 20,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    marginBottom: 20
   },
-  greeting: { fontSize: 14, color: "#737373", fontWeight: "500", marginBottom: 2 },
-  title: { fontSize: 32, fontWeight: "800", color: "#2B1B5D", letterSpacing: -0.5 },
+  greeting: { fontSize: 14, color: '#737373', fontWeight: '500', marginBottom: 2 },
+  title: { fontSize: 32, fontWeight: '800', color: '#2B1B5D', letterSpacing: -0.5 },
   guestBadge: {
-    backgroundColor: "#FDE68A",
+    backgroundColor: '#FDE68A',
     paddingHorizontal: 10,
     paddingVertical: 4,
     borderRadius: 12,
-    alignSelf: "flex-start",
-    marginTop: 4,
+    alignSelf: 'flex-start',
+    marginTop: 4
   },
-  guestBadgeText: { fontSize: 12, fontWeight: "700", color: "#92400E" },
-  assistantCard: { marginBottom: 20, borderRadius: 16, backgroundColor: "#2B1B5D" },
-  assistantRow: { flexDirection: "row", alignItems: "center", gap: 12, padding: 16 },
+  guestBadgeText: { fontSize: 12, fontWeight: '700', color: '#92400E' },
+  assistantCard: { marginBottom: 20, borderRadius: 16, backgroundColor: '#2B1B5D' },
+  assistantRow: { flexDirection: 'row', alignItems: 'center', gap: 12, padding: 16 },
   assistantIconWrap: {
     width: 48,
     height: 48,
     borderRadius: 12,
-    backgroundColor: "rgba(255,255,255,0.15)",
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: 'rgba(255,255,255,0.15)',
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   assistantEmoji: { fontSize: 24 },
   assistantInfo: { flex: 1 },
-  assistantTitle: { fontSize: 16, fontWeight: "700", color: "#FFFFFF", marginBottom: 2 },
-  assistantSubtitle: { fontSize: 13, color: "rgba(255,255,255,0.7)" },
+  assistantTitle: { fontSize: 16, fontWeight: '700', color: '#FFFFFF', marginBottom: 2 },
+  assistantSubtitle: { fontSize: 13, color: 'rgba(255,255,255,0.7)' },
   assistantArrowWrap: {
     width: 28,
     height: 28,
     borderRadius: 14,
-    backgroundColor: "rgba(255,255,255,0.2)",
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: 'rgba(255,255,255,0.2)',
+    alignItems: 'center',
+    justifyContent: 'center'
   },
-  assistantArrow: { fontSize: 18, color: "#FFFFFF", lineHeight: 22 },
+  assistantArrow: { fontSize: 18, color: '#FFFFFF', lineHeight: 22 },
   sectionLabel: {
     fontSize: 11,
-    fontWeight: "700",
-    color: "#9CA3AF",
+    fontWeight: '700',
+    color: '#9CA3AF',
     marginBottom: 8,
-    textTransform: "uppercase",
-    letterSpacing: 0.8,
+    textTransform: 'uppercase',
+    letterSpacing: 0.8
   },
   mosaicGrid: { gap: 12, marginBottom: 24 },
-  mosaicRow: { flexDirection: "row", gap: 12 },
+  mosaicRow: { flexDirection: 'row', gap: 12 },
   mosaicTile: {
     flex: 1,
     borderRadius: 16,
     padding: 16,
     minHeight: 120,
-    justifyContent: "space-between",
+    justifyContent: 'space-between'
   },
   mosaicTileActive: {
     borderWidth: 2,
-    borderColor: "#2B1B5D",
-    shadowColor: "#2B1B5D",
+    borderColor: '#2B1B5D',
+    shadowColor: '#2B1B5D',
     shadowOpacity: 0.2,
     shadowRadius: 8,
     shadowOffset: { width: 0, height: 2 },
-    elevation: 4,
+    elevation: 4
   },
   mosaicTileHeader: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "flex-start",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start'
   },
   mosaicEmoji: { fontSize: 32 },
   mosaicCountBadge: {
-    backgroundColor: "rgba(0,0,0,0.12)",
+    backgroundColor: 'rgba(0,0,0,0.12)',
     borderRadius: 10,
     paddingHorizontal: 8,
-    paddingVertical: 3,
+    paddingVertical: 3
   },
-  mosaicCountText: { fontSize: 13, fontWeight: "800", color: "#2B1B5D" },
-  mosaicTileLabel: { fontSize: 14, fontWeight: "700", color: "#2B1B5D" },
+  mosaicCountText: { fontSize: 13, fontWeight: '800', color: '#2B1B5D' },
+  mosaicTileLabel: { fontSize: 14, fontWeight: '700', color: '#2B1B5D' },
   section: { marginBottom: 24 },
-  sectionTitle: { fontSize: 18, fontWeight: "700", color: "#171717", marginBottom: 12 },
+  sectionTitle: { fontSize: 18, fontWeight: '700', color: '#171717', marginBottom: 12 },
   journeyCard: { borderRadius: 16, marginBottom: 12 },
-  journeyCardRow: { flexDirection: "row", gap: 12, padding: 12 },
+  journeyCardRow: { flexDirection: 'row', gap: 12, padding: 12 },
   journeyIcon: {
     width: 64,
     height: 64,
     borderRadius: 12,
-    alignItems: "center",
-    justifyContent: "center",
-    flexShrink: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexShrink: 0
   },
   journeyEmoji: { fontSize: 28 },
   journeyInfo: { flex: 1 },
   journeyTitleRow: {
-    flexDirection: "row",
-    alignItems: "flex-start",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    justifyContent: 'space-between',
     gap: 8,
-    marginBottom: 4,
+    marginBottom: 4
   },
-  journeyTitle: { fontSize: 15, fontWeight: "700", color: "#171717", flex: 1 },
+  journeyTitle: { fontSize: 15, fontWeight: '700', color: '#171717', flex: 1 },
   freeBadge: {
-    backgroundColor: "#D1FAE5",
+    backgroundColor: '#D1FAE5',
     paddingHorizontal: 6,
     paddingVertical: 2,
-    borderRadius: 6,
+    borderRadius: 6
   },
-  freeBadgeText: { fontSize: 10, fontWeight: "700", color: "#065F46" },
-  journeyMetaRow: { flexDirection: "row", alignItems: "center", gap: 6, marginBottom: 2 },
-  journeyMetaText: { fontSize: 12, color: "#737373" },
-  journeyMetaDot: { fontSize: 12, color: "#D4D4D4" },
-  journeyDailyTarget: { fontSize: 11, color: "#00758C", fontWeight: "600" },
+  freeBadgeText: { fontSize: 10, fontWeight: '700', color: '#065F46' },
+  journeyMetaRow: { flexDirection: 'row', alignItems: 'center', gap: 6, marginBottom: 2 },
+  journeyMetaText: { fontSize: 12, color: '#737373' },
+  journeyMetaDot: { fontSize: 12, color: '#D4D4D4' },
+  journeyDailyTarget: { fontSize: 11, color: '#00758C', fontWeight: '600' },
   ebookRow: { gap: 12, paddingBottom: 4 },
   ebookCard: { width: 130, borderRadius: 12 },
   ebookCover: {
     height: 160,
     borderRadius: 12,
-    alignItems: "center",
-    justifyContent: "center",
-    marginBottom: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 8
   },
   ebookEmoji: { fontSize: 40 },
   ebookTitle: {
     fontSize: 12,
-    fontWeight: "700",
-    color: "#171717",
+    fontWeight: '700',
+    color: '#171717',
     lineHeight: 16,
     paddingHorizontal: 4,
-    marginBottom: 2,
+    marginBottom: 2
   },
-  ebookMeta: { fontSize: 11, color: "#9CA3AF", paddingHorizontal: 4, marginBottom: 4 },
-  bottomSpacer: { height: 24 },
+  ebookMeta: { fontSize: 11, color: '#9CA3AF', paddingHorizontal: 4, marginBottom: 4 },
+  bottomSpacer: { height: 24 }
 });

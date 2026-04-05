@@ -3,9 +3,7 @@
   "title": "Kulup detayi ve uye alani",
   "route": "/epic-14/fr-e14-03",
   "purpose": "Implements FR-E14-03: Kulup detayi ve uye alani.",
-  "entryPoints": [
-    "community.book_club"
-  ],
+  "entryPoints": ["community.book_club"],
   "inputs": [
     {
       "name": "userId",
@@ -26,12 +24,7 @@
       "source": "profile"
     }
   ],
-  "dataDependencies": [
-    "BookClub",
-    "BookClubMember",
-    "BookClubTopic",
-    "BookClubMeeting"
-  ],
+  "dataDependencies": ["BookClub", "BookClubMember", "BookClubTopic", "BookClubMeeting"],
   "uiStates": {
     "loading": {
       "description": "Skeleton placeholders are shown while loading FR-E14-03 data."
@@ -51,18 +44,8 @@
   },
   "analytics": {
     "screenView": "bookclub_fr_e14_03_viewed",
-    "events": [
-      "bookclub_fr_e14_03_viewed"
-    ]
+    "events": ["bookclub_fr_e14_03_viewed"]
   },
-  "acceptanceCriteriaRefs": [
-    "AC-FR-E14-03-01",
-    "AC-FR-E14-03-02",
-    "AC-FR-E14-03-03",
-    "AC-FR-E14-03-04"
-  ],
-  "gates": [
-    "auth",
-    "subscription"
-  ]
+  "acceptanceCriteriaRefs": ["AC-FR-E14-03-01", "AC-FR-E14-03-02", "AC-FR-E14-03-03", "AC-FR-E14-03-04"],
+  "gates": ["auth", "subscription"]
 }

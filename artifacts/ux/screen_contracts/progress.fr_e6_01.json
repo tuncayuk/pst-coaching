@@ -3,10 +3,7 @@
   "title": "Gelisim paneli",
   "route": "/progress/dashboard",
   "purpose": "Implements FR-E6-01: Gelisim paneli — per-type progress metrics, streak, and accessibility.",
-  "entryPoints": [
-    "home.dashboard",
-    "tab.progress"
-  ],
+  "entryPoints": ["home.dashboard", "tab.progress"],
   "inputs": [
     {
       "name": "userId",
@@ -21,11 +18,7 @@
       "source": "entitlement_cache"
     }
   ],
-  "dataDependencies": [
-    "ContentProgress",
-    "Achievement",
-    "User"
-  ],
+  "dataDependencies": ["ContentProgress", "Achievement", "User"],
   "uiStates": {
     "loading": {
       "description": "Skeleton cards shown for weekly-summary, progress-map, and achievements sections."
@@ -55,12 +48,6 @@
       "progress_review_tapped"
     ]
   },
-  "acceptanceCriteriaRefs": [
-    "AC-FR-E6-01-01",
-    "AC-FR-E6-01-02",
-    "AC-FR-E6-01-03"
-  ],
-  "gates": [
-    "auth"
-  ]
+  "acceptanceCriteriaRefs": ["AC-FR-E6-01-01", "AC-FR-E6-01-02", "AC-FR-E6-01-03"],
+  "gates": ["auth"]
 }

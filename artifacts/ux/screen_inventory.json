@@ -1,13 +1,7 @@
 {
   "appName": "PST Coaching",
   "navigation": {
-    "tabs": [
-      "Ana Sayfa",
-      "Kesfet",
-      "Kutuphane",
-      "Gelisim",
-      "Profil"
-    ]
+    "tabs": ["Ana Sayfa", "Kesfet", "Kutuphane", "Gelisim", "Profil"]
   },
   "screens": [
     {
@@ -16,13 +10,7 @@
       "title": "Ana Sayfa",
       "type": "tab",
       "gates": [],
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ]
+      "states": ["loading", "ready", "empty", "error", "offline"]
     },
     {
       "id": "discover.catalog",
@@ -30,45 +18,23 @@
       "title": "Kesfet",
       "type": "tab",
       "gates": [],
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ]
+      "states": ["loading", "ready", "empty", "error", "offline"]
     },
     {
       "id": "library.overview",
       "route": "/library",
       "title": "Kutuphane",
       "type": "tab",
-      "gates": [
-        "subscription"
-      ],
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ]
+      "gates": ["subscription"],
+      "states": ["loading", "ready", "empty", "error", "offline"]
     },
     {
       "id": "progress.dashboard",
       "route": "/progress",
       "title": "Gelisim",
       "type": "tab",
-      "gates": [
-        "subscription"
-      ],
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ]
+      "gates": ["subscription"],
+      "states": ["loading", "ready", "empty", "error", "offline"]
     },
     {
       "id": "profile.overview",
@@ -76,26 +42,14 @@
       "title": "Profil",
       "type": "tab",
       "gates": [],
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ]
+      "states": ["loading", "ready", "empty", "error", "offline"]
     },
     {
       "id": "auth.fr_e1_01",
       "route": "/epic-1/fr-e1-01",
       "title": "Cok dilli onboarding ve profil dili",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
       "gates": [],
       "epicId": "EPIC-1",
       "requirementId": "FR-E1-01"
@@ -105,13 +59,7 @@
       "route": "/epic-1/fr-e1-02",
       "title": "Kayit olma",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
       "gates": [],
       "epicId": "EPIC-1",
       "requirementId": "FR-E1-02"
@@ -121,13 +69,7 @@
       "route": "/epic-1/fr-e1-03",
       "title": "Giris yapma",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
       "gates": [],
       "epicId": "EPIC-1",
       "requirementId": "FR-E1-03"
@@ -137,13 +79,7 @@
       "route": "/epic-1/fr-e1-04",
       "title": "Sifre sifirlama",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
       "gates": [],
       "epicId": "EPIC-1",
       "requirementId": "FR-E1-04"
@@ -153,16 +89,8 @@
       "route": "/epic-1/fr-e1-05",
       "title": "Oturum yonetimi ve guvenlik",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
-      "gates": [
-        "auth"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["auth"],
       "epicId": "EPIC-1",
       "requirementId": "FR-E1-05"
     },
@@ -171,16 +99,8 @@
       "route": "/epic-1/fr-e1-06",
       "title": "Abonelik ve rol dogrulama",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
-      "gates": [
-        "auth"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["auth"],
       "epicId": "EPIC-1",
       "requirementId": "FR-E1-06"
     },
@@ -189,13 +109,7 @@
       "route": "/epic-1/fr-e1-07",
       "title": "Biyometrik giris (FaceID/TouchID)",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
       "gates": [],
       "epicId": "EPIC-1",
       "requirementId": "FR-E1-07"
@@ -205,18 +119,8 @@
       "route": "/epic-1/fr-e1-08",
       "title": "Demografi bilgisi toplama (Tek Kaynak)",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
-      "gates": [
-        "auth",
-        "subscription",
-        "add_on"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["auth", "subscription", "add_on"],
       "epicId": "EPIC-1",
       "requirementId": "FR-E1-08"
     },
@@ -225,13 +129,7 @@
       "route": "/epic-1/fr-e1-09",
       "title": "Misafir giris (kayitsiz)",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
       "gates": [],
       "epicId": "EPIC-1",
       "requirementId": "FR-E1-09"
@@ -241,13 +139,7 @@
       "route": "/home",
       "title": "Bugun ozeti ve tekil devam CTA",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
       "gates": [],
       "epicId": "EPIC-2",
       "requirementId": "FR-E2-01"
@@ -257,16 +149,8 @@
       "route": "/home/subscription",
       "title": "Abonelik durumu rozetleri",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
-      "gates": [
-        "subscription"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["subscription"],
       "epicId": "EPIC-2",
       "requirementId": "FR-E2-02"
     },
@@ -275,13 +159,7 @@
       "route": "/home/content-nav",
       "title": "Icerik alanlari navigasyonu",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
       "gates": [],
       "epicId": "EPIC-2",
       "requirementId": "FR-E2-03"
@@ -291,13 +169,7 @@
       "route": "/home/vicdandan-karaktere",
       "title": "Vicdandan Karaktere bilgilendirmesi",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
       "gates": [],
       "epicId": "EPIC-2",
       "requirementId": "FR-E2-04"
@@ -307,13 +179,7 @@
       "route": "/home/search",
       "title": "Hizli arama",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
       "gates": [],
       "epicId": "EPIC-2",
       "requirementId": "FR-E2-05"
@@ -323,13 +189,7 @@
       "route": "/home/active-content",
       "title": "Aktif iceriklerim ozeti",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
       "gates": [],
       "epicId": "EPIC-2",
       "requirementId": "FR-E2-06"
@@ -339,13 +199,7 @@
       "route": "/home/search-results",
       "title": "Son gorutulen icerikler",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
       "gates": [],
       "epicId": "EPIC-2",
       "requirementId": "FR-E2-07"
@@ -355,13 +209,7 @@
       "route": "/home/reminder",
       "title": "Gunluk hatirlatici",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
       "gates": [],
       "epicId": "EPIC-2",
       "requirementId": "FR-E2-08"
@@ -371,13 +219,7 @@
       "route": "/home",
       "title": "Ana akis performansi",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
       "gates": [],
       "epicId": "EPIC-2",
       "requirementId": "FR-E2-09"
@@ -387,17 +229,8 @@
       "route": "/profile/subscription/plan-comparison",
       "title": "Plan secimi ve karsilastirma",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
-      "gates": [
-        "auth",
-        "subscription"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["auth", "subscription"],
       "epicId": "EPIC-3",
       "requirementId": "FR-E3-01"
     },
@@ -406,17 +239,8 @@
       "route": "/profile/subscription/checkout",
       "title": "Satin alma ve aktivasyon",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
-      "gates": [
-        "auth",
-        "subscription"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["auth", "subscription"],
       "epicId": "EPIC-3",
       "requirementId": "FR-E3-02"
     },
@@ -425,19 +249,8 @@
       "route": "/profile/subscription/addons",
       "title": "Add-on yonetimi",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
-      "gates": [
-        "add_on",
-        "auth",
-        "owner_role",
-        "subscription"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["add_on", "auth", "owner_role", "subscription"],
       "epicId": "EPIC-3",
       "requirementId": "FR-E3-03"
     },
@@ -446,17 +259,8 @@
       "route": "/profile/subscription/student-discount",
       "title": "Ogrenci indirimi",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
-      "gates": [
-        "auth",
-        "subscription"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["auth", "subscription"],
       "epicId": "EPIC-3",
       "requirementId": "FR-E3-04"
     },
@@ -465,18 +269,8 @@
       "route": "/profile/subscription/manage",
       "title": "Plan yonetimi (degistir/iptal)",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
-      "gates": [
-        "auth",
-        "owner_role",
-        "subscription"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["auth", "owner_role", "subscription"],
       "epicId": "EPIC-3",
       "requirementId": "FR-E3-05"
     },
@@ -485,18 +279,8 @@
       "route": "/profile/subscription/seats",
       "title": "Kisi (seat) yonetimi",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
-      "gates": [
-        "auth",
-        "owner_role",
-        "subscription"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["auth", "owner_role", "subscription"],
       "epicId": "EPIC-3",
       "requirementId": "FR-E3-06"
     },
@@ -505,17 +289,8 @@
       "route": "/profile/subscription/payments",
       "title": "Odeme gecmisi ve geri yukleme",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
-      "gates": [
-        "auth",
-        "subscription"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["auth", "subscription"],
       "epicId": "EPIC-3",
       "requirementId": "FR-E3-07"
     },
@@ -524,13 +299,7 @@
       "route": "/discover",
       "title": "Kesfet Ana Ekrani",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
       "gates": [],
       "epicId": "EPIC-4",
       "requirementId": "FR-E4-01"
@@ -540,13 +309,7 @@
       "route": "/discover/assistant",
       "title": "Icerik Belirleme Asistani",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
       "gates": [],
       "epicId": "EPIC-4",
       "requirementId": "FR-E4-02"
@@ -556,13 +319,7 @@
       "route": "/discover/journeys",
       "title": "Yolculuk Katalogu ve Detayi",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
       "gates": [],
       "epicId": "EPIC-4",
       "requirementId": "FR-E4-03"
@@ -572,13 +329,7 @@
       "route": "/discover/workshops",
       "title": "Atolye Katalogu ve Detayi",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
       "gates": [],
       "epicId": "EPIC-4",
       "requirementId": "FR-E4-04"
@@ -588,13 +339,7 @@
       "route": "/discover/modules",
       "title": "Modul Katalogu ve Detayi",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
       "gates": [],
       "epicId": "EPIC-4",
       "requirementId": "FR-E4-05"
@@ -604,13 +349,7 @@
       "route": "/discover/ebooks",
       "title": "e-Kitap Katalogu ve Detayi",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
       "gates": [],
       "epicId": "EPIC-4",
       "requirementId": "FR-E4-06"
@@ -620,13 +359,7 @@
       "route": "/content/launch",
       "title": "Icerik Baslatma (Ortak Akis)",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
       "gates": [],
       "epicId": "EPIC-4",
       "requirementId": "FR-E4-07"
@@ -636,13 +369,7 @@
       "route": "/discover/guest",
       "title": "Misafir Goruntuleme ve Kayit Zorunlulugu",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
       "gates": [],
       "epicId": "EPIC-4",
       "requirementId": "FR-E4-08"
@@ -652,16 +379,8 @@
       "route": "/discover/demographics-gate",
       "title": "Icerik Turune Ozel Demografi Giris Noktalari",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
-      "gates": [
-        "demography"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["demography"],
       "epicId": "EPIC-4",
       "requirementId": "FR-E4-09"
     },
@@ -670,16 +389,8 @@
       "route": "/discover/ddl-test",
       "title": "Ilk Yolculukta DDL Testi",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
-      "gates": [
-        "ddl_test"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["ddl_test"],
       "epicId": "EPIC-4",
       "requirementId": "FR-E4-10"
     },
@@ -688,16 +399,8 @@
       "route": "/content/reading",
       "title": "Gunun icerigini okuma",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
-      "gates": [
-        "auth"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["auth"],
       "epicId": "EPIC-5",
       "requirementId": "FR-E5-01"
     },
@@ -706,16 +409,8 @@
       "route": "/content/audio",
       "title": "Sesli okuma",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
-      "gates": [
-        "auth"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["auth"],
       "epicId": "EPIC-5",
       "requirementId": "FR-E5-02"
     },
@@ -724,16 +419,8 @@
       "route": "/content/highlights",
       "title": "Altini cizme ve not alma",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
-      "gates": [
-        "auth"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["auth"],
       "epicId": "EPIC-5",
       "requirementId": "FR-E5-03"
     },
@@ -742,16 +429,8 @@
       "route": "/content/comment",
       "title": "Yorum yazma ve teslim",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
-      "gates": [
-        "auth"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["auth"],
       "epicId": "EPIC-5",
       "requirementId": "FR-E5-04"
     },
@@ -760,16 +439,8 @@
       "route": "/content/locked",
       "title": "Kilitli ilerleme (08:00 kurali)",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
-      "gates": [
-        "auth"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["auth"],
       "epicId": "EPIC-5",
       "requirementId": "FR-E5-05"
     },
@@ -778,16 +449,8 @@
       "route": "/content/exercise",
       "title": "Uygulama/egzersiz tamamlama",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
-      "gates": [
-        "auth"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["auth"],
       "epicId": "EPIC-5",
       "requirementId": "FR-E5-06"
     },
@@ -796,16 +459,8 @@
       "route": "/progress/dashboard",
       "title": "Gelisim paneli",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
-      "gates": [
-        "auth"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["auth"],
       "epicId": "EPIC-6",
       "requirementId": "FR-E6-01"
     },
@@ -814,16 +469,8 @@
       "route": "/progress/emotional-map",
       "title": "Duygusal harita",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
-      "gates": [
-        "auth"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["auth"],
       "epicId": "EPIC-6",
       "requirementId": "FR-E6-02"
     },
@@ -832,16 +479,8 @@
       "route": "/progress/strengths",
       "title": "Guclu ve gelisim alanlari",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
-      "gates": [
-        "auth"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["auth"],
       "epicId": "EPIC-6",
       "requirementId": "FR-E6-03"
     },
@@ -850,16 +489,8 @@
       "route": "/progress/weekly-summary",
       "title": "Haftalik ozet",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
-      "gates": [
-        "auth"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["auth"],
       "epicId": "EPIC-6",
       "requirementId": "FR-E6-04"
     },
@@ -868,16 +499,8 @@
       "route": "/progress/completion-review",
       "title": "Icerik bitis degerlendirmesi",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
-      "gates": [
-        "auth"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["auth"],
       "epicId": "EPIC-6",
       "requirementId": "FR-E6-05"
     },
@@ -886,16 +509,8 @@
       "route": "/progress/report-export",
       "title": "Gelisim raporu (indir/paylas)",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
-      "gates": [
-        "auth"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["auth"],
       "epicId": "EPIC-6",
       "requirementId": "FR-E6-06"
     },
@@ -904,16 +519,8 @@
       "route": "/ebook/reader",
       "title": "e-Kitap okuyucu acilisi",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
-      "gates": [
-        "auth"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["auth"],
       "epicId": "EPIC-7",
       "requirementId": "FR-E7-01"
     },
@@ -922,16 +529,8 @@
       "route": "/ebook/navigation",
       "title": "Sayfa navigasyonu",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
-      "gates": [
-        "auth"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["auth"],
       "epicId": "EPIC-7",
       "requirementId": "FR-E7-02"
     },
@@ -940,16 +539,8 @@
       "route": "/ebook/settings",
       "title": "Okuma ayarlari",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
-      "gates": [
-        "auth"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["auth"],
       "epicId": "EPIC-7",
       "requirementId": "FR-E7-03"
     },
@@ -958,16 +549,8 @@
       "route": "/ebook/highlight-create",
       "title": "Metin vurgulama ve not",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
-      "gates": [
-        "auth"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["auth"],
       "epicId": "EPIC-7",
       "requirementId": "FR-E7-04"
     },
@@ -976,16 +559,8 @@
       "route": "/ebook/highlights",
       "title": "Vurgularim ve notlarim",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
-      "gates": [
-        "auth"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["auth"],
       "epicId": "EPIC-7",
       "requirementId": "FR-E7-05"
     },
@@ -994,16 +569,8 @@
       "route": "/ebook/audio",
       "title": "Sesli kitap destegi",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
-      "gates": [
-        "auth"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["auth"],
       "epicId": "EPIC-7",
       "requirementId": "FR-E7-06"
     },
@@ -1012,16 +579,8 @@
       "route": "/ebook/progress",
       "title": "Okuma ilerlemesi",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
-      "gates": [
-        "auth"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["auth"],
       "epicId": "EPIC-7",
       "requirementId": "FR-E7-07"
     },
@@ -1030,16 +589,8 @@
       "route": "/ebook/download",
       "title": "Cevrimdisi indirme",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
-      "gates": [
-        "auth"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["auth"],
       "epicId": "EPIC-7",
       "requirementId": "FR-E7-08"
     },
@@ -1048,16 +599,8 @@
       "route": "/workshop/landing",
       "title": "Atölye landing ve yapı özeti",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
-      "gates": [
-        "auth"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["auth"],
       "epicId": "EPIC-8",
       "requirementId": "FR-E8-01"
     },
@@ -1066,16 +609,8 @@
       "route": "/workshop/phases",
       "title": "Aşama navigasyonu ve ilerleme modeli",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
-      "gates": [
-        "auth"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["auth"],
       "epicId": "EPIC-8",
       "requirementId": "FR-E8-02"
     },
@@ -1084,16 +619,8 @@
       "route": "/workshop/section",
       "title": "Aşama içerik ekranı",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
-      "gates": [
-        "auth"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["auth"],
       "epicId": "EPIC-8",
       "requirementId": "FR-E8-03"
     },
@@ -1102,17 +629,8 @@
       "route": "/workshop/camp",
       "title": "3 günlük kamp ve oturum planı",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
-      "gates": [
-        "auth",
-        "subscription"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["auth", "subscription"],
       "epicId": "EPIC-8",
       "requirementId": "FR-E8-04"
     },
@@ -1121,16 +639,8 @@
       "route": "/workshop/guide",
       "title": "Eğitmen rehberi ve facilitator mode",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
-      "gates": [
-        "auth"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["auth"],
       "epicId": "EPIC-8",
       "requirementId": "FR-E8-05"
     },
@@ -1139,16 +649,8 @@
       "route": "/workshop/workbook",
       "title": "Katılımcı defteri ve çalışma kağıtları",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
-      "gates": [
-        "auth"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["auth"],
       "epicId": "EPIC-8",
       "requirementId": "FR-E8-06"
     },
@@ -1157,17 +659,8 @@
       "route": "/workshop/followup",
       "title": "Takip planı ve davranış sürekliliği",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
-      "gates": [
-        "auth",
-        "subscription"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["auth", "subscription"],
       "epicId": "EPIC-8",
       "requirementId": "FR-E8-07"
     },
@@ -1176,16 +669,8 @@
       "route": "/workshop/completion",
       "title": "Atölye tamamlama ve arşivleme",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
-      "gates": [
-        "auth"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["auth"],
       "epicId": "EPIC-8",
       "requirementId": "FR-E8-08"
     },
@@ -1194,16 +679,8 @@
       "route": "/favorites",
       "title": "Favoriler ana ekranı",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
-      "gates": [
-        "auth"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["auth"],
       "epicId": "EPIC-9",
       "requirementId": "FR-E9-01"
     },
@@ -1212,16 +689,8 @@
       "route": "/favorites/detail",
       "title": "Favori detayı",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
-      "gates": [
-        "auth"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["auth"],
       "epicId": "EPIC-9",
       "requirementId": "FR-E9-02"
     },
@@ -1230,16 +699,8 @@
       "route": "/favorites/collections",
       "title": "Koleksiyonlar",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
-      "gates": [
-        "auth"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["auth"],
       "epicId": "EPIC-9",
       "requirementId": "FR-E9-03"
     },
@@ -1248,16 +709,8 @@
       "route": "/favorites/collection-detail",
       "title": "Arama ve filtreleme",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
-      "gates": [
-        "auth"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["auth"],
       "epicId": "EPIC-9",
       "requirementId": "FR-E9-04"
     },
@@ -1266,16 +719,8 @@
       "route": "/favorites/export",
       "title": "Paylaşım ve dışa aktarma",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
-      "gates": [
-        "auth"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["auth"],
       "epicId": "EPIC-9",
       "requirementId": "FR-E9-05"
     },
@@ -1284,16 +729,8 @@
       "route": "/favorites/downloads",
       "title": "Çevrimdışı erişim",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
-      "gates": [
-        "auth"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["auth"],
       "epicId": "EPIC-9",
       "requirementId": "FR-E9-06"
     },
@@ -1302,16 +739,8 @@
       "route": "/accessibility",
       "title": "Erişilebilirlik ayarları",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
-      "gates": [
-        "auth"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["auth"],
       "epicId": "EPIC-10",
       "requirementId": "FR-E10-01"
     },
@@ -1320,16 +749,8 @@
       "route": "/accessibility/text-scale",
       "title": "Metin büyütme",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
-      "gates": [
-        "auth"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["auth"],
       "epicId": "EPIC-10",
       "requirementId": "FR-E10-02"
     },
@@ -1338,16 +759,8 @@
       "route": "/accessibility/theme",
       "title": "Yüksek kontrast ve tema",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
-      "gates": [
-        "auth"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["auth"],
       "epicId": "EPIC-10",
       "requirementId": "FR-E10-03"
     },
@@ -1356,16 +769,8 @@
       "route": "/accessibility/screen-reader",
       "title": "Ekran okuyucu uyumu",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
-      "gates": [
-        "auth"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["auth"],
       "epicId": "EPIC-10",
       "requirementId": "FR-E10-04"
     },
@@ -1374,16 +779,8 @@
       "route": "/modules",
       "title": "Modül ana ekranı",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
-      "gates": [
-        "auth"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["auth"],
       "epicId": "EPIC-11",
       "requirementId": "FR-E11-01"
     },
@@ -1392,16 +789,8 @@
       "route": "/modules/package",
       "title": "Paket detayı ve başlatma",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
-      "gates": [
-        "auth"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["auth"],
       "epicId": "EPIC-11",
       "requirementId": "FR-E11-02"
     },
@@ -1410,16 +799,8 @@
       "route": "/modules/package/exercise",
       "title": "Paket içi okuma ve uygulama",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
-      "gates": [
-        "auth"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["auth"],
       "epicId": "EPIC-11",
       "requirementId": "FR-E11-03"
     },
@@ -1428,16 +809,8 @@
       "route": "/modules/package/locked",
       "title": "Kilitli ilerleme (paket seviyesi)",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
-      "gates": [
-        "auth"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["auth"],
       "epicId": "EPIC-11",
       "requirementId": "FR-E11-04"
     },
@@ -1446,16 +819,8 @@
       "route": "/modules/completion",
       "title": "Modül tamamlama ve sertifika",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
-      "gates": [
-        "auth"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["auth"],
       "epicId": "EPIC-11",
       "requirementId": "FR-E11-05"
     },
@@ -1464,17 +829,8 @@
       "route": "/coach/dashboard",
       "title": "Danisan listesi ve risk gostergeleri",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
-      "gates": [
-        "auth",
-        "coach_role"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["auth", "coach_role"],
       "epicId": "EPIC-12",
       "requirementId": "FR-E12-01"
     },
@@ -1483,17 +839,8 @@
       "route": "/coach/client",
       "title": "Danisan profili ve metrikler",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
-      "gates": [
-        "auth",
-        "coach_role"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["auth", "coach_role"],
       "epicId": "EPIC-12",
       "requirementId": "FR-E12-02"
     },
@@ -1502,17 +849,8 @@
       "route": "/coach/client/content",
       "title": "Icerik takibi",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
-      "gates": [
-        "auth",
-        "coach_role"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["auth", "coach_role"],
       "epicId": "EPIC-12",
       "requirementId": "FR-E12-03"
     },
@@ -1521,17 +859,8 @@
       "route": "/coach/feedback",
       "title": "Koc geri bildirim akisi",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
-      "gates": [
-        "auth",
-        "coach_role"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["auth", "coach_role"],
       "epicId": "EPIC-12",
       "requirementId": "FR-E12-04"
     },
@@ -1540,17 +869,8 @@
       "route": "/epic-13/fr-e13-01",
       "title": "Okuma gruplari listesi ve durum ozeti",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
-      "gates": [
-        "auth",
-        "subscription"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["auth", "subscription"],
       "epicId": "EPIC-13",
       "requirementId": "FR-E13-01"
     },
@@ -1559,17 +879,8 @@
       "route": "/epic-13/fr-e13-02",
       "title": "Grup olusturma ve uye daveti",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
-      "gates": [
-        "auth",
-        "subscription"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["auth", "subscription"],
       "epicId": "EPIC-13",
       "requirementId": "FR-E13-02"
     },
@@ -1578,17 +889,8 @@
       "route": "/epic-13/fr-e13-03",
       "title": "Grup detayi ve tartisma alani",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
-      "gates": [
-        "auth",
-        "subscription"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["auth", "subscription"],
       "epicId": "EPIC-13",
       "requirementId": "FR-E13-03"
     },
@@ -1597,17 +899,8 @@
       "route": "/epic-13/fr-e13-04",
       "title": "Grup ilerleme ve karsilastirma",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
-      "gates": [
-        "auth",
-        "subscription"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["auth", "subscription"],
       "epicId": "EPIC-13",
       "requirementId": "FR-E13-04"
     },
@@ -1616,17 +909,8 @@
       "route": "/epic-14/fr-e14-01",
       "title": "Kulup listesi ve kesif ozeti",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
-      "gates": [
-        "auth",
-        "subscription"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["auth", "subscription"],
       "epicId": "EPIC-14",
       "requirementId": "FR-E14-01"
     },
@@ -1635,17 +919,8 @@
       "route": "/epic-14/fr-e14-02",
       "title": "Kulup olusturma ve kitap secimi",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
-      "gates": [
-        "auth",
-        "subscription"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["auth", "subscription"],
       "epicId": "EPIC-14",
       "requirementId": "FR-E14-02"
     },
@@ -1654,17 +929,8 @@
       "route": "/epic-14/fr-e14-03",
       "title": "Kulup detayi ve uye alani",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
-      "gates": [
-        "auth",
-        "subscription"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["auth", "subscription"],
       "epicId": "EPIC-14",
       "requirementId": "FR-E14-03"
     },
@@ -1673,17 +939,8 @@
       "route": "/epic-14/fr-e14-04",
       "title": "Tartisma basligi ve etkilesim akisi",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
-      "gates": [
-        "auth",
-        "subscription"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["auth", "subscription"],
       "epicId": "EPIC-14",
       "requirementId": "FR-E14-04"
     },
@@ -1692,17 +949,8 @@
       "route": "/epic-15/fr-e15-01",
       "title": "Basarim panosu ve rozet listesi",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
-      "gates": [
-        "auth",
-        "subscription"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["auth", "subscription"],
       "epicId": "EPIC-15",
       "requirementId": "FR-E15-01"
     },
@@ -1711,17 +959,8 @@
       "route": "/epic-15/fr-e15-02",
       "title": "Rozet detayi ve kilit kosullari",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
-      "gates": [
-        "auth",
-        "subscription"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["auth", "subscription"],
       "epicId": "EPIC-15",
       "requirementId": "FR-E15-02"
     },
@@ -1730,17 +969,8 @@
       "route": "/epic-15/fr-e15-03",
       "title": "Seviye sistemi ve XP ilerlemesi",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
-      "gates": [
-        "auth",
-        "subscription"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["auth", "subscription"],
       "epicId": "EPIC-15",
       "requirementId": "FR-E15-03"
     },
@@ -1749,17 +979,8 @@
       "route": "/epic-15/fr-e15-04",
       "title": "Liderlik tablosu ve seri takibi",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
-      "gates": [
-        "auth",
-        "subscription"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["auth", "subscription"],
       "epicId": "EPIC-15",
       "requirementId": "FR-E15-04"
     },
@@ -1768,17 +989,8 @@
       "route": "/epic-16/fr-e16-01",
       "title": "AI sohbet girisi ve mesaj akisi",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
-      "gates": [
-        "auth",
-        "subscription"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["auth", "subscription"],
       "epicId": "EPIC-16",
       "requirementId": "FR-E16-01"
     },
@@ -1787,17 +999,8 @@
       "route": "/epic-16/fr-e16-02",
       "title": "RAG yaniti ve baglam sentezi",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
-      "gates": [
-        "auth",
-        "subscription"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["auth", "subscription"],
       "epicId": "EPIC-16",
       "requirementId": "FR-E16-02"
     },
@@ -1806,17 +1009,8 @@
       "route": "/epic-16/fr-e16-03",
       "title": "Kaynak referansi ve izlenebilirlik",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
-      "gates": [
-        "auth",
-        "subscription"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["auth", "subscription"],
       "epicId": "EPIC-16",
       "requirementId": "FR-E16-03"
     },
@@ -1825,17 +1019,8 @@
       "route": "/epic-16/fr-e16-04",
       "title": "AI icgoruleri ve kisisel oneriler",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
-      "gates": [
-        "auth",
-        "subscription"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["auth", "subscription"],
       "epicId": "EPIC-16",
       "requirementId": "FR-E16-04"
     },
@@ -1844,17 +1029,8 @@
       "route": "/notifications",
       "title": "Bildirim listesi ve okunma yonetimi",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
-      "gates": [
-        "auth",
-        "subscription"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["auth", "subscription"],
       "epicId": "EPIC-17",
       "requirementId": "FR-E17-01"
     },
@@ -1863,17 +1039,8 @@
       "route": "/notifications/detail",
       "title": "Bildirim detayi ve hedefe gecis",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
-      "gates": [
-        "auth",
-        "subscription"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["auth", "subscription"],
       "epicId": "EPIC-17",
       "requirementId": "FR-E17-02"
     },
@@ -1882,17 +1049,8 @@
       "route": "/notifications/settings",
       "title": "Bildirim ayarlari ve sessiz saatler",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
-      "gates": [
-        "auth",
-        "subscription"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["auth", "subscription"],
       "epicId": "EPIC-17",
       "requirementId": "FR-E17-03"
     },
@@ -1901,17 +1059,8 @@
       "route": "/notifications/reminders",
       "title": "Hatirlatici planlama ve tip bazli zamanlama",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
-      "gates": [
-        "auth",
-        "subscription"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["auth", "subscription"],
       "epicId": "EPIC-17",
       "requirementId": "FR-E17-04"
     },
@@ -1920,17 +1069,8 @@
       "route": "/epic-18/fr-e18-01",
       "title": "Video katalogu ve kesif filtreleri",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
-      "gates": [
-        "auth",
-        "subscription"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["auth", "subscription"],
       "epicId": "EPIC-18",
       "requirementId": "FR-E18-01"
     },
@@ -1939,17 +1079,8 @@
       "route": "/epic-18/fr-e18-02",
       "title": "Video oynatici ve temel kontroller",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
-      "gates": [
-        "auth",
-        "subscription"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["auth", "subscription"],
       "epicId": "EPIC-18",
       "requirementId": "FR-E18-02"
     },
@@ -1958,17 +1089,8 @@
       "route": "/epic-18/fr-e18-03",
       "title": "Altyazi, transkript ve erisilebilirlik",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
-      "gates": [
-        "auth",
-        "subscription"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["auth", "subscription"],
       "epicId": "EPIC-18",
       "requirementId": "FR-E18-03"
     },
@@ -1977,17 +1099,8 @@
       "route": "/epic-18/fr-e18-04",
       "title": "Video ilerleme, tamamlama ve senkronizasyon",
       "type": "stack",
-      "states": [
-        "loading",
-        "ready",
-        "empty",
-        "error",
-        "offline"
-      ],
-      "gates": [
-        "auth",
-        "subscription"
-      ],
+      "states": ["loading", "ready", "empty", "error", "offline"],
+      "gates": ["auth", "subscription"],
       "epicId": "EPIC-18",
       "requirementId": "FR-E18-04"
     }

@@ -3,11 +3,7 @@
   "title": "Modul ana ekrani",
   "route": "/modules",
   "purpose": "Implements FR-E11-01: Module home screen with name, progress %, sorted packages with status, and 'Devam Et' CTA.",
-  "entryPoints": [
-    "discover.modules",
-    "library.modules",
-    "home.continue"
-  ],
+  "entryPoints": ["discover.modules", "library.modules", "home.continue"],
   "inputs": [
     {
       "name": "id",
@@ -22,12 +18,7 @@
       "source": "route"
     }
   ],
-  "dataDependencies": [
-    "Module",
-    "Package",
-    "ContentProgress",
-    "User"
-  ],
+  "dataDependencies": ["Module", "Package", "ContentProgress", "User"],
   "uiStates": {
     "loading": {
       "description": "Skeletons for progress bar and package list."
@@ -47,18 +38,8 @@
   },
   "analytics": {
     "screenView": "module_home_viewed",
-    "events": [
-      "module_home_viewed",
-      "package_tapped",
-      "continue_module_tapped"
-    ]
+    "events": ["module_home_viewed", "package_tapped", "continue_module_tapped"]
   },
-  "acceptanceCriteriaRefs": [
-    "AC-FR-E11-01-01",
-    "AC-FR-E11-01-02",
-    "AC-FR-E11-01-03"
-  ],
-  "gates": [
-    "auth"
-  ]
+  "acceptanceCriteriaRefs": ["AC-FR-E11-01-01", "AC-FR-E11-01-02", "AC-FR-E11-01-03"],
+  "gates": ["auth"]
 }

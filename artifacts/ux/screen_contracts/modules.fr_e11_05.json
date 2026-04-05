@@ -3,9 +3,7 @@
   "title": "Modul tamamlama ve sertifika",
   "route": "/modules/completion",
   "purpose": "Implements FR-E11-05: Module completion screen with certificate/badge, next module recommendation, and progress panel sync notice.",
-  "entryPoints": [
-    "modules.fr_e11_02"
-  ],
+  "entryPoints": ["modules.fr_e11_02"],
   "inputs": [
     {
       "name": "id",
@@ -20,11 +18,7 @@
       "source": "route"
     }
   ],
-  "dataDependencies": [
-    "Achievement",
-    "Module",
-    "User"
-  ],
+  "dataDependencies": ["Achievement", "Module", "User"],
   "uiStates": {
     "loading": {
       "description": "Skeleton for certificate/badge area."
@@ -44,19 +38,8 @@
   },
   "analytics": {
     "screenView": "module_completion_viewed",
-    "events": [
-      "module_completion_viewed",
-      "certificate_shared",
-      "next_module_tapped"
-    ]
+    "events": ["module_completion_viewed", "certificate_shared", "next_module_tapped"]
   },
-  "acceptanceCriteriaRefs": [
-    "AC-FR-E11-05-01",
-    "AC-FR-E11-05-02",
-    "AC-FR-E11-05-03",
-    "AC-FR-E11-05-04"
-  ],
-  "gates": [
-    "auth"
-  ]
+  "acceptanceCriteriaRefs": ["AC-FR-E11-05-01", "AC-FR-E11-05-02", "AC-FR-E11-05-03", "AC-FR-E11-05-04"],
+  "gates": ["auth"]
 }

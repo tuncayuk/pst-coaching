@@ -3,9 +3,7 @@
   "title": "Okuma ayarlari",
   "route": "/ebook/settings",
   "purpose": "Implements FR-E7-03: Font boyutu slider, arka plan rengi secimi (Beyaz/Sepia/Koyu), satir araligi, ayarlar saklama.",
-  "entryPoints": [
-    "ebook.reader"
-  ],
+  "entryPoints": ["ebook.reader"],
   "inputs": [
     {
       "name": "userId",
@@ -14,9 +12,7 @@
       "source": "session"
     }
   ],
-  "dataDependencies": [
-    "ReadingSettings"
-  ],
+  "dataDependencies": ["ReadingSettings"],
   "uiStates": {
     "loading": {
       "description": "Skeleton for settings panel."
@@ -36,20 +32,8 @@
   },
   "analytics": {
     "screenView": "ebook_settings_viewed",
-    "events": [
-      "ebook_settings_viewed",
-      "ebook_font_changed",
-      "ebook_bg_changed",
-      "ebook_line_height_changed"
-    ]
+    "events": ["ebook_settings_viewed", "ebook_font_changed", "ebook_bg_changed", "ebook_line_height_changed"]
   },
-  "acceptanceCriteriaRefs": [
-    "AC-FR-E7-03-01",
-    "AC-FR-E7-03-02",
-    "AC-FR-E7-03-03",
-    "AC-FR-E7-03-04"
-  ],
-  "gates": [
-    "auth"
-  ]
+  "acceptanceCriteriaRefs": ["AC-FR-E7-03-01", "AC-FR-E7-03-02", "AC-FR-E7-03-03", "AC-FR-E7-03-04"],
+  "gates": ["auth"]
 }

@@ -3,9 +3,7 @@
   "title": "3 gunluk kamp ve oturum plani",
   "route": "/workshop/camp",
   "purpose": "Implements FR-E8-04: Gun 1/2/3 sekmeleri, sabah/ogle/aksam oturumu kartlari ve oturum tamamlama.",
-  "entryPoints": [
-    "workshop.phases"
-  ],
+  "entryPoints": ["workshop.phases"],
   "inputs": [
     {
       "name": "userId",
@@ -32,12 +30,7 @@
       "source": "profile"
     }
   ],
-  "dataDependencies": [
-    "Workshop",
-    "WorkshopCampDay",
-    "WorkshopSession",
-    "ContentProgress"
-  ],
+  "dataDependencies": ["Workshop", "WorkshopCampDay", "WorkshopSession", "ContentProgress"],
   "uiStates": {
     "loading": {
       "description": "Skeleton placeholders shown while loading FR-E8-04 data."
@@ -57,20 +50,8 @@
   },
   "analytics": {
     "screenView": "workshop_camp_viewed",
-    "events": [
-      "workshop_camp_viewed",
-      "workshop_session_started",
-      "workshop_session_completed"
-    ]
+    "events": ["workshop_camp_viewed", "workshop_session_started", "workshop_session_completed"]
   },
-  "acceptanceCriteriaRefs": [
-    "AC-FR-E8-04-01",
-    "AC-FR-E8-04-02",
-    "AC-FR-E8-04-03",
-    "AC-FR-E8-04-04"
-  ],
-  "gates": [
-    "auth",
-    "subscription"
-  ]
+  "acceptanceCriteriaRefs": ["AC-FR-E8-04-01", "AC-FR-E8-04-02", "AC-FR-E8-04-03", "AC-FR-E8-04-04"],
+  "gates": ["auth", "subscription"]
 }

@@ -3,12 +3,7 @@
   "title": "Icerik Turune Ozel Demografi Giris Noktalari",
   "route": "/discover/demographics-gate",
   "purpose": "Implements FR-E4-09: Demographics gate referenced from all content types, delegating to FR-E1-08 (BR-06). No independent demographic rule defined here.",
-  "entryPoints": [
-    "discover.fr_e4_03",
-    "discover.fr_e4_04",
-    "discover.fr_e4_05",
-    "discover.fr_e4_06"
-  ],
+  "entryPoints": ["discover.fr_e4_03", "discover.fr_e4_04", "discover.fr_e4_05", "discover.fr_e4_06"],
   "inputs": [
     {
       "name": "userId",
@@ -29,9 +24,7 @@
       "source": "profile"
     }
   ],
-  "dataDependencies": [
-    "UserProfile"
-  ],
+  "dataDependencies": ["UserProfile"],
   "uiStates": {
     "loading": {
       "description": "Checking demographics completion status."
@@ -57,11 +50,6 @@
       "discover_demographics_gate_blocked"
     ]
   },
-  "acceptanceCriteriaRefs": [
-    "AC-FR-E4-09-01",
-    "AC-FR-E4-09-02"
-  ],
-  "gates": [
-    "demographics"
-  ]
+  "acceptanceCriteriaRefs": ["AC-FR-E4-09-01", "AC-FR-E4-09-02"],
+  "gates": ["demographics"]
 }

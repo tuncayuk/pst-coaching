@@ -3,9 +3,7 @@
   "title": "Bildirim detayi ve hedefe gecis",
   "route": "/notifications/detail",
   "purpose": "Implements FR-E17-02: Bildirim detayi ve hedefe gecis.",
-  "entryPoints": [
-    "notifications.fr_e17_01"
-  ],
+  "entryPoints": ["notifications.fr_e17_01"],
   "inputs": [
     {
       "name": "userId",
@@ -26,10 +24,7 @@
       "source": "profile"
     }
   ],
-  "dataDependencies": [
-    "Notification",
-    "Content"
-  ],
+  "dataDependencies": ["Notification", "Content"],
   "uiStates": {
     "loading": {
       "description": "Skeleton placeholders are shown while loading data."
@@ -49,20 +44,8 @@
   },
   "analytics": {
     "screenView": "notification_detail_viewed",
-    "events": [
-      "notification_detail_viewed",
-      "notification_cta_tapped",
-      "notification_deep_linked"
-    ]
+    "events": ["notification_detail_viewed", "notification_cta_tapped", "notification_deep_linked"]
   },
-  "acceptanceCriteriaRefs": [
-    "AC-FR-E17-02-01",
-    "AC-FR-E17-02-02",
-    "AC-FR-E17-02-03",
-    "AC-FR-E17-02-04"
-  ],
-  "gates": [
-    "auth",
-    "subscription"
-  ]
+  "acceptanceCriteriaRefs": ["AC-FR-E17-02-01", "AC-FR-E17-02-02", "AC-FR-E17-02-03", "AC-FR-E17-02-04"],
+  "gates": ["auth", "subscription"]
 }

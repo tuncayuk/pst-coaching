@@ -1,26 +1,27 @@
-import React from "react";
-import { createNativeStackNavigator, NativeStackNavigationOptions } from "@react-navigation/native-stack";
-import { ScreenState } from "../screens/components/ScreenState";
-import { ProfileOverviewScreen } from "../screens/ProfileOverviewScreen";
-import { ProfileSettingsScreen } from "../screens/profile/ProfileSettingsScreen";
-import { ProfileLanguageScreen } from "../screens/profile/ProfileLanguageScreen";
-import { ProfileAccessibilityScreen } from "../screens/profile/ProfileAccessibilityScreen";
-import { ProfileTextScaleScreen } from "../screens/profile/ProfileTextScaleScreen";
-import { ProfileThemeScreen } from "../screens/profile/ProfileThemeScreen";
-import { ProfileScreenReaderScreen } from "../screens/profile/ProfileScreenReaderScreen";
-import { ProfileRemindersScreen } from "../screens/profile/ProfileRemindersScreen";
-import { ProfileAccountScreen } from "../screens/profile/ProfileAccountScreen";
-import { ProfileChangePasswordScreen } from "../screens/profile/ProfileChangePasswordScreen";
-import { ProfileSubscriptionScreen } from "../screens/profile/ProfileSubscriptionScreen";
-import { ProfilePlanComparisonScreen } from "../screens/profile/ProfilePlanComparisonScreen";
-import { ProfileCheckoutScreen } from "../screens/profile/ProfileCheckoutScreen";
-import { ProfileAddonsScreen } from "../screens/profile/ProfileAddonsScreen";
-import { ProfileSeatManagementScreen } from "../screens/profile/ProfileSeatManagementScreen";
-import { ProfilePaymentHistoryScreen } from "../screens/profile/ProfilePaymentHistoryScreen";
-import { ProfileRestorePurchasesScreen } from "../screens/profile/ProfileRestorePurchasesScreen";
-import { ProfileStudentDiscountScreen } from "../screens/profile/ProfileStudentDiscountScreen";
-import { ProfilePlanManagementScreen } from "../screens/profile/ProfilePlanManagementScreen";
-import { ProfileLogoutConfirmScreen } from "../screens/profile/ProfileLogoutConfirmScreen";
+import { NativeStackNavigationOptions, createNativeStackNavigator } from '@react-navigation/native-stack';
+import React from 'react';
+
+import { ProfileOverviewScreen } from '../screens/ProfileOverviewScreen';
+import { ScreenState } from '../screens/components/ScreenState';
+import { ProfileAccessibilityScreen } from '../screens/profile/ProfileAccessibilityScreen';
+import { ProfileAccountScreen } from '../screens/profile/ProfileAccountScreen';
+import { ProfileAddonsScreen } from '../screens/profile/ProfileAddonsScreen';
+import { ProfileChangePasswordScreen } from '../screens/profile/ProfileChangePasswordScreen';
+import { ProfileCheckoutScreen } from '../screens/profile/ProfileCheckoutScreen';
+import { ProfileLanguageScreen } from '../screens/profile/ProfileLanguageScreen';
+import { ProfileLogoutConfirmScreen } from '../screens/profile/ProfileLogoutConfirmScreen';
+import { ProfilePaymentHistoryScreen } from '../screens/profile/ProfilePaymentHistoryScreen';
+import { ProfilePlanComparisonScreen } from '../screens/profile/ProfilePlanComparisonScreen';
+import { ProfilePlanManagementScreen } from '../screens/profile/ProfilePlanManagementScreen';
+import { ProfileRemindersScreen } from '../screens/profile/ProfileRemindersScreen';
+import { ProfileRestorePurchasesScreen } from '../screens/profile/ProfileRestorePurchasesScreen';
+import { ProfileScreenReaderScreen } from '../screens/profile/ProfileScreenReaderScreen';
+import { ProfileSeatManagementScreen } from '../screens/profile/ProfileSeatManagementScreen';
+import { ProfileSettingsScreen } from '../screens/profile/ProfileSettingsScreen';
+import { ProfileStudentDiscountScreen } from '../screens/profile/ProfileStudentDiscountScreen';
+import { ProfileSubscriptionScreen } from '../screens/profile/ProfileSubscriptionScreen';
+import { ProfileTextScaleScreen } from '../screens/profile/ProfileTextScaleScreen';
+import { ProfileThemeScreen } from '../screens/profile/ProfileThemeScreen';
 
 type ScreenStateParam = { state?: ScreenState } | undefined;
 
@@ -51,7 +52,7 @@ export type ProfileStackParamList = {
   ProfileLogoutConfirm: ScreenStateParam;
 };
 
-const sheetOptions: NativeStackNavigationOptions = { presentation: "modal" };
+const sheetOptions: NativeStackNavigationOptions = { presentation: 'modal' };
 
 type ProfileStackScreen = {
   name: keyof ProfileStackParamList;
@@ -60,26 +61,26 @@ type ProfileStackScreen = {
 };
 
 export const profileStackScreens: ProfileStackScreen[] = [
-  { name: "ProfileOverview", component: ProfileOverviewScreen },
-  { name: "ProfileSettings", component: ProfileSettingsScreen },
-  { name: "ProfileLanguage", component: ProfileLanguageScreen },
-  { name: "ProfileAccessibility", component: ProfileAccessibilityScreen },
-  { name: "ProfileTextScale", component: ProfileTextScaleScreen },
-  { name: "ProfileTheme", component: ProfileThemeScreen },
-  { name: "ProfileScreenReader", component: ProfileScreenReaderScreen },
-  { name: "ProfileReminders", component: ProfileRemindersScreen },
-  { name: "ProfileAccount", component: ProfileAccountScreen },
-  { name: "ProfileChangePassword", component: ProfileChangePasswordScreen },
-  { name: "ProfileSubscription", component: ProfileSubscriptionScreen },
-  { name: "ProfilePlanComparison", component: ProfilePlanComparisonScreen },
-  { name: "ProfileCheckout", component: ProfileCheckoutScreen },
-  { name: "ProfileAddons", component: ProfileAddonsScreen },
-  { name: "ProfileSeatManagement", component: ProfileSeatManagementScreen },
-  { name: "ProfilePaymentHistory", component: ProfilePaymentHistoryScreen },
-  { name: "ProfileRestorePurchases", component: ProfileRestorePurchasesScreen },
-  { name: "ProfileStudentDiscount", component: ProfileStudentDiscountScreen },
-  { name: "ProfilePlanManagement", component: ProfilePlanManagementScreen },
-  { name: "ProfileLogoutConfirm", component: ProfileLogoutConfirmScreen, options: sheetOptions },
+  { name: 'ProfileOverview', component: ProfileOverviewScreen },
+  { name: 'ProfileSettings', component: ProfileSettingsScreen },
+  { name: 'ProfileLanguage', component: ProfileLanguageScreen },
+  { name: 'ProfileAccessibility', component: ProfileAccessibilityScreen },
+  { name: 'ProfileTextScale', component: ProfileTextScaleScreen },
+  { name: 'ProfileTheme', component: ProfileThemeScreen },
+  { name: 'ProfileScreenReader', component: ProfileScreenReaderScreen },
+  { name: 'ProfileReminders', component: ProfileRemindersScreen },
+  { name: 'ProfileAccount', component: ProfileAccountScreen },
+  { name: 'ProfileChangePassword', component: ProfileChangePasswordScreen },
+  { name: 'ProfileSubscription', component: ProfileSubscriptionScreen },
+  { name: 'ProfilePlanComparison', component: ProfilePlanComparisonScreen },
+  { name: 'ProfileCheckout', component: ProfileCheckoutScreen },
+  { name: 'ProfileAddons', component: ProfileAddonsScreen },
+  { name: 'ProfileSeatManagement', component: ProfileSeatManagementScreen },
+  { name: 'ProfilePaymentHistory', component: ProfilePaymentHistoryScreen },
+  { name: 'ProfileRestorePurchases', component: ProfileRestorePurchasesScreen },
+  { name: 'ProfileStudentDiscount', component: ProfileStudentDiscountScreen },
+  { name: 'ProfilePlanManagement', component: ProfilePlanManagementScreen },
+  { name: 'ProfileLogoutConfirm', component: ProfileLogoutConfirmScreen, options: sheetOptions }
 ];
 
 type ProfileStackProps = {
@@ -88,16 +89,11 @@ type ProfileStackProps = {
 
 const Stack = createNativeStackNavigator<ProfileStackParamList>();
 
-export const ProfileStack = ({ initialRouteName = "ProfileOverview" }: ProfileStackProps) => {
+export const ProfileStack = ({ initialRouteName = 'ProfileOverview' }: ProfileStackProps) => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName={initialRouteName}>
-      {profileStackScreens.map((screen) => (
-        <Stack.Screen
-          key={screen.name}
-          name={screen.name}
-          component={screen.component}
-          options={screen.options}
-        />
+      {profileStackScreens.map(screen => (
+        <Stack.Screen key={screen.name} name={screen.name} component={screen.component} options={screen.options} />
       ))}
     </Stack.Navigator>
   );

@@ -1,25 +1,14 @@
-import React from "react";
-import { ScrollView, StyleSheet, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { useNavigation } from "@react-navigation/native";
-import { OfflineNotice } from "../components/OfflineNotice";
-import { SkeletonBlock } from "../components/SkeletonBlock";
-import { StateMessage } from "../components/StateMessage";
-import { resolveScreenState, ScreenState } from "../components/ScreenState";
-import {
-  getEbooks,
-  getJourneyById,
-  getModules,
-  getWorkshops,
-} from "../../data/mockSelectors";
-import {
-  PActivityIndicator,
-  PButton,
-  PCard,
-  PChip,
-  PIconButton,
-  PText,
-} from "../../components";
+import { useNavigation } from '@react-navigation/native';
+import React from 'react';
+import { ScrollView, StyleSheet, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+
+import { PActivityIndicator, PButton, PCard, PChip, PIconButton, PText } from '../../components';
+import { getEbooks, getJourneyById, getModules, getWorkshops } from '../../data/mockSelectors';
+import { OfflineNotice } from '../components/OfflineNotice';
+import { ScreenState, resolveScreenState } from '../components/ScreenState';
+import { SkeletonBlock } from '../components/SkeletonBlock';
+import { StateMessage } from '../components/StateMessage';
 
 const ContentJourneyDetailContent = ({ journeyId, isOffline }: { journeyId?: string; isOffline?: boolean }) => {
   const navigation = useNavigation<any>();
@@ -28,8 +17,8 @@ const ContentJourneyDetailContent = ({ journeyId, isOffline }: { journeyId?: str
   const workshops = getWorkshops().slice(0, 1);
   const ebooks = getEbooks().slice(0, 1);
   const duration = journey?.duration_days ?? 40;
-  const level = journey?.level ?? "Başlangıç";
-  const dailyGoal = journey?.daily_target ?? "10-20 dk/gün";
+  const level = journey?.level ?? 'Başlangıç';
+  const dailyGoal = journey?.daily_target ?? '10-20 dk/gün';
 
   return (
     <View>
@@ -40,7 +29,7 @@ const ContentJourneyDetailContent = ({ journeyId, isOffline }: { journeyId?: str
       </View>
 
       <View style={styles.content}>
-        <PText style={styles.title}>{journey?.title ?? "Sıdk ve Integrity Yolculuğu"}</PText>
+        <PText style={styles.title}>{journey?.title ?? 'Sıdk ve Integrity Yolculuğu'}</PText>
         <View style={styles.tagRow}>
           <PText style={styles.tagPrimary}>⏱️ {duration} gün</PText>
           <PText style={styles.tagSuccess}>📊 {level}</PText>
@@ -50,14 +39,15 @@ const ContentJourneyDetailContent = ({ journeyId, isOffline }: { journeyId?: str
         <PCard style={styles.sectionCard}>
           <PText style={styles.sectionTitle}>Yolculuk Hakkında</PText>
           <PText style={styles.paragraph}>
-            Sıdk ve doğruluk üzerine derinlemesine bir keşif yolculuğu. Kendi gerçekliğinizle yüzleşin, içsel bütünlüğünüzü güçlendirin.
+            Sıdk ve doğruluk üzerine derinlemesine bir keşif yolculuğu. Kendi gerçekliğinizle yüzleşin, içsel
+            bütünlüğünüzü güçlendirin.
           </PText>
         </PCard>
 
         <PCard style={styles.sectionCard}>
           <PText style={styles.sectionTitle}>İçerik</PText>
           <View style={styles.contentList}>
-            {modules.map((item) => (
+            {modules.map(item => (
               <View key={item.id} style={styles.contentRow}>
                 <PText style={styles.contentEmoji}>📦</PText>
                 <View style={styles.contentInfo}>
@@ -66,7 +56,7 @@ const ContentJourneyDetailContent = ({ journeyId, isOffline }: { journeyId?: str
                 </View>
               </View>
             ))}
-            {workshops.map((item) => (
+            {workshops.map(item => (
               <View key={item.id} style={styles.contentRow}>
                 <PText style={styles.contentEmoji}>🎨</PText>
                 <View style={styles.contentInfo}>
@@ -75,7 +65,7 @@ const ContentJourneyDetailContent = ({ journeyId, isOffline }: { journeyId?: str
                 </View>
               </View>
             ))}
-            {ebooks.map((item) => (
+            {ebooks.map(item => (
               <View key={item.id} style={styles.contentRow}>
                 <PText style={styles.contentEmoji}>📖</PText>
                 <View style={styles.contentInfo}>
@@ -91,9 +81,9 @@ const ContentJourneyDetailContent = ({ journeyId, isOffline }: { journeyId?: str
           mode="contained"
           disabled={isOffline}
           onPress={() =>
-            navigation.navigate("Content", {
-              screen: "ContentJourneyHome",
-              params: { id: journey?.id },
+            navigation.navigate('Content', {
+              screen: 'ContentJourneyHome',
+              params: { id: journey?.id }
             })
           }
         >
@@ -105,14 +95,14 @@ const ContentJourneyDetailContent = ({ journeyId, isOffline }: { journeyId?: str
 };
 
 export const ContentJourneyDetailScreen = ({
-  route,
+  route
 }: {
   route?: { params?: { state?: ScreenState; id?: string } };
 }) => {
   const state = resolveScreenState(route);
   const journeyId = route?.params?.id;
 
-  if (state === "loading") {
+  if (state === 'loading') {
     return (
       <SafeAreaView style={styles.root}>
         <ScrollView contentContainerStyle={styles.page}>
@@ -125,7 +115,7 @@ export const ContentJourneyDetailScreen = ({
     );
   }
 
-  if (state === "empty") {
+  if (state === 'empty') {
     return (
       <SafeAreaView style={styles.root}>
         <ScrollView contentContainerStyle={styles.page}>
@@ -140,7 +130,7 @@ export const ContentJourneyDetailScreen = ({
     );
   }
 
-  if (state === "error") {
+  if (state === 'error') {
     return (
       <SafeAreaView style={styles.root}>
         <ScrollView contentContainerStyle={styles.page}>
@@ -156,7 +146,7 @@ export const ContentJourneyDetailScreen = ({
     );
   }
 
-  if (state === "offline") {
+  if (state === 'offline') {
     return (
       <SafeAreaView style={styles.root}>
         <ScrollView contentContainerStyle={styles.page}>
@@ -179,115 +169,115 @@ export const ContentJourneyDetailScreen = ({
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    backgroundColor: "#FAFAFA",
+    backgroundColor: '#FAFAFA'
   },
   page: {
-    paddingBottom: 24,
+    paddingBottom: 24
   },
   hero: {
     height: 200,
-    backgroundColor: "#FFDDC1",
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: '#FFDDC1',
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   heroEmoji: {
-    fontSize: 64,
+    fontSize: 64
   },
   heroBack: {
-    position: "absolute",
+    position: 'absolute',
     top: 16,
     left: 16,
-    backgroundColor: "rgba(0,0,0,0.3)",
+    backgroundColor: 'rgba(0,0,0,0.3)'
   },
   heroFav: {
-    position: "absolute",
+    position: 'absolute',
     top: 16,
     right: 16,
-    backgroundColor: "rgba(0,0,0,0.3)",
+    backgroundColor: 'rgba(0,0,0,0.3)'
   },
   content: {
-    padding: 16,
+    padding: 16
   },
   title: {
     fontSize: 24,
-    fontWeight: "800",
-    color: "#2B1B5D",
-    marginBottom: 12,
+    fontWeight: '800',
+    color: '#2B1B5D',
+    marginBottom: 12
   },
   tagRow: {
-    flexDirection: "row",
-    flexWrap: "wrap",
+    flexDirection: 'row',
+    flexWrap: 'wrap',
     gap: 8,
-    marginBottom: 16,
+    marginBottom: 16
   },
   tagPrimary: {
-    backgroundColor: "#E0F7FA",
-    color: "#0096B8",
+    backgroundColor: '#E0F7FA',
+    color: '#0096B8',
     paddingHorizontal: 10,
     paddingVertical: 6,
     borderRadius: 8,
     fontSize: 12,
-    fontWeight: "600",
+    fontWeight: '600'
   },
   tagSuccess: {
-    backgroundColor: "#D1FAE5",
-    color: "#065F46",
+    backgroundColor: '#D1FAE5',
+    color: '#065F46',
     paddingHorizontal: 10,
     paddingVertical: 6,
     borderRadius: 8,
     fontSize: 12,
-    fontWeight: "600",
+    fontWeight: '600'
   },
   tagSecondary: {
-    backgroundColor: "#EDE7F6",
-    color: "#2B1B5D",
+    backgroundColor: '#EDE7F6',
+    color: '#2B1B5D',
     paddingHorizontal: 10,
     paddingVertical: 6,
     borderRadius: 8,
     fontSize: 12,
-    fontWeight: "600",
+    fontWeight: '600'
   },
   sectionCard: {
     padding: 16,
     borderRadius: 16,
-    marginBottom: 16,
+    marginBottom: 16
   },
   sectionTitle: {
     fontSize: 16,
-    fontWeight: "700",
-    color: "#171717",
-    marginBottom: 8,
+    fontWeight: '700',
+    color: '#171717',
+    marginBottom: 8
   },
   paragraph: {
     fontSize: 14,
-    color: "#525252",
-    lineHeight: 20,
+    color: '#525252',
+    lineHeight: 20
   },
   contentList: {
-    gap: 12,
+    gap: 12
   },
   contentRow: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     gap: 12,
     padding: 12,
     borderRadius: 10,
-    backgroundColor: "#FAFAFA",
+    backgroundColor: '#FAFAFA'
   },
   contentEmoji: {
-    fontSize: 20,
+    fontSize: 20
   },
   contentInfo: {
-    flex: 1,
+    flex: 1
   },
   contentTitle: {
     fontSize: 14,
-    fontWeight: "600",
-    color: "#171717",
-    marginBottom: 4,
+    fontWeight: '600',
+    color: '#171717',
+    marginBottom: 4
   },
   contentMeta: {
     fontSize: 12,
-    color: "#525252",
-  },
+    color: '#525252'
+  }
 });

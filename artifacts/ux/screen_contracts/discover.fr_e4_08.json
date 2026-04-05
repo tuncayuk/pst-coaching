@@ -3,9 +3,7 @@
   "title": "Misafir Goruntulemе ve Kayit Zorunlulugu",
   "route": "/discover/guest",
   "purpose": "Implements FR-E4-08: Guest users can browse all catalog/detail screens. Free content tagged. Start actions redirect to registration. Post-registration free content unlocked.",
-  "entryPoints": [
-    "bottom_tab.discover"
-  ],
+  "entryPoints": ["bottom_tab.discover"],
   "inputs": [
     {
       "name": "userId",
@@ -26,11 +24,7 @@
       "source": "profile"
     }
   ],
-  "dataDependencies": [
-    "Ebook",
-    "Journey",
-    "Subscription"
-  ],
+  "dataDependencies": ["Ebook", "Journey", "Subscription"],
   "uiStates": {
     "loading": {
       "description": "Loading guest entitlement check."
@@ -50,17 +44,8 @@
   },
   "analytics": {
     "screenView": "discover_guest_viewed",
-    "events": [
-      "discover_guest_viewed",
-      "discover_guest_start_tapped",
-      "discover_guest_registration_triggered"
-    ]
+    "events": ["discover_guest_viewed", "discover_guest_start_tapped", "discover_guest_registration_triggered"]
   },
-  "acceptanceCriteriaRefs": [
-    "AC-FR-E4-08-01",
-    "AC-FR-E4-08-02",
-    "AC-FR-E4-08-03",
-    "AC-FR-E4-08-04"
-  ],
+  "acceptanceCriteriaRefs": ["AC-FR-E4-08-01", "AC-FR-E4-08-02", "AC-FR-E4-08-03", "AC-FR-E4-08-04"],
   "gates": []
 }

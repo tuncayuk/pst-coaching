@@ -3,10 +3,7 @@
   "title": "Okuma ilerlemesi",
   "route": "/ebook/progress",
   "purpose": "Implements FR-E7-07: Ilerleme yüzdesi, kalan süre tahmini, tamamlanma rozeti/sertifikasi, Gelisim paneli yansimasi.",
-  "entryPoints": [
-    "library.ebooks",
-    "ebook.detail"
-  ],
+  "entryPoints": ["library.ebooks", "ebook.detail"],
   "inputs": [
     {
       "name": "ebookId",
@@ -21,11 +18,7 @@
       "source": "session"
     }
   ],
-  "dataDependencies": [
-    "ContentProgress",
-    "EbookProgress",
-    "Achievement"
-  ],
+  "dataDependencies": ["ContentProgress", "EbookProgress", "Achievement"],
   "uiStates": {
     "loading": {
       "description": "Skeleton progress bars."
@@ -45,19 +38,8 @@
   },
   "analytics": {
     "screenView": "ebook_progress_viewed",
-    "events": [
-      "ebook_progress_viewed",
-      "ebook_completion_badge_claimed",
-      "ebook_reading_started"
-    ]
+    "events": ["ebook_progress_viewed", "ebook_completion_badge_claimed", "ebook_reading_started"]
   },
-  "acceptanceCriteriaRefs": [
-    "AC-FR-E7-07-01",
-    "AC-FR-E7-07-02",
-    "AC-FR-E7-07-03",
-    "AC-FR-E7-07-04"
-  ],
-  "gates": [
-    "auth"
-  ]
+  "acceptanceCriteriaRefs": ["AC-FR-E7-07-01", "AC-FR-E7-07-02", "AC-FR-E7-07-03", "AC-FR-E7-07-04"],
+  "gates": ["auth"]
 }

@@ -3,9 +3,7 @@
   "title": "Sayfa navigasyonu",
   "route": "/ebook/navigation",
   "purpose": "Implements FR-E7-02: Kaydirma/sayfa cevirme, sayfa numarasina atlama, TOC'dan bolume atlama, ilerleme cubugu.",
-  "entryPoints": [
-    "ebook.reader"
-  ],
+  "entryPoints": ["ebook.reader"],
   "inputs": [
     {
       "name": "ebookId",
@@ -20,10 +18,7 @@
       "source": "route_param"
     }
   ],
-  "dataDependencies": [
-    "EbookChapter",
-    "EbookProgress"
-  ],
+  "dataDependencies": ["EbookChapter", "EbookProgress"],
   "uiStates": {
     "loading": {
       "description": "Skeleton for TOC list."
@@ -43,19 +38,8 @@
   },
   "analytics": {
     "screenView": "ebook_toc_viewed",
-    "events": [
-      "ebook_toc_viewed",
-      "ebook_chapter_selected",
-      "ebook_page_jumped"
-    ]
+    "events": ["ebook_toc_viewed", "ebook_chapter_selected", "ebook_page_jumped"]
   },
-  "acceptanceCriteriaRefs": [
-    "AC-FR-E7-02-01",
-    "AC-FR-E7-02-02",
-    "AC-FR-E7-02-03",
-    "AC-FR-E7-02-04"
-  ],
-  "gates": [
-    "auth"
-  ]
+  "acceptanceCriteriaRefs": ["AC-FR-E7-02-01", "AC-FR-E7-02-02", "AC-FR-E7-02-03", "AC-FR-E7-02-04"],
+  "gates": ["auth"]
 }

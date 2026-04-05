@@ -1,55 +1,47 @@
-import React, { useState } from "react";
-import { StyleSheet, TouchableOpacity, View } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { OfflineNotice } from "../components/OfflineNotice";
-import { ScreenLayout } from "../components/ScreenLayout";
-import { SectionCard } from "../components/SectionCard";
-import { SkeletonBlock } from "../components/SkeletonBlock";
-import { StateMessage } from "../components/StateMessage";
-import { resolveScreenState, ScreenState } from "../components/ScreenState";
-import { getAccessibilitySettings, getPrimaryUser } from "../../data/mockSelectors";
+import { useNavigation } from '@react-navigation/native';
+import React, { useState } from 'react';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
+
 import {
   PActivityIndicator,
   PButton,
   PDivider,
   PRadioButtonGroup,
   PRadioButtonItem,
-  PText,
   PSwitch,
-} from "../../components";
+  PText
+} from '../../components';
+import { getAccessibilitySettings, getPrimaryUser } from '../../data/mockSelectors';
+import { OfflineNotice } from '../components/OfflineNotice';
+import { ScreenLayout } from '../components/ScreenLayout';
+import { ScreenState, resolveScreenState } from '../components/ScreenState';
+import { SectionCard } from '../components/SectionCard';
+import { SkeletonBlock } from '../components/SkeletonBlock';
+import { StateMessage } from '../components/StateMessage';
 
 // AC-FR-E10-03-03: theme options
-type ThemeOption = "light" | "dark" | "system";
+type ThemeOption = 'light' | 'dark' | 'system';
 const THEME_OPTIONS: Array<{ value: ThemeOption; label: string; desc: string }> = [
-  { value: "light",  label: "Acik Tema",  desc: "Beyaz arka plan, koyu metin"   },
-  { value: "dark",   label: "Koyu Tema",  desc: "Koyu arka plan, acik metin"    },
-  { value: "system", label: "Sistem",     desc: "Cihaz temasini takip eder"     },
+  { value: 'light', label: 'Acik Tema', desc: 'Beyaz arka plan, koyu metin' },
+  { value: 'dark', label: 'Koyu Tema', desc: 'Koyu arka plan, acik metin' },
+  { value: 'system', label: 'Sistem', desc: 'Cihaz temasini takip eder' }
 ];
 
 // AC-FR-E10-03-02: color blindness modes
-type ColorBlindMode = "none" | "deuteranopia" | "protanopia" | "tritanopia";
+type ColorBlindMode = 'none' | 'deuteranopia' | 'protanopia' | 'tritanopia';
 const CB_MODES: Array<{ key: ColorBlindMode; label: string; desc: string; color: string }> = [
-  { key: "none",         label: "Normal",          desc: "Tum renkler varsayilan", color: "#7C4DFF" },
-  { key: "deuteranopia", label: "Deuteranopi",      desc: "Yesil koru destegi",    color: "#00897B" },
-  { key: "protanopia",   label: "Protanopi",        desc: "Kirmizi koru destegi",  color: "#1E88E5" },
-  { key: "tritanopia",   label: "Tritanopi",        desc: "Mavi koru destegi",     color: "#F57C00" },
+  { key: 'none', label: 'Normal', desc: 'Tum renkler varsayilan', color: '#7C4DFF' },
+  { key: 'deuteranopia', label: 'Deuteranopi', desc: 'Yesil koru destegi', color: '#00897B' },
+  { key: 'protanopia', label: 'Protanopi', desc: 'Kirmizi koru destegi', color: '#1E88E5' },
+  { key: 'tritanopia', label: 'Tritanopi', desc: 'Mavi koru destegi', color: '#F57C00' }
 ];
 
 // Visual theme preview swatch
-const ThemeSwatch = ({
-  theme,
-  isSelected,
-}: {
-  theme: ThemeOption;
-  isSelected: boolean;
-}) => {
-  const bg = theme === "dark" ? "#212121" : theme === "light" ? "#FFFFFF" : "#F5F5F5";
-  const textColor = theme === "dark" ? "#E0E0E0" : "#212121";
+const ThemeSwatch = ({ theme, isSelected }: { theme: ThemeOption; isSelected: boolean }) => {
+  const bg = theme === 'dark' ? '#212121' : theme === 'light' ? '#FFFFFF' : '#F5F5F5';
+  const textColor = theme === 'dark' ? '#E0E0E0' : '#212121';
   return (
-    <View
-      style={[styles.swatch, { backgroundColor: bg }, isSelected && styles.swatchSelected]}
-      accessible={false}
-    >
+    <View style={[styles.swatch, { backgroundColor: bg }, isSelected && styles.swatchSelected]} accessible={false}>
       <PText style={[styles.swatchText, { color: textColor }]}>Aa</PText>
     </View>
   );
@@ -61,11 +53,11 @@ const ProfileThemeContent = ({ isOffline }: { isOffline?: boolean }) => {
   const settings = getAccessibilitySettings().find((s: any) => s.user_id === user?.id);
 
   // AC-FR-E10-03-03: theme selection
-  const [theme, setTheme] = useState<ThemeOption>((settings?.theme as ThemeOption) ?? "system");
+  const [theme, setTheme] = useState<ThemeOption>((settings?.theme as ThemeOption) ?? 'system');
   // AC-FR-E10-03-01: high contrast mode
   const [highContrast, setHighContrast] = useState(settings?.high_contrast ?? false);
   // AC-FR-E10-03-02: color blindness mode
-  const [cbMode, setCbMode] = useState<ColorBlindMode>("none");
+  const [cbMode, setCbMode] = useState<ColorBlindMode>('none');
   const [saved, setSaved] = useState(false);
 
   const handleSave = () => {
@@ -80,31 +72,27 @@ const ProfileThemeContent = ({ isOffline }: { isOffline?: boolean }) => {
         <PText variant="bodySmall" style={styles.hint}>
           Tema tercihinizi secin; aninda onizleme saglanir.
         </PText>
-        <PRadioButtonGroup
-          value={theme}
-          onValueChange={(v) => setTheme(v as ThemeOption)}
-        >
-          {THEME_OPTIONS.map((opt) => (
+        <PRadioButtonGroup value={theme} onValueChange={v => setTheme(v as ThemeOption)}>
+          {THEME_OPTIONS.map(opt => (
             <View key={opt.value}>
               <View
                 style={styles.themeRow}
                 accessibilityRole="radio"
-                accessibilityLabel={opt.label + ", " + opt.desc}
+                accessibilityLabel={opt.label + ', ' + opt.desc}
                 accessibilityState={{ selected: theme === opt.value }}
               >
                 <ThemeSwatch theme={opt.value} isSelected={theme === opt.value} />
                 <View style={styles.themeText}>
-                  <PText variant="titleSmall" style={styles.themeLabel}>{opt.label}</PText>
-                  <PText variant="bodySmall" style={styles.themeDesc}>{opt.desc}</PText>
+                  <PText variant="titleSmall" style={styles.themeLabel}>
+                    {opt.label}
+                  </PText>
+                  <PText variant="bodySmall" style={styles.themeDesc}>
+                    {opt.desc}
+                  </PText>
                 </View>
-                <PRadioButtonItem
-                  value={opt.value}
-                  label=""
-                  disabled={isOffline}
-                  style={styles.radioHide}
-                />
+                <PRadioButtonItem value={opt.value} label="" disabled={isOffline} style={styles.radioHide} />
               </View>
-              {opt.value !== "system" && <PDivider style={styles.divider} />}
+              {opt.value !== 'system' && <PDivider style={styles.divider} />}
             </View>
           ))}
         </PRadioButtonGroup>
@@ -118,20 +106,22 @@ const ProfileThemeContent = ({ isOffline }: { isOffline?: boolean }) => {
         <View
           style={styles.toggleRow}
           accessibilityRole="switch"
-          accessibilityLabel={"Yuksek kontrast: " + (highContrast ? "acik" : "kapali")}
+          accessibilityLabel={'Yuksek kontrast: ' + (highContrast ? 'acik' : 'kapali')}
           accessibilityState={{ checked: highContrast, disabled: isOffline }}
         >
           <View style={styles.toggleText}>
-            <PText variant="bodyMedium" style={styles.toggleLabel}>Yuksek Kontrast</PText>
+            <PText variant="bodyMedium" style={styles.toggleLabel}>
+              Yuksek Kontrast
+            </PText>
             <PText variant="bodySmall" style={styles.toggleDesc}>
               7:1 kontrast orani (WCAG AAA)
             </PText>
           </View>
           <PSwitch
             value={highContrast}
-            onValueChange={(v) => setHighContrast(v)}
+            onValueChange={v => setHighContrast(v)}
             disabled={isOffline}
-            accessibilityLabel={"Yuksek kontrast: " + (highContrast ? "acik" : "kapali")}
+            accessibilityLabel={'Yuksek kontrast: ' + (highContrast ? 'acik' : 'kapali')}
           />
         </View>
         {highContrast && (
@@ -148,42 +138,48 @@ const ProfileThemeContent = ({ isOffline }: { isOffline?: boolean }) => {
         <PText variant="bodySmall" style={styles.hint}>
           Renk koru destegi; ikon ve desen eslikli renk kodlamasi saglar.
         </PText>
-        <View
-          style={styles.cbGrid}
-          accessibilityRole="radiogroup"
-          accessibilityLabel="Renk koru modu secimleri"
-        >
-          {CB_MODES.map((mode) => {
+        <View style={styles.cbGrid} accessibilityRole="radiogroup" accessibilityLabel="Renk koru modu secimleri">
+          {CB_MODES.map(mode => {
             const isSelected = cbMode === mode.key;
             return (
               <TouchableOpacity
                 key={mode.key}
-                style={[styles.cbCard, isSelected && { borderColor: mode.color, backgroundColor: mode.color + "18" }]}
+                style={[styles.cbCard, isSelected && { borderColor: mode.color, backgroundColor: mode.color + '18' }]}
                 onPress={() => setCbMode(mode.key)}
                 disabled={isOffline}
                 accessibilityRole="radio"
-                accessibilityLabel={mode.label + ": " + mode.desc + (isSelected ? ", secili" : "")}
+                accessibilityLabel={mode.label + ': ' + mode.desc + (isSelected ? ', secili' : '')}
                 accessibilityState={{ selected: isSelected }}
               >
                 {/* Pattern/icon indicator - AC-FR-E10-03-02 */}
                 <View style={[styles.cbSwatch, { backgroundColor: mode.color }]} accessible={false}>
-                  {mode.key === "deuteranopia" && (
-                    <PText style={styles.cbIcon} accessibilityElementsHidden>[D]</PText>
+                  {mode.key === 'deuteranopia' && (
+                    <PText style={styles.cbIcon} accessibilityElementsHidden>
+                      [D]
+                    </PText>
                   )}
-                  {mode.key === "protanopia" && (
-                    <PText style={styles.cbIcon} accessibilityElementsHidden>[P]</PText>
+                  {mode.key === 'protanopia' && (
+                    <PText style={styles.cbIcon} accessibilityElementsHidden>
+                      [P]
+                    </PText>
                   )}
-                  {mode.key === "tritanopia" && (
-                    <PText style={styles.cbIcon} accessibilityElementsHidden>[T]</PText>
+                  {mode.key === 'tritanopia' && (
+                    <PText style={styles.cbIcon} accessibilityElementsHidden>
+                      [T]
+                    </PText>
                   )}
-                  {mode.key === "none" && (
-                    <PText style={styles.cbIcon} accessibilityElementsHidden>[N]</PText>
+                  {mode.key === 'none' && (
+                    <PText style={styles.cbIcon} accessibilityElementsHidden>
+                      [N]
+                    </PText>
                   )}
                 </View>
                 <PText variant="labelSmall" style={[styles.cbLabel, isSelected && { color: mode.color }]}>
                   {mode.label}
                 </PText>
-                <PText variant="labelSmall" style={styles.cbDesc}>{mode.desc}</PText>
+                <PText variant="labelSmall" style={styles.cbDesc}>
+                  {mode.desc}
+                </PText>
               </TouchableOpacity>
             );
           })}
@@ -210,11 +206,7 @@ const ProfileThemeContent = ({ isOffline }: { isOffline?: boolean }) => {
         >
           Kaydet
         </PButton>
-        <PButton
-          mode="text"
-          accessibilityLabel="Geri don"
-          onPress={() => navigation.goBack()}
-        >
+        <PButton mode="text" accessibilityLabel="Geri don" onPress={() => navigation.goBack()}>
           Geri Don
         </PButton>
       </SectionCard>
@@ -222,14 +214,10 @@ const ProfileThemeContent = ({ isOffline }: { isOffline?: boolean }) => {
   );
 };
 
-export const ProfileThemeScreen = ({
-  route,
-}: {
-  route?: { params?: { state?: ScreenState } };
-}) => {
+export const ProfileThemeScreen = ({ route }: { route?: { params?: { state?: ScreenState } } }) => {
   const state = resolveScreenState(route);
 
-  if (state === "loading") {
+  if (state === 'loading') {
     return (
       <ScreenLayout title="Tema ve Kontrast" subtitle="Ayarlar hazirlaniyor">
         <SectionCard title="Tema">
@@ -245,7 +233,7 @@ export const ProfileThemeScreen = ({
     );
   }
 
-  if (state === "empty") {
+  if (state === 'empty') {
     return (
       <ScreenLayout title="Tema ve Kontrast" subtitle="Varsayilan ayarlar">
         <StateMessage
@@ -258,7 +246,7 @@ export const ProfileThemeScreen = ({
     );
   }
 
-  if (state === "error") {
+  if (state === 'error') {
     return (
       <ScreenLayout title="Tema ve Kontrast" subtitle="Bir sorun olustu">
         <StateMessage
@@ -272,7 +260,7 @@ export const ProfileThemeScreen = ({
     );
   }
 
-  if (state === "offline") {
+  if (state === 'offline') {
     return (
       <ScreenLayout title="Tema ve Kontrast" subtitle="Onbellekteki ayarlar">
         <OfflineNotice />
@@ -292,121 +280,121 @@ const styles = StyleSheet.create({
   hint: {
     opacity: 0.6,
     marginBottom: 10,
-    lineHeight: 18,
+    lineHeight: 18
   },
   themeRow: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     paddingVertical: 8,
-    gap: 12,
+    gap: 12
   },
   swatch: {
     width: 44,
     height: 44,
     borderRadius: 8,
     borderWidth: 1.5,
-    borderColor: "#E0E0E0",
-    alignItems: "center",
-    justifyContent: "center",
+    borderColor: '#E0E0E0',
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   swatchSelected: {
-    borderColor: "#7C4DFF",
-    borderWidth: 2.5,
+    borderColor: '#7C4DFF',
+    borderWidth: 2.5
   },
   swatchText: {
     fontSize: 16,
-    fontWeight: "700",
+    fontWeight: '700'
   },
   themeText: {
-    flex: 1,
+    flex: 1
   },
   themeLabel: {
-    fontWeight: "600",
+    fontWeight: '600'
   },
   themeDesc: {
     opacity: 0.6,
-    marginTop: 2,
+    marginTop: 2
   },
   radioHide: {
-    position: "absolute",
+    position: 'absolute',
     right: 0,
-    opacity: 1,
+    opacity: 1
   },
   divider: {
-    marginVertical: 2,
+    marginVertical: 2
   },
   toggleRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     paddingVertical: 8,
-    gap: 12,
+    gap: 12
   },
   toggleText: {
-    flex: 1,
+    flex: 1
   },
   toggleLabel: {
-    fontWeight: "600",
+    fontWeight: '600'
   },
   toggleDesc: {
     opacity: 0.65,
     marginTop: 2,
-    lineHeight: 18,
+    lineHeight: 18
   },
   contrastBadge: {
-    backgroundColor: "#E8F5E9",
+    backgroundColor: '#E8F5E9',
     borderRadius: 6,
     paddingHorizontal: 10,
     paddingVertical: 4,
-    alignSelf: "flex-start",
-    marginTop: 6,
+    alignSelf: 'flex-start',
+    marginTop: 6
   },
   contrastBadgeText: {
-    color: "#2E7D32",
-    fontWeight: "600",
+    color: '#2E7D32',
+    fontWeight: '600'
   },
   cbGrid: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    gap: 10,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 10
   },
   cbCard: {
-    width: "46%",
+    width: '46%',
     borderRadius: 10,
     borderWidth: 2,
-    borderColor: "#E0E0E0",
+    borderColor: '#E0E0E0',
     padding: 12,
-    alignItems: "center",
+    alignItems: 'center'
   },
   cbSwatch: {
     width: 40,
     height: 40,
     borderRadius: 20,
-    alignItems: "center",
-    justifyContent: "center",
-    marginBottom: 6,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 6
   },
   cbIcon: {
     fontSize: 18,
-    color: "#FFF",
-    fontWeight: "700",
+    color: '#FFF',
+    fontWeight: '700'
   },
   cbLabel: {
-    fontWeight: "600",
-    color: "#424242",
-    marginBottom: 2,
+    fontWeight: '600',
+    color: '#424242',
+    marginBottom: 2
   },
   cbDesc: {
     opacity: 0.6,
-    textAlign: "center",
-    lineHeight: 16,
+    textAlign: 'center',
+    lineHeight: 16
   },
   savedText: {
-    color: "#4CAF50",
-    textAlign: "center",
-    marginBottom: 6,
+    color: '#4CAF50',
+    textAlign: 'center',
+    marginBottom: 6
   },
   saveBtn: {
-    marginBottom: 8,
-  },
+    marginBottom: 8
+  }
 });

@@ -3,9 +3,7 @@
   "title": "Kilitli ilerleme (paket seviyesi)",
   "route": "/modules/package/locked",
   "purpose": "Implements FR-E11-04: Locked package view with prerequisite explanation (BR-04) and 08:00 countdown (BR-01) within ContentPackageDetailScreen.",
-  "entryPoints": [
-    "modules.fr_e11_01"
-  ],
+  "entryPoints": ["modules.fr_e11_01"],
   "inputs": [
     {
       "name": "id",
@@ -20,10 +18,7 @@
       "source": "route"
     }
   ],
-  "dataDependencies": [
-    "Package",
-    "ContentProgress"
-  ],
+  "dataDependencies": ["Package", "ContentProgress"],
   "uiStates": {
     "loading": {
       "description": "Skeleton for locked state."
@@ -43,17 +38,8 @@
   },
   "analytics": {
     "screenView": "locked_package_viewed",
-    "events": [
-      "locked_package_viewed",
-      "go_to_prerequisite_tapped"
-    ]
+    "events": ["locked_package_viewed", "go_to_prerequisite_tapped"]
   },
-  "acceptanceCriteriaRefs": [
-    "AC-FR-E11-04-01",
-    "AC-FR-E11-04-02",
-    "AC-FR-E11-04-03"
-  ],
-  "gates": [
-    "auth"
-  ]
+  "acceptanceCriteriaRefs": ["AC-FR-E11-04-01", "AC-FR-E11-04-02", "AC-FR-E11-04-03"],
+  "gates": ["auth"]
 }

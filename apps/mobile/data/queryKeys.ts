@@ -1,3 +1,3 @@
 export const queryKeys = {
-  journeys: ["journeys"],
+  journeys: ['journeys']
 };

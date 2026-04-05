@@ -1,55 +1,47 @@
-import React from "react";
-import { StyleSheet, View } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { OfflineNotice } from "../components/OfflineNotice";
-import { ScreenLayout } from "../components/ScreenLayout";
-import { SectionCard } from "../components/SectionCard";
-import { SkeletonBlock } from "../components/SkeletonBlock";
-import { StateMessage } from "../components/StateMessage";
-import { resolveScreenState, ScreenState } from "../components/ScreenState";
+import { useNavigation } from '@react-navigation/native';
+import React from 'react';
+import { StyleSheet, View } from 'react-native';
+
+import { PActivityIndicator, PAvatar, PDivider, PProgressBar, PText } from '../../components';
 import {
   getContentProgressForUser,
   getEbookProgressForUser,
   getEbooks,
   getJourneys,
   getUsers,
-  getWorkshops,
-} from "../../data/mockSelectors";
-import {
-  PActivityIndicator,
-  PAvatar,
-  PDivider,
-  PProgressBar,
-  PText,
-} from "../../components";
+  getWorkshops
+} from '../../data/mockSelectors';
+import { OfflineNotice } from '../components/OfflineNotice';
+import { ScreenLayout } from '../components/ScreenLayout';
+import { ScreenState, resolveScreenState } from '../components/ScreenState';
+import { SectionCard } from '../components/SectionCard';
+import { SkeletonBlock } from '../components/SkeletonBlock';
+import { StateMessage } from '../components/StateMessage';
 
 type RouteParams = { clientId?: string; state?: ScreenState };
 
 function getDisplayName(email?: string): string {
-  if (!email) return "Danisan";
-  return email.split("@")[0].replace(/[._]/g, " ").replace(/w/g, (c) => c.toUpperCase());
+  if (!email) return 'Danisan';
+  return email
+    .split('@')[0]
+    .replace(/[._]/g, ' ')
+    .replace(/w/g, c => c.toUpperCase());
 }
 
 function getLastActivityLabel(dateStr?: string | null): string {
-  if (!dateStr) return "Bilinmiyor";
+  if (!dateStr) return 'Bilinmiyor';
   const daysSince = Math.floor((Date.now() - new Date(dateStr).getTime()) / 86400000);
-  if (daysSince === 0) return "Bugun";
-  if (daysSince === 1) return "Dun";
-  return daysSince + " gun once";
+  if (daysSince === 0) return 'Bugun';
+  if (daysSince === 1) return 'Dun';
+  return daysSince + ' gun once';
 }
 
 // Estimated minutes per content progress item
 const EST_MINS_PER_ITEM = 15;
 
-const CoachContentTrackingContent = ({
-  clientId,
-  isOffline,
-}: {
-  clientId?: string;
-  isOffline?: boolean;
-}) => {
+const CoachContentTrackingContent = ({ clientId, isOffline }: { clientId?: string; isOffline?: boolean }) => {
   const navigation = useNavigation<any>();
-  const client = getUsers().find((u) => u.id === clientId) ?? getUsers()[1];
+  const client = getUsers().find(u => u.id === clientId) ?? getUsers()[1];
   const progress = getContentProgressForUser(client?.id);
   const ebookProgress = getEbookProgressForUser(client?.id);
   const journeys = getJourneys();
@@ -57,31 +49,32 @@ const CoachContentTrackingContent = ({
   const ebooks = getEbooks();
 
   // Group progress by content_type
-  const journeyProgress = progress.filter((p) => p.content_type === "journey_day");
-  const workshopProgress = progress.filter(
-    (p) => p.content_type === "workshop" || p.content_type === "workshop_section"
-  );
-  const completedIds = new Set(
-    progress.filter((p) => p.status === "completed").map((p) => p.content_id)
-  );
+  const journeyProgress = progress.filter(p => p.content_type === 'journey_day');
+  const workshopProgress = progress.filter(p => p.content_type === 'workshop' || p.content_type === 'workshop_section');
+  const completedIds = new Set(progress.filter(p => p.status === 'completed').map(p => p.content_id));
 
   // AC-FR-E12-03-03: compute completion % per journey
-  const journeyStats = journeys.map((j) => {
-    const days = progress.filter(
-      (p) => p.content_type === "journey_day" && p.content_id.startsWith("b")
-    );
-    const done = progress.filter((p) => p.status === "completed" && p.content_type === "journey_day").length;
+  const journeyStats = journeys.map(j => {
+    const days = progress.filter(p => p.content_type === 'journey_day' && p.content_id.startsWith('b'));
+    const done = progress.filter(p => p.status === 'completed' && p.content_type === 'journey_day').length;
     const total = Math.max(progress.length, 1);
     const pct = total > 0 ? done / total : 0;
     const lastP = progress
-      .filter((p) => p.content_type === "journey_day")
+      .filter(p => p.content_type === 'journey_day')
       .sort((a, b) => new Date(b.started_at ?? 0).getTime() - new Date(a.started_at ?? 0).getTime())[0];
     // AC-FR-E12-03-04: time spent estimate
     const estMins = done * EST_MINS_PER_ITEM;
-    return { journey: j, pct, done, total: progress.length, lastActivity: lastP?.started_at, estMins };
+    return {
+      journey: j,
+      pct,
+      done,
+      total: progress.length,
+      lastActivity: lastP?.started_at,
+      estMins
+    };
   });
 
-  const workshopStats = workshops.map((w) => {
+  const workshopStats = workshops.map(w => {
     const done = 0;
     const total = 3; // estimate
     const pct = done / total;
@@ -105,9 +98,13 @@ const CoachContentTrackingContent = ({
                 accessible
                 accessibilityLabel={
                   item.journey.title +
-                  ". Tamamlanma: yuzde " + Math.round(item.pct * 100) +
-                  ". Son aktivite: " + getLastActivityLabel(item.lastActivity) +
-                  ". Tahmini sure: " + item.estMins + " dakika."
+                  '. Tamamlanma: yuzde ' +
+                  Math.round(item.pct * 100) +
+                  '. Son aktivite: ' +
+                  getLastActivityLabel(item.lastActivity) +
+                  '. Tahmini sure: ' +
+                  item.estMins +
+                  ' dakika.'
                 }
               >
                 <PAvatar.Icon
@@ -123,22 +120,13 @@ const CoachContentTrackingContent = ({
                   </PText>
                   {/* AC-FR-E12-03-03: completion % */}
                   <View style={styles.pctRow}>
-                    <PProgressBar
-                      progress={item.pct}
-                      color="#7C4DFF"
-                      style={styles.contentBar}
-                      accessible={false}
-                    />
+                    <PProgressBar progress={item.pct} color="#7C4DFF" style={styles.contentBar} accessible={false} />
                     <PText style={styles.pctText}>{Math.round(item.pct * 100)}%</PText>
                   </View>
                   <View style={styles.metaRow}>
-                    <PText style={styles.metaText}>
-                      Son aktivite: {getLastActivityLabel(item.lastActivity)}
-                    </PText>
+                    <PText style={styles.metaText}>Son aktivite: {getLastActivityLabel(item.lastActivity)}</PText>
                     {/* AC-FR-E12-03-04: time spent */}
-                    <PText style={styles.metaText}>
-                      {item.estMins > 0 ? "~" + item.estMins + "dk" : "Baslamamis"}
-                    </PText>
+                    <PText style={styles.metaText}>{item.estMins > 0 ? '~' + item.estMins + 'dk' : 'Baslamamis'}</PText>
                   </View>
                 </View>
               </View>
@@ -162,8 +150,11 @@ const CoachContentTrackingContent = ({
                 accessible
                 accessibilityLabel={
                   item.workshop.title +
-                  ". Tamamlanma: yuzde " + Math.round(item.pct * 100) +
-                  ". Tahmini sure: " + item.estMins + " dakika."
+                  '. Tamamlanma: yuzde ' +
+                  Math.round(item.pct * 100) +
+                  '. Tahmini sure: ' +
+                  item.estMins +
+                  ' dakika.'
                 }
               >
                 <PAvatar.Icon
@@ -178,21 +169,14 @@ const CoachContentTrackingContent = ({
                     {item.workshop.title}
                   </PText>
                   <View style={styles.pctRow}>
-                    <PProgressBar
-                      progress={item.pct}
-                      color="#0EA5E9"
-                      style={styles.contentBar}
-                      accessible={false}
-                    />
+                    <PProgressBar progress={item.pct} color="#0EA5E9" style={styles.contentBar} accessible={false} />
                     <PText style={styles.pctText}>{Math.round(item.pct * 100)}%</PText>
                   </View>
                   <View style={styles.metaRow}>
                     <PText style={styles.metaText}>
                       {item.done}/{item.total} bolum
                     </PText>
-                    <PText style={styles.metaText}>
-                      {item.estMins > 0 ? "~" + item.estMins + "dk" : "Baslamamis"}
-                    </PText>
+                    <PText style={styles.metaText}>{item.estMins > 0 ? '~' + item.estMins + 'dk' : 'Baslamamis'}</PText>
                   </View>
                 </View>
               </View>
@@ -211,9 +195,9 @@ const CoachContentTrackingContent = ({
         ) : (
           ebooks.map((ebook, idx) => {
             const ep = ebookProgress.find((p: any) => p.ebook_id === ebook.id);
-            const pct = ep ? (ep as any).percent_complete ?? 0 : 0;
-            const estMins = Math.round(pct * 200 / 100); // estimate 200 mins for full book
-            const lastRead = ep ? (ep as any).updated_at ?? null : null;
+            const pct = ep ? ((ep as any).percent_complete ?? 0) : 0;
+            const estMins = Math.round((pct * 200) / 100); // estimate 200 mins for full book
+            const lastRead = ep ? ((ep as any).updated_at ?? null) : null;
             return (
               <View key={ebook.id}>
                 <View
@@ -221,8 +205,9 @@ const CoachContentTrackingContent = ({
                   accessible
                   accessibilityLabel={
                     ebook.title +
-                    ". Tamamlanma: yuzde " + Math.round(pct) +
-                    (lastRead ? ". Son okuma: " + getLastActivityLabel(lastRead) : "")
+                    '. Tamamlanma: yuzde ' +
+                    Math.round(pct) +
+                    (lastRead ? '. Son okuma: ' + getLastActivityLabel(lastRead) : '')
                   }
                 >
                   <PAvatar.Icon
@@ -237,23 +222,16 @@ const CoachContentTrackingContent = ({
                       {ebook.title}
                     </PText>
                     <View style={styles.pctRow}>
-                      <PProgressBar
-                        progress={pct / 100}
-                        color="#10B981"
-                        style={styles.contentBar}
-                        accessible={false}
-                      />
+                      <PProgressBar progress={pct / 100} color="#10B981" style={styles.contentBar} accessible={false} />
                       <PText style={styles.pctText}>{Math.round(pct)}%</PText>
                     </View>
                     <View style={styles.metaRow}>
                       {/* AC-FR-E12-03-02: chapter status */}
                       <PText style={styles.metaText}>
-                        {lastRead ? "Son okuma: " + getLastActivityLabel(lastRead) : "Henuz baslanmamis"}
+                        {lastRead ? 'Son okuma: ' + getLastActivityLabel(lastRead) : 'Henuz baslanmamis'}
                       </PText>
                       {/* AC-FR-E12-03-04: time spent */}
-                      <PText style={styles.metaText}>
-                        {estMins > 0 ? "~" + estMins + "dk" : "0dk"}
-                      </PText>
+                      <PText style={styles.metaText}>{estMins > 0 ? '~' + estMins + 'dk' : '0dk'}</PText>
                     </View>
                   </View>
                 </View>
@@ -267,17 +245,13 @@ const CoachContentTrackingContent = ({
   );
 };
 
-export const CoachContentTrackingScreen = ({
-  route,
-}: {
-  route?: { params?: RouteParams };
-}) => {
+export const CoachContentTrackingScreen = ({ route }: { route?: { params?: RouteParams } }) => {
   const state = resolveScreenState(route);
   const clientId = route?.params?.clientId;
-  const client = getUsers().find((u) => u.id === clientId);
-  const title = client ? getDisplayName(client.email) : "Danisan";
+  const client = getUsers().find(u => u.id === clientId);
+  const title = client ? getDisplayName(client.email) : 'Danisan';
 
-  if (state === "loading") {
+  if (state === 'loading') {
     return (
       <ScreenLayout title="Icerik Takibi" subtitle={title}>
         <PActivityIndicator animating accessibilityLabel="Icerik takibi yukleniyor" />
@@ -288,7 +262,7 @@ export const CoachContentTrackingScreen = ({
     );
   }
 
-  if (state === "empty" || !clientId) {
+  if (state === 'empty' || !clientId) {
     return (
       <ScreenLayout title="Icerik Takibi" subtitle="">
         <StateMessage
@@ -300,7 +274,7 @@ export const CoachContentTrackingScreen = ({
     );
   }
 
-  if (state === "error") {
+  if (state === 'error') {
     return (
       <ScreenLayout title="Icerik Takibi" subtitle={title}>
         <StateMessage
@@ -314,9 +288,9 @@ export const CoachContentTrackingScreen = ({
     );
   }
 
-  if (state === "offline") {
+  if (state === 'offline') {
     return (
-      <ScreenLayout title="Icerik Takibi" subtitle={title + " - Cevrimdisi mod"}>
+      <ScreenLayout title="Icerik Takibi" subtitle={title + ' - Cevrimdisi mod'}>
         <OfflineNotice />
         <CoachContentTrackingContent clientId={clientId} isOffline />
       </ScreenLayout>
@@ -324,25 +298,25 @@ export const CoachContentTrackingScreen = ({
   }
 
   return (
-    <ScreenLayout title="Icerik Takibi" subtitle={title + " - Detayli ilerleme"}>
+    <ScreenLayout title="Icerik Takibi" subtitle={title + ' - Detayli ilerleme'}>
       <CoachContentTrackingContent clientId={clientId} />
     </ScreenLayout>
   );
 };
 
 const styles = StyleSheet.create({
-  contentRow: { flexDirection: "row", alignItems: "flex-start", gap: 12, paddingVertical: 8 },
-  contentIcon:      { backgroundColor: "#F5F3FF", borderRadius: 18 },
-  contentIconBlue:  { backgroundColor: "#E0F2FE", borderRadius: 18 },
-  contentIconGreen: { backgroundColor: "#D1FAE5", borderRadius: 18 },
+  contentRow: { flexDirection: 'row', alignItems: 'flex-start', gap: 12, paddingVertical: 8 },
+  contentIcon: { backgroundColor: '#F5F3FF', borderRadius: 18 },
+  contentIconBlue: { backgroundColor: '#E0F2FE', borderRadius: 18 },
+  contentIconGreen: { backgroundColor: '#D1FAE5', borderRadius: 18 },
   contentInfo: { flex: 1 },
-  contentTitle: { fontSize: 14, fontWeight: "600", color: "#1E293B", marginBottom: 6 },
-  pctRow: { flexDirection: "row", alignItems: "center", gap: 8 },
+  contentTitle: { fontSize: 14, fontWeight: '600', color: '#1E293B', marginBottom: 6 },
+  pctRow: { flexDirection: 'row', alignItems: 'center', gap: 8 },
   contentBar: { flex: 1, height: 6, borderRadius: 6 },
-  pctText: { fontSize: 12, fontWeight: "700", color: "#525252", minWidth: 32 },
-  metaRow: { flexDirection: "row", justifyContent: "space-between", marginTop: 4 },
-  metaText: { fontSize: 11, color: "#9CA3AF" },
+  pctText: { fontSize: 12, fontWeight: '700', color: '#525252', minWidth: 32 },
+  metaRow: { flexDirection: 'row', justifyContent: 'space-between', marginTop: 4 },
+  metaText: { fontSize: 11, color: '#9CA3AF' },
   rowDivider: { marginVertical: 4 },
-  emptySection: { paddingVertical: 16, alignItems: "center" },
-  emptyText: { fontSize: 13, color: "#9CA3AF" },
+  emptySection: { paddingVertical: 16, alignItems: 'center' },
+  emptyText: { fontSize: 13, color: '#9CA3AF' }
 });

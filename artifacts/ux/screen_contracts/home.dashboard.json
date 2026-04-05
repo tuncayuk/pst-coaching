@@ -3,11 +3,7 @@
   "title": "Ana Sayfa",
   "route": "/home",
   "purpose": "Primary home tab root. Renders greeting, 23:59 countdown CTA (AC-FR-E2-01-01), subscription badge (AC-FR-E2-02-01), content area nav cards (AC-FR-E2-03-01), program summary card (AC-FR-E2-04-01), active content section (max 3, AC-FR-E2-06-01), recent activity list, and daily reminder nudge (AC-FR-E2-08-01).",
-  "entryPoints": [
-    "app.launch",
-    "auth.fr_e1_08",
-    "auth.fr_e1_09"
-  ],
+  "entryPoints": ["app.launch", "auth.fr_e1_08", "auth.fr_e1_09"],
   "inputs": [
     {
       "name": "userId",
@@ -28,12 +24,7 @@
       "source": "entitlement_cache"
     }
   ],
-  "dataDependencies": [
-    "User",
-    "Subscription",
-    "ContentProgress",
-    "ReminderSetting"
-  ],
+  "dataDependencies": ["User", "Subscription", "ContentProgress", "ReminderSetting"],
   "uiStates": {
     "loading": {
       "description": "Skeleton cards shown for header, stats row, continue card, and content nav section. PActivityIndicator at top. Critical cards (Bugun ozeti, Devam Et) shown first."

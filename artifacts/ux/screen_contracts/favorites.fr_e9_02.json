@@ -3,10 +3,7 @@
   "title": "Favori detayi",
   "route": "/favorites/detail",
   "purpose": "Implements FR-E9-02: Favori detayi — kaynak bilgisi, not duzenleme, kaynaga git navigasyonu.",
-  "entryPoints": [
-    "favorites.list",
-    "favorites.collection_detail"
-  ],
+  "entryPoints": ["favorites.list", "favorites.collection_detail"],
   "inputs": [
     {
       "name": "userId",
@@ -27,14 +24,7 @@
       "source": "profile"
     }
   ],
-  "dataDependencies": [
-    "Favorite",
-    "Note",
-    "Journey",
-    "Workshop",
-    "Module",
-    "Ebook"
-  ],
+  "dataDependencies": ["Favorite", "Note", "Journey", "Workshop", "Module", "Ebook"],
   "uiStates": {
     "loading": {
       "description": "Skeleton placeholders shown while loading FR-E9-02 data."
@@ -54,19 +44,8 @@
   },
   "analytics": {
     "screenView": "favorite_detail_viewed",
-    "events": [
-      "favorite_detail_viewed",
-      "favorite_note_saved",
-      "favorite_source_opened"
-    ]
+    "events": ["favorite_detail_viewed", "favorite_note_saved", "favorite_source_opened"]
   },
-  "acceptanceCriteriaRefs": [
-    "AC-FR-E9-02-01",
-    "AC-FR-E9-02-02",
-    "AC-FR-E9-02-03"
-  ],
-  "gates": [
-    "auth",
-    "subscription"
-  ]
+  "acceptanceCriteriaRefs": ["AC-FR-E9-02-01", "AC-FR-E9-02-02", "AC-FR-E9-02-03"],
+  "gates": ["auth", "subscription"]
 }

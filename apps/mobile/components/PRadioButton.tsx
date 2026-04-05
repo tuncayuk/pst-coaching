@@ -1,4 +1,4 @@
-import { RadioButton } from "react-native-paper";
+import { RadioButton } from 'react-native-paper';
 
 export const PRadioButton = RadioButton;
 export const PRadioButtonGroup = RadioButton.Group;

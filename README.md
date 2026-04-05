@@ -11,7 +11,7 @@ It is designed to be executed from the terminal using **Codex CLI**.
 
 ## Quick start
 
-1) Install Codex CLI (one-time):
+1. Install Codex CLI (one-time):
 
 ```bash
 npm i -g @openai/codex
@@ -19,7 +19,7 @@ npm i -g @openai/codex
 brew install --cask codex
 ```
 
-2) From the repo root, run an agent:
+2. From the repo root, run an agent:
 
 ```bash
 ./scripts/run-spec.sh
@@ -29,7 +29,7 @@ brew install --cask codex
 ./scripts/run-qa.sh
 ```
 
-3) Validate artifacts:
+3. Validate artifacts:
 
 ```bash
 ./scripts/validate-artifacts.sh

@@ -3,9 +3,7 @@
   "title": "Paylasim ve disa aktarma",
   "route": "/favorites/export",
   "purpose": "Implements FR-E9-05: Gizlilik uyarisi (BR-09), kapsam secimi (vurgu/vurgu+not), PDF aktarimi.",
-  "entryPoints": [
-    "favorites.detail"
-  ],
+  "entryPoints": ["favorites.detail"],
   "inputs": [
     {
       "name": "userId",
@@ -26,11 +24,7 @@
       "source": "profile"
     }
   ],
-  "dataDependencies": [
-    "Favorite",
-    "Highlight",
-    "Note"
-  ],
+  "dataDependencies": ["Favorite", "Highlight", "Note"],
   "uiStates": {
     "loading": {
       "description": "Skeleton placeholders shown while loading FR-E9-05 data."
@@ -50,19 +44,8 @@
   },
   "analytics": {
     "screenView": "favorites_export_viewed",
-    "events": [
-      "favorites_export_viewed",
-      "favorites_export_confirmed",
-      "favorites_export_cancelled"
-    ]
+    "events": ["favorites_export_viewed", "favorites_export_confirmed", "favorites_export_cancelled"]
   },
-  "acceptanceCriteriaRefs": [
-    "AC-FR-E9-05-01",
-    "AC-FR-E9-05-02",
-    "AC-FR-E9-05-03"
-  ],
-  "gates": [
-    "auth",
-    "subscription"
-  ]
+  "acceptanceCriteriaRefs": ["AC-FR-E9-05-01", "AC-FR-E9-05-02", "AC-FR-E9-05-03"],
+  "gates": ["auth", "subscription"]
 }

@@ -1,6 +1,7 @@
-import { useQuery } from "@tanstack/react-query";
-import { getMockData, isMockDataEnabled } from "../config/mockData";
-import { queryKeys } from "./queryKeys";
+import { useQuery } from '@tanstack/react-query';
+
+import { getMockData, isMockDataEnabled } from '../config/mockData';
+import { queryKeys } from './queryKeys';
 
 export type Journey = {
   id: string;
@@ -23,7 +24,7 @@ export const useJourneys = () => {
   return useQuery({
     queryKey: queryKeys.journeys,
     queryFn: loadMockJourneys,
-    enabled,
+    enabled
   });
 };
 

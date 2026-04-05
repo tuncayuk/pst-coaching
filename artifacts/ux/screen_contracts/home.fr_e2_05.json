@@ -3,9 +3,7 @@
   "title": "Hizli arama",
   "route": "/home/search",
   "purpose": "HomeSearchScreen. Search bar tap from dashboard opens this screen with auto-focused input. Quick-filter chips (Yolculuk/Atolye/Modul/e-Kitap). Submit navigates to HomeSearchResults with query + filter params (AC-FR-E2-05-01). Results categorized by type (AC-FR-E2-05-02). No-results state shows Discover suggestion (AC-FR-E2-05-03).",
-  "entryPoints": [
-    "home.dashboard"
-  ],
+  "entryPoints": ["home.dashboard"],
   "inputs": [
     {
       "name": "userId",
@@ -26,12 +24,7 @@
       "source": "profile"
     }
   ],
-  "dataDependencies": [
-    "User",
-    "Subscription",
-    "ContentProgress",
-    "ReminderSetting"
-  ],
+  "dataDependencies": ["User", "Subscription", "ContentProgress", "ReminderSetting"],
   "uiStates": {
     "loading": {
       "description": "Input auto-focused on mount. Skeleton shown for recent searches and popular topics sections."
@@ -59,10 +52,6 @@
       "home_search_popular_topic_tapped"
     ]
   },
-  "acceptanceCriteriaRefs": [
-    "AC-FR-E2-05-01",
-    "AC-FR-E2-05-02",
-    "AC-FR-E2-05-03"
-  ],
+  "acceptanceCriteriaRefs": ["AC-FR-E2-05-01", "AC-FR-E2-05-02", "AC-FR-E2-05-03"],
   "gates": []
 }

@@ -1,13 +1,13 @@
-import React from "react";
-import { StyleSheet, View } from "react-native";
-import { OfflineNotice } from "../components/OfflineNotice";
-import { ScreenLayout } from "../components/ScreenLayout";
-import { SectionCard } from "../components/SectionCard";
-import { SkeletonBlock } from "../components/SkeletonBlock";
-import { StateMessage } from "../components/StateMessage";
-import { resolveScreenState, ScreenState } from "../components/ScreenState";
-import { PActivityIndicator, PButton, PCard, PText } from "../../components";
+import React from 'react';
+import { StyleSheet, View } from 'react-native';
 
+import { PActivityIndicator, PButton, PCard, PText } from '../../components';
+import { OfflineNotice } from '../components/OfflineNotice';
+import { ScreenLayout } from '../components/ScreenLayout';
+import { ScreenState, resolveScreenState } from '../components/ScreenState';
+import { SectionCard } from '../components/SectionCard';
+import { SkeletonBlock } from '../components/SkeletonBlock';
+import { StateMessage } from '../components/StateMessage';
 
 const ProfileLogoutConfirmContent = ({ isOffline }: { isOffline?: boolean }) => {
   return (
@@ -17,8 +17,7 @@ const ProfileLogoutConfirmContent = ({ isOffline }: { isOffline?: boolean }) => 
           <PCard.Content>
             <PText variant="titleMedium">Çıkış yapmak üzeresin</PText>
             <PText variant="bodySmall">
-              Hesabından çıkış yaptığında içerik indirmeleri durdurulur ve tekrar giriş
-              yapman gerekir.
+              Hesabından çıkış yaptığında içerik indirmeleri durdurulur ve tekrar giriş yapman gerekir.
             </PText>
           </PCard.Content>
         </PCard>
@@ -35,14 +34,10 @@ const ProfileLogoutConfirmContent = ({ isOffline }: { isOffline?: boolean }) => 
   );
 };
 
-export const ProfileLogoutConfirmScreen = ({
-  route,
-}: {
-  route?: { params?: { state?: ScreenState } };
-}) => {
+export const ProfileLogoutConfirmScreen = ({ route }: { route?: { params?: { state?: ScreenState } } }) => {
   const state = resolveScreenState(route);
 
-  if (state === "loading") {
+  if (state === 'loading') {
     return (
       <ScreenLayout title="Çıkış Yap" subtitle="Çıkış hazırlanıyor">
         <SectionCard title="Yükleniyor">
@@ -54,7 +49,7 @@ export const ProfileLogoutConfirmScreen = ({
     );
   }
 
-  if (state === "empty") {
+  if (state === 'empty') {
     return (
       <ScreenLayout title="Çıkış Yap" subtitle="Çıkış işlemi">
         <StateMessage
@@ -67,7 +62,7 @@ export const ProfileLogoutConfirmScreen = ({
     );
   }
 
-  if (state === "error") {
+  if (state === 'error') {
     return (
       <ScreenLayout title="Çıkış Yap" subtitle="Bir sorun oluştu">
         <StateMessage
@@ -81,7 +76,7 @@ export const ProfileLogoutConfirmScreen = ({
     );
   }
 
-  if (state === "offline") {
+  if (state === 'offline') {
     return (
       <ScreenLayout title="Çıkış Yap" subtitle="Önbellekteki bilgiler">
         <OfflineNotice />
@@ -99,13 +94,13 @@ export const ProfileLogoutConfirmScreen = ({
 
 const styles = StyleSheet.create({
   card: {
-    marginBottom: 12,
+    marginBottom: 12
   },
   buttonRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between'
   },
   primaryButton: {
-    marginRight: 12,
-  },
+    marginRight: 12
+  }
 });

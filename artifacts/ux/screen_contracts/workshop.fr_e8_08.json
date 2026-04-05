@@ -3,10 +3,7 @@
   "title": "Atolye tamamlama ve arsivleme",
   "route": "/workshop/completion",
   "purpose": "Implements FR-E8-08: Tamamlama durumu, ozet, sertifika/rozet ve arsive ekleme.",
-  "entryPoints": [
-    "workshop.phases",
-    "library.workshops"
-  ],
+  "entryPoints": ["workshop.phases", "library.workshops"],
   "inputs": [
     {
       "name": "userId",
@@ -33,12 +30,7 @@
       "source": "profile"
     }
   ],
-  "dataDependencies": [
-    "Workshop",
-    "ContentProgress",
-    "Achievement",
-    "FollowUpPlan"
-  ],
+  "dataDependencies": ["Workshop", "ContentProgress", "Achievement", "FollowUpPlan"],
   "uiStates": {
     "loading": {
       "description": "Skeleton placeholders shown while loading FR-E8-08 data."
@@ -58,19 +50,8 @@
   },
   "analytics": {
     "screenView": "workshop_completion_viewed",
-    "events": [
-      "workshop_completion_viewed",
-      "workshop_completed",
-      "certificate_shared"
-    ]
+    "events": ["workshop_completion_viewed", "workshop_completed", "certificate_shared"]
   },
-  "acceptanceCriteriaRefs": [
-    "AC-FR-E8-08-01",
-    "AC-FR-E8-08-02",
-    "AC-FR-E8-08-03",
-    "AC-FR-E8-08-04"
-  ],
-  "gates": [
-    "auth"
-  ]
+  "acceptanceCriteriaRefs": ["AC-FR-E8-08-01", "AC-FR-E8-08-02", "AC-FR-E8-08-03", "AC-FR-E8-08-04"],
+  "gates": ["auth"]
 }

@@ -3,9 +3,7 @@
   "title": "Ilk Yolculukta DDL Testi",
   "route": "/discover/ddl-test",
   "purpose": "Implements FR-E4-10: DDL test gate on first journey start. Test required before launch. Results saved to profile. Not repeated if previously completed.",
-  "entryPoints": [
-    "discover.fr_e4_03"
-  ],
+  "entryPoints": ["discover.fr_e4_03"],
   "inputs": [
     {
       "name": "userId",
@@ -26,10 +24,7 @@
       "source": "profile"
     }
   ],
-  "dataDependencies": [
-    "UserProfile",
-    "DDLTest"
-  ],
+  "dataDependencies": ["UserProfile", "DDLTest"],
   "uiStates": {
     "loading": {
       "description": "Checking DDL completion status."
@@ -57,14 +52,6 @@
       "ddl_test_skipped_already_done"
     ]
   },
-  "acceptanceCriteriaRefs": [
-    "AC-FR-E4-10-01",
-    "AC-FR-E4-10-02",
-    "AC-FR-E4-10-03",
-    "AC-FR-E4-10-04",
-    "AC-FR-E4-10-05"
-  ],
-  "gates": [
-    "ddl_test"
-  ]
+  "acceptanceCriteriaRefs": ["AC-FR-E4-10-01", "AC-FR-E4-10-02", "AC-FR-E4-10-03", "AC-FR-E4-10-04", "AC-FR-E4-10-05"],
+  "gates": ["ddl_test"]
 }

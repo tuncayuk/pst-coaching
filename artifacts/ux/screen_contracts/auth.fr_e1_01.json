@@ -3,9 +3,7 @@
   "title": "Cok dilli onboarding ve profil dili",
   "route": "/epic-1/fr-e1-01",
   "purpose": "Implements FR-E1-01: Language selection on first launch (TR/EN/ES). User picks a UI language that persists across sessions, falls back to TR, and is changeable in settings.",
-  "entryPoints": [
-    "onboarding.carousel"
-  ],
+  "entryPoints": ["onboarding.carousel"],
   "inputs": [
     {
       "name": "locale",
@@ -15,9 +13,7 @@
       "note": "Pre-selects current language if returning user; null on first launch"
     }
   ],
-  "dataDependencies": [
-    "User"
-  ],
+  "dataDependencies": ["User"],
   "uiStates": {
     "loading": {
       "description": "Three skeleton radio-button rows and a disabled Continue button are shown while available languages load."
@@ -37,18 +33,8 @@
   },
   "analytics": {
     "screenView": "auth_fr_e1_01_viewed",
-    "events": [
-      "auth_fr_e1_01_viewed",
-      "auth_language_selected",
-      "auth_language_confirmed"
-    ]
+    "events": ["auth_fr_e1_01_viewed", "auth_language_selected", "auth_language_confirmed"]
   },
-  "acceptanceCriteriaRefs": [
-    "AC-FR-E1-01-01",
-    "AC-FR-E1-01-02",
-    "AC-FR-E1-01-03",
-    "AC-FR-E1-01-04",
-    "AC-FR-E1-01-05"
-  ],
+  "acceptanceCriteriaRefs": ["AC-FR-E1-01-01", "AC-FR-E1-01-02", "AC-FR-E1-01-03", "AC-FR-E1-01-04", "AC-FR-E1-01-05"],
   "gates": []
 }

@@ -758,198 +758,87 @@
   "enums": [
     {
       "name": "UserRole",
-      "values": [
-        "guest",
-        "member",
-        "owner",
-        "coach"
-      ]
+      "values": ["guest", "member", "owner", "coach"]
     },
     {
       "name": "LanguageCode",
-      "values": [
-        "tr",
-        "en",
-        "es"
-      ]
+      "values": ["tr", "en", "es"]
     },
     {
       "name": "SubscriptionStatus",
-      "values": [
-        "inactive",
-        "trial",
-        "active",
-        "canceled"
-      ]
+      "values": ["inactive", "trial", "active", "canceled"]
     },
     {
       "name": "PlanType",
-      "values": [
-        "individual",
-        "family",
-        "group"
-      ]
+      "values": ["individual", "family", "group"]
     },
     {
       "name": "AddOnCode",
-      "values": [
-        "ai_pack",
-        "coach_training",
-        "seat_plus_5",
-        "seat_plus_10"
-      ]
+      "values": ["ai_pack", "coach_training", "seat_plus_5", "seat_plus_10"]
     },
     {
       "name": "SeatStatus",
-      "values": [
-        "open",
-        "invited",
-        "active",
-        "removed"
-      ]
+      "values": ["open", "invited", "active", "removed"]
     },
     {
       "name": "WorkshopStageType",
-      "values": [
-        "insight",
-        "analysis",
-        "camp",
-        "facilitator_guide",
-        "workbook",
-        "closure"
-      ]
+      "values": ["insight", "analysis", "camp", "facilitator_guide", "workbook", "closure"]
     },
     {
       "name": "SessionSlot",
-      "values": [
-        "morning",
-        "midday",
-        "evening"
-      ]
+      "values": ["morning", "midday", "evening"]
     },
     {
       "name": "WorkshopBlockType",
-      "values": [
-        "intro",
-        "verse_reference",
-        "explanation",
-        "bridge",
-        "exercise",
-        "output"
-      ]
+      "values": ["intro", "verse_reference", "explanation", "bridge", "exercise", "output"]
     },
     {
       "name": "WorkshopArtifactType",
-      "values": [
-        "worksheet",
-        "guide",
-        "output_card",
-        "plan_template",
-        "reflection_map"
-      ]
+      "values": ["worksheet", "guide", "output_card", "plan_template", "reflection_map"]
     },
     {
       "name": "WorksheetType",
-      "values": [
-        "load_map",
-        "inner_sentence_shift",
-        "dua_card",
-        "trust_balance",
-        "transformation_plan"
-      ]
+      "values": ["load_map", "inner_sentence_shift", "dua_card", "trust_balance", "transformation_plan"]
     },
     {
       "name": "WorkbookEntryStatus",
-      "values": [
-        "draft",
-        "saved",
-        "submitted",
-        "archived"
-      ]
+      "values": ["draft", "saved", "submitted", "archived"]
     },
     {
       "name": "FollowUpWindowType",
-      "values": [
-        "h72",
-        "w3",
-        "d30"
-      ]
+      "values": ["h72", "w3", "d30"]
     },
     {
       "name": "FollowUpStatus",
-      "values": [
-        "planned",
-        "active",
-        "completed",
-        "missed"
-      ]
+      "values": ["planned", "active", "completed", "missed"]
     },
     {
       "name": "CommentTargetType",
-      "values": [
-        "journey_day",
-        "module_package",
-        "workshop_stage",
-        "workshop_session",
-        "ebook_chapter"
-      ]
+      "values": ["journey_day", "module_package", "workshop_stage", "workshop_session", "ebook_chapter"]
     },
     {
       "name": "CommentStatus",
-      "values": [
-        "draft",
-        "submitted",
-        "locked",
-        "expired"
-      ]
+      "values": ["draft", "submitted", "locked", "expired"]
     },
     {
       "name": "ProgressTargetType",
-      "values": [
-        "journey",
-        "module",
-        "package",
-        "workshop",
-        "workshop_stage",
-        "workshop_session",
-        "ebook"
-      ]
+      "values": ["journey", "module", "package", "workshop", "workshop_stage", "workshop_session", "ebook"]
     },
     {
       "name": "ProgressStatus",
-      "values": [
-        "locked",
-        "available",
-        "in_progress",
-        "completed"
-      ]
+      "values": ["locked", "available", "in_progress", "completed"]
     },
     {
       "name": "FavoriteSourceType",
-      "values": [
-        "highlight",
-        "note",
-        "journey",
-        "workshop",
-        "module",
-        "ebook"
-      ]
+      "values": ["highlight", "note", "journey", "workshop", "module", "ebook"]
     },
     {
       "name": "ThemeMode",
-      "values": [
-        "light",
-        "dark",
-        "system"
-      ]
+      "values": ["light", "dark", "system"]
     },
     {
       "name": "GenderOption",
-      "values": [
-        "female",
-        "male",
-        "prefer_not_to_say"
-      ]
+      "values": ["female", "male", "prefer_not_to_say"]
     }
   ],
   "relationships": [

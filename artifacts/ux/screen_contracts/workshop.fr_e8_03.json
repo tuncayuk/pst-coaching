@@ -3,9 +3,7 @@
   "title": "Asama icerik ekrani",
   "route": "/workshop/section",
   "purpose": "Implements FR-E8-03: Yapilandirilmis icerik bloklari, vurgulama/not/favori ve asama sonunda gecis.",
-  "entryPoints": [
-    "workshop.phases"
-  ],
+  "entryPoints": ["workshop.phases"],
   "inputs": [
     {
       "name": "userId",
@@ -32,14 +30,7 @@
       "source": "profile"
     }
   ],
-  "dataDependencies": [
-    "Workshop",
-    "WorkshopStage",
-    "ContentBlock",
-    "Highlight",
-    "Note",
-    "Favorite"
-  ],
+  "dataDependencies": ["Workshop", "WorkshopStage", "ContentBlock", "Highlight", "Note", "Favorite"],
   "uiStates": {
     "loading": {
       "description": "Skeleton placeholders shown while loading FR-E8-03 data."
@@ -59,20 +50,8 @@
   },
   "analytics": {
     "screenView": "workshop_section_viewed",
-    "events": [
-      "workshop_section_viewed",
-      "workshop_section_completed",
-      "highlight_created",
-      "note_saved"
-    ]
+    "events": ["workshop_section_viewed", "workshop_section_completed", "highlight_created", "note_saved"]
   },
-  "acceptanceCriteriaRefs": [
-    "AC-FR-E8-03-01",
-    "AC-FR-E8-03-02",
-    "AC-FR-E8-03-03",
-    "AC-FR-E8-03-04"
-  ],
-  "gates": [
-    "auth"
-  ]
+  "acceptanceCriteriaRefs": ["AC-FR-E8-03-01", "AC-FR-E8-03-02", "AC-FR-E8-03-03", "AC-FR-E8-03-04"],
+  "gates": ["auth"]
 }

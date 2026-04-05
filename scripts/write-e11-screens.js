@@ -1,15 +1,15 @@
 #!/usr/bin/env node
 // write-e11-screens.js — Writes all 4 EPIC-11 content screen files
-const fs = require("fs");
-const path = require("path");
+const fs = require('fs');
+const path = require('path');
 
-const CONTENT_DIR = path.join(__dirname, "../apps/mobile/screens/content");
+const CONTENT_DIR = path.join(__dirname, '../apps/mobile/screens/content');
 const files = {};
 
 // ─────────────────────────────────────────────────────────────────────────
 // ContentModuleHomeScreen  (FR-E11-01)
 // ─────────────────────────────────────────────────────────────────────────
-files["ContentModuleHomeScreen.tsx"] = `import React from "react";
+files['ContentModuleHomeScreen.tsx'] = `import React from "react";
 import { ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
@@ -499,7 +499,7 @@ const styles = StyleSheet.create({
 // ─────────────────────────────────────────────────────────────────────────
 // ContentPackageDetailScreen  (FR-E11-02 + FR-E11-04)
 // ─────────────────────────────────────────────────────────────────────────
-files["ContentPackageDetailScreen.tsx"] = `import React from "react";
+files['ContentPackageDetailScreen.tsx'] = `import React from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
@@ -1069,7 +1069,7 @@ const styles = StyleSheet.create({
 // ─────────────────────────────────────────────────────────────────────────
 // ContentExerciseScreen  (FR-E11-03)
 // ─────────────────────────────────────────────────────────────────────────
-files["ContentExerciseScreen.tsx"] = `import React, { useState } from "react";
+files['ContentExerciseScreen.tsx'] = `import React, { useState } from "react";
 import { ScrollView, StyleSheet, TextInput, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
@@ -1517,7 +1517,7 @@ const styles = StyleSheet.create({
 // ─────────────────────────────────────────────────────────────────────────
 // ContentAchievementScreen  (FR-E11-05)
 // ─────────────────────────────────────────────────────────────────────────
-files["ContentAchievementScreen.tsx"] = `import React from "react";
+files['ContentAchievementScreen.tsx'] = `import React from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
@@ -1885,8 +1885,8 @@ const styles = StyleSheet.create({
 let written = 0;
 for (const [filename, content] of Object.entries(files)) {
   const filePath = path.join(CONTENT_DIR, filename);
-  fs.writeFileSync(filePath, content, "utf8");
+  fs.writeFileSync(filePath, content, 'utf8');
   written++;
-  console.log("Wrote " + filename);
+  console.log('Wrote ' + filename);
 }
-console.log("\nScreens written: " + written + "/" + Object.keys(files).length);
+console.log('\nScreens written: ' + written + '/' + Object.keys(files).length);

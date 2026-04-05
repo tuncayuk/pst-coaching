@@ -3,9 +3,7 @@
   "title": "Haftalik ozet",
   "route": "/progress/weekly-summary",
   "purpose": "Implements FR-E6-04: Haftalik ozet — positive trend, challenge area, suggestion, completed content list.",
-  "entryPoints": [
-    "progress.dashboard"
-  ],
+  "entryPoints": ["progress.dashboard"],
   "inputs": [
     {
       "name": "userId",
@@ -14,10 +12,7 @@
       "source": "session"
     }
   ],
-  "dataDependencies": [
-    "ContentProgress",
-    "EmotionLog"
-  ],
+  "dataDependencies": ["ContentProgress", "EmotionLog"],
   "uiStates": {
     "loading": {
       "description": "Skeleton for stats bar and completed content list."
@@ -43,12 +38,6 @@
       "progress_weekly_report_tapped"
     ]
   },
-  "acceptanceCriteriaRefs": [
-    "AC-FR-E6-04-01",
-    "AC-FR-E6-04-02",
-    "AC-FR-E6-04-03"
-  ],
-  "gates": [
-    "auth"
-  ]
+  "acceptanceCriteriaRefs": ["AC-FR-E6-04-01", "AC-FR-E6-04-02", "AC-FR-E6-04-03"],
+  "gates": ["auth"]
 }

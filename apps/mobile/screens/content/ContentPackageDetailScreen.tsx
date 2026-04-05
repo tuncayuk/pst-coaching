@@ -1,19 +1,8 @@
-import React from "react";
-import { ScrollView, StyleSheet, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { useNavigation } from "@react-navigation/native";
-import { OfflineNotice } from "../components/OfflineNotice";
-import { SkeletonBlock } from "../components/SkeletonBlock";
-import { StateMessage } from "../components/StateMessage";
-import { resolveScreenState, ScreenState } from "../components/ScreenState";
-import {
-  getContentItemsForParent,
-  getContentProgressForUser,
-  getModules,
-  getPackages,
-  getPackagesForModule,
-  getPrimaryUser,
-} from "../../data/mockSelectors";
+import { useNavigation } from '@react-navigation/native';
+import React from 'react';
+import { ScrollView, StyleSheet, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+
 import {
   PActivityIndicator,
   PAvatar,
@@ -22,8 +11,20 @@ import {
   PDivider,
   PIconButton,
   PProgressBar,
-  PText,
-} from "../../components";
+  PText
+} from '../../components';
+import {
+  getContentItemsForParent,
+  getContentProgressForUser,
+  getModules,
+  getPackages,
+  getPackagesForModule,
+  getPrimaryUser
+} from '../../data/mockSelectors';
+import { OfflineNotice } from '../components/OfflineNotice';
+import { ScreenState, resolveScreenState } from '../components/ScreenState';
+import { SkeletonBlock } from '../components/SkeletonBlock';
+import { StateMessage } from '../components/StateMessage';
 
 type RouteParams = {
   state?: ScreenState;
@@ -39,20 +40,20 @@ function hoursUntil8am(): string {
   const diffMs = next8.getTime() - now.getTime();
   const diffH = Math.floor(diffMs / 3600000);
   const diffM = Math.floor((diffMs % 3600000) / 60000);
-  return diffH + "s " + diffM + "dk";
+  return diffH + 's ' + diffM + 'dk';
 }
 
 const SECTION_TYPE_CONFIG: Record<string, { icon: string; label: string; color: string }> = {
-  reading:  { icon: "book-open-outline",  label: "Okuma",     color: "#7C4DFF" },
-  exercise: { icon: "pencil-outline",     label: "Uygulama",  color: "#0EA5E9" },
-  question: { icon: "help-circle-outline",label: "Soru",      color: "#10B981" },
+  reading: { icon: 'book-open-outline', label: 'Okuma', color: '#7C4DFF' },
+  exercise: { icon: 'pencil-outline', label: 'Uygulama', color: '#0EA5E9' },
+  question: { icon: 'help-circle-outline', label: 'Soru', color: '#10B981' }
 };
 
 // AC-FR-E11-04: Locked state sub-component
 const LockedPackageView = ({
   pkg,
   prevPkg,
-  navigation,
+  navigation
 }: {
   pkg: { id: string; title: string };
   prevPkg: { id: string; title: string } | null;
@@ -68,9 +69,7 @@ const LockedPackageView = ({
         <PText style={styles.lockedTitle} accessibilityRole="header">
           Paket Kilitli
         </PText>
-        <PText style={styles.lockedSubtitle}>
-          {pkg.title}
-        </PText>
+        <PText style={styles.lockedSubtitle}>{pkg.title}</PText>
       </View>
 
       {/* AC-FR-E11-04-02: lock reason (BR-04) */}
@@ -79,12 +78,18 @@ const LockedPackageView = ({
         accessible
         accessibilityRole="none"
         accessibilityLabel={
-          "Kilit nedeni: " +
-          (prevPkg ? prevPkg.title + " paketini tamamlamaniz gerekiyor." : "Onceki paketi tamamlayin.")
+          'Kilit nedeni: ' +
+          (prevPkg ? prevPkg.title + ' paketini tamamlamaniz gerekiyor.' : 'Onceki paketi tamamlayin.')
         }
       >
         <View style={styles.lockReasonHeader}>
-          <PAvatar.Icon size={28} icon="information-outline" color="#1D4ED8" style={styles.infoIcon} accessible={false} />
+          <PAvatar.Icon
+            size={28}
+            icon="information-outline"
+            color="#1D4ED8"
+            style={styles.infoIcon}
+            accessible={false}
+          />
           <PText style={styles.lockReasonTitle}>Kilit Nedeni (BR-04)</PText>
         </View>
         <PText style={styles.lockReasonText}>
@@ -105,7 +110,7 @@ const LockedPackageView = ({
       <PCard
         style={styles.countdownCard}
         accessible
-        accessibilityLabel={"08:00 Kurali: Bir sonraki paket " + countdown + " icinde actilacak."}
+        accessibilityLabel={'08:00 Kurali: Bir sonraki paket ' + countdown + ' icinde actilacak.'}
       >
         <View style={styles.countdownHeader}>
           <PAvatar.Icon size={28} icon="clock-outline" color="#F59E0B" style={styles.clockIcon} accessible={false} />
@@ -119,7 +124,7 @@ const LockedPackageView = ({
           <PText
             style={styles.countdownValue}
             accessibilityLiveRegion="polite"
-            accessibilityLabel={"Kalan sure: " + countdown}
+            accessibilityLabel={'Kalan sure: ' + countdown}
           >
             {countdown}
           </PText>
@@ -130,20 +135,13 @@ const LockedPackageView = ({
         <PButton
           mode="contained"
           style={styles.goToPrereqBtn}
-          onPress={() =>
-            navigation.navigate("ContentPackageDetail", { id: prevPkg.id })
-          }
-          accessibilityLabel={"Onceki pakete git: " + prevPkg.title}
+          onPress={() => navigation.navigate('ContentPackageDetail', { id: prevPkg.id })}
+          accessibilityLabel={'Onceki pakete git: ' + prevPkg.title}
         >
           Onceki Pakete Git
         </PButton>
       )}
-      <PButton
-        mode="outlined"
-        style={styles.backBtn}
-        onPress={() => navigation.goBack()}
-        accessibilityLabel="Geri don"
-      >
+      <PButton mode="outlined" style={styles.backBtn} onPress={() => navigation.goBack()} accessibilityLabel="Geri don">
         Geri Don
       </PButton>
     </View>
@@ -154,7 +152,7 @@ const LockedPackageView = ({
 const PackageDetailView = ({
   pkg,
   isOffline,
-  navigation,
+  navigation
 }: {
   pkg: { id: string; title: string; description?: string };
   isOffline?: boolean;
@@ -162,22 +160,18 @@ const PackageDetailView = ({
 }) => {
   const user = getPrimaryUser();
   const progress = getContentProgressForUser(user?.id);
-  const items = [...getContentItemsForParent("package", pkg.id)].sort(
+  const items = [...getContentItemsForParent('package', pkg.id)].sort(
     (a, b) => (a.order_index ?? 0) - (b.order_index ?? 0)
   );
-  const completedIds = new Set(
-    progress.filter((p) => p.status === "completed").map((p) => p.content_id)
-  );
-  const firstUnstarted = items.find((ci) => !completedIds.has(ci.id));
-  const progressFraction = items.length > 0
-    ? items.filter((ci) => completedIds.has(ci.id)).length / items.length
-    : 0;
+  const completedIds = new Set(progress.filter(p => p.status === 'completed').map(p => p.content_id));
+  const firstUnstarted = items.find(ci => !completedIds.has(ci.id));
+  const progressFraction = items.length > 0 ? items.filter(ci => completedIds.has(ci.id)).length / items.length : 0;
 
   const navToSection = (item: { id: string; content_type: string }) => {
-    if (item.content_type === "exercise") {
-      navigation.navigate("ContentExercise", { id: item.id });
+    if (item.content_type === 'exercise') {
+      navigation.navigate('ContentExercise', { id: item.id });
     } else {
-      navigation.navigate("ContentReading", { id: item.id });
+      navigation.navigate('ContentReading', { id: item.id });
     }
   };
 
@@ -192,11 +186,7 @@ const PackageDetailView = ({
   // Simulated objectives from description
   const objectives = pkg.description
     ? [pkg.description]
-    : [
-        "Temel kavramlari anlamak",
-        "Uygulama adimlarini tamamlamak",
-        "Bir sonraki pakete gecis saglamak",
-      ];
+    : ['Temel kavramlari anlamak', 'Uygulama adimlarini tamamlamak', 'Bir sonraki pakete gecis saglamak'];
 
   return (
     <View style={styles.content}>
@@ -205,9 +195,7 @@ const PackageDetailView = ({
       {progressFraction > 0 && (
         <View style={styles.pkgProgressRow}>
           <PProgressBar progress={progressFraction} style={styles.pkgProgressBar} color="#0EA5E9" accessible={false} />
-          <PText style={styles.pkgProgressLabel}>
-            {Math.round(progressFraction * 100)}% tamamlandi
-          </PText>
+          <PText style={styles.pkgProgressLabel}>{Math.round(progressFraction * 100)}% tamamlandi</PText>
         </View>
       )}
 
@@ -217,8 +205,15 @@ const PackageDetailView = ({
           <PText style={styles.objectivesTitle}>Paket Amaclari</PText>
         </View>
         {objectives.map((obj, i) => (
-          <View key={i} style={styles.objRow} accessibilityRole="none" accessibilityLabel={"Amac " + (i + 1) + ": " + obj}>
-            <PText style={styles.objBullet} accessibilityElementsHidden>-</PText>
+          <View
+            key={i}
+            style={styles.objRow}
+            accessibilityRole="none"
+            accessibilityLabel={'Amac ' + (i + 1) + ': ' + obj}
+          >
+            <PText style={styles.objBullet} accessibilityElementsHidden>
+              -
+            </PText>
             <PText style={styles.objText}>{obj}</PText>
           </View>
         ))}
@@ -226,9 +221,7 @@ const PackageDetailView = ({
 
       {/* AC-FR-E11-02-02: sections list (reading + exercise) */}
       <PCard style={styles.sectionsCard}>
-        <PText style={styles.sectionsTitle}>
-          Icindekiler ({items.length} bolum)
-        </PText>
+        <PText style={styles.sectionsTitle}>Icindekiler ({items.length} bolum)</PText>
         {items.map((item, idx) => {
           const typeCfg = SECTION_TYPE_CONFIG[item.content_type] ?? SECTION_TYPE_CONFIG.reading;
           const isDone = completedIds.has(item.id);
@@ -241,22 +234,24 @@ const PackageDetailView = ({
                 accessible
                 accessibilityRole="button"
                 accessibilityLabel={
-                  (idx + 1) + ". " + item.title +
-                  ". Tur: " + typeCfg.label +
-                  (isDone ? ". Tamamlandi." : isNext ? ". Siradaki bolum." : "")
+                  idx +
+                  1 +
+                  '. ' +
+                  item.title +
+                  '. Tur: ' +
+                  typeCfg.label +
+                  (isDone ? '. Tamamlandi.' : isNext ? '. Siradaki bolum.' : '')
                 }
               >
                 <PAvatar.Icon
                   size={28}
-                  icon={isDone ? "check-circle" : typeCfg.icon}
-                  color={isDone ? "#16A34A" : typeCfg.color}
-                  style={[styles.sectionIcon, { backgroundColor: isDone ? "#D1FAE5" : typeCfg.color + "22" }]}
+                  icon={isDone ? 'check-circle' : typeCfg.icon}
+                  color={isDone ? '#16A34A' : typeCfg.color}
+                  style={[styles.sectionIcon, { backgroundColor: isDone ? '#D1FAE5' : typeCfg.color + '22' }]}
                   accessible={false}
                 />
                 <View style={styles.sectionInfo}>
-                  <PText style={[styles.sectionTitle, isDone && styles.sectionTitleDone]}>
-                    {item.title}
-                  </PText>
+                  <PText style={[styles.sectionTitle, isDone && styles.sectionTitleDone]}>{item.title}</PText>
                   <PText style={styles.sectionMeta}>{typeCfg.label}</PText>
                 </View>
                 {isNext && (
@@ -264,7 +259,11 @@ const PackageDetailView = ({
                     <PText style={styles.nextBadgeText}>Siradaki</PText>
                   </View>
                 )}
-                {isDone && <PText style={styles.doneCheck} accessibilityElementsHidden>+</PText>}
+                {isDone && (
+                  <PText style={styles.doneCheck} accessibilityElementsHidden>
+                    +
+                  </PText>
+                )}
               </View>
               {idx < items.length - 1 && <PDivider style={styles.sectionDivider} />}
             </View>
@@ -278,52 +277,39 @@ const PackageDetailView = ({
         disabled={isOffline}
         style={styles.startBtn}
         onPress={handleStart}
-        accessibilityLabel={progressFraction > 0 ? "Pakete devam et" : "Paketi basla"}
+        accessibilityLabel={progressFraction > 0 ? 'Pakete devam et' : 'Paketi basla'}
       >
-        {progressFraction > 0 ? "Devam Et" : "Paketi Basla"}
+        {progressFraction > 0 ? 'Devam Et' : 'Paketi Basla'}
       </PButton>
-      <PButton
-        mode="outlined"
-        style={styles.backBtn}
-        onPress={() => navigation.goBack()}
-        accessibilityLabel="Geri don"
-      >
+      <PButton mode="outlined" style={styles.backBtn} onPress={() => navigation.goBack()} accessibilityLabel="Geri don">
         Geri Don
       </PButton>
     </View>
   );
 };
 
-const ContentPackageDetailContent = ({
-  packageId,
-  isOffline,
-}: {
-  packageId?: string;
-  isOffline?: boolean;
-}) => {
+const ContentPackageDetailContent = ({ packageId, isOffline }: { packageId?: string; isOffline?: boolean }) => {
   const navigation = useNavigation<any>();
   const user = getPrimaryUser();
   const progress = getContentProgressForUser(user?.id);
 
   const allPackages = getPackages();
-  const pkg = allPackages.find((p) => p.id === packageId) ?? allPackages[0];
+  const pkg = allPackages.find(p => p.id === packageId) ?? allPackages[0];
   if (!pkg) return null;
 
   // Find the module this package belongs to and sibling packages
   const modulePackages = getPackagesForModule(pkg.module_id).sort(
     (a, b) => (a.order_index ?? 0) - (b.order_index ?? 0)
   );
-  const myIndex = modulePackages.findIndex((p) => p.id === pkg.id);
+  const myIndex = modulePackages.findIndex(p => p.id === pkg.id);
   const prevPkg = myIndex > 0 ? modulePackages[myIndex - 1] : null;
 
   // AC-FR-E11-02-04 / AC-FR-E11-04: compute locked state from real data
   let isLocked = false;
   if (prevPkg) {
-    const prevItems = getContentItemsForParent("package", prevPkg.id);
-    const completedIds = new Set(
-      progress.filter((p) => p.status === "completed").map((p) => p.content_id)
-    );
-    isLocked = prevItems.length > 0 && !prevItems.every((ci) => completedIds.has(ci.id));
+    const prevItems = getContentItemsForParent('package', prevPkg.id);
+    const completedIds = new Set(progress.filter(p => p.status === 'completed').map(p => p.content_id));
+    isLocked = prevItems.length > 0 && !prevItems.every(ci => completedIds.has(ci.id));
   }
 
   return (
@@ -332,7 +318,7 @@ const ContentPackageDetailContent = ({
         style={[styles.hero, isLocked && styles.heroLocked]}
         accessibilityRole="header"
         accessible
-        accessibilityLabel={(isLocked ? "Kilitli paket: " : "Paket: ") + pkg.title}
+        accessibilityLabel={(isLocked ? 'Kilitli paket: ' : 'Paket: ') + pkg.title}
       >
         <PIconButton
           icon="arrow-left"
@@ -344,7 +330,7 @@ const ContentPackageDetailContent = ({
         />
         <PAvatar.Icon
           size={64}
-          icon={isLocked ? "lock" : "package-variant"}
+          icon={isLocked ? 'lock' : 'package-variant'}
           color="#FFFFFF"
           style={styles.heroAvatar}
           accessible={false}
@@ -352,31 +338,19 @@ const ContentPackageDetailContent = ({
       </View>
 
       {isLocked ? (
-        <LockedPackageView
-          pkg={pkg}
-          prevPkg={prevPkg}
-          navigation={navigation}
-        />
+        <LockedPackageView pkg={pkg} prevPkg={prevPkg} navigation={navigation} />
       ) : (
-        <PackageDetailView
-          pkg={pkg}
-          isOffline={isOffline}
-          navigation={navigation}
-        />
+        <PackageDetailView pkg={pkg} isOffline={isOffline} navigation={navigation} />
       )}
     </View>
   );
 };
 
-export const ContentPackageDetailScreen = ({
-  route,
-}: {
-  route?: { params?: RouteParams };
-}) => {
+export const ContentPackageDetailScreen = ({ route }: { route?: { params?: RouteParams } }) => {
   const state = resolveScreenState(route);
   const packageId = route?.params?.id;
 
-  if (state === "loading") {
+  if (state === 'loading') {
     return (
       <SafeAreaView style={styles.root}>
         <ScrollView contentContainerStyle={styles.page}>
@@ -389,7 +363,7 @@ export const ContentPackageDetailScreen = ({
     );
   }
 
-  if (state === "empty") {
+  if (state === 'empty') {
     return (
       <SafeAreaView style={styles.root}>
         <ScrollView contentContainerStyle={styles.page}>
@@ -404,7 +378,7 @@ export const ContentPackageDetailScreen = ({
     );
   }
 
-  if (state === "error") {
+  if (state === 'error') {
     return (
       <SafeAreaView style={styles.root}>
         <ScrollView contentContainerStyle={styles.page}>
@@ -420,7 +394,7 @@ export const ContentPackageDetailScreen = ({
     );
   }
 
-  if (state === "offline") {
+  if (state === 'offline') {
     return (
       <SafeAreaView style={styles.root}>
         <OfflineNotice />
@@ -441,125 +415,125 @@ export const ContentPackageDetailScreen = ({
 };
 
 const styles = StyleSheet.create({
-  root: { flex: 1, backgroundColor: "#F8FAFC" },
+  root: { flex: 1, backgroundColor: '#F8FAFC' },
   page: { paddingBottom: 40 },
   hero: {
     height: 140,
-    backgroundColor: "#1E3A5F",
-    alignItems: "center",
-    justifyContent: "center",
-    position: "relative",
+    backgroundColor: '#1E3A5F',
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'relative'
   },
-  heroLocked: { backgroundColor: "#4B5563" },
+  heroLocked: { backgroundColor: '#4B5563' },
   heroBack: {
-    position: "absolute",
+    position: 'absolute',
     top: 8,
     left: 8,
-    backgroundColor: "rgba(255,255,255,0.15)",
-    borderRadius: 20,
+    backgroundColor: 'rgba(255,255,255,0.15)',
+    borderRadius: 20
   },
-  heroAvatar: { backgroundColor: "rgba(255,255,255,0.15)" },
+  heroAvatar: { backgroundColor: 'rgba(255,255,255,0.15)' },
   content: { paddingHorizontal: 16, paddingTop: 20 },
   // locked styles
-  lockedHeader: { alignItems: "center", marginBottom: 24 },
-  lockIcon: { backgroundColor: "#F4F4F5", marginBottom: 12 },
+  lockedHeader: { alignItems: 'center', marginBottom: 24 },
+  lockIcon: { backgroundColor: '#F4F4F5', marginBottom: 12 },
   lockedTitle: {
     fontSize: 22,
-    fontWeight: "800",
-    color: "#374151",
-    marginBottom: 4,
+    fontWeight: '800',
+    color: '#374151',
+    marginBottom: 4
   },
-  lockedSubtitle: { fontSize: 14, color: "#6B7280", textAlign: "center" },
+  lockedSubtitle: { fontSize: 14, color: '#6B7280', textAlign: 'center' },
   lockReasonCard: {
     padding: 16,
     borderRadius: 12,
     marginBottom: 12,
-    backgroundColor: "#EFF6FF",
+    backgroundColor: '#EFF6FF',
     borderLeftWidth: 4,
-    borderLeftColor: "#1D4ED8",
+    borderLeftColor: '#1D4ED8'
   },
-  lockReasonHeader: { flexDirection: "row", alignItems: "center", gap: 8, marginBottom: 8 },
-  infoIcon: { backgroundColor: "#DBEAFE" },
-  lockReasonTitle: { fontSize: 14, fontWeight: "700", color: "#1E40AF" },
-  lockReasonText: { fontSize: 13, color: "#1E3A5F", lineHeight: 20, marginBottom: 12 },
-  prereqBox: { backgroundColor: "#FFFFFF", borderRadius: 8, padding: 10 },
-  prereqLabel: { fontSize: 11, color: "#6B7280", marginBottom: 6 },
-  prereqRow: { flexDirection: "row", alignItems: "center", gap: 8 },
-  prereqIcon: { backgroundColor: "#E0F2FE" },
-  prereqTitle: { fontSize: 13, fontWeight: "600", color: "#1E293B" },
+  lockReasonHeader: { flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 8 },
+  infoIcon: { backgroundColor: '#DBEAFE' },
+  lockReasonTitle: { fontSize: 14, fontWeight: '700', color: '#1E40AF' },
+  lockReasonText: { fontSize: 13, color: '#1E3A5F', lineHeight: 20, marginBottom: 12 },
+  prereqBox: { backgroundColor: '#FFFFFF', borderRadius: 8, padding: 10 },
+  prereqLabel: { fontSize: 11, color: '#6B7280', marginBottom: 6 },
+  prereqRow: { flexDirection: 'row', alignItems: 'center', gap: 8 },
+  prereqIcon: { backgroundColor: '#E0F2FE' },
+  prereqTitle: { fontSize: 13, fontWeight: '600', color: '#1E293B' },
   countdownCard: {
     padding: 16,
     borderRadius: 12,
     marginBottom: 16,
-    backgroundColor: "#FFFBEB",
+    backgroundColor: '#FFFBEB',
     borderLeftWidth: 4,
-    borderLeftColor: "#F59E0B",
+    borderLeftColor: '#F59E0B'
   },
-  countdownHeader: { flexDirection: "row", alignItems: "center", gap: 8, marginBottom: 8 },
-  clockIcon: { backgroundColor: "#FEF3C7" },
-  countdownTitle: { fontSize: 14, fontWeight: "700", color: "#92400E" },
-  countdownText: { fontSize: 13, color: "#78350F", lineHeight: 20, marginBottom: 10 },
-  countdownRow: { flexDirection: "row", alignItems: "center", gap: 8 },
-  countdownLabel: { fontSize: 13, color: "#92400E" },
-  countdownValue: { fontSize: 18, fontWeight: "800", color: "#D97706" },
+  countdownHeader: { flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 8 },
+  clockIcon: { backgroundColor: '#FEF3C7' },
+  countdownTitle: { fontSize: 14, fontWeight: '700', color: '#92400E' },
+  countdownText: { fontSize: 13, color: '#78350F', lineHeight: 20, marginBottom: 10 },
+  countdownRow: { flexDirection: 'row', alignItems: 'center', gap: 8 },
+  countdownLabel: { fontSize: 13, color: '#92400E' },
+  countdownValue: { fontSize: 18, fontWeight: '800', color: '#D97706' },
   goToPrereqBtn: { marginBottom: 10 },
   // active/detail styles
   packageTitle: {
     fontSize: 20,
-    fontWeight: "800",
-    color: "#1E3A5F",
-    marginBottom: 10,
+    fontWeight: '800',
+    color: '#1E3A5F',
+    marginBottom: 10
   },
   pkgProgressRow: { marginBottom: 12 },
   pkgProgressBar: { height: 6, borderRadius: 6, marginBottom: 4 },
-  pkgProgressLabel: { fontSize: 12, color: "#0EA5E9", textAlign: "right", fontWeight: "600" },
+  pkgProgressLabel: { fontSize: 12, color: '#0EA5E9', textAlign: 'right', fontWeight: '600' },
   objectivesCard: {
     padding: 14,
     borderRadius: 12,
     marginBottom: 12,
-    backgroundColor: "#F5F3FF",
+    backgroundColor: '#F5F3FF',
     borderLeftWidth: 3,
-    borderLeftColor: "#7C4DFF",
+    borderLeftColor: '#7C4DFF'
   },
-  objectivesHeader: { flexDirection: "row", alignItems: "center", gap: 8, marginBottom: 8 },
-  targetIcon: { backgroundColor: "#EDE9FE" },
-  objectivesTitle: { fontSize: 14, fontWeight: "700", color: "#4C1D95" },
-  objRow: { flexDirection: "row", alignItems: "flex-start", gap: 6, marginBottom: 4 },
-  objBullet: { fontSize: 16, color: "#7C4DFF", lineHeight: 20, marginTop: 1 },
-  objText: { flex: 1, fontSize: 13, color: "#4C1D95", lineHeight: 20 },
+  objectivesHeader: { flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 8 },
+  targetIcon: { backgroundColor: '#EDE9FE' },
+  objectivesTitle: { fontSize: 14, fontWeight: '700', color: '#4C1D95' },
+  objRow: { flexDirection: 'row', alignItems: 'flex-start', gap: 6, marginBottom: 4 },
+  objBullet: { fontSize: 16, color: '#7C4DFF', lineHeight: 20, marginTop: 1 },
+  objText: { flex: 1, fontSize: 13, color: '#4C1D95', lineHeight: 20 },
   sectionsCard: {
     padding: 14,
     borderRadius: 12,
     marginBottom: 16,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: '#FFFFFF'
   },
-  sectionsTitle: { fontSize: 14, fontWeight: "700", color: "#1E293B", marginBottom: 12 },
+  sectionsTitle: { fontSize: 14, fontWeight: '700', color: '#1E293B', marginBottom: 12 },
   sectionRow: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     paddingVertical: 8,
-    gap: 10,
+    gap: 10
   },
   sectionRowNext: {
-    backgroundColor: "#F0F9FF",
+    backgroundColor: '#F0F9FF',
     borderRadius: 8,
     paddingHorizontal: 8,
-    marginHorizontal: -8,
+    marginHorizontal: -8
   },
   sectionIcon: { borderRadius: 14 },
   sectionInfo: { flex: 1 },
-  sectionTitle: { fontSize: 13, fontWeight: "600", color: "#1E293B" },
-  sectionTitleDone: { color: "#6B7280" },
-  sectionMeta: { fontSize: 11, color: "#9CA3AF", marginTop: 2 },
+  sectionTitle: { fontSize: 13, fontWeight: '600', color: '#1E293B' },
+  sectionTitleDone: { color: '#6B7280' },
+  sectionMeta: { fontSize: 11, color: '#9CA3AF', marginTop: 2 },
   nextBadge: {
-    backgroundColor: "#0EA5E9",
+    backgroundColor: '#0EA5E9',
     borderRadius: 6,
     paddingHorizontal: 6,
-    paddingVertical: 2,
+    paddingVertical: 2
   },
-  nextBadgeText: { fontSize: 10, fontWeight: "700", color: "#FFFFFF" },
-  doneCheck: { fontSize: 18, color: "#16A34A", fontWeight: "700" },
+  nextBadgeText: { fontSize: 10, fontWeight: '700', color: '#FFFFFF' },
+  doneCheck: { fontSize: 18, color: '#16A34A', fontWeight: '700' },
   sectionDivider: { marginVertical: 2 },
   startBtn: { marginBottom: 10, borderRadius: 12 },
-  backBtn: { borderRadius: 12 },
+  backBtn: { borderRadius: 12 }
 });

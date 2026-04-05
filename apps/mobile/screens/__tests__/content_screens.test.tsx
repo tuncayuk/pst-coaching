@@ -1,240 +1,241 @@
-import React from "react";
-import { render } from "@testing-library/react-native";
-import { ContentJourneyDetailScreen } from "../content/ContentJourneyDetailScreen";
-import { ContentJourneyHomeScreen } from "../content/ContentJourneyHomeScreen";
-import { ContentJourneyDayScreen } from "../content/ContentJourneyDayScreen";
-import { ContentWorkshopDetailScreen } from "../content/ContentWorkshopDetailScreen";
-import { ContentWorkshopHomeScreen } from "../content/ContentWorkshopHomeScreen";
-import { ContentWorkshopSectionScreen } from "../content/ContentWorkshopSectionScreen";
-import { ContentModuleHomeScreen } from "../content/ContentModuleHomeScreen";
-import { ContentPackageDetailScreen } from "../content/ContentPackageDetailScreen";
-import { ContentEbookDetailScreen } from "../content/ContentEbookDetailScreen";
-import { ContentEbookReaderScreen } from "../content/ContentEbookReaderScreen";
-import { ContentEbookTocScreen } from "../content/ContentEbookTocScreen";
-import { ContentEbookHighlightsScreen } from "../content/ContentEbookHighlightsScreen";
-import { ContentReadingScreen } from "../content/ContentReadingScreen";
-import { ContentExerciseScreen } from "../content/ContentExerciseScreen";
-import { ContentCommentScreen } from "../content/ContentCommentScreen";
-import { ContentCommentPreviewScreen } from "../content/ContentCommentPreviewScreen";
-import { ContentAchievementScreen } from "../content/ContentAchievementScreen";
-import { ContentReviewPromptScreen } from "../content/ContentReviewPromptScreen";
-import { ContentPaywallScreen } from "../content/ContentPaywallScreen";
+import { render } from '@testing-library/react-native';
+import React from 'react';
+
+import { ContentAchievementScreen } from '../content/ContentAchievementScreen';
+import { ContentCommentPreviewScreen } from '../content/ContentCommentPreviewScreen';
+import { ContentCommentScreen } from '../content/ContentCommentScreen';
+import { ContentEbookDetailScreen } from '../content/ContentEbookDetailScreen';
+import { ContentEbookHighlightsScreen } from '../content/ContentEbookHighlightsScreen';
+import { ContentEbookReaderScreen } from '../content/ContentEbookReaderScreen';
+import { ContentEbookTocScreen } from '../content/ContentEbookTocScreen';
+import { ContentExerciseScreen } from '../content/ContentExerciseScreen';
+import { ContentJourneyDayScreen } from '../content/ContentJourneyDayScreen';
+import { ContentJourneyDetailScreen } from '../content/ContentJourneyDetailScreen';
+import { ContentJourneyHomeScreen } from '../content/ContentJourneyHomeScreen';
+import { ContentModuleHomeScreen } from '../content/ContentModuleHomeScreen';
+import { ContentPackageDetailScreen } from '../content/ContentPackageDetailScreen';
+import { ContentPaywallScreen } from '../content/ContentPaywallScreen';
+import { ContentReadingScreen } from '../content/ContentReadingScreen';
+import { ContentReviewPromptScreen } from '../content/ContentReviewPromptScreen';
+import { ContentWorkshopDetailScreen } from '../content/ContentWorkshopDetailScreen';
+import { ContentWorkshopHomeScreen } from '../content/ContentWorkshopHomeScreen';
+import { ContentWorkshopSectionScreen } from '../content/ContentWorkshopSectionScreen';
 
 const cases = [
   {
-    name: "content.journey_home",
+    name: 'content.journey_home',
     Screen: ContentJourneyHomeScreen,
     expectations: {
-      loading: "Yolculuk yükleniyor",
-      ready: "Yolculuk akışı",
-      empty: "Yolculuk bulunamadı",
-      error: "Yolculuk yüklenemedi",
-      offline: "Çevrimdışısınız",
-    },
+      loading: 'Yolculuk yükleniyor',
+      ready: 'Yolculuk akışı',
+      empty: 'Yolculuk bulunamadı',
+      error: 'Yolculuk yüklenemedi',
+      offline: 'Çevrimdışısınız'
+    }
   },
   {
-    name: "content.journey_day",
+    name: 'content.journey_day',
     Screen: ContentJourneyDayScreen,
     expectations: {
-      loading: "Gün İçeriği yükleniyor",
-      ready: "Gün planı",
-      empty: "Gün içeriği yok",
-      error: "Gün içeriği yüklenemedi",
-      offline: "Çevrimdışısınız",
-    },
+      loading: 'Gün İçeriği yükleniyor',
+      ready: 'Gün planı',
+      empty: 'Gün içeriği yok',
+      error: 'Gün içeriği yüklenemedi',
+      offline: 'Çevrimdışısınız'
+    }
   },
   {
-    name: "content.journey_detail",
+    name: 'content.journey_detail',
     Screen: ContentJourneyDetailScreen,
     expectations: {
-      loading: "Yolculuk yükleniyor",
-      ready: "Yolculuğa genel bakış",
-      empty: "Yolculuk bulunamadı",
-      error: "Yolculuk yüklenemedi",
-      offline: "Çevrimdışısınız",
-    },
+      loading: 'Yolculuk yükleniyor',
+      ready: 'Yolculuğa genel bakış',
+      empty: 'Yolculuk bulunamadı',
+      error: 'Yolculuk yüklenemedi',
+      offline: 'Çevrimdışısınız'
+    }
   },
   {
-    name: "content.workshop_home",
+    name: 'content.workshop_home',
     Screen: ContentWorkshopHomeScreen,
     expectations: {
-      loading: "Atölye yükleniyor",
-      ready: "Atölye akışı",
-      empty: "Atölye bulunamadı",
-      error: "Atölye yüklenemedi",
-      offline: "Çevrimdışısınız",
-    },
+      loading: 'Atölye yükleniyor',
+      ready: 'Atölye akışı',
+      empty: 'Atölye bulunamadı',
+      error: 'Atölye yüklenemedi',
+      offline: 'Çevrimdışısınız'
+    }
   },
   {
-    name: "content.workshop_section",
+    name: 'content.workshop_section',
     Screen: ContentWorkshopSectionScreen,
     expectations: {
-      loading: "Bölüm hazırlanıyor",
-      ready: "Bölüm akışı",
-      empty: "Bölüm bulunamadı",
-      error: "Bölüm yüklenemedi",
-      offline: "Çevrimdışısınız",
-    },
+      loading: 'Bölüm hazırlanıyor',
+      ready: 'Bölüm akışı',
+      empty: 'Bölüm bulunamadı',
+      error: 'Bölüm yüklenemedi',
+      offline: 'Çevrimdışısınız'
+    }
   },
   {
-    name: "content.workshop_detail",
+    name: 'content.workshop_detail',
     Screen: ContentWorkshopDetailScreen,
     expectations: {
-      loading: "Atölye yükleniyor",
-      ready: "Atölye programı ve içerikler",
-      empty: "Atölye bulunamadı",
-      error: "Atölye yüklenemedi",
-      offline: "Çevrimdışısınız",
-    },
+      loading: 'Atölye yükleniyor',
+      ready: 'Atölye programı ve içerikler',
+      empty: 'Atölye bulunamadı',
+      error: 'Atölye yüklenemedi',
+      offline: 'Çevrimdışısınız'
+    }
   },
   {
-    name: "content.module_home",
+    name: 'content.module_home',
     Screen: ContentModuleHomeScreen,
     expectations: {
-      loading: "Modül yükleniyor",
-      ready: "Modül akışı",
-      empty: "Modül bulunamadı",
-      error: "Modül yüklenemedi",
-      offline: "Çevrimdışısınız",
-    },
+      loading: 'Modül yükleniyor',
+      ready: 'Modül akışı',
+      empty: 'Modül bulunamadı',
+      error: 'Modül yüklenemedi',
+      offline: 'Çevrimdışısınız'
+    }
   },
   {
-    name: "content.package_detail",
+    name: 'content.package_detail',
     Screen: ContentPackageDetailScreen,
     expectations: {
-      loading: "Paket yükleniyor",
-      ready: "Paket içeriği ve plan",
-      empty: "Paket bulunamadı",
-      error: "Paket yüklenemedi",
-      offline: "Çevrimdışısınız",
-    },
+      loading: 'Paket yükleniyor',
+      ready: 'Paket içeriği ve plan',
+      empty: 'Paket bulunamadı',
+      error: 'Paket yüklenemedi',
+      offline: 'Çevrimdışısınız'
+    }
   },
   {
-    name: "content.ebook_detail",
+    name: 'content.ebook_detail',
     Screen: ContentEbookDetailScreen,
     expectations: {
-      loading: "e-Kitap yükleniyor",
-      ready: "e-Kitap hakkında",
-      empty: "e-Kitap bulunamadı",
-      error: "e-Kitap yüklenemedi",
-      offline: "Çevrimdışısınız",
-    },
+      loading: 'e-Kitap yükleniyor',
+      ready: 'e-Kitap hakkında',
+      empty: 'e-Kitap bulunamadı',
+      error: 'e-Kitap yüklenemedi',
+      offline: 'Çevrimdışısınız'
+    }
   },
   {
-    name: "content.ebook_reader",
+    name: 'content.ebook_reader',
     Screen: ContentEbookReaderScreen,
     expectations: {
-      loading: "Okuyucu hazırlanıyor",
-      ready: "Okumaya devam et",
-      empty: "Bölüm bulunamadı",
-      error: "Okuyucu yüklenemedi",
-      offline: "Çevrimdışısınız",
-    },
+      loading: 'Okuyucu hazırlanıyor',
+      ready: 'Okumaya devam et',
+      empty: 'Bölüm bulunamadı',
+      error: 'Okuyucu yüklenemedi',
+      offline: 'Çevrimdışısınız'
+    }
   },
   {
-    name: "content.ebook_toc",
+    name: 'content.ebook_toc',
     Screen: ContentEbookTocScreen,
     expectations: {
-      loading: "İçindekiler hazırlanıyor",
-      ready: "İçindekiler listesi",
-      empty: "Bölüm bulunamadı",
-      error: "İçindekiler yüklenemedi",
-      offline: "Çevrimdışısınız",
-    },
+      loading: 'İçindekiler hazırlanıyor',
+      ready: 'İçindekiler listesi',
+      empty: 'Bölüm bulunamadı',
+      error: 'İçindekiler yüklenemedi',
+      offline: 'Çevrimdışısınız'
+    }
   },
   {
-    name: "content.ebook_highlights",
+    name: 'content.ebook_highlights',
     Screen: ContentEbookHighlightsScreen,
     expectations: {
-      loading: "Vurgular yükleniyor",
-      ready: "Kaydettiğin vurgular",
-      empty: "Vurgu bulunamadı",
-      error: "Vurgular yüklenemedi",
-      offline: "Çevrimdışısınız",
-    },
+      loading: 'Vurgular yükleniyor',
+      ready: 'Kaydettiğin vurgular',
+      empty: 'Vurgu bulunamadı',
+      error: 'Vurgular yüklenemedi',
+      offline: 'Çevrimdışısınız'
+    }
   },
   {
-    name: "content.reading",
+    name: 'content.reading',
     Screen: ContentReadingScreen,
     expectations: {
-      loading: "Okuma hazırlanıyor",
-      ready: "Okumaya devam et",
-      empty: "Bölüm bulunamadı",
-      error: "Okuma yüklenemedi",
-      offline: "Çevrimdışısınız",
-    },
+      loading: 'Okuma hazırlanıyor',
+      ready: 'Okumaya devam et',
+      empty: 'Bölüm bulunamadı',
+      error: 'Okuma yüklenemedi',
+      offline: 'Çevrimdışısınız'
+    }
   },
   {
-    name: "content.exercise",
+    name: 'content.exercise',
     Screen: ContentExerciseScreen,
     expectations: {
-      loading: "Uygulama hazırlanıyor",
-      ready: "Adımları tamamla",
-      empty: "Uygulama bulunamadı",
-      error: "Uygulama yüklenemedi",
-      offline: "Çevrimdışısınız",
-    },
+      loading: 'Uygulama hazırlanıyor',
+      ready: 'Adımları tamamla',
+      empty: 'Uygulama bulunamadı',
+      error: 'Uygulama yüklenemedi',
+      offline: 'Çevrimdışısınız'
+    }
   },
   {
-    name: "content.comment",
+    name: 'content.comment',
     Screen: ContentCommentScreen,
     expectations: {
-      loading: "Yorum hazırlanıyor",
-      ready: "Yorumunu paylaş",
-      empty: "Yorum şablonu yok",
-      error: "Yorum alanı yüklenemedi",
-      offline: "Çevrimdışısınız",
-    },
+      loading: 'Yorum hazırlanıyor',
+      ready: 'Yorumunu paylaş',
+      empty: 'Yorum şablonu yok',
+      error: 'Yorum alanı yüklenemedi',
+      offline: 'Çevrimdışısınız'
+    }
   },
   {
-    name: "content.comment_preview",
+    name: 'content.comment_preview',
     Screen: ContentCommentPreviewScreen,
     expectations: {
-      loading: "Önizleme hazırlanıyor",
-      ready: "Gönderim öncesi kontrol",
-      empty: "Önizleme bulunamadı",
-      error: "Önizleme yüklenemedi",
-      offline: "Çevrimdışısınız",
-    },
+      loading: 'Önizleme hazırlanıyor',
+      ready: 'Gönderim öncesi kontrol',
+      empty: 'Önizleme bulunamadı',
+      error: 'Önizleme yüklenemedi',
+      offline: 'Çevrimdışısınız'
+    }
   },
   {
-    name: "content.achievement",
+    name: 'content.achievement',
     Screen: ContentAchievementScreen,
     expectations: {
-      loading: "Başarım hazırlanıyor",
-      ready: "Başarımın",
-      empty: "Başarım bulunamadı",
-      error: "Başarım yüklenemedi",
-      offline: "Çevrimdışısınız",
-    },
+      loading: 'Başarım hazırlanıyor',
+      ready: 'Başarımın',
+      empty: 'Başarım bulunamadı',
+      error: 'Başarım yüklenemedi',
+      offline: 'Çevrimdışısınız'
+    }
   },
   {
-    name: "content.review_prompt",
+    name: 'content.review_prompt',
     Screen: ContentReviewPromptScreen,
     expectations: {
-      loading: "Değerlendirme hazırlanıyor",
-      ready: "Deneyimini değerlendir",
-      empty: "Değerlendirme bulunamadı",
-      error: "Değerlendirme yüklenemedi",
-      offline: "Çevrimdışısınız",
-    },
+      loading: 'Değerlendirme hazırlanıyor',
+      ready: 'Deneyimini değerlendir',
+      empty: 'Değerlendirme bulunamadı',
+      error: 'Değerlendirme yüklenemedi',
+      offline: 'Çevrimdışısınız'
+    }
   },
   {
-    name: "content.paywall",
+    name: 'content.paywall',
     Screen: ContentPaywallScreen,
     expectations: {
-      loading: "Abonelik seçenekleri hazırlanıyor",
-      ready: "Abonelik planını seç",
-      empty: "Plan bulunamadı",
-      error: "Planlar yüklenemedi",
-      offline: "Çevrimdışısınız",
-    },
-  },
+      loading: 'Abonelik seçenekleri hazırlanıyor',
+      ready: 'Abonelik planını seç',
+      empty: 'Plan bulunamadı',
+      error: 'Planlar yüklenemedi',
+      offline: 'Çevrimdışısınız'
+    }
+  }
 ];
 
-describe("Content screens render contract states", () => {
+describe('Content screens render contract states', () => {
   cases.forEach(({ name, Screen, expectations }) => {
-    (Object.keys(expectations) as (keyof typeof expectations)[]).forEach((state) => {
+    (Object.keys(expectations) as (keyof typeof expectations)[]).forEach(state => {
       it(`${name} renders ${state} state`, () => {
         const { getByText } = render(<Screen route={{ params: { state } }} />);
         expect(getByText(expectations[state])).toBeTruthy();

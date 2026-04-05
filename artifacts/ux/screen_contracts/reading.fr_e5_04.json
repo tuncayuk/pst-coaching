@@ -3,10 +3,7 @@
   "title": "Yorum yazma ve teslim",
   "route": "/content/comment",
   "purpose": "Implements FR-E5-04: Guided comment writing with auto-save, word counter, deadline enforcement.",
-  "entryPoints": [
-    "content.exercise",
-    "content.reading"
-  ],
+  "entryPoints": ["content.exercise", "content.reading"],
   "inputs": [
     {
       "name": "userId",
@@ -21,10 +18,7 @@
       "source": "route_params"
     }
   ],
-  "dataDependencies": [
-    "CommentDraft",
-    "CommentSubmission"
-  ],
+  "dataDependencies": ["CommentDraft", "CommentSubmission"],
   "uiStates": {
     "loading": {
       "description": "Comment form and guiding questions loading."
@@ -62,7 +56,5 @@
     "AC-FR-E5-04-06",
     "AC-FR-E5-04-07"
   ],
-  "gates": [
-    "auth"
-  ]
+  "gates": ["auth"]
 }

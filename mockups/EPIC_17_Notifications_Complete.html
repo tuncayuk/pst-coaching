@@ -1,1228 +1,1387 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="tr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>PST Coaching Mobile - EPIC 17: Hatirlaticilar ve Bildirimler</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap"
+      rel="stylesheet"
+    />
     <style>
-        :root {
-            --primary: #0f766e;
-            --primary-dark: #115e59;
-            --primary-light: #ccfbf1;
-            --secondary: #1f2937;
-            --success: #16a34a;
-            --success-light: #dcfce7;
-            --warning: #b45309;
-            --warning-light: #fef3c7;
-            --error: #dc2626;
-            --error-light: #fee2e2;
-            --violet: #4f46e5;
-            --violet-light: #eef2ff;
-            --gray-50: #fafafa;
-            --gray-100: #f5f5f5;
-            --gray-200: #e5e5e5;
-            --gray-300: #d4d4d4;
-            --gray-400: #a3a3a3;
-            --gray-600: #525252;
-            --gray-700: #404040;
-            --gray-900: #171717;
-        }
+      :root {
+        --primary: #0f766e;
+        --primary-dark: #115e59;
+        --primary-light: #ccfbf1;
+        --secondary: #1f2937;
+        --success: #16a34a;
+        --success-light: #dcfce7;
+        --warning: #b45309;
+        --warning-light: #fef3c7;
+        --error: #dc2626;
+        --error-light: #fee2e2;
+        --violet: #4f46e5;
+        --violet-light: #eef2ff;
+        --gray-50: #fafafa;
+        --gray-100: #f5f5f5;
+        --gray-200: #e5e5e5;
+        --gray-300: #d4d4d4;
+        --gray-400: #a3a3a3;
+        --gray-600: #525252;
+        --gray-700: #404040;
+        --gray-900: #171717;
+      }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
+      body {
+        font-family: 'Inter', sans-serif;
+        color: var(--gray-900);
+        background: radial-gradient(circle at 10% 0%, #ccfbf1 0%, #ccfbf1 6%, #e2e8f0 44%, #f8fafc 100%);
+        overflow: hidden;
+      }
+
+      .app {
+        height: 100vh;
+        display: flex;
+      }
+
+      .sidebar {
+        width: 430px;
+        background: #fff;
+        border-right: 1px solid var(--gray-200);
+        box-shadow: 2px 0 14px rgba(0, 0, 0, 0.06);
+        overflow-y: auto;
+      }
+
+      .main {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .logo {
+        font-family: 'Poppins', sans-serif;
+        font-size: 1.85rem;
+        font-weight: 800;
+        color: var(--primary-dark);
+        padding: 1.85rem;
+        border-bottom: 1px solid var(--gray-200);
+        background: linear-gradient(135deg, var(--primary-light), #fff);
+      }
+
+      .subtitle {
+        margin-top: 0.35rem;
+        font-size: 0.82rem;
+        color: var(--gray-600);
+        font-weight: 600;
+      }
+
+      .epic-header {
+        margin: 1rem 1.2rem;
+        border: 1px solid #99f6e4;
+        border-radius: 0.85rem;
+        padding: 1rem;
+        background: linear-gradient(140deg, #f0fdfa, #f8fafc);
+      }
+
+      .epic-title {
+        font-family: 'Poppins', sans-serif;
+        font-size: 1.03rem;
+        font-weight: 700;
+        margin-bottom: 0.35rem;
+      }
+
+      .epic-meta {
+        font-size: 0.76rem;
+        color: var(--gray-700);
+        line-height: 1.45;
+      }
+
+      .flow-map {
+        margin: 0 1.2rem 1rem;
+        border-radius: 0.85rem;
+        border: 1px solid #bfdbfe;
+        background: #eff6ff;
+        padding: 0.75rem;
+      }
+
+      .flow-title {
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        color: var(--gray-600);
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+      }
+
+      .flow-list {
+        display: grid;
+        gap: 0.35rem;
+      }
+
+      .flow-step {
+        border: 1px solid var(--gray-300);
+        border-radius: 0.5rem;
+        background: #fff;
+        padding: 0.34rem 0.52rem;
+        font-size: 0.69rem;
+        font-weight: 600;
+        color: var(--gray-700);
+      }
+
+      .flow-step.active {
+        border-color: var(--violet);
+        background: var(--violet-light);
+        color: #4338ca;
+      }
+
+      .gate-note {
+        margin-top: 0.55rem;
+        border-top: 1px solid #bfdbfe;
+        padding-top: 0.5rem;
+        font-size: 0.68rem;
+        color: var(--gray-600);
+        line-height: 1.45;
+      }
+
+      .nav-group {
+        border-bottom: 1px solid var(--gray-100);
+        padding: 0.28rem 0 0.72rem;
+      }
+
+      .nav-group-title {
+        padding: 0.66rem 1.2rem;
+        font-size: 0.68rem;
+        color: var(--gray-600);
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        font-weight: 700;
+      }
+
+      .nav-item {
+        display: flex;
+        align-items: center;
+        gap: 0.62rem;
+        padding: 0.7rem 1.2rem;
+        border-left: 3px solid transparent;
+        color: var(--gray-700);
+        cursor: pointer;
+        transition: background 0.18s ease;
+      }
+
+      .nav-item:hover {
+        background: var(--gray-50);
+      }
+
+      .nav-item.active {
+        border-left-color: var(--primary);
+        background: #f0fdfa;
+        color: var(--primary-dark);
+      }
+
+      .nav-icon {
+        font-size: 0.72rem;
+        font-weight: 800;
+        width: 28px;
+        text-align: center;
+        border: 1px solid var(--gray-300);
+        border-radius: 0.35rem;
+        padding: 0.1rem 0.2rem;
+        background: #fff;
+      }
+
+      .nav-text {
+        flex: 1;
+        font-size: 0.83rem;
+        font-weight: 600;
+      }
+
+      .nav-badge {
+        font-size: 0.66rem;
+        font-weight: 700;
+        border-radius: 999px;
+        padding: 0.14rem 0.45rem;
+        background: #e2e8f0;
+        color: var(--gray-700);
+      }
+
+      .topbar {
+        background: #fff;
+        border-bottom: 1px solid var(--gray-200);
+        padding: 1.45rem 2rem;
+      }
+
+      .screen-title {
+        font-family: 'Poppins', sans-serif;
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--secondary);
+      }
+
+      .screen-meta {
+        margin-top: 0.4rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        color: var(--gray-600);
+        font-size: 0.9rem;
+        flex-wrap: wrap;
+      }
+
+      .fr-badge {
+        border: 1px solid #99f6e4;
+        background: #f0fdfa;
+        color: #0f766e;
+        border-radius: 0.52rem;
+        padding: 0.2rem 0.58rem;
+        font-size: 0.78rem;
+        font-weight: 700;
+      }
+
+      .route-badge {
+        border: 1px solid #c4b5fd;
+        background: #f5f3ff;
+        color: #5b21b6;
+        border-radius: 0.52rem;
+        padding: 0.2rem 0.58rem;
+        font-size: 0.74rem;
+        font-weight: 700;
+      }
+
+      .viewer {
+        flex: 1;
+        overflow-y: auto;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        padding: 2rem;
+      }
+
+      .iphone {
+        width: 393px;
+        height: 852px;
+        background: #1d1d1f;
+        border-radius: 54px;
+        padding: 12px;
+        box-shadow: 0 44px 94px rgba(0, 0, 0, 0.45);
+        position: relative;
+      }
+
+      .island {
+        position: absolute;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 120px;
+        height: 30px;
+        border-radius: 20px;
+        background: #000;
+        z-index: 12;
+      }
+
+      .screen {
+        width: 100%;
+        height: 100%;
+        background: #fff;
+        border-radius: 42px;
+        overflow: hidden;
+      }
+
+      .content {
+        width: 100%;
+        height: 100%;
+        overflow-y: auto;
+        background: var(--gray-50);
+        padding-bottom: 1.6rem;
+      }
+
+      .content::-webkit-scrollbar {
+        width: 4px;
+      }
+
+      .content::-webkit-scrollbar-thumb {
+        background: rgba(0, 0, 0, 0.3);
+        border-radius: 12px;
+      }
+
+      .status {
+        height: 54px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 1.3rem;
+        font-size: 0.8rem;
+        font-weight: 700;
+        background: #fff;
+      }
+
+      .mobile-header {
+        position: sticky;
+        top: 0;
+        z-index: 3;
+        background: rgba(255, 255, 255, 0.94);
+        backdrop-filter: blur(6px);
+        border-bottom: 1px solid var(--gray-200);
+        padding: 0.75rem 0.9rem;
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+      }
+
+      .mobile-title {
+        font-weight: 700;
+        font-size: 0.95rem;
+        color: var(--secondary);
+      }
+
+      .mobile-body {
+        padding: 0.9rem;
+        display: grid;
+        gap: 0.75rem;
+      }
+
+      .icon-btn {
+        border: 1px solid var(--gray-300);
+        background: #fff;
+        border-radius: 0.5rem;
+        width: 34px;
+        height: 34px;
+        cursor: pointer;
+        font-size: 0.9rem;
+        font-weight: 700;
+        color: var(--gray-700);
+      }
+
+      .card {
+        background: #fff;
+        border: 1px solid var(--gray-200);
+        border-radius: 0.8rem;
+        padding: 0.75rem;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+      }
+
+      .card-title {
+        font-size: 0.82rem;
+        font-weight: 700;
+        color: var(--secondary);
+        margin-bottom: 0.45rem;
+      }
+
+      .muted {
+        color: var(--gray-600);
+        font-size: 0.73rem;
+        line-height: 1.45;
+      }
+
+      .chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.38rem;
+      }
+
+      .chip {
+        border-radius: 999px;
+        border: 1px solid var(--gray-300);
+        background: #fff;
+        color: var(--gray-700);
+        padding: 0.2rem 0.48rem;
+        font-size: 0.66rem;
+        font-weight: 700;
+      }
+
+      .chip.success {
+        border-color: #86efac;
+        background: var(--success-light);
+        color: #14532d;
+      }
+
+      .chip.warn {
+        border-color: #fcd34d;
+        background: var(--warning-light);
+        color: #92400e;
+      }
+
+      .chip.error {
+        border-color: #fca5a5;
+        background: var(--error-light);
+        color: #7f1d1d;
+      }
+
+      .btn {
+        border-radius: 0.55rem;
+        border: 1px solid transparent;
+        padding: 0.36rem 0.62rem;
+        font-size: 0.68rem;
+        font-weight: 700;
+        cursor: pointer;
+        font-family: inherit;
+      }
+
+      .btn-primary {
+        background: var(--primary);
+        color: #fff;
+        border-color: var(--primary);
+      }
+
+      .btn-outline {
+        border-color: var(--gray-300);
+        color: var(--gray-700);
+        background: #fff;
+      }
+
+      .field {
+        width: 100%;
+        border: 1px solid var(--gray-300);
+        border-radius: 0.55rem;
+        padding: 0.5rem 0.58rem;
+        font-size: 0.74rem;
+        background: #fff;
+        font-family: inherit;
+      }
+
+      textarea.field {
+        resize: vertical;
+      }
+
+      .list {
+        display: grid;
+        gap: 0.52rem;
+      }
+
+      .list-item {
+        border: 1px solid var(--gray-200);
+        background: #fff;
+        border-radius: 0.68rem;
+        padding: 0.56rem;
+      }
+
+      .list-item.action {
+        cursor: pointer;
+        text-align: left;
+      }
+
+      .row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.5rem;
+      }
+
+      .item-title {
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: var(--secondary);
+      }
+
+      .item-meta {
+        margin-top: 0.22rem;
+        font-size: 0.68rem;
+        color: var(--gray-600);
+        line-height: 1.4;
+      }
+
+      .progress {
+        width: 100%;
+        height: 7px;
+        border-radius: 999px;
+        background: var(--gray-200);
+        overflow: hidden;
+        margin-top: 0.34rem;
+      }
+
+      .progress > span {
+        display: block;
+        height: 100%;
+        background: linear-gradient(90deg, var(--primary), #06b6d4);
+      }
+
+      .state-switcher {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.35rem;
+        margin-bottom: 0.35rem;
+      }
+
+      .state-btn {
+        border: 1px solid var(--gray-300);
+        border-radius: 999px;
+        background: #fff;
+        color: var(--gray-700);
+        font-size: 0.63rem;
+        font-weight: 700;
+        padding: 0.16rem 0.45rem;
+        cursor: pointer;
+      }
+
+      .state-btn.active {
+        border-color: var(--violet);
+        background: var(--violet-light);
+        color: #4338ca;
+      }
+
+      .state-panel {
+        border-radius: 0.68rem;
+        border: 1px solid var(--gray-300);
+        background: #fff;
+        padding: 0.62rem;
+        margin-bottom: 0.58rem;
+        display: grid;
+        gap: 0.3rem;
+        font-size: 0.72rem;
+        color: var(--gray-700);
+      }
+
+      .state-panel.loading {
+        border-color: #93c5fd;
+        background: #eff6ff;
+      }
+
+      .state-panel.empty {
+        border-color: #fde68a;
+        background: #fffbeb;
+      }
+
+      .state-panel.error {
+        border-color: #fca5a5;
+        background: #fef2f2;
+      }
+
+      .state-panel.offline {
+        border-color: #c4b5fd;
+        background: #f5f3ff;
+      }
+
+      .toast {
+        position: fixed;
+        right: 1.2rem;
+        bottom: 1.2rem;
+        padding: 0.65rem 0.85rem;
+        border-radius: 0.62rem;
+        color: #fff;
+        font-weight: 700;
+        font-size: 0.74rem;
+        background: #115e59;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+        opacity: 0;
+        transform: translateY(8px);
+        pointer-events: none;
+        transition: all 0.22s ease;
+        z-index: 50;
+      }
+
+      .toast.show {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .toast.success {
+        background: #065f46;
+      }
+
+      .toast.error {
+        background: #7f1d1d;
+      }
+
+      .nav-item:focus-visible,
+      button:focus-visible,
+      textarea:focus-visible,
+      input:focus-visible {
+        outline: 3px solid #99f6e4;
+        outline-offset: 2px;
+      }
+
+      @media (max-width: 1200px) {
         body {
-            font-family: 'Inter', sans-serif;
-            color: var(--gray-900);
-            background: radial-gradient(circle at 10% 0%, #ccfbf1 0%, #ccfbf1 6%, #e2e8f0 44%, #f8fafc 100%);
-            overflow: hidden;
+          overflow: auto;
         }
 
         .app {
-            height: 100vh;
-            display: flex;
+          flex-direction: column;
+          height: auto;
+          min-height: 100vh;
         }
 
         .sidebar {
-            width: 430px;
-            background: #fff;
-            border-right: 1px solid var(--gray-200);
-            box-shadow: 2px 0 14px rgba(0, 0, 0, 0.06);
-            overflow-y: auto;
-        }
-
-        .main {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .logo {
-            font-family: 'Poppins', sans-serif;
-            font-size: 1.85rem;
-            font-weight: 800;
-            color: var(--primary-dark);
-            padding: 1.85rem;
-            border-bottom: 1px solid var(--gray-200);
-            background: linear-gradient(135deg, var(--primary-light), #fff);
-        }
-
-        .subtitle {
-            margin-top: 0.35rem;
-            font-size: 0.82rem;
-            color: var(--gray-600);
-            font-weight: 600;
-        }
-
-        .epic-header {
-            margin: 1rem 1.2rem;
-            border: 1px solid #99f6e4;
-            border-radius: 0.85rem;
-            padding: 1rem;
-            background: linear-gradient(140deg, #f0fdfa, #f8fafc);
-        }
-
-        .epic-title {
-            font-family: 'Poppins', sans-serif;
-            font-size: 1.03rem;
-            font-weight: 700;
-            margin-bottom: 0.35rem;
-        }
-
-        .epic-meta {
-            font-size: 0.76rem;
-            color: var(--gray-700);
-            line-height: 1.45;
-        }
-
-        .flow-map {
-            margin: 0 1.2rem 1rem;
-            border-radius: 0.85rem;
-            border: 1px solid #bfdbfe;
-            background: #eff6ff;
-            padding: 0.75rem;
-        }
-
-        .flow-title {
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 0.04em;
-            color: var(--gray-600);
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-
-        .flow-list {
-            display: grid;
-            gap: 0.35rem;
-        }
-
-        .flow-step {
-            border: 1px solid var(--gray-300);
-            border-radius: 0.5rem;
-            background: #fff;
-            padding: 0.34rem 0.52rem;
-            font-size: 0.69rem;
-            font-weight: 600;
-            color: var(--gray-700);
-        }
-
-        .flow-step.active {
-            border-color: var(--violet);
-            background: var(--violet-light);
-            color: #4338ca;
-        }
-
-        .gate-note {
-            margin-top: 0.55rem;
-            border-top: 1px solid #bfdbfe;
-            padding-top: 0.5rem;
-            font-size: 0.68rem;
-            color: var(--gray-600);
-            line-height: 1.45;
-        }
-
-        .nav-group {
-            border-bottom: 1px solid var(--gray-100);
-            padding: 0.28rem 0 0.72rem;
-        }
-
-        .nav-group-title {
-            padding: 0.66rem 1.2rem;
-            font-size: 0.68rem;
-            color: var(--gray-600);
-            text-transform: uppercase;
-            letter-spacing: 0.04em;
-            font-weight: 700;
-        }
-
-        .nav-item {
-            display: flex;
-            align-items: center;
-            gap: 0.62rem;
-            padding: 0.7rem 1.2rem;
-            border-left: 3px solid transparent;
-            color: var(--gray-700);
-            cursor: pointer;
-            transition: background 0.18s ease;
-        }
-
-        .nav-item:hover {
-            background: var(--gray-50);
-        }
-
-        .nav-item.active {
-            border-left-color: var(--primary);
-            background: #f0fdfa;
-            color: var(--primary-dark);
-        }
-
-        .nav-icon {
-            font-size: 0.72rem;
-            font-weight: 800;
-            width: 28px;
-            text-align: center;
-            border: 1px solid var(--gray-300);
-            border-radius: 0.35rem;
-            padding: 0.1rem 0.2rem;
-            background: #fff;
-        }
-
-        .nav-text {
-            flex: 1;
-            font-size: 0.83rem;
-            font-weight: 600;
-        }
-
-        .nav-badge {
-            font-size: 0.66rem;
-            font-weight: 700;
-            border-radius: 999px;
-            padding: 0.14rem 0.45rem;
-            background: #e2e8f0;
-            color: var(--gray-700);
-        }
-
-        .topbar {
-            background: #fff;
-            border-bottom: 1px solid var(--gray-200);
-            padding: 1.45rem 2rem;
-        }
-
-        .screen-title {
-            font-family: 'Poppins', sans-serif;
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--secondary);
-        }
-
-        .screen-meta {
-            margin-top: 0.4rem;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            color: var(--gray-600);
-            font-size: 0.9rem;
-            flex-wrap: wrap;
-        }
-
-        .fr-badge {
-            border: 1px solid #99f6e4;
-            background: #f0fdfa;
-            color: #0f766e;
-            border-radius: 0.52rem;
-            padding: 0.2rem 0.58rem;
-            font-size: 0.78rem;
-            font-weight: 700;
-        }
-
-        .route-badge {
-            border: 1px solid #c4b5fd;
-            background: #f5f3ff;
-            color: #5b21b6;
-            border-radius: 0.52rem;
-            padding: 0.2rem 0.58rem;
-            font-size: 0.74rem;
-            font-weight: 700;
+          width: 100%;
+          max-height: 52vh;
         }
 
         .viewer {
-            flex: 1;
-            overflow-y: auto;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            padding: 2rem;
+          padding: 1.2rem;
         }
-
-        .iphone {
-            width: 393px;
-            height: 852px;
-            background: #1d1d1f;
-            border-radius: 54px;
-            padding: 12px;
-            box-shadow: 0 44px 94px rgba(0, 0, 0, 0.45);
-            position: relative;
-        }
-
-        .island {
-            position: absolute;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 120px;
-            height: 30px;
-            border-radius: 20px;
-            background: #000;
-            z-index: 12;
-        }
-
-        .screen {
-            width: 100%;
-            height: 100%;
-            background: #fff;
-            border-radius: 42px;
-            overflow: hidden;
-        }
-
-        .content {
-            width: 100%;
-            height: 100%;
-            overflow-y: auto;
-            background: var(--gray-50);
-            padding-bottom: 1.6rem;
-        }
-
-        .content::-webkit-scrollbar {
-            width: 4px;
-        }
-
-        .content::-webkit-scrollbar-thumb {
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 12px;
-        }
-
-        .status {
-            height: 54px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 1.3rem;
-            font-size: 0.8rem;
-            font-weight: 700;
-            background: #fff;
-        }
-
-        .mobile-header {
-            position: sticky;
-            top: 0;
-            z-index: 3;
-            background: rgba(255, 255, 255, 0.94);
-            backdrop-filter: blur(6px);
-            border-bottom: 1px solid var(--gray-200);
-            padding: 0.75rem 0.9rem;
-            display: flex;
-            align-items: center;
-            gap: 0.6rem;
-        }
-
-        .mobile-title {
-            font-weight: 700;
-            font-size: 0.95rem;
-            color: var(--secondary);
-        }
-
-        .mobile-body {
-            padding: 0.9rem;
-            display: grid;
-            gap: 0.75rem;
-        }
-
-        .icon-btn {
-            border: 1px solid var(--gray-300);
-            background: #fff;
-            border-radius: 0.5rem;
-            width: 34px;
-            height: 34px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            font-weight: 700;
-            color: var(--gray-700);
-        }
-
-        .card {
-            background: #fff;
-            border: 1px solid var(--gray-200);
-            border-radius: 0.8rem;
-            padding: 0.75rem;
-            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
-        }
-
-        .card-title {
-            font-size: 0.82rem;
-            font-weight: 700;
-            color: var(--secondary);
-            margin-bottom: 0.45rem;
-        }
-
-        .muted {
-            color: var(--gray-600);
-            font-size: 0.73rem;
-            line-height: 1.45;
-        }
-
-        .chips {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.38rem;
-        }
-
-        .chip {
-            border-radius: 999px;
-            border: 1px solid var(--gray-300);
-            background: #fff;
-            color: var(--gray-700);
-            padding: 0.2rem 0.48rem;
-            font-size: 0.66rem;
-            font-weight: 700;
-        }
-
-        .chip.success {
-            border-color: #86efac;
-            background: var(--success-light);
-            color: #14532d;
-        }
-
-        .chip.warn {
-            border-color: #fcd34d;
-            background: var(--warning-light);
-            color: #92400e;
-        }
-
-        .chip.error {
-            border-color: #fca5a5;
-            background: var(--error-light);
-            color: #7f1d1d;
-        }
-
-        .btn {
-            border-radius: 0.55rem;
-            border: 1px solid transparent;
-            padding: 0.36rem 0.62rem;
-            font-size: 0.68rem;
-            font-weight: 700;
-            cursor: pointer;
-            font-family: inherit;
-        }
-
-        .btn-primary {
-            background: var(--primary);
-            color: #fff;
-            border-color: var(--primary);
-        }
-
-        .btn-outline {
-            border-color: var(--gray-300);
-            color: var(--gray-700);
-            background: #fff;
-        }
-
-        .field {
-            width: 100%;
-            border: 1px solid var(--gray-300);
-            border-radius: 0.55rem;
-            padding: 0.5rem 0.58rem;
-            font-size: 0.74rem;
-            background: #fff;
-            font-family: inherit;
-        }
-
-        textarea.field {
-            resize: vertical;
-        }
-
-        .list {
-            display: grid;
-            gap: 0.52rem;
-        }
-
-        .list-item {
-            border: 1px solid var(--gray-200);
-            background: #fff;
-            border-radius: 0.68rem;
-            padding: 0.56rem;
-        }
-
-        .list-item.action {
-            cursor: pointer;
-            text-align: left;
-        }
-
-        .row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 0.5rem;
-        }
-
-        .item-title {
-            font-size: 0.75rem;
-            font-weight: 700;
-            color: var(--secondary);
-        }
-
-        .item-meta {
-            margin-top: 0.22rem;
-            font-size: 0.68rem;
-            color: var(--gray-600);
-            line-height: 1.4;
-        }
-
-        .progress {
-            width: 100%;
-            height: 7px;
-            border-radius: 999px;
-            background: var(--gray-200);
-            overflow: hidden;
-            margin-top: 0.34rem;
-        }
-
-        .progress > span {
-            display: block;
-            height: 100%;
-            background: linear-gradient(90deg, var(--primary), #06b6d4);
-        }
-
-        .state-switcher {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.35rem;
-            margin-bottom: 0.35rem;
-        }
-
-        .state-btn {
-            border: 1px solid var(--gray-300);
-            border-radius: 999px;
-            background: #fff;
-            color: var(--gray-700);
-            font-size: 0.63rem;
-            font-weight: 700;
-            padding: 0.16rem 0.45rem;
-            cursor: pointer;
-        }
-
-        .state-btn.active {
-            border-color: var(--violet);
-            background: var(--violet-light);
-            color: #4338ca;
-        }
-
-        .state-panel {
-            border-radius: 0.68rem;
-            border: 1px solid var(--gray-300);
-            background: #fff;
-            padding: 0.62rem;
-            margin-bottom: 0.58rem;
-            display: grid;
-            gap: 0.3rem;
-            font-size: 0.72rem;
-            color: var(--gray-700);
-        }
-
-        .state-panel.loading {
-            border-color: #93c5fd;
-            background: #eff6ff;
-        }
-
-        .state-panel.empty {
-            border-color: #fde68a;
-            background: #fffbeb;
-        }
-
-        .state-panel.error {
-            border-color: #fca5a5;
-            background: #fef2f2;
-        }
-
-        .state-panel.offline {
-            border-color: #c4b5fd;
-            background: #f5f3ff;
-        }
-
-        .toast {
-            position: fixed;
-            right: 1.2rem;
-            bottom: 1.2rem;
-            padding: 0.65rem 0.85rem;
-            border-radius: 0.62rem;
-            color: #fff;
-            font-weight: 700;
-            font-size: 0.74rem;
-            background: #115e59;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-            opacity: 0;
-            transform: translateY(8px);
-            pointer-events: none;
-            transition: all 0.22s ease;
-            z-index: 50;
-        }
-
-        .toast.show {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .toast.success {
-            background: #065f46;
-        }
-
-        .toast.error {
-            background: #7f1d1d;
-        }
-
-        .nav-item:focus-visible,
-        button:focus-visible,
-        textarea:focus-visible,
-        input:focus-visible {
-            outline: 3px solid #99f6e4;
-            outline-offset: 2px;
-        }
-
-        @media (max-width: 1200px) {
-            body {
-                overflow: auto;
-            }
-
-            .app {
-                flex-direction: column;
-                height: auto;
-                min-height: 100vh;
-            }
-
-            .sidebar {
-                width: 100%;
-                max-height: 52vh;
-            }
-
-            .viewer {
-                padding: 1.2rem;
-            }
-        }
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="app">
-        <aside class="sidebar">
-            <div class="logo">
-                PST Coaching
-                <div class="subtitle">EPIC 17 - Hatirlaticilar ve Bildirimler</div>
-            </div>
+      <aside class="sidebar">
+        <div class="logo">
+          PST Coaching
+          <div class="subtitle">EPIC 17 - Hatirlaticilar ve Bildirimler</div>
+        </div>
 
-            <div class="epic-header">
-                <div class="epic-title">EPIC-17 Sync Pack</div>
-                <div class="epic-meta">4 FR Screen | 16 AC | Requirements + UX artifacts + mockup sync</div>
-            </div>
+        <div class="epic-header">
+          <div class="epic-title">EPIC-17 Sync Pack</div>
+          <div class="epic-meta">4 FR Screen | 16 AC | Requirements + UX artifacts + mockup sync</div>
+        </div>
 
-            <div class="flow-map">
-                <div class="flow-title">Bildirim akis haritasi</div>
-                <div class="flow-list">
-                    <div class="flow-step active" id="flow-1">FR-E17-01 Bildirim listesi ve okunma yonetimi</div>
-                    <div class="flow-step" id="flow-2">FR-E17-02 Bildirim detayi ve hedefe gecis</div>
-                    <div class="flow-step" id="flow-3">FR-E17-03 Bildirim ayarlari ve sessiz saatler</div>
-                    <div class="flow-step" id="flow-4">FR-E17-04 Hatirlatici planlama ve tip bazli zamanlama</div>
-                </div>
-                <div class="gate-note">
-                    Gates: auth + subscription | Tum ekranlar loading, ready, empty, error, offline durumlarini destekler.
-                </div>
-            </div>
+        <div class="flow-map">
+          <div class="flow-title">Bildirim akis haritasi</div>
+          <div class="flow-list">
+            <div class="flow-step active" id="flow-1">FR-E17-01 Bildirim listesi ve okunma yonetimi</div>
+            <div class="flow-step" id="flow-2">FR-E17-02 Bildirim detayi ve hedefe gecis</div>
+            <div class="flow-step" id="flow-3">FR-E17-03 Bildirim ayarlari ve sessiz saatler</div>
+            <div class="flow-step" id="flow-4">FR-E17-04 Hatirlatici planlama ve tip bazli zamanlama</div>
+          </div>
+          <div class="gate-note">
+            Gates: auth + subscription | Tum ekranlar loading, ready, empty, error, offline durumlarini destekler.
+          </div>
+        </div>
 
-            <section class="nav-group">
-                <div class="nav-group-title">Bildirim akis ekranlari</div>
-                <div class="nav-item active" data-screen="1" role="button" tabindex="0"><span class="nav-icon">N1</span><span class="nav-text">Bildirim Listesi</span><span class="nav-badge">4 AC</span></div>
-                <div class="nav-item" data-screen="2" role="button" tabindex="0"><span class="nav-icon">N2</span><span class="nav-text">Bildirim Detayi</span><span class="nav-badge">4 AC</span></div>
-            </section>
+        <section class="nav-group">
+          <div class="nav-group-title">Bildirim akis ekranlari</div>
+          <div class="nav-item active" data-screen="1" role="button" tabindex="0">
+            <span class="nav-icon">N1</span><span class="nav-text">Bildirim Listesi</span
+            ><span class="nav-badge">4 AC</span>
+          </div>
+          <div class="nav-item" data-screen="2" role="button" tabindex="0">
+            <span class="nav-icon">N2</span><span class="nav-text">Bildirim Detayi</span
+            ><span class="nav-badge">4 AC</span>
+          </div>
+        </section>
 
-            <section class="nav-group">
-                <div class="nav-group-title">Ayar ve planlama ekranlari</div>
-                <div class="nav-item" data-screen="3" role="button" tabindex="0"><span class="nav-icon">N3</span><span class="nav-text">Bildirim Ayarlari</span><span class="nav-badge">4 AC</span></div>
-                <div class="nav-item" data-screen="4" role="button" tabindex="0"><span class="nav-icon">N4</span><span class="nav-text">Hatirlatici Plani</span><span class="nav-badge">4 AC</span></div>
-            </section>
-        </aside>
+        <section class="nav-group">
+          <div class="nav-group-title">Ayar ve planlama ekranlari</div>
+          <div class="nav-item" data-screen="3" role="button" tabindex="0">
+            <span class="nav-icon">N3</span><span class="nav-text">Bildirim Ayarlari</span
+            ><span class="nav-badge">4 AC</span>
+          </div>
+          <div class="nav-item" data-screen="4" role="button" tabindex="0">
+            <span class="nav-icon">N4</span><span class="nav-text">Hatirlatici Plani</span
+            ><span class="nav-badge">4 AC</span>
+          </div>
+        </section>
+      </aside>
 
-        <main class="main">
-            <div class="topbar">
-                <h1 class="screen-title" id="screenTitle">Bildirim listesi ve okunma yonetimi</h1>
-                <div class="screen-meta">
-                    <span class="fr-badge" id="screenFr">FR-E17-01</span>
-                    <span class="route-badge" id="screenRoute">/epic-17/fr-e17-01</span>
-                    <span id="screenMeta">Tip filtreleri, okunmamis badge, okundu yonetimi ve temizleme</span>
-                </div>
-            </div>
-            <div class="viewer" id="viewer"></div>
-        </main>
+      <main class="main">
+        <div class="topbar">
+          <h1 class="screen-title" id="screenTitle">Bildirim listesi ve okunma yonetimi</h1>
+          <div class="screen-meta">
+            <span class="fr-badge" id="screenFr">FR-E17-01</span>
+            <span class="route-badge" id="screenRoute">/epic-17/fr-e17-01</span>
+            <span id="screenMeta">Tip filtreleri, okunmamis badge, okundu yonetimi ve temizleme</span>
+          </div>
+        </div>
+        <div class="viewer" id="viewer"></div>
+      </main>
     </div>
 
     <div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
 
     <script>
-        const screenData = {
-            1: {
-                title: 'Bildirim listesi ve okunma yonetimi',
-                fr: 'FR-E17-01',
-                route: '/epic-17/fr-e17-01',
-                event: 'notifications_fr_e17_01_viewed',
-                meta: 'Tip filtreleri, okunmamis badge, okundu yonetimi ve temizleme'
-            },
-            2: {
-                title: 'Bildirim detayi ve hedefe gecis',
-                fr: 'FR-E17-02',
-                route: '/epic-17/fr-e17-02',
-                event: 'notifications_fr_e17_02_viewed',
-                meta: 'Detay icerik, eylem butonu, bagli hedef ve zaman damgasi'
-            },
-            3: {
-                title: 'Bildirim ayarlari ve sessiz saatler',
-                fr: 'FR-E17-03',
-                route: '/epic-17/fr-e17-03',
-                event: 'notifications_fr_e17_03_viewed',
-                meta: 'Tip bazli ayarlar, sessiz saatler, frekans ve ses tercihleri'
-            },
-            4: {
-                title: 'Hatirlatici planlama ve tip bazli zamanlama',
-                fr: 'FR-E17-04',
-                route: '/epic-17/fr-e17-04',
-                event: 'notifications_fr_e17_04_viewed',
-                meta: 'Gunluk saatler, tip bazli plan, aktiflik ve ozel saat yonetimi'
-            }
-        };
-
-        const initialState = {
-            currentScreen: 1,
-            screenStates: {
-                1: 'ready',
-                2: 'ready',
-                3: 'ready',
-                4: 'ready'
-            },
-            lastAnalyticsEvent: 'notifications_fr_e17_01_viewed',
-            filterType: 'all',
-            selectedNotificationId: 801,
-            notifications: [
-                {
-                    id: 801,
-                    type: 'journey',
-                    title: 'Gunluk journey gorevi sizi bekliyor',
-                    message: 'Sukur yolculugunda bugunun adimi hazir. 10 dakikada tamamlayabilirsiniz.',
-                    time: '10 dk once',
-                    timestamp: '2026-04-05 09:30',
-                    route: '/journeys/sukur/day-9',
-                    actionLabel: 'Journey Ac',
-                    unread: true
-                },
-                {
-                    id: 802,
-                    type: 'workshop',
-                    title: 'Atolye geri bildirimi eklendi',
-                    message: 'Son odeviniz icin yeni geri bildirim var. Odev kartindan gorebilirsiniz.',
-                    time: '2 saat once',
-                    timestamp: '2026-04-05 07:25',
-                    route: '/workshops/vicdan/session-2',
-                    actionLabel: 'Atolye Ac',
-                    unread: true
-                },
-                {
-                    id: 803,
-                    type: 'reading',
-                    title: 'Okuma hatirlaticisi',
-                    message: 'Aksam okumasi icin planlanan 20 dakika penceresi baslamak uzere.',
-                    time: 'Dun 20:00',
-                    timestamp: '2026-04-04 20:00',
-                    route: '/ebooks/kalbimin-beyazi/chapter-3',
-                    actionLabel: 'Okumaya Git',
-                    unread: false
-                },
-                {
-                    id: 804,
-                    type: 'social',
-                    title: 'Kulup toplantisi yarin',
-                    message: 'Kitap kulubu toplantiniz yarin 20:00 saatinde baslayacak.',
-                    time: 'Dun 18:30',
-                    timestamp: '2026-04-04 18:30',
-                    route: '/epic-14/fr-e14-03',
-                    actionLabel: 'Kulube Git',
-                    unread: false
-                }
-            ],
-            settings: {
-                types: {
-                    journey: true,
-                    workshop: true,
-                    reading: true,
-                    social: true
-                },
-                quietStart: '22:30',
-                quietEnd: '07:30',
-                frequency: 'instant',
-                sound: true,
-                vibration: false
-            },
-            reminders: [
-                { id: 901, type: 'journey', time: '08:30', enabled: true },
-                { id: 902, type: 'workshop', time: '19:00', enabled: true },
-                { id: 903, type: 'reading', time: '21:15', enabled: false }
-            ],
-            draftReminderType: 'journey',
-            draftReminderTime: '12:00'
-        };
-
-        const ui = JSON.parse(JSON.stringify(initialState));
-        let toastTimer = null;
-
-        function esc(value) {
-            return String(value)
-                .replace(/&/g, '&amp;')
-                .replace(/</g, '&lt;')
-                .replace(/>/g, '&gt;')
-                .replace(/"/g, '&quot;')
-                .replace(/'/g, '&#39;');
+      const screenData = {
+        1: {
+          title: 'Bildirim listesi ve okunma yonetimi',
+          fr: 'FR-E17-01',
+          route: '/epic-17/fr-e17-01',
+          event: 'notifications_fr_e17_01_viewed',
+          meta: 'Tip filtreleri, okunmamis badge, okundu yonetimi ve temizleme'
+        },
+        2: {
+          title: 'Bildirim detayi ve hedefe gecis',
+          fr: 'FR-E17-02',
+          route: '/epic-17/fr-e17-02',
+          event: 'notifications_fr_e17_02_viewed',
+          meta: 'Detay icerik, eylem butonu, bagli hedef ve zaman damgasi'
+        },
+        3: {
+          title: 'Bildirim ayarlari ve sessiz saatler',
+          fr: 'FR-E17-03',
+          route: '/epic-17/fr-e17-03',
+          event: 'notifications_fr_e17_03_viewed',
+          meta: 'Tip bazli ayarlar, sessiz saatler, frekans ve ses tercihleri'
+        },
+        4: {
+          title: 'Hatirlatici planlama ve tip bazli zamanlama',
+          fr: 'FR-E17-04',
+          route: '/epic-17/fr-e17-04',
+          event: 'notifications_fr_e17_04_viewed',
+          meta: 'Gunluk saatler, tip bazli plan, aktiflik ve ozel saat yonetimi'
         }
+      };
 
-        function showToast(message, tone) {
-            const toast = document.getElementById('toast');
-            toast.textContent = message;
-            toast.className = 'toast show' + (tone ? ' ' + tone : '');
-            if (toastTimer) {
-                clearTimeout(toastTimer);
-            }
-            toastTimer = setTimeout(() => {
-                toast.className = 'toast';
-            }, 2200);
+      const initialState = {
+        currentScreen: 1,
+        screenStates: {
+          1: 'ready',
+          2: 'ready',
+          3: 'ready',
+          4: 'ready'
+        },
+        lastAnalyticsEvent: 'notifications_fr_e17_01_viewed',
+        filterType: 'all',
+        selectedNotificationId: 801,
+        notifications: [
+          {
+            id: 801,
+            type: 'journey',
+            title: 'Gunluk journey gorevi sizi bekliyor',
+            message: 'Sukur yolculugunda bugunun adimi hazir. 10 dakikada tamamlayabilirsiniz.',
+            time: '10 dk once',
+            timestamp: '2026-04-05 09:30',
+            route: '/journeys/sukur/day-9',
+            actionLabel: 'Journey Ac',
+            unread: true
+          },
+          {
+            id: 802,
+            type: 'workshop',
+            title: 'Atolye geri bildirimi eklendi',
+            message: 'Son odeviniz icin yeni geri bildirim var. Odev kartindan gorebilirsiniz.',
+            time: '2 saat once',
+            timestamp: '2026-04-05 07:25',
+            route: '/workshops/vicdan/session-2',
+            actionLabel: 'Atolye Ac',
+            unread: true
+          },
+          {
+            id: 803,
+            type: 'reading',
+            title: 'Okuma hatirlaticisi',
+            message: 'Aksam okumasi icin planlanan 20 dakika penceresi baslamak uzere.',
+            time: 'Dun 20:00',
+            timestamp: '2026-04-04 20:00',
+            route: '/ebooks/kalbimin-beyazi/chapter-3',
+            actionLabel: 'Okumaya Git',
+            unread: false
+          },
+          {
+            id: 804,
+            type: 'social',
+            title: 'Kulup toplantisi yarin',
+            message: 'Kitap kulubu toplantiniz yarin 20:00 saatinde baslayacak.',
+            time: 'Dun 18:30',
+            timestamp: '2026-04-04 18:30',
+            route: '/epic-14/fr-e14-03',
+            actionLabel: 'Kulube Git',
+            unread: false
+          }
+        ],
+        settings: {
+          types: {
+            journey: true,
+            workshop: true,
+            reading: true,
+            social: true
+          },
+          quietStart: '22:30',
+          quietEnd: '07:30',
+          frequency: 'instant',
+          sound: true,
+          vibration: false
+        },
+        reminders: [
+          { id: 901, type: 'journey', time: '08:30', enabled: true },
+          { id: 902, type: 'workshop', time: '19:00', enabled: true },
+          { id: 903, type: 'reading', time: '21:15', enabled: false }
+        ],
+        draftReminderType: 'journey',
+        draftReminderTime: '12:00'
+      };
+
+      const ui = JSON.parse(JSON.stringify(initialState));
+      let toastTimer = null;
+
+      function esc(value) {
+        return String(value)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#39;');
+      }
+
+      function showToast(message, tone) {
+        const toast = document.getElementById('toast');
+        toast.textContent = message;
+        toast.className = 'toast show' + (tone ? ' ' + tone : '');
+        if (toastTimer) {
+          clearTimeout(toastTimer);
         }
+        toastTimer = setTimeout(() => {
+          toast.className = 'toast';
+        }, 2200);
+      }
 
-        function phoneShell(title, body, backScreen) {
-            const back = backScreen
-                ? '<button class="icon-btn" onclick="showScreen(' + backScreen + ')" aria-label="Geri">&lt;</button>'
-                : '<span style="width:34px;"></span>';
+      function phoneShell(title, body, backScreen) {
+        const back = backScreen
+          ? '<button class="icon-btn" onclick="showScreen(' + backScreen + ')" aria-label="Geri">&lt;</button>'
+          : '<span style="width:34px;"></span>';
 
-            return (
-                '<div class="iphone">' +
-                    '<div class="island"></div>' +
-                    '<div class="screen">' +
-                        '<div class="content">' +
-                            '<div class="status"><span>9:41</span><span>5G 90%</span></div>' +
-                            '<div class="mobile-header">' +
-                                back +
-                                '<div class="mobile-title">' + title + '</div>' +
-                            '</div>' +
-                            '<div class="mobile-body">' + body + '</div>' +
-                        '</div>' +
+        return (
+          '<div class="iphone">' +
+          '<div class="island"></div>' +
+          '<div class="screen">' +
+          '<div class="content">' +
+          '<div class="status"><span>9:41</span><span>5G 90%</span></div>' +
+          '<div class="mobile-header">' +
+          back +
+          '<div class="mobile-title">' +
+          title +
+          '</div>' +
+          '</div>' +
+          '<div class="mobile-body">' +
+          body +
+          '</div>' +
+          '</div>' +
+          '</div>' +
+          '</div>'
+        );
+      }
+
+      function setCurrentScreen(screenNo) {
+        ui.currentScreen = screenNo;
+        ui.lastAnalyticsEvent = screenData[screenNo].event;
+        render();
+      }
+
+      function showScreen(screenNo) {
+        setCurrentScreen(screenNo);
+      }
+
+      function setScreenState(screenNo, state) {
+        ui.screenStates[screenNo] = state;
+        render();
+      }
+
+      function stateControls(screenNo) {
+        const states = ['ready', 'loading', 'empty', 'error', 'offline'];
+        return (
+          '<div class="state-switcher">' +
+          states
+            .map(
+              s =>
+                '<button class="state-btn ' +
+                (ui.screenStates[screenNo] === s ? 'active' : '') +
+                '" ' +
+                'onclick="setScreenState(' +
+                screenNo +
+                ", '" +
+                s +
+                '\')" aria-label="Ekran durumu ' +
+                s +
+                '" ' +
+                'aria-pressed="' +
+                (ui.screenStates[screenNo] === s) +
+                '">' +
+                s +
+                '</button>'
+            )
+            .join('') +
+          '</div>'
+        );
+      }
+
+      function statePanel(screenNo) {
+        const state = ui.screenStates[screenNo];
+        if (state === 'ready') {
+          return '';
+        }
+        if (state === 'loading') {
+          return '<div class="state-panel loading" role="status"><strong>Loading</strong><span>Bildirim verileri yukleniyor.</span></div>';
+        }
+        if (state === 'empty') {
+          return '<div class="state-panel empty"><strong>Empty</strong><span>Bu gorunumde listelenecek veri bulunmuyor.</span><button class="btn btn-outline" onclick="resetDemo()" aria-label="Demo verisini sifirla">Varsayilan veriye don</button></div>';
+        }
+        if (state === 'error') {
+          return (
+            '<div class="state-panel error" role="alert"><strong>Error</strong><span>Kurtarilabilir hata olustu.</span><button class="btn btn-primary" onclick="setScreenState(' +
+            screenNo +
+            ', \'ready\')" aria-label="Tekrar dene">Tekrar Dene</button></div>'
+          );
+        }
+        return '<div class="state-panel offline" role="status"><strong>Offline</strong><span>Son senkronize bildirimler gosterilir, yazma islemleri kuyrukta tutulur.</span></div>';
+      }
+
+      function unreadCount() {
+        return ui.notifications.filter(item => item.unread).length;
+      }
+
+      function setFilterType(filter) {
+        ui.filterType = filter;
+        render();
+      }
+
+      function filteredNotifications() {
+        if (ui.filterType === 'all') {
+          return ui.notifications;
+        }
+        return ui.notifications.filter(item => item.type === ui.filterType);
+      }
+
+      function selectNotification(id) {
+        ui.selectedNotificationId = id;
+        markAsRead(id, false);
+        showScreen(2);
+      }
+
+      function selectedNotification() {
+        return ui.notifications.find(item => item.id === ui.selectedNotificationId) || ui.notifications[0];
+      }
+
+      function markAsRead(id, notify) {
+        const row = ui.notifications.find(item => item.id === id);
+        if (!row) {
+          return;
+        }
+        row.unread = false;
+        if (notify !== false) {
+          showToast('Bildirim okundu olarak isaretlendi.', 'success');
+        }
+        render();
+      }
+
+      function markAllRead() {
+        ui.notifications.forEach(item => {
+          item.unread = false;
+        });
+        showToast('Tum bildirimler okundu.', 'success');
+        render();
+      }
+
+      function clearAllNotifications() {
+        ui.notifications = [];
+        showToast('Bildirim listesi temizlendi.', 'success');
+        render();
+      }
+
+      function openLinkedContent() {
+        const note = selectedNotification();
+        showToast('Hedef icerik hazir: ' + note.route, 'success');
+      }
+
+      function toggleType(typeKey) {
+        ui.settings.types[typeKey] = !ui.settings.types[typeKey];
+        render();
+      }
+
+      function updateQuiet(field, value) {
+        ui.settings[field] = value;
+        render();
+      }
+
+      function setFrequency(mode) {
+        ui.settings.frequency = mode;
+        render();
+      }
+
+      function toggleSimple(key) {
+        ui.settings[key] = !ui.settings[key];
+        render();
+      }
+
+      function updateDraftReminder(field, value) {
+        ui[field] = value;
+        render();
+      }
+
+      function toggleReminder(id) {
+        const row = ui.reminders.find(item => item.id === id);
+        if (!row) {
+          return;
+        }
+        row.enabled = !row.enabled;
+        render();
+      }
+
+      function updateReminderTime(id, value) {
+        const row = ui.reminders.find(item => item.id === id);
+        if (!row) {
+          return;
+        }
+        row.time = value;
+        render();
+      }
+
+      function addReminder() {
+        const time = ui.draftReminderTime.trim();
+        if (!time) {
+          showToast('Saat alani bos olamaz.', 'error');
+          return;
+        }
+        ui.reminders.push({
+          id: Date.now(),
+          type: ui.draftReminderType,
+          time,
+          enabled: true
+        });
+        showToast('Yeni hatirlatici eklendi.', 'success');
+        render();
+      }
+
+      function removeReminder(id) {
+        ui.reminders = ui.reminders.filter(item => item.id !== id);
+        showToast('Hatirlatici silindi.', 'success');
+        render();
+      }
+
+      function resetDemo() {
+        const fresh = JSON.parse(JSON.stringify(initialState));
+        Object.keys(ui).forEach(key => {
+          delete ui[key];
+        });
+        Object.assign(ui, fresh);
+        render();
+      }
+
+      function screenOne() {
+        const rows = filteredNotifications();
+        const body =
+          stateControls(1) +
+          statePanel(1) +
+          (ui.screenStates[1] !== 'ready'
+            ? ''
+            : '<div class="card">' +
+              '<div class="card-title">Bildirim ozeti</div>' +
+              '<div class="chips">' +
+              '<span class="chip">Toplam: ' +
+              ui.notifications.length +
+              '</span>' +
+              '<span class="chip warn">Okunmamis: ' +
+              unreadCount() +
+              '</span>' +
+              '<button class="btn btn-primary" onclick="markAllRead()" aria-label="Tumunu okundu yap">Tumunu Okundu Yap</button>' +
+              '<button class="btn btn-outline" onclick="clearAllNotifications()" aria-label="Tumunu temizle">Temizle</button>' +
+              '</div>' +
+              '<div class="muted" style="margin-top:0.45rem;">AC-FR-E17-01-02</div>' +
+              '<div class="muted">AC-FR-E17-01-04</div>' +
+              '</div>' +
+              '<div class="card">' +
+              '<div class="card-title">Tip filtreleri</div>' +
+              '<div class="chips">' +
+              '<button class="btn ' +
+              (ui.filterType === 'all' ? 'btn-primary' : 'btn-outline') +
+              '" onclick="setFilterType(\'all\')" aria-label="Tum tipler" aria-pressed="' +
+              (ui.filterType === 'all') +
+              '">Tum</button>' +
+              '<button class="btn ' +
+              (ui.filterType === 'journey' ? 'btn-primary' : 'btn-outline') +
+              '" onclick="setFilterType(\'journey\')" aria-label="Journey tipi" aria-pressed="' +
+              (ui.filterType === 'journey') +
+              '">Journey</button>' +
+              '<button class="btn ' +
+              (ui.filterType === 'workshop' ? 'btn-primary' : 'btn-outline') +
+              '" onclick="setFilterType(\'workshop\')" aria-label="Workshop tipi" aria-pressed="' +
+              (ui.filterType === 'workshop') +
+              '">Workshop</button>' +
+              '<button class="btn ' +
+              (ui.filterType === 'reading' ? 'btn-primary' : 'btn-outline') +
+              '" onclick="setFilterType(\'reading\')" aria-label="Reading tipi" aria-pressed="' +
+              (ui.filterType === 'reading') +
+              '">Reading</button>' +
+              '<button class="btn ' +
+              (ui.filterType === 'social' ? 'btn-primary' : 'btn-outline') +
+              '" onclick="setFilterType(\'social\')" aria-label="Social tipi" aria-pressed="' +
+              (ui.filterType === 'social') +
+              '">Social</button>' +
+              '</div>' +
+              '<div class="muted" style="margin-top:0.45rem;">AC-FR-E17-01-01</div>' +
+              '</div>' +
+              '<div class="card">' +
+              '<div class="card-title">Bildirim listesi</div>' +
+              '<div class="list">' +
+              rows
+                .map(
+                  item =>
+                    '<button class="list-item action" onclick="selectNotification(' +
+                    item.id +
+                    ')" aria-label="Bildirim detayini ac" style="border-color:' +
+                    (item.unread ? '#93c5fd' : '#e5e5e5') +
+                    '; background:' +
+                    (item.unread ? '#eff6ff' : '#fff') +
+                    ';">' +
+                    '<div class="row"><div class="item-title">' +
+                    esc(item.title) +
+                    '</div><span class="chip ' +
+                    (item.unread ? 'warn' : 'success') +
+                    '">' +
+                    (item.unread ? 'okunmamis' : 'okundu') +
+                    '</span></div>' +
+                    '<div class="item-meta">Tip: ' +
+                    esc(item.type) +
+                    ' | Zaman: ' +
+                    esc(item.time) +
                     '</div>' +
-                '</div>'
-            );
-        }
-
-        function setCurrentScreen(screenNo) {
-            ui.currentScreen = screenNo;
-            ui.lastAnalyticsEvent = screenData[screenNo].event;
-            render();
-        }
-
-        function showScreen(screenNo) {
-            setCurrentScreen(screenNo);
-        }
-
-        function setScreenState(screenNo, state) {
-            ui.screenStates[screenNo] = state;
-            render();
-        }
-
-        function stateControls(screenNo) {
-            const states = ['ready', 'loading', 'empty', 'error', 'offline'];
-            return (
-                '<div class="state-switcher">' +
-                    states.map((s) => (
-                        '<button class="state-btn ' + (ui.screenStates[screenNo] === s ? 'active' : '') + '" ' +
-                        'onclick="setScreenState(' + screenNo + ', \'' + s + '\')" aria-label="Ekran durumu ' + s + '" ' +
-                        'aria-pressed="' + (ui.screenStates[screenNo] === s) + '">' + s + '</button>'
-                    )).join('') +
-                '</div>'
-            );
-        }
-
-        function statePanel(screenNo) {
-            const state = ui.screenStates[screenNo];
-            if (state === 'ready') {
-                return '';
-            }
-            if (state === 'loading') {
-                return '<div class="state-panel loading" role="status"><strong>Loading</strong><span>Bildirim verileri yukleniyor.</span></div>';
-            }
-            if (state === 'empty') {
-                return '<div class="state-panel empty"><strong>Empty</strong><span>Bu gorunumde listelenecek veri bulunmuyor.</span><button class="btn btn-outline" onclick="resetDemo()" aria-label="Demo verisini sifirla">Varsayilan veriye don</button></div>';
-            }
-            if (state === 'error') {
-                return '<div class="state-panel error" role="alert"><strong>Error</strong><span>Kurtarilabilir hata olustu.</span><button class="btn btn-primary" onclick="setScreenState(' + screenNo + ', \'ready\')" aria-label="Tekrar dene">Tekrar Dene</button></div>';
-            }
-            return '<div class="state-panel offline" role="status"><strong>Offline</strong><span>Son senkronize bildirimler gosterilir, yazma islemleri kuyrukta tutulur.</span></div>';
-        }
-
-        function unreadCount() {
-            return ui.notifications.filter((item) => item.unread).length;
-        }
-
-        function setFilterType(filter) {
-            ui.filterType = filter;
-            render();
-        }
-
-        function filteredNotifications() {
-            if (ui.filterType === 'all') {
-                return ui.notifications;
-            }
-            return ui.notifications.filter((item) => item.type === ui.filterType);
-        }
-
-        function selectNotification(id) {
-            ui.selectedNotificationId = id;
-            markAsRead(id, false);
-            showScreen(2);
-        }
-
-        function selectedNotification() {
-            return ui.notifications.find((item) => item.id === ui.selectedNotificationId) || ui.notifications[0];
-        }
-
-        function markAsRead(id, notify) {
-            const row = ui.notifications.find((item) => item.id === id);
-            if (!row) {
-                return;
-            }
-            row.unread = false;
-            if (notify !== false) {
-                showToast('Bildirim okundu olarak isaretlendi.', 'success');
-            }
-            render();
-        }
-
-        function markAllRead() {
-            ui.notifications.forEach((item) => {
-                item.unread = false;
-            });
-            showToast('Tum bildirimler okundu.', 'success');
-            render();
-        }
-
-        function clearAllNotifications() {
-            ui.notifications = [];
-            showToast('Bildirim listesi temizlendi.', 'success');
-            render();
-        }
-
-        function openLinkedContent() {
-            const note = selectedNotification();
-            showToast('Hedef icerik hazir: ' + note.route, 'success');
-        }
-
-        function toggleType(typeKey) {
-            ui.settings.types[typeKey] = !ui.settings.types[typeKey];
-            render();
-        }
-
-        function updateQuiet(field, value) {
-            ui.settings[field] = value;
-            render();
-        }
-
-        function setFrequency(mode) {
-            ui.settings.frequency = mode;
-            render();
-        }
-
-        function toggleSimple(key) {
-            ui.settings[key] = !ui.settings[key];
-            render();
-        }
-
-        function updateDraftReminder(field, value) {
-            ui[field] = value;
-            render();
-        }
-
-        function toggleReminder(id) {
-            const row = ui.reminders.find((item) => item.id === id);
-            if (!row) {
-                return;
-            }
-            row.enabled = !row.enabled;
-            render();
-        }
-
-        function updateReminderTime(id, value) {
-            const row = ui.reminders.find((item) => item.id === id);
-            if (!row) {
-                return;
-            }
-            row.time = value;
-            render();
-        }
-
-        function addReminder() {
-            const time = ui.draftReminderTime.trim();
-            if (!time) {
-                showToast('Saat alani bos olamaz.', 'error');
-                return;
-            }
-            ui.reminders.push({
-                id: Date.now(),
-                type: ui.draftReminderType,
-                time,
-                enabled: true
-            });
-            showToast('Yeni hatirlatici eklendi.', 'success');
-            render();
-        }
-
-        function removeReminder(id) {
-            ui.reminders = ui.reminders.filter((item) => item.id !== id);
-            showToast('Hatirlatici silindi.', 'success');
-            render();
-        }
-
-        function resetDemo() {
-            const fresh = JSON.parse(JSON.stringify(initialState));
-            Object.keys(ui).forEach((key) => {
-                delete ui[key];
-            });
-            Object.assign(ui, fresh);
-            render();
-        }
-
-        function screenOne() {
-            const rows = filteredNotifications();
-            const body = (
-                stateControls(1) +
-                statePanel(1) +
-                (ui.screenStates[1] !== 'ready' ? '' : (
-                    '<div class="card">' +
-                        '<div class="card-title">Bildirim ozeti</div>' +
-                        '<div class="chips">' +
-                            '<span class="chip">Toplam: ' + ui.notifications.length + '</span>' +
-                            '<span class="chip warn">Okunmamis: ' + unreadCount() + '</span>' +
-                            '<button class="btn btn-primary" onclick="markAllRead()" aria-label="Tumunu okundu yap">Tumunu Okundu Yap</button>' +
-                            '<button class="btn btn-outline" onclick="clearAllNotifications()" aria-label="Tumunu temizle">Temizle</button>' +
-                        '</div>' +
-                        '<div class="muted" style="margin-top:0.45rem;">AC-FR-E17-01-02</div>' +
-                        '<div class="muted">AC-FR-E17-01-04</div>' +
+                    '<div class="item-meta">' +
+                    esc(item.message) +
                     '</div>' +
+                    '<div class="chips" style="margin-top:0.35rem;"><button class="btn btn-outline" onclick="event.stopPropagation();markAsRead(' +
+                    item.id +
+                    ', true)" aria-label="Bildirim okundu yap">Okundu Yap</button></div>' +
+                    '</button>'
+                )
+                .join('') +
+              '</div>' +
+              '<div class="muted" style="margin-top:0.45rem;">AC-FR-E17-01-03</div>' +
+              '</div>');
 
-                    '<div class="card">' +
-                        '<div class="card-title">Tip filtreleri</div>' +
-                        '<div class="chips">' +
-                            '<button class="btn ' + (ui.filterType === 'all' ? 'btn-primary' : 'btn-outline') + '" onclick="setFilterType(\'all\')" aria-label="Tum tipler" aria-pressed="' + (ui.filterType === 'all') + '">Tum</button>' +
-                            '<button class="btn ' + (ui.filterType === 'journey' ? 'btn-primary' : 'btn-outline') + '" onclick="setFilterType(\'journey\')" aria-label="Journey tipi" aria-pressed="' + (ui.filterType === 'journey') + '">Journey</button>' +
-                            '<button class="btn ' + (ui.filterType === 'workshop' ? 'btn-primary' : 'btn-outline') + '" onclick="setFilterType(\'workshop\')" aria-label="Workshop tipi" aria-pressed="' + (ui.filterType === 'workshop') + '">Workshop</button>' +
-                            '<button class="btn ' + (ui.filterType === 'reading' ? 'btn-primary' : 'btn-outline') + '" onclick="setFilterType(\'reading\')" aria-label="Reading tipi" aria-pressed="' + (ui.filterType === 'reading') + '">Reading</button>' +
-                            '<button class="btn ' + (ui.filterType === 'social' ? 'btn-primary' : 'btn-outline') + '" onclick="setFilterType(\'social\')" aria-label="Social tipi" aria-pressed="' + (ui.filterType === 'social') + '">Social</button>' +
-                        '</div>' +
-                        '<div class="muted" style="margin-top:0.45rem;">AC-FR-E17-01-01</div>' +
+        return phoneShell('Bildirim listesi', body, null);
+      }
+
+      function screenTwo() {
+        const note = selectedNotification();
+        const body =
+          stateControls(2) +
+          statePanel(2) +
+          (ui.screenStates[2] !== 'ready'
+            ? ''
+            : '<div class="card">' +
+              '<div class="card-title">Bildirim detay icerigi</div>' +
+              '<div class="item-meta"><strong>Baslik:</strong> ' +
+              esc(note.title) +
+              '</div>' +
+              '<div class="item-meta"><strong>Mesaj:</strong> ' +
+              esc(note.message) +
+              '</div>' +
+              '<div class="item-meta"><strong>Tip:</strong> ' +
+              esc(note.type) +
+              '</div>' +
+              '<div class="muted" style="margin-top:0.45rem;">AC-FR-E17-02-01</div>' +
+              '</div>' +
+              '<div class="card">' +
+              '<div class="card-title">Eylemler</div>' +
+              '<div class="chips">' +
+              '<button class="btn btn-primary" onclick="openLinkedContent()" aria-label="Bagli icerigi ac">' +
+              esc(note.actionLabel) +
+              '</button>' +
+              '<button class="btn btn-outline" onclick="markAsRead(' +
+              note.id +
+              ', true)" aria-label="Okundu yap">Okundu Yap</button>' +
+              '</div>' +
+              '<div class="muted" style="margin-top:0.45rem;">AC-FR-E17-02-02</div>' +
+              '<div class="muted">AC-FR-E17-02-03</div>' +
+              '</div>' +
+              '<div class="card">' +
+              '<div class="card-title">Zaman damgasi</div>' +
+              '<div class="chips">' +
+              '<span class="chip success">Zaman: ' +
+              esc(note.timestamp) +
+              '</span>' +
+              '</div>' +
+              '<div class="muted" style="margin-top:0.45rem;">AC-FR-E17-02-04</div>' +
+              '</div>');
+
+        return phoneShell('Bildirim detayi', body, 1);
+      }
+
+      function screenThree() {
+        const types = ui.settings.types;
+        const body =
+          stateControls(3) +
+          statePanel(3) +
+          (ui.screenStates[3] !== 'ready'
+            ? ''
+            : '<div class="card">' +
+              '<div class="card-title">Tip bazli bildirim anahtarlari</div>' +
+              '<div class="list">' +
+              ['journey', 'workshop', 'reading', 'social']
+                .map(
+                  key =>
+                    '<div class="list-item"><div class="row"><div class="item-title">' +
+                    key +
+                    '</div><button class="btn ' +
+                    (types[key] ? 'btn-primary' : 'btn-outline') +
+                    '" onclick="toggleType(\'' +
+                    key +
+                    '\')" aria-label="Tip anahtari" aria-pressed="' +
+                    types[key] +
+                    '">' +
+                    (types[key] ? 'Acik' : 'Kapali') +
+                    '</button></div></div>'
+                )
+                .join('') +
+              '</div>' +
+              '<div class="muted" style="margin-top:0.45rem;">AC-FR-E17-03-01</div>' +
+              '</div>' +
+              '<div class="card">' +
+              '<div class="card-title">Sessiz saat araligi</div>' +
+              '<div class="chips">' +
+              '<input class="field" style="max-width:47%;" type="text" value="' +
+              esc(ui.settings.quietStart) +
+              '" oninput="updateQuiet(\'quietStart\', this.value)" aria-label="Sessiz saat baslangic" />' +
+              '<input class="field" style="max-width:47%;" type="text" value="' +
+              esc(ui.settings.quietEnd) +
+              '" oninput="updateQuiet(\'quietEnd\', this.value)" aria-label="Sessiz saat bitis" />' +
+              '</div>' +
+              '<div class="muted" style="margin-top:0.45rem;">AC-FR-E17-03-02</div>' +
+              '</div>' +
+              '<div class="card">' +
+              '<div class="card-title">Bildirim sikligi</div>' +
+              '<div class="chips">' +
+              '<button class="btn ' +
+              (ui.settings.frequency === 'instant' ? 'btn-primary' : 'btn-outline') +
+              '" onclick="setFrequency(\'instant\')" aria-label="Anlik siklik" aria-pressed="' +
+              (ui.settings.frequency === 'instant') +
+              '">Anlik</button>' +
+              '<button class="btn ' +
+              (ui.settings.frequency === 'daily' ? 'btn-primary' : 'btn-outline') +
+              '" onclick="setFrequency(\'daily\')" aria-label="Gunluk ozet" aria-pressed="' +
+              (ui.settings.frequency === 'daily') +
+              '">Gunluk Ozet</button>' +
+              '<button class="btn ' +
+              (ui.settings.frequency === 'weekly' ? 'btn-primary' : 'btn-outline') +
+              '" onclick="setFrequency(\'weekly\')" aria-label="Haftalik ozet" aria-pressed="' +
+              (ui.settings.frequency === 'weekly') +
+              '">Haftalik Ozet</button>' +
+              '</div>' +
+              '<div class="muted" style="margin-top:0.45rem;">AC-FR-E17-03-03</div>' +
+              '</div>' +
+              '<div class="card">' +
+              '<div class="card-title">Ses ve titresim tercihleri</div>' +
+              '<div class="chips">' +
+              '<button class="btn ' +
+              (ui.settings.sound ? 'btn-primary' : 'btn-outline') +
+              '" onclick="toggleSimple(\'sound\')" aria-label="Ses tercih" aria-pressed="' +
+              ui.settings.sound +
+              '">Ses ' +
+              (ui.settings.sound ? 'Acik' : 'Kapali') +
+              '</button>' +
+              '<button class="btn ' +
+              (ui.settings.vibration ? 'btn-primary' : 'btn-outline') +
+              '" onclick="toggleSimple(\'vibration\')" aria-label="Titresim tercih" aria-pressed="' +
+              ui.settings.vibration +
+              '">Titresim ' +
+              (ui.settings.vibration ? 'Acik' : 'Kapali') +
+              '</button>' +
+              '</div>' +
+              '<div class="muted" style="margin-top:0.45rem;">AC-FR-E17-03-04</div>' +
+              '</div>');
+
+        return phoneShell('Bildirim ayarlari', body, 1);
+      }
+
+      function screenFour() {
+        const body =
+          stateControls(4) +
+          statePanel(4) +
+          (ui.screenStates[4] !== 'ready'
+            ? ''
+            : '<div class="card">' +
+              '<div class="card-title">Tip bazli hatirlatici plani</div>' +
+              '<div class="list">' +
+              ui.reminders
+                .map(
+                  item =>
+                    '<div class="list-item">' +
+                    '<div class="row"><div class="item-title">' +
+                    esc(item.type) +
+                    ' hatirlaticisi</div><button class="btn ' +
+                    (item.enabled ? 'btn-primary' : 'btn-outline') +
+                    '" onclick="toggleReminder(' +
+                    item.id +
+                    ')" aria-label="Hatirlatici durum" aria-pressed="' +
+                    item.enabled +
+                    '">' +
+                    (item.enabled ? 'Etkin' : 'Pasif') +
+                    '</button></div>' +
+                    '<div class="chips" style="margin-top:0.38rem;">' +
+                    '<input class="field" style="max-width:46%;" type="text" value="' +
+                    esc(item.time) +
+                    '" oninput="updateReminderTime(' +
+                    item.id +
+                    ', this.value)" aria-label="Hatirlatici saati" />' +
+                    '<button class="btn btn-outline" onclick="removeReminder(' +
+                    item.id +
+                    ')" aria-label="Hatirlatici sil">Sil</button>' +
                     '</div>' +
-
-                    '<div class="card">' +
-                        '<div class="card-title">Bildirim listesi</div>' +
-                        '<div class="list">' +
-                            rows.map((item) => (
-                                '<button class="list-item action" onclick="selectNotification(' + item.id + ')" aria-label="Bildirim detayini ac" style="border-color:' + (item.unread ? '#93c5fd' : '#e5e5e5') + '; background:' + (item.unread ? '#eff6ff' : '#fff') + ';">' +
-                                    '<div class="row"><div class="item-title">' + esc(item.title) + '</div><span class="chip ' + (item.unread ? 'warn' : 'success') + '">' + (item.unread ? 'okunmamis' : 'okundu') + '</span></div>' +
-                                    '<div class="item-meta">Tip: ' + esc(item.type) + ' | Zaman: ' + esc(item.time) + '</div>' +
-                                    '<div class="item-meta">' + esc(item.message) + '</div>' +
-                                    '<div class="chips" style="margin-top:0.35rem;"><button class="btn btn-outline" onclick="event.stopPropagation();markAsRead(' + item.id + ', true)" aria-label="Bildirim okundu yap">Okundu Yap</button></div>' +
-                                '</button>'
-                            )).join('') +
-                        '</div>' +
-                        '<div class="muted" style="margin-top:0.45rem;">AC-FR-E17-01-03</div>' +
                     '</div>'
-                ))
-            );
+                )
+                .join('') +
+              '</div>' +
+              '<div class="muted" style="margin-top:0.45rem;">AC-FR-E17-04-02</div>' +
+              '<div class="muted">AC-FR-E17-04-03</div>' +
+              '</div>' +
+              '<div class="card">' +
+              '<div class="card-title">Yeni ozel hatirlatici</div>' +
+              '<div class="chips">' +
+              '<button class="btn ' +
+              (ui.draftReminderType === 'journey' ? 'btn-primary' : 'btn-outline') +
+              '" onclick="updateDraftReminder(\'draftReminderType\', \'journey\')" aria-label="Journey tipi" aria-pressed="' +
+              (ui.draftReminderType === 'journey') +
+              '">Journey</button>' +
+              '<button class="btn ' +
+              (ui.draftReminderType === 'workshop' ? 'btn-primary' : 'btn-outline') +
+              '" onclick="updateDraftReminder(\'draftReminderType\', \'workshop\')" aria-label="Workshop tipi" aria-pressed="' +
+              (ui.draftReminderType === 'workshop') +
+              '">Workshop</button>' +
+              '<button class="btn ' +
+              (ui.draftReminderType === 'reading' ? 'btn-primary' : 'btn-outline') +
+              '" onclick="updateDraftReminder(\'draftReminderType\', \'reading\')" aria-label="Reading tipi" aria-pressed="' +
+              (ui.draftReminderType === 'reading') +
+              '">Reading</button>' +
+              '</div>' +
+              '<div class="chips" style="margin-top:0.45rem;">' +
+              '<input class="field" style="max-width:48%;" type="text" value="' +
+              esc(ui.draftReminderTime) +
+              '" oninput="updateDraftReminder(\'draftReminderTime\', this.value)" aria-label="Yeni hatirlatici saati" />' +
+              '<button class="btn btn-primary" onclick="addReminder()" aria-label="Hatirlatici ekle">Ekle</button>' +
+              '</div>' +
+              '<div class="muted" style="margin-top:0.45rem;">AC-FR-E17-04-01</div>' +
+              '<div class="muted">AC-FR-E17-04-04</div>' +
+              '</div>');
 
-            return phoneShell('Bildirim listesi', body, null);
+        return phoneShell('Hatirlatici planlama', body, 3);
+      }
+
+      function renderScreen(screenNo) {
+        if (screenNo === 1) {
+          return screenOne();
         }
-
-        function screenTwo() {
-            const note = selectedNotification();
-            const body = (
-                stateControls(2) +
-                statePanel(2) +
-                (ui.screenStates[2] !== 'ready' ? '' : (
-                    '<div class="card">' +
-                        '<div class="card-title">Bildirim detay icerigi</div>' +
-                        '<div class="item-meta"><strong>Baslik:</strong> ' + esc(note.title) + '</div>' +
-                        '<div class="item-meta"><strong>Mesaj:</strong> ' + esc(note.message) + '</div>' +
-                        '<div class="item-meta"><strong>Tip:</strong> ' + esc(note.type) + '</div>' +
-                        '<div class="muted" style="margin-top:0.45rem;">AC-FR-E17-02-01</div>' +
-                    '</div>' +
-
-                    '<div class="card">' +
-                        '<div class="card-title">Eylemler</div>' +
-                        '<div class="chips">' +
-                            '<button class="btn btn-primary" onclick="openLinkedContent()" aria-label="Bagli icerigi ac">' + esc(note.actionLabel) + '</button>' +
-                            '<button class="btn btn-outline" onclick="markAsRead(' + note.id + ', true)" aria-label="Okundu yap">Okundu Yap</button>' +
-                        '</div>' +
-                        '<div class="muted" style="margin-top:0.45rem;">AC-FR-E17-02-02</div>' +
-                        '<div class="muted">AC-FR-E17-02-03</div>' +
-                    '</div>' +
-
-                    '<div class="card">' +
-                        '<div class="card-title">Zaman damgasi</div>' +
-                        '<div class="chips">' +
-                            '<span class="chip success">Zaman: ' + esc(note.timestamp) + '</span>' +
-                        '</div>' +
-                        '<div class="muted" style="margin-top:0.45rem;">AC-FR-E17-02-04</div>' +
-                    '</div>'
-                ))
-            );
-
-            return phoneShell('Bildirim detayi', body, 1);
+        if (screenNo === 2) {
+          return screenTwo();
         }
-
-        function screenThree() {
-            const types = ui.settings.types;
-            const body = (
-                stateControls(3) +
-                statePanel(3) +
-                (ui.screenStates[3] !== 'ready' ? '' : (
-                    '<div class="card">' +
-                        '<div class="card-title">Tip bazli bildirim anahtarlari</div>' +
-                        '<div class="list">' +
-                            ['journey', 'workshop', 'reading', 'social'].map((key) => (
-                                '<div class="list-item"><div class="row"><div class="item-title">' + key + '</div><button class="btn ' + (types[key] ? 'btn-primary' : 'btn-outline') + '" onclick="toggleType(\'' + key + '\')" aria-label="Tip anahtari" aria-pressed="' + types[key] + '">' + (types[key] ? 'Acik' : 'Kapali') + '</button></div></div>'
-                            )).join('') +
-                        '</div>' +
-                        '<div class="muted" style="margin-top:0.45rem;">AC-FR-E17-03-01</div>' +
-                    '</div>' +
-
-                    '<div class="card">' +
-                        '<div class="card-title">Sessiz saat araligi</div>' +
-                        '<div class="chips">' +
-                            '<input class="field" style="max-width:47%;" type="text" value="' + esc(ui.settings.quietStart) + '" oninput="updateQuiet(\'quietStart\', this.value)" aria-label="Sessiz saat baslangic" />' +
-                            '<input class="field" style="max-width:47%;" type="text" value="' + esc(ui.settings.quietEnd) + '" oninput="updateQuiet(\'quietEnd\', this.value)" aria-label="Sessiz saat bitis" />' +
-                        '</div>' +
-                        '<div class="muted" style="margin-top:0.45rem;">AC-FR-E17-03-02</div>' +
-                    '</div>' +
-
-                    '<div class="card">' +
-                        '<div class="card-title">Bildirim sikligi</div>' +
-                        '<div class="chips">' +
-                            '<button class="btn ' + (ui.settings.frequency === 'instant' ? 'btn-primary' : 'btn-outline') + '" onclick="setFrequency(\'instant\')" aria-label="Anlik siklik" aria-pressed="' + (ui.settings.frequency === 'instant') + '">Anlik</button>' +
-                            '<button class="btn ' + (ui.settings.frequency === 'daily' ? 'btn-primary' : 'btn-outline') + '" onclick="setFrequency(\'daily\')" aria-label="Gunluk ozet" aria-pressed="' + (ui.settings.frequency === 'daily') + '">Gunluk Ozet</button>' +
-                            '<button class="btn ' + (ui.settings.frequency === 'weekly' ? 'btn-primary' : 'btn-outline') + '" onclick="setFrequency(\'weekly\')" aria-label="Haftalik ozet" aria-pressed="' + (ui.settings.frequency === 'weekly') + '">Haftalik Ozet</button>' +
-                        '</div>' +
-                        '<div class="muted" style="margin-top:0.45rem;">AC-FR-E17-03-03</div>' +
-                    '</div>' +
-
-                    '<div class="card">' +
-                        '<div class="card-title">Ses ve titresim tercihleri</div>' +
-                        '<div class="chips">' +
-                            '<button class="btn ' + (ui.settings.sound ? 'btn-primary' : 'btn-outline') + '" onclick="toggleSimple(\'sound\')" aria-label="Ses tercih" aria-pressed="' + ui.settings.sound + '">Ses ' + (ui.settings.sound ? 'Acik' : 'Kapali') + '</button>' +
-                            '<button class="btn ' + (ui.settings.vibration ? 'btn-primary' : 'btn-outline') + '" onclick="toggleSimple(\'vibration\')" aria-label="Titresim tercih" aria-pressed="' + ui.settings.vibration + '">Titresim ' + (ui.settings.vibration ? 'Acik' : 'Kapali') + '</button>' +
-                        '</div>' +
-                        '<div class="muted" style="margin-top:0.45rem;">AC-FR-E17-03-04</div>' +
-                    '</div>'
-                ))
-            );
-
-            return phoneShell('Bildirim ayarlari', body, 1);
+        if (screenNo === 3) {
+          return screenThree();
         }
+        return screenFour();
+      }
 
-        function screenFour() {
-            const body = (
-                stateControls(4) +
-                statePanel(4) +
-                (ui.screenStates[4] !== 'ready' ? '' : (
-                    '<div class="card">' +
-                        '<div class="card-title">Tip bazli hatirlatici plani</div>' +
-                        '<div class="list">' +
-                            ui.reminders.map((item) => (
-                                '<div class="list-item">' +
-                                    '<div class="row"><div class="item-title">' + esc(item.type) + ' hatirlaticisi</div><button class="btn ' + (item.enabled ? 'btn-primary' : 'btn-outline') + '" onclick="toggleReminder(' + item.id + ')" aria-label="Hatirlatici durum" aria-pressed="' + item.enabled + '">' + (item.enabled ? 'Etkin' : 'Pasif') + '</button></div>' +
-                                    '<div class="chips" style="margin-top:0.38rem;">' +
-                                        '<input class="field" style="max-width:46%;" type="text" value="' + esc(item.time) + '" oninput="updateReminderTime(' + item.id + ', this.value)" aria-label="Hatirlatici saati" />' +
-                                        '<button class="btn btn-outline" onclick="removeReminder(' + item.id + ')" aria-label="Hatirlatici sil">Sil</button>' +
-                                    '</div>' +
-                                '</div>'
-                            )).join('') +
-                        '</div>' +
-                        '<div class="muted" style="margin-top:0.45rem;">AC-FR-E17-04-02</div>' +
-                        '<div class="muted">AC-FR-E17-04-03</div>' +
-                    '</div>' +
+      function render() {
+        const current = screenData[ui.currentScreen];
+        document.getElementById('screenTitle').textContent = current.title;
+        document.getElementById('screenFr').textContent = current.fr;
+        document.getElementById('screenRoute').textContent = current.route;
+        document.getElementById('screenMeta').textContent = current.meta + ' | event: ' + ui.lastAnalyticsEvent;
 
-                    '<div class="card">' +
-                        '<div class="card-title">Yeni ozel hatirlatici</div>' +
-                        '<div class="chips">' +
-                            '<button class="btn ' + (ui.draftReminderType === 'journey' ? 'btn-primary' : 'btn-outline') + '" onclick="updateDraftReminder(\'draftReminderType\', \'journey\')" aria-label="Journey tipi" aria-pressed="' + (ui.draftReminderType === 'journey') + '">Journey</button>' +
-                            '<button class="btn ' + (ui.draftReminderType === 'workshop' ? 'btn-primary' : 'btn-outline') + '" onclick="updateDraftReminder(\'draftReminderType\', \'workshop\')" aria-label="Workshop tipi" aria-pressed="' + (ui.draftReminderType === 'workshop') + '">Workshop</button>' +
-                            '<button class="btn ' + (ui.draftReminderType === 'reading' ? 'btn-primary' : 'btn-outline') + '" onclick="updateDraftReminder(\'draftReminderType\', \'reading\')" aria-label="Reading tipi" aria-pressed="' + (ui.draftReminderType === 'reading') + '">Reading</button>' +
-                        '</div>' +
-                        '<div class="chips" style="margin-top:0.45rem;">' +
-                            '<input class="field" style="max-width:48%;" type="text" value="' + esc(ui.draftReminderTime) + '" oninput="updateDraftReminder(\'draftReminderTime\', this.value)" aria-label="Yeni hatirlatici saati" />' +
-                            '<button class="btn btn-primary" onclick="addReminder()" aria-label="Hatirlatici ekle">Ekle</button>' +
-                        '</div>' +
-                        '<div class="muted" style="margin-top:0.45rem;">AC-FR-E17-04-01</div>' +
-                        '<div class="muted">AC-FR-E17-04-04</div>' +
-                    '</div>'
-                ))
-            );
-
-            return phoneShell('Hatirlatici planlama', body, 3);
-        }
-
-        function renderScreen(screenNo) {
-            if (screenNo === 1) {
-                return screenOne();
-            }
-            if (screenNo === 2) {
-                return screenTwo();
-            }
-            if (screenNo === 3) {
-                return screenThree();
-            }
-            return screenFour();
-        }
-
-        function render() {
-            const current = screenData[ui.currentScreen];
-            document.getElementById('screenTitle').textContent = current.title;
-            document.getElementById('screenFr').textContent = current.fr;
-            document.getElementById('screenRoute').textContent = current.route;
-            document.getElementById('screenMeta').textContent = current.meta + ' | event: ' + ui.lastAnalyticsEvent;
-
-            document.querySelectorAll('.nav-item').forEach((item) => {
-                item.classList.toggle('active', Number(item.dataset.screen) === ui.currentScreen);
-            });
-
-            document.querySelectorAll('[id^="flow-"]').forEach((step, index) => {
-                step.classList.toggle('active', index + 1 === ui.currentScreen);
-            });
-
-            document.getElementById('viewer').innerHTML = renderScreen(ui.currentScreen);
-        }
-
-        document.querySelectorAll('.nav-item').forEach((item) => {
-            item.addEventListener('click', () => {
-                setCurrentScreen(Number(item.dataset.screen));
-            });
-            item.addEventListener('keydown', (event) => {
-                if (event.key === 'Enter' || event.key === ' ') {
-                    event.preventDefault();
-                    setCurrentScreen(Number(item.dataset.screen));
-                }
-            });
+        document.querySelectorAll('.nav-item').forEach(item => {
+          item.classList.toggle('active', Number(item.dataset.screen) === ui.currentScreen);
         });
 
-        render();
+        document.querySelectorAll('[id^="flow-"]').forEach((step, index) => {
+          step.classList.toggle('active', index + 1 === ui.currentScreen);
+        });
+
+        document.getElementById('viewer').innerHTML = renderScreen(ui.currentScreen);
+      }
+
+      document.querySelectorAll('.nav-item').forEach(item => {
+        item.addEventListener('click', () => {
+          setCurrentScreen(Number(item.dataset.screen));
+        });
+        item.addEventListener('keydown', event => {
+          if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            setCurrentScreen(Number(item.dataset.screen));
+          }
+        });
+      });
+
+      render();
     </script>
-</body>
+  </body>
 </html>

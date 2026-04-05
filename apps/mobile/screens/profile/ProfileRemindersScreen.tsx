@@ -2,24 +2,18 @@
  * ProfileRemindersScreen: Hub screen for EPIC-17 notification + reminder settings.
  * Navigates to NotificationStack screens (FR-E17-01..04).
  */
-import React from "react";
-import { StyleSheet, View } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { OfflineNotice } from "../components/OfflineNotice";
-import { ScreenLayout } from "../components/ScreenLayout";
-import { SectionCard } from "../components/SectionCard";
-import { SkeletonBlock } from "../components/SkeletonBlock";
-import { StateMessage } from "../components/StateMessage";
-import { resolveScreenState, ScreenState } from "../components/ScreenState";
-import { getPrimaryUser, getReminderSettingsForUser } from "../../data/mockSelectors";
-import {
-  PActivityIndicator,
-  PListIcon,
-  PListItem,
-  PDivider,
-  PText,
-} from "../../components";
+import { useNavigation } from '@react-navigation/native';
+import React from 'react';
+import { StyleSheet, View } from 'react-native';
 
+import { PActivityIndicator, PDivider, PListIcon, PListItem, PText } from '../../components';
+import { getPrimaryUser, getReminderSettingsForUser } from '../../data/mockSelectors';
+import { OfflineNotice } from '../components/OfflineNotice';
+import { ScreenLayout } from '../components/ScreenLayout';
+import { ScreenState, resolveScreenState } from '../components/ScreenState';
+import { SectionCard } from '../components/SectionCard';
+import { SkeletonBlock } from '../components/SkeletonBlock';
+import { StateMessage } from '../components/StateMessage';
 
 const ProfileRemindersContent = ({ isOffline }: { isOffline?: boolean }) => {
   const navigation = useNavigation<any>();
@@ -28,17 +22,17 @@ const ProfileRemindersContent = ({ isOffline }: { isOffline?: boolean }) => {
 
   const goToNotificationList = () => {
     if (isOffline) return;
-    navigation.navigate("Notifications");
+    navigation.navigate('Notifications');
   };
 
   const goToNotificationSettings = () => {
     if (isOffline) return;
-    navigation.navigate("Notifications", { screen: "NotificationSettings" });
+    navigation.navigate('Notifications', { screen: 'NotificationSettings' });
   };
 
   const goToReminderPlanner = () => {
     if (isOffline) return;
-    navigation.navigate("Notifications", { screen: "ReminderPlanner" });
+    navigation.navigate('Notifications', { screen: 'ReminderPlanner' });
   };
 
   return (
@@ -70,11 +64,7 @@ const ProfileRemindersContent = ({ isOffline }: { isOffline?: boolean }) => {
       <SectionCard title="Hatirlaticilar">
         <PListItem
           title="Hatirlatici Planlayici"
-          description={
-            reminder?.enabled
-              ? `Aktif -- ${reminder.time_local}`
-              : "Kapali"
-          }
+          description={reminder?.enabled ? `Aktif -- ${reminder.time_local}` : 'Kapali'}
           left={() => <PListIcon icon="clock-outline" />}
           right={() => <PListIcon icon="chevron-right" />}
           onPress={goToReminderPlanner}
@@ -86,23 +76,17 @@ const ProfileRemindersContent = ({ isOffline }: { isOffline?: boolean }) => {
 
       {isOffline && (
         <View style={styles.offlineNote}>
-          <PText style={styles.offlineText}>
-            Cevrimdisi modda ayarlar degistirilemez.
-          </PText>
+          <PText style={styles.offlineText}>Cevrimdisi modda ayarlar degistirilemez.</PText>
         </View>
       )}
     </>
   );
 };
 
-export const ProfileRemindersScreen = ({
-  route,
-}: {
-  route?: { params?: { state?: ScreenState } };
-}) => {
+export const ProfileRemindersScreen = ({ route }: { route?: { params?: { state?: ScreenState } } }) => {
   const state = resolveScreenState(route);
 
-  if (state === "loading") {
+  if (state === 'loading') {
     return (
       <ScreenLayout title="Hatirlatmalar">
         <PActivityIndicator />
@@ -112,7 +96,7 @@ export const ProfileRemindersScreen = ({
     );
   }
 
-  if (state === "error") {
+  if (state === 'error') {
     return (
       <ScreenLayout title="Hatirlatmalar">
         <StateMessage
@@ -125,7 +109,7 @@ export const ProfileRemindersScreen = ({
     );
   }
 
-  if (state === "offline") {
+  if (state === 'offline') {
     return (
       <ScreenLayout title="Hatirlatmalar">
         <OfflineNotice />
@@ -134,13 +118,10 @@ export const ProfileRemindersScreen = ({
     );
   }
 
-  if (state === "empty") {
+  if (state === 'empty') {
     return (
       <ScreenLayout title="Hatirlatmalar">
-        <StateMessage
-          title="Ayar bulunamadi"
-          description="Henuz hatirlatici ayari olusturulmamis."
-        />
+        <StateMessage title="Ayar bulunamadi" description="Henuz hatirlatici ayari olusturulmamis." />
       </ScreenLayout>
     );
   }
@@ -155,5 +136,5 @@ export const ProfileRemindersScreen = ({
 const styles = StyleSheet.create({
   skeleton: { marginHorizontal: 16, marginBottom: 12 },
   offlineNote: { paddingHorizontal: 16, paddingTop: 8 },
-  offlineText: { fontSize: 12, color: "#A3A3A3", fontStyle: "italic" },
+  offlineText: { fontSize: 12, color: '#A3A3A3', fontStyle: 'italic' }
 });

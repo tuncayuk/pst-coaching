@@ -3,9 +3,7 @@
   "title": "Add-on yonetimi",
   "route": "/profile/subscription/addons",
   "purpose": "FR-E3-03: Lists add-ons with price, active/passive status and toggle. Ek Kisi add-on shown only for Aile/Grup plans (AC-FR-E3-03-03). Plan Uyesi cannot purchase; only Plan Sahibi can act (AC-FR-E3-03-04). Offline: list visible, actions disabled.",
-  "entryPoints": [
-    "subscription.overview"
-  ],
+  "entryPoints": ["subscription.overview"],
   "inputs": [
     {
       "name": "userId",
@@ -26,11 +24,7 @@
       "source": "subscription_entity"
     }
   ],
-  "dataDependencies": [
-    "AddOn",
-    "SubscriptionAddOn",
-    "SubscriptionPlan"
-  ],
+  "dataDependencies": ["AddOn", "SubscriptionAddOn", "SubscriptionPlan"],
   "uiStates": {
     "loading": {
       "description": "2 skeleton add-on cards"
@@ -50,24 +44,8 @@
   },
   "analytics": {
     "screenView": "addons_viewed",
-    "events": [
-      "addons_viewed",
-      "addon_activated",
-      "addon_deactivated",
-      "addon_buy_tapped",
-      "addon_owner_gate_blocked"
-    ]
+    "events": ["addons_viewed", "addon_activated", "addon_deactivated", "addon_buy_tapped", "addon_owner_gate_blocked"]
   },
-  "acceptanceCriteriaRefs": [
-    "AC-FR-E3-03-01",
-    "AC-FR-E3-03-02",
-    "AC-FR-E3-03-03",
-    "AC-FR-E3-03-04"
-  ],
-  "gates": [
-    "add_on",
-    "auth",
-    "owner_role",
-    "subscription"
-  ]
+  "acceptanceCriteriaRefs": ["AC-FR-E3-03-01", "AC-FR-E3-03-02", "AC-FR-E3-03-03", "AC-FR-E3-03-04"],
+  "gates": ["add_on", "auth", "owner_role", "subscription"]
 }

@@ -3,9 +3,7 @@
   "title": "Profil",
   "route": "/profile",
   "purpose": "Tab root screen for Profil.",
-  "entryPoints": [
-    "app.launch"
-  ],
+  "entryPoints": ["app.launch"],
   "inputs": [
     {
       "name": "locale",
@@ -20,11 +18,7 @@
       "source": "entitlement_cache"
     }
   ],
-  "dataDependencies": [
-    "User",
-    "Subscription",
-    "ContentProgress"
-  ],
+  "dataDependencies": ["User", "Subscription", "ContentProgress"],
   "uiStates": {
     "loading": {
       "description": "Tab shows skeleton cards while initial data is loading."
@@ -44,9 +38,7 @@
   },
   "analytics": {
     "screenView": "profile_overview_viewed",
-    "events": [
-      "profile_overview_viewed"
-    ]
+    "events": ["profile_overview_viewed"]
   },
   "acceptanceCriteriaRefs": [],
   "gates": []

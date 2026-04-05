@@ -3,10 +3,7 @@
   "title": "Gunun icerigini okuma",
   "route": "/content/reading",
   "purpose": "Implements FR-E5-01: Daily reading with progress tracking and accessibility controls.",
-  "entryPoints": [
-    "content.journey_day",
-    "home.dashboard"
-  ],
+  "entryPoints": ["content.journey_day", "home.dashboard"],
   "inputs": [
     {
       "name": "userId",
@@ -27,11 +24,7 @@
       "source": "entitlement_cache"
     }
   ],
-  "dataDependencies": [
-    "ContentProgress",
-    "ContentItem",
-    "FavoriteItem"
-  ],
+  "dataDependencies": ["ContentProgress", "ContentItem", "FavoriteItem"],
   "uiStates": {
     "loading": {
       "description": "Skeleton placeholders shown while reading content loads."
@@ -63,13 +56,6 @@
       "content_reading_completed"
     ]
   },
-  "acceptanceCriteriaRefs": [
-    "AC-FR-E5-01-01",
-    "AC-FR-E5-01-02",
-    "AC-FR-E5-01-03",
-    "AC-FR-E5-01-04"
-  ],
-  "gates": [
-    "auth"
-  ]
+  "acceptanceCriteriaRefs": ["AC-FR-E5-01-01", "AC-FR-E5-01-02", "AC-FR-E5-01-03", "AC-FR-E5-01-04"],
+  "gates": ["auth"]
 }

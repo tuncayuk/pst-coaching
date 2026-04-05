@@ -1,10 +1,11 @@
-import React from "react";
-import { createNativeStackNavigator, NativeStackNavigationOptions } from "@react-navigation/native-stack";
-import { ScreenState } from "../screens/components/ScreenState";
-import { CoachDashboardScreen } from "../screens/coach/CoachDashboardScreen";
-import { CoachClientProfileScreen } from "../screens/coach/CoachClientProfileScreen";
-import { CoachContentTrackingScreen } from "../screens/coach/CoachContentTrackingScreen";
-import { CoachFeedbackScreen } from "../screens/coach/CoachFeedbackScreen";
+import { NativeStackNavigationOptions, createNativeStackNavigator } from '@react-navigation/native-stack';
+import React from 'react';
+
+import { CoachClientProfileScreen } from '../screens/coach/CoachClientProfileScreen';
+import { CoachContentTrackingScreen } from '../screens/coach/CoachContentTrackingScreen';
+import { CoachDashboardScreen } from '../screens/coach/CoachDashboardScreen';
+import { CoachFeedbackScreen } from '../screens/coach/CoachFeedbackScreen';
+import { ScreenState } from '../screens/components/ScreenState';
 
 type ScreenStateParam = { state?: ScreenState } | undefined;
 
@@ -19,7 +20,7 @@ export type CoachStackParamList = {
   CoachFeedback: { clientId: string; state?: ScreenState };
 };
 
-const sheetOptions: NativeStackNavigationOptions = { presentation: "modal" };
+const sheetOptions: NativeStackNavigationOptions = { presentation: 'modal' };
 
 type CoachStackScreen = {
   name: keyof CoachStackParamList;
@@ -28,10 +29,10 @@ type CoachStackScreen = {
 };
 
 export const coachStackScreens: CoachStackScreen[] = [
-  { name: "CoachDashboard", component: CoachDashboardScreen },
-  { name: "CoachClientProfile", component: CoachClientProfileScreen },
-  { name: "CoachContentTracking", component: CoachContentTrackingScreen },
-  { name: "CoachFeedback", component: CoachFeedbackScreen, options: sheetOptions },
+  { name: 'CoachDashboard', component: CoachDashboardScreen },
+  { name: 'CoachClientProfile', component: CoachClientProfileScreen },
+  { name: 'CoachContentTracking', component: CoachContentTrackingScreen },
+  { name: 'CoachFeedback', component: CoachFeedbackScreen, options: sheetOptions }
 ];
 
 type CoachStackProps = {
@@ -40,16 +41,11 @@ type CoachStackProps = {
 
 const Stack = createNativeStackNavigator<CoachStackParamList>();
 
-export const CoachStack = ({ initialRouteName = "CoachDashboard" }: CoachStackProps) => {
+export const CoachStack = ({ initialRouteName = 'CoachDashboard' }: CoachStackProps) => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName={initialRouteName}>
-      {coachStackScreens.map((screen) => (
-        <Stack.Screen
-          key={screen.name}
-          name={screen.name}
-          component={screen.component}
-          options={screen.options}
-        />
+      {coachStackScreens.map(screen => (
+        <Stack.Screen key={screen.name} name={screen.name} component={screen.component} options={screen.options} />
       ))}
     </Stack.Navigator>
   );

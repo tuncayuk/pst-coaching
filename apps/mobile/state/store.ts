@@ -1,8 +1,9 @@
-import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import { connectivityReducer } from "./slices/connectivitySlice";
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
+
+import { connectivityReducer } from './slices/connectivitySlice';
 
 const rootReducer = combineReducers({
-  connectivity: connectivityReducer,
+  connectivity: connectivityReducer
 });
 
 export type RootState = ReturnType<typeof rootReducer>;
@@ -10,10 +11,10 @@ export type RootState = ReturnType<typeof rootReducer>;
 export const createAppStore = (preloadedState?: Partial<RootState>) =>
   configureStore({
     reducer: rootReducer,
-    preloadedState,
+    preloadedState
   });
 
 export const appStore = createAppStore();
 
 export type AppStore = ReturnType<typeof createAppStore>;
-export type AppDispatch = AppStore["dispatch"];
+export type AppDispatch = AppStore['dispatch'];

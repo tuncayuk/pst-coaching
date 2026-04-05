@@ -3,9 +3,7 @@
   "title": "Duygusal harita",
   "route": "/progress/emotional-map",
   "purpose": "Implements FR-E6-02: Duygusal harita — 14/30-day period selector, legend, disclaimer, color-blind support.",
-  "entryPoints": [
-    "progress.dashboard"
-  ],
+  "entryPoints": ["progress.dashboard"],
   "inputs": [
     {
       "name": "userId",
@@ -14,10 +12,7 @@
       "source": "session"
     }
   ],
-  "dataDependencies": [
-    "EmotionLog",
-    "ContentProgress"
-  ],
+  "dataDependencies": ["EmotionLog", "ContentProgress"],
   "uiStates": {
     "loading": {
       "description": "Skeleton for period selector and mood grid."
@@ -37,19 +32,8 @@
   },
   "analytics": {
     "screenView": "progress_emotional_map_viewed",
-    "events": [
-      "progress_emotional_map_viewed",
-      "progress_emotional_period_changed",
-      "progress_emotional_map_refreshed"
-    ]
+    "events": ["progress_emotional_map_viewed", "progress_emotional_period_changed", "progress_emotional_map_refreshed"]
   },
-  "acceptanceCriteriaRefs": [
-    "AC-FR-E6-02-01",
-    "AC-FR-E6-02-02",
-    "AC-FR-E6-02-03",
-    "AC-FR-E6-02-04"
-  ],
-  "gates": [
-    "auth"
-  ]
+  "acceptanceCriteriaRefs": ["AC-FR-E6-02-01", "AC-FR-E6-02-02", "AC-FR-E6-02-03", "AC-FR-E6-02-04"],
+  "gates": ["auth"]
 }

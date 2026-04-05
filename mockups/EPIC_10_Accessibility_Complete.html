@@ -1,852 +1,879 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="tr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>PST Coaching Mobile - EPIC 10: Erisilebilirlik</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap"
+      rel="stylesheet"
+    />
     <style>
-        :root {
-            --primary: #2563eb;
-            --primary-dark: #1d4ed8;
-            --primary-light: #dbeafe;
-            --secondary: #0f172a;
-            --ink: #111827;
-            --success: #16a34a;
-            --success-light: #dcfce7;
-            --warning: #d97706;
-            --warning-light: #fef3c7;
-            --error: #dc2626;
-            --error-light: #fee2e2;
-            --violet: #7c3aed;
-            --violet-light: #ede9fe;
-            --gray-50: #fafafa;
-            --gray-100: #f5f5f5;
-            --gray-200: #e5e5e5;
-            --gray-300: #d4d4d4;
-            --gray-400: #a3a3a3;
-            --gray-600: #525252;
-            --gray-700: #404040;
-            --gray-900: #171717;
-        }
+      :root {
+        --primary: #2563eb;
+        --primary-dark: #1d4ed8;
+        --primary-light: #dbeafe;
+        --secondary: #0f172a;
+        --ink: #111827;
+        --success: #16a34a;
+        --success-light: #dcfce7;
+        --warning: #d97706;
+        --warning-light: #fef3c7;
+        --error: #dc2626;
+        --error-light: #fee2e2;
+        --violet: #7c3aed;
+        --violet-light: #ede9fe;
+        --gray-50: #fafafa;
+        --gray-100: #f5f5f5;
+        --gray-200: #e5e5e5;
+        --gray-300: #d4d4d4;
+        --gray-400: #a3a3a3;
+        --gray-600: #525252;
+        --gray-700: #404040;
+        --gray-900: #171717;
+      }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
+      body {
+        font-family: 'Inter', sans-serif;
+        color: var(--gray-900);
+        background: radial-gradient(circle at 18% 0%, #dbeafe 0%, #e0e7ff 45%, #e2e8f0 100%);
+        overflow: hidden;
+        transition: background 0.2s ease;
+      }
+
+      body.high-contrast {
+        background: #000;
+        color: #fff;
+      }
+
+      body.reduced-motion *,
+      body.reduced-motion *::before,
+      body.reduced-motion *::after {
+        animation: none !important;
+        transition: none !important;
+      }
+
+      .app {
+        height: 100vh;
+        display: flex;
+      }
+
+      .sidebar {
+        width: 430px;
+        background: #fff;
+        border-right: 1px solid var(--gray-200);
+        overflow-y: auto;
+        box-shadow: 2px 0 16px rgba(0, 0, 0, 0.07);
+      }
+
+      body.high-contrast .sidebar,
+      body.high-contrast .topbar,
+      body.high-contrast .mobile-header,
+      body.high-contrast .status {
+        background: #111;
+        color: #fff;
+        border-color: #444;
+      }
+
+      .main {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .topbar {
+        background: #fff;
+        border-bottom: 1px solid var(--gray-200);
+        padding: 1.45rem 2rem;
+      }
+
+      .viewer {
+        flex: 1;
+        overflow-y: auto;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        padding: 2rem;
+      }
+
+      .logo {
+        font-family: 'Poppins', sans-serif;
+        font-size: 1.85rem;
+        font-weight: 800;
+        color: var(--primary-dark);
+        padding: 1.85rem;
+        border-bottom: 1px solid var(--gray-200);
+        background: linear-gradient(140deg, var(--primary-light), #fff);
+      }
+
+      .subtitle {
+        margin-top: 0.35rem;
+        font-size: 0.82rem;
+        color: var(--gray-600);
+        font-weight: 600;
+      }
+
+      .epic-header {
+        margin: 1rem 1.2rem;
+        border: 1px solid #93c5fd;
+        background: linear-gradient(140deg, #eff6ff, #f8fafc);
+        border-radius: 0.85rem;
+        padding: 1rem;
+      }
+
+      .epic-title {
+        font-family: 'Poppins', sans-serif;
+        font-size: 1.03rem;
+        font-weight: 700;
+        margin-bottom: 0.35rem;
+      }
+
+      .epic-meta {
+        font-size: 0.76rem;
+        color: var(--gray-700);
+        line-height: 1.45;
+      }
+
+      .flow-map {
+        margin: 0 1.2rem 1rem;
+        border-radius: 0.85rem;
+        border: 1px solid #ddd6fe;
+        background: #f8f9ff;
+        padding: 0.75rem;
+      }
+
+      .flow-title {
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        color: var(--gray-600);
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+      }
+
+      .flow-list {
+        display: grid;
+        gap: 0.35rem;
+      }
+
+      .flow-step {
+        border: 1px solid var(--gray-300);
+        border-radius: 0.5rem;
+        background: #fff;
+        padding: 0.34rem 0.52rem;
+        font-size: 0.69rem;
+        font-weight: 600;
+        color: var(--gray-700);
+      }
+
+      .flow-step.active {
+        border-color: var(--violet);
+        background: var(--violet-light);
+        color: #4c1d95;
+      }
+
+      .gate-note {
+        margin-top: 0.55rem;
+        border-top: 1px solid #ddd6fe;
+        padding-top: 0.5rem;
+        font-size: 0.68rem;
+        color: var(--gray-600);
+        line-height: 1.45;
+      }
+
+      .nav-group {
+        border-bottom: 1px solid var(--gray-100);
+        padding: 0.28rem 0 0.72rem;
+      }
+
+      .nav-group-title {
+        padding: 0.66rem 1.2rem;
+        font-size: 0.68rem;
+        color: var(--gray-600);
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        font-weight: 700;
+      }
+
+      .nav-item {
+        display: flex;
+        align-items: center;
+        gap: 0.62rem;
+        padding: 0.7rem 1.2rem;
+        border-left: 3px solid transparent;
+        color: var(--gray-700);
+        cursor: pointer;
+        transition: background 0.18s ease;
+      }
+
+      .nav-item:hover {
+        background: var(--gray-50);
+      }
+
+      .nav-item.active {
+        border-left-color: var(--primary);
+        background: #eff6ff;
+        color: var(--primary-dark);
+      }
+
+      .nav-icon {
+        font-size: 0.72rem;
+        font-weight: 800;
+        width: 28px;
+        text-align: center;
+        border: 1px solid var(--gray-300);
+        border-radius: 0.35rem;
+        padding: 0.1rem 0.2rem;
+        background: #fff;
+      }
+
+      .nav-text {
+        flex: 1;
+        font-size: 0.83rem;
+        font-weight: 600;
+      }
+
+      .nav-badge {
+        font-size: 0.66rem;
+        font-weight: 700;
+        border-radius: 999px;
+        padding: 0.14rem 0.45rem;
+        background: #e2e8f0;
+        color: var(--gray-700);
+      }
+
+      .screen-title {
+        font-family: 'Poppins', sans-serif;
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--secondary);
+      }
+
+      .screen-meta {
+        margin-top: 0.4rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        color: var(--gray-600);
+        font-size: 0.9rem;
+        flex-wrap: wrap;
+      }
+
+      .fr-badge {
+        border: 1px solid #93c5fd;
+        background: #eff6ff;
+        color: #1d4ed8;
+        border-radius: 0.52rem;
+        padding: 0.2rem 0.58rem;
+        font-size: 0.78rem;
+        font-weight: 700;
+      }
+
+      .route-badge {
+        border: 1px solid #c4b5fd;
+        background: #f5f3ff;
+        color: #5b21b6;
+        border-radius: 0.52rem;
+        padding: 0.2rem 0.58rem;
+        font-size: 0.74rem;
+        font-weight: 700;
+      }
+
+      .iphone {
+        width: 393px;
+        height: 852px;
+        background: #1d1d1f;
+        border-radius: 54px;
+        padding: 12px;
+        box-shadow: 0 44px 94px rgba(0, 0, 0, 0.45);
+        position: relative;
+      }
+
+      .island {
+        position: absolute;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 120px;
+        height: 30px;
+        border-radius: 20px;
+        background: #000;
+        z-index: 4;
+      }
+
+      .screen {
+        width: 100%;
+        height: 100%;
+        border-radius: 42px;
+        overflow: hidden;
+        background: #fff;
+      }
+
+      .content {
+        width: 100%;
+        height: 100%;
+        overflow-y: auto;
+        background: var(--gray-50);
+      }
+
+      body[data-theme='dark'] .content {
+        background: #111827;
+        color: #e5e7eb;
+      }
+
+      body[data-theme='light'] .content {
+        background: #f8fafc;
+        color: #0f172a;
+      }
+
+      .status {
+        height: 54px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: #fff;
+        padding: 0 1.2rem;
+        font-size: 0.82rem;
+        font-weight: 600;
+      }
+
+      .mobile-header {
+        display: flex;
+        align-items: center;
+        gap: 0.72rem;
+        background: #fff;
+        border-bottom: 1px solid var(--gray-200);
+        padding: 0.9rem 1.2rem;
+        position: sticky;
+        top: 0;
+        z-index: 2;
+      }
+
+      .mobile-title {
+        font-family: 'Poppins', sans-serif;
+        font-size: 1rem;
+        font-weight: 700;
+        color: var(--secondary);
+      }
+
+      .icon-btn {
+        border: 1px solid var(--gray-300);
+        background: #fff;
+        color: var(--gray-700);
+        border-radius: 0.55rem;
+        padding: 0.3rem 0.5rem;
+        font-size: 0.84rem;
+        font-weight: 700;
+        cursor: pointer;
+      }
+
+      .mobile-body {
+        padding: 1rem 1.15rem 1.35rem;
+        display: grid;
+        gap: 0.78rem;
+      }
+
+      .card {
+        border: 1px solid var(--gray-200);
+        border-radius: 0.9rem;
+        background: #fff;
+        padding: 0.82rem;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+      }
+
+      body.high-contrast .card {
+        background: #000;
+        color: #fff;
+        border-color: #666;
+      }
+
+      .card-title {
+        font-size: 0.88rem;
+        font-weight: 700;
+        color: var(--gray-900);
+        margin-bottom: 0.4rem;
+      }
+
+      body.high-contrast .card-title {
+        color: #fff;
+      }
+
+      .muted {
+        color: var(--gray-600);
+        font-size: 0.78rem;
+        line-height: 1.45;
+      }
+
+      body.high-contrast .muted {
+        color: #ddd;
+      }
+
+      .row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.5rem;
+      }
+
+      .chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.42rem;
+      }
+
+      .chip {
+        border: 1px solid var(--gray-300);
+        border-radius: 999px;
+        background: #fff;
+        color: var(--gray-700);
+        font-size: 0.68rem;
+        font-weight: 700;
+        padding: 0.16rem 0.54rem;
+      }
+
+      .chip.success {
+        border-color: #86efac;
+        background: var(--success-light);
+        color: #166534;
+      }
+
+      .chip.warn {
+        border-color: #fcd34d;
+        background: var(--warning-light);
+        color: #92400e;
+      }
+
+      .chip.error {
+        border-color: #fca5a5;
+        background: var(--error-light);
+        color: #991b1b;
+      }
+
+      .chip.violet {
+        border-color: #c4b5fd;
+        background: #f5f3ff;
+        color: #6d28d9;
+      }
+
+      .btn {
+        border: none;
+        border-radius: 0.72rem;
+        padding: 0.73rem 0.92rem;
+        font-size: 0.84rem;
+        font-weight: 700;
+        cursor: pointer;
+      }
+
+      .btn:disabled {
+        opacity: 0.55;
+        cursor: not-allowed;
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        color: #fff;
+      }
+
+      .btn-outline {
+        background: #fff;
+        border: 1px solid var(--gray-300);
+        color: var(--gray-700);
+      }
+
+      .btn-success {
+        background: #fff;
+        border: 1px solid var(--success);
+        color: #166534;
+      }
+
+      .state-switcher {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.42rem;
+      }
+
+      .state-btn {
+        border: 1px solid var(--gray-300);
+        background: #fff;
+        border-radius: 999px;
+        padding: 0.2rem 0.56rem;
+        font-size: 0.66rem;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        font-weight: 700;
+        color: var(--gray-700);
+        cursor: pointer;
+      }
+
+      .state-btn.active {
+        border-color: var(--primary);
+        color: var(--primary-dark);
+        background: var(--primary-light);
+      }
+
+      .state-panel {
+        border: 1px solid var(--gray-200);
+        border-radius: 0.8rem;
+        background: #fff;
+        padding: 0.72rem;
+        display: grid;
+        gap: 0.38rem;
+        font-size: 0.79rem;
+        line-height: 1.45;
+      }
+
+      .state-panel.loading {
+        border-color: #bfdbfe;
+        background: #eff6ff;
+      }
+
+      .state-panel.empty {
+        border-color: #cbd5e1;
+        background: #f8fafc;
+      }
+
+      .state-panel.error {
+        border-color: #fecaca;
+        background: var(--error-light);
+      }
+
+      .state-panel.offline {
+        border-color: #fcd34d;
+        background: #fffbeb;
+      }
+
+      .field {
+        width: 100%;
+        border: 1px solid var(--gray-300);
+        border-radius: 0.65rem;
+        background: #fff;
+        padding: 0.45rem 0.52rem;
+        font-size: 0.78rem;
+        color: var(--gray-700);
+        font-family: 'Inter', sans-serif;
+      }
+
+      .slider {
+        width: 100%;
+        accent-color: var(--primary);
+      }
+
+      .preview-box {
+        border: 1px solid var(--gray-200);
+        border-radius: 0.7rem;
+        background: #fff;
+        padding: 0.55rem;
+        line-height: 1.45;
+      }
+
+      .preview-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.45rem;
+      }
+
+      .pattern {
+        border: 1px solid var(--gray-300);
+        border-radius: 0.4rem;
+        height: 24px;
+        width: 24px;
+        display: inline-block;
+      }
+
+      .pattern.dots {
+        background-color: #93c5fd;
+        background-image: radial-gradient(#1d4ed8 18%, transparent 19%);
+        background-size: 6px 6px;
+      }
+
+      .pattern.diag {
+        background-color: #fcd34d;
+        background-image: repeating-linear-gradient(45deg, #92400e 0 2px, transparent 2px 6px);
+      }
+
+      .pattern.lines {
+        background-color: #86efac;
+        background-image: repeating-linear-gradient(90deg, #166534 0 2px, transparent 2px 6px);
+      }
+
+      .list {
+        display: grid;
+        gap: 0.5rem;
+      }
+
+      .list-item {
+        border: 1px solid var(--gray-200);
+        border-radius: 0.72rem;
+        background: #fff;
+        padding: 0.62rem;
+      }
+
+      .item-title {
+        font-size: 0.82rem;
+        font-weight: 700;
+        color: var(--gray-900);
+      }
+
+      .item-meta {
+        font-size: 0.73rem;
+        color: var(--gray-600);
+        margin-top: 0.2rem;
+        line-height: 1.4;
+      }
+
+      .error-text {
+        margin-top: 0.3rem;
+        color: #991b1b;
+        font-size: 0.72rem;
+        font-weight: 600;
+      }
+
+      .toast {
+        position: fixed;
+        right: 1.2rem;
+        bottom: 1.2rem;
+        background: #111827;
+        color: #fff;
+        border-radius: 0.7rem;
+        padding: 0.62rem 0.92rem;
+        font-size: 0.8rem;
+        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22);
+        opacity: 0;
+        pointer-events: none;
+        transform: translateY(8px);
+        transition:
+          opacity 0.2s ease,
+          transform 0.2s ease;
+        z-index: 20;
+      }
+
+      .toast.show {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .toast.success {
+        background: #065f46;
+      }
+
+      .toast.error {
+        background: #7f1d1d;
+      }
+
+      .nav-item:focus-visible,
+      button:focus-visible,
+      select:focus-visible,
+      textarea:focus-visible,
+      input:focus-visible {
+        outline: 3px solid #60a5fa;
+        outline-offset: 2px;
+      }
+
+      @media (max-width: 1200px) {
         body {
-            font-family: 'Inter', sans-serif;
-            color: var(--gray-900);
-            background: radial-gradient(circle at 18% 0%, #dbeafe 0%, #e0e7ff 45%, #e2e8f0 100%);
-            overflow: hidden;
-            transition: background 0.2s ease;
-        }
-
-        body.high-contrast {
-            background: #000;
-            color: #fff;
-        }
-
-        body.reduced-motion *,
-        body.reduced-motion *::before,
-        body.reduced-motion *::after {
-            animation: none !important;
-            transition: none !important;
+          overflow: auto;
         }
 
         .app {
-            height: 100vh;
-            display: flex;
+          flex-direction: column;
+          height: auto;
+          min-height: 100vh;
         }
 
         .sidebar {
-            width: 430px;
-            background: #fff;
-            border-right: 1px solid var(--gray-200);
-            overflow-y: auto;
-            box-shadow: 2px 0 16px rgba(0, 0, 0, 0.07);
-        }
-
-        body.high-contrast .sidebar,
-        body.high-contrast .topbar,
-        body.high-contrast .mobile-header,
-        body.high-contrast .status {
-            background: #111;
-            color: #fff;
-            border-color: #444;
-        }
-
-        .main {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .topbar {
-            background: #fff;
-            border-bottom: 1px solid var(--gray-200);
-            padding: 1.45rem 2rem;
+          width: 100%;
+          max-height: 52vh;
         }
 
         .viewer {
-            flex: 1;
-            overflow-y: auto;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            padding: 2rem;
+          padding: 1.2rem;
         }
+      }
 
-        .logo {
-            font-family: 'Poppins', sans-serif;
-            font-size: 1.85rem;
-            font-weight: 800;
-            color: var(--primary-dark);
-            padding: 1.85rem;
-            border-bottom: 1px solid var(--gray-200);
-            background: linear-gradient(140deg, var(--primary-light), #fff);
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          animation: none !important;
+          transition: none !important;
         }
-
-        .subtitle {
-            margin-top: 0.35rem;
-            font-size: 0.82rem;
-            color: var(--gray-600);
-            font-weight: 600;
-        }
-
-        .epic-header {
-            margin: 1rem 1.2rem;
-            border: 1px solid #93c5fd;
-            background: linear-gradient(140deg, #eff6ff, #f8fafc);
-            border-radius: 0.85rem;
-            padding: 1rem;
-        }
-
-        .epic-title {
-            font-family: 'Poppins', sans-serif;
-            font-size: 1.03rem;
-            font-weight: 700;
-            margin-bottom: 0.35rem;
-        }
-
-        .epic-meta {
-            font-size: 0.76rem;
-            color: var(--gray-700);
-            line-height: 1.45;
-        }
-
-        .flow-map {
-            margin: 0 1.2rem 1rem;
-            border-radius: 0.85rem;
-            border: 1px solid #ddd6fe;
-            background: #f8f9ff;
-            padding: 0.75rem;
-        }
-
-        .flow-title {
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 0.04em;
-            color: var(--gray-600);
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-
-        .flow-list {
-            display: grid;
-            gap: 0.35rem;
-        }
-
-        .flow-step {
-            border: 1px solid var(--gray-300);
-            border-radius: 0.5rem;
-            background: #fff;
-            padding: 0.34rem 0.52rem;
-            font-size: 0.69rem;
-            font-weight: 600;
-            color: var(--gray-700);
-        }
-
-        .flow-step.active {
-            border-color: var(--violet);
-            background: var(--violet-light);
-            color: #4c1d95;
-        }
-
-        .gate-note {
-            margin-top: 0.55rem;
-            border-top: 1px solid #ddd6fe;
-            padding-top: 0.5rem;
-            font-size: 0.68rem;
-            color: var(--gray-600);
-            line-height: 1.45;
-        }
-
-        .nav-group {
-            border-bottom: 1px solid var(--gray-100);
-            padding: 0.28rem 0 0.72rem;
-        }
-
-        .nav-group-title {
-            padding: 0.66rem 1.2rem;
-            font-size: 0.68rem;
-            color: var(--gray-600);
-            text-transform: uppercase;
-            letter-spacing: 0.04em;
-            font-weight: 700;
-        }
-
-        .nav-item {
-            display: flex;
-            align-items: center;
-            gap: 0.62rem;
-            padding: 0.7rem 1.2rem;
-            border-left: 3px solid transparent;
-            color: var(--gray-700);
-            cursor: pointer;
-            transition: background 0.18s ease;
-        }
-
-        .nav-item:hover {
-            background: var(--gray-50);
-        }
-
-        .nav-item.active {
-            border-left-color: var(--primary);
-            background: #eff6ff;
-            color: var(--primary-dark);
-        }
-
-        .nav-icon {
-            font-size: 0.72rem;
-            font-weight: 800;
-            width: 28px;
-            text-align: center;
-            border: 1px solid var(--gray-300);
-            border-radius: 0.35rem;
-            padding: 0.1rem 0.2rem;
-            background: #fff;
-        }
-
-        .nav-text {
-            flex: 1;
-            font-size: 0.83rem;
-            font-weight: 600;
-        }
-
-        .nav-badge {
-            font-size: 0.66rem;
-            font-weight: 700;
-            border-radius: 999px;
-            padding: 0.14rem 0.45rem;
-            background: #e2e8f0;
-            color: var(--gray-700);
-        }
-
-        .screen-title {
-            font-family: 'Poppins', sans-serif;
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--secondary);
-        }
-
-        .screen-meta {
-            margin-top: 0.4rem;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            color: var(--gray-600);
-            font-size: 0.9rem;
-            flex-wrap: wrap;
-        }
-
-        .fr-badge {
-            border: 1px solid #93c5fd;
-            background: #eff6ff;
-            color: #1d4ed8;
-            border-radius: 0.52rem;
-            padding: 0.2rem 0.58rem;
-            font-size: 0.78rem;
-            font-weight: 700;
-        }
-
-        .route-badge {
-            border: 1px solid #c4b5fd;
-            background: #f5f3ff;
-            color: #5b21b6;
-            border-radius: 0.52rem;
-            padding: 0.2rem 0.58rem;
-            font-size: 0.74rem;
-            font-weight: 700;
-        }
-
-        .iphone {
-            width: 393px;
-            height: 852px;
-            background: #1d1d1f;
-            border-radius: 54px;
-            padding: 12px;
-            box-shadow: 0 44px 94px rgba(0, 0, 0, 0.45);
-            position: relative;
-        }
-
-        .island {
-            position: absolute;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 120px;
-            height: 30px;
-            border-radius: 20px;
-            background: #000;
-            z-index: 4;
-        }
-
-        .screen {
-            width: 100%;
-            height: 100%;
-            border-radius: 42px;
-            overflow: hidden;
-            background: #fff;
-        }
-
-        .content {
-            width: 100%;
-            height: 100%;
-            overflow-y: auto;
-            background: var(--gray-50);
-        }
-
-        body[data-theme="dark"] .content {
-            background: #111827;
-            color: #e5e7eb;
-        }
-
-        body[data-theme="light"] .content {
-            background: #f8fafc;
-            color: #0f172a;
-        }
-
-        .status {
-            height: 54px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: #fff;
-            padding: 0 1.2rem;
-            font-size: 0.82rem;
-            font-weight: 600;
-        }
-
-        .mobile-header {
-            display: flex;
-            align-items: center;
-            gap: 0.72rem;
-            background: #fff;
-            border-bottom: 1px solid var(--gray-200);
-            padding: 0.9rem 1.2rem;
-            position: sticky;
-            top: 0;
-            z-index: 2;
-        }
-
-        .mobile-title {
-            font-family: 'Poppins', sans-serif;
-            font-size: 1rem;
-            font-weight: 700;
-            color: var(--secondary);
-        }
-
-        .icon-btn {
-            border: 1px solid var(--gray-300);
-            background: #fff;
-            color: var(--gray-700);
-            border-radius: 0.55rem;
-            padding: 0.3rem 0.5rem;
-            font-size: 0.84rem;
-            font-weight: 700;
-            cursor: pointer;
-        }
-
-        .mobile-body {
-            padding: 1rem 1.15rem 1.35rem;
-            display: grid;
-            gap: 0.78rem;
-        }
-
-        .card {
-            border: 1px solid var(--gray-200);
-            border-radius: 0.9rem;
-            background: #fff;
-            padding: 0.82rem;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-        }
-
-        body.high-contrast .card {
-            background: #000;
-            color: #fff;
-            border-color: #666;
-        }
-
-        .card-title {
-            font-size: 0.88rem;
-            font-weight: 700;
-            color: var(--gray-900);
-            margin-bottom: 0.4rem;
-        }
-
-        body.high-contrast .card-title {
-            color: #fff;
-        }
-
-        .muted {
-            color: var(--gray-600);
-            font-size: 0.78rem;
-            line-height: 1.45;
-        }
-
-        body.high-contrast .muted {
-            color: #ddd;
-        }
-
-        .row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 0.5rem;
-        }
-
-        .chips {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.42rem;
-        }
-
-        .chip {
-            border: 1px solid var(--gray-300);
-            border-radius: 999px;
-            background: #fff;
-            color: var(--gray-700);
-            font-size: 0.68rem;
-            font-weight: 700;
-            padding: 0.16rem 0.54rem;
-        }
-
-        .chip.success {
-            border-color: #86efac;
-            background: var(--success-light);
-            color: #166534;
-        }
-
-        .chip.warn {
-            border-color: #fcd34d;
-            background: var(--warning-light);
-            color: #92400e;
-        }
-
-        .chip.error {
-            border-color: #fca5a5;
-            background: var(--error-light);
-            color: #991b1b;
-        }
-
-        .chip.violet {
-            border-color: #c4b5fd;
-            background: #f5f3ff;
-            color: #6d28d9;
-        }
-
-        .btn {
-            border: none;
-            border-radius: 0.72rem;
-            padding: 0.73rem 0.92rem;
-            font-size: 0.84rem;
-            font-weight: 700;
-            cursor: pointer;
-        }
-
-        .btn:disabled {
-            opacity: 0.55;
-            cursor: not-allowed;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            color: #fff;
-        }
-
-        .btn-outline {
-            background: #fff;
-            border: 1px solid var(--gray-300);
-            color: var(--gray-700);
-        }
-
-        .btn-success {
-            background: #fff;
-            border: 1px solid var(--success);
-            color: #166534;
-        }
-
-        .state-switcher {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.42rem;
-        }
-
-        .state-btn {
-            border: 1px solid var(--gray-300);
-            background: #fff;
-            border-radius: 999px;
-            padding: 0.2rem 0.56rem;
-            font-size: 0.66rem;
-            text-transform: uppercase;
-            letter-spacing: 0.04em;
-            font-weight: 700;
-            color: var(--gray-700);
-            cursor: pointer;
-        }
-
-        .state-btn.active {
-            border-color: var(--primary);
-            color: var(--primary-dark);
-            background: var(--primary-light);
-        }
-
-        .state-panel {
-            border: 1px solid var(--gray-200);
-            border-radius: 0.8rem;
-            background: #fff;
-            padding: 0.72rem;
-            display: grid;
-            gap: 0.38rem;
-            font-size: 0.79rem;
-            line-height: 1.45;
-        }
-
-        .state-panel.loading {
-            border-color: #bfdbfe;
-            background: #eff6ff;
-        }
-
-        .state-panel.empty {
-            border-color: #cbd5e1;
-            background: #f8fafc;
-        }
-
-        .state-panel.error {
-            border-color: #fecaca;
-            background: var(--error-light);
-        }
-
-        .state-panel.offline {
-            border-color: #fcd34d;
-            background: #fffbeb;
-        }
-
-        .field {
-            width: 100%;
-            border: 1px solid var(--gray-300);
-            border-radius: 0.65rem;
-            background: #fff;
-            padding: 0.45rem 0.52rem;
-            font-size: 0.78rem;
-            color: var(--gray-700);
-            font-family: 'Inter', sans-serif;
-        }
-
-        .slider {
-            width: 100%;
-            accent-color: var(--primary);
-        }
-
-        .preview-box {
-            border: 1px solid var(--gray-200);
-            border-radius: 0.7rem;
-            background: #fff;
-            padding: 0.55rem;
-            line-height: 1.45;
-        }
-
-        .preview-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 0.45rem;
-        }
-
-        .pattern {
-            border: 1px solid var(--gray-300);
-            border-radius: 0.4rem;
-            height: 24px;
-            width: 24px;
-            display: inline-block;
-        }
-
-        .pattern.dots {
-            background-color: #93c5fd;
-            background-image: radial-gradient(#1d4ed8 18%, transparent 19%);
-            background-size: 6px 6px;
-        }
-
-        .pattern.diag {
-            background-color: #fcd34d;
-            background-image: repeating-linear-gradient(45deg, #92400e 0 2px, transparent 2px 6px);
-        }
-
-        .pattern.lines {
-            background-color: #86efac;
-            background-image: repeating-linear-gradient(90deg, #166534 0 2px, transparent 2px 6px);
-        }
-
-        .list {
-            display: grid;
-            gap: 0.5rem;
-        }
-
-        .list-item {
-            border: 1px solid var(--gray-200);
-            border-radius: 0.72rem;
-            background: #fff;
-            padding: 0.62rem;
-        }
-
-        .item-title {
-            font-size: 0.82rem;
-            font-weight: 700;
-            color: var(--gray-900);
-        }
-
-        .item-meta {
-            font-size: 0.73rem;
-            color: var(--gray-600);
-            margin-top: 0.2rem;
-            line-height: 1.4;
-        }
-
-        .error-text {
-            margin-top: 0.3rem;
-            color: #991b1b;
-            font-size: 0.72rem;
-            font-weight: 600;
-        }
-
-        .toast {
-            position: fixed;
-            right: 1.2rem;
-            bottom: 1.2rem;
-            background: #111827;
-            color: #fff;
-            border-radius: 0.7rem;
-            padding: 0.62rem 0.92rem;
-            font-size: 0.8rem;
-            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22);
-            opacity: 0;
-            pointer-events: none;
-            transform: translateY(8px);
-            transition: opacity 0.2s ease, transform 0.2s ease;
-            z-index: 20;
-        }
-
-        .toast.show {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .toast.success {
-            background: #065f46;
-        }
-
-        .toast.error {
-            background: #7f1d1d;
-        }
-
-        .nav-item:focus-visible,
-        button:focus-visible,
-        select:focus-visible,
-        textarea:focus-visible,
-        input:focus-visible {
-            outline: 3px solid #60a5fa;
-            outline-offset: 2px;
-        }
-
-        @media (max-width: 1200px) {
-            body {
-                overflow: auto;
-            }
-
-            .app {
-                flex-direction: column;
-                height: auto;
-                min-height: 100vh;
-            }
-
-            .sidebar {
-                width: 100%;
-                max-height: 52vh;
-            }
-
-            .viewer {
-                padding: 1.2rem;
-            }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            *,
-            *::before,
-            *::after {
-                animation: none !important;
-                transition: none !important;
-            }
-        }
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="app">
-        <aside class="sidebar">
-            <div class="logo">
-                PST Coaching
-                <div class="subtitle">EPIC 10 - Erisilebilirlik</div>
-            </div>
+      <aside class="sidebar">
+        <div class="logo">
+          PST Coaching
+          <div class="subtitle">EPIC 10 - Erisilebilirlik</div>
+        </div>
 
-            <div class="epic-header">
-                <div class="epic-title">EPIC-10 Sync Pack</div>
-                <div class="epic-meta">4 FR Screen • 13 AC • Requirements + UX artifacts + mockup senkron</div>
-            </div>
+        <div class="epic-header">
+          <div class="epic-title">EPIC-10 Sync Pack</div>
+          <div class="epic-meta">4 FR Screen • 13 AC • Requirements + UX artifacts + mockup senkron</div>
+        </div>
 
-            <div class="flow-map">
-                <div class="flow-title">A11Y akis haritasi</div>
-                <div class="flow-list">
-                    <div class="flow-step active" id="flow-1">FR-E10-01 Erisilebilirlik ayarlari</div>
-                    <div class="flow-step" id="flow-2">FR-E10-02 Metin buyutme</div>
-                    <div class="flow-step" id="flow-3">FR-E10-03 Yuksek kontrast ve tema</div>
-                    <div class="flow-step" id="flow-4">FR-E10-04 Ekran okuyucu uyumu</div>
-                </div>
-                <div class="gate-note">
-                    Gate: auth • Tum ekranlar loading, ready, empty, error, offline durumlarini destekler.
-                </div>
-            </div>
+        <div class="flow-map">
+          <div class="flow-title">A11Y akis haritasi</div>
+          <div class="flow-list">
+            <div class="flow-step active" id="flow-1">FR-E10-01 Erisilebilirlik ayarlari</div>
+            <div class="flow-step" id="flow-2">FR-E10-02 Metin buyutme</div>
+            <div class="flow-step" id="flow-3">FR-E10-03 Yuksek kontrast ve tema</div>
+            <div class="flow-step" id="flow-4">FR-E10-04 Ekran okuyucu uyumu</div>
+          </div>
+          <div class="gate-note">
+            Gate: auth • Tum ekranlar loading, ready, empty, error, offline durumlarini destekler.
+          </div>
+        </div>
 
-            <section class="nav-group">
-                <div class="nav-group-title">Ayarlar</div>
-                <div class="nav-item active" data-screen="1" role="button" tabindex="0"><span class="nav-icon">A1</span><span class="nav-text">Erisilebilirlik Ayarlari</span><span class="nav-badge">3 AC</span></div>
-                <div class="nav-item" data-screen="2" role="button" tabindex="0"><span class="nav-icon">A2</span><span class="nav-text">Metin Buyutme</span><span class="nav-badge">3 AC</span></div>
-            </section>
+        <section class="nav-group">
+          <div class="nav-group-title">Ayarlar</div>
+          <div class="nav-item active" data-screen="1" role="button" tabindex="0">
+            <span class="nav-icon">A1</span><span class="nav-text">Erisilebilirlik Ayarlari</span
+            ><span class="nav-badge">3 AC</span>
+          </div>
+          <div class="nav-item" data-screen="2" role="button" tabindex="0">
+            <span class="nav-icon">A2</span><span class="nav-text">Metin Buyutme</span
+            ><span class="nav-badge">3 AC</span>
+          </div>
+        </section>
 
-            <section class="nav-group">
-                <div class="nav-group-title">Kontrast ve Reader</div>
-                <div class="nav-item" data-screen="3" role="button" tabindex="0"><span class="nav-icon">A3</span><span class="nav-text">Kontrast ve Tema</span><span class="nav-badge">3 AC</span></div>
-                <div class="nav-item" data-screen="4" role="button" tabindex="0"><span class="nav-icon">A4</span><span class="nav-text">Ekran Okuyucu Uyumu</span><span class="nav-badge">4 AC</span></div>
-            </section>
-        </aside>
+        <section class="nav-group">
+          <div class="nav-group-title">Kontrast ve Reader</div>
+          <div class="nav-item" data-screen="3" role="button" tabindex="0">
+            <span class="nav-icon">A3</span><span class="nav-text">Kontrast ve Tema</span
+            ><span class="nav-badge">3 AC</span>
+          </div>
+          <div class="nav-item" data-screen="4" role="button" tabindex="0">
+            <span class="nav-icon">A4</span><span class="nav-text">Ekran Okuyucu Uyumu</span
+            ><span class="nav-badge">4 AC</span>
+          </div>
+        </section>
+      </aside>
 
-        <main class="main">
-            <div class="topbar">
-                <h1 class="screen-title" id="screenTitle">Erisilebilirlik ayarlari</h1>
-                <div class="screen-meta">
-                    <span class="fr-badge" id="screenFr">FR-E10-01</span>
-                    <span class="route-badge" id="screenRoute">/epic-10/fr-e10-01</span>
-                    <span id="screenMeta">Metin boyutu, yuksek kontrast, hareket azaltma; anlik uygulama, kalici kayit, offline saklama</span>
-                </div>
-            </div>
-            <div class="viewer" id="viewer"></div>
-        </main>
+      <main class="main">
+        <div class="topbar">
+          <h1 class="screen-title" id="screenTitle">Erisilebilirlik ayarlari</h1>
+          <div class="screen-meta">
+            <span class="fr-badge" id="screenFr">FR-E10-01</span>
+            <span class="route-badge" id="screenRoute">/epic-10/fr-e10-01</span>
+            <span id="screenMeta"
+              >Metin boyutu, yuksek kontrast, hareket azaltma; anlik uygulama, kalici kayit, offline saklama</span
+            >
+          </div>
+        </div>
+        <div class="viewer" id="viewer"></div>
+      </main>
     </div>
 
     <div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
 
     <script>
-        const screenData = {
-            1: {
-                title: 'Erisilebilirlik ayarlari',
-                fr: 'FR-E10-01',
-                route: '/epic-10/fr-e10-01',
-                event: 'accessibility_fr_e10_01_viewed',
-                meta: 'Metin boyutu, yuksek kontrast, hareket azaltma; anlik uygulama, kalici kayit, offline saklama'
-            },
-            2: {
-                title: 'Metin buyutme',
-                fr: 'FR-E10-02',
-                route: '/epic-10/fr-e10-02',
-                event: 'accessibility_fr_e10_02_viewed',
-                meta: 'Slider ile canli onizleme; tum icerik turlerine uygulama; UI bozulmadan satir kaydirma'
-            },
-            3: {
-                title: 'Yuksek kontrast ve tema',
-                fr: 'FR-E10-03',
-                route: '/epic-10/fr-e10-03',
-                event: 'accessibility_fr_e10_03_viewed',
-                meta: '7:1 kontrast hedefi, renk korlugu desenleri ve acik/koyu/sistem tema secimi'
-            },
-            4: {
-                title: 'Ekran okuyucu uyumu',
-                fr: 'FR-E10-04',
-                route: '/epic-10/fr-e10-04',
-                event: 'accessibility_fr_e10_04_viewed',
-                meta: 'Meaningful labels, focus order, form error narration, visual alt text equivalents'
-            }
-        };
-
-        const ui = {
-            currentScreen: 1,
-            screenStates: {
-                1: 'ready',
-                2: 'ready',
-                3: 'ready',
-                4: 'ready'
-            },
-            lastAnalyticsEvent: 'accessibility_fr_e10_01_viewed',
-            settings: {
-                textScale: 100,
-                highContrast: false,
-                reduceMotion: false,
-                theme: 'system',
-                colorBlindAssist: true,
-                persistedAt: '-',
-                offlineStored: true
-            },
-            readerDemo: {
-                name: '',
-                email: '',
-                error: ''
-            },
-            a11yElements: [
-                { id: 'continue_btn', role: 'button', label: 'Devam et butonu' },
-                { id: 'search_input', role: 'textbox', label: 'Icerik arama alani' },
-                { id: 'filter_chip', role: 'button', label: 'Icerik turu filtresi' },
-                { id: 'save_settings', role: 'button', label: 'Erisilebilirlik ayarlarini kaydet' }
-            ],
-            focusOrder: ['Back', 'Page title', 'Search field', 'Filter button', 'Result list'],
-            altExamples: [
-                { visual: 'Progress chart', alt: 'Bu hafta teslim orani yuzde 82, gecen haftaya gore 6 puan artis.' },
-                { visual: 'Emotion map', alt: '14 gunluk gorunumde sakin hissetme desenleri artiyor.' }
-            ]
-        };
-
-        let toastTimer = null;
-
-        function showToast(message, tone) {
-            const toast = document.getElementById('toast');
-            toast.textContent = message;
-            toast.className = 'toast show' + (tone ? ' ' + tone : '');
-            if (toastTimer) {
-                clearTimeout(toastTimer);
-            }
-            toastTimer = setTimeout(() => {
-                toast.className = 'toast';
-            }, 2200);
+      const screenData = {
+        1: {
+          title: 'Erisilebilirlik ayarlari',
+          fr: 'FR-E10-01',
+          route: '/epic-10/fr-e10-01',
+          event: 'accessibility_fr_e10_01_viewed',
+          meta: 'Metin boyutu, yuksek kontrast, hareket azaltma; anlik uygulama, kalici kayit, offline saklama'
+        },
+        2: {
+          title: 'Metin buyutme',
+          fr: 'FR-E10-02',
+          route: '/epic-10/fr-e10-02',
+          event: 'accessibility_fr_e10_02_viewed',
+          meta: 'Slider ile canli onizleme; tum icerik turlerine uygulama; UI bozulmadan satir kaydirma'
+        },
+        3: {
+          title: 'Yuksek kontrast ve tema',
+          fr: 'FR-E10-03',
+          route: '/epic-10/fr-e10-03',
+          event: 'accessibility_fr_e10_03_viewed',
+          meta: '7:1 kontrast hedefi, renk korlugu desenleri ve acik/koyu/sistem tema secimi'
+        },
+        4: {
+          title: 'Ekran okuyucu uyumu',
+          fr: 'FR-E10-04',
+          route: '/epic-10/fr-e10-04',
+          event: 'accessibility_fr_e10_04_viewed',
+          meta: 'Meaningful labels, focus order, form error narration, visual alt text equivalents'
         }
+      };
 
-        function stamp() {
-            return new Date().toLocaleString('tr-TR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
+      const ui = {
+        currentScreen: 1,
+        screenStates: {
+          1: 'ready',
+          2: 'ready',
+          3: 'ready',
+          4: 'ready'
+        },
+        lastAnalyticsEvent: 'accessibility_fr_e10_01_viewed',
+        settings: {
+          textScale: 100,
+          highContrast: false,
+          reduceMotion: false,
+          theme: 'system',
+          colorBlindAssist: true,
+          persistedAt: '-',
+          offlineStored: true
+        },
+        readerDemo: {
+          name: '',
+          email: '',
+          error: ''
+        },
+        a11yElements: [
+          { id: 'continue_btn', role: 'button', label: 'Devam et butonu' },
+          { id: 'search_input', role: 'textbox', label: 'Icerik arama alani' },
+          { id: 'filter_chip', role: 'button', label: 'Icerik turu filtresi' },
+          { id: 'save_settings', role: 'button', label: 'Erisilebilirlik ayarlarini kaydet' }
+        ],
+        focusOrder: ['Back', 'Page title', 'Search field', 'Filter button', 'Result list'],
+        altExamples: [
+          {
+            visual: 'Progress chart',
+            alt: 'Bu hafta teslim orani yuzde 82, gecen haftaya gore 6 puan artis.'
+          },
+          { visual: 'Emotion map', alt: '14 gunluk gorunumde sakin hissetme desenleri artiyor.' }
+        ]
+      };
+
+      let toastTimer = null;
+
+      function showToast(message, tone) {
+        const toast = document.getElementById('toast');
+        toast.textContent = message;
+        toast.className = 'toast show' + (tone ? ' ' + tone : '');
+        if (toastTimer) {
+          clearTimeout(toastTimer);
         }
+        toastTimer = setTimeout(() => {
+          toast.className = 'toast';
+        }, 2200);
+      }
 
-        function phoneShell(title, body, backScreen) {
-            const back = backScreen
-                ? `<button class="icon-btn" onclick="showScreen(${backScreen})" aria-label="Geri">&lt;</button>`
-                : '<span style="width:34px;"></span>';
+      function stamp() {
+        return new Date().toLocaleString('tr-TR', {
+          day: '2-digit',
+          month: '2-digit',
+          hour: '2-digit',
+          minute: '2-digit'
+        });
+      }
 
-            return `
+      function phoneShell(title, body, backScreen) {
+        const back = backScreen
+          ? `<button class="icon-btn" onclick="showScreen(${backScreen})" aria-label="Geri">&lt;</button>`
+          : '<span style="width:34px;"></span>';
+
+        return `
                 <div class="iphone">
                     <div class="island"></div>
                     <div class="screen">
@@ -861,133 +888,140 @@
                     </div>
                 </div>
             `;
-        }
+      }
 
-        function setCurrentScreen(screenNo) {
-            ui.currentScreen = screenNo;
-            ui.lastAnalyticsEvent = screenData[screenNo].event;
-            render();
-        }
+      function setCurrentScreen(screenNo) {
+        ui.currentScreen = screenNo;
+        ui.lastAnalyticsEvent = screenData[screenNo].event;
+        render();
+      }
 
-        function showScreen(screenNo) {
-            setCurrentScreen(screenNo);
-        }
+      function showScreen(screenNo) {
+        setCurrentScreen(screenNo);
+      }
 
-        function setScreenState(screenNo, state) {
-            ui.screenStates[screenNo] = state;
-            render();
-        }
+      function setScreenState(screenNo, state) {
+        ui.screenStates[screenNo] = state;
+        render();
+      }
 
-        function stateControls(screenNo) {
-            const states = ['ready', 'loading', 'empty', 'error', 'offline'];
-            return `
+      function stateControls(screenNo) {
+        const states = ['ready', 'loading', 'empty', 'error', 'offline'];
+        return `
                 <div class="state-switcher">
-                    ${states.map((s) => `<button class="state-btn ${ui.screenStates[screenNo] === s ? 'active' : ''}" onclick="setScreenState(${screenNo}, '${s}')" aria-label="Ekran durumu ${s}" aria-pressed="${ui.screenStates[screenNo] === s}">${s}</button>`).join('')}
+                    ${states.map(s => `<button class="state-btn ${ui.screenStates[screenNo] === s ? 'active' : ''}" onclick="setScreenState(${screenNo}, '${s}')" aria-label="Ekran durumu ${s}" aria-pressed="${ui.screenStates[screenNo] === s}">${s}</button>`).join('')}
                 </div>
             `;
-        }
+      }
 
-        function statePanel(screenNo) {
-            const state = ui.screenStates[screenNo];
-            if (state === 'ready') {
-                return '';
-            }
-            if (state === 'loading') {
-                return '<div class="state-panel loading"><strong>Loading</strong><span>Ekran verileri yukleniyor. Gecici skeleton kartlari gosteriliyor.</span></div>';
-            }
-            if (state === 'empty') {
-                return '<div class="state-panel empty"><strong>Empty</strong><span>Bu gorunumde veri yok. Sonraki en iyi aksiyon olarak ayarlari sifirlama sunulur.</span><button class="btn btn-outline" onclick="resetSettings()" aria-label="Ayarlari varsayilana dondur">Varsayilana Don</button></div>';
-            }
-            if (state === 'error') {
-                return '<div class="state-panel error"><strong>Error</strong><span>Kurtarilabilir hata mesaji ve tekrar dene aksiyonu sunulur.</span><button class="btn btn-primary" onclick="setScreenState(' + screenNo + ', \'ready\')" aria-label="Hata sonrasi yeniden dene">Tekrar Dene</button></div>';
-            }
-            return '<div class="state-panel offline"><strong>Offline</strong><span>Son senkronize ayarlar gosterilir. Degisiklikler lokal depoda saklanir.</span></div>';
+      function statePanel(screenNo) {
+        const state = ui.screenStates[screenNo];
+        if (state === 'ready') {
+          return '';
         }
-
-        function applyBodyModes() {
-            document.body.classList.toggle('high-contrast', ui.settings.highContrast);
-            document.body.classList.toggle('reduced-motion', ui.settings.reduceMotion);
-            document.body.dataset.theme = ui.settings.theme;
+        if (state === 'loading') {
+          return '<div class="state-panel loading"><strong>Loading</strong><span>Ekran verileri yukleniyor. Gecici skeleton kartlari gosteriliyor.</span></div>';
         }
-
-        function setTextScale(value) {
-            ui.settings.textScale = Number(value);
-            render();
+        if (state === 'empty') {
+          return '<div class="state-panel empty"><strong>Empty</strong><span>Bu gorunumde veri yok. Sonraki en iyi aksiyon olarak ayarlari sifirlama sunulur.</span><button class="btn btn-outline" onclick="resetSettings()" aria-label="Ayarlari varsayilana dondur">Varsayilana Don</button></div>';
         }
-
-        function toggleHighContrast() {
-            ui.settings.highContrast = !ui.settings.highContrast;
-            render();
+        if (state === 'error') {
+          return (
+            '<div class="state-panel error"><strong>Error</strong><span>Kurtarilabilir hata mesaji ve tekrar dene aksiyonu sunulur.</span><button class="btn btn-primary" onclick="setScreenState(' +
+            screenNo +
+            ', \'ready\')" aria-label="Hata sonrasi yeniden dene">Tekrar Dene</button></div>'
+          );
         }
+        return '<div class="state-panel offline"><strong>Offline</strong><span>Son senkronize ayarlar gosterilir. Degisiklikler lokal depoda saklanir.</span></div>';
+      }
 
-        function toggleReduceMotion() {
-            ui.settings.reduceMotion = !ui.settings.reduceMotion;
-            render();
+      function applyBodyModes() {
+        document.body.classList.toggle('high-contrast', ui.settings.highContrast);
+        document.body.classList.toggle('reduced-motion', ui.settings.reduceMotion);
+        document.body.dataset.theme = ui.settings.theme;
+      }
+
+      function setTextScale(value) {
+        ui.settings.textScale = Number(value);
+        render();
+      }
+
+      function toggleHighContrast() {
+        ui.settings.highContrast = !ui.settings.highContrast;
+        render();
+      }
+
+      function toggleReduceMotion() {
+        ui.settings.reduceMotion = !ui.settings.reduceMotion;
+        render();
+      }
+
+      function setTheme(theme) {
+        ui.settings.theme = theme;
+        render();
+      }
+
+      function toggleOfflineStored() {
+        ui.settings.offlineStored = !ui.settings.offlineStored;
+        render();
+      }
+
+      function toggleColorBlindAssist() {
+        ui.settings.colorBlindAssist = !ui.settings.colorBlindAssist;
+        render();
+      }
+
+      function saveSettings() {
+        ui.settings.persistedAt = stamp();
+        showToast('Ayarlar aninda uygulandi ve kalici kaydedildi.', 'success');
+        render();
+      }
+
+      function resetSettings() {
+        ui.settings.textScale = 100;
+        ui.settings.highContrast = false;
+        ui.settings.reduceMotion = false;
+        ui.settings.theme = 'system';
+        ui.settings.colorBlindAssist = true;
+        render();
+      }
+
+      function ratioText() {
+        return ui.settings.highContrast ? '7.4:1 (AA+)' : '4.8:1';
+      }
+
+      function previewSize() {
+        return Math.round(15 * (ui.settings.textScale / 100));
+      }
+
+      function setReaderField(field, value) {
+        ui.readerDemo[field] = value;
+      }
+
+      function validateReaderForm() {
+        if (!ui.readerDemo.name.trim() || !ui.readerDemo.email.trim()) {
+          ui.readerDemo.error = 'Lutfen ad soyad ve e-posta alanlarini doldurun.';
+          showToast('Form hata mesaji ekran okuyucuya duyuruldu.', 'error');
+        } else {
+          ui.readerDemo.error = '';
+          showToast('Form dogrulama basarili.', 'success');
         }
+        render();
+      }
 
-        function setTheme(theme) {
-            ui.settings.theme = theme;
-            render();
-        }
+      function announceSample() {
+        showToast('Canli bolge bildirimi: Teslim orani yukseldi.', 'success');
+      }
 
-        function toggleOfflineStored() {
-            ui.settings.offlineStored = !ui.settings.offlineStored;
-            render();
-        }
-
-        function toggleColorBlindAssist() {
-            ui.settings.colorBlindAssist = !ui.settings.colorBlindAssist;
-            render();
-        }
-
-        function saveSettings() {
-            ui.settings.persistedAt = stamp();
-            showToast('Ayarlar aninda uygulandi ve kalici kaydedildi.', 'success');
-            render();
-        }
-
-        function resetSettings() {
-            ui.settings.textScale = 100;
-            ui.settings.highContrast = false;
-            ui.settings.reduceMotion = false;
-            ui.settings.theme = 'system';
-            ui.settings.colorBlindAssist = true;
-            render();
-        }
-
-        function ratioText() {
-            return ui.settings.highContrast ? '7.4:1 (AA+)' : '4.8:1';
-        }
-
-        function previewSize() {
-            return Math.round(15 * (ui.settings.textScale / 100));
-        }
-
-        function setReaderField(field, value) {
-            ui.readerDemo[field] = value;
-        }
-
-        function validateReaderForm() {
-            if (!ui.readerDemo.name.trim() || !ui.readerDemo.email.trim()) {
-                ui.readerDemo.error = 'Lutfen ad soyad ve e-posta alanlarini doldurun.';
-                showToast('Form hata mesaji ekran okuyucuya duyuruldu.', 'error');
-            } else {
-                ui.readerDemo.error = '';
-                showToast('Form dogrulama basarili.', 'success');
-            }
-            render();
-        }
-
-        function announceSample() {
-            showToast('Canli bolge bildirimi: Teslim orani yukseldi.', 'success');
-        }
-
-        function screenOne() {
-            const size = previewSize();
-            const body = `
+      function screenOne() {
+        const size = previewSize();
+        const body = `
                 ${stateControls(1)}
                 ${statePanel(1)}
-                ${ui.screenStates[1] !== 'ready' ? '' : `
+                ${
+                  ui.screenStates[1] !== 'ready'
+                    ? ''
+                    : `
                     <div class="card">
                         <div class="card-title">Tek ekranda temel ayarlar</div>
                         <div class="chips">
@@ -1022,17 +1056,21 @@
                         </div>
                         <div class="muted" style="margin-top:0.45rem;">AC-FR-E10-01-03</div>
                     </div>
-                `}
+                `
+                }
             `;
-            return phoneShell('Erisilebilirlik ayarlari', body, null);
-        }
+        return phoneShell('Erisilebilirlik ayarlari', body, null);
+      }
 
-        function screenTwo() {
-            const size = previewSize();
-            const body = `
+      function screenTwo() {
+        const size = previewSize();
+        const body = `
                 ${stateControls(2)}
                 ${statePanel(2)}
-                ${ui.screenStates[2] !== 'ready' ? '' : `
+                ${
+                  ui.screenStates[2] !== 'ready'
+                    ? ''
+                    : `
                     <div class="card">
                         <div class="card-title">Metin boyutu slideri (${ui.settings.textScale}%)</div>
                         <input class="slider" type="range" min="75" max="150" step="5" value="${ui.settings.textScale}" oninput="setTextScale(this.value)" aria-label="Metin boyutu ayari" aria-valuemin="75" aria-valuemax="150" aria-valuenow="${ui.settings.textScale}">
@@ -1057,16 +1095,20 @@
                         </div>
                         <div class="muted" style="margin-top:0.45rem;">AC-FR-E10-02-03</div>
                     </div>
-                `}
+                `
+                }
             `;
-            return phoneShell('Metin buyutme', body, 1);
-        }
+        return phoneShell('Metin buyutme', body, 1);
+      }
 
-        function screenThree() {
-            const body = `
+      function screenThree() {
+        const body = `
                 ${stateControls(3)}
                 ${statePanel(3)}
-                ${ui.screenStates[3] !== 'ready' ? '' : `
+                ${
+                  ui.screenStates[3] !== 'ready'
+                    ? ''
+                    : `
                     <div class="card">
                         <div class="card-title">Kontrast seviyesi</div>
                         <div class="chips">
@@ -1098,25 +1140,33 @@
                         </div>
                         <div class="muted" style="margin-top:0.45rem;">AC-FR-E10-03-03</div>
                     </div>
-                `}
+                `
+                }
             `;
-            return phoneShell('Kontrast ve tema', body, 1);
-        }
+        return phoneShell('Kontrast ve tema', body, 1);
+      }
 
-        function screenFour() {
-            const body = `
+      function screenFour() {
+        const body = `
                 ${stateControls(4)}
                 ${statePanel(4)}
-                ${ui.screenStates[4] !== 'ready' ? '' : `
+                ${
+                  ui.screenStates[4] !== 'ready'
+                    ? ''
+                    : `
                     <div class="card">
                         <div class="card-title">Anlamli etiketli elemanlar</div>
                         <div class="list">
-                            ${ui.a11yElements.map((item) => `
+                            ${ui.a11yElements
+                              .map(
+                                item => `
                                 <div class="list-item">
                                     <div class="item-title">${item.id}</div>
                                     <div class="item-meta">role=${item.role} • accessibilityLabel="${item.label}"</div>
                                 </div>
-                            `).join('')}
+                            `
+                              )
+                              .join('')}
                         </div>
                         <div class="muted" style="margin-top:0.45rem;">AC-FR-E10-04-01</div>
                     </div>
@@ -1144,65 +1194,70 @@
                     <div class="card">
                         <div class="card-title">Gorsel alternatif metinleri</div>
                         <div class="list">
-                            ${ui.altExamples.map((entry) => `
+                            ${ui.altExamples
+                              .map(
+                                entry => `
                                 <div class="list-item">
                                     <div class="item-title">${entry.visual}</div>
                                     <div class="item-meta">Alt text: ${entry.alt}</div>
                                 </div>
-                            `).join('')}
+                            `
+                              )
+                              .join('')}
                         </div>
                         <div class="muted" style="margin-top:0.45rem;">AC-FR-E10-04-04</div>
                     </div>
-                `}
-            `;
-            return phoneShell('Ekran okuyucu uyumu', body, 1);
-        }
-
-        function renderScreen(screenNo) {
-            if (screenNo === 1) {
-                return screenOne();
-            }
-            if (screenNo === 2) {
-                return screenTwo();
-            }
-            if (screenNo === 3) {
-                return screenThree();
-            }
-            return screenFour();
-        }
-
-        function render() {
-            applyBodyModes();
-            const current = screenData[ui.currentScreen];
-            document.getElementById('screenTitle').textContent = current.title;
-            document.getElementById('screenFr').textContent = current.fr;
-            document.getElementById('screenRoute').textContent = current.route;
-            document.getElementById('screenMeta').textContent = current.meta + ' • event: ' + ui.lastAnalyticsEvent;
-
-            document.querySelectorAll('.nav-item').forEach((item) => {
-                item.classList.toggle('active', Number(item.dataset.screen) === ui.currentScreen);
-            });
-
-            document.querySelectorAll('[id^="flow-"]').forEach((step, index) => {
-                step.classList.toggle('active', index + 1 === ui.currentScreen);
-            });
-
-            document.getElementById('viewer').innerHTML = renderScreen(ui.currentScreen);
-        }
-
-        document.querySelectorAll('.nav-item').forEach((item) => {
-            item.addEventListener('click', () => {
-                setCurrentScreen(Number(item.dataset.screen));
-            });
-            item.addEventListener('keydown', (event) => {
-                if (event.key === 'Enter' || event.key === ' ') {
-                    event.preventDefault();
-                    setCurrentScreen(Number(item.dataset.screen));
+                `
                 }
-            });
+            `;
+        return phoneShell('Ekran okuyucu uyumu', body, 1);
+      }
+
+      function renderScreen(screenNo) {
+        if (screenNo === 1) {
+          return screenOne();
+        }
+        if (screenNo === 2) {
+          return screenTwo();
+        }
+        if (screenNo === 3) {
+          return screenThree();
+        }
+        return screenFour();
+      }
+
+      function render() {
+        applyBodyModes();
+        const current = screenData[ui.currentScreen];
+        document.getElementById('screenTitle').textContent = current.title;
+        document.getElementById('screenFr').textContent = current.fr;
+        document.getElementById('screenRoute').textContent = current.route;
+        document.getElementById('screenMeta').textContent = current.meta + ' • event: ' + ui.lastAnalyticsEvent;
+
+        document.querySelectorAll('.nav-item').forEach(item => {
+          item.classList.toggle('active', Number(item.dataset.screen) === ui.currentScreen);
         });
 
-        render();
+        document.querySelectorAll('[id^="flow-"]').forEach((step, index) => {
+          step.classList.toggle('active', index + 1 === ui.currentScreen);
+        });
+
+        document.getElementById('viewer').innerHTML = renderScreen(ui.currentScreen);
+      }
+
+      document.querySelectorAll('.nav-item').forEach(item => {
+        item.addEventListener('click', () => {
+          setCurrentScreen(Number(item.dataset.screen));
+        });
+        item.addEventListener('keydown', event => {
+          if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            setCurrentScreen(Number(item.dataset.screen));
+          }
+        });
+      });
+
+      render();
     </script>
-</body>
+  </body>
 </html>

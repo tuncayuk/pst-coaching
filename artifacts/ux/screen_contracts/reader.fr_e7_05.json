@@ -3,10 +3,7 @@
   "title": "Vurgularim ve notlarim listesi",
   "route": "/ebook/highlights",
   "purpose": "Implements FR-E7-05: Kitaba ozel vurgu/not listesi, dokunarak sayfa gitme, not duzenleme, disa aktarma.",
-  "entryPoints": [
-    "ebook.reader",
-    "ebook.detail"
-  ],
+  "entryPoints": ["ebook.reader", "ebook.detail"],
   "inputs": [
     {
       "name": "ebookId",
@@ -15,11 +12,7 @@
       "source": "route_param"
     }
   ],
-  "dataDependencies": [
-    "Highlight",
-    "Note",
-    "FavoriteItem"
-  ],
+  "dataDependencies": ["Highlight", "Note", "FavoriteItem"],
   "uiStates": {
     "loading": {
       "description": "Skeleton list items while loading highlights."
@@ -39,20 +32,8 @@
   },
   "analytics": {
     "screenView": "ebook_highlights_viewed",
-    "events": [
-      "ebook_highlights_viewed",
-      "ebook_highlight_tapped",
-      "ebook_note_edited",
-      "ebook_highlights_exported"
-    ]
+    "events": ["ebook_highlights_viewed", "ebook_highlight_tapped", "ebook_note_edited", "ebook_highlights_exported"]
   },
-  "acceptanceCriteriaRefs": [
-    "AC-FR-E7-05-01",
-    "AC-FR-E7-05-02",
-    "AC-FR-E7-05-03",
-    "AC-FR-E7-05-04"
-  ],
-  "gates": [
-    "auth"
-  ]
+  "acceptanceCriteriaRefs": ["AC-FR-E7-05-01", "AC-FR-E7-05-02", "AC-FR-E7-05-03", "AC-FR-E7-05-04"],
+  "gates": ["auth"]
 }

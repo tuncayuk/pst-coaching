@@ -3,10 +3,7 @@
   "title": "Egitmen rehberi ve facilitator mode",
   "route": "/workshop/guide",
   "purpose": "Implements FR-E8-05: Dakika/dakika akis, cumle onerileri, facilitator mode ve cevrimdisi erisim.",
-  "entryPoints": [
-    "workshop.landing",
-    "workshop.phases"
-  ],
+  "entryPoints": ["workshop.landing", "workshop.phases"],
   "inputs": [
     {
       "name": "userId",
@@ -33,12 +30,7 @@
       "source": "profile"
     }
   ],
-  "dataDependencies": [
-    "Workshop",
-    "FacilitatorGuide",
-    "GuideSection",
-    "Download"
-  ],
+  "dataDependencies": ["Workshop", "FacilitatorGuide", "GuideSection", "Download"],
   "uiStates": {
     "loading": {
       "description": "Skeleton placeholders shown while loading FR-E8-05 data."
@@ -58,19 +50,8 @@
   },
   "analytics": {
     "screenView": "workshop_guide_viewed",
-    "events": [
-      "workshop_guide_viewed",
-      "facilitator_mode_toggled",
-      "guide_section_jumped"
-    ]
+    "events": ["workshop_guide_viewed", "facilitator_mode_toggled", "guide_section_jumped"]
   },
-  "acceptanceCriteriaRefs": [
-    "AC-FR-E8-05-01",
-    "AC-FR-E8-05-02",
-    "AC-FR-E8-05-03",
-    "AC-FR-E8-05-04"
-  ],
-  "gates": [
-    "auth"
-  ]
+  "acceptanceCriteriaRefs": ["AC-FR-E8-05-01", "AC-FR-E8-05-02", "AC-FR-E8-05-03", "AC-FR-E8-05-04"],
+  "gates": ["auth"]
 }

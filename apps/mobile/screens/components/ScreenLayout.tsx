@@ -1,9 +1,9 @@
-import React from "react";
-import { SafeAreaView, ScrollView, StyleSheet, View } from "react-native";
-import { useTheme } from "react-native-paper";
-import { useNavigation } from "@react-navigation/native";
-import { PIconButton, PSurface, PText } from "../../components";
+import { useNavigation } from '@react-navigation/native';
+import React from 'react';
+import { SafeAreaView, ScrollView, StyleSheet, View } from 'react-native';
+import { useTheme } from 'react-native-paper';
 
+import { PIconButton, PSurface, PText } from '../../components';
 
 type ScreenLayoutProps = {
   title: string;
@@ -51,28 +51,28 @@ export const ScreenLayout = ({ title, subtitle, children }: ScreenLayoutProps) =
 
 const styles = StyleSheet.create({
   root: {
-    flex: 1,
+    flex: 1
   },
   content: {
-    padding: 16,
+    padding: 16
   },
   header: {
     paddingVertical: 12,
     paddingRight: 16,
     paddingLeft: 8,
     borderRadius: 20,
-    marginBottom: 16,
+    marginBottom: 16
   },
   titleRow: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center'
   },
   backButton: {
     margin: 0,
-    marginRight: 4,
+    marginRight: 4
   },
   titleText: {
-    flex: 1,
+    flex: 1
   },
-  body: {},
+  body: {}
 });

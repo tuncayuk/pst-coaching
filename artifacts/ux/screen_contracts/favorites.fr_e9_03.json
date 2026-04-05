@@ -3,10 +3,7 @@
   "title": "Koleksiyonlar",
   "route": "/favorites/collections",
   "purpose": "Implements FR-E9-03: Koleksiyon olusturma/adlandirma, favorileri ekleme, geri alinabilir silme.",
-  "entryPoints": [
-    "library.overview",
-    "favorites.list"
-  ],
+  "entryPoints": ["library.overview", "favorites.list"],
   "inputs": [
     {
       "name": "userId",
@@ -27,11 +24,7 @@
       "source": "profile"
     }
   ],
-  "dataDependencies": [
-    "Collection",
-    "CollectionItem",
-    "Favorite"
-  ],
+  "dataDependencies": ["Collection", "CollectionItem", "Favorite"],
   "uiStates": {
     "loading": {
       "description": "Skeleton placeholders shown while loading FR-E9-03 data."
@@ -51,20 +44,8 @@
   },
   "analytics": {
     "screenView": "collections_viewed",
-    "events": [
-      "collections_viewed",
-      "collection_created",
-      "collection_deleted",
-      "collection_delete_undone"
-    ]
+    "events": ["collections_viewed", "collection_created", "collection_deleted", "collection_delete_undone"]
   },
-  "acceptanceCriteriaRefs": [
-    "AC-FR-E9-03-01",
-    "AC-FR-E9-03-02",
-    "AC-FR-E9-03-03"
-  ],
-  "gates": [
-    "auth",
-    "subscription"
-  ]
+  "acceptanceCriteriaRefs": ["AC-FR-E9-03-01", "AC-FR-E9-03-02", "AC-FR-E9-03-03"],
+  "gates": ["auth", "subscription"]
 }

@@ -5,60 +5,50 @@
  * AC-FR-E17-02-03: Deep link to target content from card
  * AC-FR-E17-02-04: Timestamp shown in detail
  */
-import React from "react";
-import { StyleSheet, View } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { OfflineNotice } from "../components/OfflineNotice";
-import { ScreenLayout } from "../components/ScreenLayout";
-import { SectionCard } from "../components/SectionCard";
-import { SkeletonBlock } from "../components/SkeletonBlock";
-import { StateMessage } from "../components/StateMessage";
-import { resolveScreenState, ScreenState } from "../components/ScreenState";
-import {
-  MockNotification,
-  getNotificationsForUser,
-  getPrimaryUser,
-} from "../../data/mockSelectors";
-import {
-  PActivityIndicator,
-  PButton,
-  PCard,
-  PChip,
-  PDivider,
-  PText,
-} from "../../components";
+import { useNavigation } from '@react-navigation/native';
+import React from 'react';
+import { StyleSheet, View } from 'react-native';
 
-const TYPE_LABELS: Record<MockNotification["type"], string> = {
-  journey: "Yolculuk",
-  workshop: "Atolye",
-  reading: "Okuma",
-  social: "Sosyal",
-  achievement: "Basari",
+import { PActivityIndicator, PButton, PCard, PChip, PDivider, PText } from '../../components';
+import { MockNotification, getNotificationsForUser, getPrimaryUser } from '../../data/mockSelectors';
+import { OfflineNotice } from '../components/OfflineNotice';
+import { ScreenLayout } from '../components/ScreenLayout';
+import { ScreenState, resolveScreenState } from '../components/ScreenState';
+import { SectionCard } from '../components/SectionCard';
+import { SkeletonBlock } from '../components/SkeletonBlock';
+import { StateMessage } from '../components/StateMessage';
+
+const TYPE_LABELS: Record<MockNotification['type'], string> = {
+  journey: 'Yolculuk',
+  workshop: 'Atolye',
+  reading: 'Okuma',
+  social: 'Sosyal',
+  achievement: 'Basari'
 };
 
-const CTA_LABELS: Record<MockNotification["type"], string> = {
-  journey: "Yolculuga Git",
-  workshop: "Atolyeye Git",
-  reading: "Okumaya Devam Et",
-  social: "Yorumu Goruntule",
-  achievement: "Rozetleri Goruntule",
+const CTA_LABELS: Record<MockNotification['type'], string> = {
+  journey: 'Yolculuga Git',
+  workshop: 'Atolyeye Git',
+  reading: 'Okumaya Devam Et',
+  social: 'Yorumu Goruntule',
+  achievement: 'Rozetleri Goruntule'
 };
 
 const formatTimestamp = (iso?: string | null): string => {
-  if (!iso) return "";
+  if (!iso) return '';
   const d = new Date(iso);
-  return d.toLocaleString("tr-TR", {
-    day: "2-digit",
-    month: "long",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
+  return d.toLocaleString('tr-TR', {
+    day: '2-digit',
+    month: 'long',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
   });
 };
 
 const NotificationDetailContent = ({
   notification,
-  isOffline,
+  isOffline
 }: {
   notification: MockNotification;
   isOffline?: boolean;
@@ -68,12 +58,12 @@ const NotificationDetailContent = ({
   const handleCTA = () => {
     if (isOffline) return;
     // AC-FR-E17-02-03: Deep link to target content
-    if (notification.content_type === "journey_day") {
-      navigation.navigate("Content");
-    } else if (notification.content_type === "journey") {
-      navigation.navigate("Content");
+    if (notification.content_type === 'journey_day') {
+      navigation.navigate('Content');
+    } else if (notification.content_type === 'journey') {
+      navigation.navigate('Content');
     } else {
-      navigation.navigate("MainTabs");
+      navigation.navigate('MainTabs');
     }
   };
 
@@ -93,9 +83,7 @@ const NotificationDetailContent = ({
         <PDivider style={styles.divider} />
         <View style={styles.metaRow}>
           <PText style={styles.metaLabel}>Tarih</PText>
-          <PText style={styles.metaValue}>
-            {formatTimestamp(notification.created_at)}
-          </PText>
+          <PText style={styles.metaValue}>{formatTimestamp(notification.created_at)}</PText>
         </View>
 
         {notification.content_id && (
@@ -125,9 +113,7 @@ const NotificationDetailContent = ({
       {notification.content_id && (
         <SectionCard title="Icerik Ozeti">
           <PCard style={styles.summaryCard}>
-            <PText style={styles.summaryType}>
-              Tur: {notification.content_type ?? "Bilinmiyor"}
-            </PText>
+            <PText style={styles.summaryType}>Tur: {notification.content_type ?? 'Bilinmiyor'}</PText>
             <PText style={styles.summaryId} numberOfLines={1}>
               Kaynak: {notification.content_id}
             </PText>
@@ -147,19 +133,15 @@ type NotificationDetailScreenProps = {
   };
 };
 
-export const NotificationDetailScreen = ({
-  route,
-}: NotificationDetailScreenProps) => {
+export const NotificationDetailScreen = ({ route }: NotificationDetailScreenProps) => {
   const state = resolveScreenState(route);
   const notificationId = route?.params?.notificationId;
 
   const user = getPrimaryUser();
   const notifications = getNotificationsForUser(user?.id);
-  const notification = notificationId
-    ? notifications.find((n) => n.id === notificationId)
-    : notifications[0];
+  const notification = notificationId ? notifications.find(n => n.id === notificationId) : notifications[0];
 
-  if (state === "loading") {
+  if (state === 'loading') {
     return (
       <ScreenLayout title="Bildirim Detayi">
         <PActivityIndicator />
@@ -169,7 +151,7 @@ export const NotificationDetailScreen = ({
     );
   }
 
-  if (state === "error") {
+  if (state === 'error') {
     return (
       <ScreenLayout title="Bildirim Detayi">
         <StateMessage
@@ -182,18 +164,16 @@ export const NotificationDetailScreen = ({
     );
   }
 
-  if (state === "offline") {
+  if (state === 'offline') {
     return (
       <ScreenLayout title="Bildirim Detayi">
         <OfflineNotice />
-        {notification && (
-          <NotificationDetailContent notification={notification} isOffline />
-        )}
+        {notification && <NotificationDetailContent notification={notification} isOffline />}
       </ScreenLayout>
     );
   }
 
-  if (state === "empty" || !notification) {
+  if (state === 'empty' || !notification) {
     return (
       <ScreenLayout title="Bildirim Detayi">
         <StateMessage
@@ -215,24 +195,24 @@ export const NotificationDetailScreen = ({
 const styles = StyleSheet.create({
   skeleton: { marginHorizontal: 16, marginBottom: 12 },
   titleRow: {
-    flexDirection: "row",
-    alignItems: "flex-start",
+    flexDirection: 'row',
+    alignItems: 'flex-start',
     gap: 8,
-    marginBottom: 8,
+    marginBottom: 8
   },
-  title: { fontWeight: "700", fontSize: 16, flex: 1 },
-  typeChip: { backgroundColor: "#E0F7FA" },
-  description: { fontSize: 14, color: "#404040", lineHeight: 20 },
+  title: { fontWeight: '700', fontSize: 16, flex: 1 },
+  typeChip: { backgroundColor: '#E0F7FA' },
+  description: { fontSize: 14, color: '#404040', lineHeight: 20 },
   divider: { marginVertical: 12 },
   metaRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginBottom: 6,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 6
   },
-  metaLabel: { fontSize: 12, color: "#737373", fontWeight: "600" },
-  metaValue: { fontSize: 12, color: "#404040", flex: 1, textAlign: "right" },
+  metaLabel: { fontSize: 12, color: '#737373', fontWeight: '600' },
+  metaValue: { fontSize: 12, color: '#404040', flex: 1, textAlign: 'right' },
   ctaButton: { marginTop: 4 },
   summaryCard: { padding: 12 },
-  summaryType: { fontSize: 13, color: "#525252", marginBottom: 4 },
-  summaryId: { fontSize: 11, color: "#A3A3A3" },
+  summaryType: { fontSize: 13, color: '#525252', marginBottom: 4 },
+  summaryId: { fontSize: 11, color: '#A3A3A3' }
 });

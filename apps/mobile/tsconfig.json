@@ -5,9 +5,5 @@
     "moduleResolution": "Bundler",
     "types": ["react", "react-native", "vitest/globals"]
   },
-  "include": [
-    "**/*.ts",
-    "**/*.tsx",
-    "../../artifacts/**/*.json"
-  ]
+  "include": ["**/*.ts", "**/*.tsx", "../../artifacts/**/*.json"]
 }

@@ -1,5 +1,5 @@
-import React from "react";
-import { Checkbox } from "react-native-paper";
+import React from 'react';
+import { Checkbox } from 'react-native-paper';
 
 type PCheckboxItemProps = React.ComponentProps<typeof Checkbox.Item>;
 

@@ -1,5 +1,5 @@
-import React from "react";
-import { IconButton } from "react-native-paper";
+import React from 'react';
+import { IconButton } from 'react-native-paper';
 
 type PIconButtonProps = React.ComponentProps<typeof IconButton>;
 

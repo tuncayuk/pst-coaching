@@ -1,37 +1,44 @@
-import React from "react";
-import { StyleSheet, View } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { OfflineNotice } from "../components/OfflineNotice";
-import { ScreenLayout } from "../components/ScreenLayout";
-import { SectionCard } from "../components/SectionCard";
-import { SkeletonBlock } from "../components/SkeletonBlock";
-import { StateMessage } from "../components/StateMessage";
-import { resolveScreenState, ScreenState } from "../components/ScreenState";
-import { PActivityIndicator, PButton, PCard, PProgressBar, PText } from "../../components";
+import { useNavigation } from '@react-navigation/native';
+import React from 'react';
+import { StyleSheet, View } from 'react-native';
+
+import { PActivityIndicator, PButton, PCard, PProgressBar, PText } from '../../components';
+import { OfflineNotice } from '../components/OfflineNotice';
+import { ScreenLayout } from '../components/ScreenLayout';
+import { ScreenState, resolveScreenState } from '../components/ScreenState';
+import { SectionCard } from '../components/SectionCard';
+import { SkeletonBlock } from '../components/SkeletonBlock';
+import { StateMessage } from '../components/StateMessage';
 
 // AC-FR-E6-03-01: Separate strong areas and development areas
 const strengths = [
-  { title: "Empati", score: 0.82, description: "Baskalarinin duygularini anlama ve paylasma." },
-  { title: "Oz Duzenleme", score: 0.64, description: "Duygulari ve tepkileri yonetme kapasitesi." },
-  { title: "Odaklanma", score: 0.71, description: "Amac odakli surdurulebilir dikkat." },
+  { title: 'Empati', score: 0.82, description: 'Baskalarinin duygularini anlama ve paylasma.' },
+  { title: 'Oz Duzenleme', score: 0.64, description: 'Duygulari ve tepkileri yonetme kapasitesi.' },
+  { title: 'Odaklanma', score: 0.71, description: 'Amac odakli surdurulebilir dikkat.' }
 ];
 
 // AC-FR-E6-03-02: Development areas with concrete suggestions + content references
 const developmentAreas = [
   {
-    title: "Kararlilik",
+    title: 'Kararlilik',
     score: 0.38,
-    suggestion: "Gunluk kucuk kararlar alarak kararliligi guclendir.",
-    contentRef: "Oz-Sefkat Yolculugu",
-    contentRouteParams: { screen: "ContentJourneyDetail", params: { id: "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa" } },
+    suggestion: 'Gunluk kucuk kararlar alarak kararliligi guclendir.',
+    contentRef: 'Oz-Sefkat Yolculugu',
+    contentRouteParams: {
+      screen: 'ContentJourneyDetail',
+      params: { id: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa' }
+    }
   },
   {
-    title: "Stres Yonetimi",
+    title: 'Stres Yonetimi',
     score: 0.44,
-    suggestion: "Nefes tekniklerini gunluk rutinine ekle.",
-    contentRef: "Duygusal Dayaniklilik Atolyesi",
-    contentRouteParams: { screen: "ContentWorkshopDetail", params: { id: "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee" } },
-  },
+    suggestion: 'Nefes tekniklerini gunluk rutinine ekle.',
+    contentRef: 'Duygusal Dayaniklilik Atolyesi',
+    contentRouteParams: {
+      screen: 'ContentWorkshopDetail',
+      params: { id: 'eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee' }
+    }
+  }
 ];
 
 const ProgressStrengthsContent = ({ isOffline }: { isOffline?: boolean }) => {
@@ -41,12 +48,9 @@ const ProgressStrengthsContent = ({ isOffline }: { isOffline?: boolean }) => {
     <>
       {/* AC-FR-E6-03-01: Strong areas card */}
       <SectionCard title="Guclu Alanlar">
-        {strengths.map((item) => (
+        {strengths.map(item => (
           <PCard key={item.title} style={styles.card}>
-            <PCard.Title
-              title={item.title}
-              subtitle={`${Math.round(item.score * 100)}%`}
-            />
+            <PCard.Title title={item.title} subtitle={`${Math.round(item.score * 100)}%`} />
             <PCard.Content>
               <PProgressBar
                 progress={item.score}
@@ -61,12 +65,9 @@ const ProgressStrengthsContent = ({ isOffline }: { isOffline?: boolean }) => {
 
       {/* AC-FR-E6-03-01: Development areas card (separate) */}
       <SectionCard title="Gelisim Alanlari">
-        {developmentAreas.map((item) => (
+        {developmentAreas.map(item => (
           <PCard key={item.title} style={[styles.card, styles.devCard]}>
-            <PCard.Title
-              title={item.title}
-              subtitle={`${Math.round(item.score * 100)}% — Gelisim alani`}
-            />
+            <PCard.Title title={item.title} subtitle={`${Math.round(item.score * 100)}% — Gelisim alani`} />
             <PCard.Content>
               <PProgressBar
                 progress={item.score}
@@ -83,9 +84,7 @@ const ProgressStrengthsContent = ({ isOffline }: { isOffline?: boolean }) => {
                 mode="contained"
                 compact
                 disabled={isOffline}
-                onPress={() =>
-                  navigation.navigate("Content", item.contentRouteParams)
-                }
+                onPress={() => navigation.navigate('Content', item.contentRouteParams)}
               >
                 Onerileri Uygula
               </PButton>
@@ -95,16 +94,8 @@ const ProgressStrengthsContent = ({ isOffline }: { isOffline?: boolean }) => {
       </SectionCard>
 
       <SectionCard title="Kisisel Plan">
-        <PText style={styles.planHint}>
-          Gelisim alanlarini hedefleyen kisisel bir eylem plani olusturabilirsin.
-        </PText>
-        <PButton
-          mode="outlined"
-          disabled={isOffline}
-          onPress={() =>
-            navigation.navigate("ProgressReportExport")
-          }
-        >
+        <PText style={styles.planHint}>Gelisim alanlarini hedefleyen kisisel bir eylem plani olusturabilirsin.</PText>
+        <PButton mode="outlined" disabled={isOffline} onPress={() => navigation.navigate('ProgressReportExport')}>
           Kisisel Plan Olustur
         </PButton>
       </SectionCard>
@@ -112,14 +103,10 @@ const ProgressStrengthsContent = ({ isOffline }: { isOffline?: boolean }) => {
   );
 };
 
-export const ProgressStrengthsScreen = ({
-  route,
-}: {
-  route?: { params?: { state?: ScreenState } };
-}) => {
+export const ProgressStrengthsScreen = ({ route }: { route?: { params?: { state?: ScreenState } } }) => {
   const state = resolveScreenState(route);
 
-  if (state === "loading") {
+  if (state === 'loading') {
     return (
       <ScreenLayout title="Guclu ve Gelisim Alanlari" subtitle="Analiz hazirlaniyor">
         <SectionCard title="Yukleniyor">
@@ -135,7 +122,7 @@ export const ProgressStrengthsScreen = ({
     );
   }
 
-  if (state === "empty") {
+  if (state === 'empty') {
     return (
       <ScreenLayout title="Guclu ve Gelisim Alanlari" subtitle="Analiz olusacak">
         <StateMessage
@@ -148,7 +135,7 @@ export const ProgressStrengthsScreen = ({
     );
   }
 
-  if (state === "error") {
+  if (state === 'error') {
     return (
       <ScreenLayout title="Guclu ve Gelisim Alanlari" subtitle="Bir sorun olustu">
         <StateMessage
@@ -162,7 +149,7 @@ export const ProgressStrengthsScreen = ({
     );
   }
 
-  if (state === "offline") {
+  if (state === 'offline') {
     return (
       <ScreenLayout title="Guclu ve Gelisim Alanlari" subtitle="Onbellekteki icerikler">
         <OfflineNotice />
@@ -180,38 +167,36 @@ export const ProgressStrengthsScreen = ({
 
 const styles = StyleSheet.create({
   card: {
-    marginBottom: 12,
+    marginBottom: 12
   },
   devCard: {
     borderWidth: 1,
-    borderColor: "#FCD34D",
-    backgroundColor: "#FFFBEB",
+    borderColor: '#FCD34D',
+    backgroundColor: '#FFFBEB'
   },
   bar: {
     marginTop: 6,
     marginBottom: 8,
     height: 6,
-    borderRadius: 3,
+    borderRadius: 3
   },
   description: {
     fontSize: 12,
-    color: "#737373",
+    color: '#737373'
   },
   suggestion: {
     fontSize: 13,
-    color: "#1F2937",
-    marginBottom: 4,
+    color: '#1F2937',
+    marginBottom: 4
   },
   contentRef: {
     fontSize: 11,
-    color: "#6B46C1",
-    fontWeight: "600",
+    color: '#6B46C1',
+    fontWeight: '600'
   },
   planHint: {
     fontSize: 13,
-    color: "#525252",
-    marginBottom: 10,
-  },
+    color: '#525252',
+    marginBottom: 10
+  }
 });
-
-

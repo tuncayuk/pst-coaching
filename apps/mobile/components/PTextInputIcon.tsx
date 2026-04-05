@@ -1,3 +1,3 @@
-import { TextInput } from "react-native-paper";
+import { TextInput } from 'react-native-paper';
 
 export const PTextInputIcon = TextInput.Icon;

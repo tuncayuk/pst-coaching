@@ -3,9 +3,7 @@
   "title": "Altini cizme ve not alma",
   "route": "/content/highlights",
   "purpose": "Implements FR-E5-03: Text highlighting, note taking, and favorites within reading.",
-  "entryPoints": [
-    "content.reading"
-  ],
+  "entryPoints": ["content.reading"],
   "inputs": [
     {
       "name": "userId",
@@ -20,11 +18,7 @@
       "source": "route_params"
     }
   ],
-  "dataDependencies": [
-    "Highlight",
-    "Note",
-    "FavoriteItem"
-  ],
+  "dataDependencies": ["Highlight", "Note", "FavoriteItem"],
   "uiStates": {
     "loading": {
       "description": "Loading existing highlights and notes."
@@ -52,13 +46,6 @@
       "content_favorited"
     ]
   },
-  "acceptanceCriteriaRefs": [
-    "AC-FR-E5-03-01",
-    "AC-FR-E5-03-02",
-    "AC-FR-E5-03-03",
-    "AC-FR-E5-03-04"
-  ],
-  "gates": [
-    "auth"
-  ]
+  "acceptanceCriteriaRefs": ["AC-FR-E5-03-01", "AC-FR-E5-03-02", "AC-FR-E5-03-03", "AC-FR-E5-03-04"],
+  "gates": ["auth"]
 }

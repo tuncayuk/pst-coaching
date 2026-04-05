@@ -3,10 +3,7 @@
   "title": "Plan secimi ve karsilastirma",
   "route": "/profile/subscription/plan-comparison",
   "purpose": "FR-E3-01: Lists Bireysel (1), Aile (5), Grup (10) plans with seat limits and feature comparison. Selected plan highlighted visually with checkmark. Devam Et CTA activates when a plan is chosen (AC-FR-E3-01-01/02/03). Offline: cached plan list, buy disabled.",
-  "entryPoints": [
-    "subscription.overview",
-    "profile.overview"
-  ],
+  "entryPoints": ["subscription.overview", "profile.overview"],
   "inputs": [
     {
       "name": "userId",
@@ -27,9 +24,7 @@
       "source": "subscription_entity"
     }
   ],
-  "dataDependencies": [
-    "SubscriptionPlan"
-  ],
+  "dataDependencies": ["SubscriptionPlan"],
   "uiStates": {
     "loading": {
       "description": "3 skeleton plan cards"
@@ -56,13 +51,6 @@
       "plan_comparison_retry_tapped"
     ]
   },
-  "acceptanceCriteriaRefs": [
-    "AC-FR-E3-01-01",
-    "AC-FR-E3-01-02",
-    "AC-FR-E3-01-03"
-  ],
-  "gates": [
-    "auth",
-    "subscription"
-  ]
+  "acceptanceCriteriaRefs": ["AC-FR-E3-01-01", "AC-FR-E3-01-02", "AC-FR-E3-01-03"],
+  "gates": ["auth", "subscription"]
 }

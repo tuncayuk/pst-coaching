@@ -3,12 +3,7 @@
   "title": "Icerik Baslatma (Ortak Akis)",
   "route": "/content/launch",
   "purpose": "Implements FR-E4-07: Content launch gate sequence (Auth → Subscription → Add-on → Demographics → DDL), planning options, time rules, psychological safety notice, and activation.",
-  "entryPoints": [
-    "discover.fr_e4_03",
-    "discover.fr_e4_04",
-    "discover.fr_e4_05",
-    "discover.fr_e4_06"
-  ],
+  "entryPoints": ["discover.fr_e4_03", "discover.fr_e4_04", "discover.fr_e4_05", "discover.fr_e4_06"],
   "inputs": [
     {
       "name": "userId",
@@ -29,12 +24,7 @@
       "source": "profile"
     }
   ],
-  "dataDependencies": [
-    "Journey",
-    "Workshop",
-    "Subscription",
-    "UserProfile"
-  ],
+  "dataDependencies": ["Journey", "Workshop", "Subscription", "UserProfile"],
   "uiStates": {
     "loading": {
       "description": "Gate check in progress — spinner shown."
@@ -63,17 +53,6 @@
       "content_launch_confirmed"
     ]
   },
-  "acceptanceCriteriaRefs": [
-    "AC-FR-E4-07-01",
-    "AC-FR-E4-07-02",
-    "AC-FR-E4-07-03",
-    "AC-FR-E4-07-04",
-    "AC-FR-E4-07-05"
-  ],
-  "gates": [
-    "auth",
-    "subscription",
-    "demographics",
-    "ddl_test"
-  ]
+  "acceptanceCriteriaRefs": ["AC-FR-E4-07-01", "AC-FR-E4-07-02", "AC-FR-E4-07-03", "AC-FR-E4-07-04", "AC-FR-E4-07-05"],
+  "gates": ["auth", "subscription", "demographics", "ddl_test"]
 }

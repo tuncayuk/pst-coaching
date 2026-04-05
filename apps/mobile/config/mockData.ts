@@ -1,4 +1,4 @@
-import mockDataJson from "../../../artifacts/mock/mock_data.json";
+import mockDataJson from '../../../artifacts/mock/mock_data.json';
 
 type MockDataFixture = typeof mockDataJson;
 
@@ -10,7 +10,6 @@ export const setMockDataEnabled = (enabled: boolean) => {
   mockDataEnabled = enabled;
 };
 
-export const getMockData = (): MockDataFixture | null =>
-  mockDataEnabled ? mockDataJson : null;
+export const getMockData = (): MockDataFixture | null => (mockDataEnabled ? mockDataJson : null);
 
 export const getMockDataMeta = () => mockDataJson.meta;

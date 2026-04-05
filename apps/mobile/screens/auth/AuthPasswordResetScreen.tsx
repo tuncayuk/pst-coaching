@@ -1,19 +1,19 @@
-import React from "react";
-import { StyleSheet, View, TouchableOpacity, ScrollView } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { OfflineNotice } from "../components/OfflineNotice";
-import { ScreenLayout } from "../components/ScreenLayout";
-import { SectionCard } from "../components/SectionCard";
-import { SkeletonBlock } from "../components/SkeletonBlock";
-import { StateMessage } from "../components/StateMessage";
-import { resolveScreenState, ScreenState } from "../components/ScreenState";
-import { PActivityIndicator, PButton, PIconButton, PText, PTextInput } from "../../components";
+import { useNavigation } from '@react-navigation/native';
+import React from 'react';
+import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { PActivityIndicator, PButton, PIconButton, PText, PTextInput } from '../../components';
+import { OfflineNotice } from '../components/OfflineNotice';
+import { ScreenLayout } from '../components/ScreenLayout';
+import { ScreenState, resolveScreenState } from '../components/ScreenState';
+import { SectionCard } from '../components/SectionCard';
+import { SkeletonBlock } from '../components/SkeletonBlock';
+import { StateMessage } from '../components/StateMessage';
 
 const PasswordResetContent = ({ isOffline }: { isOffline?: boolean }) => {
-  const [newPassword, setNewPassword] = React.useState("");
-  const [confirmPassword, setConfirmPassword] = React.useState("");
+  const [newPassword, setNewPassword] = React.useState('');
+  const [confirmPassword, setConfirmPassword] = React.useState('');
   const [showPassword, setShowPassword] = React.useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
   const [showSuccess, setShowSuccess] = React.useState(false);
@@ -21,16 +21,16 @@ const PasswordResetContent = ({ isOffline }: { isOffline?: boolean }) => {
 
   // Password strength: consistent 4-level algorithm (same as RegisterScreen)
   const getPasswordStrength = () => {
-    if (newPassword.length === 0) return { strength: 0, label: "", color: "" };
+    if (newPassword.length === 0) return { strength: 0, label: '', color: '' };
     let score = 0;
     if (newPassword.length >= 8) score++;
     if (/[A-Z]/.test(newPassword) && /[a-z]/.test(newPassword)) score++;
     if (/\d/.test(newPassword)) score++;
     if (/[^A-Za-z0-9]/.test(newPassword)) score++;
-    if (score <= 1) return { strength: 1, label: "Zayif", color: "#EF4444" };
-    if (score === 2) return { strength: 2, label: "Orta", color: "#F59E0B" };
-    if (score === 3) return { strength: 3, label: "Iyi", color: "#10B981" };
-    return { strength: 4, label: "Guclu", color: "#10B981" };
+    if (score <= 1) return { strength: 1, label: 'Zayif', color: '#EF4444' };
+    if (score === 2) return { strength: 2, label: 'Orta', color: '#F59E0B' };
+    if (score === 3) return { strength: 3, label: 'Iyi', color: '#10B981' };
+    return { strength: 4, label: 'Guclu', color: '#10B981' };
   };
 
   const passwordStrength = getPasswordStrength();
@@ -72,7 +72,7 @@ const PasswordResetContent = ({ isOffline }: { isOffline?: boolean }) => {
               placeholder="••••••••"
             />
             <PIconButton
-              icon={showPassword ? "eye-off" : "eye"}
+              icon={showPassword ? 'eye-off' : 'eye'}
               size={20}
               onPress={() => setShowPassword(!showPassword)}
               style={styles.eyeIcon}
@@ -81,12 +81,12 @@ const PasswordResetContent = ({ isOffline }: { isOffline?: boolean }) => {
           {newPassword.length > 0 && (
             <View style={styles.strengthContainer}>
               <View style={styles.strengthBars}>
-                {[1, 2, 3, 4].map((i) => (
+                {[1, 2, 3, 4].map(i => (
                   <View
                     key={i}
                     style={[
                       styles.strengthBar,
-                      i <= passwordStrength.strength && { backgroundColor: passwordStrength.color },
+                      i <= passwordStrength.strength && { backgroundColor: passwordStrength.color }
                     ]}
                   />
                 ))}
@@ -115,15 +115,13 @@ const PasswordResetContent = ({ isOffline }: { isOffline?: boolean }) => {
               placeholder="••••••••"
             />
             <PIconButton
-              icon={showConfirmPassword ? "eye-off" : "eye"}
+              icon={showConfirmPassword ? 'eye-off' : 'eye'}
               size={20}
               onPress={() => setShowConfirmPassword(!showConfirmPassword)}
               style={styles.eyeIcon}
             />
           </View>
-          {confirmPassword.length > 0 && !passwordsMatch && (
-            <PText style={styles.errorText}>Şifreler eşleşmiyor</PText>
-          )}
+          {confirmPassword.length > 0 && !passwordsMatch && <PText style={styles.errorText}>Şifreler eşleşmiyor</PText>}
         </View>
 
         <PButton
@@ -132,7 +130,7 @@ const PasswordResetContent = ({ isOffline }: { isOffline?: boolean }) => {
           onPress={() => {
             setShowSuccess(true);
             setTimeout(() => {
-              navigation.navigate("AuthLogin");
+              navigation.navigate('AuthLogin');
             }, 1500);
           }}
           style={styles.button}
@@ -149,7 +147,8 @@ const PasswordResetContent = ({ isOffline }: { isOffline?: boolean }) => {
         ) : null}
         <View style={styles.hintCard}>
           <PText style={styles.hintText}>
-            <PText style={styles.hintBold}>💡 İpucu:</PText> Güçlü bir şifre için büyük/küçük harf, rakam ve özel karakter kullanın.
+            <PText style={styles.hintBold}>💡 İpucu:</PText> Güçlü bir şifre için büyük/küçük harf, rakam ve özel
+            karakter kullanın.
           </PText>
         </View>
       </ScrollView>
@@ -157,14 +156,10 @@ const PasswordResetContent = ({ isOffline }: { isOffline?: boolean }) => {
   );
 };
 
-export const AuthPasswordResetScreen = ({
-  route,
-}: {
-  route?: { params?: { state?: ScreenState } };
-}) => {
+export const AuthPasswordResetScreen = ({ route }: { route?: { params?: { state?: ScreenState } } }) => {
   const state = resolveScreenState(route);
 
-  if (state === "loading") {
+  if (state === 'loading') {
     return (
       <ScreenLayout title="Şifre Sıfırlama" subtitle="Sıfırlama hazırlanıyor">
         <SectionCard title="Yükleniyor">
@@ -176,7 +171,7 @@ export const AuthPasswordResetScreen = ({
     );
   }
 
-  if (state === "empty") {
+  if (state === 'empty') {
     return (
       <ScreenLayout title="Şifre Sıfırlama" subtitle="Sıfırlama bilgisi yok">
         <StateMessage
@@ -189,7 +184,7 @@ export const AuthPasswordResetScreen = ({
     );
   }
 
-  if (state === "error") {
+  if (state === 'error') {
     return (
       <ScreenLayout title="Şifre Sıfırlama" subtitle="Bir sorun oluştu">
         <StateMessage
@@ -203,7 +198,7 @@ export const AuthPasswordResetScreen = ({
     );
   }
 
-  if (state === "offline") {
+  if (state === 'offline') {
     return (
       <>
         <OfflineNotice />
@@ -218,128 +213,128 @@ export const AuthPasswordResetScreen = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FAFAFA",
+    backgroundColor: '#FAFAFA'
   },
   scrollContent: {
     paddingHorizontal: 24,
     paddingTop: 16,
-    paddingBottom: 32,
+    paddingBottom: 32
   },
   backButton: {
     width: 40,
     height: 40,
-    alignItems: "center",
-    justifyContent: "center",
-    marginBottom: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 16
   },
   backButtonText: {
     fontSize: 24,
-    color: "#171717",
+    color: '#171717'
   },
   iconContainer: {
-    alignItems: "center",
-    marginBottom: 16,
+    alignItems: 'center',
+    marginBottom: 16
   },
   icon: {
-    fontSize: 64,
+    fontSize: 64
   },
   title: {
     fontSize: 24,
-    fontWeight: "700",
-    color: "#2B1B5D",
+    fontWeight: '700',
+    color: '#2B1B5D',
     marginBottom: 8,
-    textAlign: "center",
+    textAlign: 'center'
   },
   description: {
     fontSize: 15,
-    color: "#525252",
+    color: '#525252',
     marginBottom: 24,
-    textAlign: "center",
-    lineHeight: 24,
+    textAlign: 'center',
+    lineHeight: 24
   },
   inputGroup: {
-    marginBottom: 16,
+    marginBottom: 16
   },
   label: {
     fontSize: 14,
-    fontWeight: "600",
-    color: "#404040",
-    marginBottom: 8,
+    fontWeight: '600',
+    color: '#404040',
+    marginBottom: 8
   },
   passwordContainer: {
-    position: "relative",
+    position: 'relative'
   },
   input: {
-    backgroundColor: "#FFFFFF",
+    backgroundColor: '#FFFFFF'
   },
   inputContent: {
-    paddingVertical: 14,
+    paddingVertical: 14
   },
   inputOutline: {
     borderWidth: 2,
     borderRadius: 12,
-    borderColor: "#E5E5E5",
+    borderColor: '#E5E5E5'
   },
   passwordInput: {
-    paddingRight: 48,
+    paddingRight: 48
   },
   eyeIcon: {
-    position: "absolute",
+    position: 'absolute',
     right: 8,
-    top: 8,
+    top: 8
   },
   strengthContainer: {
-    marginTop: 8,
+    marginTop: 8
   },
   strengthBars: {
-    flexDirection: "row",
+    flexDirection: 'row',
     gap: 4,
-    marginBottom: 4,
+    marginBottom: 4
   },
   strengthBar: {
     flex: 1,
     height: 4,
     borderRadius: 2,
-    backgroundColor: "#E5E5E5",
+    backgroundColor: '#E5E5E5'
   },
   strengthLabel: {
     fontSize: 12,
-    fontWeight: "600",
+    fontWeight: '600'
   },
   errorText: {
-    color: "#EF4444",
+    color: '#EF4444',
     fontSize: 12,
-    marginTop: 8,
+    marginTop: 8
   },
   button: {
     marginBottom: 16,
-    borderRadius: 12,
+    borderRadius: 12
   },
   successContainer: {
-    backgroundColor: "#F0FDF4",
+    backgroundColor: '#F0FDF4',
     borderRadius: 8,
     padding: 12,
     marginBottom: 16,
     borderLeftWidth: 3,
-    borderLeftColor: "#10B981",
+    borderLeftColor: '#10B981'
   },
   successText: {
-    color: "#065F46",
-    fontSize: 14,
+    color: '#065F46',
+    fontSize: 14
   },
   hintCard: {
-    backgroundColor: "#EDE7F6",
+    backgroundColor: '#EDE7F6',
     padding: 16,
     borderRadius: 12,
     borderLeftWidth: 4,
-    borderLeftColor: "#2B1B5D",
+    borderLeftColor: '#2B1B5D'
   },
   hintText: {
-    color: "#404040",
-    lineHeight: 20,
+    color: '#404040',
+    lineHeight: 20
   },
   hintBold: {
-    fontWeight: "700",
-    color: "#2B1B5D",
-  },
+    fontWeight: '700',
+    color: '#2B1B5D'
+  }
 });

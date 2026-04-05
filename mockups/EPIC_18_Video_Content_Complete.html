@@ -1,1325 +1,1534 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="tr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>PST Coaching Mobile - EPIC 18: Video Icerikler</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap"
+      rel="stylesheet"
+    />
     <style>
-        :root {
-            --primary: #0f766e;
-            --primary-dark: #115e59;
-            --primary-light: #ccfbf1;
-            --secondary: #1f2937;
-            --success: #16a34a;
-            --success-light: #dcfce7;
-            --warning: #b45309;
-            --warning-light: #fef3c7;
-            --error: #dc2626;
-            --error-light: #fee2e2;
-            --violet: #4f46e5;
-            --violet-light: #eef2ff;
-            --gray-50: #fafafa;
-            --gray-100: #f5f5f5;
-            --gray-200: #e5e5e5;
-            --gray-300: #d4d4d4;
-            --gray-400: #a3a3a3;
-            --gray-600: #525252;
-            --gray-700: #404040;
-            --gray-900: #171717;
-        }
+      :root {
+        --primary: #0f766e;
+        --primary-dark: #115e59;
+        --primary-light: #ccfbf1;
+        --secondary: #1f2937;
+        --success: #16a34a;
+        --success-light: #dcfce7;
+        --warning: #b45309;
+        --warning-light: #fef3c7;
+        --error: #dc2626;
+        --error-light: #fee2e2;
+        --violet: #4f46e5;
+        --violet-light: #eef2ff;
+        --gray-50: #fafafa;
+        --gray-100: #f5f5f5;
+        --gray-200: #e5e5e5;
+        --gray-300: #d4d4d4;
+        --gray-400: #a3a3a3;
+        --gray-600: #525252;
+        --gray-700: #404040;
+        --gray-900: #171717;
+      }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
+      body {
+        font-family: 'Inter', sans-serif;
+        color: var(--gray-900);
+        background: radial-gradient(circle at 10% 0%, #ccfbf1 0%, #ccfbf1 6%, #e2e8f0 44%, #f8fafc 100%);
+        overflow: hidden;
+      }
+
+      .app {
+        height: 100vh;
+        display: flex;
+      }
+
+      .sidebar {
+        width: 430px;
+        background: #fff;
+        border-right: 1px solid var(--gray-200);
+        box-shadow: 2px 0 14px rgba(0, 0, 0, 0.06);
+        overflow-y: auto;
+      }
+
+      .main {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .logo {
+        font-family: 'Poppins', sans-serif;
+        font-size: 1.85rem;
+        font-weight: 800;
+        color: var(--primary-dark);
+        padding: 1.85rem;
+        border-bottom: 1px solid var(--gray-200);
+        background: linear-gradient(135deg, var(--primary-light), #fff);
+      }
+
+      .subtitle {
+        margin-top: 0.35rem;
+        font-size: 0.82rem;
+        color: var(--gray-600);
+        font-weight: 600;
+      }
+
+      .epic-header {
+        margin: 1rem 1.2rem;
+        border: 1px solid #99f6e4;
+        border-radius: 0.85rem;
+        padding: 1rem;
+        background: linear-gradient(140deg, #f0fdfa, #f8fafc);
+      }
+
+      .epic-title {
+        font-family: 'Poppins', sans-serif;
+        font-size: 1.03rem;
+        font-weight: 700;
+        margin-bottom: 0.35rem;
+      }
+
+      .epic-meta {
+        font-size: 0.76rem;
+        color: var(--gray-700);
+        line-height: 1.45;
+      }
+
+      .flow-map {
+        margin: 0 1.2rem 1rem;
+        border-radius: 0.85rem;
+        border: 1px solid #bfdbfe;
+        background: #eff6ff;
+        padding: 0.75rem;
+      }
+
+      .flow-title {
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        color: var(--gray-600);
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+      }
+
+      .flow-list {
+        display: grid;
+        gap: 0.35rem;
+      }
+
+      .flow-step {
+        border: 1px solid var(--gray-300);
+        border-radius: 0.5rem;
+        background: #fff;
+        padding: 0.34rem 0.52rem;
+        font-size: 0.69rem;
+        font-weight: 600;
+        color: var(--gray-700);
+      }
+
+      .flow-step.active {
+        border-color: var(--violet);
+        background: var(--violet-light);
+        color: #4338ca;
+      }
+
+      .gate-note {
+        margin-top: 0.55rem;
+        border-top: 1px solid #bfdbfe;
+        padding-top: 0.5rem;
+        font-size: 0.68rem;
+        color: var(--gray-600);
+        line-height: 1.45;
+      }
+
+      .nav-group {
+        border-bottom: 1px solid var(--gray-100);
+        padding: 0.28rem 0 0.72rem;
+      }
+
+      .nav-group-title {
+        padding: 0.66rem 1.2rem;
+        font-size: 0.68rem;
+        color: var(--gray-600);
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        font-weight: 700;
+      }
+
+      .nav-item {
+        display: flex;
+        align-items: center;
+        gap: 0.62rem;
+        padding: 0.7rem 1.2rem;
+        border-left: 3px solid transparent;
+        color: var(--gray-700);
+        cursor: pointer;
+        transition: background 0.18s ease;
+      }
+
+      .nav-item:hover {
+        background: var(--gray-50);
+      }
+
+      .nav-item.active {
+        border-left-color: var(--primary);
+        background: #f0fdfa;
+        color: var(--primary-dark);
+      }
+
+      .nav-icon {
+        font-size: 0.72rem;
+        font-weight: 800;
+        width: 28px;
+        text-align: center;
+        border: 1px solid var(--gray-300);
+        border-radius: 0.35rem;
+        padding: 0.1rem 0.2rem;
+        background: #fff;
+      }
+
+      .nav-text {
+        flex: 1;
+        font-size: 0.83rem;
+        font-weight: 600;
+      }
+
+      .nav-badge {
+        font-size: 0.66rem;
+        font-weight: 700;
+        border-radius: 999px;
+        padding: 0.14rem 0.45rem;
+        background: #e2e8f0;
+        color: var(--gray-700);
+      }
+
+      .topbar {
+        background: #fff;
+        border-bottom: 1px solid var(--gray-200);
+        padding: 1.45rem 2rem;
+      }
+
+      .screen-title {
+        font-family: 'Poppins', sans-serif;
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--secondary);
+      }
+
+      .screen-meta {
+        margin-top: 0.4rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        color: var(--gray-600);
+        font-size: 0.9rem;
+        flex-wrap: wrap;
+      }
+
+      .fr-badge {
+        border: 1px solid #99f6e4;
+        background: #f0fdfa;
+        color: #0f766e;
+        border-radius: 0.52rem;
+        padding: 0.2rem 0.58rem;
+        font-size: 0.78rem;
+        font-weight: 700;
+      }
+
+      .route-badge {
+        border: 1px solid #c4b5fd;
+        background: #f5f3ff;
+        color: #5b21b6;
+        border-radius: 0.52rem;
+        padding: 0.2rem 0.58rem;
+        font-size: 0.74rem;
+        font-weight: 700;
+      }
+
+      .viewer {
+        flex: 1;
+        overflow-y: auto;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        padding: 2rem;
+      }
+
+      .iphone {
+        width: 393px;
+        height: 852px;
+        background: #1d1d1f;
+        border-radius: 54px;
+        padding: 12px;
+        box-shadow: 0 44px 94px rgba(0, 0, 0, 0.45);
+        position: relative;
+      }
+
+      .island {
+        position: absolute;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 120px;
+        height: 30px;
+        border-radius: 20px;
+        background: #000;
+        z-index: 12;
+      }
+
+      .screen {
+        width: 100%;
+        height: 100%;
+        background: #fff;
+        border-radius: 42px;
+        overflow: hidden;
+      }
+
+      .content {
+        width: 100%;
+        height: 100%;
+        overflow-y: auto;
+        background: var(--gray-50);
+        padding-bottom: 1.6rem;
+      }
+
+      .content::-webkit-scrollbar {
+        width: 4px;
+      }
+
+      .content::-webkit-scrollbar-thumb {
+        background: rgba(0, 0, 0, 0.3);
+        border-radius: 12px;
+      }
+
+      .status {
+        height: 54px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 1.3rem;
+        font-size: 0.8rem;
+        font-weight: 700;
+        background: #fff;
+      }
+
+      .mobile-header {
+        position: sticky;
+        top: 0;
+        z-index: 3;
+        background: rgba(255, 255, 255, 0.94);
+        backdrop-filter: blur(6px);
+        border-bottom: 1px solid var(--gray-200);
+        padding: 0.75rem 0.9rem;
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+      }
+
+      .mobile-title {
+        font-weight: 700;
+        font-size: 0.95rem;
+        color: var(--secondary);
+      }
+
+      .mobile-body {
+        padding: 0.9rem;
+        display: grid;
+        gap: 0.75rem;
+      }
+
+      .icon-btn {
+        border: 1px solid var(--gray-300);
+        background: #fff;
+        border-radius: 0.5rem;
+        width: 34px;
+        height: 34px;
+        cursor: pointer;
+        font-size: 0.9rem;
+        font-weight: 700;
+        color: var(--gray-700);
+      }
+
+      .card {
+        background: #fff;
+        border: 1px solid var(--gray-200);
+        border-radius: 0.8rem;
+        padding: 0.75rem;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+      }
+
+      .card-title {
+        font-size: 0.82rem;
+        font-weight: 700;
+        color: var(--secondary);
+        margin-bottom: 0.45rem;
+      }
+
+      .muted {
+        color: var(--gray-600);
+        font-size: 0.73rem;
+        line-height: 1.45;
+      }
+
+      .chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.38rem;
+      }
+
+      .chip {
+        border-radius: 999px;
+        border: 1px solid var(--gray-300);
+        background: #fff;
+        color: var(--gray-700);
+        padding: 0.2rem 0.48rem;
+        font-size: 0.66rem;
+        font-weight: 700;
+      }
+
+      .chip.success {
+        border-color: #86efac;
+        background: var(--success-light);
+        color: #14532d;
+      }
+
+      .chip.warn {
+        border-color: #fcd34d;
+        background: var(--warning-light);
+        color: #92400e;
+      }
+
+      .chip.error {
+        border-color: #fca5a5;
+        background: var(--error-light);
+        color: #7f1d1d;
+      }
+
+      .btn {
+        border-radius: 0.55rem;
+        border: 1px solid transparent;
+        padding: 0.36rem 0.62rem;
+        font-size: 0.68rem;
+        font-weight: 700;
+        cursor: pointer;
+        font-family: inherit;
+      }
+
+      .btn-primary {
+        background: var(--primary);
+        color: #fff;
+        border-color: var(--primary);
+      }
+
+      .btn-outline {
+        border-color: var(--gray-300);
+        color: var(--gray-700);
+        background: #fff;
+      }
+
+      .field {
+        width: 100%;
+        border: 1px solid var(--gray-300);
+        border-radius: 0.55rem;
+        padding: 0.5rem 0.58rem;
+        font-size: 0.74rem;
+        background: #fff;
+        font-family: inherit;
+      }
+
+      textarea.field {
+        resize: vertical;
+      }
+
+      .list {
+        display: grid;
+        gap: 0.52rem;
+      }
+
+      .list-item {
+        border: 1px solid var(--gray-200);
+        background: #fff;
+        border-radius: 0.68rem;
+        padding: 0.56rem;
+      }
+
+      .list-item.action {
+        cursor: pointer;
+        text-align: left;
+      }
+
+      .row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.5rem;
+      }
+
+      .item-title {
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: var(--secondary);
+      }
+
+      .item-meta {
+        margin-top: 0.22rem;
+        font-size: 0.68rem;
+        color: var(--gray-600);
+        line-height: 1.4;
+      }
+
+      .progress {
+        width: 100%;
+        height: 7px;
+        border-radius: 999px;
+        background: var(--gray-200);
+        overflow: hidden;
+        margin-top: 0.34rem;
+      }
+
+      .progress > span {
+        display: block;
+        height: 100%;
+        background: linear-gradient(90deg, var(--primary), #06b6d4);
+      }
+
+      .state-switcher {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.35rem;
+        margin-bottom: 0.35rem;
+      }
+
+      .state-btn {
+        border: 1px solid var(--gray-300);
+        border-radius: 999px;
+        background: #fff;
+        color: var(--gray-700);
+        font-size: 0.63rem;
+        font-weight: 700;
+        padding: 0.16rem 0.45rem;
+        cursor: pointer;
+      }
+
+      .state-btn.active {
+        border-color: var(--violet);
+        background: var(--violet-light);
+        color: #4338ca;
+      }
+
+      .state-panel {
+        border-radius: 0.68rem;
+        border: 1px solid var(--gray-300);
+        background: #fff;
+        padding: 0.62rem;
+        margin-bottom: 0.58rem;
+        display: grid;
+        gap: 0.3rem;
+        font-size: 0.72rem;
+        color: var(--gray-700);
+      }
+
+      .state-panel.loading {
+        border-color: #93c5fd;
+        background: #eff6ff;
+      }
+
+      .state-panel.empty {
+        border-color: #fde68a;
+        background: #fffbeb;
+      }
+
+      .state-panel.error {
+        border-color: #fca5a5;
+        background: #fef2f2;
+      }
+
+      .state-panel.offline {
+        border-color: #c4b5fd;
+        background: #f5f3ff;
+      }
+
+      .toast {
+        position: fixed;
+        right: 1.2rem;
+        bottom: 1.2rem;
+        padding: 0.65rem 0.85rem;
+        border-radius: 0.62rem;
+        color: #fff;
+        font-weight: 700;
+        font-size: 0.74rem;
+        background: #115e59;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+        opacity: 0;
+        transform: translateY(8px);
+        pointer-events: none;
+        transition: all 0.22s ease;
+        z-index: 50;
+      }
+
+      .toast.show {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .toast.success {
+        background: #065f46;
+      }
+
+      .toast.error {
+        background: #7f1d1d;
+      }
+
+      .nav-item:focus-visible,
+      button:focus-visible,
+      textarea:focus-visible,
+      input:focus-visible {
+        outline: 3px solid #99f6e4;
+        outline-offset: 2px;
+      }
+
+      @media (max-width: 1200px) {
         body {
-            font-family: 'Inter', sans-serif;
-            color: var(--gray-900);
-            background: radial-gradient(circle at 10% 0%, #ccfbf1 0%, #ccfbf1 6%, #e2e8f0 44%, #f8fafc 100%);
-            overflow: hidden;
+          overflow: auto;
         }
 
         .app {
-            height: 100vh;
-            display: flex;
+          flex-direction: column;
+          height: auto;
+          min-height: 100vh;
         }
 
         .sidebar {
-            width: 430px;
-            background: #fff;
-            border-right: 1px solid var(--gray-200);
-            box-shadow: 2px 0 14px rgba(0, 0, 0, 0.06);
-            overflow-y: auto;
-        }
-
-        .main {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .logo {
-            font-family: 'Poppins', sans-serif;
-            font-size: 1.85rem;
-            font-weight: 800;
-            color: var(--primary-dark);
-            padding: 1.85rem;
-            border-bottom: 1px solid var(--gray-200);
-            background: linear-gradient(135deg, var(--primary-light), #fff);
-        }
-
-        .subtitle {
-            margin-top: 0.35rem;
-            font-size: 0.82rem;
-            color: var(--gray-600);
-            font-weight: 600;
-        }
-
-        .epic-header {
-            margin: 1rem 1.2rem;
-            border: 1px solid #99f6e4;
-            border-radius: 0.85rem;
-            padding: 1rem;
-            background: linear-gradient(140deg, #f0fdfa, #f8fafc);
-        }
-
-        .epic-title {
-            font-family: 'Poppins', sans-serif;
-            font-size: 1.03rem;
-            font-weight: 700;
-            margin-bottom: 0.35rem;
-        }
-
-        .epic-meta {
-            font-size: 0.76rem;
-            color: var(--gray-700);
-            line-height: 1.45;
-        }
-
-        .flow-map {
-            margin: 0 1.2rem 1rem;
-            border-radius: 0.85rem;
-            border: 1px solid #bfdbfe;
-            background: #eff6ff;
-            padding: 0.75rem;
-        }
-
-        .flow-title {
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 0.04em;
-            color: var(--gray-600);
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-
-        .flow-list {
-            display: grid;
-            gap: 0.35rem;
-        }
-
-        .flow-step {
-            border: 1px solid var(--gray-300);
-            border-radius: 0.5rem;
-            background: #fff;
-            padding: 0.34rem 0.52rem;
-            font-size: 0.69rem;
-            font-weight: 600;
-            color: var(--gray-700);
-        }
-
-        .flow-step.active {
-            border-color: var(--violet);
-            background: var(--violet-light);
-            color: #4338ca;
-        }
-
-        .gate-note {
-            margin-top: 0.55rem;
-            border-top: 1px solid #bfdbfe;
-            padding-top: 0.5rem;
-            font-size: 0.68rem;
-            color: var(--gray-600);
-            line-height: 1.45;
-        }
-
-        .nav-group {
-            border-bottom: 1px solid var(--gray-100);
-            padding: 0.28rem 0 0.72rem;
-        }
-
-        .nav-group-title {
-            padding: 0.66rem 1.2rem;
-            font-size: 0.68rem;
-            color: var(--gray-600);
-            text-transform: uppercase;
-            letter-spacing: 0.04em;
-            font-weight: 700;
-        }
-
-        .nav-item {
-            display: flex;
-            align-items: center;
-            gap: 0.62rem;
-            padding: 0.7rem 1.2rem;
-            border-left: 3px solid transparent;
-            color: var(--gray-700);
-            cursor: pointer;
-            transition: background 0.18s ease;
-        }
-
-        .nav-item:hover {
-            background: var(--gray-50);
-        }
-
-        .nav-item.active {
-            border-left-color: var(--primary);
-            background: #f0fdfa;
-            color: var(--primary-dark);
-        }
-
-        .nav-icon {
-            font-size: 0.72rem;
-            font-weight: 800;
-            width: 28px;
-            text-align: center;
-            border: 1px solid var(--gray-300);
-            border-radius: 0.35rem;
-            padding: 0.1rem 0.2rem;
-            background: #fff;
-        }
-
-        .nav-text {
-            flex: 1;
-            font-size: 0.83rem;
-            font-weight: 600;
-        }
-
-        .nav-badge {
-            font-size: 0.66rem;
-            font-weight: 700;
-            border-radius: 999px;
-            padding: 0.14rem 0.45rem;
-            background: #e2e8f0;
-            color: var(--gray-700);
-        }
-
-        .topbar {
-            background: #fff;
-            border-bottom: 1px solid var(--gray-200);
-            padding: 1.45rem 2rem;
-        }
-
-        .screen-title {
-            font-family: 'Poppins', sans-serif;
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--secondary);
-        }
-
-        .screen-meta {
-            margin-top: 0.4rem;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            color: var(--gray-600);
-            font-size: 0.9rem;
-            flex-wrap: wrap;
-        }
-
-        .fr-badge {
-            border: 1px solid #99f6e4;
-            background: #f0fdfa;
-            color: #0f766e;
-            border-radius: 0.52rem;
-            padding: 0.2rem 0.58rem;
-            font-size: 0.78rem;
-            font-weight: 700;
-        }
-
-        .route-badge {
-            border: 1px solid #c4b5fd;
-            background: #f5f3ff;
-            color: #5b21b6;
-            border-radius: 0.52rem;
-            padding: 0.2rem 0.58rem;
-            font-size: 0.74rem;
-            font-weight: 700;
+          width: 100%;
+          max-height: 52vh;
         }
 
         .viewer {
-            flex: 1;
-            overflow-y: auto;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            padding: 2rem;
+          padding: 1.2rem;
         }
-
-        .iphone {
-            width: 393px;
-            height: 852px;
-            background: #1d1d1f;
-            border-radius: 54px;
-            padding: 12px;
-            box-shadow: 0 44px 94px rgba(0, 0, 0, 0.45);
-            position: relative;
-        }
-
-        .island {
-            position: absolute;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 120px;
-            height: 30px;
-            border-radius: 20px;
-            background: #000;
-            z-index: 12;
-        }
-
-        .screen {
-            width: 100%;
-            height: 100%;
-            background: #fff;
-            border-radius: 42px;
-            overflow: hidden;
-        }
-
-        .content {
-            width: 100%;
-            height: 100%;
-            overflow-y: auto;
-            background: var(--gray-50);
-            padding-bottom: 1.6rem;
-        }
-
-        .content::-webkit-scrollbar {
-            width: 4px;
-        }
-
-        .content::-webkit-scrollbar-thumb {
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 12px;
-        }
-
-        .status {
-            height: 54px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 1.3rem;
-            font-size: 0.8rem;
-            font-weight: 700;
-            background: #fff;
-        }
-
-        .mobile-header {
-            position: sticky;
-            top: 0;
-            z-index: 3;
-            background: rgba(255, 255, 255, 0.94);
-            backdrop-filter: blur(6px);
-            border-bottom: 1px solid var(--gray-200);
-            padding: 0.75rem 0.9rem;
-            display: flex;
-            align-items: center;
-            gap: 0.6rem;
-        }
-
-        .mobile-title {
-            font-weight: 700;
-            font-size: 0.95rem;
-            color: var(--secondary);
-        }
-
-        .mobile-body {
-            padding: 0.9rem;
-            display: grid;
-            gap: 0.75rem;
-        }
-
-        .icon-btn {
-            border: 1px solid var(--gray-300);
-            background: #fff;
-            border-radius: 0.5rem;
-            width: 34px;
-            height: 34px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            font-weight: 700;
-            color: var(--gray-700);
-        }
-
-        .card {
-            background: #fff;
-            border: 1px solid var(--gray-200);
-            border-radius: 0.8rem;
-            padding: 0.75rem;
-            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
-        }
-
-        .card-title {
-            font-size: 0.82rem;
-            font-weight: 700;
-            color: var(--secondary);
-            margin-bottom: 0.45rem;
-        }
-
-        .muted {
-            color: var(--gray-600);
-            font-size: 0.73rem;
-            line-height: 1.45;
-        }
-
-        .chips {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.38rem;
-        }
-
-        .chip {
-            border-radius: 999px;
-            border: 1px solid var(--gray-300);
-            background: #fff;
-            color: var(--gray-700);
-            padding: 0.2rem 0.48rem;
-            font-size: 0.66rem;
-            font-weight: 700;
-        }
-
-        .chip.success {
-            border-color: #86efac;
-            background: var(--success-light);
-            color: #14532d;
-        }
-
-        .chip.warn {
-            border-color: #fcd34d;
-            background: var(--warning-light);
-            color: #92400e;
-        }
-
-        .chip.error {
-            border-color: #fca5a5;
-            background: var(--error-light);
-            color: #7f1d1d;
-        }
-
-        .btn {
-            border-radius: 0.55rem;
-            border: 1px solid transparent;
-            padding: 0.36rem 0.62rem;
-            font-size: 0.68rem;
-            font-weight: 700;
-            cursor: pointer;
-            font-family: inherit;
-        }
-
-        .btn-primary {
-            background: var(--primary);
-            color: #fff;
-            border-color: var(--primary);
-        }
-
-        .btn-outline {
-            border-color: var(--gray-300);
-            color: var(--gray-700);
-            background: #fff;
-        }
-
-        .field {
-            width: 100%;
-            border: 1px solid var(--gray-300);
-            border-radius: 0.55rem;
-            padding: 0.5rem 0.58rem;
-            font-size: 0.74rem;
-            background: #fff;
-            font-family: inherit;
-        }
-
-        textarea.field {
-            resize: vertical;
-        }
-
-        .list {
-            display: grid;
-            gap: 0.52rem;
-        }
-
-        .list-item {
-            border: 1px solid var(--gray-200);
-            background: #fff;
-            border-radius: 0.68rem;
-            padding: 0.56rem;
-        }
-
-        .list-item.action {
-            cursor: pointer;
-            text-align: left;
-        }
-
-        .row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 0.5rem;
-        }
-
-        .item-title {
-            font-size: 0.75rem;
-            font-weight: 700;
-            color: var(--secondary);
-        }
-
-        .item-meta {
-            margin-top: 0.22rem;
-            font-size: 0.68rem;
-            color: var(--gray-600);
-            line-height: 1.4;
-        }
-
-        .progress {
-            width: 100%;
-            height: 7px;
-            border-radius: 999px;
-            background: var(--gray-200);
-            overflow: hidden;
-            margin-top: 0.34rem;
-        }
-
-        .progress > span {
-            display: block;
-            height: 100%;
-            background: linear-gradient(90deg, var(--primary), #06b6d4);
-        }
-
-        .state-switcher {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.35rem;
-            margin-bottom: 0.35rem;
-        }
-
-        .state-btn {
-            border: 1px solid var(--gray-300);
-            border-radius: 999px;
-            background: #fff;
-            color: var(--gray-700);
-            font-size: 0.63rem;
-            font-weight: 700;
-            padding: 0.16rem 0.45rem;
-            cursor: pointer;
-        }
-
-        .state-btn.active {
-            border-color: var(--violet);
-            background: var(--violet-light);
-            color: #4338ca;
-        }
-
-        .state-panel {
-            border-radius: 0.68rem;
-            border: 1px solid var(--gray-300);
-            background: #fff;
-            padding: 0.62rem;
-            margin-bottom: 0.58rem;
-            display: grid;
-            gap: 0.3rem;
-            font-size: 0.72rem;
-            color: var(--gray-700);
-        }
-
-        .state-panel.loading {
-            border-color: #93c5fd;
-            background: #eff6ff;
-        }
-
-        .state-panel.empty {
-            border-color: #fde68a;
-            background: #fffbeb;
-        }
-
-        .state-panel.error {
-            border-color: #fca5a5;
-            background: #fef2f2;
-        }
-
-        .state-panel.offline {
-            border-color: #c4b5fd;
-            background: #f5f3ff;
-        }
-
-        .toast {
-            position: fixed;
-            right: 1.2rem;
-            bottom: 1.2rem;
-            padding: 0.65rem 0.85rem;
-            border-radius: 0.62rem;
-            color: #fff;
-            font-weight: 700;
-            font-size: 0.74rem;
-            background: #115e59;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-            opacity: 0;
-            transform: translateY(8px);
-            pointer-events: none;
-            transition: all 0.22s ease;
-            z-index: 50;
-        }
-
-        .toast.show {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .toast.success {
-            background: #065f46;
-        }
-
-        .toast.error {
-            background: #7f1d1d;
-        }
-
-        .nav-item:focus-visible,
-        button:focus-visible,
-        textarea:focus-visible,
-        input:focus-visible {
-            outline: 3px solid #99f6e4;
-            outline-offset: 2px;
-        }
-
-        @media (max-width: 1200px) {
-            body {
-                overflow: auto;
-            }
-
-            .app {
-                flex-direction: column;
-                height: auto;
-                min-height: 100vh;
-            }
-
-            .sidebar {
-                width: 100%;
-                max-height: 52vh;
-            }
-
-            .viewer {
-                padding: 1.2rem;
-            }
-        }
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="app">
-        <aside class="sidebar">
-            <div class="logo">
-                PST Coaching
-                <div class="subtitle">EPIC 18 - Video Icerikler</div>
-            </div>
+      <aside class="sidebar">
+        <div class="logo">
+          PST Coaching
+          <div class="subtitle">EPIC 18 - Video Icerikler</div>
+        </div>
 
-            <div class="epic-header">
-                <div class="epic-title">EPIC-18 Sync Pack</div>
-                <div class="epic-meta">4 FR Screen | 16 AC | Requirements + UX artifacts + mockup sync</div>
-            </div>
+        <div class="epic-header">
+          <div class="epic-title">EPIC-18 Sync Pack</div>
+          <div class="epic-meta">4 FR Screen | 16 AC | Requirements + UX artifacts + mockup sync</div>
+        </div>
 
-            <div class="flow-map">
-                <div class="flow-title">Video icerik akis haritasi</div>
-                <div class="flow-list">
-                    <div class="flow-step active" id="flow-1">FR-E18-01 Video katalogu ve kesif filtreleri</div>
-                    <div class="flow-step" id="flow-2">FR-E18-02 Video oynatici ve temel kontroller</div>
-                    <div class="flow-step" id="flow-3">FR-E18-03 Altyazi, transkript ve erisilebilirlik</div>
-                    <div class="flow-step" id="flow-4">FR-E18-04 Video ilerleme, tamamlama ve senkronizasyon</div>
-                </div>
-                <div class="gate-note">
-                    Gates: auth + subscription | Tum ekranlar loading, ready, empty, error, offline durumlarini destekler.
-                </div>
-            </div>
+        <div class="flow-map">
+          <div class="flow-title">Video icerik akis haritasi</div>
+          <div class="flow-list">
+            <div class="flow-step active" id="flow-1">FR-E18-01 Video katalogu ve kesif filtreleri</div>
+            <div class="flow-step" id="flow-2">FR-E18-02 Video oynatici ve temel kontroller</div>
+            <div class="flow-step" id="flow-3">FR-E18-03 Altyazi, transkript ve erisilebilirlik</div>
+            <div class="flow-step" id="flow-4">FR-E18-04 Video ilerleme, tamamlama ve senkronizasyon</div>
+          </div>
+          <div class="gate-note">
+            Gates: auth + subscription | Tum ekranlar loading, ready, empty, error, offline durumlarini destekler.
+          </div>
+        </div>
 
-            <section class="nav-group">
-                <div class="nav-group-title">Kesif ve oynatici ekranlari</div>
-                <div class="nav-item active" data-screen="1" role="button" tabindex="0"><span class="nav-icon">V1</span><span class="nav-text">Video Katalogu</span><span class="nav-badge">4 AC</span></div>
-                <div class="nav-item" data-screen="2" role="button" tabindex="0"><span class="nav-icon">V2</span><span class="nav-text">Video Oynatici</span><span class="nav-badge">4 AC</span></div>
-            </section>
+        <section class="nav-group">
+          <div class="nav-group-title">Kesif ve oynatici ekranlari</div>
+          <div class="nav-item active" data-screen="1" role="button" tabindex="0">
+            <span class="nav-icon">V1</span><span class="nav-text">Video Katalogu</span
+            ><span class="nav-badge">4 AC</span>
+          </div>
+          <div class="nav-item" data-screen="2" role="button" tabindex="0">
+            <span class="nav-icon">V2</span><span class="nav-text">Video Oynatici</span
+            ><span class="nav-badge">4 AC</span>
+          </div>
+        </section>
 
-            <section class="nav-group">
-                <div class="nav-group-title">Erisilebilirlik ve ilerleme ekranlari</div>
-                <div class="nav-item" data-screen="3" role="button" tabindex="0"><span class="nav-icon">V3</span><span class="nav-text">Altyazi ve Transkript</span><span class="nav-badge">4 AC</span></div>
-                <div class="nav-item" data-screen="4" role="button" tabindex="0"><span class="nav-icon">V4</span><span class="nav-text">Ilerleme ve Senkron</span><span class="nav-badge">4 AC</span></div>
-            </section>
-        </aside>
+        <section class="nav-group">
+          <div class="nav-group-title">Erisilebilirlik ve ilerleme ekranlari</div>
+          <div class="nav-item" data-screen="3" role="button" tabindex="0">
+            <span class="nav-icon">V3</span><span class="nav-text">Altyazi ve Transkript</span
+            ><span class="nav-badge">4 AC</span>
+          </div>
+          <div class="nav-item" data-screen="4" role="button" tabindex="0">
+            <span class="nav-icon">V4</span><span class="nav-text">Ilerleme ve Senkron</span
+            ><span class="nav-badge">4 AC</span>
+          </div>
+        </section>
+      </aside>
 
-        <main class="main">
-            <div class="topbar">
-                <h1 class="screen-title" id="screenTitle">Video katalogu ve kesif filtreleri</h1>
-                <div class="screen-meta">
-                    <span class="fr-badge" id="screenFr">FR-E18-01</span>
-                    <span class="route-badge" id="screenRoute">/epic-18/fr-e18-01</span>
-                    <span id="screenMeta">Kategori filtreleri, sure etiketleri, ilerleme rozeti ve baslatma eylemi</span>
-                </div>
-            </div>
-            <div class="viewer" id="viewer"></div>
-        </main>
+      <main class="main">
+        <div class="topbar">
+          <h1 class="screen-title" id="screenTitle">Video katalogu ve kesif filtreleri</h1>
+          <div class="screen-meta">
+            <span class="fr-badge" id="screenFr">FR-E18-01</span>
+            <span class="route-badge" id="screenRoute">/epic-18/fr-e18-01</span>
+            <span id="screenMeta">Kategori filtreleri, sure etiketleri, ilerleme rozeti ve baslatma eylemi</span>
+          </div>
+        </div>
+        <div class="viewer" id="viewer"></div>
+      </main>
     </div>
 
     <div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
 
     <script>
-        const screenData = {
-            1: {
-                title: 'Video katalogu ve kesif filtreleri',
-                fr: 'FR-E18-01',
-                route: '/epic-18/fr-e18-01',
-                event: 'video_fr_e18_01_viewed',
-                meta: 'Kategori filtreleri, sure etiketleri, ilerleme rozeti ve baslatma eylemi'
-            },
-            2: {
-                title: 'Video oynatici ve temel kontroller',
-                fr: 'FR-E18-02',
-                route: '/epic-18/fr-e18-02',
-                event: 'video_fr_e18_02_viewed',
-                meta: 'Oynat/duraklat, 10sn sarma, hiz secimi, tam ekran ve devam noktasi'
-            },
-            3: {
-                title: 'Altyazi, transkript ve erisilebilirlik',
-                fr: 'FR-E18-03',
-                route: '/epic-18/fr-e18-03',
-                event: 'video_fr_e18_03_viewed',
-                meta: 'Altyazi dili, zaman damgali transkript ve gorunum ayarlari'
-            },
-            4: {
-                title: 'Video ilerleme, tamamlama ve senkronizasyon',
-                fr: 'FR-E18-04',
-                route: '/epic-18/fr-e18-04',
-                event: 'video_fr_e18_04_viewed',
-                meta: 'Yuzdesel ilerleme, tamamlanma, devam listesi ve cevrimdisi senkron'
-            }
-        };
-
-        const initialState = {
-            currentScreen: 1,
-            screenStates: {
-                1: 'ready',
-                2: 'ready',
-                3: 'ready',
-                4: 'ready'
-            },
-            lastAnalyticsEvent: 'video_fr_e18_01_viewed',
-            filters: {
-                category: 'all',
-                duration: 'all',
-                level: 'all'
-            },
-            selectedVideoId: 1801,
-            playback: {
-                isPlaying: false,
-                speed: '1x',
-                isFullscreen: false
-            },
-            subtitle: {
-                enabled: true,
-                language: 'TR',
-                fontSize: 'medium',
-                contrast: 'standard'
-            },
-            videos: [
-                {
-                    id: 1801,
-                    title: 'Sukur Pratigi: Gunluk Niyet Dersi',
-                    category: 'mindset',
-                    durationMin: 8,
-                    level: 'baslangic',
-                    route: '/videos/sukur-pratigi-gunluk-niyet',
-                    positionSec: 178,
-                    savedSec: 178,
-                    totalSec: 480,
-                    isNew: true
-                },
-                {
-                    id: 1802,
-                    title: 'Atolye Klasi: Vicdan ve Karar Ani',
-                    category: 'workshop',
-                    durationMin: 22,
-                    level: 'orta',
-                    route: '/videos/vicdan-ve-karar-ani',
-                    positionSec: 620,
-                    savedSec: 620,
-                    totalSec: 1320,
-                    isNew: false
-                },
-                {
-                    id: 1803,
-                    title: 'Ekran Okuyucu Dostu Video Gezinme',
-                    category: 'accessibility',
-                    durationMin: 14,
-                    level: 'ileri',
-                    route: '/videos/ekran-okuyucu-dostu-gezinme',
-                    positionSec: 0,
-                    savedSec: 0,
-                    totalSec: 840,
-                    isNew: true
-                },
-                {
-                    id: 1804,
-                    title: 'Kisa Ozet: 3 Dakikada Atolye Hazirligi',
-                    category: 'micro',
-                    durationMin: 3,
-                    level: 'baslangic',
-                    route: '/videos/3-dakikada-atolye-hazirligi',
-                    positionSec: 0,
-                    savedSec: 0,
-                    totalSec: 180,
-                    isNew: false
-                }
-            ],
-            transcriptMap: {
-                1801: [
-                    { sec: 0, text: 'Giris: niyet ve odak cagrisi' },
-                    { sec: 45, text: 'Sukur rutinini gunluk hayata baglama' },
-                    { sec: 130, text: 'Mini uygulama: 60 saniyelik durak' },
-                    { sec: 250, text: 'Kapanis ve ertesi gun plani' }
-                ],
-                1802: [
-                    { sec: 0, text: 'Atolye acilisi ve hedefler' },
-                    { sec: 180, text: 'Vaka analizi: karar ani' },
-                    { sec: 540, text: 'Grup degerlendirme yontemi' },
-                    { sec: 980, text: 'Uygulama odevi ve kapanis' }
-                ],
-                1803: [
-                    { sec: 0, text: 'Erisilebilir oynatici ilkeleri' },
-                    { sec: 110, text: 'Odak sirasi ve etiketleme' },
-                    { sec: 300, text: 'Transkript ile hizli gezinme' },
-                    { sec: 510, text: 'Altyazi gorunum ayarlari' }
-                ],
-                1804: [
-                    { sec: 0, text: 'Hazirlik listesi' },
-                    { sec: 70, text: 'Kritik noktalari tekrarla' },
-                    { sec: 140, text: 'Baslamadan once son kontrol' }
-                ]
-            },
-            offlineQueue: [
-                {
-                    id: 1,
-                    videoId: 1802,
-                    progress: 47,
-                    time: '09:20'
-                }
-            ]
-        };
-
-        const ui = JSON.parse(JSON.stringify(initialState));
-        let toastTimer = null;
-
-        function esc(value) {
-            return String(value)
-                .replace(/&/g, '&amp;')
-                .replace(/</g, '&lt;')
-                .replace(/>/g, '&gt;')
-                .replace(/"/g, '&quot;')
-                .replace(/'/g, '&#39;');
+      const screenData = {
+        1: {
+          title: 'Video katalogu ve kesif filtreleri',
+          fr: 'FR-E18-01',
+          route: '/epic-18/fr-e18-01',
+          event: 'video_fr_e18_01_viewed',
+          meta: 'Kategori filtreleri, sure etiketleri, ilerleme rozeti ve baslatma eylemi'
+        },
+        2: {
+          title: 'Video oynatici ve temel kontroller',
+          fr: 'FR-E18-02',
+          route: '/epic-18/fr-e18-02',
+          event: 'video_fr_e18_02_viewed',
+          meta: 'Oynat/duraklat, 10sn sarma, hiz secimi, tam ekran ve devam noktasi'
+        },
+        3: {
+          title: 'Altyazi, transkript ve erisilebilirlik',
+          fr: 'FR-E18-03',
+          route: '/epic-18/fr-e18-03',
+          event: 'video_fr_e18_03_viewed',
+          meta: 'Altyazi dili, zaman damgali transkript ve gorunum ayarlari'
+        },
+        4: {
+          title: 'Video ilerleme, tamamlama ve senkronizasyon',
+          fr: 'FR-E18-04',
+          route: '/epic-18/fr-e18-04',
+          event: 'video_fr_e18_04_viewed',
+          meta: 'Yuzdesel ilerleme, tamamlanma, devam listesi ve cevrimdisi senkron'
         }
+      };
 
-            function showToast(message, tone) {
-            const toast = document.getElementById('toast');
-            toast.textContent = message;
-            toast.className = 'toast show' + (tone ? ' ' + tone : '');
-            if (toastTimer) {
-                clearTimeout(toastTimer);
-            }
-            toastTimer = setTimeout(() => {
-                toast.className = 'toast';
-            }, 2200);
+      const initialState = {
+        currentScreen: 1,
+        screenStates: {
+          1: 'ready',
+          2: 'ready',
+          3: 'ready',
+          4: 'ready'
+        },
+        lastAnalyticsEvent: 'video_fr_e18_01_viewed',
+        filters: {
+          category: 'all',
+          duration: 'all',
+          level: 'all'
+        },
+        selectedVideoId: 1801,
+        playback: {
+          isPlaying: false,
+          speed: '1x',
+          isFullscreen: false
+        },
+        subtitle: {
+          enabled: true,
+          language: 'TR',
+          fontSize: 'medium',
+          contrast: 'standard'
+        },
+        videos: [
+          {
+            id: 1801,
+            title: 'Sukur Pratigi: Gunluk Niyet Dersi',
+            category: 'mindset',
+            durationMin: 8,
+            level: 'baslangic',
+            route: '/videos/sukur-pratigi-gunluk-niyet',
+            positionSec: 178,
+            savedSec: 178,
+            totalSec: 480,
+            isNew: true
+          },
+          {
+            id: 1802,
+            title: 'Atolye Klasi: Vicdan ve Karar Ani',
+            category: 'workshop',
+            durationMin: 22,
+            level: 'orta',
+            route: '/videos/vicdan-ve-karar-ani',
+            positionSec: 620,
+            savedSec: 620,
+            totalSec: 1320,
+            isNew: false
+          },
+          {
+            id: 1803,
+            title: 'Ekran Okuyucu Dostu Video Gezinme',
+            category: 'accessibility',
+            durationMin: 14,
+            level: 'ileri',
+            route: '/videos/ekran-okuyucu-dostu-gezinme',
+            positionSec: 0,
+            savedSec: 0,
+            totalSec: 840,
+            isNew: true
+          },
+          {
+            id: 1804,
+            title: 'Kisa Ozet: 3 Dakikada Atolye Hazirligi',
+            category: 'micro',
+            durationMin: 3,
+            level: 'baslangic',
+            route: '/videos/3-dakikada-atolye-hazirligi',
+            positionSec: 0,
+            savedSec: 0,
+            totalSec: 180,
+            isNew: false
+          }
+        ],
+        transcriptMap: {
+          1801: [
+            { sec: 0, text: 'Giris: niyet ve odak cagrisi' },
+            { sec: 45, text: 'Sukur rutinini gunluk hayata baglama' },
+            { sec: 130, text: 'Mini uygulama: 60 saniyelik durak' },
+            { sec: 250, text: 'Kapanis ve ertesi gun plani' }
+          ],
+          1802: [
+            { sec: 0, text: 'Atolye acilisi ve hedefler' },
+            { sec: 180, text: 'Vaka analizi: karar ani' },
+            { sec: 540, text: 'Grup degerlendirme yontemi' },
+            { sec: 980, text: 'Uygulama odevi ve kapanis' }
+          ],
+          1803: [
+            { sec: 0, text: 'Erisilebilir oynatici ilkeleri' },
+            { sec: 110, text: 'Odak sirasi ve etiketleme' },
+            { sec: 300, text: 'Transkript ile hizli gezinme' },
+            { sec: 510, text: 'Altyazi gorunum ayarlari' }
+          ],
+          1804: [
+            { sec: 0, text: 'Hazirlik listesi' },
+            { sec: 70, text: 'Kritik noktalari tekrarla' },
+            { sec: 140, text: 'Baslamadan once son kontrol' }
+          ]
+        },
+        offlineQueue: [
+          {
+            id: 1,
+            videoId: 1802,
+            progress: 47,
+            time: '09:20'
+          }
+        ]
+      };
+
+      const ui = JSON.parse(JSON.stringify(initialState));
+      let toastTimer = null;
+
+      function esc(value) {
+        return String(value)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#39;');
+      }
+
+      function showToast(message, tone) {
+        const toast = document.getElementById('toast');
+        toast.textContent = message;
+        toast.className = 'toast show' + (tone ? ' ' + tone : '');
+        if (toastTimer) {
+          clearTimeout(toastTimer);
         }
+        toastTimer = setTimeout(() => {
+          toast.className = 'toast';
+        }, 2200);
+      }
 
-        function phoneShell(title, body, backScreen) {
-            const back = backScreen
-                ? '<button class="icon-btn" onclick="showScreen(' + backScreen + ')" aria-label="Geri">&lt;</button>'
-                : '<span style="width:34px;"></span>';
+      function phoneShell(title, body, backScreen) {
+        const back = backScreen
+          ? '<button class="icon-btn" onclick="showScreen(' + backScreen + ')" aria-label="Geri">&lt;</button>'
+          : '<span style="width:34px;"></span>';
 
-            return (
-                '<div class="iphone">' +
-                    '<div class="island"></div>' +
-                    '<div class="screen">' +
-                        '<div class="content">' +
-                            '<div class="status"><span>9:41</span><span>5G 90%</span></div>' +
-                            '<div class="mobile-header">' +
-                                back +
-                                '<div class="mobile-title">' + title + '</div>' +
-                            '</div>' +
-                            '<div class="mobile-body">' + body + '</div>' +
-                        '</div>' +
+        return (
+          '<div class="iphone">' +
+          '<div class="island"></div>' +
+          '<div class="screen">' +
+          '<div class="content">' +
+          '<div class="status"><span>9:41</span><span>5G 90%</span></div>' +
+          '<div class="mobile-header">' +
+          back +
+          '<div class="mobile-title">' +
+          title +
+          '</div>' +
+          '</div>' +
+          '<div class="mobile-body">' +
+          body +
+          '</div>' +
+          '</div>' +
+          '</div>' +
+          '</div>'
+        );
+      }
+
+      function setCurrentScreen(screenNo) {
+        ui.currentScreen = screenNo;
+        ui.lastAnalyticsEvent = screenData[screenNo].event;
+        render();
+      }
+
+      function showScreen(screenNo) {
+        setCurrentScreen(screenNo);
+      }
+
+      function setScreenState(screenNo, state) {
+        ui.screenStates[screenNo] = state;
+        render();
+      }
+
+      function stateControls(screenNo) {
+        const states = ['ready', 'loading', 'empty', 'error', 'offline'];
+        return (
+          '<div class="state-switcher">' +
+          states
+            .map(
+              s =>
+                '<button class="state-btn ' +
+                (ui.screenStates[screenNo] === s ? 'active' : '') +
+                '" ' +
+                'onclick="setScreenState(' +
+                screenNo +
+                ", '" +
+                s +
+                '\')" aria-label="Ekran durumu ' +
+                s +
+                '" ' +
+                'aria-pressed="' +
+                (ui.screenStates[screenNo] === s) +
+                '">' +
+                s +
+                '</button>'
+            )
+            .join('') +
+          '</div>'
+        );
+      }
+
+      function statePanel(screenNo) {
+        const state = ui.screenStates[screenNo];
+        if (state === 'ready') {
+          return '';
+        }
+        if (state === 'loading') {
+          return '<div class="state-panel loading" role="status"><strong>Loading</strong><span>Video icerik verileri yukleniyor.</span></div>';
+        }
+        if (state === 'empty') {
+          return '<div class="state-panel empty"><strong>Empty</strong><span>Bu gorunumde listelenecek veri bulunmuyor.</span><button class="btn btn-outline" onclick="resetDemo()" aria-label="Demo verisini sifirla">Varsayilan veriye don</button></div>';
+        }
+        if (state === 'error') {
+          return (
+            '<div class="state-panel error" role="alert"><strong>Error</strong><span>Kurtarilabilir hata olustu.</span><button class="btn btn-primary" onclick="setScreenState(' +
+            screenNo +
+            ', \'ready\')" aria-label="Tekrar dene">Tekrar Dene</button></div>'
+          );
+        }
+        return '<div class="state-panel offline" role="status"><strong>Offline</strong><span>Son senkronize video verisi gosterilir, ilerleme guncellemeleri kuyrukta tutulur.</span></div>';
+      }
+
+      function selectedVideo() {
+        return ui.videos.find(item => item.id === ui.selectedVideoId) || ui.videos[0];
+      }
+
+      function completionPercent(video) {
+        if (!video || !video.totalSec) {
+          return 0;
+        }
+        return Math.min(100, Math.round((video.positionSec * 100) / video.totalSec));
+      }
+
+      function formatTime(seconds) {
+        const safe = Math.max(0, Math.floor(Number(seconds) || 0));
+        const mins = Math.floor(safe / 60);
+        const secs = safe % 60;
+        return mins + ':' + String(secs).padStart(2, '0');
+      }
+
+      function setFilter(key, value) {
+        ui.filters[key] = value;
+        render();
+      }
+
+      function matchesDuration(item) {
+        if (ui.filters.duration === 'all') {
+          return true;
+        }
+        if (ui.filters.duration === 'short') {
+          return item.durationMin <= 10;
+        }
+        if (ui.filters.duration === 'medium') {
+          return item.durationMin > 10 && item.durationMin <= 20;
+        }
+        return item.durationMin > 20;
+      }
+
+      function filteredVideos() {
+        return ui.videos.filter(item => {
+          const categoryMatch = ui.filters.category === 'all' || item.category === ui.filters.category;
+          const levelMatch = ui.filters.level === 'all' || item.level === ui.filters.level;
+          return categoryMatch && levelMatch && matchesDuration(item);
+        });
+      }
+
+      function openVideo(videoId) {
+        ui.selectedVideoId = videoId;
+        showScreen(2);
+        showToast('Video oynatici acildi.', 'success');
+      }
+
+      function setPlayerPosition(nextSeconds) {
+        const video = selectedVideo();
+        const bounded = Math.max(0, Math.min(video.totalSec, Math.round(nextSeconds)));
+        video.positionSec = bounded;
+        render();
+      }
+
+      function togglePlay() {
+        ui.playback.isPlaying = !ui.playback.isPlaying;
+        showToast(ui.playback.isPlaying ? 'Video oynatiliyor.' : 'Video duraklatildi.', 'success');
+        render();
+      }
+
+      function seek(deltaSeconds) {
+        const video = selectedVideo();
+        setPlayerPosition(video.positionSec + deltaSeconds);
+        showToast('Konum: ' + formatTime(selectedVideo().positionSec), 'success');
+      }
+
+      function setSpeed(speed) {
+        ui.playback.speed = speed;
+        showToast('Oynatma hizi: ' + speed, 'success');
+        render();
+      }
+
+      function toggleFullscreen() {
+        ui.playback.isFullscreen = !ui.playback.isFullscreen;
+        showToast(ui.playback.isFullscreen ? 'Tam ekran acildi.' : 'Tam ekran kapatildi.', 'success');
+        render();
+      }
+
+      function resumeFromSaved() {
+        const video = selectedVideo();
+        setPlayerPosition(video.savedSec);
+        showToast('Kayitli konumdan devam edildi.', 'success');
+      }
+
+      function markAsCompleted() {
+        const video = selectedVideo();
+        video.positionSec = Math.max(video.positionSec, Math.ceil(video.totalSec * 0.92));
+        showToast('Video tamamlandi olarak isaretlendi.', 'success');
+        render();
+      }
+
+      function toggleSubtitle() {
+        ui.subtitle.enabled = !ui.subtitle.enabled;
+        render();
+      }
+
+      function setSubtitleLanguage(lang) {
+        ui.subtitle.language = lang;
+        showToast('Altyazi dili: ' + lang, 'success');
+        render();
+      }
+
+      function setSubtitleFont(size) {
+        ui.subtitle.fontSize = size;
+        render();
+      }
+
+      function setSubtitleContrast(mode) {
+        ui.subtitle.contrast = mode;
+        render();
+      }
+
+      function activeTranscript() {
+        return ui.transcriptMap[selectedVideo().id] || [];
+      }
+
+      function jumpTranscript(seconds) {
+        setPlayerPosition(seconds);
+        showToast('Transkript satirina atlandi.', 'success');
+      }
+
+      function continueWatchingVideos() {
+        return ui.videos.filter(item => completionPercent(item) > 0 && completionPercent(item) < 100);
+      }
+
+      function addOfflineQueueItem() {
+        const video = selectedVideo();
+        ui.offlineQueue.push({
+          id: Date.now(),
+          videoId: video.id,
+          progress: completionPercent(video),
+          time: 'simdi'
+        });
+        showToast('Cevrimdisi ilerleme kuyruga eklendi.', 'success');
+        render();
+      }
+
+      function syncQueue() {
+        if (!ui.offlineQueue.length) {
+          showToast('Kuyrukta bekleyen ilerleme yok.', 'error');
+          return;
+        }
+        ui.offlineQueue = [];
+        showToast('Kuyruktaki ilerlemeler senkronize edildi.', 'success');
+        render();
+      }
+
+      function resetDemo() {
+        const fresh = JSON.parse(JSON.stringify(initialState));
+        Object.keys(ui).forEach(key => {
+          delete ui[key];
+        });
+        Object.assign(ui, fresh);
+        render();
+      }
+
+      function screenOne() {
+        const rows = filteredVideos();
+        const body =
+          stateControls(1) +
+          statePanel(1) +
+          (ui.screenStates[1] !== 'ready'
+            ? ''
+            : '<div class="card">' +
+              '<div class="card-title">Kesif filtreleri</div>' +
+              '<div class="chips">' +
+              '<button class="btn ' +
+              (ui.filters.category === 'all' ? 'btn-primary' : 'btn-outline') +
+              '" onclick="setFilter(\'category\', \'all\')" aria-label="Tum kategoriler" aria-pressed="' +
+              (ui.filters.category === 'all') +
+              '">Tum</button>' +
+              '<button class="btn ' +
+              (ui.filters.category === 'mindset' ? 'btn-primary' : 'btn-outline') +
+              '" onclick="setFilter(\'category\', \'mindset\')" aria-label="Mindset kategorisi" aria-pressed="' +
+              (ui.filters.category === 'mindset') +
+              '">Mindset</button>' +
+              '<button class="btn ' +
+              (ui.filters.category === 'workshop' ? 'btn-primary' : 'btn-outline') +
+              '" onclick="setFilter(\'category\', \'workshop\')" aria-label="Workshop kategorisi" aria-pressed="' +
+              (ui.filters.category === 'workshop') +
+              '">Workshop</button>' +
+              '<button class="btn ' +
+              (ui.filters.category === 'accessibility' ? 'btn-primary' : 'btn-outline') +
+              '" onclick="setFilter(\'category\', \'accessibility\')" aria-label="Erisilebilirlik kategorisi" aria-pressed="' +
+              (ui.filters.category === 'accessibility') +
+              '">A11Y</button>' +
+              '<button class="btn ' +
+              (ui.filters.category === 'micro' ? 'btn-primary' : 'btn-outline') +
+              '" onclick="setFilter(\'category\', \'micro\')" aria-label="Mikro video kategorisi" aria-pressed="' +
+              (ui.filters.category === 'micro') +
+              '">Micro</button>' +
+              '</div>' +
+              '<div class="chips" style="margin-top:0.45rem;">' +
+              '<button class="btn ' +
+              (ui.filters.duration === 'all' ? 'btn-primary' : 'btn-outline') +
+              '" onclick="setFilter(\'duration\', \'all\')" aria-label="Tum sureler" aria-pressed="' +
+              (ui.filters.duration === 'all') +
+              '">Sure: Tum</button>' +
+              '<button class="btn ' +
+              (ui.filters.duration === 'short' ? 'btn-primary' : 'btn-outline') +
+              '" onclick="setFilter(\'duration\', \'short\')" aria-label="Kisa videolar" aria-pressed="' +
+              (ui.filters.duration === 'short') +
+              '">Kisa</button>' +
+              '<button class="btn ' +
+              (ui.filters.duration === 'medium' ? 'btn-primary' : 'btn-outline') +
+              '" onclick="setFilter(\'duration\', \'medium\')" aria-label="Orta sure videolar" aria-pressed="' +
+              (ui.filters.duration === 'medium') +
+              '">Orta</button>' +
+              '<button class="btn ' +
+              (ui.filters.duration === 'long' ? 'btn-primary' : 'btn-outline') +
+              '" onclick="setFilter(\'duration\', \'long\')" aria-label="Uzun videolar" aria-pressed="' +
+              (ui.filters.duration === 'long') +
+              '">Uzun</button>' +
+              '</div>' +
+              '<div class="chips" style="margin-top:0.45rem;">' +
+              '<button class="btn ' +
+              (ui.filters.level === 'all' ? 'btn-primary' : 'btn-outline') +
+              '" onclick="setFilter(\'level\', \'all\')" aria-label="Tum seviyeler" aria-pressed="' +
+              (ui.filters.level === 'all') +
+              '">Seviye: Tum</button>' +
+              '<button class="btn ' +
+              (ui.filters.level === 'baslangic' ? 'btn-primary' : 'btn-outline') +
+              '" onclick="setFilter(\'level\', \'baslangic\')" aria-label="Baslangic seviyesi" aria-pressed="' +
+              (ui.filters.level === 'baslangic') +
+              '">Baslangic</button>' +
+              '<button class="btn ' +
+              (ui.filters.level === 'orta' ? 'btn-primary' : 'btn-outline') +
+              '" onclick="setFilter(\'level\', \'orta\')" aria-label="Orta seviye" aria-pressed="' +
+              (ui.filters.level === 'orta') +
+              '">Orta</button>' +
+              '<button class="btn ' +
+              (ui.filters.level === 'ileri' ? 'btn-primary' : 'btn-outline') +
+              '" onclick="setFilter(\'level\', \'ileri\')" aria-label="Ileri seviye" aria-pressed="' +
+              (ui.filters.level === 'ileri') +
+              '">Ileri</button>' +
+              '</div>' +
+              '<div class="muted" style="margin-top:0.45rem;">AC-FR-E18-01-02</div>' +
+              '</div>' +
+              '<div class="card">' +
+              '<div class="card-title">Video katalogu</div>' +
+              '<div class="chips" style="margin-bottom:0.45rem;">' +
+              '<span class="chip">Toplam: ' +
+              ui.videos.length +
+              '</span>' +
+              '<span class="chip success">Filtre sonucu: ' +
+              rows.length +
+              '</span>' +
+              '</div>' +
+              '<div class="list">' +
+              rows
+                .map(
+                  item =>
+                    '<div class="list-item" style="border-color:' +
+                    (item.isNew ? '#93c5fd' : '#e5e5e5') +
+                    '; background:' +
+                    (item.isNew ? '#eff6ff' : '#fff') +
+                    ';">' +
+                    '<div class="row"><div class="item-title">' +
+                    esc(item.title) +
+                    '</div><span class="chip">' +
+                    item.durationMin +
+                    ' dk</span></div>' +
+                    '<div class="item-meta">Kategori: ' +
+                    esc(item.category) +
+                    ' | Seviye: ' +
+                    esc(item.level) +
                     '</div>' +
-                '</div>'
-            );
-        }
-
-        function setCurrentScreen(screenNo) {
-            ui.currentScreen = screenNo;
-            ui.lastAnalyticsEvent = screenData[screenNo].event;
-            render();
-        }
-
-        function showScreen(screenNo) {
-            setCurrentScreen(screenNo);
-        }
-
-        function setScreenState(screenNo, state) {
-            ui.screenStates[screenNo] = state;
-            render();
-        }
-
-        function stateControls(screenNo) {
-            const states = ['ready', 'loading', 'empty', 'error', 'offline'];
-            return (
-                '<div class="state-switcher">' +
-                    states.map((s) => (
-                        '<button class="state-btn ' + (ui.screenStates[screenNo] === s ? 'active' : '') + '" ' +
-                        'onclick="setScreenState(' + screenNo + ', \'' + s + '\')" aria-label="Ekran durumu ' + s + '" ' +
-                        'aria-pressed="' + (ui.screenStates[screenNo] === s) + '">' + s + '</button>'
-                    )).join('') +
-                '</div>'
-            );
-        }
-
-        function statePanel(screenNo) {
-            const state = ui.screenStates[screenNo];
-            if (state === 'ready') {
-                return '';
-            }
-            if (state === 'loading') {
-                return '<div class="state-panel loading" role="status"><strong>Loading</strong><span>Video icerik verileri yukleniyor.</span></div>';
-            }
-            if (state === 'empty') {
-                return '<div class="state-panel empty"><strong>Empty</strong><span>Bu gorunumde listelenecek veri bulunmuyor.</span><button class="btn btn-outline" onclick="resetDemo()" aria-label="Demo verisini sifirla">Varsayilan veriye don</button></div>';
-            }
-            if (state === 'error') {
-                return '<div class="state-panel error" role="alert"><strong>Error</strong><span>Kurtarilabilir hata olustu.</span><button class="btn btn-primary" onclick="setScreenState(' + screenNo + ', \'ready\')" aria-label="Tekrar dene">Tekrar Dene</button></div>';
-            }
-            return '<div class="state-panel offline" role="status"><strong>Offline</strong><span>Son senkronize video verisi gosterilir, ilerleme guncellemeleri kuyrukta tutulur.</span></div>';
-        }
-
-        function selectedVideo() {
-            return ui.videos.find((item) => item.id === ui.selectedVideoId) || ui.videos[0];
-        }
-
-        function completionPercent(video) {
-            if (!video || !video.totalSec) {
-                return 0;
-            }
-            return Math.min(100, Math.round((video.positionSec * 100) / video.totalSec));
-        }
-
-        function formatTime(seconds) {
-            const safe = Math.max(0, Math.floor(Number(seconds) || 0));
-            const mins = Math.floor(safe / 60);
-            const secs = safe % 60;
-            return mins + ':' + String(secs).padStart(2, '0');
-        }
-
-        function setFilter(key, value) {
-            ui.filters[key] = value;
-            render();
-        }
-
-        function matchesDuration(item) {
-            if (ui.filters.duration === 'all') {
-                return true;
-            }
-            if (ui.filters.duration === 'short') {
-                return item.durationMin <= 10;
-            }
-            if (ui.filters.duration === 'medium') {
-                return item.durationMin > 10 && item.durationMin <= 20;
-            }
-            return item.durationMin > 20;
-        }
-
-        function filteredVideos() {
-            return ui.videos.filter((item) => {
-                const categoryMatch = ui.filters.category === 'all' || item.category === ui.filters.category;
-                const levelMatch = ui.filters.level === 'all' || item.level === ui.filters.level;
-                return categoryMatch && levelMatch && matchesDuration(item);
-            });
-        }
-
-        function openVideo(videoId) {
-            ui.selectedVideoId = videoId;
-            showScreen(2);
-            showToast('Video oynatici acildi.', 'success');
-        }
-
-        function setPlayerPosition(nextSeconds) {
-            const video = selectedVideo();
-            const bounded = Math.max(0, Math.min(video.totalSec, Math.round(nextSeconds)));
-            video.positionSec = bounded;
-            render();
-        }
-
-        function togglePlay() {
-            ui.playback.isPlaying = !ui.playback.isPlaying;
-            showToast(ui.playback.isPlaying ? 'Video oynatiliyor.' : 'Video duraklatildi.', 'success');
-            render();
-        }
-
-        function seek(deltaSeconds) {
-            const video = selectedVideo();
-            setPlayerPosition(video.positionSec + deltaSeconds);
-            showToast('Konum: ' + formatTime(selectedVideo().positionSec), 'success');
-        }
-
-        function setSpeed(speed) {
-            ui.playback.speed = speed;
-            showToast('Oynatma hizi: ' + speed, 'success');
-            render();
-        }
-
-        function toggleFullscreen() {
-            ui.playback.isFullscreen = !ui.playback.isFullscreen;
-            showToast(ui.playback.isFullscreen ? 'Tam ekran acildi.' : 'Tam ekran kapatildi.', 'success');
-            render();
-        }
-
-        function resumeFromSaved() {
-            const video = selectedVideo();
-            setPlayerPosition(video.savedSec);
-            showToast('Kayitli konumdan devam edildi.', 'success');
-        }
-
-        function markAsCompleted() {
-            const video = selectedVideo();
-            video.positionSec = Math.max(video.positionSec, Math.ceil(video.totalSec * 0.92));
-            showToast('Video tamamlandi olarak isaretlendi.', 'success');
-            render();
-        }
-
-        function toggleSubtitle() {
-            ui.subtitle.enabled = !ui.subtitle.enabled;
-            render();
-        }
-
-        function setSubtitleLanguage(lang) {
-            ui.subtitle.language = lang;
-            showToast('Altyazi dili: ' + lang, 'success');
-            render();
-        }
-
-        function setSubtitleFont(size) {
-            ui.subtitle.fontSize = size;
-            render();
-        }
-
-        function setSubtitleContrast(mode) {
-            ui.subtitle.contrast = mode;
-            render();
-        }
-
-        function activeTranscript() {
-            return ui.transcriptMap[selectedVideo().id] || [];
-        }
-
-        function jumpTranscript(seconds) {
-            setPlayerPosition(seconds);
-            showToast('Transkript satirina atlandi.', 'success');
-        }
-
-        function continueWatchingVideos() {
-            return ui.videos.filter((item) => completionPercent(item) > 0 && completionPercent(item) < 100);
-        }
-
-        function addOfflineQueueItem() {
-            const video = selectedVideo();
-            ui.offlineQueue.push({
-                id: Date.now(),
-                videoId: video.id,
-                progress: completionPercent(video),
-                time: 'simdi'
-            });
-            showToast('Cevrimdisi ilerleme kuyruga eklendi.', 'success');
-            render();
-        }
-
-        function syncQueue() {
-            if (!ui.offlineQueue.length) {
-                showToast('Kuyrukta bekleyen ilerleme yok.', 'error');
-                return;
-            }
-            ui.offlineQueue = [];
-            showToast('Kuyruktaki ilerlemeler senkronize edildi.', 'success');
-            render();
-        }
-
-        function resetDemo() {
-            const fresh = JSON.parse(JSON.stringify(initialState));
-            Object.keys(ui).forEach((key) => {
-                delete ui[key];
-            });
-            Object.assign(ui, fresh);
-            render();
-        }
-
-        function screenOne() {
-            const rows = filteredVideos();
-            const body = (
-                stateControls(1) +
-                statePanel(1) +
-                (ui.screenStates[1] !== 'ready' ? '' : (
-                    '<div class="card">' +
-                        '<div class="card-title">Kesif filtreleri</div>' +
-                        '<div class="chips">' +
-                            '<button class="btn ' + (ui.filters.category === 'all' ? 'btn-primary' : 'btn-outline') + '" onclick="setFilter(\'category\', \'all\')" aria-label="Tum kategoriler" aria-pressed="' + (ui.filters.category === 'all') + '">Tum</button>' +
-                            '<button class="btn ' + (ui.filters.category === 'mindset' ? 'btn-primary' : 'btn-outline') + '" onclick="setFilter(\'category\', \'mindset\')" aria-label="Mindset kategorisi" aria-pressed="' + (ui.filters.category === 'mindset') + '">Mindset</button>' +
-                            '<button class="btn ' + (ui.filters.category === 'workshop' ? 'btn-primary' : 'btn-outline') + '" onclick="setFilter(\'category\', \'workshop\')" aria-label="Workshop kategorisi" aria-pressed="' + (ui.filters.category === 'workshop') + '">Workshop</button>' +
-                            '<button class="btn ' + (ui.filters.category === 'accessibility' ? 'btn-primary' : 'btn-outline') + '" onclick="setFilter(\'category\', \'accessibility\')" aria-label="Erisilebilirlik kategorisi" aria-pressed="' + (ui.filters.category === 'accessibility') + '">A11Y</button>' +
-                            '<button class="btn ' + (ui.filters.category === 'micro' ? 'btn-primary' : 'btn-outline') + '" onclick="setFilter(\'category\', \'micro\')" aria-label="Mikro video kategorisi" aria-pressed="' + (ui.filters.category === 'micro') + '">Micro</button>' +
-                        '</div>' +
-                        '<div class="chips" style="margin-top:0.45rem;">' +
-                            '<button class="btn ' + (ui.filters.duration === 'all' ? 'btn-primary' : 'btn-outline') + '" onclick="setFilter(\'duration\', \'all\')" aria-label="Tum sureler" aria-pressed="' + (ui.filters.duration === 'all') + '">Sure: Tum</button>' +
-                            '<button class="btn ' + (ui.filters.duration === 'short' ? 'btn-primary' : 'btn-outline') + '" onclick="setFilter(\'duration\', \'short\')" aria-label="Kisa videolar" aria-pressed="' + (ui.filters.duration === 'short') + '">Kisa</button>' +
-                            '<button class="btn ' + (ui.filters.duration === 'medium' ? 'btn-primary' : 'btn-outline') + '" onclick="setFilter(\'duration\', \'medium\')" aria-label="Orta sure videolar" aria-pressed="' + (ui.filters.duration === 'medium') + '">Orta</button>' +
-                            '<button class="btn ' + (ui.filters.duration === 'long' ? 'btn-primary' : 'btn-outline') + '" onclick="setFilter(\'duration\', \'long\')" aria-label="Uzun videolar" aria-pressed="' + (ui.filters.duration === 'long') + '">Uzun</button>' +
-                        '</div>' +
-                        '<div class="chips" style="margin-top:0.45rem;">' +
-                            '<button class="btn ' + (ui.filters.level === 'all' ? 'btn-primary' : 'btn-outline') + '" onclick="setFilter(\'level\', \'all\')" aria-label="Tum seviyeler" aria-pressed="' + (ui.filters.level === 'all') + '">Seviye: Tum</button>' +
-                            '<button class="btn ' + (ui.filters.level === 'baslangic' ? 'btn-primary' : 'btn-outline') + '" onclick="setFilter(\'level\', \'baslangic\')" aria-label="Baslangic seviyesi" aria-pressed="' + (ui.filters.level === 'baslangic') + '">Baslangic</button>' +
-                            '<button class="btn ' + (ui.filters.level === 'orta' ? 'btn-primary' : 'btn-outline') + '" onclick="setFilter(\'level\', \'orta\')" aria-label="Orta seviye" aria-pressed="' + (ui.filters.level === 'orta') + '">Orta</button>' +
-                            '<button class="btn ' + (ui.filters.level === 'ileri' ? 'btn-primary' : 'btn-outline') + '" onclick="setFilter(\'level\', \'ileri\')" aria-label="Ileri seviye" aria-pressed="' + (ui.filters.level === 'ileri') + '">Ileri</button>' +
-                        '</div>' +
-                        '<div class="muted" style="margin-top:0.45rem;">AC-FR-E18-01-02</div>' +
+                    '<div class="chips" style="margin-top:0.35rem;">' +
+                    '<span class="chip success">Ilerleme: %' +
+                    completionPercent(item) +
+                    '</span>' +
+                    (item.isNew ? '<span class="chip">yeni</span>' : '') +
+                    '<button class="btn btn-primary" onclick="openVideo(' +
+                    item.id +
+                    ')" aria-label="Videoyu baslat">Izlemeye Basla</button>' +
                     '</div>' +
-
-                    '<div class="card">' +
-                        '<div class="card-title">Video katalogu</div>' +
-                        '<div class="chips" style="margin-bottom:0.45rem;">' +
-                            '<span class="chip">Toplam: ' + ui.videos.length + '</span>' +
-                            '<span class="chip success">Filtre sonucu: ' + rows.length + '</span>' +
-                        '</div>' +
-                        '<div class="list">' +
-                            rows.map((item) => (
-                                '<div class="list-item" style="border-color:' + (item.isNew ? '#93c5fd' : '#e5e5e5') + '; background:' + (item.isNew ? '#eff6ff' : '#fff') + ';">' +
-                                    '<div class="row"><div class="item-title">' + esc(item.title) + '</div><span class="chip">' + item.durationMin + ' dk</span></div>' +
-                                    '<div class="item-meta">Kategori: ' + esc(item.category) + ' | Seviye: ' + esc(item.level) + '</div>' +
-                                    '<div class="chips" style="margin-top:0.35rem;">' +
-                                        '<span class="chip success">Ilerleme: %' + completionPercent(item) + '</span>' +
-                                        (item.isNew ? '<span class="chip">yeni</span>' : '') +
-                                        '<button class="btn btn-primary" onclick="openVideo(' + item.id + ')" aria-label="Videoyu baslat">Izlemeye Basla</button>' +
-                                    '</div>' +
-                                '</div>'
-                            )).join('') +
-                        '</div>' +
-                        '<div class="muted" style="margin-top:0.45rem;">AC-FR-E18-01-01</div>' +
-                        '<div class="muted">AC-FR-E18-01-03</div>' +
-                        '<div class="muted">AC-FR-E18-01-04</div>' +
                     '</div>'
-                ))
-            );
+                )
+                .join('') +
+              '</div>' +
+              '<div class="muted" style="margin-top:0.45rem;">AC-FR-E18-01-01</div>' +
+              '<div class="muted">AC-FR-E18-01-03</div>' +
+              '<div class="muted">AC-FR-E18-01-04</div>' +
+              '</div>');
 
-            return phoneShell('Video katalogu', body, null);
-        }
+        return phoneShell('Video katalogu', body, null);
+      }
 
-        function screenTwo() {
-            const video = selectedVideo();
-            const progress = completionPercent(video);
-            const body = (
-                stateControls(2) +
-                statePanel(2) +
-                (ui.screenStates[2] !== 'ready' ? '' : (
-                    '<div class="card">' +
-                        '<div class="card-title">Temel oynatici kontrolleri</div>' +
-                        '<div class="item-meta"><strong>Video:</strong> ' + esc(video.title) + '</div>' +
-                        '<div class="item-meta"><strong>Konum:</strong> ' + formatTime(video.positionSec) + ' / ' + formatTime(video.totalSec) + '</div>' +
-                        '<div class="item-meta"><strong>Ilerleme:</strong> %' + progress + '</div>' +
-                        '<div class="chips" style="margin-top:0.45rem;">' +
-                            '<button class="btn btn-primary" onclick="togglePlay()" aria-label="Oynat veya duraklat">' + (ui.playback.isPlaying ? 'Duraklat' : 'Oynat') + '</button>' +
-                            '<button class="btn btn-outline" onclick="seek(-10)" aria-label="10 saniye geri">-10 sn</button>' +
-                            '<button class="btn btn-outline" onclick="seek(10)" aria-label="10 saniye ileri">+10 sn</button>' +
-                        '</div>' +
-                        '<div class="muted" style="margin-top:0.45rem;">AC-FR-E18-02-01</div>' +
-                        '<div class="muted">AC-FR-E18-02-02</div>' +
+      function screenTwo() {
+        const video = selectedVideo();
+        const progress = completionPercent(video);
+        const body =
+          stateControls(2) +
+          statePanel(2) +
+          (ui.screenStates[2] !== 'ready'
+            ? ''
+            : '<div class="card">' +
+              '<div class="card-title">Temel oynatici kontrolleri</div>' +
+              '<div class="item-meta"><strong>Video:</strong> ' +
+              esc(video.title) +
+              '</div>' +
+              '<div class="item-meta"><strong>Konum:</strong> ' +
+              formatTime(video.positionSec) +
+              ' / ' +
+              formatTime(video.totalSec) +
+              '</div>' +
+              '<div class="item-meta"><strong>Ilerleme:</strong> %' +
+              progress +
+              '</div>' +
+              '<div class="chips" style="margin-top:0.45rem;">' +
+              '<button class="btn btn-primary" onclick="togglePlay()" aria-label="Oynat veya duraklat">' +
+              (ui.playback.isPlaying ? 'Duraklat' : 'Oynat') +
+              '</button>' +
+              '<button class="btn btn-outline" onclick="seek(-10)" aria-label="10 saniye geri">-10 sn</button>' +
+              '<button class="btn btn-outline" onclick="seek(10)" aria-label="10 saniye ileri">+10 sn</button>' +
+              '</div>' +
+              '<div class="muted" style="margin-top:0.45rem;">AC-FR-E18-02-01</div>' +
+              '<div class="muted">AC-FR-E18-02-02</div>' +
+              '</div>' +
+              '<div class="card">' +
+              '<div class="card-title">Hiz, tam ekran ve devam noktasi</div>' +
+              '<div class="chips">' +
+              '<button class="btn ' +
+              (ui.playback.speed === '0.75x' ? 'btn-primary' : 'btn-outline') +
+              '" onclick="setSpeed(\'0.75x\')" aria-label="0.75 hiz" aria-pressed="' +
+              (ui.playback.speed === '0.75x') +
+              '">0.75x</button>' +
+              '<button class="btn ' +
+              (ui.playback.speed === '1x' ? 'btn-primary' : 'btn-outline') +
+              '" onclick="setSpeed(\'1x\')" aria-label="1 hiz" aria-pressed="' +
+              (ui.playback.speed === '1x') +
+              '">1x</button>' +
+              '<button class="btn ' +
+              (ui.playback.speed === '1.25x' ? 'btn-primary' : 'btn-outline') +
+              '" onclick="setSpeed(\'1.25x\')" aria-label="1.25 hiz" aria-pressed="' +
+              (ui.playback.speed === '1.25x') +
+              '">1.25x</button>' +
+              '<button class="btn ' +
+              (ui.playback.speed === '1.5x' ? 'btn-primary' : 'btn-outline') +
+              '" onclick="setSpeed(\'1.5x\')" aria-label="1.5 hiz" aria-pressed="' +
+              (ui.playback.speed === '1.5x') +
+              '">1.5x</button>' +
+              '</div>' +
+              '<div class="chips" style="margin-top:0.45rem;">' +
+              '<button class="btn btn-outline" onclick="toggleFullscreen()" aria-label="Tam ekran anahtari">' +
+              (ui.playback.isFullscreen ? 'Tam Ekran Kapat' : 'Tam Ekran Ac') +
+              '</button>' +
+              '<button class="btn btn-primary" onclick="resumeFromSaved()" aria-label="Kayitli konumdan devam">Kaldigi Yerden Devam</button>' +
+              '</div>' +
+              '<div class="muted" style="margin-top:0.45rem;">AC-FR-E18-02-03</div>' +
+              '<div class="muted">AC-FR-E18-02-04</div>' +
+              '</div>');
+
+        return phoneShell('Video oynatici', body, 1);
+      }
+
+      function screenThree() {
+        const transcriptRows = activeTranscript();
+        const video = selectedVideo();
+        const body =
+          stateControls(3) +
+          statePanel(3) +
+          (ui.screenStates[3] !== 'ready'
+            ? ''
+            : '<div class="card">' +
+              '<div class="card-title">Altyazi ve dil secimi</div>' +
+              '<div class="item-meta"><strong>Video:</strong> ' +
+              esc(video.title) +
+              '</div>' +
+              '<div class="chips" style="margin-top:0.45rem;">' +
+              '<button class="btn ' +
+              (ui.subtitle.enabled ? 'btn-primary' : 'btn-outline') +
+              '" onclick="toggleSubtitle()" aria-label="Altyazi ac kapat" aria-pressed="' +
+              ui.subtitle.enabled +
+              '">' +
+              (ui.subtitle.enabled ? 'Altyazi Acik' : 'Altyazi Kapali') +
+              '</button>' +
+              '<button class="btn ' +
+              (ui.subtitle.language === 'TR' ? 'btn-primary' : 'btn-outline') +
+              '" onclick="setSubtitleLanguage(\'TR\')" aria-label="Turkce altyazi" aria-pressed="' +
+              (ui.subtitle.language === 'TR') +
+              '">TR</button>' +
+              '<button class="btn ' +
+              (ui.subtitle.language === 'EN' ? 'btn-primary' : 'btn-outline') +
+              '" onclick="setSubtitleLanguage(\'EN\')" aria-label="English subtitles" aria-pressed="' +
+              (ui.subtitle.language === 'EN') +
+              '">EN</button>' +
+              '<button class="btn ' +
+              (ui.subtitle.language === 'ES' ? 'btn-primary' : 'btn-outline') +
+              '" onclick="setSubtitleLanguage(\'ES\')" aria-label="Subtitulos espanol" aria-pressed="' +
+              (ui.subtitle.language === 'ES') +
+              '">ES</button>' +
+              '</div>' +
+              '<div class="muted" style="margin-top:0.45rem;">AC-FR-E18-03-01</div>' +
+              '</div>' +
+              '<div class="card">' +
+              '<div class="card-title">Zaman damgali transkript</div>' +
+              '<div class="list">' +
+              transcriptRows
+                .map(
+                  row =>
+                    '<button class="list-item action" onclick="jumpTranscript(' +
+                    row.sec +
+                    ')" aria-label="Transkript satirina git">' +
+                    '<div class="row"><div class="item-title">' +
+                    formatTime(row.sec) +
+                    '</div><span class="chip">atla</span></div>' +
+                    '<div class="item-meta">' +
+                    esc(row.text) +
                     '</div>' +
+                    '</button>'
+                )
+                .join('') +
+              '</div>' +
+              '<div class="muted" style="margin-top:0.45rem;">AC-FR-E18-03-02</div>' +
+              '</div>' +
+              '<div class="card">' +
+              '<div class="card-title">Altyazi gorunum ayarlari</div>' +
+              '<div class="chips">' +
+              '<button class="btn ' +
+              (ui.subtitle.fontSize === 'small' ? 'btn-primary' : 'btn-outline') +
+              '" onclick="setSubtitleFont(\'small\')" aria-label="Kucuk altyazi" aria-pressed="' +
+              (ui.subtitle.fontSize === 'small') +
+              '">Kucuk</button>' +
+              '<button class="btn ' +
+              (ui.subtitle.fontSize === 'medium' ? 'btn-primary' : 'btn-outline') +
+              '" onclick="setSubtitleFont(\'medium\')" aria-label="Orta altyazi" aria-pressed="' +
+              (ui.subtitle.fontSize === 'medium') +
+              '">Orta</button>' +
+              '<button class="btn ' +
+              (ui.subtitle.fontSize === 'large' ? 'btn-primary' : 'btn-outline') +
+              '" onclick="setSubtitleFont(\'large\')" aria-label="Buyuk altyazi" aria-pressed="' +
+              (ui.subtitle.fontSize === 'large') +
+              '">Buyuk</button>' +
+              '</div>' +
+              '<div class="chips" style="margin-top:0.45rem;">' +
+              '<button class="btn ' +
+              (ui.subtitle.contrast === 'standard' ? 'btn-primary' : 'btn-outline') +
+              '" onclick="setSubtitleContrast(\'standard\')" aria-label="Standart kontrast" aria-pressed="' +
+              (ui.subtitle.contrast === 'standard') +
+              '">Standart</button>' +
+              '<button class="btn ' +
+              (ui.subtitle.contrast === 'high' ? 'btn-primary' : 'btn-outline') +
+              '" onclick="setSubtitleContrast(\'high\')" aria-label="Yuksek kontrast" aria-pressed="' +
+              (ui.subtitle.contrast === 'high') +
+              '">Yuksek Kontrast</button>' +
+              '</div>' +
+              '<div class="muted" style="margin-top:0.45rem;">AC-FR-E18-03-03</div>' +
+              '</div>' +
+              '<div class="card">' +
+              '<div class="card-title">Erisilebilirlik notlari</div>' +
+              '<div class="list">' +
+              '<div class="list-item"><div class="item-meta">Tum oynatici kontrolleri ekran okuyucu etiketiyle tanimlidir.</div></div>' +
+              '<div class="list-item"><div class="item-meta">Odak sirasi: oynatici kontrolleri -> altyazi ayarlari -> transkript satirlari.</div></div>' +
+              '<div class="list-item"><div class="item-meta">Transkript satiri secildiginde konum degisimi canli bolgede duyurulur.</div></div>' +
+              '</div>' +
+              '<div class="muted" style="margin-top:0.45rem;">AC-FR-E18-03-04</div>' +
+              '</div>');
 
-                    '<div class="card">' +
-                        '<div class="card-title">Hiz, tam ekran ve devam noktasi</div>' +
-                        '<div class="chips">' +
-                            '<button class="btn ' + (ui.playback.speed === '0.75x' ? 'btn-primary' : 'btn-outline') + '" onclick="setSpeed(\'0.75x\')" aria-label="0.75 hiz" aria-pressed="' + (ui.playback.speed === '0.75x') + '">0.75x</button>' +
-                            '<button class="btn ' + (ui.playback.speed === '1x' ? 'btn-primary' : 'btn-outline') + '" onclick="setSpeed(\'1x\')" aria-label="1 hiz" aria-pressed="' + (ui.playback.speed === '1x') + '">1x</button>' +
-                            '<button class="btn ' + (ui.playback.speed === '1.25x' ? 'btn-primary' : 'btn-outline') + '" onclick="setSpeed(\'1.25x\')" aria-label="1.25 hiz" aria-pressed="' + (ui.playback.speed === '1.25x') + '">1.25x</button>' +
-                            '<button class="btn ' + (ui.playback.speed === '1.5x' ? 'btn-primary' : 'btn-outline') + '" onclick="setSpeed(\'1.5x\')" aria-label="1.5 hiz" aria-pressed="' + (ui.playback.speed === '1.5x') + '">1.5x</button>' +
-                        '</div>' +
-                        '<div class="chips" style="margin-top:0.45rem;">' +
-                            '<button class="btn btn-outline" onclick="toggleFullscreen()" aria-label="Tam ekran anahtari">' + (ui.playback.isFullscreen ? 'Tam Ekran Kapat' : 'Tam Ekran Ac') + '</button>' +
-                            '<button class="btn btn-primary" onclick="resumeFromSaved()" aria-label="Kayitli konumdan devam">Kaldigi Yerden Devam</button>' +
-                        '</div>' +
-                        '<div class="muted" style="margin-top:0.45rem;">AC-FR-E18-02-03</div>' +
-                        '<div class="muted">AC-FR-E18-02-04</div>' +
+        return phoneShell('Altyazi ve transkript', body, 2);
+      }
+
+      function screenFour() {
+        const video = selectedVideo();
+        const progress = completionPercent(video);
+        const continues = continueWatchingVideos();
+        const body =
+          stateControls(4) +
+          statePanel(4) +
+          (ui.screenStates[4] !== 'ready'
+            ? ''
+            : '<div class="card">' +
+              '<div class="card-title">Video ilerleme ozeti</div>' +
+              '<div class="item-meta"><strong>Secili video:</strong> ' +
+              esc(video.title) +
+              '</div>' +
+              '<div class="chips" style="margin-top:0.45rem;">' +
+              '<span class="chip success">Ilerleme: %' +
+              progress +
+              '</span>' +
+              '<span class="chip">Konum: ' +
+              formatTime(video.positionSec) +
+              ' / ' +
+              formatTime(video.totalSec) +
+              '</span>' +
+              '<button class="btn btn-primary" onclick="markAsCompleted()" aria-label="Tamamlandi isaretle">Tamamlandi Isaretle</button>' +
+              '</div>' +
+              '<div class="muted" style="margin-top:0.45rem;">AC-FR-E18-04-01</div>' +
+              '<div class="muted">AC-FR-E18-04-02</div>' +
+              '</div>' +
+              '<div class="card">' +
+              '<div class="card-title">Devam et listesi</div>' +
+              '<div class="list">' +
+              continues
+                .map(
+                  item =>
+                    '<div class="list-item">' +
+                    '<div class="row"><div class="item-title">' +
+                    esc(item.title) +
+                    '</div><span class="chip">%' +
+                    completionPercent(item) +
+                    '</span></div>' +
+                    '<div class="item-meta">Konum: ' +
+                    formatTime(item.positionSec) +
+                    ' / ' +
+                    formatTime(item.totalSec) +
+                    '</div>' +
+                    '<div class="chips" style="margin-top:0.35rem;"><button class="btn btn-outline" onclick="openVideo(' +
+                    item.id +
+                    ')" aria-label="Videoya devam et">Devam Et</button></div>' +
                     '</div>'
-                ))
-            );
+                )
+                .join('') +
+              '</div>' +
+              '<div class="muted" style="margin-top:0.45rem;">AC-FR-E18-04-03</div>' +
+              '</div>' +
+              '<div class="card">' +
+              '<div class="card-title">Cevrimdisi senkron kuyrugu</div>' +
+              '<div class="list">' +
+              ui.offlineQueue
+                .map(
+                  item =>
+                    '<div class="list-item"><div class="row"><div class="item-title">Video #' +
+                    item.videoId +
+                    '</div><span class="chip">%' +
+                    item.progress +
+                    '</span></div><div class="item-meta">Kuyruk zamani: ' +
+                    esc(item.time) +
+                    '</div></div>'
+                )
+                .join('') +
+              '</div>' +
+              '<div class="chips" style="margin-top:0.45rem;">' +
+              '<button class="btn btn-outline" onclick="addOfflineQueueItem()" aria-label="Kuyruga ornek ekle">Kuyruga Ekle</button>' +
+              '<button class="btn btn-primary" onclick="syncQueue()" aria-label="Kuyrugu senkronize et">Senkronize Et</button>' +
+              '</div>' +
+              '<div class="muted" style="margin-top:0.45rem;">AC-FR-E18-04-04</div>' +
+              '</div>');
 
-            return phoneShell('Video oynatici', body, 1);
+        return phoneShell('Ilerleme ve senkron', body, 2);
+      }
+
+      function renderScreen(screenNo) {
+        if (screenNo === 1) {
+          return screenOne();
         }
-
-        function screenThree() {
-            const transcriptRows = activeTranscript();
-            const video = selectedVideo();
-            const body = (
-                stateControls(3) +
-                statePanel(3) +
-                (ui.screenStates[3] !== 'ready' ? '' : (
-                    '<div class="card">' +
-                        '<div class="card-title">Altyazi ve dil secimi</div>' +
-                        '<div class="item-meta"><strong>Video:</strong> ' + esc(video.title) + '</div>' +
-                        '<div class="chips" style="margin-top:0.45rem;">' +
-                            '<button class="btn ' + (ui.subtitle.enabled ? 'btn-primary' : 'btn-outline') + '" onclick="toggleSubtitle()" aria-label="Altyazi ac kapat" aria-pressed="' + ui.subtitle.enabled + '">' + (ui.subtitle.enabled ? 'Altyazi Acik' : 'Altyazi Kapali') + '</button>' +
-                            '<button class="btn ' + (ui.subtitle.language === 'TR' ? 'btn-primary' : 'btn-outline') + '" onclick="setSubtitleLanguage(\'TR\')" aria-label="Turkce altyazi" aria-pressed="' + (ui.subtitle.language === 'TR') + '">TR</button>' +
-                            '<button class="btn ' + (ui.subtitle.language === 'EN' ? 'btn-primary' : 'btn-outline') + '" onclick="setSubtitleLanguage(\'EN\')" aria-label="English subtitles" aria-pressed="' + (ui.subtitle.language === 'EN') + '">EN</button>' +
-                            '<button class="btn ' + (ui.subtitle.language === 'ES' ? 'btn-primary' : 'btn-outline') + '" onclick="setSubtitleLanguage(\'ES\')" aria-label="Subtitulos espanol" aria-pressed="' + (ui.subtitle.language === 'ES') + '">ES</button>' +
-                        '</div>' +
-                        '<div class="muted" style="margin-top:0.45rem;">AC-FR-E18-03-01</div>' +
-                    '</div>' +
-
-                    '<div class="card">' +
-                        '<div class="card-title">Zaman damgali transkript</div>' +
-                        '<div class="list">' +
-                            transcriptRows.map((row) => (
-                                '<button class="list-item action" onclick="jumpTranscript(' + row.sec + ')" aria-label="Transkript satirina git">' +
-                                    '<div class="row"><div class="item-title">' + formatTime(row.sec) + '</div><span class="chip">atla</span></div>' +
-                                    '<div class="item-meta">' + esc(row.text) + '</div>' +
-                                '</button>'
-                            )).join('') +
-                        '</div>' +
-                        '<div class="muted" style="margin-top:0.45rem;">AC-FR-E18-03-02</div>' +
-                    '</div>' +
-
-                    '<div class="card">' +
-                        '<div class="card-title">Altyazi gorunum ayarlari</div>' +
-                        '<div class="chips">' +
-                            '<button class="btn ' + (ui.subtitle.fontSize === 'small' ? 'btn-primary' : 'btn-outline') + '" onclick="setSubtitleFont(\'small\')" aria-label="Kucuk altyazi" aria-pressed="' + (ui.subtitle.fontSize === 'small') + '">Kucuk</button>' +
-                            '<button class="btn ' + (ui.subtitle.fontSize === 'medium' ? 'btn-primary' : 'btn-outline') + '" onclick="setSubtitleFont(\'medium\')" aria-label="Orta altyazi" aria-pressed="' + (ui.subtitle.fontSize === 'medium') + '">Orta</button>' +
-                            '<button class="btn ' + (ui.subtitle.fontSize === 'large' ? 'btn-primary' : 'btn-outline') + '" onclick="setSubtitleFont(\'large\')" aria-label="Buyuk altyazi" aria-pressed="' + (ui.subtitle.fontSize === 'large') + '">Buyuk</button>' +
-                        '</div>' +
-                        '<div class="chips" style="margin-top:0.45rem;">' +
-                            '<button class="btn ' + (ui.subtitle.contrast === 'standard' ? 'btn-primary' : 'btn-outline') + '" onclick="setSubtitleContrast(\'standard\')" aria-label="Standart kontrast" aria-pressed="' + (ui.subtitle.contrast === 'standard') + '">Standart</button>' +
-                            '<button class="btn ' + (ui.subtitle.contrast === 'high' ? 'btn-primary' : 'btn-outline') + '" onclick="setSubtitleContrast(\'high\')" aria-label="Yuksek kontrast" aria-pressed="' + (ui.subtitle.contrast === 'high') + '">Yuksek Kontrast</button>' +
-                        '</div>' +
-                        '<div class="muted" style="margin-top:0.45rem;">AC-FR-E18-03-03</div>' +
-                    '</div>' +
-
-                    '<div class="card">' +
-                        '<div class="card-title">Erisilebilirlik notlari</div>' +
-                        '<div class="list">' +
-                            '<div class="list-item"><div class="item-meta">Tum oynatici kontrolleri ekran okuyucu etiketiyle tanimlidir.</div></div>' +
-                            '<div class="list-item"><div class="item-meta">Odak sirasi: oynatici kontrolleri -> altyazi ayarlari -> transkript satirlari.</div></div>' +
-                            '<div class="list-item"><div class="item-meta">Transkript satiri secildiginde konum degisimi canli bolgede duyurulur.</div></div>' +
-                        '</div>' +
-                        '<div class="muted" style="margin-top:0.45rem;">AC-FR-E18-03-04</div>' +
-                    '</div>'
-                ))
-            );
-
-            return phoneShell('Altyazi ve transkript', body, 2);
+        if (screenNo === 2) {
+          return screenTwo();
         }
-
-        function screenFour() {
-            const video = selectedVideo();
-            const progress = completionPercent(video);
-            const continues = continueWatchingVideos();
-            const body = (
-                stateControls(4) +
-                statePanel(4) +
-                (ui.screenStates[4] !== 'ready' ? '' : (
-                    '<div class="card">' +
-                        '<div class="card-title">Video ilerleme ozeti</div>' +
-                        '<div class="item-meta"><strong>Secili video:</strong> ' + esc(video.title) + '</div>' +
-                        '<div class="chips" style="margin-top:0.45rem;">' +
-                            '<span class="chip success">Ilerleme: %' + progress + '</span>' +
-                            '<span class="chip">Konum: ' + formatTime(video.positionSec) + ' / ' + formatTime(video.totalSec) + '</span>' +
-                            '<button class="btn btn-primary" onclick="markAsCompleted()" aria-label="Tamamlandi isaretle">Tamamlandi Isaretle</button>' +
-                        '</div>' +
-                        '<div class="muted" style="margin-top:0.45rem;">AC-FR-E18-04-01</div>' +
-                        '<div class="muted">AC-FR-E18-04-02</div>' +
-                    '</div>' +
-
-                    '<div class="card">' +
-                        '<div class="card-title">Devam et listesi</div>' +
-                        '<div class="list">' +
-                            continues.map((item) => (
-                                '<div class="list-item">' +
-                                    '<div class="row"><div class="item-title">' + esc(item.title) + '</div><span class="chip">%' + completionPercent(item) + '</span></div>' +
-                                    '<div class="item-meta">Konum: ' + formatTime(item.positionSec) + ' / ' + formatTime(item.totalSec) + '</div>' +
-                                    '<div class="chips" style="margin-top:0.35rem;"><button class="btn btn-outline" onclick="openVideo(' + item.id + ')" aria-label="Videoya devam et">Devam Et</button></div>' +
-                                '</div>'
-                            )).join('') +
-                        '</div>' +
-                        '<div class="muted" style="margin-top:0.45rem;">AC-FR-E18-04-03</div>' +
-                    '</div>' +
-
-                    '<div class="card">' +
-                        '<div class="card-title">Cevrimdisi senkron kuyrugu</div>' +
-                        '<div class="list">' +
-                            ui.offlineQueue.map((item) => (
-                                '<div class="list-item"><div class="row"><div class="item-title">Video #' + item.videoId + '</div><span class="chip">%' + item.progress + '</span></div><div class="item-meta">Kuyruk zamani: ' + esc(item.time) + '</div></div>'
-                            )).join('') +
-                        '</div>' +
-                        '<div class="chips" style="margin-top:0.45rem;">' +
-                            '<button class="btn btn-outline" onclick="addOfflineQueueItem()" aria-label="Kuyruga ornek ekle">Kuyruga Ekle</button>' +
-                            '<button class="btn btn-primary" onclick="syncQueue()" aria-label="Kuyrugu senkronize et">Senkronize Et</button>' +
-                        '</div>' +
-                        '<div class="muted" style="margin-top:0.45rem;">AC-FR-E18-04-04</div>' +
-                    '</div>'
-                ))
-            );
-
-            return phoneShell('Ilerleme ve senkron', body, 2);
+        if (screenNo === 3) {
+          return screenThree();
         }
+        return screenFour();
+      }
 
-        function renderScreen(screenNo) {
-            if (screenNo === 1) {
-                return screenOne();
-            }
-            if (screenNo === 2) {
-                return screenTwo();
-            }
-            if (screenNo === 3) {
-                return screenThree();
-            }
-            return screenFour();
-        }
+      function render() {
+        const current = screenData[ui.currentScreen];
+        document.getElementById('screenTitle').textContent = current.title;
+        document.getElementById('screenFr').textContent = current.fr;
+        document.getElementById('screenRoute').textContent = current.route;
+        document.getElementById('screenMeta').textContent = current.meta + ' | event: ' + ui.lastAnalyticsEvent;
 
-        function render() {
-            const current = screenData[ui.currentScreen];
-            document.getElementById('screenTitle').textContent = current.title;
-            document.getElementById('screenFr').textContent = current.fr;
-            document.getElementById('screenRoute').textContent = current.route;
-            document.getElementById('screenMeta').textContent = current.meta + ' | event: ' + ui.lastAnalyticsEvent;
-
-            document.querySelectorAll('.nav-item').forEach((item) => {
-                item.classList.toggle('active', Number(item.dataset.screen) === ui.currentScreen);
-            });
-
-            document.querySelectorAll('[id^="flow-"]').forEach((step, index) => {
-                step.classList.toggle('active', index + 1 === ui.currentScreen);
-            });
-
-            document.getElementById('viewer').innerHTML = renderScreen(ui.currentScreen);
-        }
-
-        document.querySelectorAll('.nav-item').forEach((item) => {
-            item.addEventListener('click', () => {
-                setCurrentScreen(Number(item.dataset.screen));
-            });
-            item.addEventListener('keydown', (event) => {
-                if (event.key === 'Enter' || event.key === ' ') {
-                    event.preventDefault();
-                    setCurrentScreen(Number(item.dataset.screen));
-                }
-            });
+        document.querySelectorAll('.nav-item').forEach(item => {
+          item.classList.toggle('active', Number(item.dataset.screen) === ui.currentScreen);
         });
 
-        render();
+        document.querySelectorAll('[id^="flow-"]').forEach((step, index) => {
+          step.classList.toggle('active', index + 1 === ui.currentScreen);
+        });
+
+        document.getElementById('viewer').innerHTML = renderScreen(ui.currentScreen);
+      }
+
+      document.querySelectorAll('.nav-item').forEach(item => {
+        item.addEventListener('click', () => {
+          setCurrentScreen(Number(item.dataset.screen));
+        });
+        item.addEventListener('keydown', event => {
+          if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            setCurrentScreen(Number(item.dataset.screen));
+          }
+        });
+      });
+
+      render();
     </script>
-</body>
+  </body>
 </html>

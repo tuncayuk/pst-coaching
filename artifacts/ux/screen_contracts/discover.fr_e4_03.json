@@ -3,9 +3,7 @@
   "title": "Yolculuk Katalogu ve Detayi",
   "route": "/discover/journeys",
   "purpose": "Implements FR-E4-03: Journey catalog with sort (Tumu/Onerilen/Populer/Yeni), level filter (Baslangic/Orta/Ileri), favorites toggle, and Yolculugu Baslat CTA.",
-  "entryPoints": [
-    "discover.fr_e4_01"
-  ],
+  "entryPoints": ["discover.fr_e4_01"],
   "inputs": [
     {
       "name": "userId",
@@ -26,10 +24,7 @@
       "source": "profile"
     }
   ],
-  "dataDependencies": [
-    "Journey",
-    "Package"
-  ],
+  "dataDependencies": ["Journey", "Package"],
   "uiStates": {
     "loading": {
       "description": "Skeleton cards while loading journeys."
@@ -58,11 +53,6 @@
       "discover_journey_card_tapped"
     ]
   },
-  "acceptanceCriteriaRefs": [
-    "AC-FR-E4-03-01",
-    "AC-FR-E4-03-02",
-    "AC-FR-E4-03-03",
-    "AC-FR-E4-03-04"
-  ],
+  "acceptanceCriteriaRefs": ["AC-FR-E4-03-01", "AC-FR-E4-03-02", "AC-FR-E4-03-03", "AC-FR-E4-03-04"],
   "gates": []
 }

@@ -1,13 +1,14 @@
-import React from "react";
-import { StyleSheet } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { OfflineNotice } from "../components/OfflineNotice";
-import { ScreenLayout } from "../components/ScreenLayout";
-import { SectionCard } from "../components/SectionCard";
-import { SkeletonBlock } from "../components/SkeletonBlock";
-import { StateMessage } from "../components/StateMessage";
-import { resolveScreenState, ScreenState } from "../components/ScreenState";
-import { PActivityIndicator, PButton, PText } from "../../components";
+import { useNavigation } from '@react-navigation/native';
+import React from 'react';
+import { StyleSheet } from 'react-native';
+
+import { PActivityIndicator, PButton, PText } from '../../components';
+import { OfflineNotice } from '../components/OfflineNotice';
+import { ScreenLayout } from '../components/ScreenLayout';
+import { ScreenState, resolveScreenState } from '../components/ScreenState';
+import { SectionCard } from '../components/SectionCard';
+import { SkeletonBlock } from '../components/SkeletonBlock';
+import { StateMessage } from '../components/StateMessage';
 
 const LOCKOUT_DURATION_MINUTES = 15;
 
@@ -18,7 +19,7 @@ const AuthLockoutContent = ({ isOffline }: { isOffline?: boolean }) => {
   React.useEffect(() => {
     if (remainingSeconds <= 0) return;
     const interval = setInterval(() => {
-      setRemainingSeconds((prev) => {
+      setRemainingSeconds(prev => {
         if (prev <= 1) {
           clearInterval(interval);
           return 0;
@@ -31,7 +32,7 @@ const AuthLockoutContent = ({ isOffline }: { isOffline?: boolean }) => {
 
   const minutes = Math.floor(remainingSeconds / 60);
   const seconds = remainingSeconds % 60;
-  const timeDisplay = `${minutes}:${seconds.toString().padStart(2, "0")}`;
+  const timeDisplay = `${minutes}:${seconds.toString().padStart(2, '0')}`;
 
   return (
     <>
@@ -42,12 +43,12 @@ const AuthLockoutContent = ({ isOffline }: { isOffline?: boolean }) => {
         <PText variant="bodySmall" style={styles.body}>
           {remainingSeconds > 0
             ? `Kalan sure: ${timeDisplay}. Bu sure sonunda tekrar giris yapabilirsin.`
-            : "Kilit suresi doldu. Tekrar giris yapabilirsin."}
+            : 'Kilit suresi doldu. Tekrar giris yapabilirsin.'}
         </PText>
         <PButton
           mode="contained"
           disabled={isOffline || remainingSeconds > 0}
-          onPress={() => navigation.navigate("AuthLogin")}
+          onPress={() => navigation.navigate('AuthLogin')}
           accessibilityLabel="Giris sayfasina don"
         >
           Giris Sayfasina Don
@@ -55,7 +56,7 @@ const AuthLockoutContent = ({ isOffline }: { isOffline?: boolean }) => {
         <PButton
           mode="text"
           disabled={isOffline}
-          onPress={() => navigation.navigate("AuthForgotPassword")}
+          onPress={() => navigation.navigate('AuthForgotPassword')}
           accessibilityLabel="Sifre sifirla"
         >
           Sifre Sifirla
@@ -68,7 +69,7 @@ const AuthLockoutContent = ({ isOffline }: { isOffline?: boolean }) => {
 export const AuthLockoutScreen = ({ route }: { route?: { params?: { state?: ScreenState } } }) => {
   const state = resolveScreenState(route);
 
-  if (state === "loading") {
+  if (state === 'loading') {
     return (
       <ScreenLayout title="Geçici Kilit" subtitle="Kilit bilgisi hazırlanıyor">
         <SectionCard title="Yükleniyor">
@@ -80,7 +81,7 @@ export const AuthLockoutScreen = ({ route }: { route?: { params?: { state?: Scre
     );
   }
 
-  if (state === "empty") {
+  if (state === 'empty') {
     return (
       <ScreenLayout title="Geçici Kilit" subtitle="Kilit bilgisi bulunamadı">
         <StateMessage
@@ -93,7 +94,7 @@ export const AuthLockoutScreen = ({ route }: { route?: { params?: { state?: Scre
     );
   }
 
-  if (state === "error") {
+  if (state === 'error') {
     return (
       <ScreenLayout title="Geçici Kilit" subtitle="Bir sorun oluştu">
         <StateMessage
@@ -107,7 +108,7 @@ export const AuthLockoutScreen = ({ route }: { route?: { params?: { state?: Scre
     );
   }
 
-  if (state === "offline") {
+  if (state === 'offline') {
     return (
       <ScreenLayout title="Geçici Kilit" subtitle="Önbellekteki bilgiler">
         <OfflineNotice />
@@ -125,9 +126,9 @@ export const AuthLockoutScreen = ({ route }: { route?: { params?: { state?: Scre
 
 const styles = StyleSheet.create({
   title: {
-    marginBottom: 8,
+    marginBottom: 8
   },
   body: {
-    marginBottom: 12,
-  },
+    marginBottom: 12
+  }
 });

@@ -3,9 +3,7 @@
   "title": "Sesli okuma",
   "route": "/content/audio",
   "purpose": "Implements FR-E5-02: Audio reading mode with speed controls and text highlight sync.",
-  "entryPoints": [
-    "content.reading"
-  ],
+  "entryPoints": ["content.reading"],
   "inputs": [
     {
       "name": "userId",
@@ -20,10 +18,7 @@
       "source": "route_params"
     }
   ],
-  "dataDependencies": [
-    "ContentItem",
-    "AudioTrack"
-  ],
+  "dataDependencies": ["ContentItem", "AudioTrack"],
   "uiStates": {
     "loading": {
       "description": "Audio player initializing; spinner shown."
@@ -51,13 +46,6 @@
       "content_audio_completed"
     ]
   },
-  "acceptanceCriteriaRefs": [
-    "AC-FR-E5-02-01",
-    "AC-FR-E5-02-02",
-    "AC-FR-E5-02-03",
-    "AC-FR-E5-02-04"
-  ],
-  "gates": [
-    "auth"
-  ]
+  "acceptanceCriteriaRefs": ["AC-FR-E5-02-01", "AC-FR-E5-02-02", "AC-FR-E5-02-03", "AC-FR-E5-02-04"],
+  "gates": ["auth"]
 }

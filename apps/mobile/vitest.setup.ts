@@ -1,21 +1,19 @@
-import "@testing-library/jest-native/extend-expect";
-import { View } from "react-native";
-import { vi } from "vitest";
+import '@testing-library/jest-native/extend-expect';
+import { View } from 'react-native';
+import { vi } from 'vitest';
 
-vi.mock("react-native-reanimated", () => require("react-native-reanimated/mock"));
+vi.mock('react-native-reanimated', () => require('react-native-reanimated/mock'));
 
-vi.mock("react-native-gesture-handler", async () => {
-  const actual = await vi.importActual<typeof import("react-native-gesture-handler")>(
-    "react-native-gesture-handler"
-  );
+vi.mock('react-native-gesture-handler', async () => {
+  const actual = await vi.importActual<typeof import('react-native-gesture-handler')>('react-native-gesture-handler');
   return {
     ...actual,
-    GestureHandlerRootView: View,
+    GestureHandlerRootView: View
   };
 });
 
-vi.mock("react-native-safe-area-context", () => {
-  const React = require("react");
+vi.mock('react-native-safe-area-context', () => {
+  const React = require('react');
   return {
     SafeAreaProvider: ({ children }: { children: React.ReactNode }) => children,
     SafeAreaView: ({ children }: { children: React.ReactNode }) => children,

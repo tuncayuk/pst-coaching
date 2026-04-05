@@ -3,9 +3,7 @@
   "title": "Ogrenci indirimi",
   "route": "/profile/subscription/student-discount",
   "purpose": "FR-E3-04: Student discount verification flow. Privacy notice shown first (AC-FR-E3-04-03). Two methods: school email or document upload (AC-FR-E3-04-01). Success applies 50% discount (AC-FR-E3-04-02). Annual re-verification required; expiry warning shown (AC-FR-E3-04-04). Offline: status visible, actions disabled.",
-  "entryPoints": [
-    "subscription.overview"
-  ],
+  "entryPoints": ["subscription.overview"],
   "inputs": [
     {
       "name": "userId",
@@ -20,9 +18,7 @@
       "source": "student_discount_entity"
     }
   ],
-  "dataDependencies": [
-    "Subscription"
-  ],
+  "dataDependencies": ["Subscription"],
   "uiStates": {
     "loading": {
       "description": "Skeleton verification status card and step list"
@@ -50,14 +46,6 @@
       "student_expiry_warning_shown"
     ]
   },
-  "acceptanceCriteriaRefs": [
-    "AC-FR-E3-04-01",
-    "AC-FR-E3-04-02",
-    "AC-FR-E3-04-03",
-    "AC-FR-E3-04-04"
-  ],
-  "gates": [
-    "auth",
-    "subscription"
-  ]
+  "acceptanceCriteriaRefs": ["AC-FR-E3-04-01", "AC-FR-E3-04-02", "AC-FR-E3-04-03", "AC-FR-E3-04-04"],
+  "gates": ["auth", "subscription"]
 }

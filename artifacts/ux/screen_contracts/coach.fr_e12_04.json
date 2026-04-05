@@ -3,9 +3,7 @@
   "title": "Koc geri bildirim akisi",
   "route": "/coach/feedback",
   "purpose": "Implements FR-E12-04: Koc geri bildirim akisi.",
-  "entryPoints": [
-    "coach.dashboard"
-  ],
+  "entryPoints": ["coach.dashboard"],
   "inputs": [
     {
       "name": "userId",
@@ -26,11 +24,7 @@
       "source": "navigation"
     }
   ],
-  "dataDependencies": [
-    "User",
-    "Comment",
-    "CoachAssignment"
-  ],
+  "dataDependencies": ["User", "Comment", "CoachAssignment"],
   "uiStates": {
     "loading": {
       "description": "Skeleton placeholders shown while loading FR-E12-04 data."
@@ -50,20 +44,8 @@
   },
   "analytics": {
     "screenView": "coach_fr_e12_04_viewed",
-    "events": [
-      "coach_feedback_viewed",
-      "feedback_draft_saved",
-      "feedback_submitted"
-    ]
+    "events": ["coach_feedback_viewed", "feedback_draft_saved", "feedback_submitted"]
   },
-  "acceptanceCriteriaRefs": [
-    "AC-FR-E12-04-01",
-    "AC-FR-E12-04-02",
-    "AC-FR-E12-04-03",
-    "AC-FR-E12-04-04"
-  ],
-  "gates": [
-    "auth",
-    "coach_role"
-  ]
+  "acceptanceCriteriaRefs": ["AC-FR-E12-04-01", "AC-FR-E12-04-02", "AC-FR-E12-04-03", "AC-FR-E12-04-04"],
+  "gates": ["auth", "coach_role"]
 }

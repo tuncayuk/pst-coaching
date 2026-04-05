@@ -1,3 +1,3 @@
-import { Chip } from "react-native-paper";
+import { Chip } from 'react-native-paper';
 
 export const PChip = Chip;

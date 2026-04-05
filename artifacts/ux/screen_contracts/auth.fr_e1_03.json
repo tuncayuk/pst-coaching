@@ -3,11 +3,7 @@
   "title": "Giris yapma",
   "route": "/epic-1/fr-e1-03",
   "purpose": "Implements FR-E1-03: Email/phone + password login with safe error messages, 5-attempt lockout, subscription sync on success, and social login options.",
-  "entryPoints": [
-    "onboarding.carousel",
-    "onboarding.welcome",
-    "auth.fr_e1_05"
-  ],
+  "entryPoints": ["onboarding.carousel", "onboarding.welcome", "auth.fr_e1_05"],
   "inputs": [
     {
       "name": "locale",
@@ -16,10 +12,7 @@
       "source": "profile"
     }
   ],
-  "dataDependencies": [
-    "User",
-    "UserSession"
-  ],
+  "dataDependencies": ["User", "UserSession"],
   "uiStates": {
     "loading": {
       "description": "Logo, two skeleton input fields, and a disabled Giris Yap button are shown."
@@ -48,11 +41,6 @@
       "auth_social_login_tapped"
     ]
   },
-  "acceptanceCriteriaRefs": [
-    "AC-FR-E1-03-01",
-    "AC-FR-E1-03-02",
-    "AC-FR-E1-03-03",
-    "AC-FR-E1-03-04"
-  ],
+  "acceptanceCriteriaRefs": ["AC-FR-E1-03-01", "AC-FR-E1-03-02", "AC-FR-E1-03-03", "AC-FR-E1-03-04"],
   "gates": []
 }

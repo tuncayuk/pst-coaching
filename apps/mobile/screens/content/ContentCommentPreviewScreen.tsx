@@ -1,12 +1,13 @@
-import React, { useState } from "react";
-import { StyleSheet, View } from "react-native";
-import { OfflineNotice } from "../components/OfflineNotice";
-import { ScreenLayout } from "../components/ScreenLayout";
-import { SectionCard } from "../components/SectionCard";
-import { SkeletonBlock } from "../components/SkeletonBlock";
-import { StateMessage } from "../components/StateMessage";
-import { resolveScreenState, ScreenState } from "../components/ScreenState";
-import { PActivityIndicator, PButton, PCard, PText } from "../../components";
+import React, { useState } from 'react';
+import { StyleSheet, View } from 'react-native';
+
+import { PActivityIndicator, PButton, PCard, PText } from '../../components';
+import { OfflineNotice } from '../components/OfflineNotice';
+import { ScreenLayout } from '../components/ScreenLayout';
+import { ScreenState, resolveScreenState } from '../components/ScreenState';
+import { SectionCard } from '../components/SectionCard';
+import { SkeletonBlock } from '../components/SkeletonBlock';
+import { StateMessage } from '../components/StateMessage';
 
 type RouteParams = {
   state?: ScreenState;
@@ -21,7 +22,7 @@ const ContentCommentPreviewContent = ({
   answer1,
   answer2,
   emotion,
-  onEdit,
+  onEdit
 }: {
   isOffline?: boolean;
   answer1?: string;
@@ -54,44 +55,35 @@ const ContentCommentPreviewContent = ({
       {/* AC-FR-E5-04-05: Show actual submitted answers in preview */}
       <SectionCard title="Onizleme">
         <PCard style={styles.card}>
-          <PCard.Title title="Secilen Duygu" subtitle={emotion || "Belirtilmedi"} />
+          <PCard.Title title="Secilen Duygu" subtitle={emotion || 'Belirtilmedi'} />
           <PCard.Content>
             <PText variant="bodySmall" style={styles.answerLabel}>
               Bu bolum seni nasil etkiledi?
             </PText>
             <PText variant="bodyMedium" style={styles.paragraph}>
-              {answer1 || "(Cevap girilmedi)"}
+              {answer1 || '(Cevap girilmedi)'}
             </PText>
             <PText variant="bodySmall" style={styles.answerLabel}>
               Gunluk hayatina nasil tasiyabilirsin?
             </PText>
-            <PText variant="bodySmall">{answer2 || "(Cevap girilmedi)"}</PText>
+            <PText variant="bodySmall">{answer2 || '(Cevap girilmedi)'}</PText>
           </PCard.Content>
           <PCard.Actions>
             <PButton mode="outlined" disabled={isOffline} onPress={onEdit}>
               Duzenle
             </PButton>
             {/* AC-FR-E5-04-06: Submit active until 23:59 */}
-            <PButton
-              mode="contained"
-              disabled={isOffline || isAfterDeadline}
-              onPress={() => setIsSubmitted(true)}
-            >
+            <PButton mode="contained" disabled={isOffline || isAfterDeadline} onPress={() => setIsSubmitted(true)}>
               Gonder
             </PButton>
           </PCard.Actions>
         </PCard>
-        {isAfterDeadline && (
-          <PText style={styles.deadlineText}>
-            Teslim suresi doldu (23:59). Yorum gonderilemez.
-          </PText>
-        )}
+        {isAfterDeadline && <PText style={styles.deadlineText}>Teslim suresi doldu (23:59). Yorum gonderilemez.</PText>}
       </SectionCard>
 
       <SectionCard title="Gonderim Bilgisi">
         <PText variant="bodySmall">
-          Yorumun topluluk rehberine uygun sekilde paylasilir. Dilersen daha
-          sonra duzenleyebilir veya silebilirsin.
+          Yorumun topluluk rehberine uygun sekilde paylasilir. Dilersen daha sonra duzenleyebilir veya silebilirsin.
         </PText>
       </SectionCard>
     </>
@@ -100,7 +92,7 @@ const ContentCommentPreviewContent = ({
 
 export const ContentCommentPreviewScreen = ({
   route,
-  navigation,
+  navigation
 }: {
   route?: { params?: RouteParams };
   navigation?: any;
@@ -112,7 +104,7 @@ export const ContentCommentPreviewScreen = ({
     navigation?.goBack();
   };
 
-  if (state === "loading") {
+  if (state === 'loading') {
     return (
       <ScreenLayout title="Yorum Onizleme" subtitle="Onizleme hazirlaniyor">
         <SectionCard title="Yukleniyor">
@@ -127,7 +119,7 @@ export const ContentCommentPreviewScreen = ({
     );
   }
 
-  if (state === "empty") {
+  if (state === 'empty') {
     return (
       <ScreenLayout title="Yorum Onizleme" subtitle="Icerik bulunamadi">
         <StateMessage
@@ -140,7 +132,7 @@ export const ContentCommentPreviewScreen = ({
     );
   }
 
-  if (state === "error") {
+  if (state === 'error') {
     return (
       <ScreenLayout title="Yorum Onizleme" subtitle="Bir sorun olustu">
         <StateMessage
@@ -154,7 +146,7 @@ export const ContentCommentPreviewScreen = ({
     );
   }
 
-  if (state === "offline") {
+  if (state === 'offline') {
     return (
       <ScreenLayout title="Yorum Onizleme" subtitle="Onbellekteki icerik">
         <OfflineNotice />
@@ -171,50 +163,45 @@ export const ContentCommentPreviewScreen = ({
 
   return (
     <ScreenLayout title="Yorum Onizleme" subtitle="Gonderim oncesi kontrol">
-      <ContentCommentPreviewContent
-        answer1={answer1}
-        answer2={answer2}
-        emotion={emotion}
-        onEdit={handleEdit}
-      />
+      <ContentCommentPreviewContent answer1={answer1} answer2={answer2} emotion={emotion} onEdit={handleEdit} />
     </ScreenLayout>
   );
 };
 
 const styles = StyleSheet.create({
   card: {
-    marginTop: 4,
+    marginTop: 4
   },
   paragraph: {
-    marginBottom: 8,
+    marginBottom: 8
   },
   answerLabel: {
-    color: "#737373",
+    color: '#737373',
     marginBottom: 4,
-    marginTop: 8,
+    marginTop: 8
   },
   successRow: {
     padding: 12,
-    backgroundColor: "#DCFCE7",
+    backgroundColor: '#DCFCE7',
     borderRadius: 12,
     marginBottom: 12,
     borderWidth: 2,
-    borderColor: "#16A34A",
+    borderColor: '#16A34A'
   },
   successTitle: {
     fontSize: 15,
-    fontWeight: "700",
-    color: "#15803D",
-    textAlign: "center",
+    fontWeight: '700',
+    color: '#15803D',
+    textAlign: 'center'
   },
   subtleText: {
-    opacity: 0.7,
+    opacity: 0.7
   },
   deadlineText: {
     fontSize: 12,
-    color: "#DC2626",
-    fontWeight: "600",
+    color: '#DC2626',
+    fontWeight: '600',
     marginTop: 8,
-    textAlign: "center",
-  },
+    textAlign: 'center'
+  }
 });

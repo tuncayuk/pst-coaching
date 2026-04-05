@@ -1,796 +1,847 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="tr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>PST Coaching Mobile - EPIC 5: Okuma Deneyimi</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap"
+      rel="stylesheet"
+    />
     <style>
-        :root {
-            --primary: #0ea5e9;
-            --primary-dark: #0369a1;
-            --primary-light: #e0f2fe;
-            --secondary: #1e293b;
-            --success: #10b981;
-            --success-light: #dcfce7;
-            --warning: #f59e0b;
-            --warning-light: #fef3c7;
-            --error: #ef4444;
-            --error-light: #fee2e2;
-            --gray-50: #fafafa;
-            --gray-100: #f5f5f5;
-            --gray-200: #e5e5e5;
-            --gray-300: #d4d4d4;
-            --gray-400: #a3a3a3;
-            --gray-600: #525252;
-            --gray-700: #404040;
-            --gray-900: #171717;
-        }
+      :root {
+        --primary: #0ea5e9;
+        --primary-dark: #0369a1;
+        --primary-light: #e0f2fe;
+        --secondary: #1e293b;
+        --success: #10b981;
+        --success-light: #dcfce7;
+        --warning: #f59e0b;
+        --warning-light: #fef3c7;
+        --error: #ef4444;
+        --error-light: #fee2e2;
+        --gray-50: #fafafa;
+        --gray-100: #f5f5f5;
+        --gray-200: #e5e5e5;
+        --gray-300: #d4d4d4;
+        --gray-400: #a3a3a3;
+        --gray-600: #525252;
+        --gray-700: #404040;
+        --gray-900: #171717;
+      }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
+      body {
+        font-family: 'Inter', sans-serif;
+        background: radial-gradient(circle at 18% 0%, #e0f2fe 0%, #edf2f7 46%, #dbe4ef 100%);
+        color: var(--gray-900);
+        overflow: hidden;
+      }
+
+      .app {
+        height: 100vh;
+        display: flex;
+      }
+
+      .sidebar {
+        width: 415px;
+        background: #fff;
+        border-right: 1px solid var(--gray-200);
+        overflow-y: auto;
+        box-shadow: 2px 0 16px rgba(0, 0, 0, 0.06);
+      }
+
+      .main {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .topbar {
+        background: #fff;
+        border-bottom: 1px solid var(--gray-200);
+        padding: 1.45rem 2rem;
+      }
+
+      .viewer {
+        flex: 1;
+        overflow-y: auto;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        padding: 2rem;
+      }
+
+      .logo {
+        font-family: 'Poppins', sans-serif;
+        font-size: 1.85rem;
+        font-weight: 800;
+        color: var(--primary-dark);
+        padding: 1.85rem;
+        border-bottom: 1px solid var(--gray-200);
+        background: linear-gradient(140deg, var(--primary-light), #fff);
+      }
+
+      .subtitle {
+        margin-top: 0.35rem;
+        font-size: 0.82rem;
+        color: var(--gray-600);
+        font-weight: 600;
+      }
+
+      .epic-header {
+        margin: 1rem 1.2rem;
+        border: 1px solid #bae6fd;
+        background: linear-gradient(140deg, #ecfeff, #eff6ff);
+        border-radius: 0.85rem;
+        padding: 1rem;
+      }
+
+      .epic-title {
+        font-family: 'Poppins', sans-serif;
+        font-size: 1.04rem;
+        font-weight: 700;
+        margin-bottom: 0.34rem;
+      }
+
+      .epic-meta {
+        font-size: 0.76rem;
+        color: var(--gray-700);
+        line-height: 1.45;
+      }
+
+      .flow-map {
+        margin: 0 1.2rem 1rem;
+        border-radius: 0.85rem;
+        border: 1px solid #e2e8f0;
+        background: #f8fafc;
+        padding: 0.75rem;
+      }
+
+      .flow-title {
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        color: var(--gray-600);
+        font-weight: 700;
+        margin-bottom: 0.48rem;
+      }
+
+      .flow-list {
+        display: grid;
+        gap: 0.34rem;
+      }
+
+      .flow-step {
+        border: 1px solid var(--gray-300);
+        border-radius: 0.5rem;
+        background: #fff;
+        padding: 0.33rem 0.5rem;
+        font-size: 0.69rem;
+        font-weight: 600;
+        color: var(--gray-700);
+      }
+
+      .flow-step.active {
+        border-color: var(--primary);
+        background: var(--primary-light);
+        color: var(--primary-dark);
+      }
+
+      .nav-group {
+        border-bottom: 1px solid var(--gray-100);
+        padding: 0.28rem 0 0.72rem;
+      }
+
+      .nav-group-title {
+        padding: 0.66rem 1.2rem;
+        font-size: 0.68rem;
+        color: var(--gray-600);
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        font-weight: 700;
+      }
+
+      .nav-item {
+        display: flex;
+        align-items: center;
+        gap: 0.62rem;
+        padding: 0.7rem 1.2rem;
+        border-left: 3px solid transparent;
+        color: var(--gray-700);
+        cursor: pointer;
+        transition: background 0.18s ease;
+      }
+
+      .nav-item:hover {
+        background: var(--gray-50);
+      }
+
+      .nav-item.active {
+        border-left-color: var(--primary);
+        background: var(--primary-light);
+        color: var(--primary-dark);
+      }
+
+      .nav-icon {
+        font-size: 1rem;
+      }
+
+      .nav-text {
+        flex: 1;
+        font-size: 0.83rem;
+        font-weight: 600;
+      }
+
+      .nav-badge {
+        font-size: 0.66rem;
+        font-weight: 700;
+        border-radius: 999px;
+        padding: 0.14rem 0.45rem;
+        background: #e2e8f0;
+        color: var(--gray-700);
+      }
+
+      .screen-title {
+        font-family: 'Poppins', sans-serif;
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--secondary);
+      }
+
+      .screen-meta {
+        margin-top: 0.4rem;
+        display: flex;
+        align-items: center;
+        gap: 0.78rem;
+        color: var(--gray-600);
+        font-size: 0.9rem;
+      }
+
+      .fr-badge {
+        border: 1px solid #93c5fd;
+        background: #eff6ff;
+        color: #1d4ed8;
+        border-radius: 0.52rem;
+        padding: 0.2rem 0.58rem;
+        font-size: 0.78rem;
+        font-weight: 700;
+      }
+
+      .iphone {
+        width: 393px;
+        height: 852px;
+        background: #1d1d1f;
+        border-radius: 54px;
+        padding: 12px;
+        box-shadow: 0 44px 94px rgba(0, 0, 0, 0.45);
+        position: relative;
+      }
+
+      .island {
+        position: absolute;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 120px;
+        height: 30px;
+        border-radius: 20px;
+        background: #000;
+        z-index: 4;
+      }
+
+      .screen {
+        width: 100%;
+        height: 100%;
+        border-radius: 42px;
+        overflow: hidden;
+        background: #fff;
+      }
+
+      .content {
+        width: 100%;
+        height: 100%;
+        overflow-y: auto;
+        background: var(--gray-50);
+      }
+
+      .status {
+        height: 54px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: #fff;
+        padding: 0 1.2rem;
+        font-size: 0.82rem;
+        font-weight: 600;
+      }
+
+      .mobile-header {
+        display: flex;
+        align-items: center;
+        gap: 0.72rem;
+        background: #fff;
+        border-bottom: 1px solid var(--gray-200);
+        padding: 0.9rem 1.2rem;
+        position: sticky;
+        top: 0;
+        z-index: 2;
+      }
+
+      .mobile-title {
+        font-family: 'Poppins', sans-serif;
+        font-size: 1rem;
+        font-weight: 700;
+        color: var(--secondary);
+      }
+
+      .icon-btn {
+        border: 1px solid var(--gray-300);
+        background: #fff;
+        color: var(--gray-700);
+        border-radius: 0.55rem;
+        padding: 0.3rem 0.5rem;
+        font-size: 0.84rem;
+        font-weight: 700;
+        cursor: pointer;
+      }
+
+      .mobile-body {
+        padding: 1rem 1.15rem 1.35rem;
+        display: grid;
+        gap: 0.78rem;
+      }
+
+      .card {
+        border: 1px solid var(--gray-200);
+        border-radius: 0.9rem;
+        background: #fff;
+        padding: 0.82rem;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+      }
+
+      .card-title {
+        font-size: 0.88rem;
+        font-weight: 700;
+        color: var(--gray-900);
+        margin-bottom: 0.38rem;
+      }
+
+      .muted {
+        color: var(--gray-600);
+        font-size: 0.78rem;
+        line-height: 1.45;
+      }
+
+      .row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.5rem;
+      }
+
+      .chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.42rem;
+      }
+
+      .chip {
+        border: 1px solid var(--gray-300);
+        border-radius: 999px;
+        background: #fff;
+        color: var(--gray-700);
+        font-size: 0.68rem;
+        font-weight: 700;
+        padding: 0.16rem 0.54rem;
+      }
+
+      .chip.success {
+        border-color: #86efac;
+        background: var(--success-light);
+        color: #166534;
+      }
+
+      .chip.warn {
+        border-color: #fcd34d;
+        background: var(--warning-light);
+        color: #92400e;
+      }
+
+      .chip.error {
+        border-color: #fca5a5;
+        background: var(--error-light);
+        color: #991b1b;
+      }
+
+      .btn {
+        border: none;
+        border-radius: 0.72rem;
+        padding: 0.73rem 0.92rem;
+        font-size: 0.84rem;
+        font-weight: 700;
+        cursor: pointer;
+      }
+
+      .btn:disabled {
+        opacity: 0.55;
+        cursor: not-allowed;
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        color: #fff;
+      }
+
+      .btn-outline {
+        background: #fff;
+        border: 1px solid var(--gray-300);
+        color: var(--gray-700);
+      }
+
+      .btn-warn {
+        background: #fff;
+        border: 1px solid var(--warning);
+        color: #92400e;
+      }
+
+      .state-switcher {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.42rem;
+      }
+
+      .state-btn {
+        border: 1px solid var(--gray-300);
+        background: #fff;
+        border-radius: 999px;
+        padding: 0.2rem 0.56rem;
+        font-size: 0.66rem;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        font-weight: 700;
+        color: var(--gray-700);
+        cursor: pointer;
+      }
+
+      .state-btn.active {
+        border-color: var(--primary);
+        color: var(--primary-dark);
+        background: var(--primary-light);
+      }
+
+      .state-panel {
+        border: 1px solid var(--gray-200);
+        border-radius: 0.8rem;
+        background: #fff;
+        padding: 0.72rem;
+        display: grid;
+        gap: 0.38rem;
+        font-size: 0.79rem;
+        line-height: 1.45;
+      }
+
+      .state-panel.loading {
+        border-color: #bfdbfe;
+        background: #eff6ff;
+      }
+
+      .state-panel.empty {
+        border-color: #cbd5e1;
+        background: #f8fafc;
+      }
+
+      .state-panel.error {
+        border-color: #fecaca;
+        background: var(--error-light);
+      }
+
+      .state-panel.offline {
+        border-color: #fcd34d;
+        background: #fffbeb;
+      }
+
+      .skeleton-line {
+        height: 9px;
+        border-radius: 999px;
+        background: linear-gradient(90deg, #e2e8f0, #f1f5f9, #e2e8f0);
+        background-size: 220px 100%;
+        animation: shimmer 1.4s infinite linear;
+      }
+
+      @keyframes shimmer {
+        from {
+          background-position: -220px 0;
+        }
+        to {
+          background-position: 220px 0;
+        }
+      }
+
+      .list {
+        display: grid;
+        gap: 0.5rem;
+      }
+
+      .list-item {
+        border: 1px solid var(--gray-200);
+        border-radius: 0.72rem;
+        background: #fff;
+        padding: 0.62rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.5rem;
+      }
+
+      .item-title {
+        font-size: 0.84rem;
+        font-weight: 700;
+        color: var(--gray-900);
+      }
+
+      .item-meta {
+        font-size: 0.74rem;
+        color: var(--gray-600);
+        margin-top: 0.2rem;
+        line-height: 1.4;
+      }
+
+      .field {
+        width: 100%;
+        border: 1px solid var(--gray-300);
+        border-radius: 0.65rem;
+        background: #fff;
+        padding: 0.45rem 0.52rem;
+        font-size: 0.78rem;
+        color: var(--gray-700);
+        font-family: 'Inter', sans-serif;
+      }
+
+      .reading-text {
+        line-height: 1.78;
+        border-radius: 0.72rem;
+        padding: 0.72rem;
+        border: 1px solid var(--gray-200);
+        background: #fff;
+      }
+
+      .reading-text.high-contrast {
+        background: #0f172a;
+        color: #f8fafc;
+        border-color: #111827;
+      }
+
+      .highlight {
+        background: #fde047;
+        border-radius: 0.2rem;
+        padding: 0 0.18rem;
+      }
+
+      .audio-segment {
+        border: 1px solid var(--gray-200);
+        border-radius: 0.65rem;
+        padding: 0.5rem;
+        background: #fff;
+        font-size: 0.8rem;
+        line-height: 1.45;
+      }
+
+      .audio-segment.active {
+        border-color: #38bdf8;
+        background: #e0f2fe;
+      }
+
+      .check-item {
+        display: flex;
+        align-items: center;
+        gap: 0.52rem;
+        border: 1px solid var(--gray-200);
+        border-radius: 0.68rem;
+        background: #fff;
+        padding: 0.55rem;
+      }
+
+      .check-item.done {
+        border-color: #86efac;
+        background: #ecfdf5;
+      }
+
+      .toast {
+        position: fixed;
+        right: 1.2rem;
+        bottom: 1.2rem;
+        background: #111827;
+        color: #fff;
+        border-radius: 0.7rem;
+        padding: 0.62rem 0.92rem;
+        font-size: 0.8rem;
+        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22);
+        opacity: 0;
+        pointer-events: none;
+        transform: translateY(8px);
+        transition:
+          opacity 0.2s ease,
+          transform 0.2s ease;
+        z-index: 20;
+      }
+
+      .toast.show {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .toast.success {
+        background: #065f46;
+      }
+
+      .toast.error {
+        background: #7f1d1d;
+      }
+
+      .nav-item:focus-visible,
+      button:focus-visible,
+      select:focus-visible,
+      textarea:focus-visible,
+      input:focus-visible {
+        outline: 3px solid #60a5fa;
+        outline-offset: 2px;
+      }
+
+      @media (max-width: 1200px) {
         body {
-            font-family: 'Inter', sans-serif;
-            background: radial-gradient(circle at 18% 0%, #e0f2fe 0%, #edf2f7 46%, #dbe4ef 100%);
-            color: var(--gray-900);
-            overflow: hidden;
+          overflow: auto;
         }
 
         .app {
-            height: 100vh;
-            display: flex;
+          flex-direction: column;
+          height: auto;
+          min-height: 100vh;
         }
 
         .sidebar {
-            width: 415px;
-            background: #fff;
-            border-right: 1px solid var(--gray-200);
-            overflow-y: auto;
-            box-shadow: 2px 0 16px rgba(0, 0, 0, 0.06);
-        }
-
-        .main {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .topbar {
-            background: #fff;
-            border-bottom: 1px solid var(--gray-200);
-            padding: 1.45rem 2rem;
+          width: 100%;
+          max-height: 52vh;
         }
 
         .viewer {
-            flex: 1;
-            overflow-y: auto;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            padding: 2rem;
+          padding: 1.2rem;
         }
+      }
 
-        .logo {
-            font-family: 'Poppins', sans-serif;
-            font-size: 1.85rem;
-            font-weight: 800;
-            color: var(--primary-dark);
-            padding: 1.85rem;
-            border-bottom: 1px solid var(--gray-200);
-            background: linear-gradient(140deg, var(--primary-light), #fff);
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          animation: none !important;
+          transition: none !important;
         }
-
-        .subtitle {
-            margin-top: 0.35rem;
-            font-size: 0.82rem;
-            color: var(--gray-600);
-            font-weight: 600;
-        }
-
-        .epic-header {
-            margin: 1rem 1.2rem;
-            border: 1px solid #bae6fd;
-            background: linear-gradient(140deg, #ecfeff, #eff6ff);
-            border-radius: 0.85rem;
-            padding: 1rem;
-        }
-
-        .epic-title {
-            font-family: 'Poppins', sans-serif;
-            font-size: 1.04rem;
-            font-weight: 700;
-            margin-bottom: 0.34rem;
-        }
-
-        .epic-meta {
-            font-size: 0.76rem;
-            color: var(--gray-700);
-            line-height: 1.45;
-        }
-
-        .flow-map {
-            margin: 0 1.2rem 1rem;
-            border-radius: 0.85rem;
-            border: 1px solid #e2e8f0;
-            background: #f8fafc;
-            padding: 0.75rem;
-        }
-
-        .flow-title {
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 0.04em;
-            color: var(--gray-600);
-            font-weight: 700;
-            margin-bottom: 0.48rem;
-        }
-
-        .flow-list {
-            display: grid;
-            gap: 0.34rem;
-        }
-
-        .flow-step {
-            border: 1px solid var(--gray-300);
-            border-radius: 0.5rem;
-            background: #fff;
-            padding: 0.33rem 0.5rem;
-            font-size: 0.69rem;
-            font-weight: 600;
-            color: var(--gray-700);
-        }
-
-        .flow-step.active {
-            border-color: var(--primary);
-            background: var(--primary-light);
-            color: var(--primary-dark);
-        }
-
-        .nav-group {
-            border-bottom: 1px solid var(--gray-100);
-            padding: 0.28rem 0 0.72rem;
-        }
-
-        .nav-group-title {
-            padding: 0.66rem 1.2rem;
-            font-size: 0.68rem;
-            color: var(--gray-600);
-            text-transform: uppercase;
-            letter-spacing: 0.04em;
-            font-weight: 700;
-        }
-
-        .nav-item {
-            display: flex;
-            align-items: center;
-            gap: 0.62rem;
-            padding: 0.7rem 1.2rem;
-            border-left: 3px solid transparent;
-            color: var(--gray-700);
-            cursor: pointer;
-            transition: background 0.18s ease;
-        }
-
-        .nav-item:hover {
-            background: var(--gray-50);
-        }
-
-        .nav-item.active {
-            border-left-color: var(--primary);
-            background: var(--primary-light);
-            color: var(--primary-dark);
-        }
-
-        .nav-icon {
-            font-size: 1rem;
-        }
-
-        .nav-text {
-            flex: 1;
-            font-size: 0.83rem;
-            font-weight: 600;
-        }
-
-        .nav-badge {
-            font-size: 0.66rem;
-            font-weight: 700;
-            border-radius: 999px;
-            padding: 0.14rem 0.45rem;
-            background: #e2e8f0;
-            color: var(--gray-700);
-        }
-
-        .screen-title {
-            font-family: 'Poppins', sans-serif;
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--secondary);
-        }
-
-        .screen-meta {
-            margin-top: 0.4rem;
-            display: flex;
-            align-items: center;
-            gap: 0.78rem;
-            color: var(--gray-600);
-            font-size: 0.9rem;
-        }
-
-        .fr-badge {
-            border: 1px solid #93c5fd;
-            background: #eff6ff;
-            color: #1d4ed8;
-            border-radius: 0.52rem;
-            padding: 0.2rem 0.58rem;
-            font-size: 0.78rem;
-            font-weight: 700;
-        }
-
-        .iphone {
-            width: 393px;
-            height: 852px;
-            background: #1d1d1f;
-            border-radius: 54px;
-            padding: 12px;
-            box-shadow: 0 44px 94px rgba(0, 0, 0, 0.45);
-            position: relative;
-        }
-
-        .island {
-            position: absolute;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 120px;
-            height: 30px;
-            border-radius: 20px;
-            background: #000;
-            z-index: 4;
-        }
-
-        .screen {
-            width: 100%;
-            height: 100%;
-            border-radius: 42px;
-            overflow: hidden;
-            background: #fff;
-        }
-
-        .content {
-            width: 100%;
-            height: 100%;
-            overflow-y: auto;
-            background: var(--gray-50);
-        }
-
-        .status {
-            height: 54px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: #fff;
-            padding: 0 1.2rem;
-            font-size: 0.82rem;
-            font-weight: 600;
-        }
-
-        .mobile-header {
-            display: flex;
-            align-items: center;
-            gap: 0.72rem;
-            background: #fff;
-            border-bottom: 1px solid var(--gray-200);
-            padding: 0.9rem 1.2rem;
-            position: sticky;
-            top: 0;
-            z-index: 2;
-        }
-
-        .mobile-title {
-            font-family: 'Poppins', sans-serif;
-            font-size: 1rem;
-            font-weight: 700;
-            color: var(--secondary);
-        }
-
-        .icon-btn {
-            border: 1px solid var(--gray-300);
-            background: #fff;
-            color: var(--gray-700);
-            border-radius: 0.55rem;
-            padding: 0.3rem 0.5rem;
-            font-size: 0.84rem;
-            font-weight: 700;
-            cursor: pointer;
-        }
-
-        .mobile-body {
-            padding: 1rem 1.15rem 1.35rem;
-            display: grid;
-            gap: 0.78rem;
-        }
-
-        .card {
-            border: 1px solid var(--gray-200);
-            border-radius: 0.9rem;
-            background: #fff;
-            padding: 0.82rem;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-        }
-
-        .card-title {
-            font-size: 0.88rem;
-            font-weight: 700;
-            color: var(--gray-900);
-            margin-bottom: 0.38rem;
-        }
-
-        .muted {
-            color: var(--gray-600);
-            font-size: 0.78rem;
-            line-height: 1.45;
-        }
-
-        .row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 0.5rem;
-        }
-
-        .chips {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.42rem;
-        }
-
-        .chip {
-            border: 1px solid var(--gray-300);
-            border-radius: 999px;
-            background: #fff;
-            color: var(--gray-700);
-            font-size: 0.68rem;
-            font-weight: 700;
-            padding: 0.16rem 0.54rem;
-        }
-
-        .chip.success {
-            border-color: #86efac;
-            background: var(--success-light);
-            color: #166534;
-        }
-
-        .chip.warn {
-            border-color: #fcd34d;
-            background: var(--warning-light);
-            color: #92400e;
-        }
-
-        .chip.error {
-            border-color: #fca5a5;
-            background: var(--error-light);
-            color: #991b1b;
-        }
-
-        .btn {
-            border: none;
-            border-radius: 0.72rem;
-            padding: 0.73rem 0.92rem;
-            font-size: 0.84rem;
-            font-weight: 700;
-            cursor: pointer;
-        }
-
-        .btn:disabled {
-            opacity: 0.55;
-            cursor: not-allowed;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            color: #fff;
-        }
-
-        .btn-outline {
-            background: #fff;
-            border: 1px solid var(--gray-300);
-            color: var(--gray-700);
-        }
-
-        .btn-warn {
-            background: #fff;
-            border: 1px solid var(--warning);
-            color: #92400e;
-        }
-
-        .state-switcher {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.42rem;
-        }
-
-        .state-btn {
-            border: 1px solid var(--gray-300);
-            background: #fff;
-            border-radius: 999px;
-            padding: 0.2rem 0.56rem;
-            font-size: 0.66rem;
-            text-transform: uppercase;
-            letter-spacing: 0.04em;
-            font-weight: 700;
-            color: var(--gray-700);
-            cursor: pointer;
-        }
-
-        .state-btn.active {
-            border-color: var(--primary);
-            color: var(--primary-dark);
-            background: var(--primary-light);
-        }
-
-        .state-panel {
-            border: 1px solid var(--gray-200);
-            border-radius: 0.8rem;
-            background: #fff;
-            padding: 0.72rem;
-            display: grid;
-            gap: 0.38rem;
-            font-size: 0.79rem;
-            line-height: 1.45;
-        }
-
-        .state-panel.loading {
-            border-color: #bfdbfe;
-            background: #eff6ff;
-        }
-
-        .state-panel.empty {
-            border-color: #cbd5e1;
-            background: #f8fafc;
-        }
-
-        .state-panel.error {
-            border-color: #fecaca;
-            background: var(--error-light);
-        }
-
-        .state-panel.offline {
-            border-color: #fcd34d;
-            background: #fffbeb;
-        }
-
-        .skeleton-line {
-            height: 9px;
-            border-radius: 999px;
-            background: linear-gradient(90deg, #e2e8f0, #f1f5f9, #e2e8f0);
-            background-size: 220px 100%;
-            animation: shimmer 1.4s infinite linear;
-        }
-
-        @keyframes shimmer {
-            from {
-                background-position: -220px 0;
-            }
-            to {
-                background-position: 220px 0;
-            }
-        }
-
-        .list {
-            display: grid;
-            gap: 0.5rem;
-        }
-
-        .list-item {
-            border: 1px solid var(--gray-200);
-            border-radius: 0.72rem;
-            background: #fff;
-            padding: 0.62rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 0.5rem;
-        }
-
-        .item-title {
-            font-size: 0.84rem;
-            font-weight: 700;
-            color: var(--gray-900);
-        }
-
-        .item-meta {
-            font-size: 0.74rem;
-            color: var(--gray-600);
-            margin-top: 0.2rem;
-            line-height: 1.4;
-        }
-
-        .field {
-            width: 100%;
-            border: 1px solid var(--gray-300);
-            border-radius: 0.65rem;
-            background: #fff;
-            padding: 0.45rem 0.52rem;
-            font-size: 0.78rem;
-            color: var(--gray-700);
-            font-family: 'Inter', sans-serif;
-        }
-
-        .reading-text {
-            line-height: 1.78;
-            border-radius: 0.72rem;
-            padding: 0.72rem;
-            border: 1px solid var(--gray-200);
-            background: #fff;
-        }
-
-        .reading-text.high-contrast {
-            background: #0f172a;
-            color: #f8fafc;
-            border-color: #111827;
-        }
-
-        .highlight {
-            background: #fde047;
-            border-radius: 0.2rem;
-            padding: 0 0.18rem;
-        }
-
-        .audio-segment {
-            border: 1px solid var(--gray-200);
-            border-radius: 0.65rem;
-            padding: 0.5rem;
-            background: #fff;
-            font-size: 0.8rem;
-            line-height: 1.45;
-        }
-
-        .audio-segment.active {
-            border-color: #38bdf8;
-            background: #e0f2fe;
-        }
-
-        .check-item {
-            display: flex;
-            align-items: center;
-            gap: 0.52rem;
-            border: 1px solid var(--gray-200);
-            border-radius: 0.68rem;
-            background: #fff;
-            padding: 0.55rem;
-        }
-
-        .check-item.done {
-            border-color: #86efac;
-            background: #ecfdf5;
-        }
-
-        .toast {
-            position: fixed;
-            right: 1.2rem;
-            bottom: 1.2rem;
-            background: #111827;
-            color: #fff;
-            border-radius: 0.7rem;
-            padding: 0.62rem 0.92rem;
-            font-size: 0.8rem;
-            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22);
-            opacity: 0;
-            pointer-events: none;
-            transform: translateY(8px);
-            transition: opacity 0.2s ease, transform 0.2s ease;
-            z-index: 20;
-        }
-
-        .toast.show {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .toast.success {
-            background: #065f46;
-        }
-
-        .toast.error {
-            background: #7f1d1d;
-        }
-
-        .nav-item:focus-visible,
-        button:focus-visible,
-        select:focus-visible,
-        textarea:focus-visible,
-        input:focus-visible {
-            outline: 3px solid #60a5fa;
-            outline-offset: 2px;
-        }
-
-        @media (max-width: 1200px) {
-            body {
-                overflow: auto;
-            }
-
-            .app {
-                flex-direction: column;
-                height: auto;
-                min-height: 100vh;
-            }
-
-            .sidebar {
-                width: 100%;
-                max-height: 52vh;
-            }
-
-            .viewer {
-                padding: 1.2rem;
-            }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            *,
-            *::before,
-            *::after {
-                animation: none !important;
-                transition: none !important;
-            }
-        }
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="app">
-        <aside class="sidebar">
-            <div class="logo">
-                PST Coaching
-                <div class="subtitle">EPIC 5 - Okuma Deneyimi</div>
-            </div>
+      <aside class="sidebar">
+        <div class="logo">
+          PST Coaching
+          <div class="subtitle">EPIC 5 - Okuma Deneyimi</div>
+        </div>
 
-            <div class="epic-header">
-                <div class="epic-title">EPIC-5 Sync Pack</div>
-                <div class="epic-meta">6 FR Screen • 25 AC • Requirements + UX artifacts + mockup senkron</div>
-            </div>
+        <div class="epic-header">
+          <div class="epic-title">EPIC-5 Sync Pack</div>
+          <div class="epic-meta">6 FR Screen • 25 AC • Requirements + UX artifacts + mockup senkron</div>
+        </div>
 
-            <div class="flow-map">
-                <div class="flow-title">Okuma Akis Haritasi</div>
-                <div class="flow-list">
-                    <div class="flow-step active" id="flow-1">FR-E5-01 Gunun Icerigini Okuma</div>
-                    <div class="flow-step" id="flow-2">FR-E5-02 Sesli Okuma</div>
-                    <div class="flow-step" id="flow-3">FR-E5-03 Altini Ciz ve Not Al</div>
-                    <div class="flow-step" id="flow-4">FR-E5-04 Yorum Yaz ve Teslim</div>
-                    <div class="flow-step" id="flow-5">FR-E5-05 Kilitli Ilerleme 08:00</div>
-                    <div class="flow-step" id="flow-6">FR-E5-06 Egzersiz Tamamlama</div>
-                </div>
-            </div>
+        <div class="flow-map">
+          <div class="flow-title">Okuma Akis Haritasi</div>
+          <div class="flow-list">
+            <div class="flow-step active" id="flow-1">FR-E5-01 Gunun Icerigini Okuma</div>
+            <div class="flow-step" id="flow-2">FR-E5-02 Sesli Okuma</div>
+            <div class="flow-step" id="flow-3">FR-E5-03 Altini Ciz ve Not Al</div>
+            <div class="flow-step" id="flow-4">FR-E5-04 Yorum Yaz ve Teslim</div>
+            <div class="flow-step" id="flow-5">FR-E5-05 Kilitli Ilerleme 08:00</div>
+            <div class="flow-step" id="flow-6">FR-E5-06 Egzersiz Tamamlama</div>
+          </div>
+        </div>
 
-            <section class="nav-group">
-                <div class="nav-group-title">Okuma ve Yardimci Ozellikler</div>
-                <div class="nav-item active" data-screen="1"><span class="nav-icon">📖</span><span class="nav-text">Gunun Icerigini Okuma</span><span class="nav-badge">4 AC</span></div>
-                <div class="nav-item" data-screen="2"><span class="nav-icon">🔊</span><span class="nav-text">Sesli Okuma</span><span class="nav-badge">4 AC</span></div>
-                <div class="nav-item" data-screen="3"><span class="nav-icon">✍️</span><span class="nav-text">Altini Cizme ve Not Alma</span><span class="nav-badge">4 AC</span></div>
-            </section>
+        <section class="nav-group">
+          <div class="nav-group-title">Okuma ve Yardimci Ozellikler</div>
+          <div class="nav-item active" data-screen="1">
+            <span class="nav-icon">📖</span><span class="nav-text">Gunun Icerigini Okuma</span
+            ><span class="nav-badge">4 AC</span>
+          </div>
+          <div class="nav-item" data-screen="2">
+            <span class="nav-icon">🔊</span><span class="nav-text">Sesli Okuma</span><span class="nav-badge">4 AC</span>
+          </div>
+          <div class="nav-item" data-screen="3">
+            <span class="nav-icon">✍️</span><span class="nav-text">Altini Cizme ve Not Alma</span
+            ><span class="nav-badge">4 AC</span>
+          </div>
+        </section>
 
-            <section class="nav-group">
-                <div class="nav-group-title">Teslim ve Kilit Kurallari</div>
-                <div class="nav-item" data-screen="4"><span class="nav-icon">💭</span><span class="nav-text">Yorum Yazma ve Teslim</span><span class="nav-badge">7 AC</span></div>
-                <div class="nav-item" data-screen="5"><span class="nav-icon">🔒</span><span class="nav-text">Kilitli Ilerleme 08:00</span><span class="nav-badge">3 AC</span></div>
-                <div class="nav-item" data-screen="6"><span class="nav-icon">✅</span><span class="nav-text">Uygulama Egzersiz Tamamlama</span><span class="nav-badge">3 AC</span></div>
-            </section>
-        </aside>
+        <section class="nav-group">
+          <div class="nav-group-title">Teslim ve Kilit Kurallari</div>
+          <div class="nav-item" data-screen="4">
+            <span class="nav-icon">💭</span><span class="nav-text">Yorum Yazma ve Teslim</span
+            ><span class="nav-badge">7 AC</span>
+          </div>
+          <div class="nav-item" data-screen="5">
+            <span class="nav-icon">🔒</span><span class="nav-text">Kilitli Ilerleme 08:00</span
+            ><span class="nav-badge">3 AC</span>
+          </div>
+          <div class="nav-item" data-screen="6">
+            <span class="nav-icon">✅</span><span class="nav-text">Uygulama Egzersiz Tamamlama</span
+            ><span class="nav-badge">3 AC</span>
+          </div>
+        </section>
+      </aside>
 
-        <main class="main">
-            <div class="topbar">
-                <h1 class="screen-title" id="screenTitle">Gunun Icerigini Okuma</h1>
-                <div class="screen-meta">
-                    <span class="fr-badge" id="screenFr">FR-E5-01</span>
-                    <span id="screenMeta">Gun, hedef, 23:59 son teslim ve okuma ilerleme gosterimi</span>
-                </div>
-            </div>
-            <div class="viewer" id="viewer"></div>
-        </main>
+      <main class="main">
+        <div class="topbar">
+          <h1 class="screen-title" id="screenTitle">Gunun Icerigini Okuma</h1>
+          <div class="screen-meta">
+            <span class="fr-badge" id="screenFr">FR-E5-01</span>
+            <span id="screenMeta">Gun, hedef, 23:59 son teslim ve okuma ilerleme gosterimi</span>
+          </div>
+        </div>
+        <div class="viewer" id="viewer"></div>
+      </main>
     </div>
 
     <div class="toast" id="toast"></div>
 
     <script>
-        const screenData = {
-            1: { title: 'Gunun Icerigini Okuma', fr: 'FR-E5-01', meta: 'Gun, hedef, 23:59 son teslim ve okuma ilerleme gosterimi' },
-            2: { title: 'Sesli Okuma', fr: 'FR-E5-02', meta: 'Play pause hiz ve metinle senkron takip akisi' },
-            3: { title: 'Altini Cizme ve Not Alma', fr: 'FR-E5-03', meta: 'Secim araci vurgula not favori autosave ve kaynak esleme' },
-            4: { title: 'Yorum Yazma ve Teslim', fr: 'FR-E5-04', meta: 'Yonlendirici sorular taslak kayit kelime sayaci ve 23:59 teslim kurali' },
-            5: { title: 'Kilitli Ilerleme 08:00', fr: 'FR-E5-05', meta: 'Bugun tamamlandi yarin kilitli 08:00 otomatik acilis' },
-            6: { title: 'Uygulama Egzersiz Tamamlama', fr: 'FR-E5-06', meta: 'Adim adim tamamlama ilerleme kaydi ve sonraki butonu' }
-        };
-
-        const ui = {
-            currentScreen: 1,
-            screenStates: {
-                1: 'ready',
-                2: 'ready',
-                3: 'ready',
-                4: 'ready',
-                5: 'ready',
-                6: 'ready'
-            },
-            reading: {
-                progress: 34,
-                textScale: 1,
-                highContrast: false,
-                cachedContent: true,
-                day: 7,
-                section: 'Icsel Dogruluk',
-                goal: '20 dk hedef',
-                deadline: '23:59'
-            },
-            audio: {
-                playing: false,
-                speed: 1,
-                segmentIndex: 0,
-                backgroundMode: false,
-                segments: [
-                    'Icsel dogruluk, kisinin kendi benligiyle olan iliskisinde durustlugu ifade eder.',
-                    'Toplumsal beklentiler nedeniyle gercek benlikten uzaklasmak mumkundur.',
-                    'Kendi duygularini tanimak s idk yolculugunun kritik adimidir.'
-                ]
-            },
-            annotation: {
-                selected: false,
-                selectedText: 'Icsel dogruluk, kisinin kendi benligiyle olan iliskisinde durustlugu ifade eder.',
-                note: '',
-                favorite: false,
-                autosaveAt: '-',
-                source: 'S idk Yolculugu > Gun 7 > Paragraf 2',
-                highlights: []
-            },
-            reflection: {
-                q1: 'Icsel dogruluk uzerine dusundugumde duygularimi bazen bastirdigimi fark ettim.',
-                q2: '',
-                q3: '',
-                nowMinutes: 22 * 60 + 30,
-                lastSavedAt: '-',
-                preview: false,
-                submitted: false
-            },
-            lockProgress: {
-                nowHour: 7,
-                nowMinute: 42,
-                todayCompleted: true
-            },
-            exercise: {
-                steps: [
-                    { id: 's1', title: 'Nefes farkindaligi 2 dakika', done: false },
-                    { id: 's2', title: 'Duygu notu yaz', done: false },
-                    { id: 's3', title: 'Kisa sukur cumlesi olustur', done: false }
-                ],
-                savedAt: '-'
-            }
-        };
-
-        let toastTimer = null;
-
-        function showToast(message, tone) {
-            const toast = document.getElementById('toast');
-            toast.textContent = message;
-            toast.className = 'toast show' + (tone ? ' ' + tone : '');
-            if (toastTimer) {
-                clearTimeout(toastTimer);
-            }
-            toastTimer = setTimeout(() => {
-                toast.className = 'toast';
-            }, 2200);
+      const screenData = {
+        1: {
+          title: 'Gunun Icerigini Okuma',
+          fr: 'FR-E5-01',
+          meta: 'Gun, hedef, 23:59 son teslim ve okuma ilerleme gosterimi'
+        },
+        2: {
+          title: 'Sesli Okuma',
+          fr: 'FR-E5-02',
+          meta: 'Play pause hiz ve metinle senkron takip akisi'
+        },
+        3: {
+          title: 'Altini Cizme ve Not Alma',
+          fr: 'FR-E5-03',
+          meta: 'Secim araci vurgula not favori autosave ve kaynak esleme'
+        },
+        4: {
+          title: 'Yorum Yazma ve Teslim',
+          fr: 'FR-E5-04',
+          meta: 'Yonlendirici sorular taslak kayit kelime sayaci ve 23:59 teslim kurali'
+        },
+        5: {
+          title: 'Kilitli Ilerleme 08:00',
+          fr: 'FR-E5-05',
+          meta: 'Bugun tamamlandi yarin kilitli 08:00 otomatik acilis'
+        },
+        6: {
+          title: 'Uygulama Egzersiz Tamamlama',
+          fr: 'FR-E5-06',
+          meta: 'Adim adim tamamlama ilerleme kaydi ve sonraki butonu'
         }
+      };
 
-        function stamp() {
-            return new Date().toLocaleString('tr-TR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
+      const ui = {
+        currentScreen: 1,
+        screenStates: {
+          1: 'ready',
+          2: 'ready',
+          3: 'ready',
+          4: 'ready',
+          5: 'ready',
+          6: 'ready'
+        },
+        reading: {
+          progress: 34,
+          textScale: 1,
+          highContrast: false,
+          cachedContent: true,
+          day: 7,
+          section: 'Icsel Dogruluk',
+          goal: '20 dk hedef',
+          deadline: '23:59'
+        },
+        audio: {
+          playing: false,
+          speed: 1,
+          segmentIndex: 0,
+          backgroundMode: false,
+          segments: [
+            'Icsel dogruluk, kisinin kendi benligiyle olan iliskisinde durustlugu ifade eder.',
+            'Toplumsal beklentiler nedeniyle gercek benlikten uzaklasmak mumkundur.',
+            'Kendi duygularini tanimak s idk yolculugunun kritik adimidir.'
+          ]
+        },
+        annotation: {
+          selected: false,
+          selectedText: 'Icsel dogruluk, kisinin kendi benligiyle olan iliskisinde durustlugu ifade eder.',
+          note: '',
+          favorite: false,
+          autosaveAt: '-',
+          source: 'S idk Yolculugu > Gun 7 > Paragraf 2',
+          highlights: []
+        },
+        reflection: {
+          q1: 'Icsel dogruluk uzerine dusundugumde duygularimi bazen bastirdigimi fark ettim.',
+          q2: '',
+          q3: '',
+          nowMinutes: 22 * 60 + 30,
+          lastSavedAt: '-',
+          preview: false,
+          submitted: false
+        },
+        lockProgress: {
+          nowHour: 7,
+          nowMinute: 42,
+          todayCompleted: true
+        },
+        exercise: {
+          steps: [
+            { id: 's1', title: 'Nefes farkindaligi 2 dakika', done: false },
+            { id: 's2', title: 'Duygu notu yaz', done: false },
+            { id: 's3', title: 'Kisa sukur cumlesi olustur', done: false }
+          ],
+          savedAt: '-'
         }
+      };
 
-        function phoneShell(title, body, backScreen) {
-            const back = backScreen
-                ? `<button class="icon-btn" onclick="showScreen(${backScreen})" aria-label="Geri">←</button>`
-                : '<span style="width:34px;"></span>';
+      let toastTimer = null;
 
-            return `
+      function showToast(message, tone) {
+        const toast = document.getElementById('toast');
+        toast.textContent = message;
+        toast.className = 'toast show' + (tone ? ' ' + tone : '');
+        if (toastTimer) {
+          clearTimeout(toastTimer);
+        }
+        toastTimer = setTimeout(() => {
+          toast.className = 'toast';
+        }, 2200);
+      }
+
+      function stamp() {
+        return new Date().toLocaleString('tr-TR', {
+          day: '2-digit',
+          month: '2-digit',
+          hour: '2-digit',
+          minute: '2-digit'
+        });
+      }
+
+      function phoneShell(title, body, backScreen) {
+        const back = backScreen
+          ? `<button class="icon-btn" onclick="showScreen(${backScreen})" aria-label="Geri">←</button>`
+          : '<span style="width:34px;"></span>';
+
+        return `
                 <div class="iphone">
                     <div class="island"></div>
                     <div class="screen">
@@ -805,25 +856,25 @@
                     </div>
                 </div>
             `;
-        }
+      }
 
-        function stateControls(screenNo) {
-            const states = ['ready', 'loading', 'empty', 'error', 'offline'];
-            return `
+      function stateControls(screenNo) {
+        const states = ['ready', 'loading', 'empty', 'error', 'offline'];
+        return `
                 <div class="state-switcher">
-                    ${states.map((s) => `<button class="state-btn ${ui.screenStates[screenNo] === s ? 'active' : ''}" onclick="setScreenState(${screenNo}, '${s}')">${s}</button>`).join('')}
+                    ${states.map(s => `<button class="state-btn ${ui.screenStates[screenNo] === s ? 'active' : ''}" onclick="setScreenState(${screenNo}, '${s}')">${s}</button>`).join('')}
                 </div>
             `;
+      }
+
+      function screenSpecificStatePanel(screenNo) {
+        const state = ui.screenStates[screenNo];
+        if (state === 'ready') {
+          return '';
         }
 
-        function screenSpecificStatePanel(screenNo) {
-            const state = ui.screenStates[screenNo];
-            if (state === 'ready') {
-                return '';
-            }
-
-            if (state === 'loading') {
-                return `
+        if (state === 'loading') {
+          return `
                     <div class="state-panel loading">
                         <strong>Loading Durumu</strong>
                         <span>Veri yukleniyor. Skeleton placeholder gosterimi aktif.</span>
@@ -832,30 +883,30 @@
                         <div class="skeleton-line" style="width: 84%;"></div>
                     </div>
                 `;
-            }
+        }
 
-            if (state === 'empty') {
-                return `
+        if (state === 'empty') {
+          return `
                     <div class="state-panel empty">
                         <strong>Empty Durumu</strong>
                         <span>Bu gorunumde icerik bulunamadi. Kullaniciya sonraki aksiyon onerilir.</span>
                         <button class="btn btn-outline" onclick="showToast('Filtre temizlendi.')">Filtreyi Temizle</button>
                     </div>
                 `;
-            }
+        }
 
-            if (state === 'error') {
-                return `
+        if (state === 'error') {
+          return `
                     <div class="state-panel error">
                         <strong>Error Durumu</strong>
                         <span>Geri alinabilir hata mesaji ve tekrar dene aksiyonu sunuluyor.</span>
                         <button class="btn btn-primary" onclick="setScreenState(${screenNo}, 'ready')">Tekrar Dene</button>
                     </div>
                 `;
-            }
+        }
 
-            if (screenNo === 1) {
-                return `
+        if (screenNo === 1) {
+          return `
                     <div class="state-panel offline">
                         <strong>Offline + Skeleton + Retry</strong>
                         <span>Cevrimdisi durumda skeleton gosterilir ve tekrar dene butonu sunulur.</span>
@@ -865,42 +916,45 @@
                         <span class="muted">Cache mevcut: ${ui.reading.cachedContent ? 'evet, son icerik goruntuleniyor' : 'hayir'}</span>
                     </div>
                 `;
-            }
+        }
 
-            return `
+        return `
                 <div class="state-panel offline">
                     <strong>Offline Durumu</strong>
                     <span>Son senkronize veri gosteriliyor, yazma islemleri kuyruga alinacak.</span>
                 </div>
             `;
-        }
+      }
 
-        function setScreenState(screenNo, state) {
-            ui.screenStates[screenNo] = state;
-            render();
-        }
+      function setScreenState(screenNo, state) {
+        ui.screenStates[screenNo] = state;
+        render();
+      }
 
-        function updateReadingProgress() {
-            ui.reading.progress = Math.min(100, ui.reading.progress + 12);
-            showToast('Kaydirma ilerlemesi guncellendi: %' + ui.reading.progress);
-            render();
-        }
+      function updateReadingProgress() {
+        ui.reading.progress = Math.min(100, ui.reading.progress + 12);
+        showToast('Kaydirma ilerlemesi guncellendi: %' + ui.reading.progress);
+        render();
+      }
 
-        function setTextScale(value) {
-            ui.reading.textScale = Number(value);
-            render();
-        }
+      function setTextScale(value) {
+        ui.reading.textScale = Number(value);
+        render();
+      }
 
-        function toggleContrast() {
-            ui.reading.highContrast = !ui.reading.highContrast;
-            render();
-        }
+      function toggleContrast() {
+        ui.reading.highContrast = !ui.reading.highContrast;
+        render();
+      }
 
-        function screenOne() {
-            const body = `
+      function screenOne() {
+        const body = `
                 ${stateControls(1)}
                 ${screenSpecificStatePanel(1)}
-                ${ui.screenStates[1] !== 'ready' ? '' : `
+                ${
+                  ui.screenStates[1] !== 'ready'
+                    ? ''
+                    : `
                     <div class="card">
                         <div class="row">
                             <div>
@@ -937,38 +991,42 @@
                         <p style="margin-bottom: 0.72rem;">Toplumsal beklentiler nedeniyle gercek benlikten uzaklasmak mumkundur.</p>
                         <p>Kendi duygularimizi tanimak ve kabul etmek bu yolculugun kritik adimlarindandir.</p>
                     </div>
-                `}
+                `
+                }
             `;
-            return phoneShell('Gunun Icerigi', body, null);
-        }
+        return phoneShell('Gunun Icerigi', body, null);
+      }
 
-        function toggleAudioPlay() {
-            ui.audio.playing = !ui.audio.playing;
-            render();
-        }
+      function toggleAudioPlay() {
+        ui.audio.playing = !ui.audio.playing;
+        render();
+      }
 
-        function setAudioSpeed(speed) {
-            ui.audio.speed = speed;
-            showToast('Hiz aninda uygulandi: ' + speed + 'x');
-            render();
-        }
+      function setAudioSpeed(speed) {
+        ui.audio.speed = speed;
+        showToast('Hiz aninda uygulandi: ' + speed + 'x');
+        render();
+      }
 
-        function nextAudioSegment() {
-            ui.audio.segmentIndex = (ui.audio.segmentIndex + 1) % ui.audio.segments.length;
-            render();
-        }
+      function nextAudioSegment() {
+        ui.audio.segmentIndex = (ui.audio.segmentIndex + 1) % ui.audio.segments.length;
+        render();
+      }
 
-        function toggleBackgroundMode() {
-            ui.audio.backgroundMode = !ui.audio.backgroundMode;
-            showToast(ui.audio.backgroundMode ? 'Arkaplanda audio session aktif.' : 'Arkaplanda audio durduruldu.');
-            render();
-        }
+      function toggleBackgroundMode() {
+        ui.audio.backgroundMode = !ui.audio.backgroundMode;
+        showToast(ui.audio.backgroundMode ? 'Arkaplanda audio session aktif.' : 'Arkaplanda audio durduruldu.');
+        render();
+      }
 
-        function screenTwo() {
-            const body = `
+      function screenTwo() {
+        const body = `
                 ${stateControls(2)}
                 ${screenSpecificStatePanel(2)}
-                ${ui.screenStates[2] !== 'ready' ? '' : `
+                ${
+                  ui.screenStates[2] !== 'ready'
+                    ? ''
+                    : `
                     <div class="card">
                         <div class="card-title">Oynatma Kontrolleri</div>
                         <div class="chips" style="margin-bottom: 0.45rem;">
@@ -986,11 +1044,15 @@
                     <div class="card">
                         <div class="card-title">Senkron Metin Takibi</div>
                         <div class="list">
-                            ${ui.audio.segments.map((segment, idx) => `
+                            ${ui.audio.segments
+                              .map(
+                                (segment, idx) => `
                                 <div class="audio-segment ${idx === ui.audio.segmentIndex ? 'active' : ''}">
                                     ${idx === ui.audio.segmentIndex ? '<span class="highlight">' + segment + '</span>' : segment}
                                 </div>
-                            `).join('')}
+                            `
+                              )
+                              .join('')}
                         </div>
                         <div class="chips" style="margin-top: 0.5rem;">
                             <span class="chip ${ui.audio.playing ? 'success' : ''}">${ui.audio.playing ? 'Caliyor' : 'Duraklatildi'}</span>
@@ -998,51 +1060,57 @@
                             <span class="chip ${ui.audio.backgroundMode ? 'success' : ''}">${ui.audio.backgroundMode ? 'Audio Session Uyumlu' : 'Foreground Mod'}</span>
                         </div>
                     </div>
-                `}
+                `
+                }
             `;
-            return phoneShell('Sesli Okuma', body, 1);
-        }
+        return phoneShell('Sesli Okuma', body, 1);
+      }
 
-        function toggleTextSelection() {
-            ui.annotation.selected = !ui.annotation.selected;
-            render();
-        }
+      function toggleTextSelection() {
+        ui.annotation.selected = !ui.annotation.selected;
+        render();
+      }
 
-        function onNoteChange(value) {
-            ui.annotation.note = value;
-            ui.annotation.autosaveAt = stamp();
-            render();
-        }
+      function onNoteChange(value) {
+        ui.annotation.note = value;
+        ui.annotation.autosaveAt = stamp();
+        render();
+      }
 
-        function applyHighlight() {
-            ui.annotation.highlights.push({
-                text: ui.annotation.selectedText,
-                note: ui.annotation.note || 'Not eklenmedi',
-                source: ui.annotation.source,
-                at: stamp()
-            });
-            ui.annotation.autosaveAt = stamp();
-            showToast('Vurgu ve not kalici kaydedildi.', 'success');
-            render();
-        }
+      function applyHighlight() {
+        ui.annotation.highlights.push({
+          text: ui.annotation.selectedText,
+          note: ui.annotation.note || 'Not eklenmedi',
+          source: ui.annotation.source,
+          at: stamp()
+        });
+        ui.annotation.autosaveAt = stamp();
+        showToast('Vurgu ve not kalici kaydedildi.', 'success');
+        render();
+      }
 
-        function toggleFavorite() {
-            ui.annotation.favorite = !ui.annotation.favorite;
-            ui.annotation.autosaveAt = stamp();
-            showToast(ui.annotation.favorite ? 'Favorilere eklendi.' : 'Favoriden cikarildi.');
-            render();
-        }
+      function toggleFavorite() {
+        ui.annotation.favorite = !ui.annotation.favorite;
+        ui.annotation.autosaveAt = stamp();
+        showToast(ui.annotation.favorite ? 'Favorilere eklendi.' : 'Favoriden cikarildi.');
+        render();
+      }
 
-        function screenThree() {
-            const body = `
+      function screenThree() {
+        const body = `
                 ${stateControls(3)}
                 ${screenSpecificStatePanel(3)}
-                ${ui.screenStates[3] !== 'ready' ? '' : `
+                ${
+                  ui.screenStates[3] !== 'ready'
+                    ? ''
+                    : `
                     <div class="card">
                         <div class="card-title">Metin Secimi</div>
                         <div class="muted" style="margin-bottom: 0.45rem;">Metin secildiginde Vurgula / Not Ekle / Favoriye Kaydet araclari gorunur.</div>
                         <button class="btn btn-outline" onclick="toggleTextSelection()">${ui.annotation.selected ? 'Secimi Kaldir' : 'Metin Secimini Simule Et'}</button>
-                        ${ui.annotation.selected ? `
+                        ${
+                          ui.annotation.selected
+                            ? `
                             <div class="state-panel loading" style="margin-top: 0.55rem;">
                                 <strong>Secili Metin</strong>
                                 <span>${ui.annotation.selectedText}</span>
@@ -1052,7 +1120,9 @@
                                     <button class="btn btn-outline" onclick="toggleFavorite()">${ui.annotation.favorite ? 'Favoriden Cikar' : 'Favoriye Kaydet'}</button>
                                 </div>
                             </div>
-                        ` : ''}
+                        `
+                            : ''
+                        }
                     </div>
 
                     <div class="card">
@@ -1067,78 +1137,92 @@
                     <div class="card">
                         <div class="card-title">Kaydedilen Vurgular</div>
                         <div class="list">
-                            ${ui.annotation.highlights.length
-                                ? ui.annotation.highlights.map((h) => `<div class="list-item"><div><div class="item-title">${h.text}</div><div class="item-meta">${h.note}</div><div class="item-meta">${h.source} • ${h.at}</div></div></div>`).join('')
-                                : '<div class="state-panel empty"><strong>Henuz vurgu yok</strong><span>Secim yapip vurgula ile kaydetme gerceklestirilebilir.</span></div>'}
+                            ${
+                              ui.annotation.highlights.length
+                                ? ui.annotation.highlights
+                                    .map(
+                                      h =>
+                                        `<div class="list-item"><div><div class="item-title">${h.text}</div><div class="item-meta">${h.note}</div><div class="item-meta">${h.source} • ${h.at}</div></div></div>`
+                                    )
+                                    .join('')
+                                : '<div class="state-panel empty"><strong>Henuz vurgu yok</strong><span>Secim yapip vurgula ile kaydetme gerceklestirilebilir.</span></div>'
+                            }
                         </div>
                     </div>
-                `}
+                `
+                }
             `;
-            return phoneShell('Not ve Vurgu', body, 1);
-        }
+        return phoneShell('Not ve Vurgu', body, 1);
+      }
 
-        function reflectionWordCount(text) {
-            return text.trim() ? text.trim().split(/\s+/).length : 0;
-        }
+      function reflectionWordCount(text) {
+        return text.trim() ? text.trim().split(/\s+/).length : 0;
+      }
 
-        function setReflectionField(field, value) {
-            if (ui.reflection.submitted) {
-                return;
-            }
-            ui.reflection[field] = value;
-            ui.reflection.lastSavedAt = stamp();
-            render();
+      function setReflectionField(field, value) {
+        if (ui.reflection.submitted) {
+          return;
         }
+        ui.reflection[field] = value;
+        ui.reflection.lastSavedAt = stamp();
+        render();
+      }
 
-        function setReflectionClock(minutes) {
-            ui.reflection.nowMinutes = Number(minutes);
-            render();
+      function setReflectionClock(minutes) {
+        ui.reflection.nowMinutes = Number(minutes);
+        render();
+      }
+
+      function reflectionTimeLabel() {
+        const m = ui.reflection.nowMinutes;
+        if (m < 24 * 60) {
+          const hh = String(Math.floor(m / 60)).padStart(2, '0');
+          const mm = String(m % 60).padStart(2, '0');
+          return hh + ':' + mm;
         }
+        const next = m - 24 * 60;
+        const hh = String(Math.floor(next / 60)).padStart(2, '0');
+        const mm = String(next % 60).padStart(2, '0');
+        return 'Ertesi Gun ' + hh + ':' + mm;
+      }
 
-        function reflectionTimeLabel() {
-            const m = ui.reflection.nowMinutes;
-            if (m < 24 * 60) {
-                const hh = String(Math.floor(m / 60)).padStart(2, '0');
-                const mm = String(m % 60).padStart(2, '0');
-                return hh + ':' + mm;
-            }
-            const next = m - 24 * 60;
-            const hh = String(Math.floor(next / 60)).padStart(2, '0');
-            const mm = String(next % 60).padStart(2, '0');
-            return 'Ertesi Gun ' + hh + ':' + mm;
+      function isBeforeDeadline() {
+        return ui.reflection.nowMinutes <= 23 * 60 + 59;
+      }
+
+      function isGentleWarnWindow() {
+        return ui.reflection.nowMinutes >= 23 * 60 && ui.reflection.nowMinutes <= 23 * 60 + 59;
+      }
+
+      function togglePreview() {
+        ui.reflection.preview = !ui.reflection.preview;
+        render();
+      }
+
+      function submitReflection() {
+        if (!isBeforeDeadline()) {
+          showToast('23:59 sonrasi teslim deaktif.', 'error');
+          return;
         }
+        ui.reflection.submitted = true;
+        ui.reflection.lastSavedAt = stamp();
+        showToast('Yorum teslim edildi, icerik kilitlendi.', 'success');
+        render();
+      }
 
-        function isBeforeDeadline() {
-            return ui.reflection.nowMinutes <= 23 * 60 + 59;
-        }
-
-        function isGentleWarnWindow() {
-            return ui.reflection.nowMinutes >= 23 * 60 && ui.reflection.nowMinutes <= 23 * 60 + 59;
-        }
-
-        function togglePreview() {
-            ui.reflection.preview = !ui.reflection.preview;
-            render();
-        }
-
-        function submitReflection() {
-            if (!isBeforeDeadline()) {
-                showToast('23:59 sonrasi teslim deaktif.', 'error');
-                return;
-            }
-            ui.reflection.submitted = true;
-            ui.reflection.lastSavedAt = stamp();
-            showToast('Yorum teslim edildi, icerik kilitlendi.', 'success');
-            render();
-        }
-
-        function screenFour() {
-            const deadlinePassed = !isBeforeDeadline();
-            const totalWords = reflectionWordCount(ui.reflection.q1) + reflectionWordCount(ui.reflection.q2) + reflectionWordCount(ui.reflection.q3);
-            const body = `
+      function screenFour() {
+        const deadlinePassed = !isBeforeDeadline();
+        const totalWords =
+          reflectionWordCount(ui.reflection.q1) +
+          reflectionWordCount(ui.reflection.q2) +
+          reflectionWordCount(ui.reflection.q3);
+        const body = `
                 ${stateControls(4)}
                 ${screenSpecificStatePanel(4)}
-                ${ui.screenStates[4] !== 'ready' ? '' : `
+                ${
+                  ui.screenStates[4] !== 'ready'
+                    ? ''
+                    : `
                     <div class="card">
                         <div class="row" style="margin-bottom: 0.45rem;">
                             <div class="card-title" style="margin-bottom: 0;">Teslim Zamani Simulasyonu</div>
@@ -1186,7 +1270,9 @@
                         <button class="btn btn-primary" onclick="submitReflection()" ${deadlinePassed || ui.reflection.submitted ? 'disabled' : ''}>Teslim Et</button>
                     </div>
 
-                    ${ui.reflection.preview ? `
+                    ${
+                      ui.reflection.preview
+                        ? `
                         <div class="card">
                             <div class="card-title">Onizle ve Teslim Ozeti</div>
                             <div class="list">
@@ -1195,40 +1281,46 @@
                                 <div class="list-item"><div><div class="item-title">Soru 3</div><div class="item-meta">${ui.reflection.q3 || 'Yanit yok'}</div></div></div>
                             </div>
                         </div>
-                    ` : ''}
+                    `
+                        : ''
+                    }
 
                     ${ui.reflection.submitted ? '<div class="state-panel loading"><strong>Teslim Tamamlandi</strong><span>Teslim sonrasi yorum kilitlenmistir.</span></div>' : ''}
-                `}
+                `
+                }
             `;
-            return phoneShell('Yorum ve Teslim', body, 1);
-        }
+        return phoneShell('Yorum ve Teslim', body, 1);
+      }
 
-        function setLockTime(hour, minute) {
-            ui.lockProgress.nowHour = hour;
-            ui.lockProgress.nowMinute = minute;
-            render();
-        }
+      function setLockTime(hour, minute) {
+        ui.lockProgress.nowHour = hour;
+        ui.lockProgress.nowMinute = minute;
+        render();
+      }
 
-        function lockIsOpen() {
-            return ui.lockProgress.nowHour >= 8;
-        }
+      function lockIsOpen() {
+        return ui.lockProgress.nowHour >= 8;
+      }
 
-        function lockCountdown() {
-            if (lockIsOpen()) {
-                return 'Acilmis durumda';
-            }
-            const minutesLeft = (8 * 60) - (ui.lockProgress.nowHour * 60 + ui.lockProgress.nowMinute);
-            const h = Math.floor(minutesLeft / 60);
-            const m = minutesLeft % 60;
-            return h + ' saat ' + m + ' dk kaldi';
+      function lockCountdown() {
+        if (lockIsOpen()) {
+          return 'Acilmis durumda';
         }
+        const minutesLeft = 8 * 60 - (ui.lockProgress.nowHour * 60 + ui.lockProgress.nowMinute);
+        const h = Math.floor(minutesLeft / 60);
+        const m = minutesLeft % 60;
+        return h + ' saat ' + m + ' dk kaldi';
+      }
 
-        function screenFive() {
-            const open = lockIsOpen();
-            const body = `
+      function screenFive() {
+        const open = lockIsOpen();
+        const body = `
                 ${stateControls(5)}
                 ${screenSpecificStatePanel(5)}
-                ${ui.screenStates[5] !== 'ready' ? '' : `
+                ${
+                  ui.screenStates[5] !== 'ready'
+                    ? ''
+                    : `
                     <div class="card">
                         <div class="card-title">Bugun Tamamlandi Durumu</div>
                         <div class="chips">
@@ -1239,51 +1331,61 @@
 
                     <div class="card">
                         <div class="card-title">Yarin Icerik Kilidi</div>
-                        ${open
+                        ${
+                          open
                             ? '<div class="state-panel loading"><strong>Available</strong><span>08:00 sonrasi icerik otomatik olarak acildi.</span></div>'
-                            : '<div class="state-panel offline"><strong>Kilitli</strong><span>Yeni icerik 08:00de acilacak.</span><span class="muted">Geri sayim: ' + lockCountdown() + '</span></div>'}
+                            : '<div class="state-panel offline"><strong>Kilitli</strong><span>Yeni icerik 08:00de acilacak.</span><span class="muted">Geri sayim: ' +
+                              lockCountdown() +
+                              '</span></div>'
+                        }
                         <div class="chips" style="margin-top: 0.5rem;">
                             <button class="btn btn-outline" onclick="setLockTime(7,42)">07:42</button>
                             <button class="btn btn-primary" onclick="setLockTime(8,0)">08:00</button>
                         </div>
                     </div>
-                `}
+                `
+                }
             `;
-            return phoneShell('Kilitli Ilerleme', body, 4);
-        }
+        return phoneShell('Kilitli Ilerleme', body, 4);
+      }
 
-        function toggleExerciseStep(stepId) {
-            const step = ui.exercise.steps.find((s) => s.id === stepId);
-            if (!step) {
-                return;
-            }
-            step.done = !step.done;
-            if (ui.exercise.steps.every((s) => s.done)) {
-                ui.exercise.savedAt = stamp();
-                showToast('Tum adimlar tamamlandi ve ilerleme kaydedildi.', 'success');
-            }
-            render();
+      function toggleExerciseStep(stepId) {
+        const step = ui.exercise.steps.find(s => s.id === stepId);
+        if (!step) {
+          return;
         }
-
-        function gotoNextContent() {
-            showToast('Sonraki icerige gecis baslatildi.', 'success');
+        step.done = !step.done;
+        if (ui.exercise.steps.every(s => s.done)) {
+          ui.exercise.savedAt = stamp();
+          showToast('Tum adimlar tamamlandi ve ilerleme kaydedildi.', 'success');
         }
+        render();
+      }
 
-        function screenSix() {
-            const doneCount = ui.exercise.steps.filter((s) => s.done).length;
-            const total = ui.exercise.steps.length;
-            const allDone = doneCount === total;
-            const body = `
+      function gotoNextContent() {
+        showToast('Sonraki icerige gecis baslatildi.', 'success');
+      }
+
+      function screenSix() {
+        const doneCount = ui.exercise.steps.filter(s => s.done).length;
+        const total = ui.exercise.steps.length;
+        const allDone = doneCount === total;
+        const body = `
                 ${stateControls(6)}
                 ${screenSpecificStatePanel(6)}
-                ${ui.screenStates[6] !== 'ready' ? '' : `
+                ${
+                  ui.screenStates[6] !== 'ready'
+                    ? ''
+                    : `
                     <div class="card">
                         <div class="row" style="margin-bottom: 0.45rem;">
                             <div class="card-title" style="margin-bottom: 0;">Egzersiz Adimlari</div>
                             <span class="chip ${allDone ? 'success' : ''}">${doneCount}/${total}</span>
                         </div>
                         <div class="list">
-                            ${ui.exercise.steps.map((step, idx) => `
+                            ${ui.exercise.steps
+                              .map(
+                                (step, idx) => `
                                 <label class="check-item ${step.done ? 'done' : ''}">
                                     <input type="checkbox" ${step.done ? 'checked' : ''} onchange="toggleExerciseStep('${step.id}')">
                                     <div>
@@ -1291,90 +1393,93 @@
                                         <div class="item-meta">Adim tamamlandiginda isaretlenir</div>
                                     </div>
                                 </label>
-                            `).join('')}
+                            `
+                              )
+                              .join('')}
                         </div>
                     </div>
 
                     ${allDone ? '<div class="state-panel loading"><strong>Ilerleme Kaydedildi</strong><span>content_completed olayi tetiklenir. Kayit zamani: ' + ui.exercise.savedAt + '</span></div>' : ''}
 
                     <button class="btn btn-primary" onclick="gotoNextContent()" ${allDone ? '' : 'disabled'}>Sonraki</button>
-                `}
-            `;
-            return phoneShell('Egzersiz Tamamlama', body, 1);
-        }
-
-        function renderScreen(screenNo) {
-            if (screenNo === 1) {
-                return screenOne();
-            }
-            if (screenNo === 2) {
-                return screenTwo();
-            }
-            if (screenNo === 3) {
-                return screenThree();
-            }
-            if (screenNo === 4) {
-                return screenFour();
-            }
-            if (screenNo === 5) {
-                return screenFive();
-            }
-            return screenSix();
-        }
-
-        function updateTopbar() {
-            const data = screenData[ui.currentScreen];
-            document.getElementById('screenTitle').textContent = data.title;
-            document.getElementById('screenFr').textContent = data.fr;
-            document.getElementById('screenMeta').textContent = data.meta;
-        }
-
-        function updateNav() {
-            const navItems = Array.from(document.querySelectorAll('.nav-item'));
-            navItems.forEach((item) => {
-                const active = Number(item.dataset.screen) === ui.currentScreen;
-                item.classList.toggle('active', active);
-                item.setAttribute('aria-current', active ? 'page' : 'false');
-            });
-
-            for (let i = 1; i <= 6; i += 1) {
-                const flow = document.getElementById('flow-' + i);
-                if (flow) {
-                    flow.classList.toggle('active', i === ui.currentScreen);
+                `
                 }
-            }
-        }
+            `;
+        return phoneShell('Egzersiz Tamamlama', body, 1);
+      }
 
-        function showScreen(screenNo) {
-            ui.currentScreen = screenNo;
-            render();
+      function renderScreen(screenNo) {
+        if (screenNo === 1) {
+          return screenOne();
         }
-
-        function wireNav() {
-            const navItems = Array.from(document.querySelectorAll('.nav-item'));
-            navItems.forEach((item) => {
-                item.setAttribute('role', 'button');
-                item.setAttribute('tabindex', '0');
-                item.addEventListener('click', () => {
-                    showScreen(Number(item.dataset.screen));
-                });
-                item.addEventListener('keydown', (event) => {
-                    if (event.key === 'Enter' || event.key === ' ') {
-                        event.preventDefault();
-                        showScreen(Number(item.dataset.screen));
-                    }
-                });
-            });
+        if (screenNo === 2) {
+          return screenTwo();
         }
-
-        function render() {
-            updateTopbar();
-            updateNav();
-            document.getElementById('viewer').innerHTML = renderScreen(ui.currentScreen);
+        if (screenNo === 3) {
+          return screenThree();
         }
+        if (screenNo === 4) {
+          return screenFour();
+        }
+        if (screenNo === 5) {
+          return screenFive();
+        }
+        return screenSix();
+      }
 
-        wireNav();
+      function updateTopbar() {
+        const data = screenData[ui.currentScreen];
+        document.getElementById('screenTitle').textContent = data.title;
+        document.getElementById('screenFr').textContent = data.fr;
+        document.getElementById('screenMeta').textContent = data.meta;
+      }
+
+      function updateNav() {
+        const navItems = Array.from(document.querySelectorAll('.nav-item'));
+        navItems.forEach(item => {
+          const active = Number(item.dataset.screen) === ui.currentScreen;
+          item.classList.toggle('active', active);
+          item.setAttribute('aria-current', active ? 'page' : 'false');
+        });
+
+        for (let i = 1; i <= 6; i += 1) {
+          const flow = document.getElementById('flow-' + i);
+          if (flow) {
+            flow.classList.toggle('active', i === ui.currentScreen);
+          }
+        }
+      }
+
+      function showScreen(screenNo) {
+        ui.currentScreen = screenNo;
         render();
+      }
+
+      function wireNav() {
+        const navItems = Array.from(document.querySelectorAll('.nav-item'));
+        navItems.forEach(item => {
+          item.setAttribute('role', 'button');
+          item.setAttribute('tabindex', '0');
+          item.addEventListener('click', () => {
+            showScreen(Number(item.dataset.screen));
+          });
+          item.addEventListener('keydown', event => {
+            if (event.key === 'Enter' || event.key === ' ') {
+              event.preventDefault();
+              showScreen(Number(item.dataset.screen));
+            }
+          });
+        });
+      }
+
+      function render() {
+        updateTopbar();
+        updateNav();
+        document.getElementById('viewer').innerHTML = renderScreen(ui.currentScreen);
+      }
+
+      wireNav();
+      render();
     </script>
-</body>
+  </body>
 </html>

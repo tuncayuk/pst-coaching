@@ -1,27 +1,27 @@
-import React, { useState } from "react";
-import { Alert, StyleSheet, View } from "react-native";
-import { OfflineNotice } from "../components/OfflineNotice";
-import { ScreenLayout } from "../components/ScreenLayout";
-import { SectionCard } from "../components/SectionCard";
-import { SkeletonBlock } from "../components/SkeletonBlock";
-import { StateMessage } from "../components/StateMessage";
-import { resolveScreenState, ScreenState } from "../components/ScreenState";
+import React, { useState } from 'react';
+import { Alert, StyleSheet, View } from 'react-native';
 
-import { PButton, PCard, PChip, PDivider, PProgressBar, PText, PTextInput } from "../../components";
+import { PButton, PCard, PChip, PDivider, PProgressBar, PText, PTextInput } from '../../components';
 import {
   getInvitesForSubscription,
   getPlanForSubscription,
   getPrimaryUser,
   getSeatsForSubscription,
   getSubscriptionForUser,
-  getUsers,
-} from "../../data/mockSelectors";
+  getUsers
+} from '../../data/mockSelectors';
+import { OfflineNotice } from '../components/OfflineNotice';
+import { ScreenLayout } from '../components/ScreenLayout';
+import { ScreenState, resolveScreenState } from '../components/ScreenState';
+import { SectionCard } from '../components/SectionCard';
+import { SkeletonBlock } from '../components/SkeletonBlock';
+import { StateMessage } from '../components/StateMessage';
 
 /** Mock user role */
-const MOCK_USER_ROLE: "owner" | "member" = "owner";
+const MOCK_USER_ROLE: 'owner' | 'member' = 'owner';
 
 const ProfileSeatManagementContent = ({ isOffline }: { isOffline?: boolean }) => {
-  const [inviteContact, setInviteContact] = useState("");
+  const [inviteContact, setInviteContact] = useState('');
   const [inviteExpanded, setInviteExpanded] = useState(false);
 
   const user = getPrimaryUser();
@@ -32,43 +32,41 @@ const ProfileSeatManagementContent = ({ isOffline }: { isOffline?: boolean }) =>
   const users = getUsers();
   const seatLimit = plan?.seat_limit ?? 1;
 
-  const seatEntries = seats.map((seat) => {
-    const seatUser = users.find((u) => u.id === seat.user_id);
+  const seatEntries = seats.map(seat => {
+    const seatUser = users.find(u => u.id === seat.user_id);
     return {
       id: seat.id,
       userId: seat.user_id,
-      displayName: seatUser?.email ?? (seat.status === "available" ? "Bos Koltuk" : "Kullanici"),
-      role: seatUser?.id === subscription?.owner_user_id ? "Plan Sahibi" : "Uye",
-      status: seat.status === "available" ? "Bos" : "Aktif",
+      displayName: seatUser?.email ?? (seat.status === 'available' ? 'Bos Koltuk' : 'Kullanici'),
+      role: seatUser?.id === subscription?.owner_user_id ? 'Plan Sahibi' : 'Uye',
+      status: seat.status === 'available' ? 'Bos' : 'Aktif'
     };
   });
 
-  const activeCount = seatEntries.filter((s) => s.status === "Aktif").length;
-  const isOwner = MOCK_USER_ROLE === "owner";
+  const activeCount = seatEntries.filter(s => s.status === 'Aktif').length;
+  const isOwner = MOCK_USER_ROLE === 'owner';
   const isFull = activeCount >= seatLimit;
 
   // AC-FR-E3-06-04: member sees only own row
-  const visibleSeats = isOwner
-    ? seatEntries
-    : seatEntries.filter((s) => s.userId === user?.id);
+  const visibleSeats = isOwner ? seatEntries : seatEntries.filter(s => s.userId === user?.id);
 
   const handleRemove = (name: string) => {
     if (isOffline) return;
-    Alert.alert("Uye Kaldir", `"${name}" plandan kaldirilacak. Devam etmek istiyor musunuz?`, [
-      { text: "Iptal", style: "cancel" },
+    Alert.alert('Uye Kaldir', `"${name}" plandan kaldirilacak. Devam etmek istiyor musunuz?`, [
+      { text: 'Iptal', style: 'cancel' },
       {
-        text: "Kaldir",
-        style: "destructive",
-        onPress: () => Alert.alert("Bilgi", "Uye kaldirildi. (Sahte ortamda simule edildi)"),
-      },
+        text: 'Kaldir',
+        style: 'destructive',
+        onPress: () => Alert.alert('Bilgi', 'Uye kaldirildi. (Sahte ortamda simule edildi)')
+      }
     ]);
   };
 
   // AC-FR-E3-06-02: send invite by email/phone
   const handleSendInvite = () => {
     if (!inviteContact.trim() || isOffline) return;
-    Alert.alert("Davet Gonderildi", `"${inviteContact}" adresine davet gonderildi. (Sahte ortamda simule edildi)`);
-    setInviteContact("");
+    Alert.alert('Davet Gonderildi', `"${inviteContact}" adresine davet gonderildi. (Sahte ortamda simule edildi)`);
+    setInviteContact('');
     setInviteExpanded(false);
   };
 
@@ -81,7 +79,7 @@ const ProfileSeatManagementContent = ({ isOffline }: { isOffline?: boolean }) =>
             {activeCount} / {seatLimit} koltuk dolu
           </PText>
           <PChip compact style={isFull ? styles.chipFull : styles.chipOk}>
-            {isFull ? "Dolu" : "Musait"}
+            {isFull ? 'Dolu' : 'Musait'}
           </PChip>
         </View>
         <PProgressBar
@@ -110,7 +108,7 @@ const ProfileSeatManagementContent = ({ isOffline }: { isOffline?: boolean }) =>
               mode="contained-tonal"
               disabled={isOffline}
               style={styles.upsellButton}
-              onPress={() => Alert.alert("Bilgi", "Add-on ekranina yonlendiriliyorsunuz.")}
+              onPress={() => Alert.alert('Bilgi', 'Add-on ekranina yonlendiriliyorsunuz.')}
               accessibilityLabel="Ek Kisi add-onu satin al"
               accessibilityRole="button"
             >
@@ -126,15 +124,19 @@ const ProfileSeatManagementContent = ({ isOffline }: { isOffline?: boolean }) =>
             <PCard style={styles.card}>
               <PCard.Content style={styles.cardRow}>
                 <View style={styles.seatInfo}>
-                  <PText variant="bodyMedium" style={styles.seatName}>{seat.displayName}</PText>
-                  <PText variant="bodySmall" style={styles.seatRole}>{seat.role}</PText>
+                  <PText variant="bodyMedium" style={styles.seatName}>
+                    {seat.displayName}
+                  </PText>
+                  <PText variant="bodySmall" style={styles.seatRole}>
+                    {seat.role}
+                  </PText>
                 </View>
-                <PChip compact style={seat.status === "Aktif" ? styles.chipActive : styles.chipEmpty}>
+                <PChip compact style={seat.status === 'Aktif' ? styles.chipActive : styles.chipEmpty}>
                   {seat.status}
                 </PChip>
               </PCard.Content>
               {/* AC-FR-E3-06-02: owner can remove active members (not self) */}
-              {isOwner && seat.status === "Aktif" && seat.role !== "Plan Sahibi" && (
+              {isOwner && seat.status === 'Aktif' && seat.role !== 'Plan Sahibi' && (
                 <PCard.Actions>
                   <PButton
                     mode="outlined"
@@ -179,7 +181,10 @@ const ProfileSeatManagementContent = ({ isOffline }: { isOffline?: boolean }) =>
                   </PButton>
                   <PButton
                     mode="text"
-                    onPress={() => { setInviteExpanded(false); setInviteContact(""); }}
+                    onPress={() => {
+                      setInviteExpanded(false);
+                      setInviteContact('');
+                    }}
                     accessibilityLabel="Daveti iptal et"
                     accessibilityRole="button"
                   >
@@ -206,14 +211,10 @@ const ProfileSeatManagementContent = ({ isOffline }: { isOffline?: boolean }) =>
   );
 };
 
-export const ProfileSeatManagementScreen = ({
-  route,
-}: {
-  route?: { params?: { state?: ScreenState } };
-}) => {
+export const ProfileSeatManagementScreen = ({ route }: { route?: { params?: { state?: ScreenState } } }) => {
   const state = resolveScreenState(route);
 
-  if (state === "loading") {
+  if (state === 'loading') {
     return (
       <ScreenLayout title="Kisi Yonetimi" subtitle="Kisiler hazirlaniyor">
         <SectionCard title="Kullanim">
@@ -227,7 +228,7 @@ export const ProfileSeatManagementScreen = ({
     );
   }
 
-  if (state === "empty") {
+  if (state === 'empty') {
     return (
       <ScreenLayout title="Kisi Yonetimi" subtitle="Koltuklarini yonet">
         <StateMessage
@@ -240,7 +241,7 @@ export const ProfileSeatManagementScreen = ({
     );
   }
 
-  if (state === "error") {
+  if (state === 'error') {
     return (
       <ScreenLayout title="Kisi Yonetimi" subtitle="Bir sorun olustu">
         <StateMessage
@@ -254,7 +255,7 @@ export const ProfileSeatManagementScreen = ({
     );
   }
 
-  if (state === "offline") {
+  if (state === 'offline') {
     return (
       <ScreenLayout title="Kisi Yonetimi" subtitle="Onbellekteki kisiler">
         <OfflineNotice />
@@ -272,92 +273,92 @@ export const ProfileSeatManagementScreen = ({
 
 const styles = StyleSheet.create({
   gaugeRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 8,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 8
   },
   gaugeLabel: {
-    fontWeight: "600",
-    color: "#1F2937",
+    fontWeight: '600',
+    color: '#1F2937'
   },
   chipFull: {
-    backgroundColor: "#FEE2E2",
+    backgroundColor: '#FEE2E2'
   },
   chipOk: {
-    backgroundColor: "#D1FAE5",
+    backgroundColor: '#D1FAE5'
   },
   gaugeBar: {
     height: 8,
     borderRadius: 4,
-    marginBottom: 4,
+    marginBottom: 4
   },
   metaRow: {
-    marginTop: 4,
+    marginTop: 4
   },
   metaText: {
-    color: "#6B7280",
+    color: '#6B7280'
   },
   upsellCard: {
-    backgroundColor: "#EDE9FE",
+    backgroundColor: '#EDE9FE',
     borderRadius: 10,
-    padding: 14,
+    padding: 14
   },
   upsellTitle: {
-    fontWeight: "700",
-    color: "#4C1D95",
-    marginBottom: 4,
+    fontWeight: '700',
+    color: '#4C1D95',
+    marginBottom: 4
   },
   upsellDesc: {
-    color: "#6D28D9",
+    color: '#6D28D9',
     marginBottom: 10,
-    lineHeight: 18,
+    lineHeight: 18
   },
   upsellButton: {
-    alignSelf: "flex-start",
-    minHeight: 44,
+    alignSelf: 'flex-start',
+    minHeight: 44
   },
   card: {
-    marginBottom: 4,
+    marginBottom: 4
   },
   cardRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center'
   },
   seatInfo: {
-    flex: 1,
+    flex: 1
   },
   seatName: {
-    fontWeight: "600",
-    color: "#1F2937",
+    fontWeight: '600',
+    color: '#1F2937'
   },
   seatRole: {
-    color: "#6B7280",
-    marginTop: 2,
+    color: '#6B7280',
+    marginTop: 2
   },
   chipActive: {
-    backgroundColor: "#D1FAE5",
+    backgroundColor: '#D1FAE5'
   },
   chipEmpty: {
-    backgroundColor: "#F3F4F6",
+    backgroundColor: '#F3F4F6'
   },
   divider: {
-    marginVertical: 4,
+    marginVertical: 4
   },
   inviteForm: {
     marginTop: 12,
-    gap: 8,
+    gap: 8
   },
   inviteInput: {
-    marginBottom: 4,
+    marginBottom: 4
   },
   inviteActions: {
-    flexDirection: "row",
-    gap: 8,
+    flexDirection: 'row',
+    gap: 8
   },
   inviteButton: {
     marginTop: 12,
-    minHeight: 48,
-  },
+    minHeight: 48
+  }
 });

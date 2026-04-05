@@ -1,24 +1,24 @@
-import React from "react";
-import { StyleSheet, View } from "react-native";
-import { OfflineNotice } from "../components/OfflineNotice";
-import { ScreenLayout } from "../components/ScreenLayout";
-import { SectionCard } from "../components/SectionCard";
-import { SkeletonBlock } from "../components/SkeletonBlock";
-import { StateMessage } from "../components/StateMessage";
-import { resolveScreenState, ScreenState } from "../components/ScreenState";
-import { getPrimaryUser } from "../../data/mockSelectors";
-import { PActivityIndicator, PButton, PCard, PRadioButton, PRadioButtonGroup, PText } from "../../components";
+import React from 'react';
+import { StyleSheet, View } from 'react-native';
 
+import { PActivityIndicator, PButton, PCard, PRadioButton, PRadioButtonGroup, PText } from '../../components';
+import { getPrimaryUser } from '../../data/mockSelectors';
+import { OfflineNotice } from '../components/OfflineNotice';
+import { ScreenLayout } from '../components/ScreenLayout';
+import { ScreenState, resolveScreenState } from '../components/ScreenState';
+import { SectionCard } from '../components/SectionCard';
+import { SkeletonBlock } from '../components/SkeletonBlock';
+import { StateMessage } from '../components/StateMessage';
 
 const languages = [
-  { code: "tr", label: "Türkçe" },
-  { code: "en", label: "English" },
-  { code: "es", label: "Español" },
+  { code: 'tr', label: 'Türkçe' },
+  { code: 'en', label: 'English' },
+  { code: 'es', label: 'Español' }
 ];
 
 const ProfileLanguageContent = ({ isOffline }: { isOffline?: boolean }) => {
   const user = getPrimaryUser();
-  const currentLanguage = user?.language ?? "tr";
+  const currentLanguage = user?.language ?? 'tr';
 
   return (
     <>
@@ -27,7 +27,7 @@ const ProfileLanguageContent = ({ isOffline }: { isOffline?: boolean }) => {
           Seçimin cihazında çevrimdışı da saklanır.
         </PText>
         <PRadioButtonGroup value={currentLanguage} onValueChange={() => undefined}>
-          {languages.map((lang) => (
+          {languages.map(lang => (
             <PCard key={lang.code} style={styles.card}>
               <PCard.Content style={styles.row}>
                 <PRadioButton value={lang.code} disabled={isOffline} />
@@ -52,7 +52,7 @@ const ProfileLanguageContent = ({ isOffline }: { isOffline?: boolean }) => {
 export const ProfileLanguageScreen = ({ route }: { route?: { params?: { state?: ScreenState } } }) => {
   const state = resolveScreenState(route);
 
-  if (state === "loading") {
+  if (state === 'loading') {
     return (
       <ScreenLayout title="Dil" subtitle="Dil hazırlanıyor">
         <SectionCard title="Yükleniyor">
@@ -64,7 +64,7 @@ export const ProfileLanguageScreen = ({ route }: { route?: { params?: { state?: 
     );
   }
 
-  if (state === "empty") {
+  if (state === 'empty') {
     return (
       <ScreenLayout title="Dil" subtitle="Dil seçenekleri">
         <StateMessage
@@ -77,7 +77,7 @@ export const ProfileLanguageScreen = ({ route }: { route?: { params?: { state?: 
     );
   }
 
-  if (state === "error") {
+  if (state === 'error') {
     return (
       <ScreenLayout title="Dil" subtitle="Bir sorun oluştu">
         <StateMessage
@@ -91,7 +91,7 @@ export const ProfileLanguageScreen = ({ route }: { route?: { params?: { state?: 
     );
   }
 
-  if (state === "offline") {
+  if (state === 'offline') {
     return (
       <ScreenLayout title="Dil" subtitle="Önbellekteki dil">
         <OfflineNotice />
@@ -110,13 +110,13 @@ export const ProfileLanguageScreen = ({ route }: { route?: { params?: { state?: 
 const styles = StyleSheet.create({
   subtleText: {
     opacity: 0.7,
-    marginBottom: 8,
+    marginBottom: 8
   },
   card: {
-    marginBottom: 8,
+    marginBottom: 8
   },
   row: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
+    flexDirection: 'row',
+    alignItems: 'center'
+  }
 });

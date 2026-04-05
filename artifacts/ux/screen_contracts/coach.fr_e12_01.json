@@ -3,9 +3,7 @@
   "title": "Danisan listesi ve risk gostergeleri",
   "route": "/coach/dashboard",
   "purpose": "Implements FR-E12-01: Danisan listesi ve risk gostergeleri.",
-  "entryPoints": [
-    "profile.overview"
-  ],
+  "entryPoints": ["profile.overview"],
   "inputs": [
     {
       "name": "userId",
@@ -20,12 +18,7 @@
       "source": "profile"
     }
   ],
-  "dataDependencies": [
-    "User",
-    "ContentProgress",
-    "CoachAssignment",
-    "UserSession"
-  ],
+  "dataDependencies": ["User", "ContentProgress", "CoachAssignment", "UserSession"],
   "uiStates": {
     "loading": {
       "description": "Skeleton placeholders shown while loading FR-E12-01 data."
@@ -45,20 +38,8 @@
   },
   "analytics": {
     "screenView": "coach_fr_e12_01_viewed",
-    "events": [
-      "coach_dashboard_viewed",
-      "client_risk_filter_applied",
-      "client_profile_opened"
-    ]
+    "events": ["coach_dashboard_viewed", "client_risk_filter_applied", "client_profile_opened"]
   },
-  "acceptanceCriteriaRefs": [
-    "AC-FR-E12-01-01",
-    "AC-FR-E12-01-02",
-    "AC-FR-E12-01-03",
-    "AC-FR-E12-01-04"
-  ],
-  "gates": [
-    "auth",
-    "coach_role"
-  ]
+  "acceptanceCriteriaRefs": ["AC-FR-E12-01-01", "AC-FR-E12-01-02", "AC-FR-E12-01-03", "AC-FR-E12-01-04"],
+  "gates": ["auth", "coach_role"]
 }

@@ -1,8 +1,8 @@
-import React from "react";
-import { StyleSheet } from "react-native";
-import { useTheme } from "react-native-paper";
-import { PSurface, PText } from "../../components";
+import React from 'react';
+import { StyleSheet } from 'react-native';
+import { useTheme } from 'react-native-paper';
 
+import { PSurface, PText } from '../../components';
 
 export const OfflineNotice = () => {
   const theme = useTheme();
@@ -23,6 +23,6 @@ const styles = StyleSheet.create({
   notice: {
     padding: 12,
     borderRadius: 16,
-    marginBottom: 16,
-  },
+    marginBottom: 16
+  }
 });

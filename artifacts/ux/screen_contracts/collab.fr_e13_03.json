@@ -3,9 +3,7 @@
   "title": "Grup detayi ve tartisma alani",
   "route": "/epic-13/fr-e13-03",
   "purpose": "Implements FR-E13-03: Grup detayi ve tartisma alani.",
-  "entryPoints": [
-    "community.collaborative_reading"
-  ],
+  "entryPoints": ["community.collaborative_reading"],
   "inputs": [
     {
       "name": "userId",
@@ -26,12 +24,7 @@
       "source": "profile"
     }
   ],
-  "dataDependencies": [
-    "ReadingGroup",
-    "ReadingGroupMember",
-    "GroupDiscussion",
-    "ContentProgress"
-  ],
+  "dataDependencies": ["ReadingGroup", "ReadingGroupMember", "GroupDiscussion", "ContentProgress"],
   "uiStates": {
     "loading": {
       "description": "Skeleton placeholders are shown while loading FR-E13-03 data."
@@ -51,18 +44,8 @@
   },
   "analytics": {
     "screenView": "collab_fr_e13_03_viewed",
-    "events": [
-      "collab_fr_e13_03_viewed"
-    ]
+    "events": ["collab_fr_e13_03_viewed"]
   },
-  "acceptanceCriteriaRefs": [
-    "AC-FR-E13-03-01",
-    "AC-FR-E13-03-02",
-    "AC-FR-E13-03-03",
-    "AC-FR-E13-03-04"
-  ],
-  "gates": [
-    "auth",
-    "subscription"
-  ]
+  "acceptanceCriteriaRefs": ["AC-FR-E13-03-01", "AC-FR-E13-03-02", "AC-FR-E13-03-03", "AC-FR-E13-03-04"],
+  "gates": ["auth", "subscription"]
 }

@@ -1,21 +1,21 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
 export type ConnectivityState = {
   isOnline: boolean;
 };
 
 const initialState: ConnectivityState = {
-  isOnline: true,
+  isOnline: true
 };
 
 const connectivitySlice = createSlice({
-  name: "connectivity",
+  name: 'connectivity',
   initialState,
   reducers: {
     setConnectivity(state, action: PayloadAction<boolean>) {
       state.isOnline = action.payload;
-    },
-  },
+    }
+  }
 });
 
 export const { setConnectivity } = connectivitySlice.actions;

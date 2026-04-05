@@ -3,9 +3,7 @@
   "title": "Kisi (seat) yonetimi",
   "route": "/profile/subscription/seats",
   "purpose": "FR-E3-06: Shows seat occupancy gauge (X/Y dolu). Invite by email/phone, remove member actions. If limit reached, Ek Kisi add-on upsell shown (AC-FR-E3-06-03). Member role sees only own row (AC-FR-E3-06-04). Owner sees all seats with remove/invite controls.",
-  "entryPoints": [
-    "subscription.overview"
-  ],
+  "entryPoints": ["subscription.overview"],
   "inputs": [
     {
       "name": "userId",
@@ -26,12 +24,7 @@
       "source": "subscription_entity"
     }
   ],
-  "dataDependencies": [
-    "Seat",
-    "Invitation",
-    "Subscription",
-    "SubscriptionPlan"
-  ],
+  "dataDependencies": ["Seat", "Invitation", "Subscription", "SubscriptionPlan"],
   "uiStates": {
     "loading": {
       "description": "Skeleton seat rows and occupancy gauge"
@@ -59,15 +52,6 @@
       "seat_addon_upsell_tapped"
     ]
   },
-  "acceptanceCriteriaRefs": [
-    "AC-FR-E3-06-01",
-    "AC-FR-E3-06-02",
-    "AC-FR-E3-06-03",
-    "AC-FR-E3-06-04"
-  ],
-  "gates": [
-    "auth",
-    "owner_role",
-    "subscription"
-  ]
+  "acceptanceCriteriaRefs": ["AC-FR-E3-06-01", "AC-FR-E3-06-02", "AC-FR-E3-06-03", "AC-FR-E3-06-04"],
+  "gates": ["auth", "owner_role", "subscription"]
 }

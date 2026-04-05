@@ -2,12 +2,7 @@
   "content_progression": {
     "description": "Locked progression for journeys, modules, packages, and workshop nodes.",
     "initial_state": "locked",
-    "states": [
-      "locked",
-      "available",
-      "in_progress",
-      "completed"
-    ],
+    "states": ["locked", "available", "in_progress", "completed"],
     "transitions": [
       {
         "from": "locked",
@@ -68,12 +63,7 @@
   "subscription_entitlement_gating": {
     "description": "Authorization gate for protected tabs and content start flow.",
     "initial_state": "inactive",
-    "states": [
-      "inactive",
-      "trial",
-      "active",
-      "canceled"
-    ],
+    "states": ["inactive", "trial", "active", "canceled"],
     "transitions": [
       {
         "from": "inactive",
@@ -111,19 +101,12 @@
         "trigger": "restore_purchase_success"
       }
     ],
-    "notes": [
-      "Cancellation keeps access until period_end_reached."
-    ]
+    "notes": ["Cancellation keeps access until period_end_reached."]
   },
   "workshop_stage_progression": {
     "description": "Stage-level progression for Rev4 workshop structure (stages 1-11 with typed layers and lock reasons).",
     "initial_state": "locked",
-    "states": [
-      "locked",
-      "available",
-      "in_progress",
-      "completed"
-    ],
+    "states": ["locked", "available", "in_progress", "completed"],
     "transitions": [
       {
         "from": "locked",
@@ -141,21 +124,12 @@
         "trigger": "required_outputs_saved"
       }
     ],
-    "constraints": [
-      "Lock reason must be shown to user.",
-      "Stage type controls UI blocks and expected outputs."
-    ]
+    "constraints": ["Lock reason must be shown to user.", "Stage type controls UI blocks and expected outputs."]
   },
   "workshop_session_progression": {
     "description": "Camp session lifecycle for day/slot sessions in Stage 8.",
     "initial_state": "locked",
-    "states": [
-      "locked",
-      "scheduled",
-      "in_progress",
-      "completed",
-      "missed"
-    ],
+    "states": ["locked", "scheduled", "in_progress", "completed", "missed"],
     "transitions": [
       {
         "from": "locked",
@@ -178,19 +152,12 @@
         "trigger": "session_window_expired"
       }
     ],
-    "notes": [
-      "Completion updates stage summary and recommends next session."
-    ]
+    "notes": ["Completion updates stage summary and recommends next session."]
   },
   "workbook_entry_lifecycle": {
     "description": "Autosave and versioned persistence for workbook and worksheet entries.",
     "initial_state": "draft",
-    "states": [
-      "draft",
-      "saved",
-      "submitted",
-      "archived"
-    ],
+    "states": ["draft", "saved", "submitted", "archived"],
     "transitions": [
       {
         "from": "draft",

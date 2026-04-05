@@ -3,9 +3,7 @@
   "title": "Koleksiyon detayi ve arama",
   "route": "/favorites/collection-detail",
   "purpose": "Implements FR-E9-04: Favorilerde ve koleksiyonda arama (baslik/not/kaynak), icerik turu filtresi, filtre temizleme.",
-  "entryPoints": [
-    "favorites.collections"
-  ],
+  "entryPoints": ["favorites.collections"],
   "inputs": [
     {
       "name": "userId",
@@ -26,16 +24,7 @@
       "source": "profile"
     }
   ],
-  "dataDependencies": [
-    "Collection",
-    "CollectionItem",
-    "Favorite",
-    "Journey",
-    "Workshop",
-    "Module",
-    "Ebook",
-    "Note"
-  ],
+  "dataDependencies": ["Collection", "CollectionItem", "Favorite", "Journey", "Workshop", "Module", "Ebook", "Note"],
   "uiStates": {
     "loading": {
       "description": "Skeleton placeholders shown while loading FR-E9-04 data."
@@ -55,20 +44,8 @@
   },
   "analytics": {
     "screenView": "collection_detail_viewed",
-    "events": [
-      "collection_detail_viewed",
-      "favorites_searched",
-      "favorites_filter_applied",
-      "favorites_filter_cleared"
-    ]
+    "events": ["collection_detail_viewed", "favorites_searched", "favorites_filter_applied", "favorites_filter_cleared"]
   },
-  "acceptanceCriteriaRefs": [
-    "AC-FR-E9-04-01",
-    "AC-FR-E9-04-02",
-    "AC-FR-E9-04-03"
-  ],
-  "gates": [
-    "auth",
-    "subscription"
-  ]
+  "acceptanceCriteriaRefs": ["AC-FR-E9-04-01", "AC-FR-E9-04-02", "AC-FR-E9-04-03"],
+  "gates": ["auth", "subscription"]
 }

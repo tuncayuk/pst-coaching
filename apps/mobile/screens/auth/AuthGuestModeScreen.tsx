@@ -1,15 +1,15 @@
-import React from "react";
-import { StyleSheet, View, ScrollView } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { OfflineNotice } from "../components/OfflineNotice";
-import { ScreenLayout } from "../components/ScreenLayout";
-import { SectionCard } from "../components/SectionCard";
-import { SkeletonBlock } from "../components/SkeletonBlock";
-import { StateMessage } from "../components/StateMessage";
-import { resolveScreenState, ScreenState } from "../components/ScreenState";
-import { PActivityIndicator, PButton, PText } from "../../components";
+import { useNavigation } from '@react-navigation/native';
+import React from 'react';
+import { ScrollView, StyleSheet, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { PActivityIndicator, PButton, PText } from '../../components';
+import { OfflineNotice } from '../components/OfflineNotice';
+import { ScreenLayout } from '../components/ScreenLayout';
+import { ScreenState, resolveScreenState } from '../components/ScreenState';
+import { SectionCard } from '../components/SectionCard';
+import { SkeletonBlock } from '../components/SkeletonBlock';
+import { StateMessage } from '../components/StateMessage';
 
 const GuestModeContent = ({ isOffline }: { isOffline?: boolean }) => {
   const navigation = useNavigation<any>();
@@ -43,7 +43,7 @@ const GuestModeContent = ({ isOffline }: { isOffline?: boolean }) => {
         <PButton
           mode="contained"
           disabled={isOffline}
-          onPress={() => navigation.getParent()?.navigate("MainTabs")}
+          onPress={() => navigation.getParent()?.navigate('MainTabs')}
           style={styles.button}
           accessibilityLabel="Misafir olarak devam et"
         >
@@ -52,7 +52,7 @@ const GuestModeContent = ({ isOffline }: { isOffline?: boolean }) => {
         <PButton
           mode="outlined"
           disabled={isOffline}
-          onPress={() => navigation.navigate("AuthRegister")}
+          onPress={() => navigation.navigate('AuthRegister')}
           style={styles.secondaryButton}
           contentStyle={styles.secondaryButtonContent}
           labelStyle={styles.secondaryButtonLabel}
@@ -61,21 +61,18 @@ const GuestModeContent = ({ isOffline }: { isOffline?: boolean }) => {
           Kayıt Ol
         </PButton>
         <PText style={styles.hint}>
-          Kayit olduktan sonra misafir oturumunuzdaki tum gozatma verileri (favoriler, goruntuleme gecmisi) hesabiniza aktarilacaktir.
+          Kayit olduktan sonra misafir oturumunuzdaki tum gozatma verileri (favoriler, goruntuleme gecmisi) hesabiniza
+          aktarilacaktir.
         </PText>
       </ScrollView>
     </SafeAreaView>
   );
 };
 
-export const AuthGuestModeScreen = ({
-  route,
-}: {
-  route?: { params?: { state?: ScreenState } };
-}) => {
+export const AuthGuestModeScreen = ({ route }: { route?: { params?: { state?: ScreenState } } }) => {
   const state = resolveScreenState(route);
 
-  if (state === "loading") {
+  if (state === 'loading') {
     return (
       <ScreenLayout title="Misafir Modu" subtitle="Yükleniyor">
         <SectionCard title="Yükleniyor">
@@ -86,7 +83,7 @@ export const AuthGuestModeScreen = ({
     );
   }
 
-  if (state === "empty") {
+  if (state === 'empty') {
     return (
       <ScreenLayout title="Misafir Modu" subtitle="Bilgi bulunamadı">
         <StateMessage
@@ -99,7 +96,7 @@ export const AuthGuestModeScreen = ({
     );
   }
 
-  if (state === "error") {
+  if (state === 'error') {
     return (
       <ScreenLayout title="Misafir Modu" subtitle="Bir sorun oluştu">
         <StateMessage
@@ -113,7 +110,7 @@ export const AuthGuestModeScreen = ({
     );
   }
 
-  if (state === "offline") {
+  if (state === 'offline') {
     return (
       <>
         <OfflineNotice />
@@ -128,96 +125,96 @@ export const AuthGuestModeScreen = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FAFAFA",
+    backgroundColor: '#FAFAFA'
   },
   scrollContent: {
     paddingHorizontal: 24,
     paddingTop: 32,
-    paddingBottom: 32,
+    paddingBottom: 32
   },
   iconContainer: {
-    alignItems: "center",
-    marginBottom: 16,
+    alignItems: 'center',
+    marginBottom: 16
   },
   icon: {
-    fontSize: 64,
+    fontSize: 64
   },
   title: {
     fontSize: 24,
-    fontWeight: "700",
-    color: "#2B1B5D",
+    fontWeight: '700',
+    color: '#2B1B5D',
     marginBottom: 8,
-    textAlign: "center",
+    textAlign: 'center'
   },
   subtitle: {
-    color: "#525252",
+    color: '#525252',
     marginBottom: 24,
-    textAlign: "center",
-    fontSize: 15,
+    textAlign: 'center',
+    fontSize: 15
   },
   infoCard: {
-    backgroundColor: "#D1FAE5",
+    backgroundColor: '#D1FAE5',
     padding: 16,
     borderRadius: 12,
     marginBottom: 16,
     borderLeftWidth: 4,
-    borderLeftColor: "#10B981",
+    borderLeftColor: '#10B981'
   },
   infoTitle: {
-    fontWeight: "700",
-    color: "#065F46",
-    marginBottom: 12,
+    fontWeight: '700',
+    color: '#065F46',
+    marginBottom: 12
   },
   warningCard: {
-    backgroundColor: "#FEF3C7",
+    backgroundColor: '#FEF3C7',
     padding: 16,
     borderRadius: 12,
     marginBottom: 24,
     borderLeftWidth: 4,
-    borderLeftColor: "#F59E0B",
+    borderLeftColor: '#F59E0B'
   },
   warningTitle: {
-    fontWeight: "700",
-    color: "#92400E",
-    marginBottom: 12,
+    fontWeight: '700',
+    color: '#92400E',
+    marginBottom: 12
   },
   list: {
-    gap: 8,
+    gap: 8
   },
   listItem: {
     fontSize: 14,
-    color: "#171717",
-    lineHeight: 24,
+    color: '#171717',
+    lineHeight: 24
   },
   warningItem: {
     fontSize: 14,
-    color: "#92400E",
-    lineHeight: 24,
+    color: '#92400E',
+    lineHeight: 24
   },
   button: {
     marginBottom: 12,
-    borderRadius: 12,
+    borderRadius: 12
   },
   secondaryButton: {
     marginBottom: 12,
     borderRadius: 12,
     borderWidth: 2,
-    borderColor: "#E5E5E5",
+    borderColor: '#E5E5E5'
   },
   secondaryButtonContent: {
     height: 56,
-    justifyContent: "center",
+    justifyContent: 'center'
   },
   secondaryButtonLabel: {
     fontSize: 16,
-    fontWeight: "600",
-    color: "#171717",
+    fontWeight: '600',
+    color: '#171717'
   },
   hint: {
-    textAlign: "center",
-    color: "#525252",
+    textAlign: 'center',
+    color: '#525252',
     marginTop: 16,
     lineHeight: 20,
-    fontSize: 12,
-  },
+    fontSize: 12
+  }
 });

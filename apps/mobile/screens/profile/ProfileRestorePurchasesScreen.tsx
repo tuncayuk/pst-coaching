@@ -1,17 +1,14 @@
-import React, { useState } from "react";
-import { Alert, StyleSheet, View } from "react-native";
-import { OfflineNotice } from "../components/OfflineNotice";
-import { ScreenLayout } from "../components/ScreenLayout";
-import { SectionCard } from "../components/SectionCard";
-import { SkeletonBlock } from "../components/SkeletonBlock";
-import { StateMessage } from "../components/StateMessage";
-import { resolveScreenState, ScreenState } from "../components/ScreenState";
-import { PButton, PCard, PChip, PText } from "../../components";
-import {
-  getPrimaryUser,
-  getSubscriptionForUser,
-  getPaymentsForSubscription,
-} from "../../data/mockSelectors";
+import React, { useState } from 'react';
+import { Alert, StyleSheet, View } from 'react-native';
+
+import { PButton, PCard, PChip, PText } from '../../components';
+import { getPaymentsForSubscription, getPrimaryUser, getSubscriptionForUser } from '../../data/mockSelectors';
+import { OfflineNotice } from '../components/OfflineNotice';
+import { ScreenLayout } from '../components/ScreenLayout';
+import { ScreenState, resolveScreenState } from '../components/ScreenState';
+import { SectionCard } from '../components/SectionCard';
+import { SkeletonBlock } from '../components/SkeletonBlock';
+import { StateMessage } from '../components/StateMessage';
 
 const ProfileRestorePurchasesContent = ({ isOffline }: { isOffline?: boolean }) => {
   const [restoring, setRestoring] = useState(false);
@@ -29,9 +26,9 @@ const ProfileRestorePurchasesContent = ({ isOffline }: { isOffline?: boolean }) 
     setTimeout(() => {
       setRestoring(false);
       Alert.alert(
-        "Geri Yukleme Tamamlandi",
-        "Satin alimlariniz dogrulandi ve aboneliginiz aktiflestirildi. (Sahte ortamda simule edildi)",
-        [{ text: "Tamam" }]
+        'Geri Yukleme Tamamlandi',
+        'Satin alimlariniz dogrulandi ve aboneliginiz aktiflestirildi. (Sahte ortamda simule edildi)',
+        [{ text: 'Tamam' }]
       );
     }, 1500);
   };
@@ -40,8 +37,8 @@ const ProfileRestorePurchasesContent = ({ isOffline }: { isOffline?: boolean }) 
     <>
       <SectionCard title="Satin Alimlari Geri Yukle">
         <PText variant="bodySmall" style={styles.explainText}>
-          Daha once satin aldiginiz planlari geri yukleyebiliriz.
-          Bu islem magaza dogrulamasi gerektirir ve aboneliginiz otomatik aktiflesir.
+          Daha once satin aldiginiz planlari geri yukleyebiliriz. Bu islem magaza dogrulamasi gerektirir ve aboneliginiz
+          otomatik aktiflesir.
         </PText>
         <PButton
           mode="contained"
@@ -51,12 +48,12 @@ const ProfileRestorePurchasesContent = ({ isOffline }: { isOffline?: boolean }) 
           accessibilityLabel="Magaza uzerinden satin alimlari dogrula ve geri yukle"
           accessibilityRole="button"
         >
-          {restoring ? "Dogrulaniyor..." : "Satin Alimlari Geri Yukle"}
+          {restoring ? 'Dogrulaniyor...' : 'Satin Alimlari Geri Yukle'}
         </PButton>
         <PButton
           mode="outlined"
           disabled={isOffline}
-          onPress={() => Alert.alert("Destek", "Destek ekibine baglaniyor. (Sahte ortamda simule edildi)")}
+          onPress={() => Alert.alert('Destek', 'Destek ekibine baglaniyor. (Sahte ortamda simule edildi)')}
           accessibilityLabel="Destek ekibiyle iletisime gec"
           accessibilityRole="button"
         >
@@ -71,12 +68,12 @@ const ProfileRestorePurchasesContent = ({ isOffline }: { isOffline?: boolean }) 
             Kayitli islem bulunamadi.
           </PText>
         ) : (
-          transactions.map((tx) => (
+          transactions.map(tx => (
             <PCard key={tx.id} style={styles.card}>
               <PCard.Content style={styles.cardRow}>
                 <View>
                   <PText variant="bodyMedium" style={styles.txDate}>
-                    {tx.purchased_at?.slice(0, 10) ?? "-"}
+                    {tx.purchased_at?.slice(0, 10) ?? '-'}
                   </PText>
                   <PText variant="bodySmall" style={styles.txAmount}>
                     {tx.amount} {tx.currency}
@@ -94,14 +91,10 @@ const ProfileRestorePurchasesContent = ({ isOffline }: { isOffline?: boolean }) 
   );
 };
 
-export const ProfileRestorePurchasesScreen = ({
-  route,
-}: {
-  route?: { params?: { state?: ScreenState } };
-}) => {
+export const ProfileRestorePurchasesScreen = ({ route }: { route?: { params?: { state?: ScreenState } } }) => {
   const state = resolveScreenState(route);
 
-  if (state === "loading") {
+  if (state === 'loading') {
     return (
       <ScreenLayout title="Satin Alimlari Geri Yukle" subtitle="Geri yukleme hazirlaniyor">
         <SectionCard title="Yukleniyor">
@@ -115,7 +108,7 @@ export const ProfileRestorePurchasesScreen = ({
     );
   }
 
-  if (state === "empty") {
+  if (state === 'empty') {
     return (
       <ScreenLayout title="Satin Alimlari Geri Yukle" subtitle="Islemler">
         <StateMessage
@@ -128,7 +121,7 @@ export const ProfileRestorePurchasesScreen = ({
     );
   }
 
-  if (state === "error") {
+  if (state === 'error') {
     return (
       <ScreenLayout title="Satin Alimlari Geri Yukle" subtitle="Bir sorun olustu">
         <StateMessage
@@ -142,7 +135,7 @@ export const ProfileRestorePurchasesScreen = ({
     );
   }
 
-  if (state === "offline") {
+  if (state === 'offline') {
     return (
       <ScreenLayout title="Satin Alimlari Geri Yukle" subtitle="Onbellekteki bilgiler">
         <OfflineNotice />
@@ -160,37 +153,37 @@ export const ProfileRestorePurchasesScreen = ({
 
 const styles = StyleSheet.create({
   explainText: {
-    color: "#374151",
+    color: '#374151',
     lineHeight: 20,
-    marginBottom: 14,
+    marginBottom: 14
   },
   restoreButton: {
     marginBottom: 8,
-    minHeight: 52,
+    minHeight: 52
   },
   card: {
-    marginBottom: 10,
+    marginBottom: 10
   },
   cardRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center'
   },
   txDate: {
-    fontWeight: "600",
-    color: "#1F2937",
+    fontWeight: '600',
+    color: '#1F2937'
   },
   txAmount: {
-    color: "#2B1B5D",
-    fontWeight: "700",
-    marginTop: 2,
+    color: '#2B1B5D',
+    fontWeight: '700',
+    marginTop: 2
   },
   chipVerified: {
-    backgroundColor: "#D1FAE5",
+    backgroundColor: '#D1FAE5'
   },
   emptyText: {
-    color: "#6B7280",
-    textAlign: "center",
-    paddingVertical: 12,
-  },
+    color: '#6B7280',
+    textAlign: 'center',
+    paddingVertical: 12
+  }
 });

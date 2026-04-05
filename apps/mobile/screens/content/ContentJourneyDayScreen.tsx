@@ -1,27 +1,27 @@
-import React, { useState } from "react";
-import { StyleSheet, View } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { OfflineNotice } from "../components/OfflineNotice";
-import { ScreenLayout } from "../components/ScreenLayout";
-import { SectionCard } from "../components/SectionCard";
-import { SkeletonBlock } from "../components/SkeletonBlock";
-import { StateMessage } from "../components/StateMessage";
-import { resolveScreenState, ScreenState } from "../components/ScreenState";
+import { useNavigation } from '@react-navigation/native';
+import React, { useState } from 'react';
+import { StyleSheet, View } from 'react-native';
 
-import { PActivityIndicator, PButton, PCard, PChip, PText } from "../../components";
+import { PActivityIndicator, PButton, PCard, PChip, PText } from '../../components';
 import {
   getContentItemsForParent,
-  getJourneyDaysForJourney,
   getJourneyById,
-  getJourneys,
-} from "../../data/mockSelectors";
+  getJourneyDaysForJourney,
+  getJourneys
+} from '../../data/mockSelectors';
+import { OfflineNotice } from '../components/OfflineNotice';
+import { ScreenLayout } from '../components/ScreenLayout';
+import { ScreenState, resolveScreenState } from '../components/ScreenState';
+import { SectionCard } from '../components/SectionCard';
+import { SkeletonBlock } from '../components/SkeletonBlock';
+import { StateMessage } from '../components/StateMessage';
 
 type RouteParams = { state?: ScreenState; id?: string; day?: string };
 
 const ContentJourneyDayContent = ({
   journeyId,
   dayNumber,
-  isOffline,
+  isOffline
 }: {
   journeyId?: string;
   dayNumber?: number;
@@ -30,8 +30,8 @@ const ContentJourneyDayContent = ({
   const navigation = useNavigation<any>();
   const journey = getJourneyById(journeyId);
   const days = getJourneyDaysForJourney(journey?.id);
-  const day = days.find((item) => item.day_number === dayNumber) ?? days[0];
-  const contentItems = day ? getContentItemsForParent("journey_day", day.id) : [];
+  const day = days.find(item => item.day_number === dayNumber) ?? days[0];
+  const contentItems = day ? getContentItemsForParent('journey_day', day.id) : [];
 
   // AC-FR-E5-05-03: Auto-unlock mock — locked when current hour < 8
   const now = new Date();
@@ -45,9 +45,9 @@ const ContentJourneyDayContent = ({
   return (
     <>
       <SectionCard title="Gunun Plani" actionLabel="Takvim">
-        <PText variant="titleMedium">{journey?.title ?? "Yolculuk"}</PText>
+        <PText variant="titleMedium">{journey?.title ?? 'Yolculuk'}</PText>
         <PText variant="bodySmall" style={styles.subtleText}>
-          {day ? `Gun ${day.day_number} - ${day.title}` : "Gun icerigi"}
+          {day ? `Gun ${day.day_number} - ${day.title}` : 'Gun icerigi'}
         </PText>
         {/* AC-FR-E5-01-01: Deadline chip */}
         <View style={styles.chipRow}>
@@ -68,13 +68,13 @@ const ContentJourneyDayContent = ({
 
         {/* Demo toggle for completed state */}
         <PButton
-          mode={isTodayCompleted ? "outlined" : "contained"}
+          mode={isTodayCompleted ? 'outlined' : 'contained'}
           compact
           disabled={isOffline || isLocked}
-          onPress={() => setIsTodayCompleted((v) => !v)}
+          onPress={() => setIsTodayCompleted(v => !v)}
           style={styles.completeBtn}
         >
-          {isTodayCompleted ? "Tamamlanmadi Olarak Isaretle" : "Bugunu Tamamla"}
+          {isTodayCompleted ? 'Tamamlanmadi Olarak Isaretle' : 'Bugunu Tamamla'}
         </PButton>
       </SectionCard>
 
@@ -93,7 +93,7 @@ const ContentJourneyDayContent = ({
         </SectionCard>
       ) : (
         <SectionCard title="Icerikler" actionLabel="Sirala">
-          {contentItems.map((item) => (
+          {contentItems.map(item => (
             <PCard key={item.id} style={styles.card}>
               <PCard.Title title={item.title} subtitle={item.content_type} />
               <PCard.Content>
@@ -106,23 +106,23 @@ const ContentJourneyDayContent = ({
                   mode="outlined"
                   disabled={isOffline}
                   onPress={() => {
-                    if (item.content_type === "reading") {
-                      navigation.navigate("Content", {
-                        screen: "ContentReading",
-                        params: { id: item.id },
+                    if (item.content_type === 'reading') {
+                      navigation.navigate('Content', {
+                        screen: 'ContentReading',
+                        params: { id: item.id }
                       });
                       return;
                     }
-                    if (item.content_type === "exercise") {
-                      navigation.navigate("Content", {
-                        screen: "ContentExercise",
-                        params: { id: item.id },
+                    if (item.content_type === 'exercise') {
+                      navigation.navigate('Content', {
+                        screen: 'ContentExercise',
+                        params: { id: item.id }
                       });
                       return;
                     }
-                    navigation.navigate("Content", {
-                      screen: "ContentComment",
-                      params: { contentItemId: item.id },
+                    navigation.navigate('Content', {
+                      screen: 'ContentComment',
+                      params: { contentItemId: item.id }
                     });
                   }}
                 >
@@ -137,16 +137,12 @@ const ContentJourneyDayContent = ({
   );
 };
 
-export const ContentJourneyDayScreen = ({
-  route,
-}: {
-  route?: { params?: RouteParams };
-}) => {
+export const ContentJourneyDayScreen = ({ route }: { route?: { params?: RouteParams } }) => {
   const state = resolveScreenState(route);
   const dayNumber = route?.params?.day ? Number(route.params.day) : undefined;
   const journeyId = route?.params?.id ?? getJourneys()[0]?.id;
 
-  if (state === "loading") {
+  if (state === 'loading') {
     return (
       <ScreenLayout title="Gun Icerigi" subtitle="Gun Icerigi yukleniyor">
         <SectionCard title="Yukleniyor">
@@ -162,7 +158,7 @@ export const ContentJourneyDayScreen = ({
     );
   }
 
-  if (state === "empty") {
+  if (state === 'empty') {
     return (
       <ScreenLayout title="Gun Icerigi" subtitle="Icerik bulunamadi">
         <StateMessage
@@ -175,7 +171,7 @@ export const ContentJourneyDayScreen = ({
     );
   }
 
-  if (state === "error") {
+  if (state === 'error') {
     return (
       <ScreenLayout title="Gun Icerigi" subtitle="Bir sorun olustu">
         <StateMessage
@@ -189,7 +185,7 @@ export const ContentJourneyDayScreen = ({
     );
   }
 
-  if (state === "offline") {
+  if (state === 'offline') {
     return (
       <ScreenLayout title="Gun Icerigi" subtitle="Onbellekteki icerik">
         <OfflineNotice />
@@ -207,63 +203,62 @@ export const ContentJourneyDayScreen = ({
 
 const styles = StyleSheet.create({
   chipRow: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    marginTop: 8,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginTop: 8
   },
   chip: {
     marginRight: 8,
-    marginBottom: 8,
+    marginBottom: 8
   },
   chipDeadline: {
-    backgroundColor: "#DCFCE7",
+    backgroundColor: '#DCFCE7'
   },
   subtleText: {
     opacity: 0.7,
-    marginTop: 4,
+    marginTop: 4
   },
   card: {
-    marginBottom: 12,
+    marginBottom: 12
   },
   completedBanner: {
-    backgroundColor: "#DCFCE7",
+    backgroundColor: '#DCFCE7',
     borderRadius: 10,
     paddingVertical: 8,
     paddingHorizontal: 12,
     borderWidth: 1,
-    borderColor: "#16A34A",
+    borderColor: '#16A34A',
     marginTop: 8,
-    marginBottom: 4,
+    marginBottom: 4
   },
   completedText: {
     fontSize: 13,
-    fontWeight: "700",
-    color: "#15803D",
-    textAlign: "center",
+    fontWeight: '700',
+    color: '#15803D',
+    textAlign: 'center'
   },
   completeBtn: {
-    marginTop: 10,
+    marginTop: 10
   },
   lockedBanner: {
     padding: 16,
-    backgroundColor: "#F5F3FF",
+    backgroundColor: '#F5F3FF',
     borderRadius: 12,
     borderWidth: 2,
-    borderColor: "#8B5CF6",
-    alignItems: "center",
+    borderColor: '#8B5CF6',
+    alignItems: 'center'
   },
   lockedTitle: {
     fontSize: 15,
-    fontWeight: "700",
-    color: "#5B21B6",
+    fontWeight: '700',
+    color: '#5B21B6',
     marginBottom: 6,
-    textAlign: "center",
+    textAlign: 'center'
   },
   lockedCountdown: {
     fontSize: 20,
-    fontWeight: "700",
-    color: "#7C3AED",
-    marginBottom: 8,
-  },
+    fontWeight: '700',
+    color: '#7C3AED',
+    marginBottom: 8
+  }
 });
-

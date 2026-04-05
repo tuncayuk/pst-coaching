@@ -1,9 +1,9 @@
 #!/usr/bin/env node
-"use strict";
-const fs = require("fs");
-const path = require("path");
+'use strict';
+const fs = require('fs');
+const path = require('path');
 
-const BASE = "/Users/tuncayyildirtan/CharityWorkspaces/pst-coaching/apps/mobile/screens/content";
+const BASE = '/Users/tuncayyildirtan/CharityWorkspaces/pst-coaching/apps/mobile/screens/content';
 
 const detailScreen = `import React, { useState } from "react";
 import { Modal, StyleSheet, View } from "react-native";
@@ -1080,15 +1080,31 @@ const styles = StyleSheet.create({
 });
 `;
 
-fs.writeFileSync(path.join(BASE, "ContentEbookDetailScreen.tsx"), detailScreen, "utf8");
-fs.writeFileSync(path.join(BASE, "ContentEbookReaderScreen.tsx"), readerScreen, "utf8");
-fs.writeFileSync(path.join(BASE, "ContentEbookTocScreen.tsx"), tocScreen, "utf8");
-fs.writeFileSync(path.join(BASE, "ContentEbookHighlightsScreen.tsx"), highlightsScreen, "utf8");
-fs.writeFileSync(path.join(BASE, "ContentEbookSettingsScreen.tsx"), settingsScreen, "utf8");
+fs.writeFileSync(path.join(BASE, 'ContentEbookDetailScreen.tsx'), detailScreen, 'utf8');
+fs.writeFileSync(path.join(BASE, 'ContentEbookReaderScreen.tsx'), readerScreen, 'utf8');
+fs.writeFileSync(path.join(BASE, 'ContentEbookTocScreen.tsx'), tocScreen, 'utf8');
+fs.writeFileSync(path.join(BASE, 'ContentEbookHighlightsScreen.tsx'), highlightsScreen, 'utf8');
+fs.writeFileSync(path.join(BASE, 'ContentEbookSettingsScreen.tsx'), settingsScreen, 'utf8');
 
-console.log("detail:", fs.readFileSync(path.join(BASE, "ContentEbookDetailScreen.tsx"), "utf8").split("\n").length, "lines");
-console.log("reader:", fs.readFileSync(path.join(BASE, "ContentEbookReaderScreen.tsx"), "utf8").split("\n").length, "lines");
-console.log("toc:", fs.readFileSync(path.join(BASE, "ContentEbookTocScreen.tsx"), "utf8").split("\n").length, "lines");
-console.log("highlights:", fs.readFileSync(path.join(BASE, "ContentEbookHighlightsScreen.tsx"), "utf8").split("\n").length, "lines");
-console.log("settings:", fs.readFileSync(path.join(BASE, "ContentEbookSettingsScreen.tsx"), "utf8").split("\n").length, "lines");
-console.log("All screens written.");
+console.log(
+  'detail:',
+  fs.readFileSync(path.join(BASE, 'ContentEbookDetailScreen.tsx'), 'utf8').split('\n').length,
+  'lines'
+);
+console.log(
+  'reader:',
+  fs.readFileSync(path.join(BASE, 'ContentEbookReaderScreen.tsx'), 'utf8').split('\n').length,
+  'lines'
+);
+console.log('toc:', fs.readFileSync(path.join(BASE, 'ContentEbookTocScreen.tsx'), 'utf8').split('\n').length, 'lines');
+console.log(
+  'highlights:',
+  fs.readFileSync(path.join(BASE, 'ContentEbookHighlightsScreen.tsx'), 'utf8').split('\n').length,
+  'lines'
+);
+console.log(
+  'settings:',
+  fs.readFileSync(path.join(BASE, 'ContentEbookSettingsScreen.tsx'), 'utf8').split('\n').length,
+  'lines'
+);
+console.log('All screens written.');

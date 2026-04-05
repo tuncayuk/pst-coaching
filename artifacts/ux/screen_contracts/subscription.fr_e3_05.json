@@ -3,9 +3,7 @@
   "title": "Plan yonetimi (degistir/iptal)",
   "route": "/profile/subscription/manage",
   "purpose": "FR-E3-05: Shows current plan, renewal date, seat usage. Plan downgrade warns if seat count exceeds new limit (AC-FR-E3-05-02). Cancellation lists all effects clearly (AC-FR-E3-05-03). Access continues until period end after cancel (AC-FR-E3-05-04). Redirects to platform cancel flow (AC-FR-E3-05-05). Only Plan Sahibi can act.",
-  "entryPoints": [
-    "subscription.overview"
-  ],
+  "entryPoints": ["subscription.overview"],
   "inputs": [
     {
       "name": "userId",
@@ -20,11 +18,7 @@
       "source": "subscription_entity"
     }
   ],
-  "dataDependencies": [
-    "Subscription",
-    "SubscriptionPlan",
-    "Seat"
-  ],
+  "dataDependencies": ["Subscription", "SubscriptionPlan", "Seat"],
   "uiStates": {
     "loading": {
       "description": "Skeleton plan summary card and action buttons"
@@ -52,16 +46,6 @@
       "plan_cancel_platform_redirect"
     ]
   },
-  "acceptanceCriteriaRefs": [
-    "AC-FR-E3-05-01",
-    "AC-FR-E3-05-02",
-    "AC-FR-E3-05-03",
-    "AC-FR-E3-05-04",
-    "AC-FR-E3-05-05"
-  ],
-  "gates": [
-    "auth",
-    "owner_role",
-    "subscription"
-  ]
+  "acceptanceCriteriaRefs": ["AC-FR-E3-05-01", "AC-FR-E3-05-02", "AC-FR-E3-05-03", "AC-FR-E3-05-04", "AC-FR-E3-05-05"],
+  "gates": ["auth", "owner_role", "subscription"]
 }

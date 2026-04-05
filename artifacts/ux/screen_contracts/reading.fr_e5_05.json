@@ -3,9 +3,7 @@
   "title": "Kilitli ilerleme (08:00 kurali)",
   "route": "/content/locked",
   "purpose": "Implements FR-E5-05: 08:00 lock gate with countdown and auto-unlock for daily content.",
-  "entryPoints": [
-    "content.journey_day"
-  ],
+  "entryPoints": ["content.journey_day"],
   "inputs": [
     {
       "name": "userId",
@@ -26,10 +24,7 @@
       "source": "route_params"
     }
   ],
-  "dataDependencies": [
-    "JourneyDay",
-    "ContentProgress"
-  ],
+  "dataDependencies": ["JourneyDay", "ContentProgress"],
   "uiStates": {
     "loading": {
       "description": "Loading day schedule and lock status."
@@ -56,12 +51,6 @@
       "content_day_completed"
     ]
   },
-  "acceptanceCriteriaRefs": [
-    "AC-FR-E5-05-01",
-    "AC-FR-E5-05-02",
-    "AC-FR-E5-05-03"
-  ],
-  "gates": [
-    "auth"
-  ]
+  "acceptanceCriteriaRefs": ["AC-FR-E5-05-01", "AC-FR-E5-05-02", "AC-FR-E5-05-03"],
+  "gates": ["auth"]
 }

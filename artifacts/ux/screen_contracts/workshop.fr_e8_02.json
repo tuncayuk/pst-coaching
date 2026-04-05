@@ -3,9 +3,7 @@
   "title": "Asama navigasyonu ve ilerleme modeli",
   "route": "/workshop/phases",
   "purpose": "Implements FR-E8-02: Asama listesi/zaman cizelgesi, tip bazli etiketler, kilit durumu ve Devam Et aksiyonu.",
-  "entryPoints": [
-    "workshop.landing"
-  ],
+  "entryPoints": ["workshop.landing"],
   "inputs": [
     {
       "name": "userId",
@@ -32,11 +30,7 @@
       "source": "profile"
     }
   ],
-  "dataDependencies": [
-    "Workshop",
-    "WorkshopStage",
-    "ContentProgress"
-  ],
+  "dataDependencies": ["Workshop", "WorkshopStage", "ContentProgress"],
   "uiStates": {
     "loading": {
       "description": "Skeleton placeholders shown while loading FR-E8-02 data."
@@ -56,19 +50,8 @@
   },
   "analytics": {
     "screenView": "workshop_phases_viewed",
-    "events": [
-      "workshop_phases_viewed",
-      "workshop_phase_tapped",
-      "workshop_resumed"
-    ]
+    "events": ["workshop_phases_viewed", "workshop_phase_tapped", "workshop_resumed"]
   },
-  "acceptanceCriteriaRefs": [
-    "AC-FR-E8-02-01",
-    "AC-FR-E8-02-02",
-    "AC-FR-E8-02-03",
-    "AC-FR-E8-02-04"
-  ],
-  "gates": [
-    "auth"
-  ]
+  "acceptanceCriteriaRefs": ["AC-FR-E8-02-01", "AC-FR-E8-02-02", "AC-FR-E8-02-03", "AC-FR-E8-02-04"],
+  "gates": ["auth"]
 }

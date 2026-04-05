@@ -1,14 +1,6 @@
 {
   "designSystem": "material3",
-  "primitives": [
-    "color",
-    "typography",
-    "shape",
-    "elevation",
-    "motion",
-    "iconography",
-    "spacing"
-  ],
+  "primitives": ["color", "typography", "shape", "elevation", "motion", "iconography", "spacing"],
   "components": [
     {
       "name": "NavigationBar",

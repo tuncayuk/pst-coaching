@@ -3,11 +3,7 @@
   "title": "Icerik bitis degerlendirmesi",
   "route": "/progress/completion-review",
   "purpose": "Implements FR-E6-05: Icerik bitis degerlendirmesi — evaluation form after content, deferral, next suggestion.",
-  "entryPoints": [
-    "content.journey_home",
-    "content.workshop_home",
-    "content.module_home"
-  ],
+  "entryPoints": ["content.journey_home", "content.workshop_home", "content.module_home"],
   "inputs": [
     {
       "name": "userId",
@@ -28,10 +24,7 @@
       "source": "route_params"
     }
   ],
-  "dataDependencies": [
-    "ContentProgress",
-    "CompletionReview"
-  ],
+  "dataDependencies": ["ContentProgress", "CompletionReview"],
   "uiStates": {
     "loading": {
       "description": "Skeleton for evaluation form."
@@ -58,12 +51,6 @@
       "progress_completion_next_suggestion_tapped"
     ]
   },
-  "acceptanceCriteriaRefs": [
-    "AC-FR-E6-05-01",
-    "AC-FR-E6-05-02",
-    "AC-FR-E6-05-03"
-  ],
-  "gates": [
-    "auth"
-  ]
+  "acceptanceCriteriaRefs": ["AC-FR-E6-05-01", "AC-FR-E6-05-02", "AC-FR-E6-05-03"],
+  "gates": ["auth"]
 }

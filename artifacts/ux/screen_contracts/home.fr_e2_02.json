@@ -3,9 +3,7 @@
   "title": "Abonelik durumu rozetleri",
   "route": "/home/subscription",
   "purpose": "HomeSubscriptionScreen shows plan badge (Aktif/Deneme/Iptal) in header area. Tapping badge opens this screen with plan details, active add-ons list, and paywall explanation for restricted content. AC-FR-E2-02-01/02/03.",
-  "entryPoints": [
-    "home.dashboard"
-  ],
+  "entryPoints": ["home.dashboard"],
   "inputs": [
     {
       "name": "userId",
@@ -26,12 +24,7 @@
       "source": "profile"
     }
   ],
-  "dataDependencies": [
-    "User",
-    "Subscription",
-    "ContentProgress",
-    "ReminderSetting"
-  ],
+  "dataDependencies": ["User", "Subscription", "ContentProgress", "ReminderSetting"],
   "uiStates": {
     "loading": {
       "description": "Skeleton badge placeholder in header while subscription data loads from entitlement cache."
@@ -58,12 +51,6 @@
       "home_paywall_upgrade_tapped"
     ]
   },
-  "acceptanceCriteriaRefs": [
-    "AC-FR-E2-02-01",
-    "AC-FR-E2-02-02",
-    "AC-FR-E2-02-03"
-  ],
-  "gates": [
-    "subscription"
-  ]
+  "acceptanceCriteriaRefs": ["AC-FR-E2-02-01", "AC-FR-E2-02-02", "AC-FR-E2-02-03"],
+  "gates": ["subscription"]
 }

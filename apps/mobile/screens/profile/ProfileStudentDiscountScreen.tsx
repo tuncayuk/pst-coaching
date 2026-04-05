@@ -1,32 +1,33 @@
-import React, { useState } from "react";
-import { Alert, StyleSheet, View } from "react-native";
-import { OfflineNotice } from "../components/OfflineNotice";
-import { ScreenLayout } from "../components/ScreenLayout";
-import { SectionCard } from "../components/SectionCard";
-import { SkeletonBlock } from "../components/SkeletonBlock";
-import { StateMessage } from "../components/StateMessage";
-import { resolveScreenState, ScreenState } from "../components/ScreenState";
-import { PButton, PCard, PChip, PText } from "../../components";
+import React, { useState } from 'react';
+import { Alert, StyleSheet, View } from 'react-native';
+
+import { PButton, PCard, PChip, PText } from '../../components';
+import { OfflineNotice } from '../components/OfflineNotice';
+import { ScreenLayout } from '../components/ScreenLayout';
+import { ScreenState, resolveScreenState } from '../components/ScreenState';
+import { SectionCard } from '../components/SectionCard';
+import { SkeletonBlock } from '../components/SkeletonBlock';
+import { StateMessage } from '../components/StateMessage';
 
 const STEPS = [
-  "Okul e-postanizi dogrulayip ogrenci belgesini yukleyin",
-  "Basvurunuz incelemeye alinir (1-2 is gunu)",
-  "Onaylandi: %50 indirim hesabiniza taninir",
-  "Yillik yeniden dogrulama hatirlatmasi gonderilir",
+  'Okul e-postanizi dogrulayip ogrenci belgesini yukleyin',
+  'Basvurunuz incelemeye alinir (1-2 is gunu)',
+  'Onaylandi: %50 indirim hesabiniza taninir',
+  'Yillik yeniden dogrulama hatirlatmasi gonderilir'
 ];
 
-type VerifyMethod = "email" | "document" | null;
+type VerifyMethod = 'email' | 'document' | null;
 
-type VerificationStatus = "none" | "pending" | "approved" | "expiring" | "expired";
-const MOCK_VERIFICATION_STATUS: VerificationStatus = "none";
+type VerificationStatus = 'none' | 'pending' | 'approved' | 'expiring' | 'expired';
+const MOCK_VERIFICATION_STATUS: VerificationStatus = 'none';
 // Change to "expiring" or "expired" to test AC-FR-E3-04-04
 
 const STATUS_CONFIG: Record<VerificationStatus, { label: string; bg: string; text: string }> = {
-  none:      { label: "Baslatilmamis", bg: "#F3F4F6", text: "#374151" },
-  pending:   { label: "Incelemede",    bg: "#FEF3C7", text: "#92400E" },
-  approved:  { label: "Onaylandi",     bg: "#D1FAE5", text: "#065F46" },
-  expiring:  { label: "Yaklasiyor",   bg: "#FEF3C7", text: "#92400E" },
-  expired:   { label: "Suresi Doldu",  bg: "#FEE2E2", text: "#991B1B" },
+  none: { label: 'Baslatilmamis', bg: '#F3F4F6', text: '#374151' },
+  pending: { label: 'Incelemede', bg: '#FEF3C7', text: '#92400E' },
+  approved: { label: 'Onaylandi', bg: '#D1FAE5', text: '#065F46' },
+  expiring: { label: 'Yaklasiyor', bg: '#FEF3C7', text: '#92400E' },
+  expired: { label: 'Suresi Doldu', bg: '#FEE2E2', text: '#991B1B' }
 };
 
 const ProfileStudentDiscountContent = ({ isOffline }: { isOffline?: boolean }) => {
@@ -39,34 +40,34 @@ const ProfileStudentDiscountContent = ({ isOffline }: { isOffline?: boolean }) =
   const handleStart = () => {
     if (isOffline) return;
     if (!verifyMethod) {
-      Alert.alert("Dogrulama Yontemi", "Lutfen bir dogrulama yontemi secin.");
+      Alert.alert('Dogrulama Yontemi', 'Lutfen bir dogrulama yontemi secin.');
       return;
     }
     // analytics: student_discount_started (stub)
     Alert.alert(
-      "Dogrulama Baslat",
-      verifyMethod === "email"
-        ? "Okul e-postaniza dogrulama linki gonderilecek."
-        : "Ogrenci belgenizi yuklemeniz icin yonlendiriliyorsunuz.",
-      [{ text: "Tamam" }]
+      'Dogrulama Baslat',
+      verifyMethod === 'email'
+        ? 'Okul e-postaniza dogrulama linki gonderilecek.'
+        : 'Ogrenci belgenizi yuklemeniz icin yonlendiriliyorsunuz.',
+      [{ text: 'Tamam' }]
     );
   };
 
   return (
     <>
       {/* AC-FR-E3-04-04: expiry warning */}
-      {(statusKey === "expiring" || statusKey === "expired") && (
+      {(statusKey === 'expiring' || statusKey === 'expired') && (
         <View style={styles.expiryBanner}>
           <PText variant="bodySmall" style={styles.expiryText}>
-            {statusKey === "expired"
-              ? "Ogrenci indirim dogrulamanizin suresi dolmustur. Erisim 30 gun icinde kesilecektir."
-              : "Yillik ogrenci dogrulamaniz yaklasiyor. Lutfen yenileyin."}
+            {statusKey === 'expired'
+              ? 'Ogrenci indirim dogrulamanizin suresi dolmustur. Erisim 30 gun icinde kesilecektir.'
+              : 'Yillik ogrenci dogrulamaniz yaklasiyor. Lutfen yenileyin.'}
           </PText>
           <PButton
             mode="text"
             compact
             disabled={isOffline}
-            onPress={() => Alert.alert("Yenile", "Yeniden dogrulama akisi baslatilacak.")}
+            onPress={() => Alert.alert('Yenile', 'Yeniden dogrulama akisi baslatilacak.')}
             accessibilityLabel="Ogrenci dogrulamasini yenile"
             accessibilityRole="button"
           >
@@ -80,7 +81,9 @@ const ProfileStudentDiscountContent = ({ isOffline }: { isOffline?: boolean }) =
         <PCard style={styles.card}>
           <PCard.Content style={styles.cardRow}>
             <View>
-              <PText variant="bodyMedium" style={styles.statusLabel}>Ogrenci Indirimi</PText>
+              <PText variant="bodyMedium" style={styles.statusLabel}>
+                Ogrenci Indirimi
+              </PText>
               {/* AC-FR-E3-04-02: 50% discount benefit shown */}
               <PText variant="bodySmall" style={styles.discountBadge}>
                 %50 indirim - bireysel planlara uygulanir
@@ -91,11 +94,11 @@ const ProfileStudentDiscountContent = ({ isOffline }: { isOffline?: boolean }) =
             </PChip>
           </PCard.Content>
         </PCard>
-        {statusKey !== "none" && (
+        {statusKey !== 'none' && (
           <PButton
             mode="text"
             disabled={isOffline}
-            onPress={() => Alert.alert("Durum", "Dogrulama durumunuz kontrol ediliyor.")}
+            onPress={() => Alert.alert('Durum', 'Dogrulama durumunuz kontrol ediliyor.')}
             accessibilityLabel="Dogrulama durumunu kontrol et"
             accessibilityRole="button"
           >
@@ -105,12 +108,11 @@ const ProfileStudentDiscountContent = ({ isOffline }: { isOffline?: boolean }) =
       </SectionCard>
 
       {/* AC-FR-E3-04-03: privacy notice shown BEFORE start */}
-      {statusKey === "none" && !privacyAccepted && (
+      {statusKey === 'none' && !privacyAccepted && (
         <SectionCard title="Gizlilik Bildirimi">
           <PText variant="bodySmall" style={styles.privacyText}>
-            Ogrenci indiriminden yararlanmak icin okul bilgilerinizi paylasmaniz gerekmektedir.
-            Bu bilgiler yalnizca dogrulama amaciyla kullanilir ve ucuncu taraflarla paylasilmaz.
-            Dogrulama tamamlandiginda belgeler silinir.
+            Ogrenci indiriminden yararlanmak icin okul bilgilerinizi paylasmaniz gerekmektedir. Bu bilgiler yalnizca
+            dogrulama amaciyla kullanilir ve ucuncu taraflarla paylasilmaz. Dogrulama tamamlandiginda belgeler silinir.
           </PText>
           <PButton
             mode="contained"
@@ -126,20 +128,20 @@ const ProfileStudentDiscountContent = ({ isOffline }: { isOffline?: boolean }) =
       )}
 
       {/* AC-FR-E3-04-01: verification method selection */}
-      {(privacyAccepted || statusKey !== "none") && statusKey !== "approved" && (
+      {(privacyAccepted || statusKey !== 'none') && statusKey !== 'approved' && (
         <SectionCard title="Dogrulama Yontemi">
           <PText variant="bodySmall" style={styles.methodLabel}>
             Bir dogrulama yontemi secin:
           </PText>
           <View style={styles.methodRow}>
             <View
-              style={[styles.methodCard, verifyMethod === "email" && styles.methodCardSelected]}
+              style={[styles.methodCard, verifyMethod === 'email' && styles.methodCardSelected]}
               accessibilityRole="radio"
-              accessibilityState={{ selected: verifyMethod === "email" }}
+              accessibilityState={{ selected: verifyMethod === 'email' }}
             >
               <PButton
-                mode={verifyMethod === "email" ? "contained" : "outlined"}
-                onPress={() => setVerifyMethod("email")}
+                mode={verifyMethod === 'email' ? 'contained' : 'outlined'}
+                onPress={() => setVerifyMethod('email')}
                 disabled={isOffline}
                 style={styles.methodButton}
                 accessibilityLabel="Okul e-postasi ile dogrula"
@@ -152,13 +154,13 @@ const ProfileStudentDiscountContent = ({ isOffline }: { isOffline?: boolean }) =
               </PText>
             </View>
             <View
-              style={[styles.methodCard, verifyMethod === "document" && styles.methodCardSelected]}
+              style={[styles.methodCard, verifyMethod === 'document' && styles.methodCardSelected]}
               accessibilityRole="radio"
-              accessibilityState={{ selected: verifyMethod === "document" }}
+              accessibilityState={{ selected: verifyMethod === 'document' }}
             >
               <PButton
-                mode={verifyMethod === "document" ? "contained" : "outlined"}
-                onPress={() => setVerifyMethod("document")}
+                mode={verifyMethod === 'document' ? 'contained' : 'outlined'}
+                onPress={() => setVerifyMethod('document')}
                 disabled={isOffline}
                 style={styles.methodButton}
                 accessibilityLabel="Ogrenci belgesi yukle"
@@ -201,14 +203,10 @@ const ProfileStudentDiscountContent = ({ isOffline }: { isOffline?: boolean }) =
   );
 };
 
-export const ProfileStudentDiscountScreen = ({
-  route,
-}: {
-  route?: { params?: { state?: ScreenState } };
-}) => {
+export const ProfileStudentDiscountScreen = ({ route }: { route?: { params?: { state?: ScreenState } } }) => {
   const state = resolveScreenState(route);
 
-  if (state === "loading") {
+  if (state === 'loading') {
     return (
       <ScreenLayout title="Ogrenci Indirimi" subtitle="Dogrulama hazirlaniyor">
         <SectionCard title="Durum">
@@ -221,7 +219,7 @@ export const ProfileStudentDiscountScreen = ({
     );
   }
 
-  if (state === "empty") {
+  if (state === 'empty') {
     return (
       <ScreenLayout title="Ogrenci Indirimi" subtitle="Dogrulama">
         <StateMessage
@@ -234,7 +232,7 @@ export const ProfileStudentDiscountScreen = ({
     );
   }
 
-  if (state === "error") {
+  if (state === 'error') {
     return (
       <ScreenLayout title="Ogrenci Indirimi" subtitle="Bir sorun olustu">
         <StateMessage
@@ -248,7 +246,7 @@ export const ProfileStudentDiscountScreen = ({
     );
   }
 
-  if (state === "offline") {
+  if (state === 'offline') {
     return (
       <ScreenLayout title="Ogrenci Indirimi" subtitle="Onbellekteki bilgiler">
         <OfflineNotice />
@@ -266,102 +264,97 @@ export const ProfileStudentDiscountScreen = ({
 
 const styles = StyleSheet.create({
   expiryBanner: {
-    backgroundColor: "#FEE2E2",
+    backgroundColor: '#FEE2E2',
     borderRadius: 8,
     padding: 12,
     marginBottom: 8,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between'
   },
   expiryText: {
-    color: "#991B1B",
+    color: '#991B1B',
     flex: 1,
-    lineHeight: 18,
+    lineHeight: 18
   },
   card: {
-    marginBottom: 8,
+    marginBottom: 8
   },
   cardRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between'
   },
   statusLabel: {
-    fontWeight: "600",
-    color: "#1F2937",
+    fontWeight: '600',
+    color: '#1F2937'
   },
   discountBadge: {
-    color: "#059669",
+    color: '#059669',
     marginTop: 2,
-    fontWeight: "600",
+    fontWeight: '600'
   },
   privacyText: {
-    color: "#374151",
+    color: '#374151',
     lineHeight: 20,
-    marginBottom: 12,
+    marginBottom: 12
   },
   privacyButton: {
-    minHeight: 48,
+    minHeight: 48
   },
   methodLabel: {
-    color: "#6B7280",
-    marginBottom: 10,
+    color: '#6B7280',
+    marginBottom: 10
   },
   methodRow: {
-    flexDirection: "row",
+    flexDirection: 'row',
     gap: 10,
-    marginBottom: 12,
+    marginBottom: 12
   },
   methodCard: {
     flex: 1,
     borderRadius: 8,
-    padding: 4,
+    padding: 4
   },
   methodCardSelected: {
-    backgroundColor: "#FAF5FF",
+    backgroundColor: '#FAF5FF'
   },
   methodButton: {
     marginBottom: 4,
-    minHeight: 44,
+    minHeight: 44
   },
   methodDesc: {
-    textAlign: "center",
-    color: "#6B7280",
-    lineHeight: 16,
+    textAlign: 'center',
+    color: '#6B7280',
+    lineHeight: 16
   },
   startButton: {
-    minHeight: 48,
+    minHeight: 48
   },
   stepRow: {
-    flexDirection: "row",
-    alignItems: "flex-start",
+    flexDirection: 'row',
+    alignItems: 'flex-start',
     marginBottom: 10,
-    gap: 10,
+    gap: 10
   },
   stepNumber: {
     width: 24,
     height: 24,
     borderRadius: 12,
-    backgroundColor: "#7C3AED",
-    justifyContent: "center",
-    alignItems: "center",
+    backgroundColor: '#7C3AED',
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   stepNumberText: {
-    color: "#FFFFFF",
+    color: '#FFFFFF',
     fontSize: 12,
-    fontWeight: "700",
+    fontWeight: '700'
   },
   stepText: {
     flex: 1,
-    color: "#374151",
-    lineHeight: 20,
-  },
+    color: '#374151',
+    lineHeight: 20
+  }
 });
 
-
-const steps = [
-  "Okul e-postanizi dogrulayip ogrenci belgesini yukleyin",
-  "Ogrenci belgesi yukle",
-  "Sonucu bekle",
-];
+const steps = ['Okul e-postanizi dogrulayip ogrenci belgesini yukleyin', 'Ogrenci belgesi yukle', 'Sonucu bekle'];

@@ -1,26 +1,27 @@
-import React, { useRef, useState } from "react";
-import { StyleSheet, TextInput, View } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { OfflineNotice } from "../components/OfflineNotice";
-import { ScreenLayout } from "../components/ScreenLayout";
-import { SectionCard } from "../components/SectionCard";
-import { SkeletonBlock } from "../components/SkeletonBlock";
-import { StateMessage } from "../components/StateMessage";
-import { resolveScreenState, ScreenState } from "../components/ScreenState";
-import { PActivityIndicator, PButton, PCard, PChip, PTextInput } from "../../components";
+import { useNavigation } from '@react-navigation/native';
+import React, { useRef, useState } from 'react';
+import { StyleSheet, TextInput, View } from 'react-native';
 
-const QUICK_FILTERS = ["Yolculuk", "Atolye", "Modul", "e-Kitap"] as const;
+import { PActivityIndicator, PButton, PCard, PChip, PTextInput } from '../../components';
+import { OfflineNotice } from '../components/OfflineNotice';
+import { ScreenLayout } from '../components/ScreenLayout';
+import { ScreenState, resolveScreenState } from '../components/ScreenState';
+import { SectionCard } from '../components/SectionCard';
+import { SkeletonBlock } from '../components/SkeletonBlock';
+import { StateMessage } from '../components/StateMessage';
+
+const QUICK_FILTERS = ['Yolculuk', 'Atolye', 'Modul', 'e-Kitap'] as const;
 type QuickFilter = (typeof QUICK_FILTERS)[number] | null;
 
-const recentSearches = ["Oz sefkat", "Sinir koyma", "Nefes egzersizi"];
+const recentSearches = ['Oz sefkat', 'Sinir koyma', 'Nefes egzersizi'];
 const popularTopics = [
-  { title: "Duygusal Dayaniklilik", subtitle: "6 gun -- 4 icerik" },
-  { title: "Zor Konusmalar", subtitle: "2 bolum -- 35 dk" },
+  { title: 'Duygusal Dayaniklilik', subtitle: '6 gun -- 4 icerik' },
+  { title: 'Zor Konusmalar', subtitle: '2 bolum -- 35 dk' }
 ];
 
 const HomeSearchContent = ({ isOffline }: { isOffline?: boolean }) => {
   const navigation = useNavigation<any>();
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState('');
   const [activeFilter, setActiveFilter] = useState<QuickFilter>(null);
   const inputRef = useRef<TextInput>(null);
 
@@ -28,13 +29,13 @@ const HomeSearchContent = ({ isOffline }: { isOffline?: boolean }) => {
 
   const handleSearch = () => {
     if (!canSearch) return;
-    navigation.navigate("HomeSearchResults", { query: query.trim(), activeFilter });
+    navigation.navigate('HomeSearchResults', { query: query.trim(), activeFilter });
   };
 
   const handleRecentTap = (term: string) => {
     if (isOffline) return;
     setQuery(term);
-    navigation.navigate("HomeSearchResults", { query: term, activeFilter });
+    navigation.navigate('HomeSearchResults', { query: term, activeFilter });
   };
 
   return (
@@ -55,14 +56,14 @@ const HomeSearchContent = ({ isOffline }: { isOffline?: boolean }) => {
           accessibilityHint="Aramak istediginiz kelimeyi yazin"
         />
         <View style={styles.chipRow}>
-          {QUICK_FILTERS.map((label) => (
+          {QUICK_FILTERS.map(label => (
             <PChip
               key={label}
               style={[styles.chip, activeFilter === label && styles.chipActive]}
               selected={activeFilter === label}
               onPress={() => !isOffline && setActiveFilter(activeFilter === label ? null : label)}
               disabled={isOffline}
-              accessibilityLabel={`Filtre: ${label}${activeFilter === label ? ", secili" : ""}`}
+              accessibilityLabel={`Filtre: ${label}${activeFilter === label ? ', secili' : ''}`}
               accessibilityRole="button"
             >
               {label}
@@ -82,7 +83,7 @@ const HomeSearchContent = ({ isOffline }: { isOffline?: boolean }) => {
 
       <SectionCard title="Son Aramalar" actionLabel="Temizle">
         <View style={styles.chipRow}>
-          {recentSearches.map((term) => (
+          {recentSearches.map(term => (
             <PChip
               key={term}
               style={styles.chip}
@@ -98,7 +99,7 @@ const HomeSearchContent = ({ isOffline }: { isOffline?: boolean }) => {
       </SectionCard>
 
       <SectionCard title="Populer Konular" actionLabel="Tumu">
-        {popularTopics.map((topic) => (
+        {popularTopics.map(topic => (
           <PCard key={topic.title} style={styles.card}>
             <PCard.Title title={topic.title} subtitle={topic.subtitle} />
             <PCard.Actions>
@@ -121,7 +122,7 @@ const HomeSearchContent = ({ isOffline }: { isOffline?: boolean }) => {
 export const HomeSearchScreen = ({ route }: { route?: { params?: { state?: ScreenState } } }) => {
   const state = resolveScreenState(route);
 
-  if (state === "loading") {
+  if (state === 'loading') {
     return (
       <ScreenLayout title="Arama" subtitle="Arama yukleniyor">
         <SectionCard title="Yukleniyor">
@@ -137,7 +138,7 @@ export const HomeSearchScreen = ({ route }: { route?: { params?: { state?: Scree
     );
   }
 
-  if (state === "empty") {
+  if (state === 'empty') {
     return (
       <ScreenLayout title="Arama" subtitle="Yeni icerikler kesfe">
         <StateMessage
@@ -150,7 +151,7 @@ export const HomeSearchScreen = ({ route }: { route?: { params?: { state?: Scree
     );
   }
 
-  if (state === "error") {
+  if (state === 'error') {
     return (
       <ScreenLayout title="Arama" subtitle="Bir sorun olustu">
         <StateMessage
@@ -164,7 +165,7 @@ export const HomeSearchScreen = ({ route }: { route?: { params?: { state?: Scree
     );
   }
 
-  if (state === "offline") {
+  if (state === 'offline') {
     return (
       <ScreenLayout title="Arama" subtitle="Cevrimdisi mod">
         <OfflineNotice />
@@ -182,22 +183,22 @@ export const HomeSearchScreen = ({ route }: { route?: { params?: { state?: Scree
 
 const styles = StyleSheet.create({
   input: {
-    marginBottom: 12,
+    marginBottom: 12
   },
   chipRow: {
-    flexDirection: "row",
-    flexWrap: "wrap",
+    flexDirection: 'row',
+    flexWrap: 'wrap',
     gap: 8,
-    marginBottom: 12,
+    marginBottom: 12
   },
   chip: {
-    minHeight: 36,
+    minHeight: 36
   },
   chipActive: {
     borderWidth: 2,
-    borderColor: "#00B4D8",
+    borderColor: '#00B4D8'
   },
   card: {
-    marginBottom: 12,
-  },
+    marginBottom: 12
+  }
 });

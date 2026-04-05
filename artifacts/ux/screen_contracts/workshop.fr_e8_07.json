@@ -3,10 +3,7 @@
   "title": "Takip plani ve davranis surekliligi",
   "route": "/workshop/followup",
   "purpose": "Implements FR-E8-07: 72 saatlik toparlanma, 3 haftalik takip, 30 gunluk plan, niyet/cumleler/adimlar ve hatirlatici.",
-  "entryPoints": [
-    "workshop.completion",
-    "workshop.phases"
-  ],
+  "entryPoints": ["workshop.completion", "workshop.phases"],
   "inputs": [
     {
       "name": "userId",
@@ -33,12 +30,7 @@
       "source": "profile"
     }
   ],
-  "dataDependencies": [
-    "Workshop",
-    "FollowUpPlan",
-    "Reminder",
-    "ContentProgress"
-  ],
+  "dataDependencies": ["Workshop", "FollowUpPlan", "Reminder", "ContentProgress"],
   "uiStates": {
     "loading": {
       "description": "Skeleton placeholders shown while loading FR-E8-07 data."
@@ -58,20 +50,8 @@
   },
   "analytics": {
     "screenView": "workshop_followup_viewed",
-    "events": [
-      "workshop_followup_viewed",
-      "followup_plan_saved",
-      "followup_reminder_set"
-    ]
+    "events": ["workshop_followup_viewed", "followup_plan_saved", "followup_reminder_set"]
   },
-  "acceptanceCriteriaRefs": [
-    "AC-FR-E8-07-01",
-    "AC-FR-E8-07-02",
-    "AC-FR-E8-07-03",
-    "AC-FR-E8-07-04"
-  ],
-  "gates": [
-    "auth",
-    "subscription"
-  ]
+  "acceptanceCriteriaRefs": ["AC-FR-E8-07-01", "AC-FR-E8-07-02", "AC-FR-E8-07-03", "AC-FR-E8-07-04"],
+  "gates": ["auth", "subscription"]
 }

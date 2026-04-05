@@ -3,10 +3,7 @@
   "title": "Yuksek kontrast ve tema",
   "route": "/accessibility/theme",
   "purpose": "Implements FR-E10-03: Tema secimi (Acik/Koyu/Sistem), yuksek kontrast 7:1, renk koru deseni.",
-  "entryPoints": [
-    "profile.accessibility",
-    "accessibility.fr_e10_01"
-  ],
+  "entryPoints": ["profile.accessibility", "accessibility.fr_e10_01"],
   "inputs": [
     {
       "name": "userId",
@@ -21,9 +18,7 @@
       "source": "accessibility_settings"
     }
   ],
-  "dataDependencies": [
-    "AccessibilitySettings"
-  ],
+  "dataDependencies": ["AccessibilitySettings"],
   "uiStates": {
     "loading": {
       "description": "Skeleton shown while loading theme and contrast settings."
@@ -43,19 +38,8 @@
   },
   "analytics": {
     "screenView": "theme_settings_viewed",
-    "events": [
-      "theme_settings_viewed",
-      "theme_changed",
-      "high_contrast_toggled",
-      "color_blind_mode_changed"
-    ]
+    "events": ["theme_settings_viewed", "theme_changed", "high_contrast_toggled", "color_blind_mode_changed"]
   },
-  "acceptanceCriteriaRefs": [
-    "AC-FR-E10-03-01",
-    "AC-FR-E10-03-02",
-    "AC-FR-E10-03-03"
-  ],
-  "gates": [
-    "auth"
-  ]
+  "acceptanceCriteriaRefs": ["AC-FR-E10-03-01", "AC-FR-E10-03-02", "AC-FR-E10-03-03"],
+  "gates": ["auth"]
 }

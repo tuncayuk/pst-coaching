@@ -3,9 +3,7 @@
   "title": "Bugun ozeti ve tekil devam CTA",
   "route": "/home",
   "purpose": "Today summary card embedded in home.dashboard. Shows active content target, countdown to 23:59, single Devam Et CTA (AC-FR-E2-01-01/02). If no active content, shows Kesfe Cik link (AC-FR-E2-01-03). Offline: last synced summary (AC-FR-E2-01-04).",
-  "entryPoints": [
-    "home.dashboard"
-  ],
+  "entryPoints": ["home.dashboard"],
   "inputs": [
     {
       "name": "userId",
@@ -26,12 +24,7 @@
       "source": "profile"
     }
   ],
-  "dataDependencies": [
-    "User",
-    "Subscription",
-    "ContentProgress",
-    "ReminderSetting"
-  ],
+  "dataDependencies": ["User", "Subscription", "ContentProgress", "ReminderSetting"],
   "uiStates": {
     "loading": {
       "description": "Skeleton card (height 120) with shimmer animation while ContentProgress loads. PActivityIndicator shown."
@@ -51,17 +44,8 @@
   },
   "analytics": {
     "screenView": "home_fr_e2_01_viewed",
-    "events": [
-      "home_continue_cta_tapped",
-      "home_today_card_viewed",
-      "home_discover_redirect_tapped"
-    ]
+    "events": ["home_continue_cta_tapped", "home_today_card_viewed", "home_discover_redirect_tapped"]
   },
-  "acceptanceCriteriaRefs": [
-    "AC-FR-E2-01-01",
-    "AC-FR-E2-01-02",
-    "AC-FR-E2-01-03",
-    "AC-FR-E2-01-04"
-  ],
+  "acceptanceCriteriaRefs": ["AC-FR-E2-01-01", "AC-FR-E2-01-02", "AC-FR-E2-01-03", "AC-FR-E2-01-04"],
   "gates": []
 }

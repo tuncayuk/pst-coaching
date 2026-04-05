@@ -3,10 +3,7 @@
   "title": "Katilimci defteri ve calisma kagitlari",
   "route": "/workshop/workbook",
   "purpose": "Implements FR-E8-06: Yapilandirilmis calisma kagitlari, otomatik kayit, devam et ve gizlilik onayi ile disari aktarim.",
-  "entryPoints": [
-    "workshop.phases",
-    "workshop.section"
-  ],
+  "entryPoints": ["workshop.phases", "workshop.section"],
   "inputs": [
     {
       "name": "userId",
@@ -33,11 +30,7 @@
       "source": "profile"
     }
   ],
-  "dataDependencies": [
-    "Workshop",
-    "WorkbookEntry",
-    "ContentProgress"
-  ],
+  "dataDependencies": ["Workshop", "WorkbookEntry", "ContentProgress"],
   "uiStates": {
     "loading": {
       "description": "Skeleton placeholders shown while loading FR-E8-06 data."
@@ -57,19 +50,8 @@
   },
   "analytics": {
     "screenView": "workshop_workbook_viewed",
-    "events": [
-      "workshop_workbook_viewed",
-      "workbook_entry_saved",
-      "workbook_exported"
-    ]
+    "events": ["workshop_workbook_viewed", "workbook_entry_saved", "workbook_exported"]
   },
-  "acceptanceCriteriaRefs": [
-    "AC-FR-E8-06-01",
-    "AC-FR-E8-06-02",
-    "AC-FR-E8-06-03",
-    "AC-FR-E8-06-04"
-  ],
-  "gates": [
-    "auth"
-  ]
+  "acceptanceCriteriaRefs": ["AC-FR-E8-06-01", "AC-FR-E8-06-02", "AC-FR-E8-06-03", "AC-FR-E8-06-04"],
+  "gates": ["auth"]
 }

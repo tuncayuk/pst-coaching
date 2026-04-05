@@ -3,9 +3,7 @@
   "title": "Gelisim raporu (indir/paylas)",
   "route": "/progress/report-export",
   "purpose": "Implements FR-E6-06: Gelisim raporu — summary metrics, PDF download, privacy consent before sharing.",
-  "entryPoints": [
-    "progress.dashboard"
-  ],
+  "entryPoints": ["progress.dashboard"],
   "inputs": [
     {
       "name": "userId",
@@ -14,11 +12,7 @@
       "source": "session"
     }
   ],
-  "dataDependencies": [
-    "ContentProgress",
-    "Achievement",
-    "EmotionLog"
-  ],
+  "dataDependencies": ["ContentProgress", "Achievement", "EmotionLog"],
   "uiStates": {
     "loading": {
       "description": "Skeleton for report summary and export actions."
@@ -47,12 +41,6 @@
       "progress_report_share_consent_declined"
     ]
   },
-  "acceptanceCriteriaRefs": [
-    "AC-FR-E6-06-01",
-    "AC-FR-E6-06-02",
-    "AC-FR-E6-06-03"
-  ],
-  "gates": [
-    "auth"
-  ]
+  "acceptanceCriteriaRefs": ["AC-FR-E6-06-01", "AC-FR-E6-06-02", "AC-FR-E6-06-03"],
+  "gates": ["auth"]
 }

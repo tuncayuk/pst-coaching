@@ -3,9 +3,7 @@
   "title": "Icerik takibi",
   "route": "/coach/client/content",
   "purpose": "Implements FR-E12-03: Icerik takibi.",
-  "entryPoints": [
-    "coach.dashboard"
-  ],
+  "entryPoints": ["coach.dashboard"],
   "inputs": [
     {
       "name": "userId",
@@ -26,15 +24,7 @@
       "source": "navigation"
     }
   ],
-  "dataDependencies": [
-    "User",
-    "ContentProgress",
-    "CoachAssignment",
-    "Journey",
-    "Workshop",
-    "Ebook",
-    "EbookProgress"
-  ],
+  "dataDependencies": ["User", "ContentProgress", "CoachAssignment", "Journey", "Workshop", "Ebook", "EbookProgress"],
   "uiStates": {
     "loading": {
       "description": "Skeleton placeholders shown while loading FR-E12-03 data."
@@ -54,19 +44,8 @@
   },
   "analytics": {
     "screenView": "coach_fr_e12_03_viewed",
-    "events": [
-      "coach_content_tracking_viewed",
-      "content_item_drilled"
-    ]
+    "events": ["coach_content_tracking_viewed", "content_item_drilled"]
   },
-  "acceptanceCriteriaRefs": [
-    "AC-FR-E12-03-01",
-    "AC-FR-E12-03-02",
-    "AC-FR-E12-03-03",
-    "AC-FR-E12-03-04"
-  ],
-  "gates": [
-    "auth",
-    "coach_role"
-  ]
+  "acceptanceCriteriaRefs": ["AC-FR-E12-03-01", "AC-FR-E12-03-02", "AC-FR-E12-03-03", "AC-FR-E12-03-04"],
+  "gates": ["auth", "coach_role"]
 }

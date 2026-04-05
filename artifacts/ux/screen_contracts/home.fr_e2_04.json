@@ -3,9 +3,7 @@
   "title": "Vicdandan Karaktere bilgilendirmesi",
   "route": "/home/vicdandan-karaktere",
   "purpose": "HomeVicdandanKaraktereDetailScreen. Summary card on home dashboard (AC-FR-E2-04-01). Daha Fazla Goster navigates to this detail screen (AC-FR-E2-04-02). Offline: served from cache (AC-FR-E2-04-03).",
-  "entryPoints": [
-    "home.dashboard"
-  ],
+  "entryPoints": ["home.dashboard"],
   "inputs": [
     {
       "name": "userId",
@@ -26,12 +24,7 @@
       "source": "profile"
     }
   ],
-  "dataDependencies": [
-    "User",
-    "Subscription",
-    "ContentProgress",
-    "ReminderSetting"
-  ],
+  "dataDependencies": ["User", "Subscription", "ContentProgress", "ReminderSetting"],
   "uiStates": {
     "loading": {
       "description": "Skeleton: title placeholder, 2x paragraph blocks, progress card skeleton, outline steps skeleton."
@@ -58,10 +51,6 @@
       "home_vicdandan_outline_step_tapped"
     ]
   },
-  "acceptanceCriteriaRefs": [
-    "AC-FR-E2-04-01",
-    "AC-FR-E2-04-02",
-    "AC-FR-E2-04-03"
-  ],
+  "acceptanceCriteriaRefs": ["AC-FR-E2-04-01", "AC-FR-E2-04-02", "AC-FR-E2-04-03"],
   "gates": []
 }

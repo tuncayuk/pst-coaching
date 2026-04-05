@@ -1,4 +1,4 @@
-export type ScreenState = "loading" | "ready" | "empty" | "error" | "offline";
+export type ScreenState = 'loading' | 'ready' | 'empty' | 'error' | 'offline';
 
 type RouteWithState = {
   params?: {
@@ -10,5 +10,5 @@ export const resolveScreenState = (route?: RouteWithState): ScreenState => {
   if (route?.params?.state) {
     return route.params.state;
   }
-  return "ready";
+  return 'ready';
 };

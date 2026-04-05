@@ -1,18 +1,18 @@
-import React from "react";
-import { StyleSheet, View, TouchableOpacity, ScrollView } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { OfflineNotice } from "../components/OfflineNotice";
-import { ScreenLayout } from "../components/ScreenLayout";
-import { SectionCard } from "../components/SectionCard";
-import { SkeletonBlock } from "../components/SkeletonBlock";
-import { StateMessage } from "../components/StateMessage";
-import { resolveScreenState, ScreenState } from "../components/ScreenState";
-import { PActivityIndicator, PButton, PText, PTextInput } from "../../components";
+import { useNavigation } from '@react-navigation/native';
+import React from 'react';
+import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { PActivityIndicator, PButton, PText, PTextInput } from '../../components';
+import { OfflineNotice } from '../components/OfflineNotice';
+import { ScreenLayout } from '../components/ScreenLayout';
+import { ScreenState, resolveScreenState } from '../components/ScreenState';
+import { SectionCard } from '../components/SectionCard';
+import { SkeletonBlock } from '../components/SkeletonBlock';
+import { StateMessage } from '../components/StateMessage';
 
 const ForgotPasswordContent = ({ isOffline }: { isOffline?: boolean }) => {
-  const [email, setEmail] = React.useState("");
+  const [email, setEmail] = React.useState('');
   const [hasSent, setHasSent] = React.useState(false);
   const navigation = useNavigation<any>();
   const isValid = email.length > 3;
@@ -45,7 +45,7 @@ const ForgotPasswordContent = ({ isOffline }: { isOffline?: boolean }) => {
             autoCapitalize="none"
             keyboardType="email-address"
             value={email}
-            onChangeText={(value) => {
+            onChangeText={value => {
               setEmail(value);
               if (hasSent) setHasSent(false);
             }}
@@ -62,18 +62,14 @@ const ForgotPasswordContent = ({ isOffline }: { isOffline?: boolean }) => {
           onPress={() => {
             setHasSent(true);
             setTimeout(() => {
-              navigation.navigate("AuthOtpVerify", { source: "forgot-password" });
+              navigation.navigate('AuthOtpVerify', { source: 'forgot-password' });
             }, 300);
           }}
           style={styles.button}
         >
           Kod Gönder
         </PButton>
-        {hasSent ? (
-          <PText style={styles.successText}>
-            Doğrulama kodu gönderildi. Yönlendiriliyorsunuz...
-          </PText>
-        ) : null}
+        {hasSent ? <PText style={styles.successText}>Doğrulama kodu gönderildi. Yönlendiriliyorsunuz...</PText> : null}
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backLink}>
           <PText style={styles.backLinkText}>← Giriş Sayfasına Dön</PText>
         </TouchableOpacity>
@@ -82,14 +78,10 @@ const ForgotPasswordContent = ({ isOffline }: { isOffline?: boolean }) => {
   );
 };
 
-export const AuthForgotPasswordScreen = ({
-  route,
-}: {
-  route?: { params?: { state?: ScreenState } };
-}) => {
+export const AuthForgotPasswordScreen = ({ route }: { route?: { params?: { state?: ScreenState } } }) => {
   const state = resolveScreenState(route);
 
-  if (state === "loading") {
+  if (state === 'loading') {
     return (
       <ScreenLayout title="Şifremi Unuttum" subtitle="Yükleniyor">
         <SectionCard title="Yükleniyor">
@@ -101,7 +93,7 @@ export const AuthForgotPasswordScreen = ({
     );
   }
 
-  if (state === "empty") {
+  if (state === 'empty') {
     return (
       <ScreenLayout title="Şifremi Unuttum" subtitle="Bilgi bulunamadı">
         <StateMessage
@@ -114,7 +106,7 @@ export const AuthForgotPasswordScreen = ({
     );
   }
 
-  if (state === "error") {
+  if (state === 'error') {
     return (
       <ScreenLayout title="Şifremi Unuttum" subtitle="Bir sorun oluştu">
         <StateMessage
@@ -128,7 +120,7 @@ export const AuthForgotPasswordScreen = ({
     );
   }
 
-  if (state === "offline") {
+  if (state === 'offline') {
     return (
       <>
         <OfflineNotice />
@@ -143,81 +135,81 @@ export const AuthForgotPasswordScreen = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FAFAFA",
+    backgroundColor: '#FAFAFA'
   },
   scrollContent: {
     paddingHorizontal: 24,
     paddingTop: 24,
-    paddingBottom: 32,
+    paddingBottom: 32
   },
   backButton: {
     width: 40,
     height: 40,
-    alignItems: "center",
-    justifyContent: "center",
-    marginBottom: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 16
   },
   backButtonText: {
     fontSize: 24,
-    color: "#171717",
+    color: '#171717'
   },
   iconContainer: {
-    alignItems: "center",
-    marginBottom: 16,
+    alignItems: 'center',
+    marginBottom: 16
   },
   icon: {
-    fontSize: 64,
+    fontSize: 64
   },
   title: {
     fontSize: 24,
-    fontWeight: "700",
-    color: "#2B1B5D",
+    fontWeight: '700',
+    color: '#2B1B5D',
     marginBottom: 8,
-    textAlign: "center",
+    textAlign: 'center'
   },
   description: {
-    color: "#525252",
+    color: '#525252',
     marginBottom: 32,
-    textAlign: "center",
-    lineHeight: 24,
+    textAlign: 'center',
+    lineHeight: 24
   },
   inputGroup: {
-    marginBottom: 24,
+    marginBottom: 24
   },
   label: {
     fontSize: 14,
-    fontWeight: "600",
-    color: "#404040",
-    marginBottom: 8,
+    fontWeight: '600',
+    color: '#404040',
+    marginBottom: 8
   },
   input: {
-    backgroundColor: "#FFFFFF",
+    backgroundColor: '#FFFFFF'
   },
   inputContent: {
-    paddingVertical: 16,
+    paddingVertical: 16
   },
   inputOutline: {
     borderWidth: 2,
     borderRadius: 12,
-    borderColor: "#D4D4D4",
+    borderColor: '#D4D4D4'
   },
   button: {
     marginBottom: 16,
-    borderRadius: 12,
+    borderRadius: 12
   },
   successText: {
-    textAlign: "center",
-    color: "#10B981",
+    textAlign: 'center',
+    color: '#10B981',
     fontSize: 13,
-    marginBottom: 12,
+    marginBottom: 12
   },
   backLink: {
-    alignItems: "center",
-    marginTop: 8,
+    alignItems: 'center',
+    marginTop: 8
   },
   backLinkText: {
-    color: "#00B4D8",
-    fontWeight: "600",
-    fontSize: 15,
-  },
+    color: '#00B4D8',
+    fontWeight: '600',
+    fontSize: 15
+  }
 });

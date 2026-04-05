@@ -1,1275 +1,1418 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="tr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>PST Coaching Mobile - EPIC 14: Kitap Kulubu</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap"
+      rel="stylesheet"
+    />
     <style>
-        :root {
-            --primary: #7c2d12;
-            --primary-dark: #9a3412;
-            --primary-light: #ffedd5;
-            --secondary: #1f2937;
-            --success: #16a34a;
-            --success-light: #dcfce7;
-            --warning: #b45309;
-            --warning-light: #fef3c7;
-            --error: #dc2626;
-            --error-light: #fee2e2;
-            --violet: #7c3aed;
-            --violet-light: #f5f3ff;
-            --gray-50: #fafafa;
-            --gray-100: #f5f5f5;
-            --gray-200: #e5e5e5;
-            --gray-300: #d4d4d4;
-            --gray-400: #a3a3a3;
-            --gray-600: #525252;
-            --gray-700: #404040;
-            --gray-900: #171717;
-        }
+      :root {
+        --primary: #7c2d12;
+        --primary-dark: #9a3412;
+        --primary-light: #ffedd5;
+        --secondary: #1f2937;
+        --success: #16a34a;
+        --success-light: #dcfce7;
+        --warning: #b45309;
+        --warning-light: #fef3c7;
+        --error: #dc2626;
+        --error-light: #fee2e2;
+        --violet: #7c3aed;
+        --violet-light: #f5f3ff;
+        --gray-50: #fafafa;
+        --gray-100: #f5f5f5;
+        --gray-200: #e5e5e5;
+        --gray-300: #d4d4d4;
+        --gray-400: #a3a3a3;
+        --gray-600: #525252;
+        --gray-700: #404040;
+        --gray-900: #171717;
+      }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
+      body {
+        font-family: 'Inter', sans-serif;
+        color: var(--gray-900);
+        background: radial-gradient(circle at 10% 0%, #fde68a 0%, #fde68a 6%, #e2e8f0 44%, #f8fafc 100%);
+        overflow: hidden;
+      }
+
+      .app {
+        height: 100vh;
+        display: flex;
+      }
+
+      .sidebar {
+        width: 430px;
+        background: #fff;
+        border-right: 1px solid var(--gray-200);
+        box-shadow: 2px 0 14px rgba(0, 0, 0, 0.06);
+        overflow-y: auto;
+      }
+
+      .main {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .logo {
+        font-family: 'Poppins', sans-serif;
+        font-size: 1.85rem;
+        font-weight: 800;
+        color: var(--primary-dark);
+        padding: 1.85rem;
+        border-bottom: 1px solid var(--gray-200);
+        background: linear-gradient(135deg, var(--primary-light), #fff);
+      }
+
+      .subtitle {
+        margin-top: 0.35rem;
+        font-size: 0.82rem;
+        color: var(--gray-600);
+        font-weight: 600;
+      }
+
+      .epic-header {
+        margin: 1rem 1.2rem;
+        border: 1px solid #fdba74;
+        border-radius: 0.85rem;
+        padding: 1rem;
+        background: linear-gradient(140deg, #fff7ed, #f8fafc);
+      }
+
+      .epic-title {
+        font-family: 'Poppins', sans-serif;
+        font-size: 1.03rem;
+        font-weight: 700;
+        margin-bottom: 0.35rem;
+      }
+
+      .epic-meta {
+        font-size: 0.76rem;
+        color: var(--gray-700);
+        line-height: 1.45;
+      }
+
+      .flow-map {
+        margin: 0 1.2rem 1rem;
+        border-radius: 0.85rem;
+        border: 1px solid #ddd6fe;
+        background: #f8f9ff;
+        padding: 0.75rem;
+      }
+
+      .flow-title {
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        color: var(--gray-600);
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+      }
+
+      .flow-list {
+        display: grid;
+        gap: 0.35rem;
+      }
+
+      .flow-step {
+        border: 1px solid var(--gray-300);
+        border-radius: 0.5rem;
+        background: #fff;
+        padding: 0.34rem 0.52rem;
+        font-size: 0.69rem;
+        font-weight: 600;
+        color: var(--gray-700);
+      }
+
+      .flow-step.active {
+        border-color: var(--violet);
+        background: var(--violet-light);
+        color: #4c1d95;
+      }
+
+      .gate-note {
+        margin-top: 0.55rem;
+        border-top: 1px solid #ddd6fe;
+        padding-top: 0.5rem;
+        font-size: 0.68rem;
+        color: var(--gray-600);
+        line-height: 1.45;
+      }
+
+      .nav-group {
+        border-bottom: 1px solid var(--gray-100);
+        padding: 0.28rem 0 0.72rem;
+      }
+
+      .nav-group-title {
+        padding: 0.66rem 1.2rem;
+        font-size: 0.68rem;
+        color: var(--gray-600);
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        font-weight: 700;
+      }
+
+      .nav-item {
+        display: flex;
+        align-items: center;
+        gap: 0.62rem;
+        padding: 0.7rem 1.2rem;
+        border-left: 3px solid transparent;
+        color: var(--gray-700);
+        cursor: pointer;
+        transition: background 0.18s ease;
+      }
+
+      .nav-item:hover {
+        background: var(--gray-50);
+      }
+
+      .nav-item.active {
+        border-left-color: var(--primary);
+        background: #fff7ed;
+        color: var(--primary-dark);
+      }
+
+      .nav-icon {
+        font-size: 0.72rem;
+        font-weight: 800;
+        width: 28px;
+        text-align: center;
+        border: 1px solid var(--gray-300);
+        border-radius: 0.35rem;
+        padding: 0.1rem 0.2rem;
+        background: #fff;
+      }
+
+      .nav-text {
+        flex: 1;
+        font-size: 0.83rem;
+        font-weight: 600;
+      }
+
+      .nav-badge {
+        font-size: 0.66rem;
+        font-weight: 700;
+        border-radius: 999px;
+        padding: 0.14rem 0.45rem;
+        background: #e2e8f0;
+        color: var(--gray-700);
+      }
+
+      .topbar {
+        background: #fff;
+        border-bottom: 1px solid var(--gray-200);
+        padding: 1.45rem 2rem;
+      }
+
+      .screen-title {
+        font-family: 'Poppins', sans-serif;
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--secondary);
+      }
+
+      .screen-meta {
+        margin-top: 0.4rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        color: var(--gray-600);
+        font-size: 0.9rem;
+        flex-wrap: wrap;
+      }
+
+      .fr-badge {
+        border: 1px solid #fdba74;
+        background: #fff7ed;
+        color: #9a3412;
+        border-radius: 0.52rem;
+        padding: 0.2rem 0.58rem;
+        font-size: 0.78rem;
+        font-weight: 700;
+      }
+
+      .route-badge {
+        border: 1px solid #c4b5fd;
+        background: #f5f3ff;
+        color: #5b21b6;
+        border-radius: 0.52rem;
+        padding: 0.2rem 0.58rem;
+        font-size: 0.74rem;
+        font-weight: 700;
+      }
+
+      .viewer {
+        flex: 1;
+        overflow-y: auto;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        padding: 2rem;
+      }
+
+      .iphone {
+        width: 393px;
+        height: 852px;
+        background: #1d1d1f;
+        border-radius: 54px;
+        padding: 12px;
+        box-shadow: 0 44px 94px rgba(0, 0, 0, 0.45);
+        position: relative;
+      }
+
+      .island {
+        position: absolute;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 120px;
+        height: 30px;
+        border-radius: 20px;
+        background: #000;
+        z-index: 12;
+      }
+
+      .screen {
+        width: 100%;
+        height: 100%;
+        background: #fff;
+        border-radius: 42px;
+        overflow: hidden;
+      }
+
+      .content {
+        width: 100%;
+        height: 100%;
+        overflow-y: auto;
+        background: var(--gray-50);
+        padding-bottom: 1.6rem;
+      }
+
+      .content::-webkit-scrollbar {
+        width: 4px;
+      }
+
+      .content::-webkit-scrollbar-thumb {
+        background: rgba(0, 0, 0, 0.3);
+        border-radius: 12px;
+      }
+
+      .status {
+        height: 54px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 1.3rem;
+        font-size: 0.8rem;
+        font-weight: 700;
+        background: #fff;
+      }
+
+      .mobile-header {
+        position: sticky;
+        top: 0;
+        z-index: 3;
+        background: rgba(255, 255, 255, 0.94);
+        backdrop-filter: blur(6px);
+        border-bottom: 1px solid var(--gray-200);
+        padding: 0.75rem 0.9rem;
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+      }
+
+      .mobile-title {
+        font-weight: 700;
+        font-size: 0.95rem;
+        color: var(--secondary);
+      }
+
+      .mobile-body {
+        padding: 0.9rem;
+        display: grid;
+        gap: 0.75rem;
+      }
+
+      .icon-btn {
+        border: 1px solid var(--gray-300);
+        background: #fff;
+        border-radius: 0.5rem;
+        width: 34px;
+        height: 34px;
+        cursor: pointer;
+        font-size: 0.9rem;
+        font-weight: 700;
+        color: var(--gray-700);
+      }
+
+      .card {
+        background: #fff;
+        border: 1px solid var(--gray-200);
+        border-radius: 0.8rem;
+        padding: 0.75rem;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+      }
+
+      .card-title {
+        font-size: 0.82rem;
+        font-weight: 700;
+        color: var(--secondary);
+        margin-bottom: 0.45rem;
+      }
+
+      .muted {
+        color: var(--gray-600);
+        font-size: 0.73rem;
+        line-height: 1.45;
+      }
+
+      .chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.38rem;
+      }
+
+      .chip {
+        border-radius: 999px;
+        border: 1px solid var(--gray-300);
+        background: #fff;
+        color: var(--gray-700);
+        padding: 0.2rem 0.48rem;
+        font-size: 0.66rem;
+        font-weight: 700;
+      }
+
+      .chip.success {
+        border-color: #86efac;
+        background: var(--success-light);
+        color: #14532d;
+      }
+
+      .chip.warn {
+        border-color: #fcd34d;
+        background: var(--warning-light);
+        color: #92400e;
+      }
+
+      .chip.error {
+        border-color: #fca5a5;
+        background: var(--error-light);
+        color: #7f1d1d;
+      }
+
+      .btn {
+        border-radius: 0.55rem;
+        border: 1px solid transparent;
+        padding: 0.36rem 0.62rem;
+        font-size: 0.68rem;
+        font-weight: 700;
+        cursor: pointer;
+        font-family: inherit;
+      }
+
+      .btn-primary {
+        background: var(--primary);
+        color: #fff;
+        border-color: var(--primary);
+      }
+
+      .btn-outline {
+        border-color: var(--gray-300);
+        color: var(--gray-700);
+        background: #fff;
+      }
+
+      .field {
+        width: 100%;
+        border: 1px solid var(--gray-300);
+        border-radius: 0.55rem;
+        padding: 0.5rem 0.58rem;
+        font-size: 0.74rem;
+        background: #fff;
+        font-family: inherit;
+      }
+
+      textarea.field {
+        resize: vertical;
+      }
+
+      .list {
+        display: grid;
+        gap: 0.52rem;
+      }
+
+      .list-item {
+        border: 1px solid var(--gray-200);
+        background: #fff;
+        border-radius: 0.68rem;
+        padding: 0.56rem;
+      }
+
+      .row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.5rem;
+      }
+
+      .item-title {
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: var(--secondary);
+      }
+
+      .item-meta {
+        margin-top: 0.22rem;
+        font-size: 0.68rem;
+        color: var(--gray-600);
+        line-height: 1.4;
+      }
+
+      .progress {
+        width: 100%;
+        height: 7px;
+        border-radius: 999px;
+        background: var(--gray-200);
+        overflow: hidden;
+        margin-top: 0.34rem;
+      }
+
+      .progress > span {
+        display: block;
+        height: 100%;
+        background: linear-gradient(90deg, var(--primary), #f59e0b);
+      }
+
+      .state-switcher {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.35rem;
+        margin-bottom: 0.35rem;
+      }
+
+      .state-btn {
+        border: 1px solid var(--gray-300);
+        border-radius: 999px;
+        background: #fff;
+        color: var(--gray-700);
+        font-size: 0.63rem;
+        font-weight: 700;
+        padding: 0.16rem 0.45rem;
+        cursor: pointer;
+      }
+
+      .state-btn.active {
+        border-color: var(--violet);
+        background: var(--violet-light);
+        color: #5b21b6;
+      }
+
+      .state-panel {
+        border-radius: 0.68rem;
+        border: 1px solid var(--gray-300);
+        background: #fff;
+        padding: 0.62rem;
+        margin-bottom: 0.58rem;
+        display: grid;
+        gap: 0.3rem;
+        font-size: 0.72rem;
+        color: var(--gray-700);
+      }
+
+      .state-panel.loading {
+        border-color: #93c5fd;
+        background: #eff6ff;
+      }
+
+      .state-panel.empty {
+        border-color: #fde68a;
+        background: #fffbeb;
+      }
+
+      .state-panel.error {
+        border-color: #fca5a5;
+        background: #fef2f2;
+      }
+
+      .state-panel.offline {
+        border-color: #c4b5fd;
+        background: #f5f3ff;
+      }
+
+      .toast {
+        position: fixed;
+        right: 1.2rem;
+        bottom: 1.2rem;
+        padding: 0.65rem 0.85rem;
+        border-radius: 0.62rem;
+        color: #fff;
+        font-weight: 700;
+        font-size: 0.74rem;
+        background: #9a3412;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+        opacity: 0;
+        transform: translateY(8px);
+        pointer-events: none;
+        transition: all 0.22s ease;
+        z-index: 50;
+      }
+
+      .toast.show {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .toast.success {
+        background: #065f46;
+      }
+
+      .toast.error {
+        background: #7f1d1d;
+      }
+
+      .nav-item:focus-visible,
+      button:focus-visible,
+      textarea:focus-visible,
+      input:focus-visible {
+        outline: 3px solid #fdba74;
+        outline-offset: 2px;
+      }
+
+      @media (max-width: 1200px) {
         body {
-            font-family: 'Inter', sans-serif;
-            color: var(--gray-900);
-            background: radial-gradient(circle at 10% 0%, #fde68a 0%, #fde68a 6%, #e2e8f0 44%, #f8fafc 100%);
-            overflow: hidden;
+          overflow: auto;
         }
 
         .app {
-            height: 100vh;
-            display: flex;
+          flex-direction: column;
+          height: auto;
+          min-height: 100vh;
         }
 
         .sidebar {
-            width: 430px;
-            background: #fff;
-            border-right: 1px solid var(--gray-200);
-            box-shadow: 2px 0 14px rgba(0, 0, 0, 0.06);
-            overflow-y: auto;
-        }
-
-        .main {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .logo {
-            font-family: 'Poppins', sans-serif;
-            font-size: 1.85rem;
-            font-weight: 800;
-            color: var(--primary-dark);
-            padding: 1.85rem;
-            border-bottom: 1px solid var(--gray-200);
-            background: linear-gradient(135deg, var(--primary-light), #fff);
-        }
-
-        .subtitle {
-            margin-top: 0.35rem;
-            font-size: 0.82rem;
-            color: var(--gray-600);
-            font-weight: 600;
-        }
-
-        .epic-header {
-            margin: 1rem 1.2rem;
-            border: 1px solid #fdba74;
-            border-radius: 0.85rem;
-            padding: 1rem;
-            background: linear-gradient(140deg, #fff7ed, #f8fafc);
-        }
-
-        .epic-title {
-            font-family: 'Poppins', sans-serif;
-            font-size: 1.03rem;
-            font-weight: 700;
-            margin-bottom: 0.35rem;
-        }
-
-        .epic-meta {
-            font-size: 0.76rem;
-            color: var(--gray-700);
-            line-height: 1.45;
-        }
-
-        .flow-map {
-            margin: 0 1.2rem 1rem;
-            border-radius: 0.85rem;
-            border: 1px solid #ddd6fe;
-            background: #f8f9ff;
-            padding: 0.75rem;
-        }
-
-        .flow-title {
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 0.04em;
-            color: var(--gray-600);
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-
-        .flow-list {
-            display: grid;
-            gap: 0.35rem;
-        }
-
-        .flow-step {
-            border: 1px solid var(--gray-300);
-            border-radius: 0.5rem;
-            background: #fff;
-            padding: 0.34rem 0.52rem;
-            font-size: 0.69rem;
-            font-weight: 600;
-            color: var(--gray-700);
-        }
-
-        .flow-step.active {
-            border-color: var(--violet);
-            background: var(--violet-light);
-            color: #4c1d95;
-        }
-
-        .gate-note {
-            margin-top: 0.55rem;
-            border-top: 1px solid #ddd6fe;
-            padding-top: 0.5rem;
-            font-size: 0.68rem;
-            color: var(--gray-600);
-            line-height: 1.45;
-        }
-
-        .nav-group {
-            border-bottom: 1px solid var(--gray-100);
-            padding: 0.28rem 0 0.72rem;
-        }
-
-        .nav-group-title {
-            padding: 0.66rem 1.2rem;
-            font-size: 0.68rem;
-            color: var(--gray-600);
-            text-transform: uppercase;
-            letter-spacing: 0.04em;
-            font-weight: 700;
-        }
-
-        .nav-item {
-            display: flex;
-            align-items: center;
-            gap: 0.62rem;
-            padding: 0.7rem 1.2rem;
-            border-left: 3px solid transparent;
-            color: var(--gray-700);
-            cursor: pointer;
-            transition: background 0.18s ease;
-        }
-
-        .nav-item:hover {
-            background: var(--gray-50);
-        }
-
-        .nav-item.active {
-            border-left-color: var(--primary);
-            background: #fff7ed;
-            color: var(--primary-dark);
-        }
-
-        .nav-icon {
-            font-size: 0.72rem;
-            font-weight: 800;
-            width: 28px;
-            text-align: center;
-            border: 1px solid var(--gray-300);
-            border-radius: 0.35rem;
-            padding: 0.1rem 0.2rem;
-            background: #fff;
-        }
-
-        .nav-text {
-            flex: 1;
-            font-size: 0.83rem;
-            font-weight: 600;
-        }
-
-        .nav-badge {
-            font-size: 0.66rem;
-            font-weight: 700;
-            border-radius: 999px;
-            padding: 0.14rem 0.45rem;
-            background: #e2e8f0;
-            color: var(--gray-700);
-        }
-
-        .topbar {
-            background: #fff;
-            border-bottom: 1px solid var(--gray-200);
-            padding: 1.45rem 2rem;
-        }
-
-        .screen-title {
-            font-family: 'Poppins', sans-serif;
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--secondary);
-        }
-
-        .screen-meta {
-            margin-top: 0.4rem;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            color: var(--gray-600);
-            font-size: 0.9rem;
-            flex-wrap: wrap;
-        }
-
-        .fr-badge {
-            border: 1px solid #fdba74;
-            background: #fff7ed;
-            color: #9a3412;
-            border-radius: 0.52rem;
-            padding: 0.2rem 0.58rem;
-            font-size: 0.78rem;
-            font-weight: 700;
-        }
-
-        .route-badge {
-            border: 1px solid #c4b5fd;
-            background: #f5f3ff;
-            color: #5b21b6;
-            border-radius: 0.52rem;
-            padding: 0.2rem 0.58rem;
-            font-size: 0.74rem;
-            font-weight: 700;
+          width: 100%;
+          max-height: 52vh;
         }
 
         .viewer {
-            flex: 1;
-            overflow-y: auto;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            padding: 2rem;
+          padding: 1.2rem;
         }
-
-        .iphone {
-            width: 393px;
-            height: 852px;
-            background: #1d1d1f;
-            border-radius: 54px;
-            padding: 12px;
-            box-shadow: 0 44px 94px rgba(0, 0, 0, 0.45);
-            position: relative;
-        }
-
-        .island {
-            position: absolute;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 120px;
-            height: 30px;
-            border-radius: 20px;
-            background: #000;
-            z-index: 12;
-        }
-
-        .screen {
-            width: 100%;
-            height: 100%;
-            background: #fff;
-            border-radius: 42px;
-            overflow: hidden;
-        }
-
-        .content {
-            width: 100%;
-            height: 100%;
-            overflow-y: auto;
-            background: var(--gray-50);
-            padding-bottom: 1.6rem;
-        }
-
-        .content::-webkit-scrollbar {
-            width: 4px;
-        }
-
-        .content::-webkit-scrollbar-thumb {
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 12px;
-        }
-
-        .status {
-            height: 54px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 1.3rem;
-            font-size: 0.8rem;
-            font-weight: 700;
-            background: #fff;
-        }
-
-        .mobile-header {
-            position: sticky;
-            top: 0;
-            z-index: 3;
-            background: rgba(255, 255, 255, 0.94);
-            backdrop-filter: blur(6px);
-            border-bottom: 1px solid var(--gray-200);
-            padding: 0.75rem 0.9rem;
-            display: flex;
-            align-items: center;
-            gap: 0.6rem;
-        }
-
-        .mobile-title {
-            font-weight: 700;
-            font-size: 0.95rem;
-            color: var(--secondary);
-        }
-
-        .mobile-body {
-            padding: 0.9rem;
-            display: grid;
-            gap: 0.75rem;
-        }
-
-        .icon-btn {
-            border: 1px solid var(--gray-300);
-            background: #fff;
-            border-radius: 0.5rem;
-            width: 34px;
-            height: 34px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            font-weight: 700;
-            color: var(--gray-700);
-        }
-
-        .card {
-            background: #fff;
-            border: 1px solid var(--gray-200);
-            border-radius: 0.8rem;
-            padding: 0.75rem;
-            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
-        }
-
-        .card-title {
-            font-size: 0.82rem;
-            font-weight: 700;
-            color: var(--secondary);
-            margin-bottom: 0.45rem;
-        }
-
-        .muted {
-            color: var(--gray-600);
-            font-size: 0.73rem;
-            line-height: 1.45;
-        }
-
-        .chips {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.38rem;
-        }
-
-        .chip {
-            border-radius: 999px;
-            border: 1px solid var(--gray-300);
-            background: #fff;
-            color: var(--gray-700);
-            padding: 0.2rem 0.48rem;
-            font-size: 0.66rem;
-            font-weight: 700;
-        }
-
-        .chip.success {
-            border-color: #86efac;
-            background: var(--success-light);
-            color: #14532d;
-        }
-
-        .chip.warn {
-            border-color: #fcd34d;
-            background: var(--warning-light);
-            color: #92400e;
-        }
-
-        .chip.error {
-            border-color: #fca5a5;
-            background: var(--error-light);
-            color: #7f1d1d;
-        }
-
-        .btn {
-            border-radius: 0.55rem;
-            border: 1px solid transparent;
-            padding: 0.36rem 0.62rem;
-            font-size: 0.68rem;
-            font-weight: 700;
-            cursor: pointer;
-            font-family: inherit;
-        }
-
-        .btn-primary {
-            background: var(--primary);
-            color: #fff;
-            border-color: var(--primary);
-        }
-
-        .btn-outline {
-            border-color: var(--gray-300);
-            color: var(--gray-700);
-            background: #fff;
-        }
-
-        .field {
-            width: 100%;
-            border: 1px solid var(--gray-300);
-            border-radius: 0.55rem;
-            padding: 0.5rem 0.58rem;
-            font-size: 0.74rem;
-            background: #fff;
-            font-family: inherit;
-        }
-
-        textarea.field {
-            resize: vertical;
-        }
-
-        .list {
-            display: grid;
-            gap: 0.52rem;
-        }
-
-        .list-item {
-            border: 1px solid var(--gray-200);
-            background: #fff;
-            border-radius: 0.68rem;
-            padding: 0.56rem;
-        }
-
-        .row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 0.5rem;
-        }
-
-        .item-title {
-            font-size: 0.75rem;
-            font-weight: 700;
-            color: var(--secondary);
-        }
-
-        .item-meta {
-            margin-top: 0.22rem;
-            font-size: 0.68rem;
-            color: var(--gray-600);
-            line-height: 1.4;
-        }
-
-        .progress {
-            width: 100%;
-            height: 7px;
-            border-radius: 999px;
-            background: var(--gray-200);
-            overflow: hidden;
-            margin-top: 0.34rem;
-        }
-
-        .progress > span {
-            display: block;
-            height: 100%;
-            background: linear-gradient(90deg, var(--primary), #f59e0b);
-        }
-
-        .state-switcher {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.35rem;
-            margin-bottom: 0.35rem;
-        }
-
-        .state-btn {
-            border: 1px solid var(--gray-300);
-            border-radius: 999px;
-            background: #fff;
-            color: var(--gray-700);
-            font-size: 0.63rem;
-            font-weight: 700;
-            padding: 0.16rem 0.45rem;
-            cursor: pointer;
-        }
-
-        .state-btn.active {
-            border-color: var(--violet);
-            background: var(--violet-light);
-            color: #5b21b6;
-        }
-
-        .state-panel {
-            border-radius: 0.68rem;
-            border: 1px solid var(--gray-300);
-            background: #fff;
-            padding: 0.62rem;
-            margin-bottom: 0.58rem;
-            display: grid;
-            gap: 0.3rem;
-            font-size: 0.72rem;
-            color: var(--gray-700);
-        }
-
-        .state-panel.loading {
-            border-color: #93c5fd;
-            background: #eff6ff;
-        }
-
-        .state-panel.empty {
-            border-color: #fde68a;
-            background: #fffbeb;
-        }
-
-        .state-panel.error {
-            border-color: #fca5a5;
-            background: #fef2f2;
-        }
-
-        .state-panel.offline {
-            border-color: #c4b5fd;
-            background: #f5f3ff;
-        }
-
-        .toast {
-            position: fixed;
-            right: 1.2rem;
-            bottom: 1.2rem;
-            padding: 0.65rem 0.85rem;
-            border-radius: 0.62rem;
-            color: #fff;
-            font-weight: 700;
-            font-size: 0.74rem;
-            background: #9a3412;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-            opacity: 0;
-            transform: translateY(8px);
-            pointer-events: none;
-            transition: all 0.22s ease;
-            z-index: 50;
-        }
-
-        .toast.show {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .toast.success {
-            background: #065f46;
-        }
-
-        .toast.error {
-            background: #7f1d1d;
-        }
-
-        .nav-item:focus-visible,
-        button:focus-visible,
-        textarea:focus-visible,
-        input:focus-visible {
-            outline: 3px solid #fdba74;
-            outline-offset: 2px;
-        }
-
-        @media (max-width: 1200px) {
-            body {
-                overflow: auto;
-            }
-
-            .app {
-                flex-direction: column;
-                height: auto;
-                min-height: 100vh;
-            }
-
-            .sidebar {
-                width: 100%;
-                max-height: 52vh;
-            }
-
-            .viewer {
-                padding: 1.2rem;
-            }
-        }
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="app">
-        <aside class="sidebar">
-            <div class="logo">
-                PST Coaching
-                <div class="subtitle">EPIC 14 - Kitap Kulubu</div>
-            </div>
+      <aside class="sidebar">
+        <div class="logo">
+          PST Coaching
+          <div class="subtitle">EPIC 14 - Kitap Kulubu</div>
+        </div>
 
-            <div class="epic-header">
-                <div class="epic-title">EPIC-14 Sync Pack</div>
-                <div class="epic-meta">4 FR Screen | 16 AC | Requirements + UX artifacts + mockup sync</div>
-            </div>
+        <div class="epic-header">
+          <div class="epic-title">EPIC-14 Sync Pack</div>
+          <div class="epic-meta">4 FR Screen | 16 AC | Requirements + UX artifacts + mockup sync</div>
+        </div>
 
-            <div class="flow-map">
-                <div class="flow-title">Kitap kulubu akis haritasi</div>
-                <div class="flow-list">
-                    <div class="flow-step active" id="flow-1">FR-E14-01 Kulup listesi ve kesif</div>
-                    <div class="flow-step" id="flow-2">FR-E14-02 Kulup olusturma ve kitap secimi</div>
-                    <div class="flow-step" id="flow-3">FR-E14-03 Kulup detayi ve uye alani</div>
-                    <div class="flow-step" id="flow-4">FR-E14-04 Tartisma basligi ve etkilesim</div>
-                </div>
-                <div class="gate-note">
-                    Gates: auth + subscription | Tum ekranlar loading, ready, empty, error, offline durumlarini destekler.
-                </div>
-            </div>
+        <div class="flow-map">
+          <div class="flow-title">Kitap kulubu akis haritasi</div>
+          <div class="flow-list">
+            <div class="flow-step active" id="flow-1">FR-E14-01 Kulup listesi ve kesif</div>
+            <div class="flow-step" id="flow-2">FR-E14-02 Kulup olusturma ve kitap secimi</div>
+            <div class="flow-step" id="flow-3">FR-E14-03 Kulup detayi ve uye alani</div>
+            <div class="flow-step" id="flow-4">FR-E14-04 Tartisma basligi ve etkilesim</div>
+          </div>
+          <div class="gate-note">
+            Gates: auth + subscription | Tum ekranlar loading, ready, empty, error, offline durumlarini destekler.
+          </div>
+        </div>
 
-            <section class="nav-group">
-                <div class="nav-group-title">Kulup giris ekranlari</div>
-                <div class="nav-item active" data-screen="1" role="button" tabindex="0"><span class="nav-icon">B1</span><span class="nav-text">Kulup Listesi ve Ozet</span><span class="nav-badge">4 AC</span></div>
-                <div class="nav-item" data-screen="2" role="button" tabindex="0"><span class="nav-icon">B2</span><span class="nav-text">Kulup Olusturma</span><span class="nav-badge">4 AC</span></div>
-            </section>
+        <section class="nav-group">
+          <div class="nav-group-title">Kulup giris ekranlari</div>
+          <div class="nav-item active" data-screen="1" role="button" tabindex="0">
+            <span class="nav-icon">B1</span><span class="nav-text">Kulup Listesi ve Ozet</span
+            ><span class="nav-badge">4 AC</span>
+          </div>
+          <div class="nav-item" data-screen="2" role="button" tabindex="0">
+            <span class="nav-icon">B2</span><span class="nav-text">Kulup Olusturma</span
+            ><span class="nav-badge">4 AC</span>
+          </div>
+        </section>
 
-            <section class="nav-group">
-                <div class="nav-group-title">Kulup ici akis</div>
-                <div class="nav-item" data-screen="3" role="button" tabindex="0"><span class="nav-icon">B3</span><span class="nav-text">Kulup Detayi ve Takvim</span><span class="nav-badge">4 AC</span></div>
-                <div class="nav-item" data-screen="4" role="button" tabindex="0"><span class="nav-icon">B4</span><span class="nav-text">Tartisma Akisi</span><span class="nav-badge">4 AC</span></div>
-            </section>
-        </aside>
+        <section class="nav-group">
+          <div class="nav-group-title">Kulup ici akis</div>
+          <div class="nav-item" data-screen="3" role="button" tabindex="0">
+            <span class="nav-icon">B3</span><span class="nav-text">Kulup Detayi ve Takvim</span
+            ><span class="nav-badge">4 AC</span>
+          </div>
+          <div class="nav-item" data-screen="4" role="button" tabindex="0">
+            <span class="nav-icon">B4</span><span class="nav-text">Tartisma Akisi</span
+            ><span class="nav-badge">4 AC</span>
+          </div>
+        </section>
+      </aside>
 
-        <main class="main">
-            <div class="topbar">
-                <h1 class="screen-title" id="screenTitle">Kulup listesi ve kesif ozeti</h1>
-                <div class="screen-meta">
-                    <span class="fr-badge" id="screenFr">FR-E14-01</span>
-                    <span class="route-badge" id="screenRoute">/epic-14/fr-e14-01</span>
-                    <span id="screenMeta">Kulup kartlari, secili kitap, filtreleme ve toplanti ozeti</span>
-                </div>
-            </div>
-            <div class="viewer" id="viewer"></div>
-        </main>
+      <main class="main">
+        <div class="topbar">
+          <h1 class="screen-title" id="screenTitle">Kulup listesi ve kesif ozeti</h1>
+          <div class="screen-meta">
+            <span class="fr-badge" id="screenFr">FR-E14-01</span>
+            <span class="route-badge" id="screenRoute">/epic-14/fr-e14-01</span>
+            <span id="screenMeta">Kulup kartlari, secili kitap, filtreleme ve toplanti ozeti</span>
+          </div>
+        </div>
+        <div class="viewer" id="viewer"></div>
+      </main>
     </div>
 
     <div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
 
     <script>
-        const screenData = {
-            1: {
-                title: 'Kulup listesi ve kesif ozeti',
-                fr: 'FR-E14-01',
-                route: '/epic-14/fr-e14-01',
-                event: 'bookclub_fr_e14_01_viewed',
-                meta: 'Kulup kartlari, secili kitap, filtreleme ve toplanti ozeti'
+      const screenData = {
+        1: {
+          title: 'Kulup listesi ve kesif ozeti',
+          fr: 'FR-E14-01',
+          route: '/epic-14/fr-e14-01',
+          event: 'bookclub_fr_e14_01_viewed',
+          meta: 'Kulup kartlari, secili kitap, filtreleme ve toplanti ozeti'
+        },
+        2: {
+          title: 'Kulup olusturma ve kitap secimi',
+          fr: 'FR-E14-02',
+          route: '/epic-14/fr-e14-02',
+          event: 'bookclub_fr_e14_02_viewed',
+          meta: 'Zorunlu kulup adi, kitap secimi, takvim ve gizlilik'
+        },
+        3: {
+          title: 'Kulup detayi ve uye alani',
+          fr: 'FR-E14-03',
+          route: '/epic-14/fr-e14-03',
+          event: 'bookclub_fr_e14_03_viewed',
+          meta: 'Kitap ve bolum ozeti, uye rolleri, basliklar ve planli oturumlar'
+        },
+        4: {
+          title: 'Tartisma basligi ve etkilesim akisi',
+          fr: 'FR-E14-04',
+          route: '/epic-14/fr-e14-04',
+          event: 'bookclub_fr_e14_04_viewed',
+          meta: 'Kronolojik mesajlar, yanitlar, reaksiyonlar ve moderasyon'
+        }
+      };
+
+      const ui = {
+        currentScreen: 1,
+        screenStates: {
+          1: 'ready',
+          2: 'ready',
+          3: 'ready',
+          4: 'ready'
+        },
+        lastAnalyticsEvent: 'bookclub_fr_e14_01_viewed',
+        privacyFilter: 'all',
+        selectedClubId: 201,
+        clubs: [
+          {
+            id: 201,
+            name: 'Sukur Sifresi Kulubu',
+            members: 15,
+            book: 'Sukur Sifresi',
+            chapter: 'Bolum 3: Sukrun Kaynagi',
+            meetings: 'Persembe 20:00',
+            privacy: 'private',
+            lastActivity: '2 saat once'
+          },
+          {
+            id: 202,
+            name: 'Kalbimin Beyazi Okurlari',
+            members: 22,
+            book: 'Kalbimin Beyazi',
+            chapter: 'Bolum 5: Icler Yolculuk',
+            meetings: 'Cumartesi 18:00',
+            privacy: 'public',
+            lastActivity: '1 gun once'
+          },
+          {
+            id: 203,
+            name: 'Yolcu Sohbet Kulubu',
+            members: 9,
+            book: 'Yolcu',
+            chapter: 'Bolum 2: Niyet ve Yon',
+            meetings: 'Pazar 19:30',
+            privacy: 'private',
+            lastActivity: '4 saat once'
+          }
+        ],
+        members: {
+          201: [
+            { name: 'Melek', role: 'owner', completion: 76 },
+            { name: 'Burak', role: 'moderator', completion: 69 },
+            { name: 'Asli', role: 'member', completion: 63 },
+            { name: 'Umut', role: 'member', completion: 58 }
+          ],
+          202: [
+            { name: 'Elif', role: 'owner', completion: 80 },
+            { name: 'Ozan', role: 'member', completion: 74 },
+            { name: 'Can', role: 'member', completion: 71 }
+          ],
+          203: [
+            { name: 'Tugce', role: 'owner', completion: 66 },
+            { name: 'Sinem', role: 'member', completion: 61 },
+            { name: 'Arda', role: 'member', completion: 54 }
+          ]
+        },
+        topics: {
+          201: ['Bolum 3 ana fikir tartismasi', 'Haftalik alinti secimi', 'Bir sonraki okumaya hazirlik sorulari'],
+          202: ['Bolum 5 ozeti', 'Kisa not paylasimi', 'Hafta sonu toplanti plana baglama'],
+          203: ['Niyet konusu uzerine grup yorumu', 'Pazar oturumu soru listesi']
+        },
+        schedule: {
+          201: [
+            { label: 'Canli okuma bulusmasi', when: 'Persembe 20:00' },
+            { label: 'Yorum teslim kontrolu', when: 'Cuma 18:00' }
+          ],
+          202: [
+            { label: 'Hafta sonu ortak okuma', when: 'Cumartesi 18:00' },
+            { label: 'Moderasyon notu guncelleme', when: 'Pazar 17:00' }
+          ],
+          203: [
+            { label: 'Pazar sohbet oturumu', when: 'Pazar 19:30' },
+            { label: 'Takip mesaji', when: 'Pazartesi 10:00' }
+          ]
+        },
+        thread: {
+          201: [
+            {
+              id: 1,
+              author: 'Melek',
+              time: '20:05',
+              text: 'Bu hafta bolum 3 icin ana cikarimim su oldu.',
+              reacts: 5
             },
-            2: {
-                title: 'Kulup olusturma ve kitap secimi',
-                fr: 'FR-E14-02',
-                route: '/epic-14/fr-e14-02',
-                event: 'bookclub_fr_e14_02_viewed',
-                meta: 'Zorunlu kulup adi, kitap secimi, takvim ve gizlilik'
+            {
+              id: 2,
+              author: 'Burak',
+              time: '20:12',
+              text: 'Ayni noktayi fark ettim, ozellikle son paragraf kuvvetliydi.',
+              reacts: 3
             },
-            3: {
-                title: 'Kulup detayi ve uye alani',
-                fr: 'FR-E14-03',
-                route: '/epic-14/fr-e14-03',
-                event: 'bookclub_fr_e14_03_viewed',
-                meta: 'Kitap ve bolum ozeti, uye rolleri, basliklar ve planli oturumlar'
-            },
-            4: {
-                title: 'Tartisma basligi ve etkilesim akisi',
-                fr: 'FR-E14-04',
-                route: '/epic-14/fr-e14-04',
-                event: 'bookclub_fr_e14_04_viewed',
-                meta: 'Kronolojik mesajlar, yanitlar, reaksiyonlar ve moderasyon'
+            {
+              id: 3,
+              author: 'Asli',
+              time: '20:20',
+              text: 'Yarin gorusmede bu bolumu sorularla acalim.',
+              reacts: 2
             }
-        };
-
-        const ui = {
-            currentScreen: 1,
-            screenStates: {
-                1: 'ready',
-                2: 'ready',
-                3: 'ready',
-                4: 'ready'
-            },
-            lastAnalyticsEvent: 'bookclub_fr_e14_01_viewed',
-            privacyFilter: 'all',
-            selectedClubId: 201,
-            clubs: [
-                {
-                    id: 201,
-                    name: 'Sukur Sifresi Kulubu',
-                    members: 15,
-                    book: 'Sukur Sifresi',
-                    chapter: 'Bolum 3: Sukrun Kaynagi',
-                    meetings: 'Persembe 20:00',
-                    privacy: 'private',
-                    lastActivity: '2 saat once'
-                },
-                {
-                    id: 202,
-                    name: 'Kalbimin Beyazi Okurlari',
-                    members: 22,
-                    book: 'Kalbimin Beyazi',
-                    chapter: 'Bolum 5: Icler Yolculuk',
-                    meetings: 'Cumartesi 18:00',
-                    privacy: 'public',
-                    lastActivity: '1 gun once'
-                },
-                {
-                    id: 203,
-                    name: 'Yolcu Sohbet Kulubu',
-                    members: 9,
-                    book: 'Yolcu',
-                    chapter: 'Bolum 2: Niyet ve Yon',
-                    meetings: 'Pazar 19:30',
-                    privacy: 'private',
-                    lastActivity: '4 saat once'
-                }
-            ],
-            members: {
-                201: [
-                    { name: 'Melek', role: 'owner', completion: 76 },
-                    { name: 'Burak', role: 'moderator', completion: 69 },
-                    { name: 'Asli', role: 'member', completion: 63 },
-                    { name: 'Umut', role: 'member', completion: 58 }
-                ],
-                202: [
-                    { name: 'Elif', role: 'owner', completion: 80 },
-                    { name: 'Ozan', role: 'member', completion: 74 },
-                    { name: 'Can', role: 'member', completion: 71 }
-                ],
-                203: [
-                    { name: 'Tugce', role: 'owner', completion: 66 },
-                    { name: 'Sinem', role: 'member', completion: 61 },
-                    { name: 'Arda', role: 'member', completion: 54 }
-                ]
-            },
-            topics: {
-                201: [
-                    'Bolum 3 ana fikir tartismasi',
-                    'Haftalik alinti secimi',
-                    'Bir sonraki okumaya hazirlik sorulari'
-                ],
-                202: [
-                    'Bolum 5 ozeti',
-                    'Kisa not paylasimi',
-                    'Hafta sonu toplanti plana baglama'
-                ],
-                203: [
-                    'Niyet konusu uzerine grup yorumu',
-                    'Pazar oturumu soru listesi'
-                ]
-            },
-            schedule: {
-                201: [
-                    { label: 'Canli okuma bulusmasi', when: 'Persembe 20:00' },
-                    { label: 'Yorum teslim kontrolu', when: 'Cuma 18:00' }
-                ],
-                202: [
-                    { label: 'Hafta sonu ortak okuma', when: 'Cumartesi 18:00' },
-                    { label: 'Moderasyon notu guncelleme', when: 'Pazar 17:00' }
-                ],
-                203: [
-                    { label: 'Pazar sohbet oturumu', when: 'Pazar 19:30' },
-                    { label: 'Takip mesaji', when: 'Pazartesi 10:00' }
-                ]
-            },
-            thread: {
-                201: [
-                    { id: 1, author: 'Melek', time: '20:05', text: 'Bu hafta bolum 3 icin ana cikarimim su oldu.', reacts: 5 },
-                    { id: 2, author: 'Burak', time: '20:12', text: 'Ayni noktayi fark ettim, ozellikle son paragraf kuvvetliydi.', reacts: 3 },
-                    { id: 3, author: 'Asli', time: '20:20', text: 'Yarin gorusmede bu bolumu sorularla acalim.', reacts: 2 }
-                ],
-                202: [
-                    { id: 1, author: 'Elif', time: '18:11', text: 'Toplanti icin kisa ozet akisini ekledim.', reacts: 4 }
-                ],
-                203: [
-                    { id: 1, author: 'Tugce', time: '19:45', text: 'Niyet bolumu icin iki acik soru biraktim.', reacts: 2 }
-                ]
-            },
-            composer: '',
-            draft: {
-                name: '',
-                book: '',
-                day: 'Persembe',
-                time: '20:00',
-                privacy: 'private',
-                invites: ''
+          ],
+          202: [
+            {
+              id: 1,
+              author: 'Elif',
+              time: '18:11',
+              text: 'Toplanti icin kisa ozet akisini ekledim.',
+              reacts: 4
             }
-        };
-
-        let toastTimer = null;
-
-        function showToast(message, tone) {
-            const toast = document.getElementById('toast');
-            toast.textContent = message;
-            toast.className = 'toast show' + (tone ? ' ' + tone : '');
-            if (toastTimer) {
-                clearTimeout(toastTimer);
+          ],
+          203: [
+            {
+              id: 1,
+              author: 'Tugce',
+              time: '19:45',
+              text: 'Niyet bolumu icin iki acik soru biraktim.',
+              reacts: 2
             }
-            toastTimer = setTimeout(() => {
-                toast.className = 'toast';
-            }, 2200);
+          ]
+        },
+        composer: '',
+        draft: {
+          name: '',
+          book: '',
+          day: 'Persembe',
+          time: '20:00',
+          privacy: 'private',
+          invites: ''
+        }
+      };
+
+      let toastTimer = null;
+
+      function showToast(message, tone) {
+        const toast = document.getElementById('toast');
+        toast.textContent = message;
+        toast.className = 'toast show' + (tone ? ' ' + tone : '');
+        if (toastTimer) {
+          clearTimeout(toastTimer);
+        }
+        toastTimer = setTimeout(() => {
+          toast.className = 'toast';
+        }, 2200);
+      }
+
+      function phoneShell(title, body, backScreen) {
+        const back = backScreen
+          ? '<button class="icon-btn" onclick="showScreen(' + backScreen + ')" aria-label="Geri">&lt;</button>'
+          : '<span style="width:34px;"></span>';
+
+        return (
+          '<div class="iphone">' +
+          '<div class="island"></div>' +
+          '<div class="screen">' +
+          '<div class="content">' +
+          '<div class="status"><span>9:41</span><span>5G 90%</span></div>' +
+          '<div class="mobile-header">' +
+          back +
+          '<div class="mobile-title">' +
+          title +
+          '</div>' +
+          '</div>' +
+          '<div class="mobile-body">' +
+          body +
+          '</div>' +
+          '</div>' +
+          '</div>' +
+          '</div>'
+        );
+      }
+
+      function setCurrentScreen(screenNo) {
+        ui.currentScreen = screenNo;
+        ui.lastAnalyticsEvent = screenData[screenNo].event;
+        render();
+      }
+
+      function showScreen(screenNo) {
+        setCurrentScreen(screenNo);
+      }
+
+      function setScreenState(screenNo, state) {
+        ui.screenStates[screenNo] = state;
+        render();
+      }
+
+      function stateControls(screenNo) {
+        const states = ['ready', 'loading', 'empty', 'error', 'offline'];
+        return (
+          '<div class="state-switcher">' +
+          states
+            .map(
+              s =>
+                '<button class="state-btn ' +
+                (ui.screenStates[screenNo] === s ? 'active' : '') +
+                '" ' +
+                'onclick="setScreenState(' +
+                screenNo +
+                ', \'" + s + "\')" aria-label="Ekran durumu ' +
+                s +
+                '" ' +
+                'aria-pressed="' +
+                (ui.screenStates[screenNo] === s) +
+                '">' +
+                s +
+                '</button>'
+            )
+            .join('') +
+          '</div>'
+        );
+      }
+
+      function statePanel(screenNo) {
+        const state = ui.screenStates[screenNo];
+        if (state === 'ready') {
+          return '';
+        }
+        if (state === 'loading') {
+          return '<div class="state-panel loading" role="status"><strong>Loading</strong><span>Kulup verileri yukleniyor.</span></div>';
+        }
+        if (state === 'empty') {
+          return '<div class="state-panel empty"><strong>Empty</strong><span>Bu gorunumde listelenecek kayit yok.</span><button class="btn btn-outline" onclick="resetDemo()" aria-label="Demo verisini sifirla">Varsayilan veriye don</button></div>';
+        }
+        if (state === 'error') {
+          return (
+            '<div class="state-panel error" role="alert"><strong>Error</strong><span>Kurtarilabilir hata olustu.</span><button class="btn btn-primary" onclick="setScreenState(' +
+            screenNo +
+            ', \'ready\')" aria-label="Tekrar dene">Tekrar Dene</button></div>'
+          );
+        }
+        return '<div class="state-panel offline" role="status"><strong>Offline</strong><span>Son senkronize kayitlar gosterilir, islemler kuyruga alinmistir.</span></div>';
+      }
+
+      function setPrivacyFilter(filter) {
+        ui.privacyFilter = filter;
+        render();
+      }
+
+      function filteredClubs() {
+        if (ui.privacyFilter === 'all') {
+          return ui.clubs;
+        }
+        return ui.clubs.filter(club => club.privacy === ui.privacyFilter);
+      }
+
+      function selectClub(id) {
+        ui.selectedClubId = id;
+        showScreen(3);
+        showToast('Kulup detay ekranina gecildi.', 'success');
+      }
+
+      function selectedClub() {
+        return ui.clubs.find(club => club.id === ui.selectedClubId) || ui.clubs[0];
+      }
+
+      function selectedMembers() {
+        const club = selectedClub();
+        return ui.members[club.id] || [];
+      }
+
+      function updateDraft(field, value) {
+        ui.draft[field] = value;
+        render();
+      }
+
+      function createClub() {
+        if (!ui.draft.name.trim()) {
+          showToast('Kulup adi zorunludur.', 'error');
+          return;
+        }
+        if (!ui.draft.book.trim()) {
+          showToast('Kitap secimi zorunludur.', 'error');
+          return;
         }
 
-        function phoneShell(title, body, backScreen) {
-            const back = backScreen
-                ? '<button class="icon-btn" onclick="showScreen(' + backScreen + ')" aria-label="Geri">&lt;</button>'
-                : '<span style="width:34px;"></span>';
-
-            return (
-                '<div class="iphone">' +
-                    '<div class="island"></div>' +
-                    '<div class="screen">' +
-                        '<div class="content">' +
-                            '<div class="status"><span>9:41</span><span>5G 90%</span></div>' +
-                            '<div class="mobile-header">' +
-                                back +
-                                '<div class="mobile-title">' + title + '</div>' +
-                            '</div>' +
-                            '<div class="mobile-body">' + body + '</div>' +
-                        '</div>' +
-                    '</div>' +
-                '</div>'
-            );
-        }
-
-        function setCurrentScreen(screenNo) {
-            ui.currentScreen = screenNo;
-            ui.lastAnalyticsEvent = screenData[screenNo].event;
-            render();
-        }
-
-        function showScreen(screenNo) {
-            setCurrentScreen(screenNo);
-        }
-
-        function setScreenState(screenNo, state) {
-            ui.screenStates[screenNo] = state;
-            render();
-        }
-
-        function stateControls(screenNo) {
-            const states = ['ready', 'loading', 'empty', 'error', 'offline'];
-            return (
-                '<div class="state-switcher">' +
-                    states.map((s) => (
-                        '<button class="state-btn ' + (ui.screenStates[screenNo] === s ? 'active' : '') + '" ' +
-                        'onclick="setScreenState(' + screenNo + ', \'" + s + "\')" aria-label="Ekran durumu ' + s + '" ' +
-                        'aria-pressed="' + (ui.screenStates[screenNo] === s) + '">' + s + '</button>'
-                    )).join('') +
-                '</div>'
-            );
-        }
-
-        function statePanel(screenNo) {
-            const state = ui.screenStates[screenNo];
-            if (state === 'ready') {
-                return '';
-            }
-            if (state === 'loading') {
-                return '<div class="state-panel loading" role="status"><strong>Loading</strong><span>Kulup verileri yukleniyor.</span></div>';
-            }
-            if (state === 'empty') {
-                return '<div class="state-panel empty"><strong>Empty</strong><span>Bu gorunumde listelenecek kayit yok.</span><button class="btn btn-outline" onclick="resetDemo()" aria-label="Demo verisini sifirla">Varsayilan veriye don</button></div>';
-            }
-            if (state === 'error') {
-                return '<div class="state-panel error" role="alert"><strong>Error</strong><span>Kurtarilabilir hata olustu.</span><button class="btn btn-primary" onclick="setScreenState(' + screenNo + ', \'ready\')" aria-label="Tekrar dene">Tekrar Dene</button></div>';
-            }
-            return '<div class="state-panel offline" role="status"><strong>Offline</strong><span>Son senkronize kayitlar gosterilir, islemler kuyruga alinmistir.</span></div>';
-        }
-
-        function setPrivacyFilter(filter) {
-            ui.privacyFilter = filter;
-            render();
-        }
-
-        function filteredClubs() {
-            if (ui.privacyFilter === 'all') {
-                return ui.clubs;
-            }
-            return ui.clubs.filter((club) => club.privacy === ui.privacyFilter);
-        }
-
-        function selectClub(id) {
-            ui.selectedClubId = id;
-            showScreen(3);
-            showToast('Kulup detay ekranina gecildi.', 'success');
-        }
-
-        function selectedClub() {
-            return ui.clubs.find((club) => club.id === ui.selectedClubId) || ui.clubs[0];
-        }
-
-        function selectedMembers() {
-            const club = selectedClub();
-            return ui.members[club.id] || [];
-        }
-
-        function updateDraft(field, value) {
-            ui.draft[field] = value;
-            render();
-        }
-
-        function createClub() {
-            if (!ui.draft.name.trim()) {
-                showToast('Kulup adi zorunludur.', 'error');
-                return;
-            }
-            if (!ui.draft.book.trim()) {
-                showToast('Kitap secimi zorunludur.', 'error');
-                return;
-            }
-
-            const newId = Date.now();
-            ui.clubs.unshift({
-                id: newId,
-                name: ui.draft.name.trim(),
-                members: ui.draft.invites.trim() ? ui.draft.invites.split(',').map((i) => i.trim()).filter(Boolean).length + 1 : 1,
-                book: ui.draft.book.trim(),
-                chapter: 'Bolum 1: Giris',
-                meetings: ui.draft.day + ' ' + ui.draft.time,
-                privacy: ui.draft.privacy,
-                lastActivity: 'simdi'
-            });
-
-            ui.members[newId] = [
-                { name: 'Siz', role: 'owner', completion: 0 }
-            ];
-            ui.topics[newId] = [
-                'Kulup acilis mesaji'
-            ];
-            ui.schedule[newId] = [
-                { label: 'Ilk tanisma oturumu', when: ui.draft.day + ' ' + ui.draft.time }
-            ];
-            ui.thread[newId] = [
-                { id: 1, author: 'Sistem', time: 'simdi', text: 'Kulup olusturuldu. Ilk tartisma basliginizi acabilirsiniz.', reacts: 0 }
-            ];
-            ui.selectedClubId = newId;
-            showToast('Kulup olusturuldu.', 'success');
-            showScreen(3);
-        }
-
-        function addReply(threadId) {
-            const text = ui.composer.trim();
-            if (!text) {
-                showToast('Mesaj metni bos olamaz.', 'error');
-                return;
-            }
-
-            const club = selectedClub();
-            const list = ui.thread[club.id] || [];
-            list.push({
-                id: list.length + 1,
-                author: 'Siz',
-                time: new Date().toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' }),
-                text,
-                reacts: 0
-            });
-            ui.thread[club.id] = list;
-            ui.composer = '';
-            showToast('Yanit eklendi.', 'success');
-            render();
-        }
-
-        function quoteReplyById(messageId) {
-            const club = selectedClub();
-            const thread = ui.thread[club.id] || [];
-            const msg = thread.find((item) => item.id === messageId);
-            if (!msg) {
-                return;
-            }
-            ui.composer = '> ' + msg.text + '\n';
-            render();
-        }
-
-        function reportMessage(messageId) {
-            showToast('Mesaj #' + messageId + ' moderasyona bildirildi.', 'success');
-        }
-
-        function updateComposer(value) {
-            ui.composer = value;
-            render();
-        }
-
-        function resetDemo() {
-            ui.privacyFilter = 'all';
-            ui.selectedClubId = 201;
-            ui.composer = '';
-            ui.draft.name = '';
-            ui.draft.book = '';
-            ui.draft.day = 'Persembe';
-            ui.draft.time = '20:00';
-            ui.draft.privacy = 'private';
-            ui.draft.invites = '';
-            render();
-        }
-
-        function screenOne() {
-            const clubs = filteredClubs();
-            const body = (
-                stateControls(1) +
-                statePanel(1) +
-                (ui.screenStates[1] !== 'ready' ? '' : (
-                    '<div class="card">' +
-                        '<div class="card-title">Kulup listesi</div>' +
-                        '<div class="chips">' +
-                            '<span class="chip">Toplam kulup: ' + ui.clubs.length + '</span>' +
-                            '<span class="chip success">Acik: ' + ui.clubs.filter((c) => c.privacy === 'public').length + '</span>' +
-                            '<span class="chip warn">Ozel: ' + ui.clubs.filter((c) => c.privacy === 'private').length + '</span>' +
-                            '<button class="btn btn-primary" onclick="showScreen(2)" aria-label="Kulup olusturma ekranina gec">+ Kulup Olustur</button>' +
-                        '</div>' +
-                        '<div class="muted" style="margin-top:0.45rem;">AC-FR-E14-01-01</div>' +
-                    '</div>' +
-
-                    '<div class="card">' +
-                        '<div class="card-title">Gizlilik filtresi</div>' +
-                        '<div class="chips">' +
-                            '<button class="btn ' + (ui.privacyFilter === 'all' ? 'btn-primary' : 'btn-outline') + '" onclick="setPrivacyFilter(\'all\')" aria-label="Tum kulup" aria-pressed="' + (ui.privacyFilter === 'all') + '">Tum</button>' +
-                            '<button class="btn ' + (ui.privacyFilter === 'public' ? 'btn-primary' : 'btn-outline') + '" onclick="setPrivacyFilter(\'public\')" aria-label="Acik kulup" aria-pressed="' + (ui.privacyFilter === 'public') + '">Acik</button>' +
-                            '<button class="btn ' + (ui.privacyFilter === 'private' ? 'btn-primary' : 'btn-outline') + '" onclick="setPrivacyFilter(\'private\')" aria-label="Ozel kulup" aria-pressed="' + (ui.privacyFilter === 'private') + '">Ozel</button>' +
-                        '</div>' +
-                        '<div class="muted" style="margin-top:0.45rem;">AC-FR-E14-01-04</div>' +
-                    '</div>' +
-
-                    '<div class="card">' +
-                        '<div class="card-title">Kulup kart ozetleri</div>' +
-                        '<div class="list">' +
-                            clubs.map((club) => (
-                                '<button class="list-item" onclick="selectClub(' + club.id + ')" aria-label="' + club.name + ' detayini ac" style="text-align:left; cursor:pointer;">' +
-                                    '<div class="row">' +
-                                        '<div class="item-title">' + club.name + '</div>' +
-                                        '<span class="chip ' + (club.privacy === 'public' ? 'success' : 'warn') + '">' + (club.privacy === 'public' ? 'acik' : 'ozel') + '</span>' +
-                                    '</div>' +
-                                    '<div class="item-meta">Uye: ' + club.members + ' | Kitap: ' + club.book + '</div>' +
-                                    '<div class="item-meta">Son aktivite: ' + club.lastActivity + ' | Toplanti: ' + club.meetings + '</div>' +
-                                '</button>'
-                            )).join('') +
-                        '</div>' +
-                        '<div class="muted" style="margin-top:0.45rem;">AC-FR-E14-01-02</div>' +
-                        '<div class="muted">AC-FR-E14-01-03</div>' +
-                    '</div>'
-                ))
-            );
-
-            return phoneShell('Kulup listesi ve kesif', body, null);
-        }
-
-        function screenTwo() {
-            const draft = ui.draft;
-            const body = (
-                stateControls(2) +
-                statePanel(2) +
-                (ui.screenStates[2] !== 'ready' ? '' : (
-                    '<div class="card">' +
-                        '<div class="card-title">Kulup bilgisi</div>' +
-                        '<input class="field" type="text" placeholder="Kulup adini girin" value="' + draft.name.replace(/"/g, '&quot;') + '" oninput="updateDraft(\'name\', this.value)" aria-label="Kulup adi" />' +
-                        '<div class="muted" style="margin-top:0.4rem;">Kulup adi zorunludur.</div>' +
-                        '<div class="muted" style="margin-top:0.45rem;">AC-FR-E14-02-01</div>' +
-                    '</div>' +
-
-                    '<div class="card">' +
-                        '<div class="card-title">Kitap secimi</div>' +
-                        '<input class="field" type="text" placeholder="Kitap adi secin veya arayin" value="' + draft.book.replace(/"/g, '&quot;') + '" oninput="updateDraft(\'book\', this.value)" aria-label="Kitap secimi" />' +
-                        '<div class="chips" style="margin-top:0.45rem;">' +
-                            '<button class="btn btn-outline" onclick="updateDraft(\'book\', \'Sukur Sifresi\')" aria-label="Sukur Sifresi sec">Sukur Sifresi</button>' +
-                            '<button class="btn btn-outline" onclick="updateDraft(\'book\', \'Kalbimin Beyazi\')" aria-label="Kalbimin Beyazi sec">Kalbimin Beyazi</button>' +
-                            '<button class="btn btn-outline" onclick="updateDraft(\'book\', \'Yolcu\')" aria-label="Yolcu sec">Yolcu</button>' +
-                        '</div>' +
-                        '<div class="muted" style="margin-top:0.45rem;">AC-FR-E14-02-02</div>' +
-                    '</div>' +
-
-                    '<div class="card">' +
-                        '<div class="card-title">Toplanti takvimi</div>' +
-                        '<div class="chips">' +
-                            '<input class="field" style="max-width:47%;" type="text" value="' + draft.day + '" oninput="updateDraft(\'day\', this.value)" aria-label="Toplanti gunu" />' +
-                            '<input class="field" style="max-width:47%;" type="text" value="' + draft.time + '" oninput="updateDraft(\'time\', this.value)" aria-label="Toplanti saati" />' +
-                        '</div>' +
-                        '<div class="muted" style="margin-top:0.45rem;">AC-FR-E14-02-03</div>' +
-                    '</div>' +
-
-                    '<div class="card">' +
-                        '<div class="card-title">Gizlilik ve davet</div>' +
-                        '<div class="chips">' +
-                            '<button class="btn ' + (draft.privacy === 'public' ? 'btn-primary' : 'btn-outline') + '" onclick="updateDraft(\'privacy\', \'public\')" aria-label="Acik kulup" aria-pressed="' + (draft.privacy === 'public') + '">Acik</button>' +
-                            '<button class="btn ' + (draft.privacy === 'private' ? 'btn-primary' : 'btn-outline') + '" onclick="updateDraft(\'privacy\', \'private\')" aria-label="Ozel kulup" aria-pressed="' + (draft.privacy === 'private') + '">Ozel</button>' +
-                        '</div>' +
-                        '<textarea class="field" style="margin-top:0.45rem; min-height:72px;" placeholder="Davet e-postalari (virgulle ayirin)" oninput="updateDraft(\'invites\', this.value)" aria-label="Davet e-postalari">' + draft.invites + '</textarea>' +
-                        '<div class="chips" style="margin-top:0.5rem;">' +
-                            '<button class="btn btn-primary" onclick="createClub()" aria-label="Kulubu olustur">Kulubu Olustur</button>' +
-                            '<button class="btn btn-outline" onclick="showScreen(1)" aria-label="Listeye don">Listeye Don</button>' +
-                        '</div>' +
-                        '<div class="muted" style="margin-top:0.45rem;">AC-FR-E14-02-04</div>' +
-                    '</div>'
-                ))
-            );
-
-            return phoneShell('Kulup olusturma ve kitap secimi', body, 1);
-        }
-
-        function screenThree() {
-            const club = selectedClub();
-            const members = selectedMembers();
-            const topics = ui.topics[club.id] || [];
-            const schedule = ui.schedule[club.id] || [];
-
-            const body = (
-                stateControls(3) +
-                statePanel(3) +
-                (ui.screenStates[3] !== 'ready' ? '' : (
-                    '<div class="card">' +
-                        '<div class="card-title">Kulup kitabi ve bolum ozeti</div>' +
-                        '<div class="muted"><strong>Kulup:</strong> ' + club.name + '</div>' +
-                        '<div class="muted"><strong>Kitap:</strong> ' + club.book + '</div>' +
-                        '<div class="muted"><strong>Guncel bolum:</strong> ' + club.chapter + '</div>' +
-                        '<div class="muted" style="margin-top:0.45rem;">AC-FR-E14-03-01</div>' +
-                    '</div>' +
-
-                    '<div class="card">' +
-                        '<div class="card-title">Uye listesi ve roller</div>' +
-                        '<div class="list">' +
-                            members.map((member) => (
-                                '<div class="list-item">' +
-                                    '<div class="row">' +
-                                        '<div class="item-title">' + member.name + '</div>' +
-                                        '<span class="chip ' + (member.role === 'owner' ? 'success' : member.role === 'moderator' ? 'warn' : '') + '">' + member.role + '</span>' +
-                                    '</div>' +
-                                    '<div class="item-meta">Okuma tamamlanma: %' + member.completion + '</div>' +
-                                '</div>'
-                            )).join('') +
-                        '</div>' +
-                        '<div class="muted" style="margin-top:0.45rem;">AC-FR-E14-03-02</div>' +
-                    '</div>' +
-
-                    '<div class="card">' +
-                        '<div class="card-title">Aktif tartisma basliklari</div>' +
-                        '<div class="list">' +
-                            topics.map((topic) => (
-                                '<div class="list-item"><div class="item-meta">' + topic + '</div></div>'
-                            )).join('') +
-                        '</div>' +
-                        '<div class="chips" style="margin-top:0.5rem;">' +
-                            '<button class="btn btn-primary" onclick="showScreen(4)" aria-label="Tartisma ekranina gec">Tartismaya Gec</button>' +
-                        '</div>' +
-                        '<div class="muted" style="margin-top:0.45rem;">AC-FR-E14-03-03</div>' +
-                    '</div>' +
-
-                    '<div class="card">' +
-                        '<div class="card-title">Planli oturum takvimi</div>' +
-                        '<div class="list">' +
-                            schedule.map((slot) => (
-                                '<div class="list-item">' +
-                                    '<div class="row"><div class="item-title">' + slot.label + '</div><span class="chip warn">' + slot.when + '</span></div>' +
-                                '</div>'
-                            )).join('') +
-                        '</div>' +
-                        '<div class="muted" style="margin-top:0.45rem;">AC-FR-E14-03-04</div>' +
-                    '</div>'
-                ))
-            );
-
-            return phoneShell('Kulup detayi ve uye alani', body, 1);
-        }
-
-        function screenFour() {
-            const club = selectedClub();
-            const thread = ui.thread[club.id] || [];
-
-            const body = (
-                stateControls(4) +
-                statePanel(4) +
-                (ui.screenStates[4] !== 'ready' ? '' : (
-                    '<div class="card">' +
-                        '<div class="card-title">Kronolojik tartisma akisi</div>' +
-                        '<div class="list">' +
-                            thread.map((msg) => (
-                                '<div class="list-item">' +
-                                    '<div class="row"><div class="item-title">' + msg.author + '</div><span class="chip">' + msg.time + '</span></div>' +
-                                    '<div class="item-meta">' + msg.text + '</div>' +
-                                    '<div class="chips" style="margin-top:0.35rem;">' +
-                                        '<button class="btn btn-outline" onclick="quoteReplyById(' + msg.id + ')" aria-label="Mesaji alinti ile yanitla">Yanitla</button>' +
-                                        '<span class="chip success">Reaksiyon: ' + msg.reacts + '</span>' +
-                                        '<button class="btn btn-outline" onclick="reportMessage(' + msg.id + ')" aria-label="Mesaji bildir">Bildir</button>' +
-                                    '</div>' +
-                                '</div>'
-                            )).join('') +
-                        '</div>' +
-                        '<div class="muted" style="margin-top:0.45rem;">AC-FR-E14-04-01</div>' +
-                        '<div class="muted">AC-FR-E14-04-03</div>' +
-                    '</div>' +
-
-                    '<div class="card">' +
-                        '<div class="card-title">Yanit olustur</div>' +
-                        '<textarea class="field" style="min-height:88px;" placeholder="Mesajinizi yazin" aria-label="Mesaj olustur" oninput="updateComposer(this.value)">' + ui.composer + '</textarea>' +
-                        '<div class="chips" style="margin-top:0.5rem;">' +
-                            '<button class="btn btn-primary" onclick="addReply()" aria-label="Yaniti gonder">Gonder</button>' +
-                            '<button class="btn btn-outline" onclick="showScreen(3)" aria-label="Kulup detayina don">Kulube Don</button>' +
-                        '</div>' +
-                        '<div class="muted" style="margin-top:0.45rem;">AC-FR-E14-04-02</div>' +
-                        '<div class="muted">AC-FR-E14-04-04</div>' +
-                    '</div>'
-                ))
-            );
-
-            return phoneShell('Tartisma basligi ve etkilesim', body, 3);
-        }
-
-        function renderScreen(screenNo) {
-            if (screenNo === 1) {
-                return screenOne();
-            }
-            if (screenNo === 2) {
-                return screenTwo();
-            }
-            if (screenNo === 3) {
-                return screenThree();
-            }
-            return screenFour();
-        }
-
-        function render() {
-            const current = screenData[ui.currentScreen];
-            document.getElementById('screenTitle').textContent = current.title;
-            document.getElementById('screenFr').textContent = current.fr;
-            document.getElementById('screenRoute').textContent = current.route;
-            document.getElementById('screenMeta').textContent = current.meta + ' | event: ' + ui.lastAnalyticsEvent;
-
-            document.querySelectorAll('.nav-item').forEach((item) => {
-                item.classList.toggle('active', Number(item.dataset.screen) === ui.currentScreen);
-            });
-
-            document.querySelectorAll('[id^="flow-"]').forEach((step, index) => {
-                step.classList.toggle('active', index + 1 === ui.currentScreen);
-            });
-
-            document.getElementById('viewer').innerHTML = renderScreen(ui.currentScreen);
-        }
-
-        document.querySelectorAll('.nav-item').forEach((item) => {
-            item.addEventListener('click', () => {
-                setCurrentScreen(Number(item.dataset.screen));
-            });
-            item.addEventListener('keydown', (event) => {
-                if (event.key === 'Enter' || event.key === ' ') {
-                    event.preventDefault();
-                    setCurrentScreen(Number(item.dataset.screen));
-                }
-            });
+        const newId = Date.now();
+        ui.clubs.unshift({
+          id: newId,
+          name: ui.draft.name.trim(),
+          members: ui.draft.invites.trim()
+            ? ui.draft.invites
+                .split(',')
+                .map(i => i.trim())
+                .filter(Boolean).length + 1
+            : 1,
+          book: ui.draft.book.trim(),
+          chapter: 'Bolum 1: Giris',
+          meetings: ui.draft.day + ' ' + ui.draft.time,
+          privacy: ui.draft.privacy,
+          lastActivity: 'simdi'
         });
 
+        ui.members[newId] = [{ name: 'Siz', role: 'owner', completion: 0 }];
+        ui.topics[newId] = ['Kulup acilis mesaji'];
+        ui.schedule[newId] = [{ label: 'Ilk tanisma oturumu', when: ui.draft.day + ' ' + ui.draft.time }];
+        ui.thread[newId] = [
+          {
+            id: 1,
+            author: 'Sistem',
+            time: 'simdi',
+            text: 'Kulup olusturuldu. Ilk tartisma basliginizi acabilirsiniz.',
+            reacts: 0
+          }
+        ];
+        ui.selectedClubId = newId;
+        showToast('Kulup olusturuldu.', 'success');
+        showScreen(3);
+      }
+
+      function addReply(threadId) {
+        const text = ui.composer.trim();
+        if (!text) {
+          showToast('Mesaj metni bos olamaz.', 'error');
+          return;
+        }
+
+        const club = selectedClub();
+        const list = ui.thread[club.id] || [];
+        list.push({
+          id: list.length + 1,
+          author: 'Siz',
+          time: new Date().toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' }),
+          text,
+          reacts: 0
+        });
+        ui.thread[club.id] = list;
+        ui.composer = '';
+        showToast('Yanit eklendi.', 'success');
         render();
+      }
+
+      function quoteReplyById(messageId) {
+        const club = selectedClub();
+        const thread = ui.thread[club.id] || [];
+        const msg = thread.find(item => item.id === messageId);
+        if (!msg) {
+          return;
+        }
+        ui.composer = '> ' + msg.text + '\n';
+        render();
+      }
+
+      function reportMessage(messageId) {
+        showToast('Mesaj #' + messageId + ' moderasyona bildirildi.', 'success');
+      }
+
+      function updateComposer(value) {
+        ui.composer = value;
+        render();
+      }
+
+      function resetDemo() {
+        ui.privacyFilter = 'all';
+        ui.selectedClubId = 201;
+        ui.composer = '';
+        ui.draft.name = '';
+        ui.draft.book = '';
+        ui.draft.day = 'Persembe';
+        ui.draft.time = '20:00';
+        ui.draft.privacy = 'private';
+        ui.draft.invites = '';
+        render();
+      }
+
+      function screenOne() {
+        const clubs = filteredClubs();
+        const body =
+          stateControls(1) +
+          statePanel(1) +
+          (ui.screenStates[1] !== 'ready'
+            ? ''
+            : '<div class="card">' +
+              '<div class="card-title">Kulup listesi</div>' +
+              '<div class="chips">' +
+              '<span class="chip">Toplam kulup: ' +
+              ui.clubs.length +
+              '</span>' +
+              '<span class="chip success">Acik: ' +
+              ui.clubs.filter(c => c.privacy === 'public').length +
+              '</span>' +
+              '<span class="chip warn">Ozel: ' +
+              ui.clubs.filter(c => c.privacy === 'private').length +
+              '</span>' +
+              '<button class="btn btn-primary" onclick="showScreen(2)" aria-label="Kulup olusturma ekranina gec">+ Kulup Olustur</button>' +
+              '</div>' +
+              '<div class="muted" style="margin-top:0.45rem;">AC-FR-E14-01-01</div>' +
+              '</div>' +
+              '<div class="card">' +
+              '<div class="card-title">Gizlilik filtresi</div>' +
+              '<div class="chips">' +
+              '<button class="btn ' +
+              (ui.privacyFilter === 'all' ? 'btn-primary' : 'btn-outline') +
+              '" onclick="setPrivacyFilter(\'all\')" aria-label="Tum kulup" aria-pressed="' +
+              (ui.privacyFilter === 'all') +
+              '">Tum</button>' +
+              '<button class="btn ' +
+              (ui.privacyFilter === 'public' ? 'btn-primary' : 'btn-outline') +
+              '" onclick="setPrivacyFilter(\'public\')" aria-label="Acik kulup" aria-pressed="' +
+              (ui.privacyFilter === 'public') +
+              '">Acik</button>' +
+              '<button class="btn ' +
+              (ui.privacyFilter === 'private' ? 'btn-primary' : 'btn-outline') +
+              '" onclick="setPrivacyFilter(\'private\')" aria-label="Ozel kulup" aria-pressed="' +
+              (ui.privacyFilter === 'private') +
+              '">Ozel</button>' +
+              '</div>' +
+              '<div class="muted" style="margin-top:0.45rem;">AC-FR-E14-01-04</div>' +
+              '</div>' +
+              '<div class="card">' +
+              '<div class="card-title">Kulup kart ozetleri</div>' +
+              '<div class="list">' +
+              clubs
+                .map(
+                  club =>
+                    '<button class="list-item" onclick="selectClub(' +
+                    club.id +
+                    ')" aria-label="' +
+                    club.name +
+                    ' detayini ac" style="text-align:left; cursor:pointer;">' +
+                    '<div class="row">' +
+                    '<div class="item-title">' +
+                    club.name +
+                    '</div>' +
+                    '<span class="chip ' +
+                    (club.privacy === 'public' ? 'success' : 'warn') +
+                    '">' +
+                    (club.privacy === 'public' ? 'acik' : 'ozel') +
+                    '</span>' +
+                    '</div>' +
+                    '<div class="item-meta">Uye: ' +
+                    club.members +
+                    ' | Kitap: ' +
+                    club.book +
+                    '</div>' +
+                    '<div class="item-meta">Son aktivite: ' +
+                    club.lastActivity +
+                    ' | Toplanti: ' +
+                    club.meetings +
+                    '</div>' +
+                    '</button>'
+                )
+                .join('') +
+              '</div>' +
+              '<div class="muted" style="margin-top:0.45rem;">AC-FR-E14-01-02</div>' +
+              '<div class="muted">AC-FR-E14-01-03</div>' +
+              '</div>');
+
+        return phoneShell('Kulup listesi ve kesif', body, null);
+      }
+
+      function screenTwo() {
+        const draft = ui.draft;
+        const body =
+          stateControls(2) +
+          statePanel(2) +
+          (ui.screenStates[2] !== 'ready'
+            ? ''
+            : '<div class="card">' +
+              '<div class="card-title">Kulup bilgisi</div>' +
+              '<input class="field" type="text" placeholder="Kulup adini girin" value="' +
+              draft.name.replace(/"/g, '&quot;') +
+              '" oninput="updateDraft(\'name\', this.value)" aria-label="Kulup adi" />' +
+              '<div class="muted" style="margin-top:0.4rem;">Kulup adi zorunludur.</div>' +
+              '<div class="muted" style="margin-top:0.45rem;">AC-FR-E14-02-01</div>' +
+              '</div>' +
+              '<div class="card">' +
+              '<div class="card-title">Kitap secimi</div>' +
+              '<input class="field" type="text" placeholder="Kitap adi secin veya arayin" value="' +
+              draft.book.replace(/"/g, '&quot;') +
+              '" oninput="updateDraft(\'book\', this.value)" aria-label="Kitap secimi" />' +
+              '<div class="chips" style="margin-top:0.45rem;">' +
+              '<button class="btn btn-outline" onclick="updateDraft(\'book\', \'Sukur Sifresi\')" aria-label="Sukur Sifresi sec">Sukur Sifresi</button>' +
+              '<button class="btn btn-outline" onclick="updateDraft(\'book\', \'Kalbimin Beyazi\')" aria-label="Kalbimin Beyazi sec">Kalbimin Beyazi</button>' +
+              '<button class="btn btn-outline" onclick="updateDraft(\'book\', \'Yolcu\')" aria-label="Yolcu sec">Yolcu</button>' +
+              '</div>' +
+              '<div class="muted" style="margin-top:0.45rem;">AC-FR-E14-02-02</div>' +
+              '</div>' +
+              '<div class="card">' +
+              '<div class="card-title">Toplanti takvimi</div>' +
+              '<div class="chips">' +
+              '<input class="field" style="max-width:47%;" type="text" value="' +
+              draft.day +
+              '" oninput="updateDraft(\'day\', this.value)" aria-label="Toplanti gunu" />' +
+              '<input class="field" style="max-width:47%;" type="text" value="' +
+              draft.time +
+              '" oninput="updateDraft(\'time\', this.value)" aria-label="Toplanti saati" />' +
+              '</div>' +
+              '<div class="muted" style="margin-top:0.45rem;">AC-FR-E14-02-03</div>' +
+              '</div>' +
+              '<div class="card">' +
+              '<div class="card-title">Gizlilik ve davet</div>' +
+              '<div class="chips">' +
+              '<button class="btn ' +
+              (draft.privacy === 'public' ? 'btn-primary' : 'btn-outline') +
+              '" onclick="updateDraft(\'privacy\', \'public\')" aria-label="Acik kulup" aria-pressed="' +
+              (draft.privacy === 'public') +
+              '">Acik</button>' +
+              '<button class="btn ' +
+              (draft.privacy === 'private' ? 'btn-primary' : 'btn-outline') +
+              '" onclick="updateDraft(\'privacy\', \'private\')" aria-label="Ozel kulup" aria-pressed="' +
+              (draft.privacy === 'private') +
+              '">Ozel</button>' +
+              '</div>' +
+              '<textarea class="field" style="margin-top:0.45rem; min-height:72px;" placeholder="Davet e-postalari (virgulle ayirin)" oninput="updateDraft(\'invites\', this.value)" aria-label="Davet e-postalari">' +
+              draft.invites +
+              '</textarea>' +
+              '<div class="chips" style="margin-top:0.5rem;">' +
+              '<button class="btn btn-primary" onclick="createClub()" aria-label="Kulubu olustur">Kulubu Olustur</button>' +
+              '<button class="btn btn-outline" onclick="showScreen(1)" aria-label="Listeye don">Listeye Don</button>' +
+              '</div>' +
+              '<div class="muted" style="margin-top:0.45rem;">AC-FR-E14-02-04</div>' +
+              '</div>');
+
+        return phoneShell('Kulup olusturma ve kitap secimi', body, 1);
+      }
+
+      function screenThree() {
+        const club = selectedClub();
+        const members = selectedMembers();
+        const topics = ui.topics[club.id] || [];
+        const schedule = ui.schedule[club.id] || [];
+
+        const body =
+          stateControls(3) +
+          statePanel(3) +
+          (ui.screenStates[3] !== 'ready'
+            ? ''
+            : '<div class="card">' +
+              '<div class="card-title">Kulup kitabi ve bolum ozeti</div>' +
+              '<div class="muted"><strong>Kulup:</strong> ' +
+              club.name +
+              '</div>' +
+              '<div class="muted"><strong>Kitap:</strong> ' +
+              club.book +
+              '</div>' +
+              '<div class="muted"><strong>Guncel bolum:</strong> ' +
+              club.chapter +
+              '</div>' +
+              '<div class="muted" style="margin-top:0.45rem;">AC-FR-E14-03-01</div>' +
+              '</div>' +
+              '<div class="card">' +
+              '<div class="card-title">Uye listesi ve roller</div>' +
+              '<div class="list">' +
+              members
+                .map(
+                  member =>
+                    '<div class="list-item">' +
+                    '<div class="row">' +
+                    '<div class="item-title">' +
+                    member.name +
+                    '</div>' +
+                    '<span class="chip ' +
+                    (member.role === 'owner' ? 'success' : member.role === 'moderator' ? 'warn' : '') +
+                    '">' +
+                    member.role +
+                    '</span>' +
+                    '</div>' +
+                    '<div class="item-meta">Okuma tamamlanma: %' +
+                    member.completion +
+                    '</div>' +
+                    '</div>'
+                )
+                .join('') +
+              '</div>' +
+              '<div class="muted" style="margin-top:0.45rem;">AC-FR-E14-03-02</div>' +
+              '</div>' +
+              '<div class="card">' +
+              '<div class="card-title">Aktif tartisma basliklari</div>' +
+              '<div class="list">' +
+              topics.map(topic => '<div class="list-item"><div class="item-meta">' + topic + '</div></div>').join('') +
+              '</div>' +
+              '<div class="chips" style="margin-top:0.5rem;">' +
+              '<button class="btn btn-primary" onclick="showScreen(4)" aria-label="Tartisma ekranina gec">Tartismaya Gec</button>' +
+              '</div>' +
+              '<div class="muted" style="margin-top:0.45rem;">AC-FR-E14-03-03</div>' +
+              '</div>' +
+              '<div class="card">' +
+              '<div class="card-title">Planli oturum takvimi</div>' +
+              '<div class="list">' +
+              schedule
+                .map(
+                  slot =>
+                    '<div class="list-item">' +
+                    '<div class="row"><div class="item-title">' +
+                    slot.label +
+                    '</div><span class="chip warn">' +
+                    slot.when +
+                    '</span></div>' +
+                    '</div>'
+                )
+                .join('') +
+              '</div>' +
+              '<div class="muted" style="margin-top:0.45rem;">AC-FR-E14-03-04</div>' +
+              '</div>');
+
+        return phoneShell('Kulup detayi ve uye alani', body, 1);
+      }
+
+      function screenFour() {
+        const club = selectedClub();
+        const thread = ui.thread[club.id] || [];
+
+        const body =
+          stateControls(4) +
+          statePanel(4) +
+          (ui.screenStates[4] !== 'ready'
+            ? ''
+            : '<div class="card">' +
+              '<div class="card-title">Kronolojik tartisma akisi</div>' +
+              '<div class="list">' +
+              thread
+                .map(
+                  msg =>
+                    '<div class="list-item">' +
+                    '<div class="row"><div class="item-title">' +
+                    msg.author +
+                    '</div><span class="chip">' +
+                    msg.time +
+                    '</span></div>' +
+                    '<div class="item-meta">' +
+                    msg.text +
+                    '</div>' +
+                    '<div class="chips" style="margin-top:0.35rem;">' +
+                    '<button class="btn btn-outline" onclick="quoteReplyById(' +
+                    msg.id +
+                    ')" aria-label="Mesaji alinti ile yanitla">Yanitla</button>' +
+                    '<span class="chip success">Reaksiyon: ' +
+                    msg.reacts +
+                    '</span>' +
+                    '<button class="btn btn-outline" onclick="reportMessage(' +
+                    msg.id +
+                    ')" aria-label="Mesaji bildir">Bildir</button>' +
+                    '</div>' +
+                    '</div>'
+                )
+                .join('') +
+              '</div>' +
+              '<div class="muted" style="margin-top:0.45rem;">AC-FR-E14-04-01</div>' +
+              '<div class="muted">AC-FR-E14-04-03</div>' +
+              '</div>' +
+              '<div class="card">' +
+              '<div class="card-title">Yanit olustur</div>' +
+              '<textarea class="field" style="min-height:88px;" placeholder="Mesajinizi yazin" aria-label="Mesaj olustur" oninput="updateComposer(this.value)">' +
+              ui.composer +
+              '</textarea>' +
+              '<div class="chips" style="margin-top:0.5rem;">' +
+              '<button class="btn btn-primary" onclick="addReply()" aria-label="Yaniti gonder">Gonder</button>' +
+              '<button class="btn btn-outline" onclick="showScreen(3)" aria-label="Kulup detayina don">Kulube Don</button>' +
+              '</div>' +
+              '<div class="muted" style="margin-top:0.45rem;">AC-FR-E14-04-02</div>' +
+              '<div class="muted">AC-FR-E14-04-04</div>' +
+              '</div>');
+
+        return phoneShell('Tartisma basligi ve etkilesim', body, 3);
+      }
+
+      function renderScreen(screenNo) {
+        if (screenNo === 1) {
+          return screenOne();
+        }
+        if (screenNo === 2) {
+          return screenTwo();
+        }
+        if (screenNo === 3) {
+          return screenThree();
+        }
+        return screenFour();
+      }
+
+      function render() {
+        const current = screenData[ui.currentScreen];
+        document.getElementById('screenTitle').textContent = current.title;
+        document.getElementById('screenFr').textContent = current.fr;
+        document.getElementById('screenRoute').textContent = current.route;
+        document.getElementById('screenMeta').textContent = current.meta + ' | event: ' + ui.lastAnalyticsEvent;
+
+        document.querySelectorAll('.nav-item').forEach(item => {
+          item.classList.toggle('active', Number(item.dataset.screen) === ui.currentScreen);
+        });
+
+        document.querySelectorAll('[id^="flow-"]').forEach((step, index) => {
+          step.classList.toggle('active', index + 1 === ui.currentScreen);
+        });
+
+        document.getElementById('viewer').innerHTML = renderScreen(ui.currentScreen);
+      }
+
+      document.querySelectorAll('.nav-item').forEach(item => {
+        item.addEventListener('click', () => {
+          setCurrentScreen(Number(item.dataset.screen));
+        });
+        item.addEventListener('keydown', event => {
+          if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            setCurrentScreen(Number(item.dataset.screen));
+          }
+        });
+      });
+
+      render();
     </script>
-</body>
+  </body>
 </html>

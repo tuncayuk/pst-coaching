@@ -1,38 +1,38 @@
-import React from "react";
-import { Alert, StyleSheet, View } from "react-native";
-import { OfflineNotice } from "../components/OfflineNotice";
-import { ScreenLayout } from "../components/ScreenLayout";
-import { SectionCard } from "../components/SectionCard";
-import { SkeletonBlock } from "../components/SkeletonBlock";
-import { StateMessage } from "../components/StateMessage";
-import { resolveScreenState, ScreenState } from "../components/ScreenState";
+import React from 'react';
+import { Alert, StyleSheet, View } from 'react-native';
 
-import { PButton, PCard, PChip, PText } from "../../components";
+import { PButton, PCard, PChip, PText } from '../../components';
 import {
   getAddOns,
   getAddOnsForSubscription,
   getPlanForSubscription,
   getPrimaryUser,
-  getSubscriptionForUser,
-} from "../../data/mockSelectors";
+  getSubscriptionForUser
+} from '../../data/mockSelectors';
+import { OfflineNotice } from '../components/OfflineNotice';
+import { ScreenLayout } from '../components/ScreenLayout';
+import { ScreenState, resolveScreenState } from '../components/ScreenState';
+import { SectionCard } from '../components/SectionCard';
+import { SkeletonBlock } from '../components/SkeletonBlock';
+import { StateMessage } from '../components/StateMessage';
 
 /** Mock pricing per add-on code */
 const ADDON_PRICING: Record<string, string> = {
-  ai_package: "49,99 TL / ay",
-  extra_seat: "29,99 TL / kisi",
+  ai_package: '49,99 TL / ay',
+  extra_seat: '29,99 TL / kisi'
 };
 
 /** Human-readable descriptions per code */
 const ADDON_DESCRIPTIONS: Record<string, string> = {
-  ai_package: "Yapay zeka destekli icerik onerileri ve kisisel gelisim asistani",
-  extra_seat: "Aile veya grup planina ek kisi ekle",
+  ai_package: 'Yapay zeka destekli icerik onerileri ve kisisel gelisim asistani',
+  extra_seat: 'Aile veya grup planina ek kisi ekle'
 };
 
 /** AC-FR-E3-03-03: Ek Kisi only for family/group */
-const EXTRA_SEAT_PLANS = ["family", "group"];
+const EXTRA_SEAT_PLANS = ['family', 'group'];
 
 /** Mock user role - owner vs member */
-const MOCK_USER_ROLE: "owner" | "member" = "owner";
+const MOCK_USER_ROLE: 'owner' | 'member' = 'owner';
 
 const ProfileAddonsContent = ({ isOffline }: { isOffline?: boolean }) => {
   const user = getPrimaryUser();
@@ -41,35 +41,35 @@ const ProfileAddonsContent = ({ isOffline }: { isOffline?: boolean }) => {
   const activeAddons = getAddOnsForSubscription(subscription?.id);
 
   // AC-FR-E3-03-03: filter extra_seat for non-Aile/Grup plans
-  const visibleAddons = getAddOns().filter((addon) => {
-    if (addon.code === "extra_seat" && !EXTRA_SEAT_PLANS.includes(plan?.plan_type ?? "")) {
+  const visibleAddons = getAddOns().filter(addon => {
+    if (addon.code === 'extra_seat' && !EXTRA_SEAT_PLANS.includes(plan?.plan_type ?? '')) {
       return false;
     }
     return true;
   });
 
-  const addonItems = visibleAddons.map((addon) => ({
+  const addonItems = visibleAddons.map(addon => ({
     id: addon.id,
     name: addon.name,
     code: addon.code,
     description: ADDON_DESCRIPTIONS[addon.code] ?? addon.code,
-    price: ADDON_PRICING[addon.code] ?? "-",
-    isActive: activeAddons.some((a) => a.id === addon.id),
+    price: ADDON_PRICING[addon.code] ?? '-',
+    isActive: activeAddons.some(a => a.id === addon.id)
   }));
 
   // AC-FR-E3-03-04: only owner can toggle add-ons
-  const isOwner = MOCK_USER_ROLE === "owner";
+  const isOwner = MOCK_USER_ROLE === 'owner';
 
   const handleToggle = (name: string, isActive: boolean) => {
     if (!isOwner) {
       // analytics: addon_owner_gate_blocked (stub)
-      Alert.alert("Yetki Gerekli", "Add-on yonetimi yalnizca Plan Sahibi tarafindan yapilabilir.");
+      Alert.alert('Yetki Gerekli', 'Add-on yonetimi yalnizca Plan Sahibi tarafindan yapilabilir.');
       return;
     }
     if (isOffline) return;
     Alert.alert(
-      isActive ? "Add-on Kapat" : "Add-on Etkinlestir",
-      `"${name}" ${isActive ? "kapatilacak" : "etkinlestirilecek"}. (Sahte ortamda simule edildi)`
+      isActive ? 'Add-on Kapat' : 'Add-on Etkinlestir',
+      `"${name}" ${isActive ? 'kapatilacak' : 'etkinlestirilecek'}. (Sahte ortamda simule edildi)`
     );
   };
 
@@ -85,34 +85,30 @@ const ProfileAddonsContent = ({ isOffline }: { isOffline?: boolean }) => {
       )}
 
       <SectionCard title="Add-on Paketleri">
-        {addonItems.map((addon) => (
+        {addonItems.map(addon => (
           <PCard key={addon.id} style={styles.card}>
-            <PCard.Title
-              title={addon.name}
-              subtitle={addon.description}
-            />
+            <PCard.Title title={addon.name} subtitle={addon.description} />
             <PCard.Content>
               <View style={styles.cardRow}>
                 {/* AC-FR-E3-03-01: price shown */}
-                <PText variant="bodySmall" style={styles.priceText}>{addon.price}</PText>
-                <PChip
-                  compact
-                  style={addon.isActive ? styles.chipActive : styles.chipPassive}
-                >
-                  {addon.isActive ? "Aktif" : "Pasif"}
+                <PText variant="bodySmall" style={styles.priceText}>
+                  {addon.price}
+                </PText>
+                <PChip compact style={addon.isActive ? styles.chipActive : styles.chipPassive}>
+                  {addon.isActive ? 'Aktif' : 'Pasif'}
                 </PChip>
               </View>
             </PCard.Content>
             <PCard.Actions>
               {/* AC-FR-E3-03-02: activate/deactivate */}
               <PButton
-                mode={addon.isActive ? "outlined" : "contained"}
+                mode={addon.isActive ? 'outlined' : 'contained'}
                 disabled={isOffline || !isOwner}
                 onPress={() => handleToggle(addon.name, addon.isActive)}
                 accessibilityLabel={addon.isActive ? `${addon.name} kapat` : `${addon.name} satin al ve etkinlestir`}
                 accessibilityRole="button"
               >
-                {addon.isActive ? "Kapat" : "Satin Al"}
+                {addon.isActive ? 'Kapat' : 'Satin Al'}
               </PButton>
             </PCard.Actions>
           </PCard>
@@ -143,14 +139,10 @@ const ProfileAddonsContent = ({ isOffline }: { isOffline?: boolean }) => {
   );
 };
 
-export const ProfileAddonsScreen = ({
-  route,
-}: {
-  route?: { params?: { state?: ScreenState } };
-}) => {
+export const ProfileAddonsScreen = ({ route }: { route?: { params?: { state?: ScreenState } } }) => {
   const state = resolveScreenState(route);
 
-  if (state === "loading") {
+  if (state === 'loading') {
     return (
       <ScreenLayout title="Add-on Yonetimi" subtitle="Add-onlar hazirlaniyor">
         <SectionCard title="Paketler">
@@ -161,7 +153,7 @@ export const ProfileAddonsScreen = ({
     );
   }
 
-  if (state === "empty") {
+  if (state === 'empty') {
     return (
       <ScreenLayout title="Add-on Yonetimi" subtitle="Paketler">
         <StateMessage
@@ -174,7 +166,7 @@ export const ProfileAddonsScreen = ({
     );
   }
 
-  if (state === "error") {
+  if (state === 'error') {
     return (
       <ScreenLayout title="Add-on Yonetimi" subtitle="Bir sorun olustu">
         <StateMessage
@@ -188,7 +180,7 @@ export const ProfileAddonsScreen = ({
     );
   }
 
-  if (state === "offline") {
+  if (state === 'offline') {
     return (
       <ScreenLayout title="Add-on Yonetimi" subtitle="Onbellekteki paketler">
         <OfflineNotice />
@@ -206,39 +198,39 @@ export const ProfileAddonsScreen = ({
 
 const styles = StyleSheet.create({
   roleBanner: {
-    backgroundColor: "#FEF3C7",
+    backgroundColor: '#FEF3C7',
     borderRadius: 8,
     padding: 12,
-    marginBottom: 8,
+    marginBottom: 8
   },
   roleBannerText: {
-    color: "#92400E",
+    color: '#92400E'
   },
   card: {
-    marginBottom: 12,
+    marginBottom: 12
   },
   cardRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center'
   },
   priceText: {
-    color: "#2B1B5D",
-    fontWeight: "700",
+    color: '#2B1B5D',
+    fontWeight: '700'
   },
   chipActive: {
-    backgroundColor: "#D1FAE5",
+    backgroundColor: '#D1FAE5'
   },
   chipPassive: {
-    backgroundColor: "#F3F4F6",
+    backgroundColor: '#F3F4F6'
   },
   benefit: {
-    color: "#374151",
+    color: '#374151',
     marginBottom: 6,
-    lineHeight: 20,
+    lineHeight: 20
   },
   exploreButton: {
     marginTop: 8,
-    minHeight: 44,
-  },
+    minHeight: 44
+  }
 });

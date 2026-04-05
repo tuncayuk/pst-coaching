@@ -1,26 +1,21 @@
-import React from "react";
-import { StyleSheet, View } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { OfflineNotice } from "../components/OfflineNotice";
-import { ScreenLayout } from "../components/ScreenLayout";
-import { SectionCard } from "../components/SectionCard";
-import { SkeletonBlock } from "../components/SkeletonBlock";
-import { StateMessage } from "../components/StateMessage";
-import { resolveScreenState, ScreenState } from "../components/ScreenState";
+import { useNavigation } from '@react-navigation/native';
+import React from 'react';
+import { StyleSheet, View } from 'react-native';
+
+import { PActivityIndicator, PButton, PChip, PDivider, PText } from '../../components';
 import {
   getContentItemsForParent,
   getContentProgressForUser,
   getPrimaryUser,
   getWorkshopById,
-  getWorkshops,
-} from "../../data/mockSelectors";
-import {
-  PActivityIndicator,
-  PButton,
-  PChip,
-  PDivider,
-  PText,
-} from "../../components";
+  getWorkshops
+} from '../../data/mockSelectors';
+import { OfflineNotice } from '../components/OfflineNotice';
+import { ScreenLayout } from '../components/ScreenLayout';
+import { ScreenState, resolveScreenState } from '../components/ScreenState';
+import { SectionCard } from '../components/SectionCard';
+import { SkeletonBlock } from '../components/SkeletonBlock';
+import { StateMessage } from '../components/StateMessage';
 
 type RouteParams = { state?: ScreenState; id?: string };
 
@@ -29,49 +24,47 @@ const CAMP_DAYS = 3;
 
 // Simulated stage type labels for display (AC-FR-E8-02-02)
 const STAGE_LABELS: Record<number, string> = {
-  1: "Referans", 2: "Icgoru", 3: "Referans", 4: "Icgoru",
-  5: "Referans", 6: "Icgoru", 7: "Entegrasyon",
-  8: "Kamp", 9: "Rehber", 10: "Calisma Kitabi", 11: "Kapanis",
+  1: 'Referans',
+  2: 'Icgoru',
+  3: 'Referans',
+  4: 'Icgoru',
+  5: 'Referans',
+  6: 'Icgoru',
+  7: 'Entegrasyon',
+  8: 'Kamp',
+  9: 'Rehber',
+  10: 'Calisma Kitabi',
+  11: 'Kapanis'
 };
 
-const ContentWorkshopDetailContent = ({
-  workshopId,
-  isOffline,
-}: {
-  workshopId?: string;
-  isOffline?: boolean;
-}) => {
+const ContentWorkshopDetailContent = ({ workshopId, isOffline }: { workshopId?: string; isOffline?: boolean }) => {
   const navigation = useNavigation<any>();
   const user = getPrimaryUser();
   // AC-FR-E8-01-03: role-based CTA -- "facilitator" role triggers guide CTA
-  const isFacilitator = user?.role === "facilitator";
+  const isFacilitator = user?.role === 'facilitator';
   const workshop = getWorkshopById(workshopId) ?? getWorkshops()[0];
-  const sections = getContentItemsForParent("workshop", workshop?.id);
+  const sections = getContentItemsForParent('workshop', workshop?.id);
   const progressList = getContentProgressForUser(user?.id);
   // AC-FR-E8-01-04: show last synced stage/session
-  const workshopProgress = progressList.find(
-    (p: any) => p.content_id === workshop?.id
-  );
+  const workshopProgress = progressList.find((p: any) => p.content_id === workshop?.id);
   const isStarted = !!workshopProgress?.started_at;
   const isCompleted = !!workshopProgress?.completed_at;
   const completedCount = sections.filter(
-    (s: any) =>
-      progressList.find((p: any) => p.content_id === s.id)?.status === "completed"
+    (s: any) => progressList.find((p: any) => p.content_id === s.id)?.status === 'completed'
   ).length;
-  const lastSection =
-    completedCount > 0 ? sections[completedCount - 1] : null;
+  const lastSection = completedCount > 0 ? sections[completedCount - 1] : null;
 
   const handlePrimary = () => {
     if (isFacilitator) {
       // AC-FR-E8-01-03: facilitator opens guide
-      navigation.navigate("Content", {
-        screen: "ContentWorkshopGuide",
-        params: { id: workshop?.id },
+      navigation.navigate('Content', {
+        screen: 'ContentWorkshopGuide',
+        params: { id: workshop?.id }
       });
     } else {
-      navigation.navigate("Content", {
-        screen: "ContentWorkshopHome",
-        params: { id: workshop?.id },
+      navigation.navigate('Content', {
+        screen: 'ContentWorkshopHome',
+        params: { id: workshop?.id }
       });
     }
   };
@@ -80,12 +73,12 @@ const ContentWorkshopDetailContent = ({
     <>
       {/* AC-FR-E8-01-01: title, theme, conversion goal, target audience, duration, references */}
       <View style={styles.hero}>
-        <PText style={styles.heroEmoji}>{"\uD83C\uDFDB"}</PText>
+        <PText style={styles.heroEmoji}>{'\uD83C\uDFDB'}</PText>
         <PText variant="headlineMedium" style={styles.heroTitle}>
-          {workshop?.title ?? "Atolye"}
+          {workshop?.title ?? 'Atolye'}
         </PText>
         <PText variant="bodyMedium" style={styles.heroDesc}>
-          {workshop?.description ?? "Canli uygulamalar, paylasim ve destekleyici egzersizlerle ilerleyen bir atolye."}
+          {workshop?.description ?? 'Canli uygulamalar, paylasim ve destekleyici egzersizlerle ilerleyen bir atolye.'}
         </PText>
       </View>
 
@@ -99,15 +92,21 @@ const ContentWorkshopDetailContent = ({
         </View>
         <PDivider style={styles.divider} />
         <View style={styles.metaRow}>
-          <PText variant="labelMedium" style={styles.metaLabel}>Hedef kitle</PText>
+          <PText variant="labelMedium" style={styles.metaLabel}>
+            Hedef kitle
+          </PText>
           <PText variant="bodySmall">Kisisel gelisim arayanlar</PText>
         </View>
         <View style={styles.metaRow}>
-          <PText variant="labelMedium" style={styles.metaLabel}>Toplam sure</PText>
+          <PText variant="labelMedium" style={styles.metaLabel}>
+            Toplam sure
+          </PText>
           <PText variant="bodySmall">3 gun + 7 oncesi asama</PText>
         </View>
         <View style={styles.metaRow}>
-          <PText variant="labelMedium" style={styles.metaLabel}>Referans</PText>
+          <PText variant="labelMedium" style={styles.metaLabel}>
+            Referans
+          </PText>
           <PText variant="bodySmall">Kuran ve sunnet destekli icerik</PText>
         </View>
       </SectionCard>
@@ -116,7 +115,7 @@ const ContentWorkshopDetailContent = ({
       {isStarted && lastSection ? (
         <SectionCard title="Kaldigin Yer">
           <PText variant="bodySmall" style={styles.subtleText}>
-            Son asama: {lastSection.title ?? "Asama " + completedCount}
+            Son asama: {lastSection.title ?? 'Asama ' + completedCount}
           </PText>
           <PText variant="bodySmall" style={styles.subtleText}>
             {completedCount}/{sections.length} bolum tamamlandi
@@ -150,11 +149,9 @@ const ContentWorkshopDetailContent = ({
           disabled={isOffline}
           style={styles.primaryButton}
           onPress={handlePrimary}
-          accessibilityLabel={
-            isFacilitator ? "Rehberi Ac" : isStarted ? "Devam Et" : "Basla"
-          }
+          accessibilityLabel={isFacilitator ? 'Rehberi Ac' : isStarted ? 'Devam Et' : 'Basla'}
         >
-          {isFacilitator ? "Rehberi Ac" : isStarted ? "Devam Et" : "Basla"}
+          {isFacilitator ? 'Rehberi Ac' : isStarted ? 'Devam Et' : 'Basla'}
         </PButton>
         {!isFacilitator && (
           <PButton
@@ -162,13 +159,13 @@ const ContentWorkshopDetailContent = ({
             disabled={isOffline}
             style={styles.secondaryButton}
             onPress={() =>
-              navigation.navigate("Content", {
-                screen: "ContentWorkshopCompletion",
-                params: { id: workshop?.id },
+              navigation.navigate('Content', {
+                screen: 'ContentWorkshopCompletion',
+                params: { id: workshop?.id }
               })
             }
           >
-            {isCompleted ? "Arsivi Gor" : "Tamamlama Ekrani"}
+            {isCompleted ? 'Arsivi Gor' : 'Tamamlama Ekrani'}
           </PButton>
         )}
       </SectionCard>
@@ -176,15 +173,11 @@ const ContentWorkshopDetailContent = ({
   );
 };
 
-export const ContentWorkshopDetailScreen = ({
-  route,
-}: {
-  route?: { params?: RouteParams };
-}) => {
+export const ContentWorkshopDetailScreen = ({ route }: { route?: { params?: RouteParams } }) => {
   const state = resolveScreenState(route);
   const workshopId = route?.params?.id;
 
-  if (state === "loading") {
+  if (state === 'loading') {
     return (
       <ScreenLayout title="Atolye" subtitle="Yukleniyor">
         <SectionCard title="Atolye Bilgisi">
@@ -200,7 +193,7 @@ export const ContentWorkshopDetailScreen = ({
     );
   }
 
-  if (state === "empty") {
+  if (state === 'empty') {
     return (
       <ScreenLayout title="Atolye" subtitle="Icerik bulunamadi">
         <StateMessage
@@ -213,7 +206,7 @@ export const ContentWorkshopDetailScreen = ({
     );
   }
 
-  if (state === "error") {
+  if (state === 'error') {
     return (
       <ScreenLayout title="Atolye" subtitle="Bir sorun olustu">
         <StateMessage
@@ -227,7 +220,7 @@ export const ContentWorkshopDetailScreen = ({
     );
   }
 
-  if (state === "offline") {
+  if (state === 'offline') {
     return (
       <ScreenLayout title="Atolye" subtitle="Onbellekteki icerik">
         <OfflineNotice />
@@ -245,69 +238,69 @@ export const ContentWorkshopDetailScreen = ({
 
 const styles = StyleSheet.create({
   hero: {
-    alignItems: "center",
+    alignItems: 'center',
     paddingVertical: 24,
-    paddingHorizontal: 16,
+    paddingHorizontal: 16
   },
   heroEmoji: {
     fontSize: 48,
-    marginBottom: 12,
+    marginBottom: 12
   },
   heroTitle: {
-    textAlign: "center",
-    fontWeight: "700",
-    marginBottom: 8,
+    textAlign: 'center',
+    fontWeight: '700',
+    marginBottom: 8
   },
   heroDesc: {
-    textAlign: "center",
+    textAlign: 'center',
     opacity: 0.75,
-    lineHeight: 22,
+    lineHeight: 22
   },
   chipRow: {
-    flexDirection: "row",
-    flexWrap: "wrap",
+    flexDirection: 'row',
+    flexWrap: 'wrap',
     gap: 8,
-    marginBottom: 12,
+    marginBottom: 12
   },
   chip: {
-    marginBottom: 4,
+    marginBottom: 4
   },
   divider: {
-    marginVertical: 10,
+    marginVertical: 10
   },
   metaRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginTop: 6,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 6
   },
   metaLabel: {
-    opacity: 0.6,
+    opacity: 0.6
   },
   subtleText: {
     opacity: 0.7,
-    marginTop: 4,
+    marginTop: 4
   },
   offlineNote: {
     marginTop: 8,
     opacity: 0.55,
-    fontStyle: "italic",
+    fontStyle: 'italic'
   },
   stageRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingVertical: 4,
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 4
   },
   stageNum: {
     width: 28,
-    opacity: 0.5,
+    opacity: 0.5
   },
   stageLabel: {
-    flex: 1,
+    flex: 1
   },
   primaryButton: {
-    marginTop: 8,
+    marginTop: 8
   },
   secondaryButton: {
-    marginTop: 10,
-  },
+    marginTop: 10
+  }
 });

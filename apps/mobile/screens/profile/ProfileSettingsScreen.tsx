@@ -1,44 +1,44 @@
-import React from "react";
-import { StyleSheet, View } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { OfflineNotice } from "../components/OfflineNotice";
-import { ScreenLayout } from "../components/ScreenLayout";
-import { SectionCard } from "../components/SectionCard";
-import { SkeletonBlock } from "../components/SkeletonBlock";
-import { StateMessage } from "../components/StateMessage";
-import { resolveScreenState, ScreenState } from "../components/ScreenState";
-import { getAccessibilitySettings, getPrimaryUser, getReminderSettings } from "../../data/mockSelectors";
-import { PActivityIndicator, PButton, PDivider, PListIcon, PListItem, PSwitch, PText } from "../../components";
+import { useNavigation } from '@react-navigation/native';
+import React from 'react';
+import { StyleSheet, View } from 'react-native';
 
+import { PActivityIndicator, PButton, PDivider, PListIcon, PListItem, PSwitch, PText } from '../../components';
+import { getAccessibilitySettings, getPrimaryUser, getReminderSettings } from '../../data/mockSelectors';
+import { OfflineNotice } from '../components/OfflineNotice';
+import { ScreenLayout } from '../components/ScreenLayout';
+import { ScreenState, resolveScreenState } from '../components/ScreenState';
+import { SectionCard } from '../components/SectionCard';
+import { SkeletonBlock } from '../components/SkeletonBlock';
+import { StateMessage } from '../components/StateMessage';
 
 const ProfileSettingsContent = ({ isOffline }: { isOffline?: boolean }) => {
   const navigation = useNavigation<any>();
   const user = getPrimaryUser();
-  const accessibility = getAccessibilitySettings().find((item) => item.user_id === user?.id);
-  const reminders = getReminderSettings().find((item) => item.user_id === user?.id);
+  const accessibility = getAccessibilitySettings().find(item => item.user_id === user?.id);
+  const reminders = getReminderSettings().find(item => item.user_id === user?.id);
 
   return (
     <>
       <SectionCard title="Genel Ayarlar" actionLabel="">
         <PListItem
           title="Dil"
-          description={user?.language?.toUpperCase() ?? "TR"}
-          left={(props) => <PListIcon {...props} icon="translate" />}
-          onPress={() => navigation.navigate("ProfileLanguage")}
+          description={user?.language?.toUpperCase() ?? 'TR'}
+          left={props => <PListIcon {...props} icon="translate" />}
+          onPress={() => navigation.navigate('ProfileLanguage')}
         />
         <PDivider />
         <PListItem
           title="Hatırlatmalar"
-          description={reminders?.enabled ? "Açık" : "Kapalı"}
-          left={(props) => <PListIcon {...props} icon="bell-outline" />}
-          onPress={() => navigation.navigate("ProfileReminders")}
+          description={reminders?.enabled ? 'Açık' : 'Kapalı'}
+          left={props => <PListIcon {...props} icon="bell-outline" />}
+          onPress={() => navigation.navigate('ProfileReminders')}
         />
         <PDivider />
         <PListItem
           title="Erişilebilirlik"
-          description={accessibility?.text_size ?? "medium"}
-          left={(props) => <PListIcon {...props} icon="human-handsup" />}
-          onPress={() => navigation.navigate("ProfileAccessibility")}
+          description={accessibility?.text_size ?? 'medium'}
+          left={props => <PListIcon {...props} icon="human-handsup" />}
+          onPress={() => navigation.navigate('ProfileAccessibility')}
         />
       </SectionCard>
 
@@ -46,7 +46,7 @@ const ProfileSettingsContent = ({ isOffline }: { isOffline?: boolean }) => {
         <PListItem
           title="Okuma Modu"
           description="Gündüz"
-          left={(props) => <PListIcon {...props} icon="book-open-page-variant" />}
+          left={props => <PListIcon {...props} icon="book-open-page-variant" />}
         />
         <PDivider />
         <View style={styles.switchRow}>
@@ -82,14 +82,10 @@ const ProfileSettingsContent = ({ isOffline }: { isOffline?: boolean }) => {
   );
 };
 
-export const ProfileSettingsScreen = ({
-  route,
-}: {
-  route?: { params?: { state?: ScreenState } };
-}) => {
+export const ProfileSettingsScreen = ({ route }: { route?: { params?: { state?: ScreenState } } }) => {
   const state = resolveScreenState(route);
 
-  if (state === "loading") {
+  if (state === 'loading') {
     return (
       <ScreenLayout title="Ayarlar" subtitle="Ayarlar hazırlanıyor">
         <SectionCard title="Yükleniyor">
@@ -105,7 +101,7 @@ export const ProfileSettingsScreen = ({
     );
   }
 
-  if (state === "empty") {
+  if (state === 'empty') {
     return (
       <ScreenLayout title="Ayarlar" subtitle="Tercihlerin">
         <StateMessage
@@ -118,7 +114,7 @@ export const ProfileSettingsScreen = ({
     );
   }
 
-  if (state === "error") {
+  if (state === 'error') {
     return (
       <ScreenLayout title="Ayarlar" subtitle="Bir sorun oluştu">
         <StateMessage
@@ -132,7 +128,7 @@ export const ProfileSettingsScreen = ({
     );
   }
 
-  if (state === "offline") {
+  if (state === 'offline') {
     return (
       <ScreenLayout title="Ayarlar" subtitle="Önbellekteki ayarlar">
         <OfflineNotice />
@@ -150,13 +146,13 @@ export const ProfileSettingsScreen = ({
 
 const styles = StyleSheet.create({
   switchRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingVertical: 8,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingVertical: 8
   },
   actionButton: {
     marginTop: 12,
-    alignSelf: "flex-start",
-  },
+    alignSelf: 'flex-start'
+  }
 });

@@ -1,28 +1,22 @@
-import React from "react";
-import { StyleSheet, View, TouchableOpacity, ScrollView } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { OfflineNotice } from "../components/OfflineNotice";
-import { ScreenLayout } from "../components/ScreenLayout";
-import { SectionCard } from "../components/SectionCard";
-import { SkeletonBlock } from "../components/SkeletonBlock";
-import { StateMessage } from "../components/StateMessage";
-import { resolveScreenState, ScreenState } from "../components/ScreenState";
-import { PActivityIndicator, PButton, PText, PTextInput } from "../../components";
+import { useNavigation } from '@react-navigation/native';
+import React from 'react';
+import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { PActivityIndicator, PButton, PText, PTextInput } from '../../components';
+import { OfflineNotice } from '../components/OfflineNotice';
+import { ScreenLayout } from '../components/ScreenLayout';
+import { ScreenState, resolveScreenState } from '../components/ScreenState';
+import { SectionCard } from '../components/SectionCard';
+import { SkeletonBlock } from '../components/SkeletonBlock';
+import { StateMessage } from '../components/StateMessage';
 
-const OtpVerifyContent = ({ 
-  isOffline,
-  source,
-}: { 
-  isOffline?: boolean;
-  source?: "register" | "forgot-password";
-}) => {
+const OtpVerifyContent = ({ isOffline, source }: { isOffline?: boolean; source?: 'register' | 'forgot-password' }) => {
   const navigation = useNavigation<any>();
-  const [codes, setCodes] = React.useState(["", "", "", "", "", ""]);
-  const [otpError, setOtpError] = React.useState("");
+  const [codes, setCodes] = React.useState(['', '', '', '', '', '']);
+  const [otpError, setOtpError] = React.useState('');
   const [attemptCount, setAttemptCount] = React.useState(0);
-  const inputRefs = React.useRef<(any)[]>([]);
+  const inputRefs = React.useRef<any[]>([]);
 
   const MAX_OTP_ATTEMPTS = 5;
   const remainingAttempts = MAX_OTP_ATTEMPTS - attemptCount;
@@ -30,7 +24,7 @@ const OtpVerifyContent = ({
   const handleCodeChange = (index: number, value: string) => {
     if (value.length > 1) {
       // Handle paste
-      const pastedCodes = value.slice(0, 6).split("");
+      const pastedCodes = value.slice(0, 6).split('');
       const newCodes = [...codes];
       pastedCodes.forEach((code, i) => {
         if (index + i < 6) {
@@ -55,12 +49,12 @@ const OtpVerifyContent = ({
   };
 
   const handleKeyPress = (index: number, key: string) => {
-    if (key === "Backspace" && !codes[index] && index > 0) {
+    if (key === 'Backspace' && !codes[index] && index > 0) {
       inputRefs.current[index - 1]?.focus();
     }
   };
 
-  const isCodeComplete = codes.every((code) => code.length === 1);
+  const isCodeComplete = codes.every(code => code.length === 1);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -89,7 +83,7 @@ const OtpVerifyContent = ({
               key={index}
               ref={(ref: any) => (inputRefs.current[index] = ref)}
               value={code}
-              onChangeText={(value) => handleCodeChange(index, value)}
+              onChangeText={value => handleCodeChange(index, value)}
               onKeyPress={({ nativeEvent }) => handleKeyPress(index, nativeEvent.key)}
               keyboardType="number-pad"
               maxLength={1}
@@ -106,11 +100,7 @@ const OtpVerifyContent = ({
         {otpError ? (
           <View style={styles.errorContainer}>
             <PText style={styles.errorText}>{otpError}</PText>
-            {remainingAttempts > 0 && (
-              <PText style={styles.attemptText}>
-                Kalan deneme: {remainingAttempts}
-              </PText>
-            )}
+            {remainingAttempts > 0 && <PText style={styles.attemptText}>Kalan deneme: {remainingAttempts}</PText>}
           </View>
         ) : null}
         <PButton
@@ -118,14 +108,14 @@ const OtpVerifyContent = ({
           disabled={isOffline || !isCodeComplete}
           onPress={() => {
             if (attemptCount >= MAX_OTP_ATTEMPTS) {
-              navigation.navigate("AuthLockout");
+              navigation.navigate('AuthLockout');
               return;
             }
             // Simulate OTP verification — on error show remaining attempts (AC-FR-E1-02-03)
-            setAttemptCount((prev) => prev + 1);
-            setOtpError("Girilen kod hatali. Lutfen tekrar deneyin.");
+            setAttemptCount(prev => prev + 1);
+            setOtpError('Girilen kod hatali. Lutfen tekrar deneyin.');
             if (attemptCount + 1 >= MAX_OTP_ATTEMPTS) {
-              navigation.navigate("AuthLockout");
+              navigation.navigate('AuthLockout');
               return;
             }
             // On success:
@@ -148,15 +138,15 @@ const OtpVerifyContent = ({
   );
 };
 
-export const AuthOtpVerifyScreen = ({ 
-  route,
-}: { 
-  route?: { params?: { state?: ScreenState; source?: "register" | "forgot-password" } };
+export const AuthOtpVerifyScreen = ({
+  route
+}: {
+  route?: { params?: { state?: ScreenState; source?: 'register' | 'forgot-password' } };
 }) => {
   const state = resolveScreenState(route);
   const source = route?.params?.source;
 
-  if (state === "loading") {
+  if (state === 'loading') {
     return (
       <ScreenLayout title="OTP Doğrulama" subtitle="Doğrulama hazırlanıyor">
         <SectionCard title="Yükleniyor">
@@ -168,7 +158,7 @@ export const AuthOtpVerifyScreen = ({
     );
   }
 
-  if (state === "empty") {
+  if (state === 'empty') {
     return (
       <ScreenLayout title="OTP Doğrulama" subtitle="Doğrulama kodu yok">
         <StateMessage
@@ -181,7 +171,7 @@ export const AuthOtpVerifyScreen = ({
     );
   }
 
-  if (state === "error") {
+  if (state === 'error') {
     return (
       <ScreenLayout title="OTP Doğrulama" subtitle="Bir sorun oluştu">
         <StateMessage
@@ -195,7 +185,7 @@ export const AuthOtpVerifyScreen = ({
     );
   }
 
-  if (state === "offline") {
+  if (state === 'offline') {
     return (
       <>
         <OfflineNotice />
@@ -210,96 +200,96 @@ export const AuthOtpVerifyScreen = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FAFAFA",
+    backgroundColor: '#FAFAFA'
   },
   scrollContent: {
     paddingHorizontal: 24,
     paddingTop: 16,
-    paddingBottom: 32,
+    paddingBottom: 32
   },
   backButton: {
     width: 40,
     height: 40,
-    alignItems: "center",
-    justifyContent: "center",
-    marginBottom: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 16
   },
   backButtonText: {
     fontSize: 24,
-    color: "#171717",
+    color: '#171717'
   },
   iconContainer: {
-    alignItems: "center",
-    marginBottom: 16,
+    alignItems: 'center',
+    marginBottom: 16
   },
   icon: {
-    fontSize: 64,
+    fontSize: 64
   },
   title: {
     fontSize: 24,
-    fontWeight: "700",
-    color: "#2B1B5D",
+    fontWeight: '700',
+    color: '#2B1B5D',
     marginBottom: 8,
-    textAlign: "center",
+    textAlign: 'center'
   },
   description: {
     fontSize: 15,
-    color: "#525252",
+    color: '#525252',
     marginBottom: 32,
-    textAlign: "center",
-    lineHeight: 24,
+    textAlign: 'center',
+    lineHeight: 24
   },
   emailText: {
-    fontWeight: "700",
+    fontWeight: '700'
   },
   codeContainer: {
-    flexDirection: "row",
+    flexDirection: 'row',
     gap: 12,
     marginBottom: 24,
-    justifyContent: "center",
+    justifyContent: 'center'
   },
   codeInput: {
     width: 48,
     height: 56,
     fontSize: 24,
-    fontWeight: "700",
-    backgroundColor: "#FFFFFF",
+    fontWeight: '700',
+    backgroundColor: '#FFFFFF'
   },
   codeInputOutline: {
     borderWidth: 2,
     borderRadius: 12,
-    borderColor: "#D4D4D4",
+    borderColor: '#D4D4D4'
   },
   button: {
     marginBottom: 16,
-    borderRadius: 12,
+    borderRadius: 12
   },
   errorContainer: {
-    backgroundColor: "#FEF2F2",
+    backgroundColor: '#FEF2F2',
     borderRadius: 8,
     padding: 12,
     marginBottom: 16,
     borderLeftWidth: 3,
-    borderLeftColor: "#EF4444",
+    borderLeftColor: '#EF4444'
   },
   errorText: {
-    color: "#DC2626",
-    fontSize: 14,
+    color: '#DC2626',
+    fontSize: 14
   },
   attemptText: {
-    color: "#DC2626",
+    color: '#DC2626',
     fontSize: 12,
-    fontWeight: "600",
-    marginTop: 4,
+    fontWeight: '600',
+    marginTop: 4
   },
   resendContainer: {
-    alignItems: "center",
+    alignItems: 'center'
   },
   resendText: {
-    color: "#525252",
-    marginBottom: 8,
+    color: '#525252',
+    marginBottom: 8
   },
   resendButton: {
-    marginTop: 0,
-  },
+    marginTop: 0
+  }
 });

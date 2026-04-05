@@ -3,10 +3,7 @@
   "title": "Metin buyutme",
   "route": "/accessibility/text-scale",
   "purpose": "Implements FR-E10-02: Metin buyutme - slider/step selector with live preview.",
-  "entryPoints": [
-    "profile.accessibility",
-    "accessibility.fr_e10_01"
-  ],
+  "entryPoints": ["profile.accessibility", "accessibility.fr_e10_01"],
   "inputs": [
     {
       "name": "userId",
@@ -21,9 +18,7 @@
       "source": "accessibility_settings"
     }
   ],
-  "dataDependencies": [
-    "AccessibilitySettings"
-  ],
+  "dataDependencies": ["AccessibilitySettings"],
   "uiStates": {
     "loading": {
       "description": "Skeleton shown while loading current text size setting."
@@ -43,17 +38,8 @@
   },
   "analytics": {
     "screenView": "text_scale_viewed",
-    "events": [
-      "text_scale_viewed",
-      "text_scale_changed"
-    ]
+    "events": ["text_scale_viewed", "text_scale_changed"]
   },
-  "acceptanceCriteriaRefs": [
-    "AC-FR-E10-02-01",
-    "AC-FR-E10-02-02",
-    "AC-FR-E10-02-03"
-  ],
-  "gates": [
-    "auth"
-  ]
+  "acceptanceCriteriaRefs": ["AC-FR-E10-02-01", "AC-FR-E10-02-02", "AC-FR-E10-02-03"],
+  "gates": ["auth"]
 }

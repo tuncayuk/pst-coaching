@@ -1,33 +1,33 @@
-import React, { useState } from "react";
-import { Alert, StyleSheet, View } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { OfflineNotice } from "../components/OfflineNotice";
-import { ScreenLayout } from "../components/ScreenLayout";
-import { SectionCard } from "../components/SectionCard";
-import { SkeletonBlock } from "../components/SkeletonBlock";
-import { StateMessage } from "../components/StateMessage";
-import { resolveScreenState, ScreenState } from "../components/ScreenState";
+import { useNavigation } from '@react-navigation/native';
+import React, { useState } from 'react';
+import { Alert, StyleSheet, View } from 'react-native';
 
-import { PButton, PCard, PChip, PDivider, PProgressBar, PText } from "../../components";
+import { PButton, PCard, PChip, PDivider, PProgressBar, PText } from '../../components';
 import {
   getPlanForSubscription,
   getPrimaryUser,
   getSeatsForSubscription,
-  getSubscriptionForUser,
-} from "../../data/mockSelectors";
+  getSubscriptionForUser
+} from '../../data/mockSelectors';
+import { OfflineNotice } from '../components/OfflineNotice';
+import { ScreenLayout } from '../components/ScreenLayout';
+import { ScreenState, resolveScreenState } from '../components/ScreenState';
+import { SectionCard } from '../components/SectionCard';
+import { SkeletonBlock } from '../components/SkeletonBlock';
+import { StateMessage } from '../components/StateMessage';
 
 /** AC-FR-E3-05-03: cancellation effects listed clearly */
 const CANCELLATION_EFFECTS = [
-  "Tum icerikler ve kisisel ilerleme kaydi korunur",
-  "Donem sonuna kadar erisim devam eder",
-  "Yenileme tarihi gecince erisim sonlanir",
-  "Iptal sonrasi veriler 90 gun saklanir",
+  'Tum icerikler ve kisisel ilerleme kaydi korunur',
+  'Donem sonuna kadar erisim devam eder',
+  'Yenileme tarihi gecince erisim sonlanir',
+  'Iptal sonrasi veriler 90 gun saklanir'
 ];
 
 const PLAN_PRICES: Record<string, string> = {
-  individual: "19,99 TL / ay",
-  family: "29,99 TL / ay",
-  group: "39,99 TL / ay",
+  individual: '19,99 TL / ay',
+  family: '29,99 TL / ay',
+  group: '39,99 TL / ay'
 };
 
 const ProfilePlanManagementContent = ({ isOffline }: { isOffline?: boolean }) => {
@@ -38,10 +38,10 @@ const ProfilePlanManagementContent = ({ isOffline }: { isOffline?: boolean }) =>
   const subscription = getSubscriptionForUser(user?.id);
   const plan = getPlanForSubscription(subscription?.plan_id);
   const seats = getSeatsForSubscription(subscription?.id);
-  const activeSeats = seats.filter((s) => s.status === "active").length;
+  const activeSeats = seats.filter(s => s.status === 'active').length;
   const seatLimit = plan?.seat_limit ?? 1;
   // AC-FR-E3-05-01: show renewal date and seat usage
-  const renewalDate = subscription?.renewal_at?.slice(0, 10) ?? "-";
+  const renewalDate = subscription?.renewal_at?.slice(0, 10) ?? '-';
   const seatFill = seatLimit > 0 ? activeSeats / seatLimit : 0;
 
   // AC-FR-E3-05-05: redirect to platform cancel flow
@@ -49,18 +49,18 @@ const ProfilePlanManagementContent = ({ isOffline }: { isOffline?: boolean }) =>
     if (isOffline) return;
     // AC-FR-E3-05-03: show effects before confirming
     Alert.alert(
-      "Plani Iptal Et",
-      "Iptal ederseniz donem sonuna kadar erisim devam eder. Devam etmek istiyor musunuz?",
+      'Plani Iptal Et',
+      'Iptal ederseniz donem sonuna kadar erisim devam eder. Devam etmek istiyor musunuz?',
       [
-        { text: "Vazgec", style: "cancel" },
+        { text: 'Vazgec', style: 'cancel' },
         {
-          text: "Magaza Iptal Ekranina Git",
-          style: "destructive",
+          text: 'Magaza Iptal Ekranina Git',
+          style: 'destructive',
           onPress: () => {
             // AC-FR-E3-05-05: in real app open platform cancel URL (App Store / Play Store)
-            Alert.alert("Bilgi", "Magaza iptal akisina yonlendiriliyorsunuz. (Sahte ortamda simule edildi)");
-          },
-        },
+            Alert.alert('Bilgi', 'Magaza iptal akisina yonlendiriliyorsunuz. (Sahte ortamda simule edildi)');
+          }
+        }
       ]
     );
   };
@@ -68,7 +68,7 @@ const ProfilePlanManagementContent = ({ isOffline }: { isOffline?: boolean }) =>
   const handleChangePlan = () => {
     if (isOffline) return;
     // AC-FR-E3-05-02: navigate to plan comparison; downgrade check happens there
-    navigation.navigate("ProfilePlanComparison");
+    navigation.navigate('ProfilePlanComparison');
   };
 
   return (
@@ -76,29 +76,26 @@ const ProfilePlanManagementContent = ({ isOffline }: { isOffline?: boolean }) =>
       {/* AC-FR-E3-05-01: current plan summary */}
       <SectionCard title="Mevcut Plan">
         <PCard style={styles.card}>
-          <PCard.Title
-            title={plan?.name ?? "Plan"}
-            subtitle={`Yenileme: ${renewalDate}`}
-          />
+          <PCard.Title title={plan?.name ?? 'Plan'} subtitle={`Yenileme: ${renewalDate}`} />
           <PCard.Content>
             <View style={styles.row}>
               <PChip
                 compact
                 style={[
                   styles.statusChip,
-                  subscription?.status === "active" && styles.chipActive,
-                  subscription?.status === "trial" && styles.chipTrial,
-                  subscription?.status === "cancelled" && styles.chipCancelled,
+                  subscription?.status === 'active' && styles.chipActive,
+                  subscription?.status === 'trial' && styles.chipTrial,
+                  subscription?.status === 'cancelled' && styles.chipCancelled
                 ]}
               >
-                {subscription?.status === "active"
-                  ? "Aktif"
-                  : subscription?.status === "trial"
-                  ? "Deneme"
-                  : "Iptal Edilmis"}
+                {subscription?.status === 'active'
+                  ? 'Aktif'
+                  : subscription?.status === 'trial'
+                    ? 'Deneme'
+                    : 'Iptal Edilmis'}
               </PChip>
               <PText variant="bodySmall" style={styles.priceLabel}>
-                {PLAN_PRICES[plan?.plan_type ?? "individual"]}
+                {PLAN_PRICES[plan?.plan_type ?? 'individual']}
               </PText>
             </View>
             {/* AC-FR-E3-05-01: seat usage */}
@@ -119,8 +116,7 @@ const ProfilePlanManagementContent = ({ isOffline }: { isOffline?: boolean }) =>
       {/* AC-FR-E3-05-02: change plan CTA */}
       <SectionCard title="Plan Degistir">
         <PText variant="bodySmall" style={styles.infoText}>
-          Mevcut planini yukseltebilir veya dusuk bir plana gecebilirsin.
-          Plan dusururken kisi limiti kontrolu yapilir.
+          Mevcut planini yukseltebilir veya dusuk bir plana gecebilirsin. Plan dusururken kisi limiti kontrolu yapilir.
         </PText>
         <PButton
           mode="contained"
@@ -138,12 +134,12 @@ const ProfilePlanManagementContent = ({ isOffline }: { isOffline?: boolean }) =>
       <SectionCard title="Aboneligi Iptal Et">
         <PButton
           mode="text"
-          onPress={() => setCancelExpanded((v) => !v)}
+          onPress={() => setCancelExpanded(v => !v)}
           style={styles.expandButton}
           accessibilityLabel="Iptal etkilerini goster"
           accessibilityRole="button"
         >
-          {cancelExpanded ? "Etkileri Gizle" : "Iptal Etkilerini Goster"}
+          {cancelExpanded ? 'Etkileri Gizle' : 'Iptal Etkilerini Goster'}
         </PButton>
         {cancelExpanded && (
           <View style={styles.effectsList}>
@@ -168,27 +164,23 @@ const ProfilePlanManagementContent = ({ isOffline }: { isOffline?: boolean }) =>
         <PDivider style={styles.divider} />
         <PButton
           mode="outlined"
-          disabled={isOffline || subscription?.status === "cancelled"}
+          disabled={isOffline || subscription?.status === 'cancelled'}
           onPress={handleCancelPlan}
           style={styles.cancelButton}
           accessibilityLabel="Aboneligi iptal et ve magaza iptal ekranina git"
           accessibilityRole="button"
         >
-          {subscription?.status === "cancelled" ? "Zaten Iptal Edildi" : "Aboneligi Iptal Et"}
+          {subscription?.status === 'cancelled' ? 'Zaten Iptal Edildi' : 'Aboneligi Iptal Et'}
         </PButton>
       </SectionCard>
     </>
   );
 };
 
-export const ProfilePlanManagementScreen = ({
-  route,
-}: {
-  route?: { params?: { state?: ScreenState } };
-}) => {
+export const ProfilePlanManagementScreen = ({ route }: { route?: { params?: { state?: ScreenState } } }) => {
   const state = resolveScreenState(route);
 
-  if (state === "loading") {
+  if (state === 'loading') {
     return (
       <ScreenLayout title="Plan Yonetimi" subtitle="Plan detaylari hazirlaniyor">
         <SectionCard title="Yuklenyor">
@@ -202,7 +194,7 @@ export const ProfilePlanManagementScreen = ({
     );
   }
 
-  if (state === "empty") {
+  if (state === 'empty') {
     return (
       <ScreenLayout title="Plan Yonetimi" subtitle="Aktif plan yok">
         <StateMessage
@@ -215,7 +207,7 @@ export const ProfilePlanManagementScreen = ({
     );
   }
 
-  if (state === "error") {
+  if (state === 'error') {
     return (
       <ScreenLayout title="Plan Yonetimi" subtitle="Bir sorun olustu">
         <StateMessage
@@ -229,7 +221,7 @@ export const ProfilePlanManagementScreen = ({
     );
   }
 
-  if (state === "offline") {
+  if (state === 'offline') {
     return (
       <ScreenLayout title="Plan Yonetimi" subtitle="Onbellekteki plan">
         <OfflineNotice />
@@ -247,82 +239,82 @@ export const ProfilePlanManagementScreen = ({
 
 const styles = StyleSheet.create({
   card: {
-    marginBottom: 8,
+    marginBottom: 8
   },
   row: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 8,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 8
   },
   statusChip: {
-    alignSelf: "flex-start",
+    alignSelf: 'flex-start'
   },
   chipActive: {
-    backgroundColor: "#D1FAE5",
+    backgroundColor: '#D1FAE5'
   },
   chipTrial: {
-    backgroundColor: "#FEF3C7",
+    backgroundColor: '#FEF3C7'
   },
   chipCancelled: {
-    backgroundColor: "#FEE2E2",
+    backgroundColor: '#FEE2E2'
   },
   priceLabel: {
-    color: "#6B7280",
+    color: '#6B7280'
   },
   seatRow: {
-    marginBottom: 4,
+    marginBottom: 4
   },
   seatBar: {
     height: 6,
-    borderRadius: 3,
+    borderRadius: 3
   },
   infoText: {
-    color: "#6B7280",
+    color: '#6B7280',
     marginBottom: 12,
-    lineHeight: 20,
+    lineHeight: 20
   },
   actionButton: {
     marginBottom: 4,
-    minHeight: 48,
+    minHeight: 48
   },
   expandButton: {
-    alignSelf: "flex-start",
-    marginBottom: 4,
+    alignSelf: 'flex-start',
+    marginBottom: 4
   },
   effectsList: {
     marginTop: 8,
     marginBottom: 8,
-    paddingHorizontal: 4,
+    paddingHorizontal: 4
   },
   effectRow: {
-    flexDirection: "row",
+    flexDirection: 'row',
     marginBottom: 6,
-    gap: 6,
+    gap: 6
   },
   effectBullet: {
-    color: "#7C3AED",
-    fontWeight: "700",
-    minWidth: 16,
+    color: '#7C3AED',
+    fontWeight: '700',
+    minWidth: 16
   },
   effectText: {
     flex: 1,
-    color: "#374151",
-    lineHeight: 18,
+    color: '#374151',
+    lineHeight: 18
   },
   accessNote: {
     marginTop: 8,
-    backgroundColor: "#EDE9FE",
+    backgroundColor: '#EDE9FE',
     borderRadius: 8,
-    padding: 10,
+    padding: 10
   },
   accessNoteText: {
-    color: "#4C1D95",
+    color: '#4C1D95'
   },
   divider: {
-    marginVertical: 12,
+    marginVertical: 12
   },
   cancelButton: {
-    minHeight: 48,
-  },
+    minHeight: 48
+  }
 });

@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 // write-e12-screens.js — Writes all 4 EPIC-12 coach screen files
-const fs = require("fs");
-const path = require("path");
+const fs = require('fs');
+const path = require('path');
 
-const COACH_DIR = path.join(__dirname, "../apps/mobile/screens/coach");
+const COACH_DIR = path.join(__dirname, '../apps/mobile/screens/coach');
 fs.mkdirSync(COACH_DIR, { recursive: true });
 
 const files = {};
@@ -13,7 +13,7 @@ const files = {};
 // AC-FR-E12-01-01: client list | AC-FR-E12-01-02: risk level badges
 // AC-FR-E12-01-03: last activity date | AC-FR-E12-01-04: risk filter
 // ─────────────────────────────────────────────────────────────────────────
-files["CoachDashboardScreen.tsx"] = `import React, { useState } from "react";
+files['CoachDashboardScreen.tsx'] = `import React, { useState } from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
@@ -453,7 +453,7 @@ const styles = StyleSheet.create({
 // AC-FR-E12-02-01: active goal | AC-FR-E12-02-02: content status summary
 // AC-FR-E12-02-03: engagement metrics | AC-FR-E12-02-04: progress trend
 // ─────────────────────────────────────────────────────────────────────────
-files["CoachClientProfileScreen.tsx"] = `import React from "react";
+files['CoachClientProfileScreen.tsx'] = `import React from "react";
 import { StyleSheet, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
@@ -859,7 +859,7 @@ const styles = StyleSheet.create({
 // AC-FR-E12-03-01: journeys+workshops | AC-FR-E12-03-02: ebooks+chapter status
 // AC-FR-E12-03-03: completion % | AC-FR-E12-03-04: time-spent metrics
 // ─────────────────────────────────────────────────────────────────────────
-files["CoachContentTrackingScreen.tsx"] = `import React from "react";
+files['CoachContentTrackingScreen.tsx'] = `import React from "react";
 import { StyleSheet, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
@@ -1214,7 +1214,7 @@ const styles = StyleSheet.create({
 // AC-FR-E12-04-01: feedback form | AC-FR-E12-04-02: send notification
 // AC-FR-E12-04-03: feedback history | AC-FR-E12-04-04: auto-save draft
 // ─────────────────────────────────────────────────────────────────────────
-files["CoachFeedbackScreen.tsx"] = `import React, { useEffect, useRef, useState } from "react";
+files['CoachFeedbackScreen.tsx'] = `import React, { useEffect, useRef, useState } from "react";
 import { ScrollView, StyleSheet, TextInput, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
@@ -1632,8 +1632,8 @@ const styles = StyleSheet.create({
 let written = 0;
 for (const [filename, content] of Object.entries(files)) {
   const filePath = path.join(COACH_DIR, filename);
-  fs.writeFileSync(filePath, content, "utf8");
+  fs.writeFileSync(filePath, content, 'utf8');
   written++;
-  console.log("Wrote " + filename);
+  console.log('Wrote ' + filename);
 }
-console.log("\nScreens written: " + written + "/" + Object.keys(files).length);
+console.log('\nScreens written: ' + written + '/' + Object.keys(files).length);

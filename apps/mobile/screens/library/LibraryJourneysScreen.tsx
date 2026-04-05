@@ -1,15 +1,15 @@
-import React from "react";
-import { StyleSheet, View } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { OfflineNotice } from "../components/OfflineNotice";
-import { ScreenLayout } from "../components/ScreenLayout";
-import { SectionCard } from "../components/SectionCard";
-import { SkeletonBlock } from "../components/SkeletonBlock";
-import { StateMessage } from "../components/StateMessage";
-import { resolveScreenState, ScreenState } from "../components/ScreenState";
-import { getJourneys } from "../../data/mockSelectors";
-import { PActivityIndicator, PButton, PCard, PChip, PProgressBar, PText } from "../../components";
+import { useNavigation } from '@react-navigation/native';
+import React from 'react';
+import { StyleSheet, View } from 'react-native';
 
+import { PActivityIndicator, PButton, PCard, PChip, PProgressBar, PText } from '../../components';
+import { getJourneys } from '../../data/mockSelectors';
+import { OfflineNotice } from '../components/OfflineNotice';
+import { ScreenLayout } from '../components/ScreenLayout';
+import { ScreenState, resolveScreenState } from '../components/ScreenState';
+import { SectionCard } from '../components/SectionCard';
+import { SkeletonBlock } from '../components/SkeletonBlock';
+import { StateMessage } from '../components/StateMessage';
 
 const LibraryJourneysContent = ({ isOffline }: { isOffline?: boolean }) => {
   const navigation = useNavigation<any>();
@@ -18,18 +18,18 @@ const LibraryJourneysContent = ({ isOffline }: { isOffline?: boolean }) => {
     id: journey.id,
     title: journey.title,
     progress: 0.2 + index * 0.2,
-    next: `Gün ${index + 1} · ${journey.daily_target ?? "10 dk"}`,
+    next: `Gün ${index + 1} · ${journey.daily_target ?? '10 dk'}`
   }));
-  const suggestedJourneys = journeys.slice(2, 4).map((journey) => ({
+  const suggestedJourneys = journeys.slice(2, 4).map(journey => ({
     id: journey.id,
     title: journey.title,
-    subtitle: `${journey.duration_days ?? 0} gün · ${journey.daily_target ?? "10 dk"}`,
+    subtitle: `${journey.duration_days ?? 0} gün · ${journey.daily_target ?? '10 dk'}`
   }));
 
   return (
     <>
       <SectionCard title="Aktif Yolculuklar" actionLabel="Tümü">
-        {activeJourneys.map((journey) => (
+        {activeJourneys.map(journey => (
           <View key={journey.title} style={styles.progressBlock}>
             <View style={styles.progressHeader}>
               <PText variant="titleSmall">{journey.title}</PText>
@@ -46,9 +46,9 @@ const LibraryJourneysContent = ({ isOffline }: { isOffline?: boolean }) => {
           disabled={isOffline}
           style={styles.primaryButton}
           onPress={() =>
-            navigation.navigate("Content", {
-              screen: "ContentJourneyDay",
-              params: { id: activeJourneys[0]?.id, day: "1" },
+            navigation.navigate('Content', {
+              screen: 'ContentJourneyDay',
+              params: { id: activeJourneys[0]?.id, day: '1' }
             })
           }
         >
@@ -57,7 +57,7 @@ const LibraryJourneysContent = ({ isOffline }: { isOffline?: boolean }) => {
       </SectionCard>
 
       <SectionCard title="Önerilen Yolculuklar" actionLabel="Keşfet">
-        {suggestedJourneys.map((journey) => (
+        {suggestedJourneys.map(journey => (
           <PCard key={journey.title} style={styles.card}>
             <PCard.Title title={journey.title} subtitle={journey.subtitle} />
             <PCard.Actions>
@@ -65,9 +65,9 @@ const LibraryJourneysContent = ({ isOffline }: { isOffline?: boolean }) => {
                 mode="outlined"
                 disabled={isOffline}
                 onPress={() =>
-                  navigation.navigate("Content", {
-                    screen: "ContentJourneyDetail",
-                    params: { id: journey.id },
+                  navigation.navigate('Content', {
+                    screen: 'ContentJourneyDetail',
+                    params: { id: journey.id }
                   })
                 }
               >
@@ -84,7 +84,7 @@ const LibraryJourneysContent = ({ isOffline }: { isOffline?: boolean }) => {
 export const LibraryJourneysScreen = ({ route }: { route?: { params?: { state?: ScreenState } } }) => {
   const state = resolveScreenState(route);
 
-  if (state === "loading") {
+  if (state === 'loading') {
     return (
       <ScreenLayout title="Yolculuklar" subtitle="Yolculuklar hazırlanıyor">
         <SectionCard title="Yükleniyor">
@@ -100,7 +100,7 @@ export const LibraryJourneysScreen = ({ route }: { route?: { params?: { state?: 
     );
   }
 
-  if (state === "empty") {
+  if (state === 'empty') {
     return (
       <ScreenLayout title="Yolculuklar" subtitle="Kişisel programın hazır">
         <StateMessage
@@ -113,7 +113,7 @@ export const LibraryJourneysScreen = ({ route }: { route?: { params?: { state?: 
     );
   }
 
-  if (state === "error") {
+  if (state === 'error') {
     return (
       <ScreenLayout title="Yolculuklar" subtitle="Bir sorun oluştu">
         <StateMessage
@@ -127,7 +127,7 @@ export const LibraryJourneysScreen = ({ route }: { route?: { params?: { state?: 
     );
   }
 
-  if (state === "offline") {
+  if (state === 'offline') {
     return (
       <ScreenLayout title="Yolculuklar" subtitle="Önbellekteki içerikler">
         <OfflineNotice />
@@ -145,22 +145,22 @@ export const LibraryJourneysScreen = ({ route }: { route?: { params?: { state?: 
 
 const styles = StyleSheet.create({
   progressBlock: {
-    marginBottom: 16,
+    marginBottom: 16
   },
   progressHeader: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 8,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 8
   },
   subtitle: {
-    marginBottom: 8,
+    marginBottom: 8
   },
   primaryButton: {
     marginTop: 8,
-    alignSelf: "flex-start",
+    alignSelf: 'flex-start'
   },
   card: {
-    marginBottom: 12,
-  },
+    marginBottom: 12
+  }
 });
