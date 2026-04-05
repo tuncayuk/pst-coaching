@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet } from "react-native";
+import { Alert, StyleSheet, View } from "react-native";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
@@ -7,46 +7,92 @@ import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
 
-import { PActivityIndicator, PButton, PCard, PChip, PText } from "../../components";
+import { PButton, PCard, PChip, PText } from "../../components";
 import {
-  getPaymentTransactions,
   getPrimaryUser,
   getSubscriptionForUser,
+  getPaymentsForSubscription,
 } from "../../data/mockSelectors";
 
+const TX_STATUS_CONFIG: Record<string, { label: string; bg: string; text: string }> = {
+  completed: { label: "Basarili",  bg: "#D1FAE5", text: "#065F46" },
+  pending:   { label: "Bekliyor", bg: "#FEF3C7", text: "#92400E" },
+  failed:    { label: "Basarisiz", bg: "#FEE2E2", text: "#991B1B" },
+  refunded:  { label: "Iade",     bg: "#EDE9FE", text: "#4C1D95" },
+};
 
 const ProfilePaymentHistoryContent = ({ isOffline }: { isOffline?: boolean }) => {
   const user = getPrimaryUser();
   const subscription = getSubscriptionForUser(user?.id);
-  const transactions = getPaymentTransactions().filter(
-    (item) => item.subscription_id === subscription?.id
-  );
+  // AC-FR-E3-07-01: payments with date and amount
+  const transactions = getPaymentsForSubscription(subscription?.id);
+
+  // AC-FR-E3-07-03: view receipt detail
+  const handleReceipt = (id: string, amount: number, currency: string, date: string) => {
+    Alert.alert(
+      "Makbuz Detayi",
+      `Islem No: ${id.slice(0, 8)}\nTutar: ${amount} ${currency}\nTarih: ${date}\nDurum: Tamamlandi`,
+      [{ text: "Kapat" }]
+    );
+  };
 
   return (
     <>
-      <SectionCard title="Ödemeler" actionLabel="">
-        {transactions.map((transaction) => (
-          <PCard key={transaction.id} style={styles.card}>
-            <PCard.Content style={styles.cardRow}>
-              <PText variant="bodyMedium">{transaction.purchased_at.slice(0, 10)}</PText>
-              <PText variant="bodyMedium">
-                {transaction.amount} {transaction.currency}
-              </PText>
-              <PChip compact>Başarılı</PChip>
-            </PCard.Content>
-            <PCard.Actions>
-              <PButton mode="text" disabled={isOffline}>
-                Makbuz
-              </PButton>
-            </PCard.Actions>
-          </PCard>
-        ))}
+      <SectionCard title="Odeme Gecmisi">
+        {transactions.length === 0 ? (
+          <PText variant="bodySmall" style={styles.emptyText}>
+            Henuz kayitli bir odeme bulunamadi.
+          </PText>
+        ) : (
+          transactions.map((tx) => {
+            const statusKey = (tx as any).status ?? "completed";
+            const statusCfg = TX_STATUS_CONFIG[statusKey] ?? TX_STATUS_CONFIG.completed;
+            const dateStr = tx.purchased_at?.slice(0, 10) ?? "-";
+
+            return (
+              <PCard key={tx.id} style={styles.card}>
+                <PCard.Content style={styles.cardRow}>
+                  <View style={styles.txInfo}>
+                    <PText variant="bodyMedium" style={styles.txDate}>{dateStr}</PText>
+                    <PText variant="bodySmall" style={styles.txAmount}>
+                      {tx.amount} {tx.currency}
+                    </PText>
+                  </View>
+                  <PChip compact style={{ backgroundColor: statusCfg.bg }}>
+                    <PText style={{ color: statusCfg.text, fontSize: 12 }}>{statusCfg.label}</PText>
+                  </PChip>
+                </PCard.Content>
+                <PCard.Actions>
+                  {/* AC-FR-E3-07-03: receipt detail */}
+                  <PButton
+                    mode="text"
+                    disabled={isOffline}
+                    onPress={() => handleReceipt(tx.id, tx.amount, tx.currency, dateStr)}
+                    accessibilityLabel={`${dateStr} tarihli makbuzu goruntule`}
+                    accessibilityRole="button"
+                  >
+                    Makbuz
+                  </PButton>
+                </PCard.Actions>
+              </PCard>
+            );
+          })
+        )}
       </SectionCard>
 
-      <SectionCard title="Fatura" actionLabel="">
-        <PText variant="bodySmall">Fatura bilgileri kişisel olarak kayıtlı.</PText>
-        <PButton mode="outlined" style={styles.actionButton} disabled={isOffline}>
-          Fatura Bilgilerini Güncelle
+      <SectionCard title="Fatura">
+        <PText variant="bodySmall" style={styles.infoText}>
+          Fatura bilgileri kisisel olarak kayitli.
+        </PText>
+        <PButton
+          mode="outlined"
+          style={styles.actionButton}
+          disabled={isOffline}
+          onPress={() => Alert.alert("Fatura", "Fatura bilgileri guncelleme akisi. (Sahte ortamda simule edildi)")}
+          accessibilityLabel="Fatura bilgilerini guncelle"
+          accessibilityRole="button"
+        >
+          Fatura Bilgilerini Guncelle
         </PButton>
       </SectionCard>
     </>
@@ -62,15 +108,10 @@ export const ProfilePaymentHistoryScreen = ({
 
   if (state === "loading") {
     return (
-      <ScreenLayout title="Ödeme Geçmişi" subtitle="Ödeme geçmişi hazırlanıyor">
-        <SectionCard title="Yükleniyor">
-          <PActivityIndicator animating />
-          <SkeletonBlock height={18} />
-          <SkeletonBlock height={18} />
-        </SectionCard>
-        <SectionCard title="Geçmiş">
-          <SkeletonBlock height={72} />
-          <SkeletonBlock height={72} />
+      <ScreenLayout title="Odeme Gecmisi" subtitle="Odeme gecmisi hazirlaniyor">
+        <SectionCard title="Gecmis">
+          <SkeletonBlock height={80} />
+          <SkeletonBlock height={80} />
         </SectionCard>
       </ScreenLayout>
     );
@@ -78,11 +119,11 @@ export const ProfilePaymentHistoryScreen = ({
 
   if (state === "empty") {
     return (
-      <ScreenLayout title="Ödeme Geçmişi" subtitle="İşlem bilgileri">
+      <ScreenLayout title="Odeme Gecmisi" subtitle="Islem bilgileri">
         <StateMessage
-          title="Ödeme geçmişi yok"
-          description="Henüz kayıtlı bir ödeme bulunmuyor."
-          actionLabel="Planları Gör"
+          title="Odeme gecmisi yok"
+          description="Henuz kayitli bir odeme bulunmuyor."
+          actionLabel="Planlari Gor"
           icon="credit-card-outline"
         />
       </ScreenLayout>
@@ -91,10 +132,10 @@ export const ProfilePaymentHistoryScreen = ({
 
   if (state === "error") {
     return (
-      <ScreenLayout title="Ödeme Geçmişi" subtitle="Bir sorun oluştu">
+      <ScreenLayout title="Odeme Gecmisi" subtitle="Bir sorun olustu">
         <StateMessage
-          title="Ödemeler yüklenemedi"
-          description="Ödeme geçmişini getiremedik. Lütfen tekrar dene."
+          title="Odemeler yuklenemedi"
+          description="Odeme gecmisini getiremedik. Lutfen tekrar dene."
           actionLabel="Tekrar Dene"
           icon="alert-circle-outline"
           tone="error"
@@ -105,7 +146,7 @@ export const ProfilePaymentHistoryScreen = ({
 
   if (state === "offline") {
     return (
-      <ScreenLayout title="Ödeme Geçmişi" subtitle="Önbellekteki ödemeler">
+      <ScreenLayout title="Odeme Gecmisi" subtitle="Onbellekteki odemeler">
         <OfflineNotice />
         <ProfilePaymentHistoryContent isOffline />
       </ScreenLayout>
@@ -113,7 +154,7 @@ export const ProfilePaymentHistoryScreen = ({
   }
 
   return (
-    <ScreenLayout title="Ödeme Geçmişi" subtitle="İşlemlerini incele">
+    <ScreenLayout title="Odeme Gecmisi" subtitle="Islemlerini incele">
       <ProfilePaymentHistoryContent />
     </ScreenLayout>
   );
@@ -121,15 +162,35 @@ export const ProfilePaymentHistoryScreen = ({
 
 const styles = StyleSheet.create({
   card: {
-    marginBottom: 12,
+    marginBottom: 10,
   },
   cardRow: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
   },
+  txInfo: {
+    flex: 1,
+  },
+  txDate: {
+    fontWeight: "600",
+    color: "#1F2937",
+  },
+  txAmount: {
+    color: "#2B1B5D",
+    fontWeight: "700",
+    marginTop: 2,
+  },
+  emptyText: {
+    color: "#6B7280",
+    textAlign: "center",
+    paddingVertical: 16,
+  },
+  infoText: {
+    color: "#6B7280",
+    marginBottom: 8,
+  },
   actionButton: {
-    marginTop: 12,
-    alignSelf: "flex-start",
+    minHeight: 44,
   },
 });

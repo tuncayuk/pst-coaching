@@ -1,10 +1,10 @@
 {
   "id": "subscription.fr_e3_07",
-  "title": "Ödeme geçmişi ve geri yükleme",
-  "route": "/epic-3/fr-e3-07",
-  "purpose": "Implements FR-E3-07: Ödeme geçmişi ve geri yükleme.",
+  "title": "Odeme gecmisi ve geri yukleme",
+  "route": "/profile/subscription/payments",
+  "purpose": "FR-E3-07: Shows payment transactions with date, amount, currency, status. Receipt detail viewable per transaction (AC-FR-E3-07-03). Restore Purchases triggers platform IAP restore (AC-FR-E3-07-02). Offline: cached transaction list, restore disabled.",
   "entryPoints": [
-    "profile.overview"
+    "subscription.overview"
   ],
   "inputs": [
     {
@@ -14,45 +14,41 @@
       "source": "session"
     },
     {
-      "name": "subscriptionStatus",
-      "type": "SubscriptionStatus",
+      "name": "subscriptionId",
+      "type": "uuid",
       "required": true,
-      "source": "entitlement_cache"
-    },
-    {
-      "name": "locale",
-      "type": "LanguageCode",
-      "required": true,
-      "source": "profile"
+      "source": "subscription_entity"
     }
   ],
   "dataDependencies": [
-    "Subscription",
-    "SubscriptionPlan",
-    "AddOn",
-    "Seat"
+    "PaymentTransaction",
+    "Subscription"
   ],
   "uiStates": {
     "loading": {
-      "description": "Skeleton placeholders are shown while loading FR-E3-07 data."
+      "description": "Skeleton transaction rows"
     },
     "ready": {
-      "description": "FR-E3-07 flows are fully interactive with primary CTA available when prerequisites are met."
+      "description": "Grouped payment list (date, amount, currency, status chip), Makbuz button per row, Restore Purchases section, billing info update link"
     },
     "empty": {
-      "description": "Empty state explains why no data is available and points to next best action."
+      "description": "StateMessage: no payment history, Planlari Gor CTA"
     },
     "error": {
-      "description": "Error state is recoverable with user-safe messaging and a retry action."
+      "description": "StateMessage: payments unavailable, Tekrar Dene CTA"
     },
     "offline": {
-      "description": "Offline state shows last synchronized data and queues write actions for later sync."
+      "description": "OfflineNotice + cached transaction list with restore disabled"
     }
   },
   "analytics": {
-    "screenView": "subscription_fr_e3_07_viewed",
+    "screenView": "payment_history_viewed",
     "events": [
-      "subscription_fr_e3_07_viewed"
+      "payment_history_viewed",
+      "payment_receipt_viewed",
+      "restore_purchases_tapped",
+      "restore_purchases_success",
+      "restore_purchases_error"
     ]
   },
   "acceptanceCriteriaRefs": [

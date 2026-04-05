@@ -1,9 +1,10 @@
 {
   "id": "subscription.fr_e3_01",
-  "title": "Plan seçimi ve karşılaştırma",
-  "route": "/epic-3/fr-e3-01",
-  "purpose": "Implements FR-E3-01: Plan seçimi ve karşılaştırma.",
+  "title": "Plan secimi ve karsilastirma",
+  "route": "/profile/subscription/plan-comparison",
+  "purpose": "FR-E3-01: Lists Bireysel (1), Aile (5), Grup (10) plans with seat limits and feature comparison. Selected plan highlighted visually with checkmark. Devam Et CTA activates when a plan is chosen (AC-FR-E3-01-01/02/03). Offline: cached plan list, buy disabled.",
   "entryPoints": [
+    "subscription.overview",
     "profile.overview"
   ],
   "inputs": [
@@ -20,39 +21,39 @@
       "source": "entitlement_cache"
     },
     {
-      "name": "locale",
-      "type": "LanguageCode",
-      "required": true,
-      "source": "profile"
+      "name": "currentPlanId",
+      "type": "uuid",
+      "required": false,
+      "source": "subscription_entity"
     }
   ],
   "dataDependencies": [
-    "Subscription",
-    "SubscriptionPlan",
-    "AddOn",
-    "Seat"
+    "SubscriptionPlan"
   ],
   "uiStates": {
     "loading": {
-      "description": "Skeleton placeholders are shown while loading FR-E3-01 data."
+      "description": "3 skeleton plan cards"
     },
     "ready": {
-      "description": "FR-E3-01 flows are fully interactive with primary CTA available when prerequisites are met."
+      "description": "Plan cards with name, seat limit, price, feature list; selected plan has colored border and checkmark badge"
     },
     "empty": {
-      "description": "Empty state explains why no data is available and points to next best action."
+      "description": "StateMessage: no plans available, Tekrar Dene CTA"
     },
     "error": {
-      "description": "Error state is recoverable with user-safe messaging and a retry action."
+      "description": "StateMessage: plans could not be loaded, Tekrar Dene CTA"
     },
     "offline": {
-      "description": "Offline state shows last synchronized data and queues write actions for later sync."
+      "description": "OfflineNotice banner + cached plan cards with purchase disabled"
     }
   },
   "analytics": {
-    "screenView": "subscription_fr_e3_01_viewed",
+    "screenView": "plan_comparison_viewed",
     "events": [
-      "subscription_fr_e3_01_viewed"
+      "plan_comparison_viewed",
+      "plan_card_selected",
+      "plan_comparison_continue_tapped",
+      "plan_comparison_retry_tapped"
     ]
   },
   "acceptanceCriteriaRefs": [

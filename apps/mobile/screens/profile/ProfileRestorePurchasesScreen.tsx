@@ -1,43 +1,94 @@
-import React from "react";
-import { StyleSheet } from "react-native";
+import React, { useState } from "react";
+import { Alert, StyleSheet, View } from "react-native";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
 import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
-import { PActivityIndicator, PButton, PCard, PText } from "../../components";
-
+import { PButton, PCard, PChip, PText } from "../../components";
+import {
+  getPrimaryUser,
+  getSubscriptionForUser,
+  getPaymentsForSubscription,
+} from "../../data/mockSelectors";
 
 const ProfileRestorePurchasesContent = ({ isOffline }: { isOffline?: boolean }) => {
+  const [restoring, setRestoring] = useState(false);
+
+  const user = getPrimaryUser();
+  const subscription = getSubscriptionForUser(user?.id);
+  // AC-FR-E3-07-02: recent transactions from real mock data
+  const transactions = getPaymentsForSubscription(subscription?.id);
+
+  // AC-FR-E3-07-02: trigger platform restore
+  const handleRestore = () => {
+    if (isOffline) return;
+    setRestoring(true);
+    // analytics: restore_purchases_tapped (stub)
+    setTimeout(() => {
+      setRestoring(false);
+      Alert.alert(
+        "Geri Yukleme Tamamlandi",
+        "Satin alimlariniz dogrulandi ve aboneliginiz aktiflestirildi. (Sahte ortamda simule edildi)",
+        [{ text: "Tamam" }]
+      );
+    }, 1500);
+  };
+
   return (
     <>
-      <SectionCard title="Satın Alımları Geri Yükle" actionLabel="">
-        <PText variant="bodySmall">
-          Daha önce satın aldığın planları geri yükleyebiliriz. Bu işlem mağaza
-          doğrulaması gerektirir.
+      <SectionCard title="Satin Alimlari Geri Yukle">
+        <PText variant="bodySmall" style={styles.explainText}>
+          Daha once satin aldiginiz planlari geri yukleyebiliriz.
+          Bu islem magaza dogrulamasi gerektirir ve aboneliginiz otomatik aktiflesir.
         </PText>
-        <PButton mode="contained" style={styles.actionButton} disabled={isOffline}>
-          Satın Alımları Geri Yükle
+        <PButton
+          mode="contained"
+          style={styles.restoreButton}
+          disabled={isOffline || restoring}
+          onPress={handleRestore}
+          accessibilityLabel="Magaza uzerinden satin alimlari dogrula ve geri yukle"
+          accessibilityRole="button"
+        >
+          {restoring ? "Dogrulaniyor..." : "Satin Alimlari Geri Yukle"}
         </PButton>
-        <PButton mode="outlined" disabled={isOffline}>
-          Destekle İletişime Geç
+        <PButton
+          mode="outlined"
+          disabled={isOffline}
+          onPress={() => Alert.alert("Destek", "Destek ekibine baglaniyor. (Sahte ortamda simule edildi)")}
+          accessibilityLabel="Destek ekibiyle iletisime gec"
+          accessibilityRole="button"
+        >
+          Destekle Iletisime Gec
         </PButton>
       </SectionCard>
 
-      <SectionCard title="Son İşlemler" actionLabel="">
-        <PCard style={styles.card}>
-          <PCard.Title title="12 Ocak 2025" subtitle="Premium Yıllık Plan" />
-          <PCard.Content>
-            <PText variant="bodySmall">Doğrulandı</PText>
-          </PCard.Content>
-        </PCard>
-        <PCard style={styles.card}>
-          <PCard.Title title="12 Ocak 2024" subtitle="Premium Yıllık Plan" />
-          <PCard.Content>
-            <PText variant="bodySmall">Doğrulandı</PText>
-          </PCard.Content>
-        </PCard>
+      {/* AC-FR-E3-07-01: real transaction data from mock selectors */}
+      <SectionCard title="Son Islemler">
+        {transactions.length === 0 ? (
+          <PText variant="bodySmall" style={styles.emptyText}>
+            Kayitli islem bulunamadi.
+          </PText>
+        ) : (
+          transactions.map((tx) => (
+            <PCard key={tx.id} style={styles.card}>
+              <PCard.Content style={styles.cardRow}>
+                <View>
+                  <PText variant="bodyMedium" style={styles.txDate}>
+                    {tx.purchased_at?.slice(0, 10) ?? "-"}
+                  </PText>
+                  <PText variant="bodySmall" style={styles.txAmount}>
+                    {tx.amount} {tx.currency}
+                  </PText>
+                </View>
+                <PChip compact style={styles.chipVerified}>
+                  Dogrulandi
+                </PChip>
+              </PCard.Content>
+            </PCard>
+          ))
+        )}
       </SectionCard>
     </>
   );
@@ -52,14 +103,12 @@ export const ProfileRestorePurchasesScreen = ({
 
   if (state === "loading") {
     return (
-      <ScreenLayout title="Satın Alımları Geri Yükle" subtitle="Geri yükleme hazırlanıyor">
-        <SectionCard title="Yükleniyor">
-          <PActivityIndicator animating />
-          <SkeletonBlock height={18} />
-          <SkeletonBlock height={18} />
+      <ScreenLayout title="Satin Alimlari Geri Yukle" subtitle="Geri yukleme hazirlaniyor">
+        <SectionCard title="Yukleniyor">
+          <SkeletonBlock height={64} />
+          <SkeletonBlock height={48} />
         </SectionCard>
-        <SectionCard title="Geçmiş">
-          <SkeletonBlock height={72} />
+        <SectionCard title="Gecmis">
           <SkeletonBlock height={72} />
         </SectionCard>
       </ScreenLayout>
@@ -68,11 +117,11 @@ export const ProfileRestorePurchasesScreen = ({
 
   if (state === "empty") {
     return (
-      <ScreenLayout title="Satın Alımları Geri Yükle" subtitle="İşlemler">
+      <ScreenLayout title="Satin Alimlari Geri Yukle" subtitle="Islemler">
         <StateMessage
-          title="Geri yüklenecek satın alım yok"
-          description="Mağazadan satın alma bulunamadı."
-          actionLabel="Planları Gör"
+          title="Geri yuklenecek satin alim yok"
+          description="Magazadan satin alma bulunamadi."
+          actionLabel="Planlari Gor"
           icon="refresh"
         />
       </ScreenLayout>
@@ -81,10 +130,10 @@ export const ProfileRestorePurchasesScreen = ({
 
   if (state === "error") {
     return (
-      <ScreenLayout title="Satın Alımları Geri Yükle" subtitle="Bir sorun oluştu">
+      <ScreenLayout title="Satin Alimlari Geri Yukle" subtitle="Bir sorun olustu">
         <StateMessage
-          title="Geri yükleme başarısız"
-          description="Satın alımlar doğrulanamadı. Lütfen tekrar dene."
+          title="Geri yukleme basarisiz"
+          description="Satin alimlar dogrulanamadi. Lutfen tekrar dene."
           actionLabel="Tekrar Dene"
           icon="alert-circle-outline"
           tone="error"
@@ -95,7 +144,7 @@ export const ProfileRestorePurchasesScreen = ({
 
   if (state === "offline") {
     return (
-      <ScreenLayout title="Satın Alımları Geri Yükle" subtitle="Önbellekteki bilgiler">
+      <ScreenLayout title="Satin Alimlari Geri Yukle" subtitle="Onbellekteki bilgiler">
         <OfflineNotice />
         <ProfileRestorePurchasesContent isOffline />
       </ScreenLayout>
@@ -103,19 +152,45 @@ export const ProfileRestorePurchasesScreen = ({
   }
 
   return (
-    <ScreenLayout title="Satın Alımları Geri Yükle" subtitle="Satın alımlarını doğrula">
+    <ScreenLayout title="Satin Alimlari Geri Yukle" subtitle="Satin alimlarini dogrula">
       <ProfileRestorePurchasesContent />
     </ScreenLayout>
   );
 };
 
 const styles = StyleSheet.create({
-  actionButton: {
-    marginTop: 12,
+  explainText: {
+    color: "#374151",
+    lineHeight: 20,
+    marginBottom: 14,
+  },
+  restoreButton: {
     marginBottom: 8,
-    alignSelf: "flex-start",
+    minHeight: 52,
   },
   card: {
-    marginBottom: 12,
+    marginBottom: 10,
+  },
+  cardRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  txDate: {
+    fontWeight: "600",
+    color: "#1F2937",
+  },
+  txAmount: {
+    color: "#2B1B5D",
+    fontWeight: "700",
+    marginTop: 2,
+  },
+  chipVerified: {
+    backgroundColor: "#D1FAE5",
+  },
+  emptyText: {
+    color: "#6B7280",
+    textAlign: "center",
+    paddingVertical: 12,
   },
 });

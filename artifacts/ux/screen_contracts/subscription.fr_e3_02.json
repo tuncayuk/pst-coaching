@@ -1,10 +1,10 @@
 {
   "id": "subscription.fr_e3_02",
-  "title": "Satın alma ve aktivasyon",
-  "route": "/epic-3/fr-e3-02",
-  "purpose": "Implements FR-E3-02: Satın alma ve aktivasyon.",
+  "title": "Satin alma ve aktivasyon",
+  "route": "/profile/subscription/checkout",
+  "purpose": "FR-E3-02: Opens platform (Apple/Google) IAP sheet. Server-side validation grants entitlement immediately (BR-08). Shows order summary with plan, price, coupon field. Handles purchase error with clear user message (AC-FR-E3-02-01/02/03/04). Offline: purchase disabled, show offline notice.",
   "entryPoints": [
-    "profile.overview"
+    "subscription.fr_e3_01"
   ],
   "inputs": [
     {
@@ -14,45 +14,47 @@
       "source": "session"
     },
     {
-      "name": "subscriptionStatus",
-      "type": "SubscriptionStatus",
+      "name": "selectedPlanId",
+      "type": "uuid",
       "required": true,
-      "source": "entitlement_cache"
+      "source": "navigation_params"
     },
     {
-      "name": "locale",
-      "type": "LanguageCode",
+      "name": "platform",
+      "type": "string",
       "required": true,
-      "source": "profile"
+      "source": "device_info"
     }
   ],
   "dataDependencies": [
-    "Subscription",
     "SubscriptionPlan",
-    "AddOn",
-    "Seat"
+    "Subscription"
   ],
   "uiStates": {
     "loading": {
-      "description": "Skeleton placeholders are shown while loading FR-E3-02 data."
+      "description": "Skeleton order summary and payment method rows"
     },
     "ready": {
-      "description": "FR-E3-02 flows are fully interactive with primary CTA available when prerequisites are met."
+      "description": "Order summary card (plan name, price, coupon field), platform IAP button, payment method section"
     },
     "empty": {
-      "description": "Empty state explains why no data is available and points to next best action."
+      "description": "StateMessage: cart empty, Planlari Gor CTA"
     },
     "error": {
-      "description": "Error state is recoverable with user-safe messaging and a retry action."
+      "description": "StateMessage + inline toast for purchase failure (AC-FR-E3-02-04)"
     },
     "offline": {
-      "description": "Offline state shows last synchronized data and queues write actions for later sync."
+      "description": "OfflineNotice + disabled purchase button with explanation"
     }
   },
   "analytics": {
-    "screenView": "subscription_fr_e3_02_viewed",
+    "screenView": "checkout_viewed",
     "events": [
-      "subscription_fr_e3_02_viewed"
+      "checkout_viewed",
+      "checkout_coupon_applied",
+      "checkout_purchase_tapped",
+      "checkout_purchase_success",
+      "checkout_purchase_error"
     ]
   },
   "acceptanceCriteriaRefs": [

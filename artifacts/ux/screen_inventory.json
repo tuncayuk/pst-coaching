@@ -384,8 +384,8 @@
     },
     {
       "id": "subscription.fr_e3_01",
-      "route": "/epic-3/fr-e3-01",
-      "title": "Plan seçimi ve karşılaştırma",
+      "route": "/profile/subscription/plan-comparison",
+      "title": "Plan secimi ve karsilastirma",
       "type": "stack",
       "states": [
         "loading",
@@ -403,8 +403,8 @@
     },
     {
       "id": "subscription.fr_e3_02",
-      "route": "/epic-3/fr-e3-02",
-      "title": "Satın alma ve aktivasyon",
+      "route": "/profile/subscription/checkout",
+      "title": "Satin alma ve aktivasyon",
       "type": "stack",
       "states": [
         "loading",
@@ -422,8 +422,8 @@
     },
     {
       "id": "subscription.fr_e3_03",
-      "route": "/epic-3/fr-e3-03",
-      "title": "Add-on yönetimi",
+      "route": "/profile/subscription/addons",
+      "title": "Add-on yonetimi",
       "type": "stack",
       "states": [
         "loading",
@@ -443,8 +443,8 @@
     },
     {
       "id": "subscription.fr_e3_04",
-      "route": "/epic-3/fr-e3-04",
-      "title": "Öğrenci indirimi",
+      "route": "/profile/subscription/student-discount",
+      "title": "Ogrenci indirimi",
       "type": "stack",
       "states": [
         "loading",
@@ -462,8 +462,8 @@
     },
     {
       "id": "subscription.fr_e3_05",
-      "route": "/epic-3/fr-e3-05",
-      "title": "Plan yönetimi (değiştir/iptal)",
+      "route": "/profile/subscription/manage",
+      "title": "Plan yonetimi (degistir/iptal)",
       "type": "stack",
       "states": [
         "loading",
@@ -482,8 +482,8 @@
     },
     {
       "id": "subscription.fr_e3_06",
-      "route": "/epic-3/fr-e3-06",
-      "title": "Kişi (seat) yönetimi",
+      "route": "/profile/subscription/seats",
+      "title": "Kisi (seat) yonetimi",
       "type": "stack",
       "states": [
         "loading",
@@ -502,8 +502,8 @@
     },
     {
       "id": "subscription.fr_e3_07",
-      "route": "/epic-3/fr-e3-07",
-      "title": "Ödeme geçmişi ve geri yükleme",
+      "route": "/profile/subscription/payments",
+      "title": "Odeme gecmisi ve geri yukleme",
       "type": "stack",
       "states": [
         "loading",

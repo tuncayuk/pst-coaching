@@ -16,6 +16,7 @@ import { ProfileSeatManagementScreen } from "../screens/profile/ProfileSeatManag
 import { ProfilePaymentHistoryScreen } from "../screens/profile/ProfilePaymentHistoryScreen";
 import { ProfileRestorePurchasesScreen } from "../screens/profile/ProfileRestorePurchasesScreen";
 import { ProfileStudentDiscountScreen } from "../screens/profile/ProfileStudentDiscountScreen";
+import { ProfilePlanManagementScreen } from "../screens/profile/ProfilePlanManagementScreen";
 import { ProfileLogoutConfirmScreen } from "../screens/profile/ProfileLogoutConfirmScreen";
 
 type ScreenStateParam = { state?: ScreenState } | undefined;
@@ -36,6 +37,8 @@ export type ProfileStackParamList = {
   ProfilePaymentHistory: ScreenStateParam;
   ProfileRestorePurchases: ScreenStateParam;
   ProfileStudentDiscount: ScreenStateParam;
+  /** FR-E3-05: Plan management (change/cancel) */
+  ProfilePlanManagement: ScreenStateParam;
   ProfileLogoutConfirm: ScreenStateParam;
 };
 
@@ -63,6 +66,7 @@ export const profileStackScreens: ProfileStackScreen[] = [
   { name: "ProfilePaymentHistory", component: ProfilePaymentHistoryScreen },
   { name: "ProfileRestorePurchases", component: ProfileRestorePurchasesScreen },
   { name: "ProfileStudentDiscount", component: ProfileStudentDiscountScreen },
+  { name: "ProfilePlanManagement", component: ProfilePlanManagementScreen },
   { name: "ProfileLogoutConfirm", component: ProfileLogoutConfirmScreen, options: sheetOptions },
 ];
 

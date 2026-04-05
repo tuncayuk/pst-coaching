@@ -1,10 +1,10 @@
 {
   "id": "subscription.fr_e3_05",
-  "title": "Plan yönetimi (değiştir/iptal)",
-  "route": "/epic-3/fr-e3-05",
-  "purpose": "Implements FR-E3-05: Plan yönetimi (değiştir/iptal).",
+  "title": "Plan yonetimi (degistir/iptal)",
+  "route": "/profile/subscription/manage",
+  "purpose": "FR-E3-05: Shows current plan, renewal date, seat usage. Plan downgrade warns if seat count exceeds new limit (AC-FR-E3-05-02). Cancellation lists all effects clearly (AC-FR-E3-05-03). Access continues until period end after cancel (AC-FR-E3-05-04). Redirects to platform cancel flow (AC-FR-E3-05-05). Only Plan Sahibi can act.",
   "entryPoints": [
-    "profile.overview"
+    "subscription.overview"
   ],
   "inputs": [
     {
@@ -14,45 +14,42 @@
       "source": "session"
     },
     {
-      "name": "subscriptionStatus",
-      "type": "SubscriptionStatus",
+      "name": "subscriptionId",
+      "type": "uuid",
       "required": true,
-      "source": "entitlement_cache"
-    },
-    {
-      "name": "locale",
-      "type": "LanguageCode",
-      "required": true,
-      "source": "profile"
+      "source": "subscription_entity"
     }
   ],
   "dataDependencies": [
     "Subscription",
     "SubscriptionPlan",
-    "AddOn",
     "Seat"
   ],
   "uiStates": {
     "loading": {
-      "description": "Skeleton placeholders are shown while loading FR-E3-05 data."
+      "description": "Skeleton plan summary card and action buttons"
     },
     "ready": {
-      "description": "FR-E3-05 flows are fully interactive with primary CTA available when prerequisites are met."
+      "description": "Plan summary (name, renewal date, seat gauge), change plan CTA, cancellation effects list, cancel CTA routing to platform"
     },
     "empty": {
-      "description": "Empty state explains why no data is available and points to next best action."
+      "description": "StateMessage: no active subscription found"
     },
     "error": {
-      "description": "Error state is recoverable with user-safe messaging and a retry action."
+      "description": "StateMessage: plan details unavailable, Tekrar Dene CTA"
     },
     "offline": {
-      "description": "Offline state shows last synchronized data and queues write actions for later sync."
+      "description": "OfflineNotice + cached plan details, actions disabled"
     }
   },
   "analytics": {
-    "screenView": "subscription_fr_e3_05_viewed",
+    "screenView": "plan_management_viewed",
     "events": [
-      "subscription_fr_e3_05_viewed"
+      "plan_management_viewed",
+      "plan_change_tapped",
+      "plan_cancel_tapped",
+      "plan_cancel_confirmed",
+      "plan_cancel_platform_redirect"
     ]
   },
   "acceptanceCriteriaRefs": [

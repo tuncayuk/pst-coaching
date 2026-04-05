@@ -1,10 +1,10 @@
 {
   "id": "subscription.fr_e3_03",
-  "title": "Add-on yönetimi",
-  "route": "/epic-3/fr-e3-03",
-  "purpose": "Implements FR-E3-03: Add-on yönetimi.",
+  "title": "Add-on yonetimi",
+  "route": "/profile/subscription/addons",
+  "purpose": "FR-E3-03: Lists add-ons with price, active/passive status and toggle. Ek Kisi add-on shown only for Aile/Grup plans (AC-FR-E3-03-03). Plan Uyesi cannot purchase; only Plan Sahibi can act (AC-FR-E3-03-04). Offline: list visible, actions disabled.",
   "entryPoints": [
-    "profile.overview"
+    "subscription.overview"
   ],
   "inputs": [
     {
@@ -14,45 +14,48 @@
       "source": "session"
     },
     {
-      "name": "subscriptionStatus",
-      "type": "SubscriptionStatus",
+      "name": "subscriptionId",
+      "type": "uuid",
       "required": true,
-      "source": "entitlement_cache"
+      "source": "subscription_entity"
     },
     {
-      "name": "locale",
-      "type": "LanguageCode",
+      "name": "userRole",
+      "type": "string",
       "required": true,
-      "source": "profile"
+      "source": "subscription_entity"
     }
   ],
   "dataDependencies": [
-    "Subscription",
-    "SubscriptionPlan",
     "AddOn",
-    "Seat"
+    "SubscriptionAddOn",
+    "SubscriptionPlan"
   ],
   "uiStates": {
     "loading": {
-      "description": "Skeleton placeholders are shown while loading FR-E3-03 data."
+      "description": "2 skeleton add-on cards"
     },
     "ready": {
-      "description": "FR-E3-03 flows are fully interactive with primary CTA available when prerequisites are met."
+      "description": "Add-on cards with name, description, price badge, Aktif/Pasif chip, toggle button. Owner sees full actions; member sees read-only."
     },
     "empty": {
-      "description": "Empty state explains why no data is available and points to next best action."
+      "description": "StateMessage: no add-ons available, Planlari Incele CTA"
     },
     "error": {
-      "description": "Error state is recoverable with user-safe messaging and a retry action."
+      "description": "StateMessage: add-ons could not be loaded, Tekrar Dene CTA"
     },
     "offline": {
-      "description": "Offline state shows last synchronized data and queues write actions for later sync."
+      "description": "OfflineNotice + cached add-on list with actions disabled"
     }
   },
   "analytics": {
-    "screenView": "subscription_fr_e3_03_viewed",
+    "screenView": "addons_viewed",
     "events": [
-      "subscription_fr_e3_03_viewed"
+      "addons_viewed",
+      "addon_activated",
+      "addon_deactivated",
+      "addon_buy_tapped",
+      "addon_owner_gate_blocked"
     ]
   },
   "acceptanceCriteriaRefs": [
