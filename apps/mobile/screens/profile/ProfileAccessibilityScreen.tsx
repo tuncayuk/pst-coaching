@@ -1,5 +1,6 @@
-import React from "react";
-import { StyleSheet, View } from "react-native";
+import React, { useState } from "react";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 import { OfflineNotice } from "../components/OfflineNotice";
 import { ScreenLayout } from "../components/ScreenLayout";
 import { SectionCard } from "../components/SectionCard";
@@ -7,53 +8,163 @@ import { SkeletonBlock } from "../components/SkeletonBlock";
 import { StateMessage } from "../components/StateMessage";
 import { resolveScreenState, ScreenState } from "../components/ScreenState";
 import { getAccessibilitySettings, getPrimaryUser } from "../../data/mockSelectors";
-import { PActivityIndicator, PButton, PCard, PChip, PSwitch, PText } from "../../components";
+import {
+  PActivityIndicator,
+  PButton,
+  PDivider,
+  PText,
+  PSwitch,
+} from "../../components";
 
+// Nav arrow pill
+const NavCard = ({
+  title,
+  subtitle,
+  onPress,
+  disabled,
+  accessibilityLabel,
+}: {
+  title: string;
+  subtitle: string;
+  onPress: () => void;
+  disabled?: boolean;
+  accessibilityLabel: string;
+}) => (
+  <TouchableOpacity
+    style={[styles.navCard, disabled && styles.navCardDisabled]}
+    onPress={onPress}
+    disabled={disabled}
+    accessibilityRole="button"
+    accessibilityLabel={accessibilityLabel}
+    accessibilityHint="Bu erisilebilirlik bolumunu acmak icin dokunun"
+  >
+    <View style={styles.navCardBody}>
+      <PText variant="titleSmall" style={styles.navCardTitle}>{title}</PText>
+      <PText variant="bodySmall" style={styles.navCardSub}>{subtitle}</PText>
+    </View>
+    <PText style={styles.navArrow} accessibilityElementsHidden>></PText>
+  </TouchableOpacity>
+);
+
+// Toggle row
+const ToggleRow = ({
+  label,
+  description,
+  value,
+  onValueChange,
+  disabled,
+  accessibilityLabel,
+}: {
+  label: string;
+  description: string;
+  value: boolean;
+  onValueChange: (v: boolean) => void;
+  disabled?: boolean;
+  accessibilityLabel: string;
+}) => (
+  <View
+    style={styles.toggleRow}
+    accessibilityRole="switch"
+    accessibilityLabel={accessibilityLabel}
+    accessibilityState={{ checked: value, disabled }}
+  >
+    <View style={styles.toggleText}>
+      <PText variant="bodyMedium" style={styles.toggleLabel}>{label}</PText>
+      <PText variant="bodySmall" style={styles.toggleDesc}>{description}</PText>
+    </View>
+    <PSwitch
+      value={value}
+      onValueChange={onValueChange}
+      disabled={disabled}
+      accessibilityLabel={accessibilityLabel}
+    />
+  </View>
+);
 
 const ProfileAccessibilityContent = ({ isOffline }: { isOffline?: boolean }) => {
+  const navigation = useNavigation<any>();
   const user = getPrimaryUser();
-  const settings = getAccessibilitySettings().find((item) => item.user_id === user?.id);
+  const settings = getAccessibilitySettings().find((s: any) => s.user_id === user?.id);
+
+  // AC-FR-E10-01-02: interactive local state, simulates immediate apply
+  const [highContrast, setHighContrast] = useState(settings?.high_contrast ?? false);
+  const [reduceMotion, setReduceMotion] = useState(settings?.reduce_motion ?? false);
+
+  // Summary for nav cards
+  const textSizeLabel = settings?.text_size ?? "normal";
+  const themeLabel = settings?.theme ?? "system";
 
   return (
     <>
-      <SectionCard title="Erişilebilirlik">
-        <PCard style={styles.card}>
-          <PCard.Content style={styles.row}>
-            <View style={styles.rowText}>
-              <PText variant="bodyMedium">Yüksek Kontrast</PText>
-              <PText variant="bodySmall" style={styles.subtleText}>
-                Daha net metin ve arka plan
-              </PText>
-            </View>
-            <PSwitch value={settings?.high_contrast ?? false} disabled={isOffline} />
-          </PCard.Content>
-        </PCard>
-        <PCard style={styles.card}>
-          <PCard.Content style={styles.row}>
-            <View style={styles.rowText}>
-              <PText variant="bodyMedium">Hareketi Azalt</PText>
-              <PText variant="bodySmall" style={styles.subtleText}>
-                Animasyonları minimize et
-              </PText>
-            </View>
-            <PSwitch value={settings?.reduce_motion ?? false} disabled={isOffline} />
-          </PCard.Content>
-        </PCard>
+      {/* AC-FR-E10-01-01: text size, high contrast, reduce motion on one screen */}
+      <SectionCard title="Hizli Ayarlar">
+        <PText variant="bodySmall" style={styles.sectionHint}>
+          Degisiklikler aninda uygulanir ve cihazda kaydedilir.
+        </PText>
+        <ToggleRow
+          label="Yuksek Kontrast"
+          description="Metin ve arka plan kontrastini arttirir (min 7:1)"
+          value={highContrast}
+          onValueChange={(v) => setHighContrast(v)}
+          disabled={isOffline}
+          accessibilityLabel={"Yuksek kontrast: " + (highContrast ? "acik" : "kapali")}
+        />
+        <PDivider style={styles.divider} />
+        <ToggleRow
+          label="Hareketi Azalt"
+          description="Animasyonlari ve gecis efektlerini minimize eder"
+          value={reduceMotion}
+          onValueChange={(v) => setReduceMotion(v)}
+          disabled={isOffline}
+          accessibilityLabel={"Hareket azaltma: " + (reduceMotion ? "acik" : "kapali")}
+        />
       </SectionCard>
 
-      <SectionCard title="Metin Boyutu">
-        <PText variant="bodySmall" style={styles.subtleText}>
-          Şu anki boyut: {settings?.text_size ?? "medium"}
-        </PText>
-        <View style={styles.chipRow}>
-          {["small", "medium", "large"].map((size) => (
-            <PChip key={size} style={styles.chip} disabled={isOffline}>
-              {size}
-            </PChip>
-          ))}
-        </View>
-        <PButton mode="contained" disabled={isOffline}>
-          Kaydet
+      {/* AC-FR-E10-01-01: navigation to each accessibility sub-screen */}
+      <SectionCard title="Detayli Ayarlar">
+        <NavCard
+          title="Metin Buyutme"
+          subtitle={"Mevcut: " + textSizeLabel + " - Adim secici + onizleme"}
+          onPress={() => navigation.navigate("ProfileTextScale")}
+          disabled={isOffline}
+          accessibilityLabel={"Metin buyutme ayarina git. Mevcut: " + textSizeLabel}
+        />
+        <PDivider style={styles.divider} />
+        <NavCard
+          title="Tema ve Yuksek Kontrast"
+          subtitle={"Tema: " + themeLabel + " - Acik / Koyu / Sistem"}
+          onPress={() => navigation.navigate("ProfileTheme")}
+          disabled={isOffline}
+          accessibilityLabel={"Tema ve kontrast ayarina git. Mevcut: " + themeLabel}
+        />
+        <PDivider style={styles.divider} />
+        <NavCard
+          title="Ekran Okuyucu Uyumu"
+          subtitle="VoiceOver ve TalkBack destegi durumu"
+          onPress={() => navigation.navigate("ProfileScreenReader")}
+          disabled={false}
+          accessibilityLabel="Ekran okuyucu uyumu ayarina git"
+        />
+      </SectionCard>
+
+      {/* AC-FR-E10-01-03: offline note */}
+      {isOffline && (
+        <SectionCard title="Cevrimdisi">
+          <PText variant="bodySmall" style={styles.offlineNote}>
+            Degisiklikler cihazda saklanir ve baglanti gelince senkronize edilir.
+          </PText>
+        </SectionCard>
+      )}
+
+      <SectionCard title="">
+        <PButton
+          mode="contained"
+          disabled={isOffline}
+          accessibilityLabel="Erisilebilirlik ayarlarini kaydet"
+          style={styles.saveBtn}
+          onPress={() => {}}
+        >
+          Ayarlari Kaydet
         </PButton>
       </SectionCard>
     </>
@@ -69,11 +180,16 @@ export const ProfileAccessibilityScreen = ({
 
   if (state === "loading") {
     return (
-      <ScreenLayout title="Erişilebilirlik" subtitle="Ayarlar hazırlanıyor">
-        <SectionCard title="Yükleniyor">
-          <PActivityIndicator animating />
-          <SkeletonBlock height={20} />
-          <SkeletonBlock height={20} />
+      <ScreenLayout title="Erisilebilirlik" subtitle="Ayarlar hazirlaniyor">
+        <SectionCard title="Hizli Ayarlar">
+          <PActivityIndicator animating accessibilityLabel="Ayarlar yukleniyor" />
+          <SkeletonBlock height={52} />
+          <SkeletonBlock height={52} />
+        </SectionCard>
+        <SectionCard title="Detayli Ayarlar">
+          <SkeletonBlock height={56} />
+          <SkeletonBlock height={56} />
+          <SkeletonBlock height={56} />
         </SectionCard>
       </ScreenLayout>
     );
@@ -81,11 +197,11 @@ export const ProfileAccessibilityScreen = ({
 
   if (state === "empty") {
     return (
-      <ScreenLayout title="Erişilebilirlik" subtitle="Ayar bulunamadı">
+      <ScreenLayout title="Erisilebilirlik" subtitle="Varsayilan ayarlar">
         <StateMessage
-          title="Ayar bulunamadı"
-          description="Erişilebilirlik ayarları yüklenemedi."
-          actionLabel="Tekrar Dene"
+          title="Ayar bulunamadi"
+          description="Erisilebilirlik ayarlari henuz yapilmamis. Varsayilan degerler kullanilacak."
+          actionLabel="Varsayilana Sifirla"
           icon="accessibility"
         />
       </ScreenLayout>
@@ -94,10 +210,10 @@ export const ProfileAccessibilityScreen = ({
 
   if (state === "error") {
     return (
-      <ScreenLayout title="Erişilebilirlik" subtitle="Bir sorun oluştu">
+      <ScreenLayout title="Erisilebilirlik" subtitle="Bir sorun olustu">
         <StateMessage
-          title="Ayarlar yüklenemedi"
-          description="Bağlantını kontrol edip tekrar dene."
+          title="Ayarlar yuklenemedi"
+          description="Baglantini kontrol edip tekrar dene."
           actionLabel="Tekrar Dene"
           icon="alert-circle-outline"
           tone="error"
@@ -108,7 +224,7 @@ export const ProfileAccessibilityScreen = ({
 
   if (state === "offline") {
     return (
-      <ScreenLayout title="Erişilebilirlik" subtitle="Önbellekteki ayarlar">
+      <ScreenLayout title="Erisilebilirlik" subtitle="Onbellekteki ayarlar">
         <OfflineNotice />
         <ProfileAccessibilityContent isOffline />
       </ScreenLayout>
@@ -116,37 +232,71 @@ export const ProfileAccessibilityScreen = ({
   }
 
   return (
-    <ScreenLayout title="Erişilebilirlik" subtitle="Erişilebilirlik ayarları">
+    <ScreenLayout title="Erisilebilirlik" subtitle="Kapsayici deneyim ayarlari">
       <ProfileAccessibilityContent />
     </ScreenLayout>
   );
 };
 
 const styles = StyleSheet.create({
-  card: {
+  sectionHint: {
+    opacity: 0.6,
     marginBottom: 12,
+    lineHeight: 18,
   },
-  row: {
+  toggleRow: {
     flexDirection: "row",
-    justifyContent: "space-between",
     alignItems: "center",
+    justifyContent: "space-between",
+    paddingVertical: 10,
+    gap: 12,
   },
-  rowText: {
+  toggleText: {
     flex: 1,
-    marginRight: 12,
   },
-  subtleText: {
-    opacity: 0.7,
-    marginTop: 4,
+  toggleLabel: {
+    fontWeight: "600",
   },
-  chipRow: {
+  toggleDesc: {
+    opacity: 0.65,
+    marginTop: 2,
+    lineHeight: 18,
+  },
+  divider: {
+    marginVertical: 2,
+  },
+  navCard: {
     flexDirection: "row",
-    flexWrap: "wrap",
-    marginTop: 8,
-    marginBottom: 12,
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingVertical: 14,
+    paddingHorizontal: 4,
   },
-  chip: {
-    marginRight: 8,
-    marginBottom: 8,
+  navCardDisabled: {
+    opacity: 0.5,
+  },
+  navCardBody: {
+    flex: 1,
+  },
+  navCardTitle: {
+    fontWeight: "600",
+    marginBottom: 2,
+  },
+  navCardSub: {
+    opacity: 0.65,
+    lineHeight: 18,
+  },
+  navArrow: {
+    fontSize: 22,
+    opacity: 0.4,
+    paddingLeft: 8,
+  },
+  offlineNote: {
+    opacity: 0.65,
+    lineHeight: 20,
+    fontStyle: "italic",
+  },
+  saveBtn: {
+    marginTop: 4,
   },
 });

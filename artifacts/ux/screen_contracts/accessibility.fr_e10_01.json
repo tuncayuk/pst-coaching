@@ -1,8 +1,8 @@
 {
   "id": "accessibility.fr_e10_01",
-  "title": "Erişilebilirlik ayarları",
-  "route": "/epic-10/fr-e10-01",
-  "purpose": "Implements FR-E10-01: Erişilebilirlik ayarları.",
+  "title": "Erisilebilirlik ayarlari",
+  "route": "/accessibility",
+  "purpose": "Implements FR-E10-01: Erisilebilirlik ayarlari hub - metin boyutu, yuksek kontrast, hareket azaltma.",
   "entryPoints": [
     "profile.accessibility"
   ],
@@ -32,25 +32,26 @@
   ],
   "uiStates": {
     "loading": {
-      "description": "Skeleton placeholders are shown while loading FR-E10-01 data."
+      "description": "Skeleton placeholders shown while loading accessibility settings."
     },
     "ready": {
-      "description": "FR-E10-01 flows are fully interactive with primary CTA available when prerequisites are met."
+      "description": "All toggles interactive: high contrast, reduce motion. Navigation to text-scale, theme, screen-reader sub-screens."
     },
     "empty": {
-      "description": "Empty state explains why no data is available and points to next best action."
+      "description": "Default settings displayed with reset CTA."
     },
     "error": {
-      "description": "Error state is recoverable with user-safe messaging and a retry action."
+      "description": "Error state recoverable with retry action."
     },
     "offline": {
-      "description": "Offline state shows last synchronized data and queues write actions for later sync."
+      "description": "Cached settings shown; writes queued for sync."
     }
   },
   "analytics": {
-    "screenView": "accessibility_fr_e10_01_viewed",
+    "screenView": "accessibility_settings_viewed",
     "events": [
-      "accessibility_fr_e10_01_viewed"
+      "accessibility_settings_viewed",
+      "accessibility_toggle_changed"
     ]
   },
   "acceptanceCriteriaRefs": [

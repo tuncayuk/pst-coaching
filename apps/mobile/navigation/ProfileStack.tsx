@@ -5,6 +5,9 @@ import { ProfileOverviewScreen } from "../screens/ProfileOverviewScreen";
 import { ProfileSettingsScreen } from "../screens/profile/ProfileSettingsScreen";
 import { ProfileLanguageScreen } from "../screens/profile/ProfileLanguageScreen";
 import { ProfileAccessibilityScreen } from "../screens/profile/ProfileAccessibilityScreen";
+import { ProfileTextScaleScreen } from "../screens/profile/ProfileTextScaleScreen";
+import { ProfileThemeScreen } from "../screens/profile/ProfileThemeScreen";
+import { ProfileScreenReaderScreen } from "../screens/profile/ProfileScreenReaderScreen";
 import { ProfileRemindersScreen } from "../screens/profile/ProfileRemindersScreen";
 import { ProfileAccountScreen } from "../screens/profile/ProfileAccountScreen";
 import { ProfileChangePasswordScreen } from "../screens/profile/ProfileChangePasswordScreen";
@@ -26,6 +29,12 @@ export type ProfileStackParamList = {
   ProfileSettings: ScreenStateParam;
   ProfileLanguage: ScreenStateParam;
   ProfileAccessibility: ScreenStateParam;
+  /** FR-E10-02: Text scale screen */
+  ProfileTextScale: ScreenStateParam;
+  /** FR-E10-03: Theme and high contrast screen */
+  ProfileTheme: ScreenStateParam;
+  /** FR-E10-04: Screen reader compatibility screen */
+  ProfileScreenReader: ScreenStateParam;
   ProfileReminders: ScreenStateParam;
   ProfileAccount: ScreenStateParam;
   ProfileChangePassword: ScreenStateParam;
@@ -55,6 +64,9 @@ export const profileStackScreens: ProfileStackScreen[] = [
   { name: "ProfileSettings", component: ProfileSettingsScreen },
   { name: "ProfileLanguage", component: ProfileLanguageScreen },
   { name: "ProfileAccessibility", component: ProfileAccessibilityScreen },
+  { name: "ProfileTextScale", component: ProfileTextScaleScreen },
+  { name: "ProfileTheme", component: ProfileThemeScreen },
+  { name: "ProfileScreenReader", component: ProfileScreenReaderScreen },
   { name: "ProfileReminders", component: ProfileRemindersScreen },
   { name: "ProfileAccount", component: ProfileAccountScreen },
   { name: "ProfileChangePassword", component: ProfileChangePasswordScreen },

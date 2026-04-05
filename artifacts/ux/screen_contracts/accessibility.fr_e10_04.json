@@ -1,10 +1,11 @@
 {
   "id": "accessibility.fr_e10_04",
   "title": "Ekran okuyucu uyumu",
-  "route": "/epic-10/fr-e10-04",
-  "purpose": "Implements FR-E10-04: Ekran okuyucu uyumu.",
+  "route": "/accessibility/screen-reader",
+  "purpose": "Implements FR-E10-04: Ekran okuyucu uyumu - etiket durumu, odak sirasi, form etiketleri, gorsel alternatifleri.",
   "entryPoints": [
-    "profile.accessibility"
+    "profile.accessibility",
+    "accessibility.fr_e10_01"
   ],
   "inputs": [
     {
@@ -12,45 +13,33 @@
       "type": "uuid",
       "required": true,
       "source": "session"
-    },
-    {
-      "name": "subscriptionStatus",
-      "type": "SubscriptionStatus",
-      "required": true,
-      "source": "entitlement_cache"
-    },
-    {
-      "name": "locale",
-      "type": "LanguageCode",
-      "required": true,
-      "source": "profile"
     }
   ],
   "dataDependencies": [
-    "AccessibilitySettings",
-    "User"
+    "AccessibilitySettings"
   ],
   "uiStates": {
     "loading": {
-      "description": "Skeleton placeholders are shown while loading FR-E10-04 data."
+      "description": "Skeleton shown while loading screen reader compatibility status."
     },
     "ready": {
-      "description": "FR-E10-04 flows are fully interactive with primary CTA available when prerequisites are met."
+      "description": "Feature checklist with status indicators. Tips and toggle for enhanced screen reader mode."
     },
     "empty": {
-      "description": "Empty state explains why no data is available and points to next best action."
+      "description": "Default state with all features shown as supported."
     },
     "error": {
-      "description": "Error state is recoverable with user-safe messaging and a retry action."
+      "description": "Error state with retry CTA."
     },
     "offline": {
-      "description": "Offline state shows last synchronized data and queues write actions for later sync."
+      "description": "Cached status shown offline."
     }
   },
   "analytics": {
-    "screenView": "accessibility_fr_e10_04_viewed",
+    "screenView": "screen_reader_settings_viewed",
     "events": [
-      "accessibility_fr_e10_04_viewed"
+      "screen_reader_settings_viewed",
+      "screen_reader_mode_toggled"
     ]
   },
   "acceptanceCriteriaRefs": [

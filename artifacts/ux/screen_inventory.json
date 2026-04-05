@@ -1299,7 +1299,7 @@
     },
     {
       "id": "accessibility.fr_e10_01",
-      "route": "/epic-10/fr-e10-01",
+      "route": "/accessibility",
       "title": "Erişilebilirlik ayarları",
       "type": "stack",
       "states": [
@@ -1317,7 +1317,7 @@
     },
     {
       "id": "accessibility.fr_e10_02",
-      "route": "/epic-10/fr-e10-02",
+      "route": "/accessibility/text-scale",
       "title": "Metin büyütme",
       "type": "stack",
       "states": [
@@ -1335,7 +1335,7 @@
     },
     {
       "id": "accessibility.fr_e10_03",
-      "route": "/epic-10/fr-e10-03",
+      "route": "/accessibility/theme",
       "title": "Yüksek kontrast ve tema",
       "type": "stack",
       "states": [
@@ -1353,7 +1353,7 @@
     },
     {
       "id": "accessibility.fr_e10_04",
-      "route": "/epic-10/fr-e10-04",
+      "route": "/accessibility/screen-reader",
       "title": "Ekran okuyucu uyumu",
       "type": "stack",
       "states": [

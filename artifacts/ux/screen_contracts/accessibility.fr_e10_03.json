@@ -1,10 +1,11 @@
 {
   "id": "accessibility.fr_e10_03",
-  "title": "Yüksek kontrast ve tema",
-  "route": "/epic-10/fr-e10-03",
-  "purpose": "Implements FR-E10-03: Yüksek kontrast ve tema.",
+  "title": "Yuksek kontrast ve tema",
+  "route": "/accessibility/theme",
+  "purpose": "Implements FR-E10-03: Tema secimi (Acik/Koyu/Sistem), yuksek kontrast 7:1, renk koru deseni.",
   "entryPoints": [
-    "profile.accessibility"
+    "profile.accessibility",
+    "accessibility.fr_e10_01"
   ],
   "inputs": [
     {
@@ -14,43 +15,39 @@
       "source": "session"
     },
     {
-      "name": "subscriptionStatus",
-      "type": "SubscriptionStatus",
-      "required": true,
-      "source": "entitlement_cache"
-    },
-    {
-      "name": "locale",
-      "type": "LanguageCode",
-      "required": true,
-      "source": "profile"
+      "name": "currentTheme",
+      "type": "string",
+      "required": false,
+      "source": "accessibility_settings"
     }
   ],
   "dataDependencies": [
-    "AccessibilitySettings",
-    "User"
+    "AccessibilitySettings"
   ],
   "uiStates": {
     "loading": {
-      "description": "Skeleton placeholders are shown while loading FR-E10-03 data."
+      "description": "Skeleton shown while loading theme and contrast settings."
     },
     "ready": {
-      "description": "FR-E10-03 flows are fully interactive with primary CTA available when prerequisites are met."
+      "description": "Theme radio group (Acik/Koyu/Sistem), high contrast toggle, color blindness mode chips."
     },
     "empty": {
-      "description": "Empty state explains why no data is available and points to next best action."
+      "description": "Default System theme shown."
     },
     "error": {
-      "description": "Error state is recoverable with user-safe messaging and a retry action."
+      "description": "Error state with retry CTA."
     },
     "offline": {
-      "description": "Offline state shows last synchronized data and queues write actions for later sync."
+      "description": "Last saved theme shown; changes queued for sync."
     }
   },
   "analytics": {
-    "screenView": "accessibility_fr_e10_03_viewed",
+    "screenView": "theme_settings_viewed",
     "events": [
-      "accessibility_fr_e10_03_viewed"
+      "theme_settings_viewed",
+      "theme_changed",
+      "high_contrast_toggled",
+      "color_blind_mode_changed"
     ]
   },
   "acceptanceCriteriaRefs": [
