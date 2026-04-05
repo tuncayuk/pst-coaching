@@ -1,8 +1,8 @@
-import React from 'react';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
-import { useTheme } from 'react-native-paper';
+import React from "react";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
+import { useTheme } from "react-native-paper";
 
-import { PSurface, PText } from '../../components';
+import { PSurface, PText } from "../../components";
 
 type SectionCardProps = {
   title: string;
@@ -43,12 +43,12 @@ const styles = StyleSheet.create({
   card: {
     padding: 16,
     borderRadius: 20,
-    marginBottom: 16
+    marginBottom: 16,
   },
   headerRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 12
-  }
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 12,
+  },
 });
