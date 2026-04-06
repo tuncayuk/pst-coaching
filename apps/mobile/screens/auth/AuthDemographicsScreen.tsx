@@ -278,7 +278,7 @@ function makeStyles(c: ColorTokens) {
       textAlign: 'center'
     },
     infoCard: {
-      backgroundColor: palette.cyan50,
+      backgroundColor: c.primaryContainer,
       padding: spacing[2],
       borderRadius: radii.lg,
       marginBottom: spacing[3],
@@ -296,7 +296,7 @@ function makeStyles(c: ColorTokens) {
       marginBottom: spacing[2]
     },
     input: {
-      backgroundColor: palette.white
+      backgroundColor: c.surface
     },
     inputContent: {
       paddingVertical: spacing[2]
@@ -312,12 +312,12 @@ function makeStyles(c: ColorTokens) {
       fontSize: fontSizes.base
     },
     errorText: {
-      color: palette.red600,
+      color: c.error,
       marginTop: 6,
       fontSize: fontSizes.base
     },
     inputOutlineError: {
-      borderColor: palette.red500
+      borderColor: c.error
     },
     label: {
       fontWeight: fontWeights.semiBold,
@@ -341,7 +341,7 @@ function makeStyles(c: ColorTokens) {
       borderColor: c.outline,
       borderRadius: radii.lg,
       padding: spacing[2],
-      backgroundColor: palette.white,
+      backgroundColor: c.surface,
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center'
@@ -354,7 +354,7 @@ function makeStyles(c: ColorTokens) {
       color: c.textPrimary
     },
     countryPlaceholder: {
-      color: palette.neutral400
+      color: c.textDisabled
     },
     countryChevron: {
       fontSize: fontSizes.lg,
@@ -365,12 +365,12 @@ function makeStyles(c: ColorTokens) {
       borderWidth: 1,
       borderColor: c.outline,
       borderRadius: radii.lg,
-      backgroundColor: palette.white,
+      backgroundColor: c.surface,
       maxHeight: 240,
       overflow: 'hidden'
     },
     searchInput: {
-      backgroundColor: palette.white,
+      backgroundColor: c.surface,
       margin: spacing[1]
     },
     searchOutline: {
@@ -385,10 +385,10 @@ function makeStyles(c: ColorTokens) {
       paddingVertical: spacing[1.5],
       paddingHorizontal: spacing[2],
       borderBottomWidth: 1,
-      borderBottomColor: palette.neutral100
+      borderBottomColor: c.outlineVariant
     },
     dropdownItemSelected: {
-      backgroundColor: palette.cyan50
+      backgroundColor: c.primaryContainer
     },
     dropdownItemText: {
       fontSize: fontSizes.xl,

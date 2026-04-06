@@ -233,7 +233,7 @@ function makeStyles(c: ColorTokens) {
   return StyleSheet.create({
     root: {
       flex: 1,
-      backgroundColor: palette.white
+      backgroundColor: c.surface
     },
     wrapper: {
       flex: 1
@@ -255,7 +255,7 @@ function makeStyles(c: ColorTokens) {
     },
     // Header
     header: {
-      backgroundColor: palette.white,
+      backgroundColor: c.surface,
       paddingHorizontal: spacing[2.5],
       paddingTop: 10,
       paddingBottom: 10,

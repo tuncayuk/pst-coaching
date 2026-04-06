@@ -270,7 +270,7 @@ function makeStyles(c: ColorTokens) {
       position: 'relative'
     },
     input: {
-      backgroundColor: palette.white
+      backgroundColor: c.surface
     },
     inputContent: {
       paddingVertical: 14
@@ -307,7 +307,7 @@ function makeStyles(c: ColorTokens) {
       fontWeight: fontWeights.semiBold
     },
     errorText: {
-      color: palette.red500,
+      color: c.error,
       fontSize: fontSizes.base,
       marginTop: spacing[1]
     },
@@ -328,7 +328,7 @@ function makeStyles(c: ColorTokens) {
       fontSize: fontSizes.lg
     },
     hintCard: {
-      backgroundColor: palette.purple50,
+      backgroundColor: c.secondaryContainer,
       padding: spacing[2],
       borderRadius: radii.lg,
       borderLeftWidth: 4,

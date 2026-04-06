@@ -198,7 +198,7 @@ function makeStyles(c: ColorTokens) {
     stepValue: {
       paddingHorizontal: spacing[2],
       paddingVertical: spacing[1],
-      backgroundColor: palette.purple50,
+      backgroundColor: c.secondaryContainer,
       borderRadius: radii.md
     },
     stepValueLabel: { fontSize: fontSizes['3xl'], fontWeight: fontWeights.extraBold, color: '#6B46C1' },

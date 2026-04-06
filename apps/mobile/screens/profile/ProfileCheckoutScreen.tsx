@@ -248,13 +248,13 @@ function makeStyles(c: ColorTokens) {
       alignSelf: 'flex-end'
     },
     errorBanner: {
-      backgroundColor: palette.red50,
+      backgroundColor: c.errorContainer,
       borderRadius: radii.md,
       padding: 10,
       marginBottom: spacing[1]
     },
     errorText: {
-      color: palette.red900
+      color: c.onErrorContainer
     },
     purchaseButton: {
       minHeight: 52,

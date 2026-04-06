@@ -296,7 +296,7 @@ function makeStyles(c: ColorTokens) {
       paddingVertical: 6,
       backgroundColor: c.background
     },
-    timeChipSelected: { borderColor: c.primary, backgroundColor: palette.cyan50 },
+    timeChipSelected: { borderColor: c.primary, backgroundColor: c.primaryContainer },
     timeChipText: { fontSize: fontSizes.md, color: c.textSecondary },
     timeChipTextSelected: { color: c.primary, fontWeight: fontWeights.bold },
     divider: { marginVertical: 8 },
@@ -310,7 +310,7 @@ function makeStyles(c: ColorTokens) {
       borderColor: c.primary,
       paddingHorizontal: spacing[1],
       paddingVertical: 2,
-      backgroundColor: palette.cyan50
+      backgroundColor: c.primaryContainer
     },
     selectedChipText: { fontSize: fontSizes.md, color: c.primary, fontWeight: fontWeights.semiBold },
     removeIcon: { margin: 0, padding: 0 },

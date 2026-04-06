@@ -256,13 +256,13 @@ function makeStyles(c: ColorTokens) {
       alignSelf: 'flex-start'
     },
     chipActive: {
-      backgroundColor: palette.emerald50
+      backgroundColor: c.tertiaryContainer
     },
     chipTrial: {
       backgroundColor: c.warningContainer
     },
     chipCancelled: {
-      backgroundColor: palette.red50
+      backgroundColor: c.errorContainer
     },
     priceLabel: {
       color: c.textTertiary
@@ -309,7 +309,7 @@ function makeStyles(c: ColorTokens) {
     },
     accessNote: {
       marginTop: spacing[1],
-      backgroundColor: palette.purple50,
+      backgroundColor: c.secondaryContainer,
       borderRadius: radii.md,
       padding: 10
     },

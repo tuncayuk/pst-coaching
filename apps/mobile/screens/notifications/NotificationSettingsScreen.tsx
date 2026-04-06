@@ -287,7 +287,7 @@ function makeStyles(c: ColorTokens) {
     },
     timeChipSelected: {
       borderColor: c.primary,
-      backgroundColor: palette.cyan50
+      backgroundColor: c.primaryContainer
     },
     timeChipText: { fontSize: fontSizes.base, color: c.textSecondary },
     timeChipTextSelected: { color: c.primary, fontWeight: fontWeights.bold }

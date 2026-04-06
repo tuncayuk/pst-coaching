@@ -313,7 +313,7 @@ function makeStyles(c: ColorTokens) {
       marginBottom: spacing[1]
     },
     input: {
-      backgroundColor: palette.white
+      backgroundColor: c.surface
     },
     inputContent: {
       paddingVertical: spacing[2]
@@ -356,19 +356,19 @@ function makeStyles(c: ColorTokens) {
       fontSize: fontSizes.lg
     },
     errorContainer: {
-      backgroundColor: palette.red50,
+      backgroundColor: c.errorContainer,
       borderRadius: radii.md,
       padding: spacing[1.5],
       marginBottom: spacing[2],
       borderLeftWidth: 3,
-      borderLeftColor: palette.red500
+      borderLeftColor: c.error
     },
     errorText: {
-      color: palette.red600,
+      color: c.error,
       fontSize: fontSizes.lg
     },
     attemptText: {
-      color: palette.red600,
+      color: c.error,
       fontSize: fontSizes.base,
       fontWeight: fontWeights.semiBold,
       marginTop: 4
@@ -383,7 +383,7 @@ function makeStyles(c: ColorTokens) {
       borderRadius: radii.sm,
       borderWidth: 2,
       borderColor: c.outline,
-      backgroundColor: palette.white,
+      backgroundColor: c.surface,
       alignItems: 'center',
       justifyContent: 'center'
     },

@@ -206,7 +206,7 @@ function makeStyles(c: ColorTokens) {
       marginBottom: spacing[1]
     },
     title: { fontWeight: fontWeights.bold, fontSize: fontSizes['2xl'], flex: 1 },
-    typeChip: { backgroundColor: palette.cyan50 },
+    typeChip: { backgroundColor: c.primaryContainer },
     description: { fontSize: fontSizes.lg, color: c.textTertiary, lineHeight: 20 },
     divider: { marginVertical: 12 },
     metaRow: {

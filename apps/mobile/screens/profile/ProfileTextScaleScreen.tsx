@@ -235,7 +235,7 @@ function makeStyles(c: ColorTokens) {
     },
     stepBtnActive: {
       borderColor: '#7C4DFF',
-      backgroundColor: palette.purple50
+      backgroundColor: c.secondaryContainer
     },
     stepLabel: {
       color: '#616161'

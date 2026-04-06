@@ -50,8 +50,8 @@ const DiscoverEbooksContent = ({ isOffline }: { isOffline?: boolean }) => {
             style={styles.chip}
             contentStyle={styles.chipContent}
             labelStyle={styles.chipLabel}
-            buttonColor={selectedSort === label ? '#2B1B5D' : '#F5F5F5'}
-            textColor={selectedSort === label ? '#FFFFFF' : '#525252'}
+            buttonColor={selectedSort === label ? c.secondary : c.surfaceVariant}
+            textColor={selectedSort === label ? c.onSecondary : c.textSecondary}
             onPress={() => setSelectedSort(label)}
           >
             {label}
@@ -70,8 +70,8 @@ const DiscoverEbooksContent = ({ isOffline }: { isOffline?: boolean }) => {
             style={styles.chip}
             contentStyle={styles.chipContent}
             labelStyle={styles.chipLabel}
-            buttonColor={selectedCategory === cat ? '#00B4D8' : 'transparent'}
-            textColor={selectedCategory === cat ? '#FFFFFF' : '#2B1B5D'}
+            buttonColor={selectedCategory === cat ? c.primary : 'transparent'}
+            textColor={selectedCategory === cat ? c.onPrimary : c.textBrand}
             onPress={() => setSelectedCategory(cat)}
           >
             {cat}
@@ -202,7 +202,7 @@ function makeStyles(c: ColorTokens) {
     headerLeft: { flexDirection: 'row', alignItems: 'center', gap: 4 },
     title: { fontSize: fontSizes['7xl'], fontWeight: fontWeights.extraBold, color: c.textBrand },
     countBadge: {
-      backgroundColor: palette.purple50,
+      backgroundColor: c.secondaryContainer,
       paddingHorizontal: 10,
       paddingVertical: 4,
       borderRadius: radii.lg

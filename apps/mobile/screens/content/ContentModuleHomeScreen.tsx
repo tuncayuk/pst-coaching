@@ -394,7 +394,7 @@ function makeStyles(c: ColorTokens) {
       padding: spacing[2],
       borderRadius: radii.xl,
       marginBottom: spacing[2],
-      backgroundColor: palette.white,
+      backgroundColor: c.surface,
       elevation: 1
     },
     progressHeader: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: spacing[1] },
@@ -414,7 +414,7 @@ function makeStyles(c: ColorTokens) {
       borderRadius: radii.lg,
       borderLeftWidth: 4,
       padding: spacing[1.5],
-      backgroundColor: palette.white
+      backgroundColor: c.surface
     },
     packageRow: { flexDirection: 'row', alignItems: 'center', gap: spacing[1.5] },
     pkgIconBg: { borderRadius: 18 },

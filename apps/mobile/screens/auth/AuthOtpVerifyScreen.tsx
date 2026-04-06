@@ -258,7 +258,7 @@ function makeStyles(c: ColorTokens) {
       height: 56,
       fontSize: fontSizes['6xl'],
       fontWeight: fontWeights.bold,
-      backgroundColor: palette.white
+      backgroundColor: c.surface
     },
     codeInputOutline: {
       borderWidth: 2,
@@ -275,14 +275,14 @@ function makeStyles(c: ColorTokens) {
       padding: spacing[1.5],
       marginBottom: spacing[2],
       borderLeftWidth: 3,
-      borderLeftColor: palette.red500
+      borderLeftColor: c.error
     },
     errorText: {
-      color: palette.red600,
+      color: c.error,
       fontSize: fontSizes.lg
     },
     attemptText: {
-      color: palette.red600,
+      color: c.error,
       fontSize: fontSizes.base,
       fontWeight: fontWeights.semiBold,
       marginTop: 4

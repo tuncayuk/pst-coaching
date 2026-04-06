@@ -345,7 +345,7 @@ function makeStyles(c: ColorTokens) {
       letterSpacing: -0.5
     },
     guestBadge: {
-      backgroundColor: palette.amber50,
+      backgroundColor: c.warningContainer,
       paddingHorizontal: 10,
       paddingVertical: 4,
       borderRadius: radii.lg,
@@ -397,7 +397,7 @@ function makeStyles(c: ColorTokens) {
     sectionLabel: {
       fontSize: fontSizes.sm,
       fontWeight: fontWeights.bold,
-      color: palette.neutral400,
+      color: c.textDisabled,
       marginBottom: spacing[1],
       textTransform: 'uppercase',
       letterSpacing: 0.8
@@ -471,7 +471,7 @@ function makeStyles(c: ColorTokens) {
       flex: 1
     },
     freeBadge: {
-      backgroundColor: palette.emerald50,
+      backgroundColor: c.tertiaryContainer,
       paddingHorizontal: 6,
       paddingVertical: 2,
       borderRadius: radii.xs
@@ -486,7 +486,7 @@ function makeStyles(c: ColorTokens) {
     journeyMetaDot: { fontSize: fontSizes.base, color: c.outline },
     journeyDailyTarget: {
       fontSize: fontSizes.sm,
-      color: palette.cyan600,
+      color: c.onPrimaryContainer,
       fontWeight: fontWeights.semiBold
     },
     ebookRow: { gap: spacing[1.5], paddingBottom: 4 },
@@ -509,7 +509,7 @@ function makeStyles(c: ColorTokens) {
     },
     ebookMeta: {
       fontSize: fontSizes.sm,
-      color: palette.neutral400,
+      color: c.textDisabled,
       paddingHorizontal: 4,
       marginBottom: 4
     },

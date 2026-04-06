@@ -85,8 +85,8 @@ const DiscoverJourneysContent = ({ isOffline }: { isOffline?: boolean }) => {
             style={styles.chip}
             contentStyle={styles.chipContent}
             labelStyle={styles.chipLabel}
-            buttonColor={selectedSort === label ? '#2B1B5D' : '#F5F5F5'}
-            textColor={selectedSort === label ? '#FFFFFF' : '#525252'}
+            buttonColor={selectedSort === label ? c.secondary : c.surfaceVariant}
+            textColor={selectedSort === label ? c.onSecondary : c.textSecondary}
             onPress={() => setSelectedSort(label)}
           >
             {label}
@@ -105,8 +105,8 @@ const DiscoverJourneysContent = ({ isOffline }: { isOffline?: boolean }) => {
             style={styles.chip}
             contentStyle={styles.chipContent}
             labelStyle={styles.chipLabel}
-            buttonColor={selectedLevel === lvl.key ? '#00B4D8' : 'transparent'}
-            textColor={selectedLevel === lvl.key ? '#FFFFFF' : '#2B1B5D'}
+            buttonColor={selectedLevel === lvl.key ? c.primary : 'transparent'}
+            textColor={selectedLevel === lvl.key ? c.onPrimary : c.textBrand}
             onPress={() => setSelectedLevel(lvl.key)}
           >
             {lvl.label}
@@ -182,7 +182,7 @@ const DiscoverJourneysContent = ({ isOffline }: { isOffline?: boolean }) => {
                     style={styles.startButton}
                     contentStyle={styles.startButtonContent}
                     labelStyle={styles.startButtonLabel}
-                    buttonColor="#2B1B5D"
+                    buttonColor={c.secondary}
                     onPress={() =>
                       navigation.navigate('Content', {
                         screen: 'ContentJourneyDetail',
@@ -274,7 +274,7 @@ function makeStyles(c: ColorTokens) {
     headerLeft: { flexDirection: 'row', alignItems: 'center', gap: 4 },
     title: { fontSize: fontSizes['7xl'], fontWeight: fontWeights.extraBold, color: c.textBrand },
     countBadge: {
-      backgroundColor: palette.cyan50,
+      backgroundColor: c.primaryContainer,
       paddingHorizontal: 10,
       paddingVertical: 4,
       borderRadius: radii.lg
@@ -282,7 +282,7 @@ function makeStyles(c: ColorTokens) {
     countBadgeText: {
       fontSize: fontSizes.base,
       fontWeight: fontWeights.bold,
-      color: palette.cyan600
+      color: c.onPrimaryContainer
     },
     chipsRow: { gap: spacing[1], paddingBottom: 4, marginBottom: spacing[1.5] },
     chip: { borderRadius: spacing[2.5], elevation: 0 },
@@ -312,14 +312,14 @@ function makeStyles(c: ColorTokens) {
     cardMetaSep: { fontSize: fontSizes.base, color: c.outline },
     cardTarget: {
       fontSize: fontSizes.sm,
-      color: palette.cyan600,
+      color: c.onPrimaryContainer,
       fontWeight: fontWeights.semiBold,
       marginBottom: 6
     },
     chipRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 4 },
     chipPrimary: {
-      backgroundColor: palette.cyan50,
-      color: palette.cyan600,
+      backgroundColor: c.primaryContainer,
+      color: c.onPrimaryContainer,
       fontSize: fontSizes.sm,
       fontWeight: fontWeights.semiBold,
       paddingHorizontal: 6,
@@ -327,7 +327,7 @@ function makeStyles(c: ColorTokens) {
       borderRadius: radii.sm
     },
     chipSuccess: {
-      backgroundColor: palette.emerald50,
+      backgroundColor: c.tertiaryContainer,
       color: c.onTertiaryContainer,
       fontSize: fontSizes.sm,
       fontWeight: fontWeights.semiBold,
@@ -336,7 +336,7 @@ function makeStyles(c: ColorTokens) {
       borderRadius: radii.sm
     },
     chipSecondary: {
-      backgroundColor: palette.purple200,
+      backgroundColor: c.secondaryContainer,
       color: c.textBrand,
       fontSize: fontSizes.sm,
       fontWeight: fontWeights.semiBold,
@@ -347,7 +347,7 @@ function makeStyles(c: ColorTokens) {
     favButton: { margin: 0, alignSelf: 'flex-start' },
     cardFooter: {
       borderTopWidth: 1,
-      borderTopColor: palette.neutral100,
+      borderTopColor: c.outlineVariant,
       paddingHorizontal: spacing[2],
       paddingVertical: 10,
       alignItems: 'flex-start'

@@ -168,7 +168,7 @@ function makeStyles(c: ColorTokens) {
       alignSelf: 'center'
     },
     infoCard: {
-      backgroundColor: palette.purple50,
+      backgroundColor: c.secondaryContainer,
       padding: spacing[2],
       borderRadius: radii.lg,
       marginBottom: spacing[3],

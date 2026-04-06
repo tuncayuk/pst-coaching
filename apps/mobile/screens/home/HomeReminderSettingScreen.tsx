@@ -240,7 +240,7 @@ function makeStyles(c: ColorTokens) {
       marginBottom: spacing[1.5]
     },
     completedChip: {
-      backgroundColor: palette.emerald50
+      backgroundColor: c.tertiaryContainer
     },
     completedNote: {
       fontSize: fontSizes.base,
@@ -250,7 +250,7 @@ function makeStyles(c: ColorTokens) {
       minHeight: 48
     },
     permissionGrantedCard: {
-      backgroundColor: palette.emerald50,
+      backgroundColor: c.tertiaryContainer,
       padding: spacing[1.5],
       borderRadius: radii.md
     },
@@ -271,7 +271,7 @@ function makeStyles(c: ColorTokens) {
       borderRadius: radii.lg,
       borderWidth: 1.5,
       borderColor: c.outline,
-      backgroundColor: palette.white,
+      backgroundColor: c.surface,
       minWidth: 72,
       alignItems: 'center',
       minHeight: 48,
@@ -279,7 +279,7 @@ function makeStyles(c: ColorTokens) {
     },
     timeChipSelected: {
       borderColor: c.primary,
-      backgroundColor: palette.cyan50
+      backgroundColor: c.primaryContainer
     },
     timeChipText: {
       fontSize: fontSizes.lg,
@@ -303,7 +303,7 @@ function makeStyles(c: ColorTokens) {
       marginBottom: spacing[1.5]
     },
     savedCard: {
-      backgroundColor: palette.emerald50,
+      backgroundColor: c.tertiaryContainer,
       borderLeftWidth: 4,
       borderLeftColor: c.tertiary,
       padding: 14

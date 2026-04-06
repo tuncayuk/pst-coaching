@@ -224,7 +224,7 @@ function makeStyles(c: ColorTokens) {
       fontWeight: fontWeights.bold
     },
     chipActive: {
-      backgroundColor: palette.emerald50
+      backgroundColor: c.tertiaryContainer
     },
     chipPassive: {
       backgroundColor: '#F3F4F6'

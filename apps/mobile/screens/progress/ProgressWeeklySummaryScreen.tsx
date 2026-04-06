@@ -253,7 +253,7 @@ function makeStyles(c: ColorTokens) {
     },
     suggestionBox: {
       padding: spacing[1.5],
-      backgroundColor: palette.purple50,
+      backgroundColor: c.secondaryContainer,
       borderRadius: radii.md,
       borderLeftWidth: 4,
       borderLeftColor: '#6B46C1'

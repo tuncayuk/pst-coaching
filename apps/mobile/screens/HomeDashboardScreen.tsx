@@ -496,7 +496,7 @@ function makeStyles(c: ColorTokens) {
       marginTop: 4
     },
     notificationButton: {
-      backgroundColor: palette.neutral100,
+      backgroundColor: c.surfaceVariant,
       minWidth: 48,
       minHeight: 48
     },
@@ -526,7 +526,7 @@ function makeStyles(c: ColorTokens) {
       minHeight: 48
     },
     searchInput: {
-      backgroundColor: palette.white
+      backgroundColor: c.surface
     },
     searchOutline: {
       borderWidth: 2,
@@ -550,13 +550,13 @@ function makeStyles(c: ColorTokens) {
       justifyContent: 'center'
     },
     statPrimary: {
-      backgroundColor: palette.cyan50
+      backgroundColor: c.primaryContainer
     },
     statSuccess: {
-      backgroundColor: palette.emerald50
+      backgroundColor: c.tertiaryContainer
     },
     statWarning: {
-      backgroundColor: palette.amber50
+      backgroundColor: c.warningContainer
     },
     statValue: {
       fontSize: fontSizes['5xl'],
@@ -620,7 +620,7 @@ function makeStyles(c: ColorTokens) {
       width: 56,
       height: 56,
       borderRadius: radii.lg,
-      backgroundColor: palette.cyan50,
+      backgroundColor: c.primaryContainer,
       alignItems: 'center',
       justifyContent: 'center'
     },
@@ -672,7 +672,7 @@ function makeStyles(c: ColorTokens) {
     },
     contentNavCard: {
       width: '47%',
-      backgroundColor: palette.white,
+      backgroundColor: c.surface,
       borderRadius: 14,
       padding: spacing[2],
       borderWidth: 1.5,
@@ -749,7 +749,7 @@ function makeStyles(c: ColorTokens) {
       color: c.textSecondary
     },
     reminderNudge: {
-      backgroundColor: palette.purple50,
+      backgroundColor: c.secondaryContainer,
       borderRadius: radii.lg,
       paddingVertical: 14,
       paddingHorizontal: spacing[2],

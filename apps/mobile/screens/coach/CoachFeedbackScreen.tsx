@@ -311,7 +311,7 @@ function makeStyles(c: ColorTokens) {
       alignItems: 'center',
       paddingVertical: spacing[1],
       paddingRight: 16,
-      backgroundColor: palette.white,
+      backgroundColor: c.surface,
       borderBottomWidth: 1,
       borderBottomColor: '#E2E8F0'
     },
@@ -332,7 +332,7 @@ function makeStyles(c: ColorTokens) {
       padding: spacing[2],
       borderRadius: radii.xl,
       marginBottom: spacing[2],
-      backgroundColor: palette.white
+      backgroundColor: c.surface
     },
     formTitle: { fontSize: fontSizes.xl, fontWeight: fontWeights.bold, color: '#1E3A5F', marginBottom: 4 },
     formHint: { fontSize: fontSizes.base, color: c.textTertiary, marginBottom: spacing[1.5], lineHeight: 18 },
@@ -356,11 +356,11 @@ function makeStyles(c: ColorTokens) {
       marginBottom: spacing[1],
       lineHeight: 20
     },
-    inputError: { borderColor: palette.red600 },
+    inputError: { borderColor: c.error },
     inputDisabled: { backgroundColor: '#F9FAFB', color: '#9CA3AF' },
     formFooter: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
     charCounter: { fontSize: fontSizes.base, color: '#9CA3AF' },
-    charCounterError: { color: palette.red600 },
+    charCounterError: { color: c.error },
     sentConfirm: {
       flexDirection: 'row',
       alignItems: 'center',
@@ -384,7 +384,7 @@ function makeStyles(c: ColorTokens) {
     historyCard: {
       padding: spacing[2],
       borderRadius: radii.xl,
-      backgroundColor: palette.white
+      backgroundColor: c.surface
     },
     historyTitle: { fontSize: fontSizes.xl, fontWeight: fontWeights.bold, color: '#1E3A5F', marginBottom: 14 },
     historyEmpty: { alignItems: 'center', paddingVertical: spacing[3] },

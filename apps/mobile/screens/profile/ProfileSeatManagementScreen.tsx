@@ -288,10 +288,10 @@ function makeStyles(c: ColorTokens) {
       color: '#1F2937'
     },
     chipFull: {
-      backgroundColor: palette.red50
+      backgroundColor: c.errorContainer
     },
     chipOk: {
-      backgroundColor: palette.emerald50
+      backgroundColor: c.tertiaryContainer
     },
     gaugeBar: {
       height: 8,
@@ -305,7 +305,7 @@ function makeStyles(c: ColorTokens) {
       color: c.textTertiary
     },
     upsellCard: {
-      backgroundColor: palette.purple50,
+      backgroundColor: c.secondaryContainer,
       borderRadius: radii.md,
       padding: 14
     },
@@ -343,7 +343,7 @@ function makeStyles(c: ColorTokens) {
       marginTop: 2
     },
     chipActive: {
-      backgroundColor: palette.emerald50
+      backgroundColor: c.tertiaryContainer
     },
     chipEmpty: {
       backgroundColor: '#F3F4F6'

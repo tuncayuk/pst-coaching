@@ -189,7 +189,7 @@ function makeStyles(c: ColorTokens) {
       color: '#1F2937',
       backgroundColor: c.background
     },
-    jumpError: { fontSize: fontSizes.base, color: palette.red600, marginTop: 6 },
+    jumpError: { fontSize: fontSizes.base, color: c.error, marginTop: 6 },
     chapRow: {
       flexDirection: 'row',
       alignItems: 'center',
@@ -197,7 +197,7 @@ function makeStyles(c: ColorTokens) {
       paddingVertical: 10,
       paddingHorizontal: 4
     },
-    chapRowActive: { backgroundColor: palette.purple50, borderRadius: radii.md },
+    chapRowActive: { backgroundColor: c.secondaryContainer, borderRadius: radii.md },
     chapMeta: { flex: 1, marginRight: 8 },
     chapTitle: { fontSize: fontSizes.lg, fontWeight: fontWeights.semiBold, color: '#1F2937' },
     chapTitleActive: { color: '#6B46C1' },

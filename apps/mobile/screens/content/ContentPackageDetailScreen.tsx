@@ -470,7 +470,7 @@ function makeStyles(c: ColorTokens) {
     infoIcon: { backgroundColor: '#DBEAFE' },
     lockReasonTitle: { fontSize: fontSizes.lg, fontWeight: fontWeights.bold, color: '#1E40AF' },
     lockReasonText: { fontSize: fontSizes.md, color: '#1E3A5F', lineHeight: 20, marginBottom: spacing[1.5] },
-    prereqBox: { backgroundColor: palette.white, borderRadius: radii.md, padding: 10 },
+    prereqBox: { backgroundColor: c.surface, borderRadius: radii.md, padding: 10 },
     prereqLabel: { fontSize: fontSizes.sm, color: c.textTertiary, marginBottom: 6 },
     prereqRow: { flexDirection: 'row', alignItems: 'center', gap: spacing[1] },
     prereqIcon: { backgroundColor: '#E0F2FE' },
@@ -515,7 +515,7 @@ function makeStyles(c: ColorTokens) {
       borderLeftColor: '#7C4DFF'
     },
     objectivesHeader: { flexDirection: 'row', alignItems: 'center', gap: spacing[1], marginBottom: spacing[1] },
-    targetIcon: { backgroundColor: palette.purple50 },
+    targetIcon: { backgroundColor: c.secondaryContainer },
     objectivesTitle: { fontSize: fontSizes.lg, fontWeight: fontWeights.bold, color: '#4C1D95' },
     objRow: { flexDirection: 'row', alignItems: 'flex-start', gap: 6, marginBottom: 4 },
     objBullet: { fontSize: fontSizes['2xl'], color: '#7C4DFF', lineHeight: 20, marginTop: 1 },
@@ -524,7 +524,7 @@ function makeStyles(c: ColorTokens) {
       padding: 14,
       borderRadius: radii.lg,
       marginBottom: spacing[2],
-      backgroundColor: palette.white
+      backgroundColor: c.surface
     },
     sectionsTitle: {
       fontSize: fontSizes.lg,

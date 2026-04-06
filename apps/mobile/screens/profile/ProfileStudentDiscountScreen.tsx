@@ -269,7 +269,7 @@ export const ProfileStudentDiscountScreen = ({ route }: { route?: { params?: { s
 function makeStyles(c: ColorTokens) {
   return StyleSheet.create({
     expiryBanner: {
-      backgroundColor: palette.red50,
+      backgroundColor: c.errorContainer,
       borderRadius: radii.md,
       padding: spacing[1.5],
       marginBottom: spacing[1],
@@ -278,7 +278,7 @@ function makeStyles(c: ColorTokens) {
       justifyContent: 'space-between'
     },
     expiryText: {
-      color: palette.red900,
+      color: c.onErrorContainer,
       flex: 1,
       lineHeight: 18
     },

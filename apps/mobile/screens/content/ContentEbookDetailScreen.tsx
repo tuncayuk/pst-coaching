@@ -143,7 +143,7 @@ const ContentEbookDetailContent = ({ ebookId, isOffline }: { ebookId?: string; i
         ) : downloadDone ? (
           <View style={styles.downloadedRow}>
             <PText style={styles.downloadedText}>Kitap indirildi. Cevrimdisiyken okuyabilirsin.</PText>
-            <PButton mode="text" compact textColor="#DC2626">
+            <PButton mode="text" compact textColor={c.error}>
               Sil
             </PButton>
           </View>
@@ -319,7 +319,7 @@ function makeStyles(c: ColorTokens) {
       marginBottom: spacing[1.5]
     },
     tagRow: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing[1], justifyContent: 'center' },
-    tagChip: { backgroundColor: palette.cyan50 },
+    tagChip: { backgroundColor: c.primaryContainer },
     audioChip: { backgroundColor: c.warningContainer },
     downloadedChip: { backgroundColor: '#DCFCE7' },
     progressHeader: {

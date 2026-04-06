@@ -225,7 +225,7 @@ function makeStyles(c: ColorTokens) {
       fontWeight: fontWeights.bold
     },
     lockedChip: {
-      backgroundColor: palette.red50
+      backgroundColor: c.errorContainer
     },
     cardTitle: {
       fontSize: fontSizes.lg,

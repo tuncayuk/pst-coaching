@@ -208,7 +208,7 @@ function makeStyles(c: ColorTokens) {
       marginBottom: spacing[2]
     },
     tagPrimary: {
-      backgroundColor: palette.cyan50,
+      backgroundColor: c.primaryContainer,
       color: '#0096B8',
       paddingHorizontal: 10,
       paddingVertical: 6,
@@ -217,7 +217,7 @@ function makeStyles(c: ColorTokens) {
       fontWeight: fontWeights.semiBold
     },
     tagSuccess: {
-      backgroundColor: palette.emerald50,
+      backgroundColor: c.tertiaryContainer,
       color: '#065F46',
       paddingHorizontal: 10,
       paddingVertical: 6,
@@ -226,7 +226,7 @@ function makeStyles(c: ColorTokens) {
       fontWeight: fontWeights.semiBold
     },
     tagSecondary: {
-      backgroundColor: palette.purple50,
+      backgroundColor: c.secondaryContainer,
       color: c.textBrand,
       paddingHorizontal: 10,
       paddingVertical: 6,

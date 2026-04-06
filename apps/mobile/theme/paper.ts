@@ -47,7 +47,18 @@ function buildPaperColors(tokens: ColorTokens, base: typeof DefaultTheme.colors)
 
     // Borders
     outline: tokens.outline,
-    outlineVariant: tokens.outlineVariant
+    outlineVariant: tokens.outlineVariant,
+
+    // Elevation surface tints (for md3 dark mode surface overlay)
+    elevation: {
+      ...base.elevation,
+      level0: tokens.background,
+      level1: tokens.surface,
+      level2: tokens.surfaceVariant,
+      level3: tokens.surfaceElevated,
+      level4: tokens.surfaceElevated,
+      level5: tokens.surfaceElevated
+    }
   };
 }
 

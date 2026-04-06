@@ -313,7 +313,7 @@ function makeStyles(c: ColorTokens) {
     contentRow: { flexDirection: 'row', alignItems: 'flex-start', gap: spacing[1.5], paddingVertical: spacing[1] },
     contentIcon: { backgroundColor: '#F5F3FF', borderRadius: 18 },
     contentIconBlue: { backgroundColor: '#E0F2FE', borderRadius: 18 },
-    contentIconGreen: { backgroundColor: palette.emerald50, borderRadius: 18 },
+    contentIconGreen: { backgroundColor: c.tertiaryContainer, borderRadius: 18 },
     contentInfo: { flex: 1 },
     contentTitle: { fontSize: fontSizes.lg, fontWeight: fontWeights.semiBold, color: '#1E293B', marginBottom: 6 },
     pctRow: { flexDirection: 'row', alignItems: 'center', gap: spacing[1] },

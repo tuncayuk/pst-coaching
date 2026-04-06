@@ -340,7 +340,7 @@ function makeStyles(c: ColorTokens) {
     rootSafe: { flex: 1, backgroundColor: '#F8FAFC' },
     wrapper: { flex: 1, backgroundColor: '#F8FAFC' },
     header: {
-      backgroundColor: palette.white,
+      backgroundColor: c.surface,
       borderBottomWidth: 1,
       borderBottomColor: '#E2E8F0',
       paddingHorizontal: 4,
@@ -362,14 +362,14 @@ function makeStyles(c: ColorTokens) {
       borderLeftColor: '#7C4DFF'
     },
     instructionHeader: { flexDirection: 'row', alignItems: 'center', gap: spacing[1], marginBottom: 6 },
-    lightbulb: { backgroundColor: palette.purple50 },
+    lightbulb: { backgroundColor: c.secondaryContainer },
     instructionTitle: { fontSize: fontSizes.md, fontWeight: fontWeights.bold, color: '#4C1D95' },
     instructionText: { fontSize: fontSizes.md, color: '#4C1D95', lineHeight: 20 },
     stepList: { gap: 10 },
     stepCard: {
       borderRadius: radii.lg,
       padding: 14,
-      backgroundColor: palette.white,
+      backgroundColor: c.surface,
       borderWidth: 1,
       borderColor: '#E2E8F0'
     },
@@ -434,7 +434,7 @@ function makeStyles(c: ColorTokens) {
       borderColor: '#86EFAC',
       borderWidth: 1.5
     },
-    completionIcon: { backgroundColor: palette.emerald50, marginBottom: spacing[1.5] },
+    completionIcon: { backgroundColor: c.tertiaryContainer, marginBottom: spacing[1.5] },
     completionTitle: {
       fontSize: fontSizes['4xl'],
       fontWeight: fontWeights.extraBold,

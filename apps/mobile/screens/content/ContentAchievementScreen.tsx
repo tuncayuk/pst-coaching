@@ -317,7 +317,7 @@ function makeStyles(c: ColorTokens) {
       flexDirection: 'row',
       alignItems: 'center',
       gap: 4,
-      backgroundColor: palette.purple50,
+      backgroundColor: c.secondaryContainer,
       borderRadius: radii.md,
       paddingHorizontal: 10,
       paddingVertical: 4
@@ -356,7 +356,7 @@ function makeStyles(c: ColorTokens) {
       gap: spacing[1],
       marginBottom: spacing[1]
     },
-    nextIcon: { backgroundColor: palette.purple50 },
+    nextIcon: { backgroundColor: c.secondaryContainer },
     nextTitle: { fontSize: fontSizes.base, fontWeight: fontWeights.bold, color: '#6D28D9' },
     nextModuleName: {
       fontSize: fontSizes.xl,

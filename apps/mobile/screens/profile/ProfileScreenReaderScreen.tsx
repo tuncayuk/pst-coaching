@@ -317,7 +317,7 @@ function makeStyles(c: ColorTokens) {
       gap: spacing[1.5]
     },
     tipIcon: {
-      backgroundColor: palette.purple50
+      backgroundColor: c.secondaryContainer
     },
     tipBody: { flex: 1 },
     tipTitle: { fontWeight: fontWeights.semiBold, marginBottom: 4 },

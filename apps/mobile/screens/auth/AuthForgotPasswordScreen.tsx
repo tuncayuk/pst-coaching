@@ -188,7 +188,7 @@ function makeStyles(c: ColorTokens) {
       marginBottom: spacing[1]
     },
     input: {
-      backgroundColor: palette.white
+      backgroundColor: c.surface
     },
     inputContent: {
       paddingVertical: spacing[2]

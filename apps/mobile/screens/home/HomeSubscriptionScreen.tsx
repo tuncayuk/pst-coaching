@@ -225,7 +225,7 @@ function makeStyles(c: ColorTokens) {
       marginRight: 8
     },
     addonActiveChip: {
-      backgroundColor: palette.emerald50
+      backgroundColor: c.tertiaryContainer
     },
     addonInactiveChip: {
       backgroundColor: c.surfaceVariant

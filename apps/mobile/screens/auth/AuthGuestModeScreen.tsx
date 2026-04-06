@@ -158,7 +158,7 @@ function makeStyles(c: ColorTokens) {
       fontSize: fontSizes.xl
     },
     infoCard: {
-      backgroundColor: palette.emerald50,
+      backgroundColor: c.tertiaryContainer,
       padding: spacing[2],
       borderRadius: radii.lg,
       marginBottom: spacing[2],

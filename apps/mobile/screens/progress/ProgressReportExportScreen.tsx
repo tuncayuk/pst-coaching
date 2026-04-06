@@ -249,7 +249,7 @@ function makeStyles(c: ColorTokens) {
       color: '#1F2937',
       lineHeight: 18,
       padding: 10,
-      backgroundColor: palette.purple50,
+      backgroundColor: c.secondaryContainer,
       borderRadius: radii.md,
       borderLeftWidth: 4,
       borderLeftColor: '#6B46C1'

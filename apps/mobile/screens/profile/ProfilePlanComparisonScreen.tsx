@@ -213,7 +213,7 @@ function makeStyles(c: ColorTokens) {
       borderRadius: radii.lg,
       padding: spacing[2],
       marginBottom: spacing[1.5],
-      backgroundColor: palette.white
+      backgroundColor: c.surface
     },
     planCardSelected: {
       borderColor: '#7C3AED',
@@ -238,7 +238,7 @@ function makeStyles(c: ColorTokens) {
       gap: 4
     },
     currentChip: {
-      backgroundColor: palette.purple50
+      backgroundColor: c.secondaryContainer
     },
     checkBadge: {
       backgroundColor: '#7C3AED',

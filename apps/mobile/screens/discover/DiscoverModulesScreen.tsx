@@ -54,8 +54,8 @@ const DiscoverModulesContent = ({ isOffline }: { isOffline?: boolean }) => {
             style={styles.chip}
             contentStyle={styles.chipContent}
             labelStyle={styles.chipLabel}
-            buttonColor={selectedSort === label ? '#2B1B5D' : '#F5F5F5'}
-            textColor={selectedSort === label ? '#FFFFFF' : '#525252'}
+            buttonColor={selectedSort === label ? c.secondary : c.surfaceVariant}
+            textColor={selectedSort === label ? c.onSecondary : c.textSecondary}
             onPress={() => setSelectedSort(label)}
           >
             {label}
@@ -74,8 +74,8 @@ const DiscoverModulesContent = ({ isOffline }: { isOffline?: boolean }) => {
             style={styles.chip}
             contentStyle={styles.chipContent}
             labelStyle={styles.chipLabel}
-            buttonColor={selectedTopic === topic.key ? '#00B4D8' : 'transparent'}
-            textColor={selectedTopic === topic.key ? '#FFFFFF' : '#2B1B5D'}
+            buttonColor={selectedTopic === topic.key ? c.primary : 'transparent'}
+            textColor={selectedTopic === topic.key ? c.onPrimary : c.textBrand}
             onPress={() => setSelectedTopic(topic.key)}
           >
             {topic.label}
@@ -154,7 +154,7 @@ const DiscoverModulesContent = ({ isOffline }: { isOffline?: boolean }) => {
                     style={styles.startButton}
                     contentStyle={styles.startButtonContent}
                     labelStyle={styles.startButtonLabel}
-                    buttonColor="#2B1B5D"
+                    buttonColor={c.secondary}
                     onPress={() =>
                       navigation.navigate('Content', {
                         screen: 'ContentModuleHome',
@@ -256,7 +256,7 @@ function makeStyles(c: ColorTokens) {
     cardDescription: { fontSize: fontSizes.base, color: c.textTertiary, marginBottom: 6, lineHeight: 16 },
     pkgCountRow: { flexDirection: 'row' },
     pkgCountChip: {
-      backgroundColor: palette.cyan50,
+      backgroundColor: c.primaryContainer,
       color: '#00758C',
       fontSize: fontSizes.sm,
       fontWeight: fontWeights.bold,

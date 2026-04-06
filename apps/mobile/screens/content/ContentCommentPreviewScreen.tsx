@@ -204,7 +204,7 @@ function makeStyles(c: ColorTokens) {
     },
     deadlineText: {
       fontSize: fontSizes.base,
-      color: palette.red600,
+      color: c.error,
       fontWeight: fontWeights.semiBold,
       marginTop: spacing[1],
       textAlign: 'center'

@@ -329,7 +329,7 @@ function makeStyles(c: ColorTokens) {
       marginBottom: spacing[1]
     },
     input: {
-      backgroundColor: palette.white
+      backgroundColor: c.surface
     },
     inputContent: {
       paddingVertical: 14
@@ -354,7 +354,7 @@ function makeStyles(c: ColorTokens) {
       borderRadius: radii.lg,
       paddingVertical: 14,
       paddingHorizontal: spacing[1.5],
-      backgroundColor: palette.white
+      backgroundColor: c.surface
     },
     countryCodeText: {
       fontSize: fontSizes.lg,
@@ -397,7 +397,7 @@ function makeStyles(c: ColorTokens) {
       fontWeight: fontWeights.semiBold
     },
     errorText: {
-      color: palette.red500,
+      color: c.error,
       fontSize: fontSizes.base,
       marginTop: spacing[1]
     },
@@ -423,7 +423,7 @@ function makeStyles(c: ColorTokens) {
       borderRadius: radii.sm,
       borderWidth: 2,
       borderColor: c.outline,
-      backgroundColor: palette.white,
+      backgroundColor: c.surface,
       alignItems: 'center',
       justifyContent: 'center',
       marginTop: 2

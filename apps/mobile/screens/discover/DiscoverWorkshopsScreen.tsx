@@ -72,8 +72,8 @@ const DiscoverWorkshopsContent = ({ isOffline }: { isOffline?: boolean }) => {
             style={styles.chip}
             contentStyle={styles.chipContent}
             labelStyle={styles.chipLabel}
-            buttonColor={selectedSort === label ? '#2B1B5D' : '#F5F5F5'}
-            textColor={selectedSort === label ? '#FFFFFF' : '#525252'}
+            buttonColor={selectedSort === label ? c.secondary : c.surfaceVariant}
+            textColor={selectedSort === label ? c.onSecondary : c.textSecondary}
             onPress={() => setSelectedSort(label)}
           >
             {label}
@@ -92,8 +92,8 @@ const DiscoverWorkshopsContent = ({ isOffline }: { isOffline?: boolean }) => {
             style={styles.chip}
             contentStyle={styles.chipContent}
             labelStyle={styles.chipLabel}
-            buttonColor={selectedType === opt.key ? '#00B4D8' : 'transparent'}
-            textColor={selectedType === opt.key ? '#FFFFFF' : '#2B1B5D'}
+            buttonColor={selectedType === opt.key ? c.primary : 'transparent'}
+            textColor={selectedType === opt.key ? c.onPrimary : c.textBrand}
             onPress={() => setSelectedType(opt.key)}
           >
             {opt.label}

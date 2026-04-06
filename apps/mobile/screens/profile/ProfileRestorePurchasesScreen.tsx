@@ -184,7 +184,7 @@ function makeStyles(c: ColorTokens) {
       marginTop: 2
     },
     chipVerified: {
-      backgroundColor: palette.emerald50
+      backgroundColor: c.tertiaryContainer
     },
     emptyText: {
       color: c.textTertiary,

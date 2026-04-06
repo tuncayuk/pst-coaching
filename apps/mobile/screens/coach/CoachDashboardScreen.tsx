@@ -347,7 +347,7 @@ function makeStyles(c: ColorTokens) {
     statItem: { alignItems: 'center', flex: 1 },
     statBorder: { borderLeftWidth: 1, borderRightWidth: 1, borderColor: '#E5E7EB' },
     statValue: { fontSize: fontSizes['5xl'], fontWeight: fontWeights.extraBold, color: '#1E3A5F' },
-    statValueRed: { color: palette.red600 },
+    statValueRed: { color: c.error },
     statValueAmber: { color: '#D97706' },
     statValueGreen: { color: c.success },
     statLabel: { fontSize: fontSizes.sm, color: c.textTertiary, marginTop: 2 },
@@ -363,7 +363,7 @@ function makeStyles(c: ColorTokens) {
       borderRadius: radii.lg,
       borderLeftWidth: 4,
       padding: 14,
-      backgroundColor: palette.white,
+      backgroundColor: c.surface,
       marginBottom: 2
     },
     clientTop: {

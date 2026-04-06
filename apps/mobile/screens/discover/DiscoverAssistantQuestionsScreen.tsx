@@ -79,7 +79,7 @@ const DiscoverAssistantQuestionsContent = ({ isOffline }: { isOffline?: boolean 
               disabled={isOffline}
               onPress={() => setDuration(option.value)}
               style={styles.durationButton}
-              buttonColor={duration === option.value ? '#2B1B5D' : 'transparent'}
+              buttonColor={duration === option.value ? c.secondary : 'transparent'}
             >
               {option.label}
             </PButton>
@@ -101,7 +101,7 @@ const DiscoverAssistantQuestionsContent = ({ isOffline }: { isOffline?: boolean 
                 onPress={() => setPreference(option.value)}
                 style={styles.prefButton}
                 contentStyle={styles.prefButtonContent}
-                buttonColor={isActive ? '#2B1B5D' : 'transparent'}
+                buttonColor={isActive ? c.secondary : 'transparent'}
               >
                 {option.emoji} {option.label}
               </PButton>
@@ -113,7 +113,7 @@ const DiscoverAssistantQuestionsContent = ({ isOffline }: { isOffline?: boolean 
       <PButton
         mode="contained"
         style={styles.primaryButton}
-        buttonColor="#2B1B5D"
+        buttonColor={c.secondary}
         disabled={isOffline}
         onPress={() => navigation.navigate('DiscoverAssistantResults')}
       >
@@ -207,8 +207,8 @@ function makeStyles(c: ColorTokens) {
       marginBottom: spacing[1.5]
     },
     radioItem: { borderWidth: 2, borderRadius: radii.lg, marginBottom: spacing[1] },
-    radioItemActive: { borderColor: c.textBrand, backgroundColor: palette.purple50 },
-    radioItemIdle: { borderColor: c.outlineVariant, backgroundColor: palette.white },
+    radioItemActive: { borderColor: c.textBrand, backgroundColor: c.secondaryContainer },
+    radioItemIdle: { borderColor: c.outlineVariant, backgroundColor: c.surface },
     durationGrid: { flexDirection: 'row', gap: spacing[1] },
     durationButton: { flex: 1 },
     prefGrid: { gap: spacing[1] },
