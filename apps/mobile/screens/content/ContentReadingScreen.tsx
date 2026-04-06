@@ -1,11 +1,11 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useCallback, useMemo, useState } from 'react';
 import { NativeScrollEvent, NativeSyntheticEvent, ScrollView, StyleSheet, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { PActivityIndicator, PButton, PCard, PIconButton, PText } from '../../components';
 import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
+import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
 import { SkeletonBlock } from '../components/SkeletonBlock';
 import { StateMessage } from '../components/StateMessage';
@@ -171,70 +171,61 @@ export const ContentReadingScreen = ({ route }: { route?: { params?: RouteParams
 
   if (state === 'loading') {
     return (
-      <SafeAreaView style={styles.root}>
-        <ScrollView contentContainerStyle={styles.page}>
-          <PActivityIndicator animating />
-          <SkeletonBlock height={20} />
-          <SkeletonBlock height={20} />
-          <SkeletonBlock height={120} />
-        </ScrollView>
-      </SafeAreaView>
+      <ScreenLayout title="Okuma" headerVariant="none">
+        <PActivityIndicator animating />
+        <SkeletonBlock height={20} />
+        <SkeletonBlock height={20} />
+        <SkeletonBlock height={120} />
+      </ScreenLayout>
     );
   }
 
   if (state === 'empty') {
     return (
-      <SafeAreaView style={styles.root}>
-        <ScrollView contentContainerStyle={styles.page}>
-          <StateMessage
-            title="Bolum bulunamadi"
-            description="Okuma icerigi su anda erisilebilir degil."
-            actionLabel="Geri Don"
-            icon="book-open-page-variant"
-          />
-        </ScrollView>
-      </SafeAreaView>
+      <ScreenLayout title="Okuma" headerVariant="none">
+        <StateMessage
+          title="Bolum bulunamadi"
+          description="Okuma icerigi su anda erisilebilir degil."
+          actionLabel="Geri Don"
+          icon="book-open-page-variant"
+        />
+      </ScreenLayout>
     );
   }
 
   if (state === 'error') {
     return (
-      <SafeAreaView style={styles.root}>
-        <ScrollView contentContainerStyle={styles.page}>
-          <StateMessage
-            title="Okuma yuklenemedi"
-            description="Baglantini kontrol edip tekrar dene."
-            actionLabel="Tekrar Dene"
-            icon="alert-circle-outline"
-            tone="error"
-          />
-        </ScrollView>
-      </SafeAreaView>
+      <ScreenLayout title="Okuma" headerVariant="none">
+        <StateMessage
+          title="Okuma yuklenemedi"
+          description="Baglantini kontrol edip tekrar dene."
+          actionLabel="Tekrar Dene"
+          icon="alert-circle-outline"
+          tone="error"
+        />
+      </ScreenLayout>
     );
   }
 
   if (state === 'offline') {
     return (
-      <SafeAreaView style={styles.root}>
+      <ScreenLayout title="Okuma" headerVariant="none" scrollEnabled={false} contentStyle={styles.fullContent}>
         <OfflineNotice />
         <ContentReadingContent isOffline id={id} />
-      </SafeAreaView>
+      </ScreenLayout>
     );
   }
 
   return (
-    <SafeAreaView style={styles.root}>
+    <ScreenLayout title="Okuma" headerVariant="none" scrollEnabled={false} contentStyle={styles.fullContent}>
       <ContentReadingContent id={id} />
-    </SafeAreaView>
+    </ScreenLayout>
   );
 };
 
 function makeStyles(c: ColorTokens) {
   return StyleSheet.create({
-    root: {
-      flex: 1,
-      backgroundColor: c.surface
-    },
+    fullContent: { flex: 1, padding: 0, paddingBottom: 0 },
     wrapper: {
       flex: 1
     },

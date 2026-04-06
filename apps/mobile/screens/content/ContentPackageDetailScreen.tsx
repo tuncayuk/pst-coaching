@@ -1,7 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useMemo } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { StyleSheet, View } from 'react-native';
 
 import {
   PActivityIndicator,
@@ -23,6 +22,7 @@ import {
 } from '../../data/mockSelectors';
 import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
+import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
 import { SkeletonBlock } from '../components/SkeletonBlock';
 import { StateMessage } from '../components/StateMessage';
@@ -365,72 +365,61 @@ export const ContentPackageDetailScreen = ({ route }: { route?: { params?: Route
 
   if (state === 'loading') {
     return (
-      <SafeAreaView style={styles.root}>
-        <ScrollView contentContainerStyle={styles.page}>
-          <PActivityIndicator animating accessibilityLabel="Paket yukleniyor" />
-          <SkeletonBlock height={64} />
-          <SkeletonBlock height={120} />
-          <SkeletonBlock height={80} />
-        </ScrollView>
-      </SafeAreaView>
+      <ScreenLayout title="Paket" headerVariant="none" contentStyle={styles.pageContent}>
+        <PActivityIndicator animating accessibilityLabel="Paket yukleniyor" />
+        <SkeletonBlock height={64} />
+        <SkeletonBlock height={120} />
+        <SkeletonBlock height={80} />
+      </ScreenLayout>
     );
   }
 
   if (state === 'empty') {
     return (
-      <SafeAreaView style={styles.root}>
-        <ScrollView contentContainerStyle={styles.page}>
-          <StateMessage
-            title="Paket bulunamadi"
-            description="Bu paket su anda erisebilir degil."
-            actionLabel="Module Don"
-            icon="package-variant"
-          />
-        </ScrollView>
-      </SafeAreaView>
+      <ScreenLayout title="Paket" headerVariant="none" contentStyle={styles.pageContent}>
+        <StateMessage
+          title="Paket bulunamadi"
+          description="Bu paket su anda erisebilir degil."
+          actionLabel="Module Don"
+          icon="package-variant"
+        />
+      </ScreenLayout>
     );
   }
 
   if (state === 'error') {
     return (
-      <SafeAreaView style={styles.root}>
-        <ScrollView contentContainerStyle={styles.page}>
-          <StateMessage
-            title="Paket yuklenemedi"
-            description="Baglantini kontrol edip tekrar dene."
-            actionLabel="Tekrar Dene"
-            icon="alert-circle-outline"
-            tone="error"
-          />
-        </ScrollView>
-      </SafeAreaView>
+      <ScreenLayout title="Paket" headerVariant="none" contentStyle={styles.pageContent}>
+        <StateMessage
+          title="Paket yuklenemedi"
+          description="Baglantini kontrol edip tekrar dene."
+          actionLabel="Tekrar Dene"
+          icon="alert-circle-outline"
+          tone="error"
+        />
+      </ScreenLayout>
     );
   }
 
   if (state === 'offline') {
     return (
-      <SafeAreaView style={styles.root}>
+      <ScreenLayout title="Paket" headerVariant="none" contentStyle={styles.pageContent}>
         <OfflineNotice />
-        <ScrollView contentContainerStyle={styles.page}>
-          <ContentPackageDetailContent packageId={packageId} isOffline />
-        </ScrollView>
-      </SafeAreaView>
+        <ContentPackageDetailContent packageId={packageId} isOffline />
+      </ScreenLayout>
     );
   }
 
   return (
-    <SafeAreaView style={styles.root}>
-      <ScrollView contentContainerStyle={styles.page}>
-        <ContentPackageDetailContent packageId={packageId} />
-      </ScrollView>
-    </SafeAreaView>
+    <ScreenLayout title="Paket" headerVariant="none" contentStyle={styles.pageContent}>
+      <ContentPackageDetailContent packageId={packageId} />
+    </ScreenLayout>
   );
 };
 
 function makeStyles(c: ColorTokens) {
   return StyleSheet.create({
-    root: { flex: 1, backgroundColor: '#F8FAFC' },
-    page: { paddingBottom: 40 },
+    pageContent: { paddingBottom: 40 },
     hero: {
       height: 140,
       backgroundColor: '#1E3A5F',
@@ -466,10 +455,20 @@ function makeStyles(c: ColorTokens) {
       borderLeftWidth: 4,
       borderLeftColor: '#1D4ED8'
     },
-    lockReasonHeader: { flexDirection: 'row', alignItems: 'center', gap: spacing[1], marginBottom: spacing[1] },
+    lockReasonHeader: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: spacing[1],
+      marginBottom: spacing[1]
+    },
     infoIcon: { backgroundColor: '#DBEAFE' },
     lockReasonTitle: { fontSize: fontSizes.lg, fontWeight: fontWeights.bold, color: '#1E40AF' },
-    lockReasonText: { fontSize: fontSizes.md, color: '#1E3A5F', lineHeight: 20, marginBottom: spacing[1.5] },
+    lockReasonText: {
+      fontSize: fontSizes.md,
+      color: '#1E3A5F',
+      lineHeight: 20,
+      marginBottom: spacing[1.5]
+    },
     prereqBox: { backgroundColor: c.surface, borderRadius: radii.md, padding: 10 },
     prereqLabel: { fontSize: fontSizes.sm, color: c.textTertiary, marginBottom: 6 },
     prereqRow: { flexDirection: 'row', alignItems: 'center', gap: spacing[1] },
@@ -483,13 +482,22 @@ function makeStyles(c: ColorTokens) {
       borderLeftWidth: 4,
       borderLeftColor: '#F59E0B'
     },
-    countdownHeader: { flexDirection: 'row', alignItems: 'center', gap: spacing[1], marginBottom: spacing[1] },
+    countdownHeader: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: spacing[1],
+      marginBottom: spacing[1]
+    },
     clockIcon: { backgroundColor: c.warningContainer },
     countdownTitle: { fontSize: fontSizes.lg, fontWeight: fontWeights.bold, color: '#92400E' },
     countdownText: { fontSize: fontSizes.md, color: '#78350F', lineHeight: 20, marginBottom: 10 },
     countdownRow: { flexDirection: 'row', alignItems: 'center', gap: spacing[1] },
     countdownLabel: { fontSize: fontSizes.md, color: '#92400E' },
-    countdownValue: { fontSize: fontSizes['3xl'], fontWeight: fontWeights.extraBold, color: '#D97706' },
+    countdownValue: {
+      fontSize: fontSizes['3xl'],
+      fontWeight: fontWeights.extraBold,
+      color: '#D97706'
+    },
     goToPrereqBtn: { marginBottom: 10 },
     // active/detail styles
     packageTitle: {
@@ -514,7 +522,12 @@ function makeStyles(c: ColorTokens) {
       borderLeftWidth: 3,
       borderLeftColor: '#7C4DFF'
     },
-    objectivesHeader: { flexDirection: 'row', alignItems: 'center', gap: spacing[1], marginBottom: spacing[1] },
+    objectivesHeader: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: spacing[1],
+      marginBottom: spacing[1]
+    },
     targetIcon: { backgroundColor: c.secondaryContainer },
     objectivesTitle: { fontSize: fontSizes.lg, fontWeight: fontWeights.bold, color: '#4C1D95' },
     objRow: { flexDirection: 'row', alignItems: 'flex-start', gap: 6, marginBottom: 4 },

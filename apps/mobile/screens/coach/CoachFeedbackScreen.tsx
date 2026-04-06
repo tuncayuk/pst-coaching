@@ -1,12 +1,12 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { ScrollView, StyleSheet, TextInput, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { PActivityIndicator, PAvatar, PButton, PCard, PDivider, PIconButton, PText } from '../../components';
 import { getCommentsForClient, getUsers } from '../../data/mockSelectors';
 import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
+import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
 import { SkeletonBlock } from '../components/SkeletonBlock';
 import { StateMessage } from '../components/StateMessage';
@@ -253,29 +253,29 @@ export const CoachFeedbackScreen = ({ route }: { route?: { params?: RouteParams 
 
   if (state === 'loading') {
     return (
-      <SafeAreaView style={styles.root}>
+      <ScreenLayout title="Geri Bildirim" headerVariant="none">
         <PActivityIndicator animating accessibilityLabel="Geri bildirim yukleniyor" />
         <SkeletonBlock height={200} />
         <SkeletonBlock height={120} />
-      </SafeAreaView>
+      </ScreenLayout>
     );
   }
 
   if (state === 'empty' || !clientId) {
     return (
-      <SafeAreaView style={styles.root}>
+      <ScreenLayout title="Geri Bildirim" headerVariant="none">
         <StateMessage
           title="Danisan bulunamadi"
           description="Geri bildirim yazilacak danisan belirlenemedi."
           icon="account-outline"
         />
-      </SafeAreaView>
+      </ScreenLayout>
     );
   }
 
   if (state === 'error') {
     return (
-      <SafeAreaView style={styles.root}>
+      <ScreenLayout title="Geri Bildirim" headerVariant="none">
         <StateMessage
           title="Veriler yuklenemedi"
           description="Baglantini kontrol edip tekrar dene."
@@ -283,28 +283,28 @@ export const CoachFeedbackScreen = ({ route }: { route?: { params?: RouteParams 
           icon="alert-circle-outline"
           tone="error"
         />
-      </SafeAreaView>
+      </ScreenLayout>
     );
   }
 
   if (state === 'offline') {
     return (
-      <SafeAreaView style={styles.root}>
+      <ScreenLayout title="Geri Bildirim" headerVariant="none" scrollEnabled={false} contentStyle={styles.fullContent}>
         <CoachFeedbackContent clientId={clientId} isOffline />
-      </SafeAreaView>
+      </ScreenLayout>
     );
   }
 
   return (
-    <SafeAreaView style={styles.root}>
+    <ScreenLayout title="Geri Bildirim" headerVariant="none" scrollEnabled={false} contentStyle={styles.fullContent}>
       <CoachFeedbackContent clientId={clientId} />
-    </SafeAreaView>
+    </ScreenLayout>
   );
 };
 
 function makeStyles(c: ColorTokens) {
   return StyleSheet.create({
-    root: { flex: 1, backgroundColor: '#F8FAFC' },
+    fullContent: { flex: 1, padding: 0, paddingBottom: 0 },
     wrapper: { flex: 1, backgroundColor: '#F8FAFC' },
     header: {
       flexDirection: 'row',
@@ -324,7 +324,11 @@ function makeStyles(c: ColorTokens) {
       alignItems: 'center',
       justifyContent: 'center'
     },
-    headerAvatarText: { color: palette.white, fontSize: fontSizes.xl, fontWeight: fontWeights.bold },
+    headerAvatarText: {
+      color: palette.white,
+      fontSize: fontSizes.xl,
+      fontWeight: fontWeights.bold
+    },
     headerTitle: { fontSize: fontSizes.xl, fontWeight: fontWeights.bold, color: '#1E293B' },
     headerSubtitle: { fontSize: fontSizes.base, color: c.textTertiary },
     body: { padding: spacing[2], paddingBottom: 40 },
@@ -334,8 +338,18 @@ function makeStyles(c: ColorTokens) {
       marginBottom: spacing[2],
       backgroundColor: c.surface
     },
-    formTitle: { fontSize: fontSizes.xl, fontWeight: fontWeights.bold, color: '#1E3A5F', marginBottom: 4 },
-    formHint: { fontSize: fontSizes.base, color: c.textTertiary, marginBottom: spacing[1.5], lineHeight: 18 },
+    formTitle: {
+      fontSize: fontSizes.xl,
+      fontWeight: fontWeights.bold,
+      color: '#1E3A5F',
+      marginBottom: 4
+    },
+    formHint: {
+      fontSize: fontSizes.base,
+      color: c.textTertiary,
+      marginBottom: spacing[1.5],
+      lineHeight: 18
+    },
     draftStatus: {
       flexDirection: 'row',
       alignItems: 'center',
@@ -386,12 +400,22 @@ function makeStyles(c: ColorTokens) {
       borderRadius: radii.xl,
       backgroundColor: c.surface
     },
-    historyTitle: { fontSize: fontSizes.xl, fontWeight: fontWeights.bold, color: '#1E3A5F', marginBottom: 14 },
+    historyTitle: {
+      fontSize: fontSizes.xl,
+      fontWeight: fontWeights.bold,
+      color: '#1E3A5F',
+      marginBottom: 14
+    },
     historyEmpty: { alignItems: 'center', paddingVertical: spacing[3] },
     historyEmptyIcon: { backgroundColor: '#F1F5F9', marginBottom: 10 },
     historyEmptyText: { fontSize: fontSizes.md, color: '#9CA3AF' },
     historyItem: { paddingVertical: spacing[1] },
-    historyItemHeader: { flexDirection: 'row', alignItems: 'center', gap: spacing[1], marginBottom: 6 },
+    historyItemHeader: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: spacing[1],
+      marginBottom: 6
+    },
     historyIcon: { backgroundColor: 'transparent' },
     historyDate: { flex: 1, fontSize: fontSizes.base, color: c.textTertiary },
     historyStatusBadge: { borderRadius: radii.sm, paddingHorizontal: 6, paddingVertical: 2 },

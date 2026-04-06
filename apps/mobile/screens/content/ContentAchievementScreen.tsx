@@ -1,7 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useMemo } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { StyleSheet, View } from 'react-native';
 
 import { PActivityIndicator, PAvatar, PButton, PCard, PDivider, PText } from '../../components';
 import {
@@ -13,6 +12,7 @@ import {
 } from '../../data/mockSelectors';
 import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
+import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
 import { SkeletonBlock } from '../components/SkeletonBlock';
 import { StateMessage } from '../components/StateMessage';
@@ -188,71 +188,60 @@ export const ContentAchievementScreen = ({ route }: { route?: { params?: RoutePa
 
   if (state === 'loading') {
     return (
-      <SafeAreaView style={styles.root}>
-        <ScrollView contentContainerStyle={styles.page}>
-          <PActivityIndicator animating accessibilityLabel="Basari yukleniyor" />
-          <SkeletonBlock height={200} />
-          <SkeletonBlock height={120} />
-        </ScrollView>
-      </SafeAreaView>
+      <ScreenLayout title="Basari" headerVariant="none" contentStyle={styles.pageContent}>
+        <PActivityIndicator animating accessibilityLabel="Basari yukleniyor" />
+        <SkeletonBlock height={200} />
+        <SkeletonBlock height={120} />
+      </ScreenLayout>
     );
   }
 
   if (state === 'empty') {
     return (
-      <SafeAreaView style={styles.root}>
-        <ScrollView contentContainerStyle={styles.page}>
-          <StateMessage
-            title="Basari bulunamadi"
-            description="Bu tamamlama kaydina ulasilamadi."
-            actionLabel="Kutuphaneye Don"
-            icon="medal-outline"
-          />
-        </ScrollView>
-      </SafeAreaView>
+      <ScreenLayout title="Basari" headerVariant="none" contentStyle={styles.pageContent}>
+        <StateMessage
+          title="Basari bulunamadi"
+          description="Bu tamamlama kaydina ulasilamadi."
+          actionLabel="Kutuphaneye Don"
+          icon="medal-outline"
+        />
+      </ScreenLayout>
     );
   }
 
   if (state === 'error') {
     return (
-      <SafeAreaView style={styles.root}>
-        <ScrollView contentContainerStyle={styles.page}>
-          <StateMessage
-            title="Basari yuklenemedi"
-            description="Baglantini kontrol edip tekrar dene."
-            actionLabel="Tekrar Dene"
-            icon="alert-circle-outline"
-            tone="error"
-          />
-        </ScrollView>
-      </SafeAreaView>
+      <ScreenLayout title="Basari" headerVariant="none" contentStyle={styles.pageContent}>
+        <StateMessage
+          title="Basari yuklenemedi"
+          description="Baglantini kontrol edip tekrar dene."
+          actionLabel="Tekrar Dene"
+          icon="alert-circle-outline"
+          tone="error"
+        />
+      </ScreenLayout>
     );
   }
 
   if (state === 'offline') {
     return (
-      <SafeAreaView style={styles.root}>
+      <ScreenLayout title="Basari" headerVariant="none" contentStyle={styles.pageContent}>
         <OfflineNotice />
-        <ScrollView contentContainerStyle={styles.page}>
-          <ContentAchievementContent achievementId={achievementId} isOffline />
-        </ScrollView>
-      </SafeAreaView>
+        <ContentAchievementContent achievementId={achievementId} isOffline />
+      </ScreenLayout>
     );
   }
 
   return (
-    <SafeAreaView style={styles.root}>
-      <ScrollView contentContainerStyle={styles.page}>
-        <ContentAchievementContent achievementId={achievementId} />
-      </ScrollView>
-    </SafeAreaView>
+    <ScreenLayout title="Basari" headerVariant="none" contentStyle={styles.pageContent}>
+      <ContentAchievementContent achievementId={achievementId} />
+    </ScreenLayout>
   );
 };
 
 function makeStyles(c: ColorTokens) {
   return StyleSheet.create({
-    root: { flex: 1, backgroundColor: '#F8FAFC' },
-    page: { paddingBottom: 40 },
+    pageContent: { paddingBottom: 40 },
     body: { flex: 1 },
     celebrationHeader: {
       backgroundColor: '#1E3A5F',

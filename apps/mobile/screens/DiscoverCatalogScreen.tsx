@@ -1,7 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useMemo } from 'react';
 import { Linking, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { trackCtaTap } from '../analytics';
 import { PActivityIndicator, PCard, PText } from '../components';
@@ -15,6 +14,7 @@ import {
 } from '../data/mockSelectors';
 import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../theme';
 import { OfflineNotice } from './components/OfflineNotice';
+import { ScreenLayout } from './components/ScreenLayout';
 import { ScreenState, resolveScreenState } from './components/ScreenState';
 import { SkeletonBlock } from './components/SkeletonBlock';
 import { StateMessage } from './components/StateMessage';
@@ -256,76 +256,69 @@ export const DiscoverCatalogScreen = ({ route }: { route?: { params?: { state?: 
 
   if (state === 'loading') {
     return (
-      <SafeAreaView style={styles.root}>
-        <ScrollView contentContainerStyle={styles.content}>
-          <SkeletonBlock height={24} />
-          <SkeletonBlock height={72} />
-          <SkeletonBlock height={40} />
-          <SkeletonBlock height={100} />
-          <SkeletonBlock height={100} />
-          <PActivityIndicator animating />
-        </ScrollView>
-      </SafeAreaView>
+      <ScreenLayout title="Kesfedin" headerVariant="none" contentStyle={styles.catalogContent}>
+        <SkeletonBlock height={24} />
+        <SkeletonBlock height={72} />
+        <SkeletonBlock height={40} />
+        <SkeletonBlock height={100} />
+        <SkeletonBlock height={100} />
+        <PActivityIndicator animating />
+      </ScreenLayout>
     );
   }
 
   if (state === 'empty') {
     return (
-      <SafeAreaView style={styles.root}>
-        <ScrollView contentContainerStyle={styles.content}>
-          <StateMessage
-            title="Henuz icerik yok"
-            description="Yakinda yeni yolculuklar ve atolyeler eklenecek."
-            actionLabel="Bildirimleri Ac"
-            onAction={() => Linking.openSettings()}
-            icon="bell-outline"
-          />
-        </ScrollView>
-      </SafeAreaView>
+      <ScreenLayout title="Kesfedin" headerVariant="none" contentStyle={styles.catalogContent}>
+        <StateMessage
+          title="Henuz icerik yok"
+          description="Yakinda yeni yolculuklar ve atolyeler eklenecek."
+          actionLabel="Bildirimleri Ac"
+          onAction={() => Linking.openSettings()}
+          icon="bell-outline"
+        />
+      </ScreenLayout>
     );
   }
 
   if (state === 'error') {
     return (
-      <SafeAreaView style={styles.root}>
-        <ScrollView contentContainerStyle={styles.content}>
-          <StateMessage
-            title="Icerik yuklenemedi"
-            description="Baglantini kontrol edip tekrar dene."
-            actionLabel="Tekrar Dene"
-            onAction={() => navigation.setParams({ state: undefined })}
-            icon="alert-circle-outline"
-            tone="error"
-          />
-        </ScrollView>
-      </SafeAreaView>
+      <ScreenLayout title="Kesfedin" headerVariant="none" contentStyle={styles.catalogContent}>
+        <StateMessage
+          title="Icerik yuklenemedi"
+          description="Baglantini kontrol edip tekrar dene."
+          actionLabel="Tekrar Dene"
+          onAction={() => navigation.setParams({ state: undefined })}
+          icon="alert-circle-outline"
+          tone="error"
+        />
+      </ScreenLayout>
     );
   }
 
   if (state === 'offline') {
     return (
-      <SafeAreaView style={styles.root}>
-        <ScrollView contentContainerStyle={styles.content}>
-          <OfflineNotice />
-          <DiscoverReadyContent isOffline />
-        </ScrollView>
-      </SafeAreaView>
+      <ScreenLayout title="Kesfedin" headerVariant="none" contentStyle={styles.catalogContent}>
+        <OfflineNotice />
+        <DiscoverReadyContent isOffline />
+      </ScreenLayout>
     );
   }
 
   return (
-    <SafeAreaView style={styles.root}>
-      <ScrollView contentContainerStyle={styles.content}>
-        <DiscoverReadyContent />
-      </ScrollView>
-    </SafeAreaView>
+    <ScreenLayout title="Kesfedin" headerVariant="none" contentStyle={styles.catalogContent}>
+      <DiscoverReadyContent />
+    </ScreenLayout>
   );
 };
 
 function makeStyles(c: ColorTokens) {
   return StyleSheet.create({
-    root: { flex: 1, backgroundColor: c.background },
-    content: { paddingHorizontal: spacing[2.5], paddingTop: spacing[2.5], paddingBottom: 96 },
+    catalogContent: {
+      paddingHorizontal: spacing[2.5],
+      paddingTop: spacing[2.5],
+      paddingBottom: 96
+    },
     header: {
       flexDirection: 'row',
       justifyContent: 'space-between',

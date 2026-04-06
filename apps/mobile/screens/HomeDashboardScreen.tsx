@@ -1,7 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import { trackCtaTap } from '../analytics';
 import {
@@ -24,6 +23,7 @@ import {
 } from '../data/mockSelectors';
 import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../theme';
 import { OfflineNotice } from './components/OfflineNotice';
+import { ScreenLayout } from './components/ScreenLayout';
 import { ScreenState, resolveScreenState } from './components/ScreenState';
 import { SkeletonBlock } from './components/SkeletonBlock';
 import { StateMessage } from './components/StateMessage';
@@ -376,86 +376,69 @@ export const HomeDashboardScreen = ({ route }: { route?: { params?: { state?: Sc
 
   if (state === 'loading') {
     return (
-      <SafeAreaView style={styles.root}>
-        <ScrollView contentContainerStyle={styles.content}>
-          <View style={styles.section}>
-            <PActivityIndicator animating />
-            <SkeletonBlock height={20} />
-            <SkeletonBlock height={20} />
-          </View>
-          <View style={styles.section}>
-            <SkeletonBlock height={120} />
-          </View>
-          <View style={styles.section}>
-            <SkeletonBlock height={120} />
-          </View>
-        </ScrollView>
-      </SafeAreaView>
+      <ScreenLayout title="Ana Sayfa" headerVariant="none">
+        <View style={styles.section}>
+          <PActivityIndicator animating />
+          <SkeletonBlock height={20} />
+          <SkeletonBlock height={20} />
+        </View>
+        <View style={styles.section}>
+          <SkeletonBlock height={120} />
+        </View>
+        <View style={styles.section}>
+          <SkeletonBlock height={120} />
+        </View>
+      </ScreenLayout>
     );
   }
 
   if (state === 'empty') {
     return (
-      <SafeAreaView style={styles.root}>
-        <ScrollView contentContainerStyle={styles.content}>
-          <StateMessage
-            title="Henuz icerik yok"
-            description="Ilk yolculugunu secerek kisisel gelisim planini olusturabilirsin."
-            actionLabel="Kesfe Cik"
-            onAction={() => navigation.navigate('Discover')}
-            icon="compass-outline"
-          />
-        </ScrollView>
-      </SafeAreaView>
+      <ScreenLayout title="Ana Sayfa" headerVariant="none">
+        <StateMessage
+          title="Henuz icerik yok"
+          description="Ilk yolculugunu secerek kisisel gelisim planini olusturabilirsin."
+          actionLabel="Kesfe Cik"
+          onAction={() => navigation.navigate('Discover')}
+          icon="compass-outline"
+        />
+      </ScreenLayout>
     );
   }
 
   if (state === 'error') {
     return (
-      <SafeAreaView style={styles.root}>
-        <ScrollView contentContainerStyle={styles.content}>
-          <StateMessage
-            title="Ana sayfa yuklenemedi"
-            description="Baglantini kontrol edip tekrar dene."
-            actionLabel="Tekrar Dene"
-            onAction={() => navigation.setParams({ state: undefined })}
-            icon="alert-circle-outline"
-            tone="error"
-          />
-        </ScrollView>
-      </SafeAreaView>
+      <ScreenLayout title="Ana Sayfa" headerVariant="none">
+        <StateMessage
+          title="Ana sayfa yuklenemedi"
+          description="Baglantini kontrol edip tekrar dene."
+          actionLabel="Tekrar Dene"
+          onAction={() => navigation.setParams({ state: undefined })}
+          icon="alert-circle-outline"
+          tone="error"
+        />
+      </ScreenLayout>
     );
   }
 
   if (state === 'offline') {
     return (
-      <SafeAreaView style={styles.root}>
-        <ScrollView contentContainerStyle={styles.content}>
-          <OfflineNotice />
-          <HomeReadyContent isOffline />
-        </ScrollView>
-      </SafeAreaView>
+      <ScreenLayout title="Ana Sayfa" headerVariant="none">
+        <OfflineNotice />
+        <HomeReadyContent isOffline />
+      </ScreenLayout>
     );
   }
 
   return (
-    <SafeAreaView style={styles.root}>
-      <ScrollView contentContainerStyle={styles.content}>
-        <HomeReadyContent />
-      </ScrollView>
-    </SafeAreaView>
+    <ScreenLayout title="Ana Sayfa" headerVariant="none">
+      <HomeReadyContent />
+    </ScreenLayout>
   );
 };
 
 function makeStyles(c: ColorTokens) {
   return StyleSheet.create({
-    root: {
-      flex: 1,
-      backgroundColor: c.background
-    },
-    content: {
-      padding: spacing[2]
-    },
     headerRow: {
       flexDirection: 'row',
       justifyContent: 'space-between',

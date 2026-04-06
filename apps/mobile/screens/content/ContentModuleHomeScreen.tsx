@@ -1,7 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useMemo } from 'react';
 import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 import {
   PActivityIndicator,
@@ -23,6 +22,7 @@ import {
 } from '../../data/mockSelectors';
 import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
+import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
 import { SkeletonBlock } from '../components/SkeletonBlock';
 import { StateMessage } from '../components/StateMessage';
@@ -288,74 +288,63 @@ export const ContentModuleHomeScreen = ({ route }: { route?: { params?: RoutePar
 
   if (state === 'loading') {
     return (
-      <SafeAreaView style={styles.root}>
-        <ScrollView contentContainerStyle={styles.page}>
-          <PActivityIndicator animating accessibilityLabel="Modul yukleniyor" />
-          <SkeletonBlock height={72} />
-          <SkeletonBlock height={20} />
-          <SkeletonBlock height={64} />
-          <SkeletonBlock height={64} />
-          <SkeletonBlock height={64} />
-        </ScrollView>
-      </SafeAreaView>
+      <ScreenLayout title="Modul" headerVariant="none" contentStyle={styles.pageContent}>
+        <PActivityIndicator animating accessibilityLabel="Modul yukleniyor" />
+        <SkeletonBlock height={72} />
+        <SkeletonBlock height={20} />
+        <SkeletonBlock height={64} />
+        <SkeletonBlock height={64} />
+        <SkeletonBlock height={64} />
+      </ScreenLayout>
     );
   }
 
   if (state === 'empty') {
     return (
-      <SafeAreaView style={styles.root}>
-        <ScrollView contentContainerStyle={styles.page}>
-          <StateMessage
-            title="Modul bulunamadi"
-            description="Bu modul su anda erisebilir degil."
-            actionLabel="Kutuphaneye Don"
-            icon="layers-outline"
-          />
-        </ScrollView>
-      </SafeAreaView>
+      <ScreenLayout title="Modul" headerVariant="none" contentStyle={styles.pageContent}>
+        <StateMessage
+          title="Modul bulunamadi"
+          description="Bu modul su anda erisebilir degil."
+          actionLabel="Kutuphaneye Don"
+          icon="layers-outline"
+        />
+      </ScreenLayout>
     );
   }
 
   if (state === 'error') {
     return (
-      <SafeAreaView style={styles.root}>
-        <ScrollView contentContainerStyle={styles.page}>
-          <StateMessage
-            title="Modul yuklenemedi"
-            description="Baglantini kontrol edip tekrar dene."
-            actionLabel="Tekrar Dene"
-            icon="alert-circle-outline"
-            tone="error"
-          />
-        </ScrollView>
-      </SafeAreaView>
+      <ScreenLayout title="Modul" headerVariant="none" contentStyle={styles.pageContent}>
+        <StateMessage
+          title="Modul yuklenemedi"
+          description="Baglantini kontrol edip tekrar dene."
+          actionLabel="Tekrar Dene"
+          icon="alert-circle-outline"
+          tone="error"
+        />
+      </ScreenLayout>
     );
   }
 
   if (state === 'offline') {
     return (
-      <SafeAreaView style={styles.root}>
+      <ScreenLayout title="Modul" headerVariant="none" contentStyle={styles.pageContent}>
         <OfflineNotice />
-        <ScrollView contentContainerStyle={styles.page}>
-          <ContentModuleHomeContent moduleId={moduleId} isOffline />
-        </ScrollView>
-      </SafeAreaView>
+        <ContentModuleHomeContent moduleId={moduleId} isOffline />
+      </ScreenLayout>
     );
   }
 
   return (
-    <SafeAreaView style={styles.root}>
-      <ScrollView contentContainerStyle={styles.page}>
-        <ContentModuleHomeContent moduleId={moduleId} />
-      </ScrollView>
-    </SafeAreaView>
+    <ScreenLayout title="Modul" headerVariant="none" contentStyle={styles.pageContent}>
+      <ContentModuleHomeContent moduleId={moduleId} />
+    </ScreenLayout>
   );
 };
 
 function makeStyles(c: ColorTokens) {
   return StyleSheet.create({
-    root: { flex: 1, backgroundColor: '#F8FAFC' },
-    page: { paddingBottom: 40 },
+    pageContent: { paddingBottom: 40 },
     hero: {
       backgroundColor: '#1E3A5F',
       paddingTop: 16,
@@ -397,8 +386,16 @@ function makeStyles(c: ColorTokens) {
       backgroundColor: c.surface,
       elevation: 1
     },
-    progressHeader: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: spacing[1] },
-    progressLabel: { fontSize: fontSizes.lg, fontWeight: fontWeights.semiBold, color: c.textSecondary },
+    progressHeader: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      marginBottom: spacing[1]
+    },
+    progressLabel: {
+      fontSize: fontSizes.lg,
+      fontWeight: fontWeights.semiBold,
+      color: c.textSecondary
+    },
     progressValue: { fontSize: fontSizes.xl, fontWeight: fontWeights.bold, color: '#0EA5E9' },
     progressBar: { height: 8, borderRadius: radii.md, marginBottom: 6 },
     progressMeta: { fontSize: fontSizes.base, color: c.textTertiary, textAlign: 'right' },
@@ -426,7 +423,12 @@ function makeStyles(c: ColorTokens) {
       marginBottom: 3,
       gap: 6
     },
-    packageTitle: { flex: 1, fontSize: fontSizes.lg, fontWeight: fontWeights.semiBold, color: '#1E293B' },
+    packageTitle: {
+      flex: 1,
+      fontSize: fontSizes.lg,
+      fontWeight: fontWeights.semiBold,
+      color: '#1E293B'
+    },
     packageTitleLocked: { color: '#9CA3AF' },
     statusBadge: {
       borderRadius: radii.md,

@@ -1,7 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useMemo, useState } from 'react';
 import { ScrollView, StyleSheet, TextInput, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 import {
   PActivityIndicator,
@@ -16,6 +15,7 @@ import {
 import { getContentItemsForParent, getExerciseSteps, getPrimaryUser } from '../../data/mockSelectors';
 import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
+import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
 import { SkeletonBlock } from '../components/SkeletonBlock';
 import { StateMessage } from '../components/StateMessage';
@@ -284,31 +284,31 @@ export const ContentExerciseScreen = ({ route }: { route?: { params?: RouteParam
 
   if (state === 'loading') {
     return (
-      <SafeAreaView style={styles.rootSafe}>
+      <ScreenLayout title="Alistirma" headerVariant="none">
         <PActivityIndicator animating accessibilityLabel="Alistirma yukleniyor" />
         <SkeletonBlock height={72} />
         <SkeletonBlock height={120} />
         <SkeletonBlock height={120} />
-      </SafeAreaView>
+      </ScreenLayout>
     );
   }
 
   if (state === 'empty') {
     return (
-      <SafeAreaView style={styles.rootSafe}>
+      <ScreenLayout title="Alistirma" headerVariant="none">
         <StateMessage
           title="Alistirma bulunamadi"
           description="Bu alistirma icin icerik bulunamadi."
           actionLabel="Pakete Don"
           icon="pencil-outline"
         />
-      </SafeAreaView>
+      </ScreenLayout>
     );
   }
 
   if (state === 'error') {
     return (
-      <SafeAreaView style={styles.rootSafe}>
+      <ScreenLayout title="Alistirma" headerVariant="none">
         <StateMessage
           title="Alistirma yuklenemedi"
           description="Baglantini kontrol edip tekrar dene."
@@ -316,28 +316,28 @@ export const ContentExerciseScreen = ({ route }: { route?: { params?: RouteParam
           icon="alert-circle-outline"
           tone="error"
         />
-      </SafeAreaView>
+      </ScreenLayout>
     );
   }
 
   if (state === 'offline') {
     return (
-      <SafeAreaView style={styles.rootSafe}>
+      <ScreenLayout title="Alistirma" headerVariant="none" scrollEnabled={false} contentStyle={styles.fullContent}>
         <ContentExerciseContent contentItemId={id} isOffline />
-      </SafeAreaView>
+      </ScreenLayout>
     );
   }
 
   return (
-    <SafeAreaView style={styles.rootSafe}>
+    <ScreenLayout title="Alistirma" headerVariant="none" scrollEnabled={false} contentStyle={styles.fullContent}>
       <ContentExerciseContent contentItemId={id} />
-    </SafeAreaView>
+    </ScreenLayout>
   );
 };
 
 function makeStyles(c: ColorTokens) {
   return StyleSheet.create({
-    rootSafe: { flex: 1, backgroundColor: '#F8FAFC' },
+    fullContent: { flex: 1, padding: 0, paddingBottom: 0 },
     wrapper: { flex: 1, backgroundColor: '#F8FAFC' },
     header: {
       backgroundColor: c.surface,
@@ -361,7 +361,12 @@ function makeStyles(c: ColorTokens) {
       borderLeftWidth: 3,
       borderLeftColor: '#7C4DFF'
     },
-    instructionHeader: { flexDirection: 'row', alignItems: 'center', gap: spacing[1], marginBottom: 6 },
+    instructionHeader: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: spacing[1],
+      marginBottom: 6
+    },
     lightbulb: { backgroundColor: c.secondaryContainer },
     instructionTitle: { fontSize: fontSizes.md, fontWeight: fontWeights.bold, color: '#4C1D95' },
     instructionText: { fontSize: fontSizes.md, color: '#4C1D95', lineHeight: 20 },
@@ -401,13 +406,23 @@ function makeStyles(c: ColorTokens) {
     },
     stepBadgeText: { fontSize: fontSizes.lg, fontWeight: fontWeights.bold },
     stepInfo: { flex: 1 },
-    stepTitle: { fontSize: fontSizes.lg, fontWeight: fontWeights.bold, color: '#1E293B', marginBottom: 4 },
+    stepTitle: {
+      fontSize: fontSizes.lg,
+      fontWeight: fontWeights.bold,
+      color: '#1E293B',
+      marginBottom: 4
+    },
     stepTitleLocked: { color: '#9CA3AF' },
     stepDesc: { fontSize: fontSizes.md, color: '#475569', lineHeight: 20 },
     stepLockedHint: { fontSize: fontSizes.base, color: '#9CA3AF', fontStyle: 'italic' },
     noteArea: { marginTop: 4 },
     noteDivider: { marginVertical: 10 },
-    noteLabel: { fontSize: fontSizes.sm, color: '#94A3B8', marginBottom: 4, fontWeight: fontWeights.semiBold },
+    noteLabel: {
+      fontSize: fontSizes.sm,
+      color: '#94A3B8',
+      marginBottom: 4,
+      fontWeight: fontWeights.semiBold
+    },
     noteInput: {
       borderWidth: 1,
       borderColor: '#CBD5E1',
