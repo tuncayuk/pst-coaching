@@ -1,8 +1,8 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import { Button, type ButtonProps, useTheme } from 'react-native-paper';
+import { Button, type ButtonProps } from 'react-native-paper';
 
-import { fontSizes, fontWeights } from '../theme';
+import { fontSizes, fontWeights, useAppTheme } from '../theme';
 
 const styles = StyleSheet.create({
   content: {
@@ -24,12 +24,12 @@ export const PButton = ({
   textColor,
   ...rest
 }: ButtonProps) => {
-  const theme = useTheme();
+  const { colors: c } = useAppTheme();
   const isPrimary = mode === 'contained';
   const isOutlined = mode === 'outlined';
   const shouldApplySizing = isPrimary || isOutlined;
-  const resolvedButtonColor = buttonColor ?? (isPrimary ? theme.colors.primary : undefined);
-  const resolvedTextColor = textColor ?? (isPrimary ? theme.colors.onPrimary : undefined);
+  const resolvedButtonColor = buttonColor ?? (isPrimary ? c.primary : undefined);
+  const resolvedTextColor = textColor ?? (isPrimary ? c.onPrimary : undefined);
 
   return (
     <Button
@@ -37,7 +37,7 @@ export const PButton = ({
       mode={mode}
       buttonColor={resolvedButtonColor}
       textColor={resolvedTextColor}
-      style={[shouldApplySizing ? { borderRadius: theme.roundness * 1.5 } : null, style]}
+      style={[shouldApplySizing ? { borderRadius: 6 } : null, style]}
       contentStyle={[shouldApplySizing ? styles.content : null, contentStyle]}
       labelStyle={[shouldApplySizing ? styles.label : null, labelStyle]}
       accessibilityState={{ busy: !!rest.loading, ...rest.accessibilityState }}

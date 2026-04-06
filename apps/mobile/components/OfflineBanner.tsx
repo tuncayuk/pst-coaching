@@ -1,13 +1,14 @@
 import React, { useEffect, useRef } from 'react';
 import { Animated, StyleSheet, View } from 'react-native';
-import { Icon, useTheme } from 'react-native-paper';
+import { Icon } from 'react-native-paper';
 
 import { useAppSelector } from '../state/hooks';
 import { selectIsOnline } from '../state/selectors';
+import { useAppTheme } from '../theme';
 import { PSurface, PText } from './index';
 
 export const OfflineBanner = () => {
-  const theme = useTheme();
+  const { colors: c } = useAppTheme();
   const isOnline = useAppSelector(selectIsOnline);
   const opacity = useRef(new Animated.Value(0)).current;
   const translateY = useRef(new Animated.Value(-8)).current;
@@ -35,17 +36,17 @@ export const OfflineBanner = () => {
     <Animated.View style={{ opacity, transform: [{ translateY }] }}>
       <PSurface
         elevation={0}
-        style={[styles.banner, { backgroundColor: theme.colors.errorContainer, borderRadius: theme.roundness * 2 }]}
+        style={[styles.banner, { backgroundColor: c.errorContainer, borderRadius: 8 }]}
         accessibilityRole="alert"
         accessibilityLabel="Çevrimdışısınız. İnternet bağlantısı yok. Önbellekteki içerikler gösteriliyor."
         accessibilityLiveRegion="assertive"
       >
-        <Icon source="wifi-off" size={20} color={theme.colors.onErrorContainer} />
+        <Icon source="wifi-off" size={20} color={c.onErrorContainer} />
         <View style={styles.textGroup}>
-          <PText variant="labelLarge" style={{ color: theme.colors.onErrorContainer }}>
+          <PText variant="labelLarge" style={{ color: c.onErrorContainer }}>
             Çevrimdışısınız
           </PText>
-          <PText variant="bodySmall" style={{ color: theme.colors.onErrorContainer }}>
+          <PText variant="bodySmall" style={{ color: c.onErrorContainer }}>
             İnternet bağlantısı yok. Önbellekteki içerikler gösteriliyor.
           </PText>
         </View>

@@ -1,7 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { useTheme } from 'react-native-paper';
 
 import { trackCtaTap } from '../analytics';
 import {
@@ -33,7 +32,6 @@ const ProfileReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
   const { colors: c } = useAppTheme();
   const styles = useMemo(() => makeStyles(c), [c]);
 
-  const theme = useTheme();
   const navigation = useNavigation<any>();
   const user = getPrimaryUser();
   const subscription = getSubscriptionForUser(user?.id);
@@ -49,7 +47,7 @@ const ProfileReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
           <PAvatar.Text size={56} label={(user?.email ?? 'EA').slice(0, 2).toUpperCase()} />
           <View style={styles.profileInfo}>
             <PText variant="titleMedium">{user?.email ?? 'Kullanıcı'}</PText>
-            <PText variant="bodySmall" style={{ color: theme.colors.onSurfaceVariant }}>
+            <PText variant="bodySmall" style={{ color: c.onSurfaceVariant }}>
               {user?.email ?? 'demo@pstcoaching.app'}
             </PText>
           </View>
@@ -71,7 +69,7 @@ const ProfileReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
           <PCard style={styles.card}>
             <PCard.Title title={plan?.name ?? 'Plan'} subtitle={subscription?.renewal_at?.slice(0, 10)} />
             <PCard.Content>
-              <PText variant="bodySmall" style={{ color: theme.colors.onSurfaceVariant }}>
+              <PText variant="bodySmall" style={{ color: c.onSurfaceVariant }}>
                 {plan?.seat_limit ?? 1} koltuk · Premium içerikler açık
               </PText>
             </PCard.Content>
@@ -93,7 +91,7 @@ const ProfileReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
           <PCard style={[styles.card, styles.upgradeCard]}>
             <PCard.Title title="Premium'a Yükselt" subtitle="İçeriklerin tümüne erişim sağla" />
             <PCard.Content>
-              <PText variant="bodySmall" style={{ color: theme.colors.onSurfaceVariant }}>
+              <PText variant="bodySmall" style={{ color: c.onSurfaceVariant }}>
                 Koçluk seansları, e-kitaplar ve video içeriklerin tamamına anında eriş.
               </PText>
             </PCard.Content>
@@ -148,7 +146,7 @@ const ProfileReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
         {payments.map(payment => (
           <View key={payment.id} style={styles.paymentRow}>
             <PText variant="bodyMedium">{payment.purchased_at.slice(0, 10)}</PText>
-            <PText variant="bodyMedium" style={{ color: theme.colors.onSurfaceVariant }}>
+            <PText variant="bodyMedium" style={{ color: c.onSurfaceVariant }}>
               {payment.amount} {payment.currency}
             </PText>
           </View>

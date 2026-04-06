@@ -1,7 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useMemo } from 'react';
 import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, View, ViewStyle } from 'react-native';
-import { useTheme } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { PIconButton, PSurface, PText } from '../../components';
@@ -33,7 +32,6 @@ export const ScreenLayout = ({
   const { colors: c } = useAppTheme();
   const styles = useMemo(() => makeStyles(c), [c]);
 
-  const theme = useTheme();
   const navigation = useNavigation();
   const canGoBack = navigation.canGoBack();
 
@@ -44,9 +42,9 @@ export const ScreenLayout = ({
         style={[
           styles.header,
           {
-            borderRadius: theme.roundness * 2.5,
-            borderBottomColor: `${theme.colors.outlineVariant}66`,
-            backgroundColor: headerVariant === 'transparent' ? 'transparent' : theme.colors.background
+            borderRadius: 10,
+            borderBottomColor: `${c.outlineVariant}66`,
+            backgroundColor: headerVariant === 'transparent' ? 'transparent' : c.background
           }
         ]}
         accessibilityLabel={title}
@@ -67,7 +65,7 @@ export const ScreenLayout = ({
               {title}
             </PText>
             {subtitle ? (
-              <PText variant="bodyMedium" style={{ color: theme.colors.onSurfaceVariant }}>
+              <PText variant="bodyMedium" style={{ color: c.onSurfaceVariant }}>
                 {subtitle}
               </PText>
             ) : null}
@@ -79,7 +77,7 @@ export const ScreenLayout = ({
 
   return (
     <SafeAreaView
-      style={[styles.root, { backgroundColor: theme.colors.background }]}
+      style={[styles.root, { backgroundColor: c.background }]}
       edges={edges}
       accessibilityViewIsModal={false}
     >

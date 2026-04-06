@@ -1,7 +1,8 @@
 import React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
-import { Card, useTheme } from 'react-native-paper';
+import { Card } from 'react-native-paper';
 
+import { useAppTheme } from '../theme';
 import { PText } from './PText';
 
 const SPACING = 16;
@@ -32,15 +33,12 @@ const BasePCard = ({
   style,
   ...rest
 }: PCardProps) => {
-  const theme = useTheme();
+  const { colors: c } = useAppTheme();
   const accentStyle = accentColor ? { borderLeftWidth: 4, borderLeftColor: accentColor } : undefined;
 
   if (sectionTitle) {
     return (
-      <Card
-        {...rest}
-        style={[{ borderRadius: theme.roundness * 2.5, padding: SPACING, marginBottom: SPACING }, accentStyle, style]}
-      >
+      <Card {...rest} style={[{ borderRadius: 10, padding: SPACING, marginBottom: SPACING }, accentStyle, style]}>
         <View style={styles.headerRow}>
           <PText variant="titleMedium" accessibilityRole="header">
             {sectionTitle}
@@ -57,7 +55,7 @@ const BasePCard = ({
               <PText
                 variant="labelLarge"
                 style={{
-                  color: onSectionAction ? theme.colors.primary : theme.colors.onSurfaceVariant
+                  color: onSectionAction ? c.primary : c.onSurfaceVariant
                 }}
               >
                 {sectionActionLabel}

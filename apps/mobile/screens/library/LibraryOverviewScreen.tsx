@@ -1,7 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { useTheme } from 'react-native-paper';
 
 import { PActivityIndicator, PButton, PCard, PChip, PListIcon, PListItem, PProgressBar, PText } from '../../components';
 import {
@@ -25,7 +24,6 @@ const LibraryReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
   const { colors: c } = useAppTheme();
   const styles = useMemo(() => makeStyles(c), [c]);
 
-  const theme = useTheme();
   const navigation = useNavigation<any>();
   const user = getPrimaryUser();
   const favorites = getFavoritesForUser(user?.id);
@@ -97,10 +95,10 @@ const LibraryReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
 
       <SectionCard title="Vurgular & Notlar" actionLabel="Tümü">
         <View style={styles.noteBox}>
-          <PText variant="bodyMedium" style={{ color: theme.colors.onSurfaceVariant }}>
+          <PText variant="bodyMedium" style={{ color: c.onSurfaceVariant }}>
             “{highlights[0]?.quote ?? 'Kendine karşı nazik olmak, dönüşümün ilk adımıdır.'}”
           </PText>
-          <PText variant="labelSmall" style={{ color: theme.colors.primary }}>
+          <PText variant="labelSmall" style={{ color: c.primary }}>
             {getEbookById(highlights[0]?.source_id)?.title ?? 'Kişisel Notlar'}
           </PText>
         </View>

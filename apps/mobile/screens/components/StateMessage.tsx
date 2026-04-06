@@ -1,6 +1,5 @@
 import React, { useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { useTheme } from 'react-native-paper';
 
 import { PAvatar, PButton, PText } from '../../components';
 import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
@@ -25,9 +24,8 @@ export const StateMessage = ({
   const { colors: c } = useAppTheme();
   const styles = useMemo(() => makeStyles(c), [c]);
 
-  const theme = useTheme();
-  const background = tone === 'error' ? theme.colors.errorContainer : theme.colors.elevation.level1;
-  const onBackground = tone === 'error' ? theme.colors.onErrorContainer : theme.colors.onSurface;
+  const background = tone === 'error' ? c.errorContainer : c.surfaceElevated;
+  const onBackground = tone === 'error' ? c.onErrorContainer : c.textPrimary;
 
   return (
     <View style={[styles.container, { backgroundColor: background }]}>

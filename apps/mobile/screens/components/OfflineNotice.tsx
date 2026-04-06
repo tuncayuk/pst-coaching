@@ -1,6 +1,5 @@
 import React, { useMemo } from 'react';
 import { StyleSheet } from 'react-native';
-import { useTheme } from 'react-native-paper';
 
 import { PSurface, PText } from '../../components';
 import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
@@ -9,14 +8,12 @@ export const OfflineNotice = () => {
   const { colors: c } = useAppTheme();
   const styles = useMemo(() => makeStyles(c), [c]);
 
-  const theme = useTheme();
-
   return (
-    <PSurface style={[styles.notice, { backgroundColor: theme.colors.secondaryContainer }]}>
-      <PText variant="labelLarge" style={{ color: theme.colors.onSecondaryContainer }}>
+    <PSurface style={[styles.notice, { backgroundColor: c.secondaryContainer }]}>
+      <PText variant="labelLarge" style={{ color: c.onSecondaryContainer }}>
         Çevrimdışısınız
       </PText>
-      <PText variant="bodySmall" style={{ color: theme.colors.onSecondaryContainer }}>
+      <PText variant="bodySmall" style={{ color: c.onSecondaryContainer }}>
         Önbellekteki içerikler gösteriliyor. Bağlantı geldiğinde senkronize edeceğiz.
       </PText>
     </PSurface>
