@@ -213,7 +213,7 @@ const HomeReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
           </View>
         </View>
         {nextStep ? (
-          <PCard style={styles.continueCard}>
+          <PCard accentColor="#00B4D8" style={styles.continueCard}>
             <View style={styles.continueRow}>
               <View style={styles.continueIcon} accessibilityElementsHidden>
                 <PText style={styles.continueIconText}>H</PText>
@@ -292,7 +292,7 @@ const HomeReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
             Detaylar
           </PButton>
         </View>
-        <PCard style={styles.programCard}>
+        <PCard accentColor="#10B981" style={styles.programCard}>
           <PText style={styles.programDescription}>Ic sesini guclendir ve degerlerinle uyumlu kararlar al.</PText>
           <View style={styles.progressRow}>
             <View style={styles.progressHeader}>
@@ -591,8 +591,6 @@ const styles = StyleSheet.create({
     color: '#92400E'
   },
   continueCard: {
-    borderLeftWidth: 4,
-    borderLeftColor: '#00B4D8',
     padding: 16
   },
   continueCardEmpty: {
@@ -685,9 +683,7 @@ const styles = StyleSheet.create({
     color: '#525252'
   },
   programCard: {
-    padding: 14,
-    borderLeftWidth: 4,
-    borderLeftColor: '#10B981'
+    padding: 14
   },
   programDescription: {
     fontSize: 13,
