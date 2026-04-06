@@ -14,11 +14,11 @@
  *     return StyleSheet.create({ container: { backgroundColor: c.background } });
  *   }
  */
-import { useMemo } from "react";
-import { useColorScheme } from "react-native";
+import { useMemo } from 'react';
+import { useColorScheme } from 'react-native';
 
-import { ColorTokens, dark, light } from "./colors";
-import { darkPaperTheme, paperTheme } from "./paper";
+import { ColorTokens, dark, light } from './colors';
+import { darkPaperTheme, paperTheme } from './paper';
 
 export interface AppTheme {
   colors: ColorTokens;
@@ -28,14 +28,14 @@ export interface AppTheme {
 
 export function useAppTheme(): AppTheme {
   const scheme = useColorScheme();
-  const isDark = scheme === "dark";
+  const isDark = scheme === 'dark';
   console.log(`Current color scheme: ${scheme} (isDark: ${isDark})`); // Debug log to verify color scheme detection
 
   return useMemo(
     () => ({
       colors: isDark ? dark : light,
       isDark,
-      paperTheme: isDark ? darkPaperTheme : paperTheme,
+      paperTheme: isDark ? darkPaperTheme : paperTheme
     }),
     [isDark]
   );
