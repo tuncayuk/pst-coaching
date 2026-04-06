@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Modal, StyleSheet, View } from 'react-native';
 
 import { PActivityIndicator, PButton, PCard, PChip, PDivider, PText } from '../../components';
 import { getContentProgressForUser, getPrimaryUser } from '../../data/mockSelectors';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -15,6 +16,9 @@ type Format = 'PDF' | 'Ozet';
 const THEMES = ['Duygusal Zeka', 'Oz Yonetim', 'Empati', 'Stres Yonetimi'];
 
 const ProgressReportExportContent = ({ isOffline }: { isOffline?: boolean }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const [format, setFormat] = useState<Format>('PDF');
   const [isDownloading, setIsDownloading] = useState(false);
   const [isDownloaded, setIsDownloaded] = useState(false);
@@ -198,92 +202,94 @@ export const ProgressReportExportScreen = ({ route }: { route?: { params?: { sta
   );
 };
 
-const styles = StyleSheet.create({
-  metricRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 12
-  },
-  metricBox: {
-    flex: 1,
-    alignItems: 'center',
-    padding: 12,
-    backgroundColor: '#F5F3FF',
-    borderRadius: 10,
-    marginHorizontal: 4
-  },
-  metricValue: {
-    fontSize: 22,
-    fontWeight: '800',
-    color: '#6B46C1'
-  },
-  metricLabel: {
-    fontSize: 11,
-    color: '#737373',
-    marginTop: 2,
-    textAlign: 'center'
-  },
-  divider: { marginVertical: 12 },
-  label: {
-    fontSize: 12,
-    fontWeight: '700',
-    color: '#525252',
-    marginBottom: 8
-  },
-  chipRow: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    marginBottom: 12
-  },
-  chip: {
-    marginRight: 8,
-    marginBottom: 8
-  },
-  suggestionText: {
-    fontSize: 13,
-    color: '#1F2937',
-    lineHeight: 18,
-    padding: 10,
-    backgroundColor: '#EDE7F6',
-    borderRadius: 8,
-    borderLeftWidth: 4,
-    borderLeftColor: '#6B46C1'
-  },
-  action: { marginTop: 8 },
-  successText: {
-    fontSize: 13,
-    color: '#15803D',
-    fontWeight: '600',
-    marginBottom: 8,
-    textAlign: 'center'
-  },
-  modalOverlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.5)',
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 24
-  },
-  consentCard: {
-    width: '100%',
-    borderRadius: 16,
-    padding: 8
-  },
-  consentTitle: {
-    fontSize: 17,
-    fontWeight: '700',
-    color: '#1F2937',
-    marginBottom: 12
-  },
-  consentBody: {
-    fontSize: 14,
-    color: '#525252',
-    lineHeight: 22,
-    marginBottom: 20
-  },
-  consentActions: {
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    gap: 8
-  }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    metricRow: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      marginBottom: spacing[1.5]
+    },
+    metricBox: {
+      flex: 1,
+      alignItems: 'center',
+      padding: spacing[1.5],
+      backgroundColor: '#F5F3FF',
+      borderRadius: radii.md,
+      marginHorizontal: 4
+    },
+    metricValue: {
+      fontSize: fontSizes['5xl'],
+      fontWeight: fontWeights.extraBold,
+      color: '#6B46C1'
+    },
+    metricLabel: {
+      fontSize: fontSizes.sm,
+      color: c.textTertiary,
+      marginTop: 2,
+      textAlign: 'center'
+    },
+    divider: { marginVertical: 12 },
+    label: {
+      fontSize: fontSizes.base,
+      fontWeight: fontWeights.bold,
+      color: c.textSecondary,
+      marginBottom: spacing[1]
+    },
+    chipRow: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      marginBottom: spacing[1.5]
+    },
+    chip: {
+      marginRight: 8,
+      marginBottom: spacing[1]
+    },
+    suggestionText: {
+      fontSize: fontSizes.md,
+      color: '#1F2937',
+      lineHeight: 18,
+      padding: 10,
+      backgroundColor: palette.purple50,
+      borderRadius: radii.md,
+      borderLeftWidth: 4,
+      borderLeftColor: '#6B46C1'
+    },
+    action: { marginTop: spacing[1] },
+    successText: {
+      fontSize: fontSizes.md,
+      color: '#15803D',
+      fontWeight: fontWeights.semiBold,
+      marginBottom: spacing[1],
+      textAlign: 'center'
+    },
+    modalOverlay: {
+      flex: 1,
+      backgroundColor: 'rgba(0,0,0,0.5)',
+      justifyContent: 'center',
+      alignItems: 'center',
+      padding: spacing[3]
+    },
+    consentCard: {
+      width: '100%',
+      borderRadius: radii.xl,
+      padding: spacing[1]
+    },
+    consentTitle: {
+      fontSize: 17,
+      fontWeight: fontWeights.bold,
+      color: '#1F2937',
+      marginBottom: spacing[1.5]
+    },
+    consentBody: {
+      fontSize: fontSizes.lg,
+      color: c.textSecondary,
+      lineHeight: 22,
+      marginBottom: spacing[2.5]
+    },
+    consentActions: {
+      flexDirection: 'row',
+      justifyContent: 'flex-end',
+      gap: spacing[1]
+    }
+  });
+}

@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Alert, StyleSheet, View } from 'react-native';
 
 import { PButton, PCard, PChip, PText } from '../../components';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -31,6 +32,9 @@ const STATUS_CONFIG: Record<VerificationStatus, { label: string; bg: string; tex
 };
 
 const ProfileStudentDiscountContent = ({ isOffline }: { isOffline?: boolean }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const [privacyAccepted, setPrivacyAccepted] = useState(false);
   const [verifyMethod, setVerifyMethod] = useState<VerifyMethod>(null);
   // useState prevents TypeScript from narrowing to a literal type
@@ -262,99 +266,101 @@ export const ProfileStudentDiscountScreen = ({ route }: { route?: { params?: { s
   );
 };
 
-const styles = StyleSheet.create({
-  expiryBanner: {
-    backgroundColor: '#FEE2E2',
-    borderRadius: 8,
-    padding: 12,
-    marginBottom: 8,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between'
-  },
-  expiryText: {
-    color: '#991B1B',
-    flex: 1,
-    lineHeight: 18
-  },
-  card: {
-    marginBottom: 8
-  },
-  cardRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between'
-  },
-  statusLabel: {
-    fontWeight: '600',
-    color: '#1F2937'
-  },
-  discountBadge: {
-    color: '#059669',
-    marginTop: 2,
-    fontWeight: '600'
-  },
-  privacyText: {
-    color: '#374151',
-    lineHeight: 20,
-    marginBottom: 12
-  },
-  privacyButton: {
-    minHeight: 48
-  },
-  methodLabel: {
-    color: '#6B7280',
-    marginBottom: 10
-  },
-  methodRow: {
-    flexDirection: 'row',
-    gap: 10,
-    marginBottom: 12
-  },
-  methodCard: {
-    flex: 1,
-    borderRadius: 8,
-    padding: 4
-  },
-  methodCardSelected: {
-    backgroundColor: '#FAF5FF'
-  },
-  methodButton: {
-    marginBottom: 4,
-    minHeight: 44
-  },
-  methodDesc: {
-    textAlign: 'center',
-    color: '#6B7280',
-    lineHeight: 16
-  },
-  startButton: {
-    minHeight: 48
-  },
-  stepRow: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    marginBottom: 10,
-    gap: 10
-  },
-  stepNumber: {
-    width: 24,
-    height: 24,
-    borderRadius: 12,
-    backgroundColor: '#7C3AED',
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  stepNumberText: {
-    color: '#FFFFFF',
-    fontSize: 12,
-    fontWeight: '700'
-  },
-  stepText: {
-    flex: 1,
-    color: '#374151',
-    lineHeight: 20
-  }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    expiryBanner: {
+      backgroundColor: palette.red50,
+      borderRadius: radii.md,
+      padding: spacing[1.5],
+      marginBottom: spacing[1],
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between'
+    },
+    expiryText: {
+      color: palette.red900,
+      flex: 1,
+      lineHeight: 18
+    },
+    card: {
+      marginBottom: spacing[1]
+    },
+    cardRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between'
+    },
+    statusLabel: {
+      fontWeight: fontWeights.semiBold,
+      color: '#1F2937'
+    },
+    discountBadge: {
+      color: '#059669',
+      marginTop: 2,
+      fontWeight: fontWeights.semiBold
+    },
+    privacyText: {
+      color: '#374151',
+      lineHeight: 20,
+      marginBottom: spacing[1.5]
+    },
+    privacyButton: {
+      minHeight: 48
+    },
+    methodLabel: {
+      color: c.textTertiary,
+      marginBottom: 10
+    },
+    methodRow: {
+      flexDirection: 'row',
+      gap: 10,
+      marginBottom: spacing[1.5]
+    },
+    methodCard: {
+      flex: 1,
+      borderRadius: radii.md,
+      padding: 4
+    },
+    methodCardSelected: {
+      backgroundColor: '#FAF5FF'
+    },
+    methodButton: {
+      marginBottom: 4,
+      minHeight: 44
+    },
+    methodDesc: {
+      textAlign: 'center',
+      color: c.textTertiary,
+      lineHeight: 16
+    },
+    startButton: {
+      minHeight: 48
+    },
+    stepRow: {
+      flexDirection: 'row',
+      alignItems: 'flex-start',
+      marginBottom: 10,
+      gap: 10
+    },
+    stepNumber: {
+      width: 24,
+      height: 24,
+      borderRadius: radii.lg,
+      backgroundColor: '#7C3AED',
+      justifyContent: 'center',
+      alignItems: 'center'
+    },
+    stepNumberText: {
+      color: palette.white,
+      fontSize: fontSizes.base,
+      fontWeight: fontWeights.bold
+    },
+    stepText: {
+      flex: 1,
+      color: '#374151',
+      lineHeight: 20
+    }
+  });
+}
 
 const steps = ['Okul e-postanizi dogrulayip ogrenci belgesini yukleyin', 'Ogrenci belgesi yukle', 'Sonucu bekle'];

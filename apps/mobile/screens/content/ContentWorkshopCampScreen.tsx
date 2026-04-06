@@ -1,9 +1,10 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import { PActivityIndicator, PButton, PChip, PDivider, PText } from '../../components';
 import { getPrimaryUser, getWorkshopById, getWorkshops } from '../../data/mockSelectors';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -142,6 +143,9 @@ type SessionCardProps = {
 };
 
 const SessionCard = ({ session, isOffline, onComplete, isCompleted }: SessionCardProps) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const [expanded, setExpanded] = useState(false);
   return (
     <View style={styles.sessionCard}>
@@ -220,6 +224,9 @@ const SessionCard = ({ session, isOffline, onComplete, isCompleted }: SessionCar
 };
 
 const ContentWorkshopCampContent = ({ workshopId, isOffline }: { workshopId?: string; isOffline?: boolean }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const navigation = useNavigation<any>();
   const workshop = getWorkshopById(workshopId) ?? getWorkshops()[0];
   const [activeDay, setActiveDay] = useState(0);
@@ -405,104 +412,106 @@ export const ContentWorkshopCampScreen = ({ route }: { route?: { params?: RouteP
   );
 };
 
-const styles = StyleSheet.create({
-  campDesc: {
-    opacity: 0.7,
-    lineHeight: 20
-  },
-  tabRow: {
-    flexDirection: 'row',
-    marginHorizontal: 16,
-    marginBottom: 0,
-    gap: 8
-  },
-  tab: {
-    flex: 1,
-    paddingVertical: 10,
-    borderRadius: 10,
-    alignItems: 'center',
-    backgroundColor: '#F0F0F0'
-  },
-  tabActive: {
-    backgroundColor: '#7C4DFF'
-  },
-  tabLabel: {
-    color: '#555'
-  },
-  tabLabelActive: {
-    color: '#FFF',
-    fontWeight: '700'
-  },
-  dayProgress: {
-    opacity: 0.6,
-    marginBottom: 10
-  },
-  sessionCard: {
-    borderWidth: 1,
-    borderColor: '#E0E0E0',
-    borderRadius: 10,
-    marginBottom: 10,
-    overflow: 'hidden'
-  },
-  sessionHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 12,
-    gap: 8,
-    flexWrap: 'wrap'
-  },
-  slotChip: {
-    height: 24,
-    marginRight: 4
-  },
-  sessionTitle: {
-    flex: 1
-  },
-  duration: {
-    opacity: 0.55
-  },
-  doneCheck: {
-    color: '#4CAF50',
-    fontSize: 16,
-    fontWeight: '700'
-  },
-  sessionDetail: {
-    paddingHorizontal: 12,
-    paddingBottom: 12
-  },
-  divider: {
-    marginVertical: 8
-  },
-  detailRow: {
-    marginBottom: 6
-  },
-  detailLabel: {
-    opacity: 0.55,
-    marginBottom: 2
-  },
-  detailText: {
-    lineHeight: 20
-  },
-  completeBtn: {
-    marginTop: 10,
-    alignSelf: 'flex-start'
-  },
-  daySummary: {
-    marginTop: 4
-  },
-  daySummaryTitle: {
-    color: '#4CAF50',
-    fontWeight: '700',
-    marginBottom: 4
-  },
-  daySummaryText: {
-    opacity: 0.7,
-    marginBottom: 8
-  },
-  nextDayBtn: {
-    alignSelf: 'flex-start'
-  },
-  quickLink: {
-    marginBottom: 10
-  }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    campDesc: {
+      opacity: 0.7,
+      lineHeight: 20
+    },
+    tabRow: {
+      flexDirection: 'row',
+      marginHorizontal: 16,
+      marginBottom: 0,
+      gap: spacing[1]
+    },
+    tab: {
+      flex: 1,
+      paddingVertical: 10,
+      borderRadius: radii.md,
+      alignItems: 'center',
+      backgroundColor: '#F0F0F0'
+    },
+    tabActive: {
+      backgroundColor: '#7C4DFF'
+    },
+    tabLabel: {
+      color: '#555'
+    },
+    tabLabelActive: {
+      color: '#FFF',
+      fontWeight: fontWeights.bold
+    },
+    dayProgress: {
+      opacity: 0.6,
+      marginBottom: 10
+    },
+    sessionCard: {
+      borderWidth: 1,
+      borderColor: '#E0E0E0',
+      borderRadius: radii.md,
+      marginBottom: 10,
+      overflow: 'hidden'
+    },
+    sessionHeader: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      padding: spacing[1.5],
+      gap: spacing[1],
+      flexWrap: 'wrap'
+    },
+    slotChip: {
+      height: 24,
+      marginRight: 4
+    },
+    sessionTitle: {
+      flex: 1
+    },
+    duration: {
+      opacity: 0.55
+    },
+    doneCheck: {
+      color: '#4CAF50',
+      fontSize: fontSizes['2xl'],
+      fontWeight: fontWeights.bold
+    },
+    sessionDetail: {
+      paddingHorizontal: spacing[1.5],
+      paddingBottom: 12
+    },
+    divider: {
+      marginVertical: 8
+    },
+    detailRow: {
+      marginBottom: 6
+    },
+    detailLabel: {
+      opacity: 0.55,
+      marginBottom: 2
+    },
+    detailText: {
+      lineHeight: 20
+    },
+    completeBtn: {
+      marginTop: 10,
+      alignSelf: 'flex-start'
+    },
+    daySummary: {
+      marginTop: 4
+    },
+    daySummaryTitle: {
+      color: '#4CAF50',
+      fontWeight: fontWeights.bold,
+      marginBottom: 4
+    },
+    daySummaryText: {
+      opacity: 0.7,
+      marginBottom: spacing[1]
+    },
+    nextDayBtn: {
+      alignSelf: 'flex-start'
+    },
+    quickLink: {
+      marginBottom: 10
+    }
+  });
+}

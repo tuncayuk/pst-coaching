@@ -1,9 +1,10 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { StyleSheet, TextInput, View } from 'react-native';
 
 import { PActivityIndicator, PButton, PDivider, PText } from '../../components';
 import { getEbookById, getEbookChaptersForEbook } from '../../data/mockSelectors';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -20,6 +21,9 @@ const ContentEbookTocContent = ({
   ebookId?: string;
   currentChapterId?: string;
 }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const navigation = useNavigation<any>();
   const ebook = getEbookById(ebookId) ?? getEbookById(undefined);
   const chapters = getEbookChaptersForEbook(ebook?.id ?? ebookId);
@@ -172,30 +176,32 @@ export const ContentEbookTocScreen = ({
   );
 };
 
-const styles = StyleSheet.create({
-  jumpRow: { flexDirection: 'row', gap: 10, alignItems: 'center' },
-  jumpInput: {
-    flex: 1,
-    borderWidth: 1,
-    borderColor: '#E5E7EB',
-    borderRadius: 10,
-    padding: 10,
-    fontSize: 14,
-    color: '#1F2937',
-    backgroundColor: '#FAFAFA'
-  },
-  jumpError: { fontSize: 12, color: '#DC2626', marginTop: 6 },
-  chapRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingVertical: 10,
-    paddingHorizontal: 4
-  },
-  chapRowActive: { backgroundColor: '#EDE7F6', borderRadius: 8 },
-  chapMeta: { flex: 1, marginRight: 8 },
-  chapTitle: { fontSize: 14, fontWeight: '600', color: '#1F2937' },
-  chapTitleActive: { color: '#6B46C1' },
-  chapPages: { fontSize: 11, color: '#9CA3AF', marginTop: 2 },
-  emptyHint: { fontSize: 13, color: '#9CA3AF' }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    jumpRow: { flexDirection: 'row', gap: 10, alignItems: 'center' },
+    jumpInput: {
+      flex: 1,
+      borderWidth: 1,
+      borderColor: '#E5E7EB',
+      borderRadius: radii.md,
+      padding: 10,
+      fontSize: fontSizes.lg,
+      color: '#1F2937',
+      backgroundColor: c.background
+    },
+    jumpError: { fontSize: fontSizes.base, color: palette.red600, marginTop: 6 },
+    chapRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      paddingVertical: 10,
+      paddingHorizontal: 4
+    },
+    chapRowActive: { backgroundColor: palette.purple50, borderRadius: radii.md },
+    chapMeta: { flex: 1, marginRight: 8 },
+    chapTitle: { fontSize: fontSizes.lg, fontWeight: fontWeights.semiBold, color: '#1F2937' },
+    chapTitleActive: { color: '#6B46C1' },
+    chapPages: { fontSize: fontSizes.sm, color: '#9CA3AF', marginTop: 2 },
+    emptyHint: { fontSize: fontSizes.md, color: '#9CA3AF' }
+  });
+}

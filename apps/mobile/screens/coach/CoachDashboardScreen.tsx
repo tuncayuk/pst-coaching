@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import { PActivityIndicator, PAvatar, PButton, PChip, PDivider, PProgressBar, PText } from '../../components';
@@ -9,6 +9,7 @@ import {
   getPrimaryUser,
   getSessionsForUser
 } from '../../data/mockSelectors';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -78,6 +79,9 @@ function getDisplayName(email?: string): string {
 }
 
 const CoachDashboardContent = ({ isOffline }: { isOffline?: boolean }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const navigation = useNavigation<any>();
   const coach = getPrimaryUser();
   const [activeFilter, setActiveFilter] = useState<RiskLevel | 'all'>('all');
@@ -333,76 +337,92 @@ export const CoachDashboardScreen = ({ route }: { route?: { params?: RouteParams
   );
 };
 
-const styles = StyleSheet.create({
-  statsRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    paddingVertical: 8
-  },
-  statItem: { alignItems: 'center', flex: 1 },
-  statBorder: { borderLeftWidth: 1, borderRightWidth: 1, borderColor: '#E5E7EB' },
-  statValue: { fontSize: 22, fontWeight: '800', color: '#1E3A5F' },
-  statValueRed: { color: '#DC2626' },
-  statValueAmber: { color: '#D97706' },
-  statValueGreen: { color: '#16A34A' },
-  statLabel: { fontSize: 11, color: '#6B7280', marginTop: 2 },
-  filterRow: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 8,
-    marginBottom: 16
-  },
-  filterChip: { borderRadius: 20 },
-  filterChipActive: { backgroundColor: '#EFF6FF' },
-  clientCard: {
-    borderRadius: 12,
-    borderLeftWidth: 4,
-    padding: 14,
-    backgroundColor: '#FFFFFF',
-    marginBottom: 2
-  },
-  clientTop: { flexDirection: 'row', alignItems: 'flex-start', gap: 12, marginBottom: 10 },
-  avatarCircle: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  avatarInitials: { color: '#FFFFFF', fontSize: 16, fontWeight: '700' },
-  clientInfo: { flex: 1 },
-  clientNameRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    gap: 8,
-    marginBottom: 4
-  },
-  clientName: { flex: 1, fontSize: 15, fontWeight: '700', color: '#1E293B' },
-  riskBadge: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderRadius: 8,
-    paddingHorizontal: 6,
-    paddingVertical: 2,
-    gap: 3
-  },
-  riskBadgeIcon: { backgroundColor: 'transparent' },
-  riskBadgeText: { fontSize: 10, fontWeight: '700' },
-  lastActivity: { fontSize: 12, color: '#6B7280' },
-  progressSection: { marginBottom: 10 },
-  progressLabelRow: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 4 },
-  progressLabel: { fontSize: 12, color: '#525252' },
-  progressValue: { fontSize: 12, fontWeight: '700' },
-  progressBar: { height: 6, borderRadius: 6, marginBottom: 4 },
-  progressMeta: { fontSize: 11, color: '#9CA3AF' },
-  clientActions: { flexDirection: 'row', gap: 8 },
-  clientActionBtn: { borderRadius: 8 },
-  cardDivider: { marginVertical: 8 },
-  emptyFilter: { paddingVertical: 24, alignItems: 'center' },
-  emptyFilterText: { color: '#9CA3AF', fontSize: 14 },
-  emptyAll: { alignItems: 'center', paddingVertical: 32 },
-  emptyIcon: { backgroundColor: '#F1F5F9', marginBottom: 12 },
-  emptyTitle: { fontSize: 16, fontWeight: '700', color: '#374151', marginBottom: 4 },
-  emptyDesc: { fontSize: 13, color: '#6B7280', textAlign: 'center' }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    statsRow: {
+      flexDirection: 'row',
+      justifyContent: 'space-around',
+      paddingVertical: spacing[1]
+    },
+    statItem: { alignItems: 'center', flex: 1 },
+    statBorder: { borderLeftWidth: 1, borderRightWidth: 1, borderColor: '#E5E7EB' },
+    statValue: { fontSize: fontSizes['5xl'], fontWeight: fontWeights.extraBold, color: '#1E3A5F' },
+    statValueRed: { color: palette.red600 },
+    statValueAmber: { color: '#D97706' },
+    statValueGreen: { color: c.success },
+    statLabel: { fontSize: fontSizes.sm, color: c.textTertiary, marginTop: 2 },
+    filterRow: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      gap: spacing[1],
+      marginBottom: spacing[2]
+    },
+    filterChip: { borderRadius: radii['2xl'] },
+    filterChipActive: { backgroundColor: '#EFF6FF' },
+    clientCard: {
+      borderRadius: radii.lg,
+      borderLeftWidth: 4,
+      padding: 14,
+      backgroundColor: palette.white,
+      marginBottom: 2
+    },
+    clientTop: {
+      flexDirection: 'row',
+      alignItems: 'flex-start',
+      gap: spacing[1.5],
+      marginBottom: 10
+    },
+    avatarCircle: {
+      width: 44,
+      height: 44,
+      borderRadius: 22,
+      alignItems: 'center',
+      justifyContent: 'center'
+    },
+    avatarInitials: {
+      color: palette.white,
+      fontSize: fontSizes['2xl'],
+      fontWeight: fontWeights.bold
+    },
+    clientInfo: { flex: 1 },
+    clientNameRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      gap: spacing[1],
+      marginBottom: 4
+    },
+    clientName: { flex: 1, fontSize: fontSizes.xl, fontWeight: fontWeights.bold, color: '#1E293B' },
+    riskBadge: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      borderRadius: radii.md,
+      paddingHorizontal: 6,
+      paddingVertical: 2,
+      gap: 3
+    },
+    riskBadgeIcon: { backgroundColor: 'transparent' },
+    riskBadgeText: { fontSize: 10, fontWeight: fontWeights.bold },
+    lastActivity: { fontSize: fontSizes.base, color: c.textTertiary },
+    progressSection: { marginBottom: 10 },
+    progressLabelRow: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 4 },
+    progressLabel: { fontSize: fontSizes.base, color: c.textSecondary },
+    progressValue: { fontSize: fontSizes.base, fontWeight: fontWeights.bold },
+    progressBar: { height: 6, borderRadius: radii.sm, marginBottom: 4 },
+    progressMeta: { fontSize: fontSizes.sm, color: '#9CA3AF' },
+    clientActions: { flexDirection: 'row', gap: spacing[1] },
+    clientActionBtn: { borderRadius: radii.md },
+    cardDivider: { marginVertical: 8 },
+    emptyFilter: { paddingVertical: spacing[3], alignItems: 'center' },
+    emptyFilterText: { color: '#9CA3AF', fontSize: fontSizes.lg },
+    emptyAll: { alignItems: 'center', paddingVertical: 32 },
+    emptyIcon: { backgroundColor: '#F1F5F9', marginBottom: spacing[1.5] },
+    emptyTitle: {
+      fontSize: fontSizes['2xl'],
+      fontWeight: fontWeights.bold,
+      color: '#374151',
+      marginBottom: 4
+    },
+    emptyDesc: { fontSize: fontSizes.md, color: c.textTertiary, textAlign: 'center' }
+  });
+}

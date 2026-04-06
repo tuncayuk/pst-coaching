@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { PActivityIndicator, PButton, PChip, PDivider, PText } from '../../components';
@@ -10,6 +10,7 @@ import {
   getWorkshopById,
   getWorkshops
 } from '../../data/mockSelectors';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -38,6 +39,9 @@ const STAGE_LABELS: Record<number, string> = {
 };
 
 const ContentWorkshopDetailContent = ({ workshopId, isOffline }: { workshopId?: string; isOffline?: boolean }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const navigation = useNavigation<any>();
   const user = getPrimaryUser();
   // AC-FR-E8-01-03: role-based CTA -- "facilitator" role triggers guide CTA
@@ -236,71 +240,73 @@ export const ContentWorkshopDetailScreen = ({ route }: { route?: { params?: Rout
   );
 };
 
-const styles = StyleSheet.create({
-  hero: {
-    alignItems: 'center',
-    paddingVertical: 24,
-    paddingHorizontal: 16
-  },
-  heroEmoji: {
-    fontSize: 48,
-    marginBottom: 12
-  },
-  heroTitle: {
-    textAlign: 'center',
-    fontWeight: '700',
-    marginBottom: 8
-  },
-  heroDesc: {
-    textAlign: 'center',
-    opacity: 0.75,
-    lineHeight: 22
-  },
-  chipRow: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 8,
-    marginBottom: 12
-  },
-  chip: {
-    marginBottom: 4
-  },
-  divider: {
-    marginVertical: 10
-  },
-  metaRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 6
-  },
-  metaLabel: {
-    opacity: 0.6
-  },
-  subtleText: {
-    opacity: 0.7,
-    marginTop: 4
-  },
-  offlineNote: {
-    marginTop: 8,
-    opacity: 0.55,
-    fontStyle: 'italic'
-  },
-  stageRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 4
-  },
-  stageNum: {
-    width: 28,
-    opacity: 0.5
-  },
-  stageLabel: {
-    flex: 1
-  },
-  primaryButton: {
-    marginTop: 8
-  },
-  secondaryButton: {
-    marginTop: 10
-  }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    hero: {
+      alignItems: 'center',
+      paddingVertical: spacing[3],
+      paddingHorizontal: spacing[2]
+    },
+    heroEmoji: {
+      fontSize: fontSizes['11xl'],
+      marginBottom: spacing[1.5]
+    },
+    heroTitle: {
+      textAlign: 'center',
+      fontWeight: fontWeights.bold,
+      marginBottom: spacing[1]
+    },
+    heroDesc: {
+      textAlign: 'center',
+      opacity: 0.75,
+      lineHeight: 22
+    },
+    chipRow: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      gap: spacing[1],
+      marginBottom: spacing[1.5]
+    },
+    chip: {
+      marginBottom: 4
+    },
+    divider: {
+      marginVertical: 10
+    },
+    metaRow: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      marginTop: 6
+    },
+    metaLabel: {
+      opacity: 0.6
+    },
+    subtleText: {
+      opacity: 0.7,
+      marginTop: 4
+    },
+    offlineNote: {
+      marginTop: spacing[1],
+      opacity: 0.55,
+      fontStyle: 'italic'
+    },
+    stageRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      paddingVertical: 4
+    },
+    stageNum: {
+      width: 28,
+      opacity: 0.5
+    },
+    stageLabel: {
+      flex: 1
+    },
+    primaryButton: {
+      marginTop: spacing[1]
+    },
+    secondaryButton: {
+      marginTop: 10
+    }
+  });
+}

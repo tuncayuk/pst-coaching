@@ -1,9 +1,10 @@
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { PActivityIndicator, PButton, PIconButton, PText, PTextInput } from '../../components';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -12,6 +13,9 @@ import { SkeletonBlock } from '../components/SkeletonBlock';
 import { StateMessage } from '../components/StateMessage';
 
 const RegisterContent = ({ isOffline }: { isOffline?: boolean }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const [accepted, setAccepted] = React.useState(false);
   const [showPassword, setShowPassword] = React.useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
@@ -276,180 +280,182 @@ export const AuthRegisterScreen = ({ route }: { route?: { params?: { state?: Scr
   return <RegisterContent />;
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#FAFAFA'
-  },
-  scrollContent: {
-    paddingHorizontal: 24,
-    paddingTop: 24,
-    paddingBottom: 32
-  },
-  backButton: {
-    width: 40,
-    height: 40,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 8
-  },
-  backButtonText: {
-    fontSize: 24,
-    color: '#171717'
-  },
-  header: {
-    alignItems: 'center',
-    marginBottom: 24
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: '700',
-    color: '#2B1B5D',
-    marginBottom: 8,
-    textAlign: 'center'
-  },
-  subtitle: {
-    fontSize: 15,
-    color: '#525252',
-    marginBottom: 24,
-    textAlign: 'center'
-  },
-  inputGroup: {
-    marginBottom: 16
-  },
-  label: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#404040',
-    marginBottom: 8
-  },
-  input: {
-    backgroundColor: '#FFFFFF'
-  },
-  inputContent: {
-    paddingVertical: 14
-  },
-  inputOutline: {
-    borderWidth: 2,
-    borderRadius: 12,
-    borderColor: '#D4D4D4'
-  },
-  phoneRow: {
-    flexDirection: 'row',
-    gap: 8
-  },
-  countryCode: {
-    width: 100,
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'row',
-    gap: 4,
-    borderWidth: 2,
-    borderColor: '#E5E5E5',
-    borderRadius: 12,
-    paddingVertical: 14,
-    paddingHorizontal: 12,
-    backgroundColor: '#FFFFFF'
-  },
-  countryCodeText: {
-    fontSize: 14,
-    color: '#404040'
-  },
-  countryCodeChevron: {
-    fontSize: 12,
-    color: '#525252'
-  },
-  phoneInput: {
-    flex: 1
-  },
-  passwordContainer: {
-    position: 'relative'
-  },
-  passwordInput: {
-    paddingRight: 48
-  },
-  eyeIcon: {
-    position: 'absolute',
-    right: 8,
-    top: 8
-  },
-  strengthContainer: {
-    marginTop: 8
-  },
-  strengthBars: {
-    flexDirection: 'row',
-    gap: 4,
-    marginBottom: 4
-  },
-  strengthBar: {
-    flex: 1,
-    height: 4,
-    borderRadius: 2,
-    backgroundColor: '#E5E5E5'
-  },
-  strengthLabel: {
-    fontSize: 12,
-    fontWeight: '600'
-  },
-  errorText: {
-    color: '#EF4444',
-    fontSize: 12,
-    marginTop: 8
-  },
-  checkboxRow: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    gap: 8,
-    marginBottom: 16
-  },
-  checkboxText: {
-    flex: 1,
-    fontSize: 13,
-    color: '#404040',
-    lineHeight: 18
-  },
-  linkText: {
-    color: '#00B4D8',
-    fontSize: 13
-  },
-  checkboxBox: {
-    width: 24,
-    height: 24,
-    borderRadius: 6,
-    borderWidth: 2,
-    borderColor: '#D4D4D4',
-    backgroundColor: '#FFFFFF',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 2
-  },
-  checkboxBoxChecked: {
-    borderColor: '#00B4D8',
-    backgroundColor: '#00B4D8'
-  },
-  checkboxCheck: {
-    color: '#FFFFFF',
-    fontSize: 12,
-    fontWeight: '700',
-    lineHeight: 12
-  },
-  button: {
-    marginBottom: 16,
-    borderRadius: 12
-  },
-  signupRow: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 8
-  },
-  signupText: {
-    color: '#525252',
-    fontSize: 15
-  },
-  signupLink: {
-    color: '#00B4D8',
-    fontWeight: '600',
-    fontSize: 15
-  }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: c.background
+    },
+    scrollContent: {
+      paddingHorizontal: spacing[3],
+      paddingTop: spacing[3],
+      paddingBottom: spacing[4]
+    },
+    backButton: {
+      width: 40,
+      height: 40,
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginBottom: spacing[1]
+    },
+    backButtonText: {
+      fontSize: fontSizes['6xl'],
+      color: c.textPrimary
+    },
+    header: {
+      alignItems: 'center',
+      marginBottom: spacing[3]
+    },
+    title: {
+      fontSize: fontSizes['6xl'],
+      fontWeight: fontWeights.bold,
+      color: c.textBrand,
+      marginBottom: spacing[1],
+      textAlign: 'center'
+    },
+    subtitle: {
+      fontSize: fontSizes.xl,
+      color: c.textSecondary,
+      marginBottom: spacing[3],
+      textAlign: 'center'
+    },
+    inputGroup: {
+      marginBottom: spacing[2]
+    },
+    label: {
+      fontSize: fontSizes.lg,
+      fontWeight: fontWeights.semiBold,
+      color: c.textTertiary,
+      marginBottom: spacing[1]
+    },
+    input: {
+      backgroundColor: palette.white
+    },
+    inputContent: {
+      paddingVertical: 14
+    },
+    inputOutline: {
+      borderWidth: 2,
+      borderRadius: radii.lg,
+      borderColor: c.outline
+    },
+    phoneRow: {
+      flexDirection: 'row',
+      gap: spacing[1]
+    },
+    countryCode: {
+      width: 100,
+      justifyContent: 'center',
+      alignItems: 'center',
+      flexDirection: 'row',
+      gap: 4,
+      borderWidth: 2,
+      borderColor: c.outlineVariant,
+      borderRadius: radii.lg,
+      paddingVertical: 14,
+      paddingHorizontal: spacing[1.5],
+      backgroundColor: palette.white
+    },
+    countryCodeText: {
+      fontSize: fontSizes.lg,
+      color: c.textTertiary
+    },
+    countryCodeChevron: {
+      fontSize: fontSizes.base,
+      color: c.textSecondary
+    },
+    phoneInput: {
+      flex: 1
+    },
+    passwordContainer: {
+      position: 'relative'
+    },
+    passwordInput: {
+      paddingRight: 48
+    },
+    eyeIcon: {
+      position: 'absolute',
+      right: spacing[1],
+      top: spacing[1]
+    },
+    strengthContainer: {
+      marginTop: spacing[1]
+    },
+    strengthBars: {
+      flexDirection: 'row',
+      gap: 4,
+      marginBottom: 4
+    },
+    strengthBar: {
+      flex: 1,
+      height: 4,
+      borderRadius: radii.xs,
+      backgroundColor: c.outlineVariant
+    },
+    strengthLabel: {
+      fontSize: fontSizes.base,
+      fontWeight: fontWeights.semiBold
+    },
+    errorText: {
+      color: palette.red500,
+      fontSize: fontSizes.base,
+      marginTop: spacing[1]
+    },
+    checkboxRow: {
+      flexDirection: 'row',
+      alignItems: 'flex-start',
+      gap: spacing[1],
+      marginBottom: spacing[2]
+    },
+    checkboxText: {
+      flex: 1,
+      fontSize: fontSizes.md,
+      color: c.textTertiary,
+      lineHeight: 18
+    },
+    linkText: {
+      color: c.primary,
+      fontSize: fontSizes.md
+    },
+    checkboxBox: {
+      width: 24,
+      height: 24,
+      borderRadius: radii.sm,
+      borderWidth: 2,
+      borderColor: c.outline,
+      backgroundColor: palette.white,
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginTop: 2
+    },
+    checkboxBoxChecked: {
+      borderColor: c.primary,
+      backgroundColor: c.primary
+    },
+    checkboxCheck: {
+      color: palette.white,
+      fontSize: fontSizes.base,
+      fontWeight: fontWeights.bold,
+      lineHeight: 12
+    },
+    button: {
+      marginBottom: spacing[2],
+      borderRadius: radii.lg
+    },
+    signupRow: {
+      flexDirection: 'row',
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginTop: spacing[1]
+    },
+    signupText: {
+      color: c.textSecondary,
+      fontSize: fontSizes.xl
+    },
+    signupLink: {
+      color: c.primary,
+      fontWeight: fontWeights.semiBold,
+      fontSize: fontSizes.xl
+    }
+  });
+}

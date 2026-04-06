@@ -1,9 +1,10 @@
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { PActivityIndicator, PButton, PCard, PChip, PProgressBar, PText } from '../../components';
 import { getJourneys } from '../../data/mockSelectors';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -12,6 +13,9 @@ import { SkeletonBlock } from '../components/SkeletonBlock';
 import { StateMessage } from '../components/StateMessage';
 
 const LibraryJourneysContent = ({ isOffline }: { isOffline?: boolean }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const navigation = useNavigation<any>();
   const journeys = getJourneys();
   const activeJourneys = journeys.slice(0, 2).map((journey, index) => ({
@@ -143,24 +147,26 @@ export const LibraryJourneysScreen = ({ route }: { route?: { params?: { state?: 
   );
 };
 
-const styles = StyleSheet.create({
-  progressBlock: {
-    marginBottom: 16
-  },
-  progressHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 8
-  },
-  subtitle: {
-    marginBottom: 8
-  },
-  primaryButton: {
-    marginTop: 8,
-    alignSelf: 'flex-start'
-  },
-  card: {
-    marginBottom: 12
-  }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    progressBlock: {
+      marginBottom: spacing[2]
+    },
+    progressHeader: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginBottom: spacing[1]
+    },
+    subtitle: {
+      marginBottom: spacing[1]
+    },
+    primaryButton: {
+      marginTop: spacing[1],
+      alignSelf: 'flex-start'
+    },
+    card: {
+      marginBottom: spacing[1.5]
+    }
+  });
+}

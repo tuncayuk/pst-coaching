@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { PActivityIndicator, PButton, PChip, PText, PTextInput } from '../../components';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -12,6 +13,9 @@ import { StateMessage } from '../components/StateMessage';
 const ratingLabels = ['Harika', 'Faydalı', 'Geliştirilebilir', 'Zorlayıcı'];
 
 const ContentReviewPromptContent = ({ isOffline }: { isOffline?: boolean }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   return (
     <>
       <SectionCard title="Değerlendirme">
@@ -109,18 +113,20 @@ export const ContentReviewPromptScreen = ({
   );
 };
 
-const styles = StyleSheet.create({
-  chipRow: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    marginTop: 12,
-    marginBottom: 12
-  },
-  chip: {
-    marginRight: 8,
-    marginBottom: 8
-  },
-  input: {
-    marginBottom: 12
-  }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    chipRow: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      marginTop: spacing[1.5],
+      marginBottom: spacing[1.5]
+    },
+    chip: {
+      marginRight: 8,
+      marginBottom: spacing[1]
+    },
+    input: {
+      marginBottom: spacing[1.5]
+    }
+  });
+}

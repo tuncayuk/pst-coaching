@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Modal, StyleSheet, TextInput, View } from 'react-native';
 
 import { PActivityIndicator, PButton, PDivider, PText } from '../../components';
@@ -12,6 +12,7 @@ import {
   getPrimaryUser,
   getWorkshops
 } from '../../data/mockSelectors';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -26,6 +27,9 @@ type CollectionEntry = {
 };
 
 const LibraryCollectionsContent = ({ isOffline }: { isOffline?: boolean }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const navigation = useNavigation<any>();
   const user = getPrimaryUser();
   const collectionsRaw = getCollectionsForUser(user?.id);
@@ -240,82 +244,84 @@ export const LibraryCollectionsScreen = ({ route }: { route?: { params?: { state
   );
 };
 
-const styles = StyleSheet.create({
-  createBtn: {
-    alignSelf: 'flex-start'
-  },
-  emptyText: {
-    opacity: 0.6,
-    paddingVertical: 8,
-    lineHeight: 20
-  },
-  colRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingVertical: 8,
-    gap: 10
-  },
-  colInfo: {
-    flex: 1
-  },
-  colName: {
-    fontWeight: '600'
-  },
-  colMeta: {
-    opacity: 0.55,
-    marginTop: 2
-  },
-  colActions: {
-    flexDirection: 'row',
-    gap: 4
-  },
-  divider: {
-    marginHorizontal: 0
-  },
-  snackbar: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    backgroundColor: '#323232',
-    borderRadius: 8,
-    paddingHorizontal: 16,
-    paddingVertical: 10,
-    marginHorizontal: 16,
-    marginBottom: 16
-  },
-  snackbarText: {
-    color: '#FFF',
-    flex: 1
-  },
-  undoBtn: {
-    marginLeft: 8
-  },
-  modalOverlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.5)',
-    justifyContent: 'flex-end'
-  },
-  modalCard: {
-    backgroundColor: '#FFF',
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    padding: 24,
-    paddingBottom: 36
-  },
-  modalTitle: {
-    fontWeight: '700',
-    marginBottom: 14
-  },
-  nameInput: {
-    borderWidth: 1,
-    borderColor: '#DDD',
-    borderRadius: 8,
-    padding: 12,
-    fontSize: 16,
-    marginBottom: 16
-  },
-  modalActions: {
-    gap: 10
-  }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    createBtn: {
+      alignSelf: 'flex-start'
+    },
+    emptyText: {
+      opacity: 0.6,
+      paddingVertical: spacing[1],
+      lineHeight: 20
+    },
+    colRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      paddingVertical: spacing[1],
+      gap: 10
+    },
+    colInfo: {
+      flex: 1
+    },
+    colName: {
+      fontWeight: fontWeights.semiBold
+    },
+    colMeta: {
+      opacity: 0.55,
+      marginTop: 2
+    },
+    colActions: {
+      flexDirection: 'row',
+      gap: 4
+    },
+    divider: {
+      marginHorizontal: 0
+    },
+    snackbar: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      backgroundColor: '#323232',
+      borderRadius: radii.md,
+      paddingHorizontal: spacing[2],
+      paddingVertical: 10,
+      marginHorizontal: 16,
+      marginBottom: spacing[2]
+    },
+    snackbarText: {
+      color: '#FFF',
+      flex: 1
+    },
+    undoBtn: {
+      marginLeft: 8
+    },
+    modalOverlay: {
+      flex: 1,
+      backgroundColor: 'rgba(0,0,0,0.5)',
+      justifyContent: 'flex-end'
+    },
+    modalCard: {
+      backgroundColor: '#FFF',
+      borderTopLeftRadius: 20,
+      borderTopRightRadius: 20,
+      padding: spacing[3],
+      paddingBottom: 36
+    },
+    modalTitle: {
+      fontWeight: fontWeights.bold,
+      marginBottom: 14
+    },
+    nameInput: {
+      borderWidth: 1,
+      borderColor: '#DDD',
+      borderRadius: radii.md,
+      padding: spacing[1.5],
+      fontSize: fontSizes['2xl'],
+      marginBottom: spacing[2]
+    },
+    modalActions: {
+      gap: 10
+    }
+  });
+}

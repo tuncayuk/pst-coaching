@@ -1,9 +1,10 @@
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { PActivityIndicator, PButton, PText, PTextInput } from '../../components';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -12,6 +13,9 @@ import { SkeletonBlock } from '../components/SkeletonBlock';
 import { StateMessage } from '../components/StateMessage';
 
 const ForgotPasswordContent = ({ isOffline }: { isOffline?: boolean }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const [email, setEmail] = React.useState('');
   const [hasSent, setHasSent] = React.useState(false);
   const navigation = useNavigation<any>();
@@ -132,84 +136,86 @@ export const AuthForgotPasswordScreen = ({ route }: { route?: { params?: { state
   return <ForgotPasswordContent />;
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#FAFAFA'
-  },
-  scrollContent: {
-    paddingHorizontal: 24,
-    paddingTop: 24,
-    paddingBottom: 32
-  },
-  backButton: {
-    width: 40,
-    height: 40,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 16
-  },
-  backButtonText: {
-    fontSize: 24,
-    color: '#171717'
-  },
-  iconContainer: {
-    alignItems: 'center',
-    marginBottom: 16
-  },
-  icon: {
-    fontSize: 64
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: '700',
-    color: '#2B1B5D',
-    marginBottom: 8,
-    textAlign: 'center'
-  },
-  description: {
-    color: '#525252',
-    marginBottom: 32,
-    textAlign: 'center',
-    lineHeight: 24
-  },
-  inputGroup: {
-    marginBottom: 24
-  },
-  label: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#404040',
-    marginBottom: 8
-  },
-  input: {
-    backgroundColor: '#FFFFFF'
-  },
-  inputContent: {
-    paddingVertical: 16
-  },
-  inputOutline: {
-    borderWidth: 2,
-    borderRadius: 12,
-    borderColor: '#D4D4D4'
-  },
-  button: {
-    marginBottom: 16,
-    borderRadius: 12
-  },
-  successText: {
-    textAlign: 'center',
-    color: '#10B981',
-    fontSize: 13,
-    marginBottom: 12
-  },
-  backLink: {
-    alignItems: 'center',
-    marginTop: 8
-  },
-  backLinkText: {
-    color: '#00B4D8',
-    fontWeight: '600',
-    fontSize: 15
-  }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: c.background
+    },
+    scrollContent: {
+      paddingHorizontal: spacing[3],
+      paddingTop: 24,
+      paddingBottom: 32
+    },
+    backButton: {
+      width: 40,
+      height: 40,
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginBottom: spacing[2]
+    },
+    backButtonText: {
+      fontSize: fontSizes['6xl'],
+      color: c.textPrimary
+    },
+    iconContainer: {
+      alignItems: 'center',
+      marginBottom: spacing[2]
+    },
+    icon: {
+      fontSize: fontSizes['12xl']
+    },
+    title: {
+      fontSize: fontSizes['6xl'],
+      fontWeight: fontWeights.bold,
+      color: c.textBrand,
+      marginBottom: spacing[1],
+      textAlign: 'center'
+    },
+    description: {
+      color: c.textSecondary,
+      marginBottom: spacing[4],
+      textAlign: 'center',
+      lineHeight: 24
+    },
+    inputGroup: {
+      marginBottom: spacing[3]
+    },
+    label: {
+      fontSize: fontSizes.lg,
+      fontWeight: fontWeights.semiBold,
+      color: c.textTertiary,
+      marginBottom: spacing[1]
+    },
+    input: {
+      backgroundColor: palette.white
+    },
+    inputContent: {
+      paddingVertical: spacing[2]
+    },
+    inputOutline: {
+      borderWidth: 2,
+      borderRadius: radii.lg,
+      borderColor: c.outline
+    },
+    button: {
+      marginBottom: spacing[2],
+      borderRadius: radii.lg
+    },
+    successText: {
+      textAlign: 'center',
+      color: c.tertiary,
+      fontSize: fontSizes.md,
+      marginBottom: spacing[1.5]
+    },
+    backLink: {
+      alignItems: 'center',
+      marginTop: spacing[1]
+    },
+    backLinkText: {
+      color: c.primary,
+      fontWeight: fontWeights.semiBold,
+      fontSize: fontSizes.xl
+    }
+  });
+}

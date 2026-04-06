@@ -1,9 +1,10 @@
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { PActivityIndicator, PButton, PCard, PText } from '../../components';
 import { getEbooks, getJourneys, getModules, getWorkshops } from '../../data/mockSelectors';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -20,6 +21,9 @@ const levelLabels: Record<string, string> = {
 };
 
 const DiscoverAssistantResultsContent = ({ isOffline }: { isOffline?: boolean }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const navigation = useNavigation<any>();
   const journey = getJourneys()[0];
   const workshop = getWorkshops()[0];
@@ -199,96 +203,98 @@ export const DiscoverAssistantResultsScreen = ({ route }: { route?: { params?: {
   );
 };
 
-const styles = StyleSheet.create({
-  hero: {
-    alignItems: 'center',
-    marginBottom: 24
-  },
-  heroEmoji: {
-    fontSize: 46,
-    marginBottom: 12
-  },
-  heroTitle: {
-    fontSize: 20,
-    fontWeight: '700',
-    color: '#2B1B5D',
-    textAlign: 'center',
-    marginBottom: 6
-  },
-  heroSubtitle: {
-    fontSize: 15,
-    color: '#525252',
-    textAlign: 'center'
-  },
-  primaryCard: {
-    padding: 16,
-    borderRadius: 16,
-    marginBottom: 16
-  },
-  cardLabel: {
-    fontSize: 13,
-    fontWeight: '700',
-    color: '#00B4D8',
-    marginBottom: 6
-  },
-  cardTitle: {
-    fontSize: 18,
-    fontWeight: '700',
-    color: '#171717',
-    marginBottom: 4
-  },
-  cardMeta: {
-    fontSize: 13,
-    color: '#737373',
-    marginBottom: 10
-  },
-  cardDetail: {
-    fontSize: 14,
-    color: '#525252',
-    marginBottom: 12
-  },
-  primaryActions: {
-    gap: 8
-  },
-  primaryAction: {
-    marginBottom: 4
-  },
-  sectionTitle: {
-    fontSize: 16,
-    fontWeight: '700',
-    color: '#171717',
-    marginBottom: 10
-  },
-  altCard: {
-    padding: 16,
-    borderRadius: 16,
-    marginBottom: 12
-  },
-  altTitle: {
-    fontSize: 16,
-    fontWeight: '700',
-    color: '#171717',
-    marginBottom: 4
-  },
-  altMeta: {
-    fontSize: 13,
-    color: '#737373',
-    marginBottom: 12
-  },
-  ctaCard: {
-    padding: 16,
-    borderRadius: 16,
-    marginTop: 8
-  },
-  ctaTitle: {
-    fontSize: 16,
-    fontWeight: '700',
-    color: '#171717',
-    marginBottom: 6
-  },
-  ctaText: {
-    fontSize: 14,
-    color: '#525252',
-    marginBottom: 12
-  }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    hero: {
+      alignItems: 'center',
+      marginBottom: spacing[3]
+    },
+    heroEmoji: {
+      fontSize: 46,
+      marginBottom: spacing[1.5]
+    },
+    heroTitle: {
+      fontSize: fontSizes['4xl'],
+      fontWeight: fontWeights.bold,
+      color: c.textBrand,
+      textAlign: 'center',
+      marginBottom: 6
+    },
+    heroSubtitle: {
+      fontSize: fontSizes.xl,
+      color: c.textSecondary,
+      textAlign: 'center'
+    },
+    primaryCard: {
+      padding: spacing[2],
+      borderRadius: radii.xl,
+      marginBottom: spacing[2]
+    },
+    cardLabel: {
+      fontSize: fontSizes.md,
+      fontWeight: fontWeights.bold,
+      color: c.primary,
+      marginBottom: 6
+    },
+    cardTitle: {
+      fontSize: fontSizes['3xl'],
+      fontWeight: fontWeights.bold,
+      color: c.textPrimary,
+      marginBottom: 4
+    },
+    cardMeta: {
+      fontSize: fontSizes.md,
+      color: c.textTertiary,
+      marginBottom: 10
+    },
+    cardDetail: {
+      fontSize: fontSizes.lg,
+      color: c.textSecondary,
+      marginBottom: spacing[1.5]
+    },
+    primaryActions: {
+      gap: spacing[1]
+    },
+    primaryAction: {
+      marginBottom: 4
+    },
+    sectionTitle: {
+      fontSize: fontSizes['2xl'],
+      fontWeight: fontWeights.bold,
+      color: c.textPrimary,
+      marginBottom: 10
+    },
+    altCard: {
+      padding: spacing[2],
+      borderRadius: radii.xl,
+      marginBottom: spacing[1.5]
+    },
+    altTitle: {
+      fontSize: fontSizes['2xl'],
+      fontWeight: fontWeights.bold,
+      color: c.textPrimary,
+      marginBottom: 4
+    },
+    altMeta: {
+      fontSize: fontSizes.md,
+      color: c.textTertiary,
+      marginBottom: spacing[1.5]
+    },
+    ctaCard: {
+      padding: spacing[2],
+      borderRadius: radii.xl,
+      marginTop: spacing[1]
+    },
+    ctaTitle: {
+      fontSize: fontSizes['2xl'],
+      fontWeight: fontWeights.bold,
+      color: c.textPrimary,
+      marginBottom: 6
+    },
+    ctaText: {
+      fontSize: fontSizes.lg,
+      color: c.textSecondary,
+      marginBottom: spacing[1.5]
+    }
+  });
+}

@@ -1,9 +1,10 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import { PActivityIndicator, PButton, PDivider, PText } from '../../components';
 import { getAccessibilitySettings, getPrimaryUser } from '../../data/mockSelectors';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -25,6 +26,9 @@ const PREVIEW_TEXT =
   'Bu bir onizleme cumlesidir. Sectiginiz metin boyutunun iceriklerinizde nasil gorunecegini burada canli olarak takip edebilirsiniz.';
 
 const ProfileTextScaleContent = ({ isOffline }: { isOffline?: boolean }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const navigation = useNavigation<any>();
   const user = getPrimaryUser();
   const settings = getAccessibilitySettings().find((s: any) => s.user_id === user?.id);
@@ -208,71 +212,73 @@ export const ProfileTextScaleScreen = ({ route }: { route?: { params?: { state?:
   );
 };
 
-const styles = StyleSheet.create({
-  hint: {
-    opacity: 0.6,
-    marginBottom: 12,
-    lineHeight: 18
-  },
-  stepRow: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 8,
-    marginBottom: 10
-  },
-  stepBtn: {
-    paddingHorizontal: 14,
-    paddingVertical: 9,
-    borderRadius: 20,
-    borderWidth: 1.5,
-    borderColor: '#BDBDBD',
-    backgroundColor: '#FAFAFA'
-  },
-  stepBtnActive: {
-    borderColor: '#7C4DFF',
-    backgroundColor: '#EDE7F6'
-  },
-  stepLabel: {
-    color: '#616161'
-  },
-  stepLabelActive: {
-    color: '#7C4DFF',
-    fontWeight: '700'
-  },
-  scaleNote: {
-    opacity: 0.6,
-    marginTop: 4
-  },
-  divider: {
-    marginVertical: 10
-  },
-  previewLabel: {
-    opacity: 0.5,
-    marginBottom: 4,
-    textTransform: 'uppercase',
-    letterSpacing: 0.5
-  },
-  previewHeading: {
-    fontWeight: '700',
-    color: '#212121',
-    marginBottom: 4
-  },
-  previewBody: {
-    color: '#424242'
-  },
-  previewCaption: {
-    color: '#757575'
-  },
-  scopeText: {
-    opacity: 0.7,
-    lineHeight: 20
-  },
-  savedText: {
-    color: '#4CAF50',
-    textAlign: 'center',
-    marginBottom: 6
-  },
-  saveBtn: {
-    marginBottom: 8
-  }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    hint: {
+      opacity: 0.6,
+      marginBottom: spacing[1.5],
+      lineHeight: 18
+    },
+    stepRow: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      gap: spacing[1],
+      marginBottom: 10
+    },
+    stepBtn: {
+      paddingHorizontal: 14,
+      paddingVertical: 9,
+      borderRadius: radii['2xl'],
+      borderWidth: 1.5,
+      borderColor: '#BDBDBD',
+      backgroundColor: c.background
+    },
+    stepBtnActive: {
+      borderColor: '#7C4DFF',
+      backgroundColor: palette.purple50
+    },
+    stepLabel: {
+      color: '#616161'
+    },
+    stepLabelActive: {
+      color: '#7C4DFF',
+      fontWeight: fontWeights.bold
+    },
+    scaleNote: {
+      opacity: 0.6,
+      marginTop: 4
+    },
+    divider: {
+      marginVertical: 10
+    },
+    previewLabel: {
+      opacity: 0.5,
+      marginBottom: 4,
+      textTransform: 'uppercase',
+      letterSpacing: 0.5
+    },
+    previewHeading: {
+      fontWeight: fontWeights.bold,
+      color: '#212121',
+      marginBottom: 4
+    },
+    previewBody: {
+      color: '#424242'
+    },
+    previewCaption: {
+      color: '#757575'
+    },
+    scopeText: {
+      opacity: 0.7,
+      lineHeight: 20
+    },
+    savedText: {
+      color: '#4CAF50',
+      textAlign: 'center',
+      marginBottom: 6
+    },
+    saveBtn: {
+      marginBottom: spacing[1]
+    }
+  });
+}

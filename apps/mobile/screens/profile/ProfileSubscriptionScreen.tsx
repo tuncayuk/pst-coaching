@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { PButton, PCard, PChip, PDivider, PListIcon, PListItem, PProgressBar, PText } from '../../components';
@@ -10,6 +10,7 @@ import {
   getSeatsForSubscription,
   getSubscriptionForUser
 } from '../../data/mockSelectors';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -26,6 +27,9 @@ const STATUS_CONFIG = {
 const BENEFITS = ['Sinirsiz icerik erisimi', 'Offline indirme', 'Aile paylasimi'];
 
 const ProfileSubscriptionContent = ({ isOffline }: { isOffline?: boolean }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const navigation = useNavigation<any>();
   const user = getPrimaryUser();
   const subscription = getSubscriptionForUser(user?.id);
@@ -224,41 +228,43 @@ export const ProfileSubscriptionScreen = ({ route }: { route?: { params?: { stat
   );
 };
 
-const styles = StyleSheet.create({
-  card: {
-    marginBottom: 8
-  },
-  row: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 8
-  },
-  statusBadge: {
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: 12
-  },
-  statusText: {
-    fontSize: 12,
-    fontWeight: '700'
-  },
-  seatCount: {
-    color: '#6B7280'
-  },
-  seatBar: {
-    height: 6,
-    borderRadius: 3,
-    marginBottom: 12
-  },
-  benefitList: {
-    gap: 4
-  },
-  benefit: {
-    color: '#374151'
-  },
-  actionButton: {
-    marginBottom: 8,
-    minHeight: 48
-  }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    card: {
+      marginBottom: spacing[1]
+    },
+    row: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginBottom: spacing[1]
+    },
+    statusBadge: {
+      paddingHorizontal: 10,
+      paddingVertical: 4,
+      borderRadius: radii.lg
+    },
+    statusText: {
+      fontSize: fontSizes.base,
+      fontWeight: fontWeights.bold
+    },
+    seatCount: {
+      color: c.textTertiary
+    },
+    seatBar: {
+      height: 6,
+      borderRadius: 3,
+      marginBottom: spacing[1.5]
+    },
+    benefitList: {
+      gap: 4
+    },
+    benefit: {
+      color: '#374151'
+    },
+    actionButton: {
+      marginBottom: spacing[1],
+      minHeight: 48
+    }
+  });
+}

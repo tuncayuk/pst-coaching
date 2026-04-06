@@ -1,8 +1,9 @@
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { PActivityIndicator, PAvatar, PButton, PText } from '../../components';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -11,6 +12,9 @@ import { SkeletonBlock } from '../components/SkeletonBlock';
 import { StateMessage } from '../components/StateMessage';
 
 const SessionTimeoutContent = ({ isOffline }: { isOffline?: boolean }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const navigation = useNavigation<any>();
 
   return (
@@ -94,16 +98,18 @@ export const AuthSessionTimeoutScreen = ({ route }: { route?: { params?: { state
   );
 };
 
-const styles = StyleSheet.create({
-  iconWrap: {
-    alignItems: 'center',
-    marginBottom: 12
-  },
-  bodyText: {
-    lineHeight: 20,
-    marginBottom: 16
-  },
-  primaryButton: {
-    marginBottom: 8
-  }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    iconWrap: {
+      alignItems: 'center',
+      marginBottom: spacing[1.5]
+    },
+    bodyText: {
+      lineHeight: 20,
+      marginBottom: spacing[2]
+    },
+    primaryButton: {
+      marginBottom: spacing[1]
+    }
+  });
+}

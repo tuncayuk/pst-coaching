@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { PActivityIndicator, PButton, PCard, PText } from '../../components';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -30,6 +31,9 @@ const ContentCommentPreviewContent = ({
   emotion?: string;
   onEdit: () => void;
 }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   const now = new Date();
@@ -168,40 +172,42 @@ export const ContentCommentPreviewScreen = ({
   );
 };
 
-const styles = StyleSheet.create({
-  card: {
-    marginTop: 4
-  },
-  paragraph: {
-    marginBottom: 8
-  },
-  answerLabel: {
-    color: '#737373',
-    marginBottom: 4,
-    marginTop: 8
-  },
-  successRow: {
-    padding: 12,
-    backgroundColor: '#DCFCE7',
-    borderRadius: 12,
-    marginBottom: 12,
-    borderWidth: 2,
-    borderColor: '#16A34A'
-  },
-  successTitle: {
-    fontSize: 15,
-    fontWeight: '700',
-    color: '#15803D',
-    textAlign: 'center'
-  },
-  subtleText: {
-    opacity: 0.7
-  },
-  deadlineText: {
-    fontSize: 12,
-    color: '#DC2626',
-    fontWeight: '600',
-    marginTop: 8,
-    textAlign: 'center'
-  }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    card: {
+      marginTop: 4
+    },
+    paragraph: {
+      marginBottom: spacing[1]
+    },
+    answerLabel: {
+      color: c.textTertiary,
+      marginBottom: 4,
+      marginTop: spacing[1]
+    },
+    successRow: {
+      padding: spacing[1.5],
+      backgroundColor: '#DCFCE7',
+      borderRadius: radii.lg,
+      marginBottom: spacing[1.5],
+      borderWidth: 2,
+      borderColor: c.success
+    },
+    successTitle: {
+      fontSize: fontSizes.xl,
+      fontWeight: fontWeights.bold,
+      color: '#15803D',
+      textAlign: 'center'
+    },
+    subtleText: {
+      opacity: 0.7
+    },
+    deadlineText: {
+      fontSize: fontSizes.base,
+      color: palette.red600,
+      fontWeight: fontWeights.semiBold,
+      marginTop: spacing[1],
+      textAlign: 'center'
+    }
+  });
+}

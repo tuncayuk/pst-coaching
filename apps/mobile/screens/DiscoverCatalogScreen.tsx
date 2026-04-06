@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Linking, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -13,6 +13,7 @@ import {
   getSubscriptionForUser,
   getWorkshops
 } from '../data/mockSelectors';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../theme';
 import { OfflineNotice } from './components/OfflineNotice';
 import { ScreenState, resolveScreenState } from './components/ScreenState';
 import { SkeletonBlock } from './components/SkeletonBlock';
@@ -41,6 +42,9 @@ const EBOOK_EMOJIS = ['📖', '📘', '📕', '📗'];
 const MOSAIC_COLORS = ['#E9D5FF', '#D1FAE5', '#FDE68A', '#B2EBF2'];
 
 const DiscoverReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const navigation = useNavigation<any>();
   const [activeTab, setActiveTab] = React.useState<string>('journeys');
   const user = getPrimaryUser();
@@ -244,6 +248,9 @@ const DiscoverReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
 };
 
 export const DiscoverCatalogScreen = ({ route }: { route?: { params?: { state?: ScreenState } } }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const state = resolveScreenState(route);
   const navigation = useNavigation<any>();
 
@@ -315,140 +322,197 @@ export const DiscoverCatalogScreen = ({ route }: { route?: { params?: { state?: 
   );
 };
 
-const styles = StyleSheet.create({
-  root: { flex: 1, backgroundColor: '#FAFAFA' },
-  content: { paddingHorizontal: 20, paddingTop: 20, paddingBottom: 96 },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
-    marginBottom: 20
-  },
-  greeting: { fontSize: 14, color: '#737373', fontWeight: '500', marginBottom: 2 },
-  title: { fontSize: 32, fontWeight: '800', color: '#2B1B5D', letterSpacing: -0.5 },
-  guestBadge: {
-    backgroundColor: '#FDE68A',
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: 12,
-    alignSelf: 'flex-start',
-    marginTop: 4
-  },
-  guestBadgeText: { fontSize: 12, fontWeight: '700', color: '#92400E' },
-  assistantCard: { marginBottom: 20, borderRadius: 16, backgroundColor: '#2B1B5D' },
-  assistantRow: { flexDirection: 'row', alignItems: 'center', gap: 12, padding: 16 },
-  assistantIconWrap: {
-    width: 48,
-    height: 48,
-    borderRadius: 12,
-    backgroundColor: 'rgba(255,255,255,0.15)',
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  assistantEmoji: { fontSize: 24 },
-  assistantInfo: { flex: 1 },
-  assistantTitle: { fontSize: 16, fontWeight: '700', color: '#FFFFFF', marginBottom: 2 },
-  assistantSubtitle: { fontSize: 13, color: 'rgba(255,255,255,0.7)' },
-  assistantArrowWrap: {
-    width: 28,
-    height: 28,
-    borderRadius: 14,
-    backgroundColor: 'rgba(255,255,255,0.2)',
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  assistantArrow: { fontSize: 18, color: '#FFFFFF', lineHeight: 22 },
-  sectionLabel: {
-    fontSize: 11,
-    fontWeight: '700',
-    color: '#9CA3AF',
-    marginBottom: 8,
-    textTransform: 'uppercase',
-    letterSpacing: 0.8
-  },
-  mosaicGrid: { gap: 12, marginBottom: 24 },
-  mosaicRow: { flexDirection: 'row', gap: 12 },
-  mosaicTile: {
-    flex: 1,
-    borderRadius: 16,
-    padding: 16,
-    minHeight: 120,
-    justifyContent: 'space-between'
-  },
-  mosaicTileActive: {
-    borderWidth: 2,
-    borderColor: '#2B1B5D',
-    shadowColor: '#2B1B5D',
-    shadowOpacity: 0.2,
-    shadowRadius: 8,
-    shadowOffset: { width: 0, height: 2 },
-    elevation: 4
-  },
-  mosaicTileHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start'
-  },
-  mosaicEmoji: { fontSize: 32 },
-  mosaicCountBadge: {
-    backgroundColor: 'rgba(0,0,0,0.12)',
-    borderRadius: 10,
-    paddingHorizontal: 8,
-    paddingVertical: 3
-  },
-  mosaicCountText: { fontSize: 13, fontWeight: '800', color: '#2B1B5D' },
-  mosaicTileLabel: { fontSize: 14, fontWeight: '700', color: '#2B1B5D' },
-  section: { marginBottom: 24 },
-  sectionTitle: { fontSize: 18, fontWeight: '700', color: '#171717', marginBottom: 12 },
-  journeyCard: { borderRadius: 16, marginBottom: 12 },
-  journeyCardRow: { flexDirection: 'row', gap: 12, padding: 12 },
-  journeyIcon: {
-    width: 64,
-    height: 64,
-    borderRadius: 12,
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexShrink: 0
-  },
-  journeyEmoji: { fontSize: 28 },
-  journeyInfo: { flex: 1 },
-  journeyTitleRow: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    justifyContent: 'space-between',
-    gap: 8,
-    marginBottom: 4
-  },
-  journeyTitle: { fontSize: 15, fontWeight: '700', color: '#171717', flex: 1 },
-  freeBadge: {
-    backgroundColor: '#D1FAE5',
-    paddingHorizontal: 6,
-    paddingVertical: 2,
-    borderRadius: 6
-  },
-  freeBadgeText: { fontSize: 10, fontWeight: '700', color: '#065F46' },
-  journeyMetaRow: { flexDirection: 'row', alignItems: 'center', gap: 6, marginBottom: 2 },
-  journeyMetaText: { fontSize: 12, color: '#737373' },
-  journeyMetaDot: { fontSize: 12, color: '#D4D4D4' },
-  journeyDailyTarget: { fontSize: 11, color: '#00758C', fontWeight: '600' },
-  ebookRow: { gap: 12, paddingBottom: 4 },
-  ebookCard: { width: 130, borderRadius: 12 },
-  ebookCover: {
-    height: 160,
-    borderRadius: 12,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 8
-  },
-  ebookEmoji: { fontSize: 40 },
-  ebookTitle: {
-    fontSize: 12,
-    fontWeight: '700',
-    color: '#171717',
-    lineHeight: 16,
-    paddingHorizontal: 4,
-    marginBottom: 2
-  },
-  ebookMeta: { fontSize: 11, color: '#9CA3AF', paddingHorizontal: 4, marginBottom: 4 },
-  bottomSpacer: { height: 24 }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    root: { flex: 1, backgroundColor: c.background },
+    content: { paddingHorizontal: spacing[2.5], paddingTop: spacing[2.5], paddingBottom: 96 },
+    header: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'flex-start',
+      marginBottom: spacing[2.5]
+    },
+    greeting: {
+      fontSize: fontSizes.lg,
+      color: c.textTertiary,
+      fontWeight: fontWeights.medium,
+      marginBottom: 2
+    },
+    title: {
+      fontSize: fontSizes['9xl'],
+      fontWeight: fontWeights.extraBold,
+      color: c.textBrand,
+      letterSpacing: -0.5
+    },
+    guestBadge: {
+      backgroundColor: palette.amber50,
+      paddingHorizontal: 10,
+      paddingVertical: 4,
+      borderRadius: radii.lg,
+      alignSelf: 'flex-start',
+      marginTop: 4
+    },
+    guestBadgeText: {
+      fontSize: fontSizes.base,
+      fontWeight: fontWeights.bold,
+      color: c.onWarningContainer
+    },
+    assistantCard: {
+      marginBottom: spacing[2.5],
+      borderRadius: radii.xl,
+      backgroundColor: c.secondary
+    },
+    assistantRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: spacing[1.5],
+      padding: spacing[2]
+    },
+    assistantIconWrap: {
+      width: 48,
+      height: 48,
+      borderRadius: radii.lg,
+      backgroundColor: 'rgba(255,255,255,0.15)',
+      alignItems: 'center',
+      justifyContent: 'center'
+    },
+    assistantEmoji: { fontSize: fontSizes['6xl'] },
+    assistantInfo: { flex: 1 },
+    assistantTitle: {
+      fontSize: fontSizes['2xl'],
+      fontWeight: fontWeights.bold,
+      color: palette.white,
+      marginBottom: 2
+    },
+    assistantSubtitle: { fontSize: fontSizes.md, color: 'rgba(255,255,255,0.7)' },
+    assistantArrowWrap: {
+      width: 28,
+      height: 28,
+      borderRadius: 14,
+      backgroundColor: 'rgba(255,255,255,0.2)',
+      alignItems: 'center',
+      justifyContent: 'center'
+    },
+    assistantArrow: { fontSize: fontSizes['4xl'], color: palette.white, lineHeight: 22 },
+    sectionLabel: {
+      fontSize: fontSizes.sm,
+      fontWeight: fontWeights.bold,
+      color: palette.neutral400,
+      marginBottom: spacing[1],
+      textTransform: 'uppercase',
+      letterSpacing: 0.8
+    },
+    mosaicGrid: { gap: spacing[1.5], marginBottom: spacing[3] },
+    mosaicRow: { flexDirection: 'row', gap: spacing[1.5] },
+    mosaicTile: {
+      flex: 1,
+      borderRadius: radii.xl,
+      padding: spacing[2],
+      minHeight: 120,
+      justifyContent: 'space-between'
+    },
+    mosaicTileActive: {
+      borderWidth: 2,
+      borderColor: c.secondary,
+      shadowColor: c.secondary,
+      shadowOpacity: 0.2,
+      shadowRadius: 8,
+      shadowOffset: { width: 0, height: 2 },
+      elevation: 4
+    },
+    mosaicTileHeader: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'flex-start'
+    },
+    mosaicEmoji: { fontSize: fontSizes['9xl'] },
+    mosaicCountBadge: {
+      backgroundColor: 'rgba(0,0,0,0.12)',
+      borderRadius: 10,
+      paddingHorizontal: spacing[1],
+      paddingVertical: 3
+    },
+    mosaicCountText: {
+      fontSize: fontSizes.md,
+      fontWeight: fontWeights.extraBold,
+      color: c.textBrand
+    },
+    mosaicTileLabel: { fontSize: fontSizes.lg, fontWeight: fontWeights.bold, color: c.textBrand },
+    section: { marginBottom: spacing[3] },
+    sectionTitle: {
+      fontSize: fontSizes['3xl'],
+      fontWeight: fontWeights.bold,
+      color: c.textPrimary,
+      marginBottom: spacing[1.5]
+    },
+    journeyCard: { borderRadius: radii.xl, marginBottom: spacing[1.5] },
+    journeyCardRow: { flexDirection: 'row', gap: spacing[1.5], padding: spacing[1.5] },
+    journeyIcon: {
+      width: 64,
+      height: 64,
+      borderRadius: radii.lg,
+      alignItems: 'center',
+      justifyContent: 'center',
+      flexShrink: 0
+    },
+    journeyEmoji: { fontSize: fontSizes['8xl'] },
+    journeyInfo: { flex: 1 },
+    journeyTitleRow: {
+      flexDirection: 'row',
+      alignItems: 'flex-start',
+      justifyContent: 'space-between',
+      gap: spacing[1],
+      marginBottom: 4
+    },
+    journeyTitle: {
+      fontSize: fontSizes.xl,
+      fontWeight: fontWeights.bold,
+      color: c.textPrimary,
+      flex: 1
+    },
+    freeBadge: {
+      backgroundColor: palette.emerald50,
+      paddingHorizontal: 6,
+      paddingVertical: 2,
+      borderRadius: radii.xs
+    },
+    freeBadgeText: {
+      fontSize: fontSizes.xs,
+      fontWeight: fontWeights.bold,
+      color: c.onTertiaryContainer
+    },
+    journeyMetaRow: { flexDirection: 'row', alignItems: 'center', gap: 6, marginBottom: 2 },
+    journeyMetaText: { fontSize: fontSizes.base, color: c.textTertiary },
+    journeyMetaDot: { fontSize: fontSizes.base, color: c.outline },
+    journeyDailyTarget: {
+      fontSize: fontSizes.sm,
+      color: palette.cyan600,
+      fontWeight: fontWeights.semiBold
+    },
+    ebookRow: { gap: spacing[1.5], paddingBottom: 4 },
+    ebookCard: { width: 130, borderRadius: radii.lg },
+    ebookCover: {
+      height: 160,
+      borderRadius: radii.lg,
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginBottom: spacing[1]
+    },
+    ebookEmoji: { fontSize: fontSizes['11xl'] },
+    ebookTitle: {
+      fontSize: fontSizes.base,
+      fontWeight: fontWeights.bold,
+      color: c.textPrimary,
+      lineHeight: 16,
+      paddingHorizontal: 4,
+      marginBottom: 2
+    },
+    ebookMeta: {
+      fontSize: fontSizes.sm,
+      color: palette.neutral400,
+      paddingHorizontal: 4,
+      marginBottom: 4
+    },
+    bottomSpacer: { height: spacing[3] }
+  });
+}

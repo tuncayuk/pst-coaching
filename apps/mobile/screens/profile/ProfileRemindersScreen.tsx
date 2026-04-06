@@ -3,11 +3,12 @@
  * Navigates to NotificationStack screens (FR-E17-01..04).
  */
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { PActivityIndicator, PDivider, PListIcon, PListItem, PText } from '../../components';
 import { getPrimaryUser, getReminderSettingsForUser } from '../../data/mockSelectors';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -16,6 +17,9 @@ import { SkeletonBlock } from '../components/SkeletonBlock';
 import { StateMessage } from '../components/StateMessage';
 
 const ProfileRemindersContent = ({ isOffline }: { isOffline?: boolean }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const navigation = useNavigation<any>();
   const user = getPrimaryUser();
   const reminder = getReminderSettingsForUser(user?.id);
@@ -133,8 +137,10 @@ export const ProfileRemindersScreen = ({ route }: { route?: { params?: { state?:
   );
 };
 
-const styles = StyleSheet.create({
-  skeleton: { marginHorizontal: 16, marginBottom: 12 },
-  offlineNote: { paddingHorizontal: 16, paddingTop: 8 },
-  offlineText: { fontSize: 12, color: '#A3A3A3', fontStyle: 'italic' }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    skeleton: { marginHorizontal: 16, marginBottom: spacing[1.5] },
+    offlineNote: { paddingHorizontal: spacing[2], paddingTop: 8 },
+    offlineText: { fontSize: fontSizes.base, color: '#A3A3A3', fontStyle: 'italic' }
+  });
+}

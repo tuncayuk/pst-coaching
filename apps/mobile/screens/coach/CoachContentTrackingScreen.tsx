@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { PActivityIndicator, PAvatar, PDivider, PProgressBar, PText } from '../../components';
@@ -11,6 +11,7 @@ import {
   getUsers,
   getWorkshops
 } from '../../data/mockSelectors';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -40,6 +41,9 @@ function getLastActivityLabel(dateStr?: string | null): string {
 const EST_MINS_PER_ITEM = 15;
 
 const CoachContentTrackingContent = ({ clientId, isOffline }: { clientId?: string; isOffline?: boolean }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const navigation = useNavigation<any>();
   const client = getUsers().find(u => u.id === clientId) ?? getUsers()[1];
   const progress = getContentProgressForUser(client?.id);
@@ -304,19 +308,21 @@ export const CoachContentTrackingScreen = ({ route }: { route?: { params?: Route
   );
 };
 
-const styles = StyleSheet.create({
-  contentRow: { flexDirection: 'row', alignItems: 'flex-start', gap: 12, paddingVertical: 8 },
-  contentIcon: { backgroundColor: '#F5F3FF', borderRadius: 18 },
-  contentIconBlue: { backgroundColor: '#E0F2FE', borderRadius: 18 },
-  contentIconGreen: { backgroundColor: '#D1FAE5', borderRadius: 18 },
-  contentInfo: { flex: 1 },
-  contentTitle: { fontSize: 14, fontWeight: '600', color: '#1E293B', marginBottom: 6 },
-  pctRow: { flexDirection: 'row', alignItems: 'center', gap: 8 },
-  contentBar: { flex: 1, height: 6, borderRadius: 6 },
-  pctText: { fontSize: 12, fontWeight: '700', color: '#525252', minWidth: 32 },
-  metaRow: { flexDirection: 'row', justifyContent: 'space-between', marginTop: 4 },
-  metaText: { fontSize: 11, color: '#9CA3AF' },
-  rowDivider: { marginVertical: 4 },
-  emptySection: { paddingVertical: 16, alignItems: 'center' },
-  emptyText: { fontSize: 13, color: '#9CA3AF' }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    contentRow: { flexDirection: 'row', alignItems: 'flex-start', gap: spacing[1.5], paddingVertical: spacing[1] },
+    contentIcon: { backgroundColor: '#F5F3FF', borderRadius: 18 },
+    contentIconBlue: { backgroundColor: '#E0F2FE', borderRadius: 18 },
+    contentIconGreen: { backgroundColor: palette.emerald50, borderRadius: 18 },
+    contentInfo: { flex: 1 },
+    contentTitle: { fontSize: fontSizes.lg, fontWeight: fontWeights.semiBold, color: '#1E293B', marginBottom: 6 },
+    pctRow: { flexDirection: 'row', alignItems: 'center', gap: spacing[1] },
+    contentBar: { flex: 1, height: 6, borderRadius: radii.sm },
+    pctText: { fontSize: fontSizes.base, fontWeight: fontWeights.bold, color: c.textSecondary, minWidth: 32 },
+    metaRow: { flexDirection: 'row', justifyContent: 'space-between', marginTop: 4 },
+    metaText: { fontSize: fontSizes.sm, color: '#9CA3AF' },
+    rowDivider: { marginVertical: 4 },
+    emptySection: { paddingVertical: spacing[2], alignItems: 'center' },
+    emptyText: { fontSize: fontSizes.md, color: '#9CA3AF' }
+  });
+}

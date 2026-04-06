@@ -1,10 +1,11 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { trackCtaTap } from '../../analytics';
 import { PActivityIndicator, PButton, PCard, PChip, PText } from '../../components';
 import { getEbooks, getJourneys, getModules, getWorkshops } from '../../data/mockSelectors';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -23,6 +24,9 @@ const TYPE_CHIP_COLORS: Record<string, { bg: string; text: string }> = {
 };
 
 const HomeSearchResultsContent = ({ isOffline, query }: { isOffline?: boolean; query?: string }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const navigation = useNavigation<any>();
   const resultGroups = [
     {
@@ -205,45 +209,47 @@ export const HomeSearchResultsScreen = ({
   );
 };
 
-const styles = StyleSheet.create({
-  filterRow: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 8,
-    marginBottom: 8
-  },
-  chip: {
-    minHeight: 36
-  },
-  resultCount: {
-    color: '#525252',
-    marginTop: 4
-  },
-  card: {
-    marginBottom: 12
-  },
-  cardHeader: {
-    flexDirection: 'row',
-    marginBottom: 6
-  },
-  typeChip: {
-    paddingHorizontal: 8,
-    paddingVertical: 3,
-    borderRadius: 999,
-    alignSelf: 'flex-start'
-  },
-  typeChipText: {
-    fontSize: 11,
-    fontWeight: '700'
-  },
-  cardTitle: {
-    fontSize: 14,
-    fontWeight: '700',
-    color: '#171717',
-    marginBottom: 2
-  },
-  cardMeta: {
-    fontSize: 12,
-    color: '#525252'
-  }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    filterRow: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      gap: spacing[1],
+      marginBottom: spacing[1]
+    },
+    chip: {
+      minHeight: 36
+    },
+    resultCount: {
+      color: c.textSecondary,
+      marginTop: 4
+    },
+    card: {
+      marginBottom: spacing[1.5]
+    },
+    cardHeader: {
+      flexDirection: 'row',
+      marginBottom: 6
+    },
+    typeChip: {
+      paddingHorizontal: spacing[1],
+      paddingVertical: 3,
+      borderRadius: radii.full,
+      alignSelf: 'flex-start'
+    },
+    typeChipText: {
+      fontSize: fontSizes.sm,
+      fontWeight: fontWeights.bold
+    },
+    cardTitle: {
+      fontSize: fontSizes.lg,
+      fontWeight: fontWeights.bold,
+      color: c.textPrimary,
+      marginBottom: 2
+    },
+    cardMeta: {
+      fontSize: fontSizes.base,
+      color: c.textSecondary
+    }
+  });
+}

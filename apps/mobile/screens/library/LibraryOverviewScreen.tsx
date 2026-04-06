@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useTheme } from 'react-native-paper';
 
@@ -13,6 +13,7 @@ import {
   getHighlightsForUser,
   getPrimaryUser
 } from '../../data/mockSelectors';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -21,6 +22,9 @@ import { SkeletonBlock } from '../components/SkeletonBlock';
 import { StateMessage } from '../components/StateMessage';
 
 const LibraryReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const theme = useTheme();
   const navigation = useNavigation<any>();
   const user = getPrimaryUser();
@@ -171,26 +175,28 @@ export const LibraryOverviewScreen = ({ route }: { route?: { params?: { state?: 
   );
 };
 
-const styles = StyleSheet.create({
-  actionButton: {
-    marginTop: 8,
-    alignSelf: 'flex-start'
-  },
-  progressRow: {
-    marginBottom: 12
-  },
-  progressHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 8
-  },
-  card: {
-    marginBottom: 12
-  },
-  noteBox: {
-    padding: 12,
-    borderRadius: 16,
-    backgroundColor: 'rgba(0,0,0,0.04)'
-  }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    actionButton: {
+      marginTop: spacing[1],
+      alignSelf: 'flex-start'
+    },
+    progressRow: {
+      marginBottom: spacing[1.5]
+    },
+    progressHeader: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginBottom: spacing[1]
+    },
+    card: {
+      marginBottom: spacing[1.5]
+    },
+    noteBox: {
+      padding: spacing[1.5],
+      borderRadius: radii.xl,
+      backgroundColor: 'rgba(0,0,0,0.04)'
+    }
+  });
+}

@@ -1,8 +1,9 @@
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { StyleSheet } from 'react-native';
 
 import { PActivityIndicator, PButton, PText } from '../../components';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -13,6 +14,9 @@ import { StateMessage } from '../components/StateMessage';
 const LOCKOUT_DURATION_MINUTES = 15;
 
 const AuthLockoutContent = ({ isOffline }: { isOffline?: boolean }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const navigation = useNavigation<any>();
   const [remainingSeconds, setRemainingSeconds] = React.useState(LOCKOUT_DURATION_MINUTES * 60);
 
@@ -124,11 +128,13 @@ export const AuthLockoutScreen = ({ route }: { route?: { params?: { state?: Scre
   );
 };
 
-const styles = StyleSheet.create({
-  title: {
-    marginBottom: 8
-  },
-  body: {
-    marginBottom: 12
-  }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    title: {
+      marginBottom: spacing[1]
+    },
+    body: {
+      marginBottom: spacing[1.5]
+    }
+  });
+}

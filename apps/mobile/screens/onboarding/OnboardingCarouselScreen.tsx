@@ -1,9 +1,10 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useRef, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import { Dimensions, NativeScrollEvent, NativeSyntheticEvent, ScrollView, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { PButton, PText } from '../../components';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
@@ -26,6 +27,9 @@ const onboardingScreens = [
 ];
 
 export const OnboardingCarouselScreen = () => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const navigation = useNavigation<any>();
   const scrollViewRef = useRef<ScrollView>(null);
   const [currentPage, setCurrentPage] = useState(0);
@@ -92,74 +96,76 @@ export const OnboardingCarouselScreen = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#FAFAFA'
-  },
-  scrollView: {
-    flex: 1
-  },
-  screen: {
-    width: SCREEN_WIDTH,
-    flex: 1,
-    paddingHorizontal: 32,
-    paddingTop: 48,
-    paddingBottom: 32,
-    justifyContent: 'space-between'
-  },
-  content: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    textAlign: 'center'
-  },
-  emoji: {
-    fontSize: 128,
-    marginBottom: 32
-  },
-  title: {
-    fontSize: 32,
-    fontWeight: '800',
-    color: '#2B1B5D',
-    marginBottom: 16,
-    textAlign: 'center',
-    fontFamily: 'System'
-  },
-  description: {
-    fontSize: 16,
-    color: '#525252',
-    lineHeight: 24,
-    textAlign: 'center',
-    maxWidth: 320
-  },
-  footer: {
-    paddingBottom: 32
-  },
-  progressContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    gap: 8,
-    marginBottom: 32
-  },
-  progressDot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    backgroundColor: '#D4D4D4'
-  },
-  progressDotActive: {
-    width: 32,
-    backgroundColor: '#00B4D8'
-  },
-  buttonContainer: {
-    flexDirection: 'row',
-    gap: 16
-  },
-  skipButton: {
-    flex: 1
-  },
-  nextButton: {
-    flex: 1
-  }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: c.background
+    },
+    scrollView: {
+      flex: 1
+    },
+    screen: {
+      width: SCREEN_WIDTH,
+      flex: 1,
+      paddingHorizontal: spacing[4],
+      paddingTop: 48,
+      paddingBottom: 32,
+      justifyContent: 'space-between'
+    },
+    content: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      textAlign: 'center'
+    },
+    emoji: {
+      fontSize: 128,
+      marginBottom: spacing[4]
+    },
+    title: {
+      fontSize: fontSizes['9xl'],
+      fontWeight: fontWeights.extraBold,
+      color: c.textBrand,
+      marginBottom: spacing[2],
+      textAlign: 'center',
+      fontFamily: 'System'
+    },
+    description: {
+      fontSize: fontSizes['2xl'],
+      color: c.textSecondary,
+      lineHeight: 24,
+      textAlign: 'center',
+      maxWidth: 320
+    },
+    footer: {
+      paddingBottom: 32
+    },
+    progressContainer: {
+      flexDirection: 'row',
+      justifyContent: 'center',
+      gap: spacing[1],
+      marginBottom: spacing[4]
+    },
+    progressDot: {
+      width: 8,
+      height: 8,
+      borderRadius: radii.sm,
+      backgroundColor: c.outline
+    },
+    progressDotActive: {
+      width: 32,
+      backgroundColor: c.primary
+    },
+    buttonContainer: {
+      flexDirection: 'row',
+      gap: spacing[2]
+    },
+    skipButton: {
+      flex: 1
+    },
+    nextButton: {
+      flex: 1
+    }
+  });
+}

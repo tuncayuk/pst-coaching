@@ -1,9 +1,10 @@
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 
 import { PActivityIndicator, PButton, PIconButton, PText } from '../../components';
 import { getEbooks } from '../../data/mockSelectors';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -15,6 +16,9 @@ const COVER_COLORS = ['#B2EBF2', '#D1FAE5', '#E9D5FF', '#FDE68A'];
 const COVER_EMOJIS = ['📖', '📘', '📕', '📗'];
 
 const DiscoverEbooksContent = ({ isOffline }: { isOffline?: boolean }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const navigation = useNavigation<any>();
   const ebooks = getEbooks();
   const [selectedSort, setSelectedSort] = React.useState('Tumu');
@@ -185,60 +189,68 @@ export const DiscoverEbooksScreen = ({ route }: { route?: { params?: { state?: S
   );
 };
 
-const styles = StyleSheet.create({
-  root: { flex: 1, backgroundColor: '#FAFAFA' },
-  content: { paddingHorizontal: 20, paddingTop: 20, paddingBottom: 96 },
-  headerRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 16
-  },
-  headerLeft: { flexDirection: 'row', alignItems: 'center', gap: 4 },
-  title: { fontSize: 26, fontWeight: '800', color: '#2B1B5D' },
-  countBadge: {
-    backgroundColor: '#EDE7F6',
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: 12
-  },
-  countBadgeText: { fontSize: 12, fontWeight: '700', color: '#4C1D95' },
-  chipsRow: { gap: 8, paddingBottom: 4, marginBottom: 12 },
-  chip: { borderRadius: 20, elevation: 0 },
-  chipContent: { height: 34, paddingHorizontal: 4 },
-  chipLabel: { fontSize: 12, fontWeight: '600' },
-  grid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-    rowGap: 20
-  },
-  gridItem: { flexBasis: '48%' },
-  cover: {
-    height: 180,
-    borderRadius: 14,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 10,
-    shadowColor: '#000',
-    shadowOpacity: 0.08,
-    shadowRadius: 8,
-    shadowOffset: { width: 0, height: 3 },
-    elevation: 3
-  },
-  coverEmoji: { fontSize: 48 },
-  featuredBadge: {
-    position: 'absolute',
-    top: 8,
-    left: 8,
-    backgroundColor: '#2B1B5D',
-    paddingHorizontal: 6,
-    paddingVertical: 2,
-    borderRadius: 6
-  },
-  featuredBadgeText: { fontSize: 9, fontWeight: '700', color: '#FFFFFF' },
-  bookTitle: { fontSize: 13, fontWeight: '700', color: '#171717', lineHeight: 17, marginBottom: 3 },
-  bookCategory: { fontSize: 11, color: '#00758C', fontWeight: '600', marginBottom: 2 },
-  bookMeta: { fontSize: 11, color: '#9CA3AF', marginBottom: 4 },
-  bottomSpacer: { height: 24 }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    root: { flex: 1, backgroundColor: c.background },
+    content: { paddingHorizontal: spacing[2.5], paddingTop: 20, paddingBottom: 96 },
+    headerRow: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginBottom: spacing[2]
+    },
+    headerLeft: { flexDirection: 'row', alignItems: 'center', gap: 4 },
+    title: { fontSize: fontSizes['7xl'], fontWeight: fontWeights.extraBold, color: c.textBrand },
+    countBadge: {
+      backgroundColor: palette.purple50,
+      paddingHorizontal: 10,
+      paddingVertical: 4,
+      borderRadius: radii.lg
+    },
+    countBadgeText: { fontSize: fontSizes.base, fontWeight: fontWeights.bold, color: '#4C1D95' },
+    chipsRow: { gap: spacing[1], paddingBottom: 4, marginBottom: spacing[1.5] },
+    chip: { borderRadius: radii['2xl'], elevation: 0 },
+    chipContent: { height: 34, paddingHorizontal: 4 },
+    chipLabel: { fontSize: fontSizes.base, fontWeight: fontWeights.semiBold },
+    grid: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      justifyContent: 'space-between',
+      rowGap: 20
+    },
+    gridItem: { flexBasis: '48%' },
+    cover: {
+      height: 180,
+      borderRadius: radii.xl,
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginBottom: 10,
+      shadowColor: '#000',
+      shadowOpacity: 0.08,
+      shadowRadius: 8,
+      shadowOffset: { width: 0, height: 3 },
+      elevation: 3
+    },
+    coverEmoji: { fontSize: fontSizes['11xl'] },
+    featuredBadge: {
+      position: 'absolute',
+      top: 8,
+      left: 8,
+      backgroundColor: c.textBrand,
+      paddingHorizontal: 6,
+      paddingVertical: 2,
+      borderRadius: radii.sm
+    },
+    featuredBadgeText: { fontSize: fontSizes.xs, fontWeight: fontWeights.bold, color: palette.white },
+    bookTitle: {
+      fontSize: fontSizes.md,
+      fontWeight: fontWeights.bold,
+      color: c.textPrimary,
+      lineHeight: 17,
+      marginBottom: 3
+    },
+    bookCategory: { fontSize: fontSizes.sm, color: '#00758C', fontWeight: fontWeights.semiBold, marginBottom: 2 },
+    bookMeta: { fontSize: fontSizes.sm, color: '#9CA3AF', marginBottom: 4 },
+    bottomSpacer: { height: 24 }
+  });
+}

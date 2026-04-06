@@ -1,10 +1,11 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { ScrollView, StyleSheet, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { PActivityIndicator, PAvatar, PButton, PCard, PDivider, PIconButton, PText } from '../../components';
 import { getCommentsForClient, getUsers } from '../../data/mockSelectors';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
 import { SkeletonBlock } from '../components/SkeletonBlock';
@@ -32,6 +33,9 @@ function formatDate(dateStr?: string): string {
 }
 
 const CoachFeedbackContent = ({ clientId, isOffline }: { clientId?: string; isOffline?: boolean }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const navigation = useNavigation<any>();
   const client = getUsers().find(u => u.id === clientId) ?? getUsers()[1];
   const history = getCommentsForClient(client?.id).sort(
@@ -241,6 +245,9 @@ const CoachFeedbackContent = ({ clientId, isOffline }: { clientId?: string; isOf
 };
 
 export const CoachFeedbackScreen = ({ route }: { route?: { params?: RouteParams } }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const state = resolveScreenState(route);
   const clientId = route?.params?.clientId;
 
@@ -295,99 +302,101 @@ export const CoachFeedbackScreen = ({ route }: { route?: { params?: RouteParams 
   );
 };
 
-const styles = StyleSheet.create({
-  root: { flex: 1, backgroundColor: '#F8FAFC' },
-  wrapper: { flex: 1, backgroundColor: '#F8FAFC' },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 8,
-    paddingRight: 16,
-    backgroundColor: '#FFFFFF',
-    borderBottomWidth: 1,
-    borderBottomColor: '#E2E8F0'
-  },
-  headerCenter: { flexDirection: 'row', alignItems: 'center', gap: 10, flex: 1 },
-  headerAvatar: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    backgroundColor: '#1E3A5F',
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  headerAvatarText: { color: '#FFFFFF', fontSize: 15, fontWeight: '700' },
-  headerTitle: { fontSize: 15, fontWeight: '700', color: '#1E293B' },
-  headerSubtitle: { fontSize: 12, color: '#6B7280' },
-  body: { padding: 16, paddingBottom: 40 },
-  formCard: {
-    padding: 16,
-    borderRadius: 16,
-    marginBottom: 16,
-    backgroundColor: '#FFFFFF'
-  },
-  formTitle: { fontSize: 15, fontWeight: '700', color: '#1E3A5F', marginBottom: 4 },
-  formHint: { fontSize: 12, color: '#6B7280', marginBottom: 12, lineHeight: 18 },
-  draftStatus: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 4,
-    marginBottom: 8
-  },
-  draftIcon: { backgroundColor: 'transparent' },
-  draftText: { fontSize: 12 },
-  input: {
-    borderWidth: 1,
-    borderColor: '#CBD5E1',
-    borderRadius: 10,
-    padding: 12,
-    minHeight: 120,
-    fontSize: 14,
-    textAlignVertical: 'top',
-    color: '#1E293B',
-    marginBottom: 8,
-    lineHeight: 20
-  },
-  inputError: { borderColor: '#DC2626' },
-  inputDisabled: { backgroundColor: '#F9FAFB', color: '#9CA3AF' },
-  formFooter: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-  charCounter: { fontSize: 12, color: '#9CA3AF' },
-  charCounterError: { color: '#DC2626' },
-  sentConfirm: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
-    marginTop: 10,
-    backgroundColor: '#F0FDF4',
-    borderRadius: 8,
-    padding: 8
-  },
-  sentIcon: { backgroundColor: 'transparent' },
-  sentText: { fontSize: 13, color: '#16A34A' },
-  offlineNote: {
-    backgroundColor: '#FFF7ED',
-    borderRadius: 8,
-    padding: 10,
-    marginTop: 8,
-    borderLeftWidth: 3,
-    borderLeftColor: '#F59E0B'
-  },
-  offlineNoteText: { fontSize: 12, color: '#92400E' },
-  historyCard: {
-    padding: 16,
-    borderRadius: 16,
-    backgroundColor: '#FFFFFF'
-  },
-  historyTitle: { fontSize: 15, fontWeight: '700', color: '#1E3A5F', marginBottom: 14 },
-  historyEmpty: { alignItems: 'center', paddingVertical: 24 },
-  historyEmptyIcon: { backgroundColor: '#F1F5F9', marginBottom: 10 },
-  historyEmptyText: { fontSize: 13, color: '#9CA3AF' },
-  historyItem: { paddingVertical: 8 },
-  historyItemHeader: { flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 6 },
-  historyIcon: { backgroundColor: 'transparent' },
-  historyDate: { flex: 1, fontSize: 12, color: '#6B7280' },
-  historyStatusBadge: { borderRadius: 6, paddingHorizontal: 6, paddingVertical: 2 },
-  historyStatusText: { fontSize: 10, fontWeight: '700' },
-  historyText: { fontSize: 13, color: '#374151', lineHeight: 20 },
-  historyDivider: { marginVertical: 4 }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    root: { flex: 1, backgroundColor: '#F8FAFC' },
+    wrapper: { flex: 1, backgroundColor: '#F8FAFC' },
+    header: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      paddingVertical: spacing[1],
+      paddingRight: 16,
+      backgroundColor: palette.white,
+      borderBottomWidth: 1,
+      borderBottomColor: '#E2E8F0'
+    },
+    headerCenter: { flexDirection: 'row', alignItems: 'center', gap: 10, flex: 1 },
+    headerAvatar: {
+      width: 36,
+      height: 36,
+      borderRadius: 18,
+      backgroundColor: '#1E3A5F',
+      alignItems: 'center',
+      justifyContent: 'center'
+    },
+    headerAvatarText: { color: palette.white, fontSize: fontSizes.xl, fontWeight: fontWeights.bold },
+    headerTitle: { fontSize: fontSizes.xl, fontWeight: fontWeights.bold, color: '#1E293B' },
+    headerSubtitle: { fontSize: fontSizes.base, color: c.textTertiary },
+    body: { padding: spacing[2], paddingBottom: 40 },
+    formCard: {
+      padding: spacing[2],
+      borderRadius: radii.xl,
+      marginBottom: spacing[2],
+      backgroundColor: palette.white
+    },
+    formTitle: { fontSize: fontSizes.xl, fontWeight: fontWeights.bold, color: '#1E3A5F', marginBottom: 4 },
+    formHint: { fontSize: fontSizes.base, color: c.textTertiary, marginBottom: spacing[1.5], lineHeight: 18 },
+    draftStatus: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 4,
+      marginBottom: spacing[1]
+    },
+    draftIcon: { backgroundColor: 'transparent' },
+    draftText: { fontSize: fontSizes.base },
+    input: {
+      borderWidth: 1,
+      borderColor: '#CBD5E1',
+      borderRadius: radii.md,
+      padding: spacing[1.5],
+      minHeight: 120,
+      fontSize: fontSizes.lg,
+      textAlignVertical: 'top',
+      color: '#1E293B',
+      marginBottom: spacing[1],
+      lineHeight: 20
+    },
+    inputError: { borderColor: palette.red600 },
+    inputDisabled: { backgroundColor: '#F9FAFB', color: '#9CA3AF' },
+    formFooter: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+    charCounter: { fontSize: fontSizes.base, color: '#9CA3AF' },
+    charCounterError: { color: palette.red600 },
+    sentConfirm: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 6,
+      marginTop: 10,
+      backgroundColor: '#F0FDF4',
+      borderRadius: radii.md,
+      padding: spacing[1]
+    },
+    sentIcon: { backgroundColor: 'transparent' },
+    sentText: { fontSize: fontSizes.md, color: c.success },
+    offlineNote: {
+      backgroundColor: '#FFF7ED',
+      borderRadius: radii.md,
+      padding: 10,
+      marginTop: spacing[1],
+      borderLeftWidth: 3,
+      borderLeftColor: '#F59E0B'
+    },
+    offlineNoteText: { fontSize: fontSizes.base, color: '#92400E' },
+    historyCard: {
+      padding: spacing[2],
+      borderRadius: radii.xl,
+      backgroundColor: palette.white
+    },
+    historyTitle: { fontSize: fontSizes.xl, fontWeight: fontWeights.bold, color: '#1E3A5F', marginBottom: 14 },
+    historyEmpty: { alignItems: 'center', paddingVertical: spacing[3] },
+    historyEmptyIcon: { backgroundColor: '#F1F5F9', marginBottom: 10 },
+    historyEmptyText: { fontSize: fontSizes.md, color: '#9CA3AF' },
+    historyItem: { paddingVertical: spacing[1] },
+    historyItemHeader: { flexDirection: 'row', alignItems: 'center', gap: spacing[1], marginBottom: 6 },
+    historyIcon: { backgroundColor: 'transparent' },
+    historyDate: { flex: 1, fontSize: fontSizes.base, color: c.textTertiary },
+    historyStatusBadge: { borderRadius: radii.sm, paddingHorizontal: 6, paddingVertical: 2 },
+    historyStatusText: { fontSize: 10, fontWeight: fontWeights.bold },
+    historyText: { fontSize: fontSizes.md, color: '#374151', lineHeight: 20 },
+    historyDivider: { marginVertical: 4 }
+  });
+}

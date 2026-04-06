@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { PActivityIndicator, PAvatar, PButton, PDivider, PProgressBar, PText } from '../../components';
@@ -10,6 +10,7 @@ import {
   getSessionsForUser,
   getUsers
 } from '../../data/mockSelectors';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -55,6 +56,9 @@ function computeTrend(userId?: string): { label: string; icon: string; color: st
 }
 
 const CoachClientProfileContent = ({ clientId, isOffline }: { clientId?: string; isOffline?: boolean }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const navigation = useNavigation<any>();
   const client = getUsers().find(u => u.id === clientId) ?? getUsers()[1];
 
@@ -324,65 +328,67 @@ export const CoachClientProfileScreen = ({ route }: { route?: { params?: RoutePa
   );
 };
 
-const styles = StyleSheet.create({
-  profileHeader: {
-    alignItems: 'center',
-    paddingVertical: 20,
-    marginBottom: 8
-  },
-  avatarWrap: { marginBottom: 12 },
-  avatarCircle: {
-    width: 72,
-    height: 72,
-    borderRadius: 36,
-    backgroundColor: '#1E3A5F',
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  avatarInitials: { color: '#FFFFFF', fontSize: 26, fontWeight: '700' },
-  clientName: { fontSize: 20, fontWeight: '800', color: '#1E293B', marginBottom: 2 },
-  clientEmail: { fontSize: 13, color: '#6B7280', marginBottom: 8 },
-  statusBadge: {
-    borderRadius: 8,
-    paddingHorizontal: 10,
-    paddingVertical: 3
-  },
-  statusBadgeText: { fontSize: 12, fontWeight: '700' },
-  goalRow: { flexDirection: 'row', alignItems: 'center', gap: 12, marginBottom: 10 },
-  goalIcon: { borderRadius: 18 },
-  goalInfo: { flex: 1 },
-  goalLabel: { fontSize: 14, fontWeight: '600', color: '#1E293B' },
-  goalMeta: { fontSize: 12, color: '#6B7280' },
-  goalProgress: { marginTop: 4 },
-  goalProgressBar: { height: 6, borderRadius: 6, marginBottom: 4 },
-  goalProgressLabel: { fontSize: 12, color: '#7C4DFF', textAlign: 'right' },
-  statusRow: { flexDirection: 'row', gap: 8 },
-  statusItem: { flex: 1, borderRadius: 10, padding: 10, alignItems: 'center' },
-  statusCount: { fontSize: 20, fontWeight: '800' },
-  statusLabel: { fontSize: 11, color: '#525252', marginTop: 2 },
-  metricsGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
-  metricItem: {
-    width: '47%',
-    alignItems: 'center',
-    backgroundColor: '#FAFAFA',
-    borderRadius: 10,
-    paddingVertical: 14
-  },
-  metricIcon: { borderRadius: 14, marginBottom: 6 },
-  metricValue: { fontSize: 16, fontWeight: '800', marginBottom: 2 },
-  metricLabel: { fontSize: 11, color: '#6B7280', textAlign: 'center' },
-  trendRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 12,
-    padding: 12,
-    borderRadius: 10
-  },
-  trendIcon: { borderRadius: 18 },
-  trendInfo: { flex: 1 },
-  trendLabel: { fontSize: 14, fontWeight: '700' },
-  trendDesc: { fontSize: 12, color: '#525252', marginTop: 2 },
-  actionDivider: { marginVertical: 8 },
-  actions: { gap: 10 },
-  actionBtn: { borderRadius: 12 }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    profileHeader: {
+      alignItems: 'center',
+      paddingVertical: spacing[2.5],
+      marginBottom: spacing[1]
+    },
+    avatarWrap: { marginBottom: spacing[1.5] },
+    avatarCircle: {
+      width: 72,
+      height: 72,
+      borderRadius: 36,
+      backgroundColor: '#1E3A5F',
+      alignItems: 'center',
+      justifyContent: 'center'
+    },
+    avatarInitials: { color: palette.white, fontSize: fontSizes['7xl'], fontWeight: fontWeights.bold },
+    clientName: { fontSize: fontSizes['4xl'], fontWeight: fontWeights.extraBold, color: '#1E293B', marginBottom: 2 },
+    clientEmail: { fontSize: fontSizes.md, color: c.textTertiary, marginBottom: spacing[1] },
+    statusBadge: {
+      borderRadius: radii.md,
+      paddingHorizontal: 10,
+      paddingVertical: 3
+    },
+    statusBadgeText: { fontSize: fontSizes.base, fontWeight: fontWeights.bold },
+    goalRow: { flexDirection: 'row', alignItems: 'center', gap: spacing[1.5], marginBottom: 10 },
+    goalIcon: { borderRadius: 18 },
+    goalInfo: { flex: 1 },
+    goalLabel: { fontSize: fontSizes.lg, fontWeight: fontWeights.semiBold, color: '#1E293B' },
+    goalMeta: { fontSize: fontSizes.base, color: c.textTertiary },
+    goalProgress: { marginTop: 4 },
+    goalProgressBar: { height: 6, borderRadius: radii.sm, marginBottom: 4 },
+    goalProgressLabel: { fontSize: fontSizes.base, color: '#7C4DFF', textAlign: 'right' },
+    statusRow: { flexDirection: 'row', gap: spacing[1] },
+    statusItem: { flex: 1, borderRadius: radii.md, padding: 10, alignItems: 'center' },
+    statusCount: { fontSize: fontSizes['4xl'], fontWeight: fontWeights.extraBold },
+    statusLabel: { fontSize: fontSizes.sm, color: c.textSecondary, marginTop: 2 },
+    metricsGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
+    metricItem: {
+      width: '47%',
+      alignItems: 'center',
+      backgroundColor: c.background,
+      borderRadius: radii.md,
+      paddingVertical: 14
+    },
+    metricIcon: { borderRadius: radii.xl, marginBottom: 6 },
+    metricValue: { fontSize: fontSizes['2xl'], fontWeight: fontWeights.extraBold, marginBottom: 2 },
+    metricLabel: { fontSize: fontSizes.sm, color: c.textTertiary, textAlign: 'center' },
+    trendRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: spacing[1.5],
+      padding: spacing[1.5],
+      borderRadius: radii.md
+    },
+    trendIcon: { borderRadius: 18 },
+    trendInfo: { flex: 1 },
+    trendLabel: { fontSize: fontSizes.lg, fontWeight: fontWeights.bold },
+    trendDesc: { fontSize: fontSizes.base, color: c.textSecondary, marginTop: 2 },
+    actionDivider: { marginVertical: 8 },
+    actions: { gap: 10 },
+    actionBtn: { borderRadius: radii.lg }
+  });
+}

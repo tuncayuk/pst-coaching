@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Modal, StyleSheet, View } from 'react-native';
 
 import { PActivityIndicator, PButton, PCard, PChip, PProgressBar, PText } from '../../components';
@@ -10,6 +10,7 @@ import {
   getEbookProgressForUser,
   getPrimaryUser
 } from '../../data/mockSelectors';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -21,6 +22,9 @@ const LOW_STORAGE_MB = 200;
 const AVG_MIN_PER_PAGE = 2.5;
 
 const ContentEbookDetailContent = ({ ebookId, isOffline }: { ebookId?: string; isOffline?: boolean }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const navigation = useNavigation<any>();
   const user = getPrimaryUser();
   const ebook = getEbookById(ebookId) ?? getEbookById(undefined);
@@ -296,78 +300,86 @@ export const ContentEbookDetailScreen = ({ route }: { route?: { params?: { state
   );
 };
 
-const styles = StyleSheet.create({
-  hero: {
-    alignItems: 'center',
-    paddingVertical: 24,
-    paddingHorizontal: 16,
-    backgroundColor: '#F0FDF4',
-    borderRadius: 20,
-    marginBottom: 16
-  },
-  heroEmoji: { fontSize: 64, marginBottom: 12 },
-  heroTitle: {
-    fontSize: 24,
-    fontWeight: '800',
-    color: '#1F2937',
-    textAlign: 'center',
-    marginBottom: 12
-  },
-  tagRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 8, justifyContent: 'center' },
-  tagChip: { backgroundColor: '#E0F7FA' },
-  audioChip: { backgroundColor: '#FEF3C7' },
-  downloadedChip: { backgroundColor: '#DCFCE7' },
-  progressHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'baseline',
-    marginBottom: 8
-  },
-  progressPct: { fontSize: 28, fontWeight: '800', color: '#6B46C1' },
-  progressSub: { fontSize: 12, color: '#737373' },
-  progressBar: { marginBottom: 8 },
-  metaRow: { flexDirection: 'row', justifyContent: 'space-between', marginTop: 4 },
-  metaItem: { fontSize: 12, color: '#737373' },
-  completionBadge: {
-    marginTop: 16,
-    padding: 16,
-    backgroundColor: '#FEF9C3',
-    borderRadius: 12,
-    alignItems: 'center',
-    gap: 8
-  },
-  completionIcon: { fontSize: 32 },
-  completionText: { fontSize: 14, fontWeight: '600', color: '#1F2937', textAlign: 'center' },
-  badgeCta: { marginTop: 8 },
-  downloadLabel: { fontSize: 13, color: '#525252', marginBottom: 8 },
-  downloadedRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
-  downloadedText: { flex: 1, fontSize: 13, color: '#15803D', marginRight: 8 },
-  paragraph: { fontSize: 14, color: '#525252', lineHeight: 22, marginBottom: 12 },
-  metaBox: { backgroundColor: '#F9FAFB', borderRadius: 10, padding: 12, gap: 4 },
-  metaText: { fontSize: 12, color: '#525252' },
-  chapRow: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    gap: 12,
-    paddingVertical: 8,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: '#E5E7EB'
-  },
-  chapIndex: { fontSize: 14, fontWeight: '700', color: '#6B46C1', width: 20, textAlign: 'center' },
-  chapInfo: { flex: 1 },
-  chapTitle: { fontSize: 14, fontWeight: '600', color: '#1F2937' },
-  chapPages: { fontSize: 11, color: '#9CA3AF', marginTop: 2 },
-  toolRow: { flexDirection: 'row', gap: 10 },
-  toolBtn: { flex: 1 },
-  primaryCta: { marginBottom: 8 },
-  modalOverlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.5)',
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 24
-  },
-  modalCard: { width: '100%', borderRadius: 16 },
-  modalTitle: { fontSize: 17, fontWeight: '700', color: '#1F2937', marginBottom: 12 },
-  modalBody: { fontSize: 14, color: '#525252', lineHeight: 22, marginBottom: 20 }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    hero: {
+      alignItems: 'center',
+      paddingVertical: spacing[3],
+      paddingHorizontal: spacing[2],
+      backgroundColor: '#F0FDF4',
+      borderRadius: radii['2xl'],
+      marginBottom: spacing[2]
+    },
+    heroEmoji: { fontSize: fontSizes['12xl'], marginBottom: spacing[1.5] },
+    heroTitle: {
+      fontSize: fontSizes['6xl'],
+      fontWeight: fontWeights.extraBold,
+      color: '#1F2937',
+      textAlign: 'center',
+      marginBottom: spacing[1.5]
+    },
+    tagRow: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing[1], justifyContent: 'center' },
+    tagChip: { backgroundColor: palette.cyan50 },
+    audioChip: { backgroundColor: c.warningContainer },
+    downloadedChip: { backgroundColor: '#DCFCE7' },
+    progressHeader: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'baseline',
+      marginBottom: spacing[1]
+    },
+    progressPct: { fontSize: fontSizes['8xl'], fontWeight: fontWeights.extraBold, color: '#6B46C1' },
+    progressSub: { fontSize: fontSizes.base, color: c.textTertiary },
+    progressBar: { marginBottom: spacing[1] },
+    metaRow: { flexDirection: 'row', justifyContent: 'space-between', marginTop: 4 },
+    metaItem: { fontSize: fontSizes.base, color: c.textTertiary },
+    completionBadge: {
+      marginTop: spacing[2],
+      padding: spacing[2],
+      backgroundColor: c.warningContainer,
+      borderRadius: radii.lg,
+      alignItems: 'center',
+      gap: spacing[1]
+    },
+    completionIcon: { fontSize: fontSizes['9xl'] },
+    completionText: { fontSize: fontSizes.lg, fontWeight: fontWeights.semiBold, color: '#1F2937', textAlign: 'center' },
+    badgeCta: { marginTop: spacing[1] },
+    downloadLabel: { fontSize: fontSizes.md, color: c.textSecondary, marginBottom: spacing[1] },
+    downloadedRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
+    downloadedText: { flex: 1, fontSize: fontSizes.md, color: '#15803D', marginRight: 8 },
+    paragraph: { fontSize: fontSizes.lg, color: c.textSecondary, lineHeight: 22, marginBottom: spacing[1.5] },
+    metaBox: { backgroundColor: '#F9FAFB', borderRadius: radii.md, padding: spacing[1.5], gap: 4 },
+    metaText: { fontSize: fontSizes.base, color: c.textSecondary },
+    chapRow: {
+      flexDirection: 'row',
+      alignItems: 'flex-start',
+      gap: spacing[1.5],
+      paddingVertical: spacing[1],
+      borderBottomWidth: StyleSheet.hairlineWidth,
+      borderBottomColor: '#E5E7EB'
+    },
+    chapIndex: {
+      fontSize: fontSizes.lg,
+      fontWeight: fontWeights.bold,
+      color: '#6B46C1',
+      width: 20,
+      textAlign: 'center'
+    },
+    chapInfo: { flex: 1 },
+    chapTitle: { fontSize: fontSizes.lg, fontWeight: fontWeights.semiBold, color: '#1F2937' },
+    chapPages: { fontSize: fontSizes.sm, color: '#9CA3AF', marginTop: 2 },
+    toolRow: { flexDirection: 'row', gap: 10 },
+    toolBtn: { flex: 1 },
+    primaryCta: { marginBottom: spacing[1] },
+    modalOverlay: {
+      flex: 1,
+      backgroundColor: 'rgba(0,0,0,0.5)',
+      justifyContent: 'center',
+      alignItems: 'center',
+      padding: spacing[3]
+    },
+    modalCard: { width: '100%', borderRadius: radii.xl },
+    modalTitle: { fontSize: 17, fontWeight: fontWeights.bold, color: '#1F2937', marginBottom: spacing[1.5] },
+    modalBody: { fontSize: fontSizes.lg, color: c.textSecondary, lineHeight: 22, marginBottom: spacing[2.5] }
+  });
+}

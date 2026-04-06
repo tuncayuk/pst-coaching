@@ -1,9 +1,10 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Modal, StyleSheet, TextInput, View } from 'react-native';
 
 import { PActivityIndicator, PButton, PCard, PChip, PText } from '../../components';
 import { getEbookById, getHighlightsForUser, getNotesForUser, getPrimaryUser } from '../../data/mockSelectors';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -19,6 +20,9 @@ const COLOR_MAP: Record<string, string> = {
 };
 
 const ContentEbookHighlightsContent = ({ isOffline, ebookId }: { isOffline?: boolean; ebookId?: string }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const navigation = useNavigation<any>();
   const user = getPrimaryUser();
   const ebook = getEbookById(ebookId) ?? getEbookById(undefined);
@@ -250,47 +254,49 @@ export const ContentEbookHighlightsScreen = ({
   );
 };
 
-const styles = StyleSheet.create({
-  emptyBox: { alignItems: 'center', paddingVertical: 20, gap: 8 },
-  emptyIcon: { fontSize: 36 },
-  emptyTitle: { fontSize: 16, fontWeight: '700', color: '#1F2937' },
-  emptyBody: { fontSize: 13, color: '#737373', textAlign: 'center' },
-  highlightCard: { borderLeftWidth: 4, marginBottom: 10, borderRadius: 10 },
-  highlightHeader: { flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 6 },
-  colorDot: { width: 12, height: 12, borderRadius: 6 },
-  quoteText: {
-    fontSize: 14,
-    color: '#1F2937',
-    lineHeight: 22,
-    fontStyle: 'italic',
-    marginBottom: 8
-  },
-  highlightActions: { flexDirection: 'row', gap: 4 },
-  noteCard: { marginBottom: 10, borderRadius: 10 },
-  noteInput: {
-    borderWidth: 1,
-    borderColor: '#E5E7EB',
-    borderRadius: 8,
-    padding: 10,
-    fontSize: 14,
-    color: '#1F2937',
-    minHeight: 60,
-    textAlignVertical: 'top'
-  },
-  noteEditActions: { flexDirection: 'row', justifyContent: 'flex-end', gap: 8, marginTop: 8 },
-  noteText: { fontSize: 14, color: '#1F2937', lineHeight: 20, marginBottom: 8 },
-  emptyHint: { fontSize: 13, color: '#9CA3AF' },
-  exportRow: { flexDirection: 'row', gap: 10 },
-  exportDone: { fontSize: 13, color: '#15803D' },
-  modalOverlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.5)',
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 24
-  },
-  modalCard: { width: '100%', borderRadius: 16 },
-  modalTitle: { fontSize: 17, fontWeight: '700', color: '#1F2937', marginBottom: 12 },
-  modalBody: { fontSize: 14, color: '#525252', lineHeight: 22, marginBottom: 20 },
-  modalActions: { flexDirection: 'row', justifyContent: 'flex-end', gap: 8 }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    emptyBox: { alignItems: 'center', paddingVertical: spacing[2.5], gap: spacing[1] },
+    emptyIcon: { fontSize: fontSizes['10xl'] },
+    emptyTitle: { fontSize: fontSizes['2xl'], fontWeight: fontWeights.bold, color: '#1F2937' },
+    emptyBody: { fontSize: fontSizes.md, color: c.textTertiary, textAlign: 'center' },
+    highlightCard: { borderLeftWidth: 4, marginBottom: 10, borderRadius: radii.md },
+    highlightHeader: { flexDirection: 'row', alignItems: 'center', gap: spacing[1], marginBottom: 6 },
+    colorDot: { width: 12, height: 12, borderRadius: radii.sm },
+    quoteText: {
+      fontSize: fontSizes.lg,
+      color: '#1F2937',
+      lineHeight: 22,
+      fontStyle: 'italic',
+      marginBottom: spacing[1]
+    },
+    highlightActions: { flexDirection: 'row', gap: 4 },
+    noteCard: { marginBottom: 10, borderRadius: radii.md },
+    noteInput: {
+      borderWidth: 1,
+      borderColor: '#E5E7EB',
+      borderRadius: radii.md,
+      padding: 10,
+      fontSize: fontSizes.lg,
+      color: '#1F2937',
+      minHeight: 60,
+      textAlignVertical: 'top'
+    },
+    noteEditActions: { flexDirection: 'row', justifyContent: 'flex-end', gap: spacing[1], marginTop: spacing[1] },
+    noteText: { fontSize: fontSizes.lg, color: '#1F2937', lineHeight: 20, marginBottom: spacing[1] },
+    emptyHint: { fontSize: fontSizes.md, color: '#9CA3AF' },
+    exportRow: { flexDirection: 'row', gap: 10 },
+    exportDone: { fontSize: fontSizes.md, color: '#15803D' },
+    modalOverlay: {
+      flex: 1,
+      backgroundColor: 'rgba(0,0,0,0.5)',
+      justifyContent: 'center',
+      alignItems: 'center',
+      padding: spacing[3]
+    },
+    modalCard: { width: '100%', borderRadius: radii.xl },
+    modalTitle: { fontSize: 17, fontWeight: fontWeights.bold, color: '#1F2937', marginBottom: spacing[1.5] },
+    modalBody: { fontSize: fontSizes.lg, color: c.textSecondary, lineHeight: 22, marginBottom: spacing[2.5] },
+    modalActions: { flexDirection: 'row', justifyContent: 'flex-end', gap: spacing[1] }
+  });
+}

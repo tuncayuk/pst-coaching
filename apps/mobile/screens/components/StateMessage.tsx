@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useTheme } from 'react-native-paper';
 
 import { PAvatar, PButton, PText } from '../../components';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 
 type StateMessageProps = {
   title: string;
@@ -21,6 +22,9 @@ export const StateMessage = ({
   icon = 'information-outline',
   tone = 'neutral'
 }: StateMessageProps) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const theme = useTheme();
   const background = tone === 'error' ? theme.colors.errorContainer : theme.colors.elevation.level1;
   const onBackground = tone === 'error' ? theme.colors.onErrorContainer : theme.colors.onSurface;
@@ -43,16 +47,18 @@ export const StateMessage = ({
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    padding: 20,
-    borderRadius: 24,
-    alignItems: 'center'
-  },
-  avatar: {
-    marginBottom: 12
-  },
-  button: {
-    marginTop: 16
-  }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    container: {
+      padding: spacing[2.5],
+      borderRadius: radii['3xl'],
+      alignItems: 'center'
+    },
+    avatar: {
+      marginBottom: spacing[1.5]
+    },
+    button: {
+      marginTop: spacing[2]
+    }
+  });
+}

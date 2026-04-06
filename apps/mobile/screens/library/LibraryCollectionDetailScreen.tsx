@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
 
 import { PActivityIndicator, PButton, PChip, PDivider, PText } from '../../components';
@@ -13,6 +13,7 @@ import {
   getPrimaryUser,
   getWorkshops
 } from '../../data/mockSelectors';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -42,6 +43,9 @@ const LibraryCollectionDetailContent = ({
   collectionId?: string;
   isOffline?: boolean;
 }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const navigation = useNavigation<any>();
   const user = getPrimaryUser();
   const collection = getCollectionsForUser(user?.id).find((c: any) => c.id === collectionId);
@@ -265,38 +269,40 @@ export const LibraryCollectionDetailScreen = ({
   );
 };
 
-const styles = StyleSheet.create({
-  desc: { opacity: 0.65, marginBottom: 8 },
-  editBtn: { alignSelf: 'flex-start' },
-  searchRow: { flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 10 },
-  searchInput: {
-    flex: 1,
-    borderWidth: 1,
-    borderColor: '#DDD',
-    borderRadius: 8,
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    fontSize: 14
-  },
-  clearText: { color: '#7C4DFF' },
-  chipRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
-  filterChip: { marginBottom: 4 },
-  emptyText: { opacity: 0.6, paddingVertical: 8 },
-  itemRow: { flexDirection: 'row', paddingVertical: 10, gap: 10 },
-  typeBar: { width: 4, borderRadius: 2, minHeight: 40 },
-  itemBody: { flex: 1 },
-  itemTitleRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    flexWrap: 'wrap',
-    gap: 6
-  },
-  itemTitle: { flex: 1, fontWeight: '600', marginRight: 6 },
-  typeChip: { height: 24 },
-  itemDesc: { opacity: 0.6, marginTop: 3 },
-  openBtn: { alignSelf: 'flex-start', marginTop: 4 },
-  divider: { marginHorizontal: 0 },
-  addHint: { opacity: 0.65, marginBottom: 8 },
-  addBtn: { alignSelf: 'flex-start' }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    desc: { opacity: 0.65, marginBottom: spacing[1] },
+    editBtn: { alignSelf: 'flex-start' },
+    searchRow: { flexDirection: 'row', alignItems: 'center', gap: spacing[1], marginBottom: 10 },
+    searchInput: {
+      flex: 1,
+      borderWidth: 1,
+      borderColor: '#DDD',
+      borderRadius: radii.md,
+      paddingHorizontal: spacing[1.5],
+      paddingVertical: spacing[1],
+      fontSize: fontSizes.lg
+    },
+    clearText: { color: '#7C4DFF' },
+    chipRow: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing[1] },
+    filterChip: { marginBottom: 4 },
+    emptyText: { opacity: 0.6, paddingVertical: spacing[1] },
+    itemRow: { flexDirection: 'row', paddingVertical: 10, gap: 10 },
+    typeBar: { width: 4, borderRadius: radii.xs, minHeight: 40 },
+    itemBody: { flex: 1 },
+    itemTitleRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      flexWrap: 'wrap',
+      gap: 6
+    },
+    itemTitle: { flex: 1, fontWeight: fontWeights.semiBold, marginRight: 6 },
+    typeChip: { height: 24 },
+    itemDesc: { opacity: 0.6, marginTop: 3 },
+    openBtn: { alignSelf: 'flex-start', marginTop: 4 },
+    divider: { marginHorizontal: 0 },
+    addHint: { opacity: 0.65, marginBottom: spacing[1] },
+    addBtn: { alignSelf: 'flex-start' }
+  });
+}

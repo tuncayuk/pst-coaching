@@ -2,14 +2,16 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 import { Button, type ButtonProps, useTheme } from 'react-native-paper';
 
+import { fontSizes, fontWeights } from '../theme';
+
 const styles = StyleSheet.create({
   content: {
     height: 56,
     justifyContent: 'center'
   },
   label: {
-    fontSize: 16,
-    fontWeight: '600'
+    fontSize: fontSizes['2xl'],
+    fontWeight: fontWeights.semiBold
   }
 });
 

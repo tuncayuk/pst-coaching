@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Modal, StyleSheet, TextInput, View } from 'react-native';
 
 import { PActivityIndicator, PButton, PChip, PDivider, PText } from '../../components';
 import { getWorkshopById, getWorkshops } from '../../data/mockSelectors';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -130,6 +131,9 @@ const WorksheetForm = ({
   savedValues: Record<string, string>;
   onSave: (id: string, values: Record<string, string>, completedAt?: string) => void;
 }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const [values, setValues] = useState<Record<string, string>>(initialValues);
   const [saved, setSaved] = useState(false);
 
@@ -175,6 +179,9 @@ const WorksheetForm = ({
 };
 
 const ContentWorkshopWorkbookContent = ({ workshopId, isOffline }: { workshopId?: string; isOffline?: boolean }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const workshop = getWorkshopById(workshopId) ?? getWorkshops()[0];
 
   // AC-FR-E8-06-02/03: track saved worksheets
@@ -344,93 +351,95 @@ export const ContentWorkshopWorkbookScreen = ({ route }: { route?: { params?: Ro
   );
 };
 
-const styles = StyleSheet.create({
-  desc: {
-    opacity: 0.7,
-    lineHeight: 20,
-    marginBottom: 8
-  },
-  exportBtn: {
-    alignSelf: 'flex-start',
-    marginTop: 4
-  },
-  wsRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingVertical: 8,
-    gap: 10
-  },
-  wsInfo: {
-    flex: 1
-  },
-  completedText: {
-    color: '#4CAF50',
-    marginTop: 2
-  },
-  incompleteText: {
-    opacity: 0.55,
-    marginTop: 2
-  },
-  divider: {
-    marginVertical: 6
-  },
-  worksheetForm: {
-    paddingTop: 8,
-    paddingBottom: 12
-  },
-  wsDesc: {
-    opacity: 0.7,
-    lineHeight: 20
-  },
-  fieldBlock: {
-    marginBottom: 12
-  },
-  fieldLabel: {
-    marginBottom: 4,
-    opacity: 0.7
-  },
-  textInput: {
-    borderWidth: 1,
-    borderColor: '#DDD',
-    borderRadius: 8,
-    padding: 10,
-    fontSize: 14
-  },
-  textInputMulti: {
-    minHeight: 72,
-    textAlignVertical: 'top'
-  },
-  savedNote: {
-    color: '#4CAF50',
-    marginBottom: 4
-  },
-  saveBtn: {
-    alignSelf: 'flex-start',
-    marginTop: 4
-  },
-  modalOverlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.5)',
-    justifyContent: 'flex-end'
-  },
-  modalCard: {
-    backgroundColor: '#FFF',
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    padding: 24,
-    paddingBottom: 36
-  },
-  modalTitle: {
-    marginBottom: 12,
-    fontWeight: '700'
-  },
-  modalText: {
-    opacity: 0.75,
-    lineHeight: 20,
-    marginBottom: 16
-  },
-  modalActions: {
-    gap: 10
-  }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    desc: {
+      opacity: 0.7,
+      lineHeight: 20,
+      marginBottom: spacing[1]
+    },
+    exportBtn: {
+      alignSelf: 'flex-start',
+      marginTop: 4
+    },
+    wsRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      paddingVertical: spacing[1],
+      gap: 10
+    },
+    wsInfo: {
+      flex: 1
+    },
+    completedText: {
+      color: '#4CAF50',
+      marginTop: 2
+    },
+    incompleteText: {
+      opacity: 0.55,
+      marginTop: 2
+    },
+    divider: {
+      marginVertical: 6
+    },
+    worksheetForm: {
+      paddingTop: 8,
+      paddingBottom: 12
+    },
+    wsDesc: {
+      opacity: 0.7,
+      lineHeight: 20
+    },
+    fieldBlock: {
+      marginBottom: spacing[1.5]
+    },
+    fieldLabel: {
+      marginBottom: 4,
+      opacity: 0.7
+    },
+    textInput: {
+      borderWidth: 1,
+      borderColor: '#DDD',
+      borderRadius: radii.md,
+      padding: 10,
+      fontSize: fontSizes.lg
+    },
+    textInputMulti: {
+      minHeight: 72,
+      textAlignVertical: 'top'
+    },
+    savedNote: {
+      color: '#4CAF50',
+      marginBottom: 4
+    },
+    saveBtn: {
+      alignSelf: 'flex-start',
+      marginTop: 4
+    },
+    modalOverlay: {
+      flex: 1,
+      backgroundColor: 'rgba(0,0,0,0.5)',
+      justifyContent: 'flex-end'
+    },
+    modalCard: {
+      backgroundColor: '#FFF',
+      borderTopLeftRadius: 20,
+      borderTopRightRadius: 20,
+      padding: spacing[3],
+      paddingBottom: 36
+    },
+    modalTitle: {
+      marginBottom: spacing[1.5],
+      fontWeight: fontWeights.bold
+    },
+    modalText: {
+      opacity: 0.75,
+      lineHeight: 20,
+      marginBottom: spacing[2]
+    },
+    modalActions: {
+      gap: 10
+    }
+  });
+}

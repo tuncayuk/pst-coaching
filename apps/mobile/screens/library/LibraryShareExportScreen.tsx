@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { PActivityIndicator, PButton, PChip, PDivider, PProgressBar, PText } from '../../components';
@@ -13,6 +13,7 @@ import {
   getPrimaryUser,
   getWorkshops
 } from '../../data/mockSelectors';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -33,6 +34,9 @@ const SCOPE_OPTIONS: Array<{ key: ExportScope; label: string; desc: string }> = 
 ];
 
 const LibraryShareExportContent = ({ favoriteId, isOffline }: { favoriteId?: string; isOffline?: boolean }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const navigation = useNavigation<any>();
   const user = getPrimaryUser();
   const favorite = getFavoritesForUser(user?.id).find((f: any) => f.id === favoriteId);
@@ -249,32 +253,34 @@ export const LibraryShareExportScreen = ({ route }: { route?: { params?: { state
   );
 };
 
-const styles = StyleSheet.create({
-  sourceLabel: { opacity: 0.55, marginBottom: 2 },
-  sourceTitle: { fontWeight: '600', marginBottom: 8 },
-  statsRow: { flexDirection: 'row', gap: 8 },
-  statChip: {},
-  privacyText: { opacity: 0.75, lineHeight: 20 },
-  divider: { marginVertical: 8 },
-  consentRow: { flexDirection: 'row', alignItems: 'center', gap: 10 },
-  consentBtn: { alignSelf: 'flex-start' },
-  consentCheck: { color: '#4CAF50' },
-  scopeRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingVertical: 8,
-    gap: 10
-  },
-  scopeInfo: { flex: 1 },
-  scopeDesc: { opacity: 0.6, marginTop: 2 },
-  itemCountText: { opacity: 0.55, marginTop: 8 },
-  doneBlock: { alignItems: 'center', paddingVertical: 12 },
-  doneText: { color: '#4CAF50', fontWeight: '700', marginBottom: 6 },
-  doneDesc: { opacity: 0.7, marginBottom: 12, textAlign: 'center' },
-  progressBlock: { paddingVertical: 8 },
-  exportingText: { opacity: 0.7, marginBottom: 8 },
-  progressBar: { borderRadius: 4 },
-  exportBtn: {},
-  warningText: { opacity: 0.55, marginTop: 8, textAlign: 'center' }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    sourceLabel: { opacity: 0.55, marginBottom: 2 },
+    sourceTitle: { fontWeight: fontWeights.semiBold, marginBottom: spacing[1] },
+    statsRow: { flexDirection: 'row', gap: spacing[1] },
+    statChip: {},
+    privacyText: { opacity: 0.75, lineHeight: 20 },
+    divider: { marginVertical: 8 },
+    consentRow: { flexDirection: 'row', alignItems: 'center', gap: 10 },
+    consentBtn: { alignSelf: 'flex-start' },
+    consentCheck: { color: '#4CAF50' },
+    scopeRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      paddingVertical: spacing[1],
+      gap: 10
+    },
+    scopeInfo: { flex: 1 },
+    scopeDesc: { opacity: 0.6, marginTop: 2 },
+    itemCountText: { opacity: 0.55, marginTop: spacing[1] },
+    doneBlock: { alignItems: 'center', paddingVertical: spacing[1.5] },
+    doneText: { color: '#4CAF50', fontWeight: fontWeights.bold, marginBottom: 6 },
+    doneDesc: { opacity: 0.7, marginBottom: spacing[1.5], textAlign: 'center' },
+    progressBlock: { paddingVertical: spacing[1] },
+    exportingText: { opacity: 0.7, marginBottom: spacing[1] },
+    progressBar: { borderRadius: radii.sm },
+    exportBtn: {},
+    warningText: { opacity: 0.55, marginTop: spacing[1], textAlign: 'center' }
+  });
+}

@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { PActivityIndicator, PButton, PCard, PChip, PProgressBar, PText } from '../../components';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -70,6 +71,9 @@ const moodSummary30 = [
 ];
 
 const ProgressEmotionalMapContent = ({ isOffline }: { isOffline?: boolean }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   // AC-FR-E6-02-01: period toggle
   const [period, setPeriod] = useState<Period>('14');
   const grid = period === '14' ? MOOD_GRID_14 : MOOD_GRID_30;
@@ -219,84 +223,91 @@ export const ProgressEmotionalMapScreen = ({ route }: { route?: { params?: { sta
   );
 };
 
-const styles = StyleSheet.create({
-  periodRow: {
-    flexDirection: 'row',
-    gap: 10
-  },
-  periodBtn: { flex: 1 },
-  grid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 6
-  },
-  gridCell: {
-    width: 36,
-    height: 36,
-    borderRadius: 8,
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  gridIcon: {
-    fontSize: 14,
-    fontWeight: '700'
-  },
-  legendRow: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 12
-  },
-  legendItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6
-  },
-  legendSwatch: {
-    width: 26,
-    height: 26,
-    borderRadius: 6,
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  legendIcon: {
-    fontSize: 12,
-    fontWeight: '700'
-  },
-  legendLabel: {
-    fontSize: 12,
-    color: '#525252'
-  },
-  summaryRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-    marginBottom: 10
-  },
-  summaryLabelRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 4,
-    width: 70
-  },
-  summaryIcon: { fontSize: 11 },
-  summaryLabel: { fontSize: 12, color: '#525252' },
-  summaryBar: { flex: 1, height: 6, borderRadius: 3 },
-  summaryPct: { fontSize: 12, fontWeight: '700', width: 34, textAlign: 'right' },
-  disclaimer: {
-    marginHorizontal: 16,
-    marginBottom: 24,
-    padding: 12,
-    backgroundColor: '#FEF9C3',
-    borderRadius: 10,
-    borderLeftWidth: 4,
-    borderLeftColor: '#CA8A04'
-  },
-  disclaimerText: {
-    fontSize: 12,
-    color: '#A16207',
-    fontWeight: '600'
-  }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    periodRow: {
+      flexDirection: 'row',
+      gap: 10
+    },
+    periodBtn: { flex: 1 },
+    grid: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      gap: 6
+    },
+    gridCell: {
+      width: 36,
+      height: 36,
+      borderRadius: radii.md,
+      alignItems: 'center',
+      justifyContent: 'center'
+    },
+    gridIcon: {
+      fontSize: fontSizes.lg,
+      fontWeight: fontWeights.bold
+    },
+    legendRow: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      gap: spacing[1.5]
+    },
+    legendItem: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 6
+    },
+    legendSwatch: {
+      width: 26,
+      height: 26,
+      borderRadius: radii.sm,
+      alignItems: 'center',
+      justifyContent: 'center'
+    },
+    legendIcon: {
+      fontSize: fontSizes.base,
+      fontWeight: fontWeights.bold
+    },
+    legendLabel: {
+      fontSize: fontSizes.base,
+      color: c.textSecondary
+    },
+    summaryRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: spacing[1],
+      marginBottom: 10
+    },
+    summaryLabelRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 4,
+      width: 70
+    },
+    summaryIcon: { fontSize: fontSizes.sm },
+    summaryLabel: { fontSize: fontSizes.base, color: c.textSecondary },
+    summaryBar: { flex: 1, height: 6, borderRadius: 3 },
+    summaryPct: {
+      fontSize: fontSizes.base,
+      fontWeight: fontWeights.bold,
+      width: 34,
+      textAlign: 'right'
+    },
+    disclaimer: {
+      marginHorizontal: 16,
+      marginBottom: spacing[3],
+      padding: spacing[1.5],
+      backgroundColor: c.warningContainer,
+      borderRadius: radii.md,
+      borderLeftWidth: 4,
+      borderLeftColor: '#CA8A04'
+    },
+    disclaimerText: {
+      fontSize: fontSizes.base,
+      color: '#A16207',
+      fontWeight: fontWeights.semiBold
+    }
+  });
+}
 
 const moodTags = ['Sakin', 'Odakli', 'Merakli', 'Dusuk enerji'];
 

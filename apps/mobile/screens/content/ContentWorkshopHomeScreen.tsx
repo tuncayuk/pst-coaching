@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { PActivityIndicator, PButton, PChip, PDivider, PText } from '../../components';
@@ -10,6 +10,7 @@ import {
   getWorkshopById,
   getWorkshops
 } from '../../data/mockSelectors';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -46,6 +47,9 @@ const LOCK_REASON: Record<number, string> = {
 };
 
 const ContentWorkshopHomeContent = ({ workshopId, isOffline }: { workshopId?: string; isOffline?: boolean }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const navigation = useNavigation<any>();
   const user = getPrimaryUser();
   const workshop = getWorkshopById(workshopId) ?? getWorkshops()[0];
@@ -240,67 +244,69 @@ export const ContentWorkshopHomeScreen = ({ route }: { route?: { params?: RouteP
   );
 };
 
-const styles = StyleSheet.create({
-  resumeText: {
-    opacity: 0.7,
-    marginBottom: 8
-  },
-  resumeButton: {
-    alignSelf: 'flex-start'
-  },
-  stageItem: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    paddingVertical: 10
-  },
-  stageNumBadge: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: 12,
-    marginTop: 2
-  },
-  stageNumText: {
-    color: '#FFF',
-    fontSize: 12,
-    fontWeight: '700'
-  },
-  stageBody: {
-    flex: 1
-  },
-  stageTitleRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    flexWrap: 'wrap',
-    gap: 6
-  },
-  stageTitleText: {
-    flex: 1,
-    marginRight: 6
-  },
-  typeChip: {
-    height: 24
-  },
-  lockNote: {
-    opacity: 0.5,
-    marginTop: 3,
-    fontStyle: 'italic'
-  },
-  completedNote: {
-    color: '#4CAF50',
-    marginTop: 3
-  },
-  openButton: {
-    alignSelf: 'flex-start',
-    marginTop: 4
-  },
-  lockedText: {
-    opacity: 0.45
-  },
-  divider: {
-    marginHorizontal: 0
-  }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    resumeText: {
+      opacity: 0.7,
+      marginBottom: spacing[1]
+    },
+    resumeButton: {
+      alignSelf: 'flex-start'
+    },
+    stageItem: {
+      flexDirection: 'row',
+      alignItems: 'flex-start',
+      paddingVertical: 10
+    },
+    stageNumBadge: {
+      width: 32,
+      height: 32,
+      borderRadius: radii.xl,
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginRight: 12,
+      marginTop: 2
+    },
+    stageNumText: {
+      color: '#FFF',
+      fontSize: fontSizes.base,
+      fontWeight: fontWeights.bold
+    },
+    stageBody: {
+      flex: 1
+    },
+    stageTitleRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      flexWrap: 'wrap',
+      gap: 6
+    },
+    stageTitleText: {
+      flex: 1,
+      marginRight: 6
+    },
+    typeChip: {
+      height: 24
+    },
+    lockNote: {
+      opacity: 0.5,
+      marginTop: 3,
+      fontStyle: 'italic'
+    },
+    completedNote: {
+      color: '#4CAF50',
+      marginTop: 3
+    },
+    openButton: {
+      alignSelf: 'flex-start',
+      marginTop: 4
+    },
+    lockedText: {
+      opacity: 0.45
+    },
+    divider: {
+      marginHorizontal: 0
+    }
+  });
+}

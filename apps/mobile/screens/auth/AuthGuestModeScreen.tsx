@@ -1,9 +1,10 @@
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { PActivityIndicator, PButton, PText } from '../../components';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -12,6 +13,9 @@ import { SkeletonBlock } from '../components/SkeletonBlock';
 import { StateMessage } from '../components/StateMessage';
 
 const GuestModeContent = ({ isOffline }: { isOffline?: boolean }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const navigation = useNavigation<any>();
 
   return (
@@ -122,99 +126,101 @@ export const AuthGuestModeScreen = ({ route }: { route?: { params?: { state?: Sc
   return <GuestModeContent />;
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#FAFAFA'
-  },
-  scrollContent: {
-    paddingHorizontal: 24,
-    paddingTop: 32,
-    paddingBottom: 32
-  },
-  iconContainer: {
-    alignItems: 'center',
-    marginBottom: 16
-  },
-  icon: {
-    fontSize: 64
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: '700',
-    color: '#2B1B5D',
-    marginBottom: 8,
-    textAlign: 'center'
-  },
-  subtitle: {
-    color: '#525252',
-    marginBottom: 24,
-    textAlign: 'center',
-    fontSize: 15
-  },
-  infoCard: {
-    backgroundColor: '#D1FAE5',
-    padding: 16,
-    borderRadius: 12,
-    marginBottom: 16,
-    borderLeftWidth: 4,
-    borderLeftColor: '#10B981'
-  },
-  infoTitle: {
-    fontWeight: '700',
-    color: '#065F46',
-    marginBottom: 12
-  },
-  warningCard: {
-    backgroundColor: '#FEF3C7',
-    padding: 16,
-    borderRadius: 12,
-    marginBottom: 24,
-    borderLeftWidth: 4,
-    borderLeftColor: '#F59E0B'
-  },
-  warningTitle: {
-    fontWeight: '700',
-    color: '#92400E',
-    marginBottom: 12
-  },
-  list: {
-    gap: 8
-  },
-  listItem: {
-    fontSize: 14,
-    color: '#171717',
-    lineHeight: 24
-  },
-  warningItem: {
-    fontSize: 14,
-    color: '#92400E',
-    lineHeight: 24
-  },
-  button: {
-    marginBottom: 12,
-    borderRadius: 12
-  },
-  secondaryButton: {
-    marginBottom: 12,
-    borderRadius: 12,
-    borderWidth: 2,
-    borderColor: '#E5E5E5'
-  },
-  secondaryButtonContent: {
-    height: 56,
-    justifyContent: 'center'
-  },
-  secondaryButtonLabel: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#171717'
-  },
-  hint: {
-    textAlign: 'center',
-    color: '#525252',
-    marginTop: 16,
-    lineHeight: 20,
-    fontSize: 12
-  }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: c.background
+    },
+    scrollContent: {
+      paddingHorizontal: spacing[3],
+      paddingTop: 32,
+      paddingBottom: 32
+    },
+    iconContainer: {
+      alignItems: 'center',
+      marginBottom: spacing[2]
+    },
+    icon: {
+      fontSize: fontSizes['12xl']
+    },
+    title: {
+      fontSize: fontSizes['6xl'],
+      fontWeight: fontWeights.bold,
+      color: c.textBrand,
+      marginBottom: spacing[1],
+      textAlign: 'center'
+    },
+    subtitle: {
+      color: c.textSecondary,
+      marginBottom: spacing[3],
+      textAlign: 'center',
+      fontSize: fontSizes.xl
+    },
+    infoCard: {
+      backgroundColor: palette.emerald50,
+      padding: spacing[2],
+      borderRadius: radii.lg,
+      marginBottom: spacing[2],
+      borderLeftWidth: 4,
+      borderLeftColor: c.tertiary
+    },
+    infoTitle: {
+      fontWeight: fontWeights.bold,
+      color: '#065F46',
+      marginBottom: spacing[1.5]
+    },
+    warningCard: {
+      backgroundColor: c.warningContainer,
+      padding: spacing[2],
+      borderRadius: radii.lg,
+      marginBottom: spacing[3],
+      borderLeftWidth: 4,
+      borderLeftColor: '#F59E0B'
+    },
+    warningTitle: {
+      fontWeight: fontWeights.bold,
+      color: '#92400E',
+      marginBottom: spacing[1.5]
+    },
+    list: {
+      gap: spacing[1]
+    },
+    listItem: {
+      fontSize: fontSizes.lg,
+      color: c.textPrimary,
+      lineHeight: 24
+    },
+    warningItem: {
+      fontSize: fontSizes.lg,
+      color: '#92400E',
+      lineHeight: 24
+    },
+    button: {
+      marginBottom: spacing[1.5],
+      borderRadius: radii.lg
+    },
+    secondaryButton: {
+      marginBottom: spacing[1.5],
+      borderRadius: radii.lg,
+      borderWidth: 2,
+      borderColor: c.outlineVariant
+    },
+    secondaryButtonContent: {
+      height: 56,
+      justifyContent: 'center'
+    },
+    secondaryButtonLabel: {
+      fontSize: fontSizes['2xl'],
+      fontWeight: fontWeights.semiBold,
+      color: c.textPrimary
+    },
+    hint: {
+      textAlign: 'center',
+      color: c.textSecondary,
+      marginTop: spacing[2],
+      lineHeight: 20,
+      fontSize: fontSizes.base
+    }
+  });
+}

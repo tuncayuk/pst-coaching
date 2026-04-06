@@ -5,11 +5,12 @@
  * AC-FR-E17-04-03: Active/passive toggle per type
  * AC-FR-E17-04-04: CRUD for custom reminder times
  */
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import { PActivityIndicator, PButton, PDivider, PIconButton, PListItem, PSwitch, PText } from '../../components';
 import { getPrimaryUser, getReminderSettingsForUser } from '../../data/mockSelectors';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -33,6 +34,9 @@ type ReminderTypeConfig = {
 };
 
 const ReminderPlannerContent = ({ isOffline }: { isOffline?: boolean }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const user = getPrimaryUser();
   const settings = getReminderSettingsForUser(user?.id);
 
@@ -277,37 +281,39 @@ export const ReminderPlannerScreen = ({ route }: ReminderPlannerScreenProps) => 
   );
 };
 
-const styles = StyleSheet.create({
-  scroll: { flex: 1 },
-  scrollContent: { paddingBottom: 32 },
-  skeleton: { marginHorizontal: 16, marginBottom: 12 },
-  sectionHint: { fontSize: 12, color: '#737373', marginBottom: 8 },
-  timeGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginBottom: 8 },
-  timeChip: {
-    borderRadius: 16,
-    borderWidth: 1,
-    borderColor: '#D4D4D4',
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    backgroundColor: '#FAFAFA'
-  },
-  timeChipSelected: { borderColor: '#00B4D8', backgroundColor: '#E0F7FA' },
-  timeChipText: { fontSize: 13, color: '#525252' },
-  timeChipTextSelected: { color: '#00B4D8', fontWeight: '700' },
-  divider: { marginVertical: 8 },
-  selectedLabel: { fontSize: 12, color: '#737373', marginBottom: 6 },
-  selectedRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 6 },
-  selectedChip: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: '#00B4D8',
-    paddingHorizontal: 8,
-    paddingVertical: 2,
-    backgroundColor: '#E0F7FA'
-  },
-  selectedChipText: { fontSize: 13, color: '#00B4D8', fontWeight: '600' },
-  removeIcon: { margin: 0, padding: 0 },
-  noTimesHint: { fontSize: 12, color: '#A3A3A3', fontStyle: 'italic' }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    scroll: { flex: 1 },
+    scrollContent: { paddingBottom: 32 },
+    skeleton: { marginHorizontal: 16, marginBottom: spacing[1.5] },
+    sectionHint: { fontSize: fontSizes.base, color: c.textTertiary, marginBottom: spacing[1] },
+    timeGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing[1], marginBottom: spacing[1] },
+    timeChip: {
+      borderRadius: radii.xl,
+      borderWidth: 1,
+      borderColor: c.outline,
+      paddingHorizontal: spacing[1.5],
+      paddingVertical: 6,
+      backgroundColor: c.background
+    },
+    timeChipSelected: { borderColor: c.primary, backgroundColor: palette.cyan50 },
+    timeChipText: { fontSize: fontSizes.md, color: c.textSecondary },
+    timeChipTextSelected: { color: c.primary, fontWeight: fontWeights.bold },
+    divider: { marginVertical: 8 },
+    selectedLabel: { fontSize: fontSizes.base, color: c.textTertiary, marginBottom: 6 },
+    selectedRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 6 },
+    selectedChip: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      borderRadius: radii.lg,
+      borderWidth: 1,
+      borderColor: c.primary,
+      paddingHorizontal: spacing[1],
+      paddingVertical: 2,
+      backgroundColor: palette.cyan50
+    },
+    selectedChipText: { fontSize: fontSizes.md, color: c.primary, fontWeight: fontWeights.semiBold },
+    removeIcon: { margin: 0, padding: 0 },
+    noTimesHint: { fontSize: fontSizes.base, color: '#A3A3A3', fontStyle: 'italic' }
+  });
+}

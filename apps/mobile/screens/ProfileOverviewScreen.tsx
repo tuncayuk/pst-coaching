@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useTheme } from 'react-native-paper';
 
@@ -21,6 +21,7 @@ import {
   getPrimaryUser,
   getSubscriptionForUser
 } from '../data/mockSelectors';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../theme';
 import { OfflineNotice } from './components/OfflineNotice';
 import { ScreenLayout } from './components/ScreenLayout';
 import { ScreenState, resolveScreenState } from './components/ScreenState';
@@ -29,6 +30,9 @@ import { SkeletonBlock } from './components/SkeletonBlock';
 import { StateMessage } from './components/StateMessage';
 
 const ProfileReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const theme = useTheme();
   const navigation = useNavigation<any>();
   const user = getPrimaryUser();
@@ -228,29 +232,31 @@ export const ProfileOverviewScreen = ({ route }: { route?: { params?: { state?: 
   );
 };
 
-const styles = StyleSheet.create({
-  profileHeader: {
-    flexDirection: 'row',
-    alignItems: 'center'
-  },
-  profileInfo: {
-    flex: 1,
-    marginLeft: 12
-  },
-  actionButton: {
-    marginTop: 12,
-    alignSelf: 'flex-start'
-  },
-  card: {
-    marginBottom: 8
-  },
-  upgradeCard: {
-    borderWidth: 1.5,
-    borderColor: '#00B4D8'
-  },
-  paymentRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 8
-  }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    profileHeader: {
+      flexDirection: 'row',
+      alignItems: 'center'
+    },
+    profileInfo: {
+      flex: 1,
+      marginLeft: 12
+    },
+    actionButton: {
+      marginTop: spacing[1.5],
+      alignSelf: 'flex-start'
+    },
+    card: {
+      marginBottom: spacing[1]
+    },
+    upgradeCard: {
+      borderWidth: 1.5,
+      borderColor: c.primary
+    },
+    paymentRow: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      marginBottom: spacing[1]
+    }
+  });
+}

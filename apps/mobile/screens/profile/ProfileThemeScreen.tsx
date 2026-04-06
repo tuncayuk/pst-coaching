@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import {
@@ -12,6 +12,7 @@ import {
   PText
 } from '../../components';
 import { getAccessibilitySettings, getPrimaryUser } from '../../data/mockSelectors';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -38,6 +39,9 @@ const CB_MODES: Array<{ key: ColorBlindMode; label: string; desc: string; color:
 
 // Visual theme preview swatch
 const ThemeSwatch = ({ theme, isSelected }: { theme: ThemeOption; isSelected: boolean }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const bg = theme === 'dark' ? '#212121' : theme === 'light' ? '#FFFFFF' : '#F5F5F5';
   const textColor = theme === 'dark' ? '#E0E0E0' : '#212121';
   return (
@@ -48,6 +52,9 @@ const ThemeSwatch = ({ theme, isSelected }: { theme: ThemeOption; isSelected: bo
 };
 
 const ProfileThemeContent = ({ isOffline }: { isOffline?: boolean }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const navigation = useNavigation<any>();
   const user = getPrimaryUser();
   const settings = getAccessibilitySettings().find((s: any) => s.user_id === user?.id);
@@ -276,125 +283,127 @@ export const ProfileThemeScreen = ({ route }: { route?: { params?: { state?: Scr
   );
 };
 
-const styles = StyleSheet.create({
-  hint: {
-    opacity: 0.6,
-    marginBottom: 10,
-    lineHeight: 18
-  },
-  themeRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 8,
-    gap: 12
-  },
-  swatch: {
-    width: 44,
-    height: 44,
-    borderRadius: 8,
-    borderWidth: 1.5,
-    borderColor: '#E0E0E0',
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  swatchSelected: {
-    borderColor: '#7C4DFF',
-    borderWidth: 2.5
-  },
-  swatchText: {
-    fontSize: 16,
-    fontWeight: '700'
-  },
-  themeText: {
-    flex: 1
-  },
-  themeLabel: {
-    fontWeight: '600'
-  },
-  themeDesc: {
-    opacity: 0.6,
-    marginTop: 2
-  },
-  radioHide: {
-    position: 'absolute',
-    right: 0,
-    opacity: 1
-  },
-  divider: {
-    marginVertical: 2
-  },
-  toggleRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingVertical: 8,
-    gap: 12
-  },
-  toggleText: {
-    flex: 1
-  },
-  toggleLabel: {
-    fontWeight: '600'
-  },
-  toggleDesc: {
-    opacity: 0.65,
-    marginTop: 2,
-    lineHeight: 18
-  },
-  contrastBadge: {
-    backgroundColor: '#E8F5E9',
-    borderRadius: 6,
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    alignSelf: 'flex-start',
-    marginTop: 6
-  },
-  contrastBadgeText: {
-    color: '#2E7D32',
-    fontWeight: '600'
-  },
-  cbGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 10
-  },
-  cbCard: {
-    width: '46%',
-    borderRadius: 10,
-    borderWidth: 2,
-    borderColor: '#E0E0E0',
-    padding: 12,
-    alignItems: 'center'
-  },
-  cbSwatch: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 6
-  },
-  cbIcon: {
-    fontSize: 18,
-    color: '#FFF',
-    fontWeight: '700'
-  },
-  cbLabel: {
-    fontWeight: '600',
-    color: '#424242',
-    marginBottom: 2
-  },
-  cbDesc: {
-    opacity: 0.6,
-    textAlign: 'center',
-    lineHeight: 16
-  },
-  savedText: {
-    color: '#4CAF50',
-    textAlign: 'center',
-    marginBottom: 6
-  },
-  saveBtn: {
-    marginBottom: 8
-  }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    hint: {
+      opacity: 0.6,
+      marginBottom: 10,
+      lineHeight: 18
+    },
+    themeRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      paddingVertical: spacing[1],
+      gap: spacing[1.5]
+    },
+    swatch: {
+      width: 44,
+      height: 44,
+      borderRadius: radii.md,
+      borderWidth: 1.5,
+      borderColor: '#E0E0E0',
+      alignItems: 'center',
+      justifyContent: 'center'
+    },
+    swatchSelected: {
+      borderColor: '#7C4DFF',
+      borderWidth: 2.5
+    },
+    swatchText: {
+      fontSize: fontSizes['2xl'],
+      fontWeight: fontWeights.bold
+    },
+    themeText: {
+      flex: 1
+    },
+    themeLabel: {
+      fontWeight: fontWeights.semiBold
+    },
+    themeDesc: {
+      opacity: 0.6,
+      marginTop: 2
+    },
+    radioHide: {
+      position: 'absolute',
+      right: 0,
+      opacity: 1
+    },
+    divider: {
+      marginVertical: 2
+    },
+    toggleRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      paddingVertical: spacing[1],
+      gap: spacing[1.5]
+    },
+    toggleText: {
+      flex: 1
+    },
+    toggleLabel: {
+      fontWeight: fontWeights.semiBold
+    },
+    toggleDesc: {
+      opacity: 0.65,
+      marginTop: 2,
+      lineHeight: 18
+    },
+    contrastBadge: {
+      backgroundColor: '#E8F5E9',
+      borderRadius: radii.sm,
+      paddingHorizontal: 10,
+      paddingVertical: 4,
+      alignSelf: 'flex-start',
+      marginTop: 6
+    },
+    contrastBadgeText: {
+      color: '#2E7D32',
+      fontWeight: fontWeights.semiBold
+    },
+    cbGrid: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      gap: 10
+    },
+    cbCard: {
+      width: '46%',
+      borderRadius: radii.md,
+      borderWidth: 2,
+      borderColor: '#E0E0E0',
+      padding: spacing[1.5],
+      alignItems: 'center'
+    },
+    cbSwatch: {
+      width: 40,
+      height: 40,
+      borderRadius: radii['2xl'],
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginBottom: 6
+    },
+    cbIcon: {
+      fontSize: fontSizes['3xl'],
+      color: '#FFF',
+      fontWeight: fontWeights.bold
+    },
+    cbLabel: {
+      fontWeight: fontWeights.semiBold,
+      color: '#424242',
+      marginBottom: 2
+    },
+    cbDesc: {
+      opacity: 0.6,
+      textAlign: 'center',
+      lineHeight: 16
+    },
+    savedText: {
+      color: '#4CAF50',
+      textAlign: 'center',
+      marginBottom: 6
+    },
+    saveBtn: {
+      marginBottom: spacing[1]
+    }
+  });
+}

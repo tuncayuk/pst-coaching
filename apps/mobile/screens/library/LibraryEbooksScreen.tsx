@@ -1,9 +1,10 @@
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { PActivityIndicator, PButton, PCard, PChip, PProgressBar, PText } from '../../components';
 import { getEbookProgressForUser, getEbooks, getPrimaryUser } from '../../data/mockSelectors';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -14,6 +15,9 @@ import { StateMessage } from '../components/StateMessage';
 const filters = ['Yeni', 'Devam Eden', 'Tamamlanan', 'İndirilen'];
 
 const LibraryEbooksContent = ({ isOffline }: { isOffline?: boolean }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const navigation = useNavigation<any>();
   const user = getPrimaryUser();
   const ebooks = getEbooks();
@@ -131,19 +135,21 @@ export const LibraryEbooksScreen = ({ route }: { route?: { params?: { state?: Sc
   );
 };
 
-const styles = StyleSheet.create({
-  chipRow: {
-    flexDirection: 'row',
-    flexWrap: 'wrap'
-  },
-  chip: {
-    marginRight: 8,
-    marginBottom: 8
-  },
-  card: {
-    marginBottom: 12
-  },
-  progressLabel: {
-    marginBottom: 8
-  }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    chipRow: {
+      flexDirection: 'row',
+      flexWrap: 'wrap'
+    },
+    chip: {
+      marginRight: 8,
+      marginBottom: spacing[1]
+    },
+    card: {
+      marginBottom: spacing[1.5]
+    },
+    progressLabel: {
+      marginBottom: spacing[1]
+    }
+  });
+}

@@ -1,9 +1,10 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import { PButton, PCard, PChip, PDivider, PText } from '../../components';
 import { getPrimaryUser, getSubscriptionForUser, getSubscriptionPlans } from '../../data/mockSelectors';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -32,6 +33,9 @@ const PLAN_TYPE_LABELS: Record<string, string> = {
 };
 
 const ProfilePlanComparisonContent = ({ isOffline }: { isOffline?: boolean }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const navigation = useNavigation<any>();
   const plans = getSubscriptionPlans();
   const user = getPrimaryUser();
@@ -201,74 +205,76 @@ export const ProfilePlanComparisonScreen = ({ route }: { route?: { params?: { st
   );
 };
 
-const styles = StyleSheet.create({
-  planCard: {
-    borderWidth: 2,
-    borderColor: '#D4D4D4',
-    borderRadius: 12,
-    padding: 16,
-    marginBottom: 12,
-    backgroundColor: '#FFFFFF'
-  },
-  planCardSelected: {
-    borderColor: '#7C3AED',
-    backgroundColor: '#FAF5FF'
-  },
-  planHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
-    marginBottom: 4
-  },
-  planName: {
-    fontWeight: '700',
-    color: '#1F2937'
-  },
-  planType: {
-    color: '#6B7280',
-    marginTop: 2
-  },
-  planBadges: {
-    alignItems: 'flex-end',
-    gap: 4
-  },
-  currentChip: {
-    backgroundColor: '#EDE9FE'
-  },
-  checkBadge: {
-    backgroundColor: '#7C3AED',
-    borderRadius: 10,
-    paddingHorizontal: 8,
-    paddingVertical: 2
-  },
-  checkText: {
-    color: '#FFFFFF',
-    fontSize: 11,
-    fontWeight: '700'
-  },
-  planDivider: {
-    marginVertical: 8
-  },
-  priceText: {
-    fontWeight: '700',
-    color: '#2B1B5D',
-    marginBottom: 2
-  },
-  priceAlt: {
-    color: '#6B7280',
-    marginBottom: 8
-  },
-  featureList: {
-    gap: 4,
-    marginBottom: 12
-  },
-  featureItem: {
-    color: '#374151'
-  },
-  selectButton: {
-    minHeight: 44
-  },
-  continueButton: {
-    minHeight: 48
-  }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    planCard: {
+      borderWidth: 2,
+      borderColor: c.outline,
+      borderRadius: radii.lg,
+      padding: spacing[2],
+      marginBottom: spacing[1.5],
+      backgroundColor: palette.white
+    },
+    planCardSelected: {
+      borderColor: '#7C3AED',
+      backgroundColor: '#FAF5FF'
+    },
+    planHeader: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'flex-start',
+      marginBottom: 4
+    },
+    planName: {
+      fontWeight: fontWeights.bold,
+      color: '#1F2937'
+    },
+    planType: {
+      color: c.textTertiary,
+      marginTop: 2
+    },
+    planBadges: {
+      alignItems: 'flex-end',
+      gap: 4
+    },
+    currentChip: {
+      backgroundColor: palette.purple50
+    },
+    checkBadge: {
+      backgroundColor: '#7C3AED',
+      borderRadius: radii.md,
+      paddingHorizontal: spacing[1],
+      paddingVertical: 2
+    },
+    checkText: {
+      color: palette.white,
+      fontSize: fontSizes.sm,
+      fontWeight: fontWeights.bold
+    },
+    planDivider: {
+      marginVertical: 8
+    },
+    priceText: {
+      fontWeight: fontWeights.bold,
+      color: c.textBrand,
+      marginBottom: 2
+    },
+    priceAlt: {
+      color: c.textTertiary,
+      marginBottom: spacing[1]
+    },
+    featureList: {
+      gap: 4,
+      marginBottom: spacing[1.5]
+    },
+    featureItem: {
+      color: '#374151'
+    },
+    selectButton: {
+      minHeight: 44
+    },
+    continueButton: {
+      minHeight: 48
+    }
+  });
+}

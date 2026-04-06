@@ -1,9 +1,10 @@
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { PActivityIndicator, PButton, PText } from '../../components';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -12,6 +13,9 @@ import { SkeletonBlock } from '../components/SkeletonBlock';
 import { StateMessage } from '../components/StateMessage';
 
 const FaceIdSetupContent = ({ isOffline }: { isOffline?: boolean }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const navigation = useNavigation<any>();
 
   return (
@@ -117,97 +121,99 @@ export const AuthFaceIdSetupScreen = ({ route }: { route?: { params?: { state?: 
   return <FaceIdSetupContent />;
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#FAFAFA'
-  },
-  scrollContent: {
-    paddingHorizontal: 24,
-    paddingTop: 32,
-    paddingBottom: 32,
-    alignItems: 'center'
-  },
-  iconContainer: {
-    alignItems: 'center',
-    marginBottom: 24
-  },
-  iconCircle: {
-    width: 120,
-    height: 120,
-    borderRadius: 60,
-    backgroundColor: '#8B5CF6',
-    justifyContent: 'center',
-    alignItems: 'center',
-    shadowColor: '#8B5CF6',
-    shadowOpacity: 0.4,
-    shadowRadius: 30,
-    elevation: 10
-  },
-  icon: {
-    fontSize: 64
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: '700',
-    color: '#2B1B5D',
-    marginBottom: 12,
-    textAlign: 'center'
-  },
-  description: {
-    fontSize: 16,
-    color: '#404040',
-    marginBottom: 32,
-    textAlign: 'center',
-    maxWidth: 300,
-    alignSelf: 'center'
-  },
-  infoCard: {
-    backgroundColor: '#EDE9FE',
-    padding: 16,
-    borderRadius: 12,
-    marginBottom: 24,
-    borderWidth: 2,
-    borderColor: '#8B5CF6',
-    maxWidth: 320,
-    alignSelf: 'center'
-  },
-  infoTitle: {
-    fontWeight: '700',
-    color: '#8B5CF6',
-    marginBottom: 12
-  },
-  list: {
-    gap: 8
-  },
-  listItem: {
-    fontSize: 14,
-    color: '#171717',
-    lineHeight: 24,
-    marginLeft: 20
-  },
-  button: {
-    marginBottom: 12,
-    maxWidth: 320,
-    alignSelf: 'center',
-    borderRadius: 12
-  },
-  skipButton: {
-    alignItems: 'center',
-    marginTop: 8
-  },
-  skipText: {
-    color: '#525252',
-    fontWeight: '600',
-    fontSize: 15
-  },
-  hint: {
-    textAlign: 'center',
-    color: '#525252',
-    marginTop: 24,
-    maxWidth: 280,
-    alignSelf: 'center',
-    lineHeight: 18,
-    fontSize: 12
-  }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: c.background
+    },
+    scrollContent: {
+      paddingHorizontal: spacing[3],
+      paddingTop: 32,
+      paddingBottom: 32,
+      alignItems: 'center'
+    },
+    iconContainer: {
+      alignItems: 'center',
+      marginBottom: spacing[3]
+    },
+    iconCircle: {
+      width: 120,
+      height: 120,
+      borderRadius: 40,
+      backgroundColor: '#8B5CF6',
+      justifyContent: 'center',
+      alignItems: 'center',
+      shadowColor: '#8B5CF6',
+      shadowOpacity: 0.4,
+      shadowRadius: 30,
+      elevation: 10
+    },
+    icon: {
+      fontSize: fontSizes['12xl']
+    },
+    title: {
+      fontSize: fontSizes['6xl'],
+      fontWeight: fontWeights.bold,
+      color: c.textBrand,
+      marginBottom: spacing[1.5],
+      textAlign: 'center'
+    },
+    description: {
+      fontSize: fontSizes['2xl'],
+      color: c.textTertiary,
+      marginBottom: spacing[4],
+      textAlign: 'center',
+      maxWidth: 300,
+      alignSelf: 'center'
+    },
+    infoCard: {
+      backgroundColor: palette.purple50,
+      padding: spacing[2],
+      borderRadius: radii.lg,
+      marginBottom: spacing[3],
+      borderWidth: 2,
+      borderColor: '#8B5CF6',
+      maxWidth: 320,
+      alignSelf: 'center'
+    },
+    infoTitle: {
+      fontWeight: fontWeights.bold,
+      color: '#8B5CF6',
+      marginBottom: spacing[1.5]
+    },
+    list: {
+      gap: spacing[1]
+    },
+    listItem: {
+      fontSize: fontSizes.lg,
+      color: c.textPrimary,
+      lineHeight: 24,
+      marginLeft: 20
+    },
+    button: {
+      marginBottom: spacing[1.5],
+      maxWidth: 320,
+      alignSelf: 'center',
+      borderRadius: radii.lg
+    },
+    skipButton: {
+      alignItems: 'center',
+      marginTop: spacing[1]
+    },
+    skipText: {
+      color: c.textSecondary,
+      fontWeight: fontWeights.semiBold,
+      fontSize: fontSizes.xl
+    },
+    hint: {
+      textAlign: 'center',
+      color: c.textSecondary,
+      marginTop: spacing[3],
+      maxWidth: 280,
+      alignSelf: 'center',
+      lineHeight: 18,
+      fontSize: fontSizes.base
+    }
+  });
+}

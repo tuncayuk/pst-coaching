@@ -1,9 +1,10 @@
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 
 import { PActivityIndicator, PButton, PCard, PText } from '../../components';
 import { getWorkshops } from '../../data/mockSelectors';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -40,6 +41,9 @@ const DURATIONS = ['90 dk', '120 dk', '60 dk', '150 dk', '90 dk', '120 dk'];
 const AGE_TARGETS = ['14-18', '18+', 'Yetiskin', 'Aile', '14+', '18-35'];
 
 const DiscoverWorkshopsContent = ({ isOffline }: { isOffline?: boolean }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const navigation = useNavigation<any>();
   const workshops = getWorkshops();
   const [selectedSort, setSelectedSort] = React.useState('Tumu');
@@ -235,46 +239,48 @@ export const DiscoverWorkshopsScreen = ({ route }: { route?: { params?: { state?
   );
 };
 
-const styles = StyleSheet.create({
-  chipsRow: { gap: 8, paddingBottom: 4, marginBottom: 12 },
-  chip: { borderRadius: 20, elevation: 0 },
-  chipContent: { height: 34, paddingHorizontal: 4 },
-  chipLabel: { fontSize: 12, fontWeight: '600' },
-  card: { borderRadius: 16, marginBottom: 16 },
-  cardInner: { borderRadius: 16, overflow: 'hidden' },
-  cardTop: { flexDirection: 'row', gap: 12, padding: 16 },
-  cardIcon: {
-    width: 64,
-    height: 64,
-    borderRadius: 12,
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexShrink: 0
-  },
-  cardEmoji: { fontSize: 28 },
-  cardInfo: { flex: 1 },
-  cardTitle: { fontSize: 16, fontWeight: '700', color: '#171717', marginBottom: 4 },
-  cardMetaRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 4,
-    flexWrap: 'wrap',
-    marginBottom: 6
-  },
-  cardMeta: { fontSize: 12, color: '#737373' },
-  cardMetaSep: { fontSize: 12, color: '#D4D4D4' },
-  typeChipRow: { flexDirection: 'row', gap: 4 },
-  typeChip: { paddingHorizontal: 8, paddingVertical: 3, borderRadius: 6 },
-  typeChipText: { fontSize: 11, fontWeight: '700' },
-  cardFooter: {
-    borderTopWidth: 1,
-    borderTopColor: '#F5F5F5',
-    paddingHorizontal: 16,
-    paddingVertical: 10,
-    alignItems: 'flex-start'
-  },
-  detailButton: { borderRadius: 8 },
-  detailButtonContent: { height: 36, paddingHorizontal: 12 },
-  detailButtonLabel: { fontSize: 13, fontWeight: '700' },
-  bottomSpacer: { height: 24 }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    chipsRow: { gap: spacing[1], paddingBottom: 4, marginBottom: spacing[1.5] },
+    chip: { borderRadius: radii['2xl'], elevation: 0 },
+    chipContent: { height: 34, paddingHorizontal: 4 },
+    chipLabel: { fontSize: fontSizes.base, fontWeight: fontWeights.semiBold },
+    card: { borderRadius: radii.xl, marginBottom: spacing[2] },
+    cardInner: { borderRadius: radii.xl, overflow: 'hidden' },
+    cardTop: { flexDirection: 'row', gap: spacing[1.5], padding: spacing[2] },
+    cardIcon: {
+      width: 64,
+      height: 64,
+      borderRadius: radii.lg,
+      alignItems: 'center',
+      justifyContent: 'center',
+      flexShrink: 0
+    },
+    cardEmoji: { fontSize: fontSizes['8xl'] },
+    cardInfo: { flex: 1 },
+    cardTitle: { fontSize: fontSizes['2xl'], fontWeight: fontWeights.bold, color: c.textPrimary, marginBottom: 4 },
+    cardMetaRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 4,
+      flexWrap: 'wrap',
+      marginBottom: 6
+    },
+    cardMeta: { fontSize: fontSizes.base, color: c.textTertiary },
+    cardMetaSep: { fontSize: fontSizes.base, color: c.outline },
+    typeChipRow: { flexDirection: 'row', gap: 4 },
+    typeChip: { paddingHorizontal: spacing[1], paddingVertical: 3, borderRadius: radii.sm },
+    typeChipText: { fontSize: fontSizes.sm, fontWeight: fontWeights.bold },
+    cardFooter: {
+      borderTopWidth: 1,
+      borderTopColor: c.surfaceVariant,
+      paddingHorizontal: spacing[2],
+      paddingVertical: 10,
+      alignItems: 'flex-start'
+    },
+    detailButton: { borderRadius: radii.md },
+    detailButtonContent: { height: 36, paddingHorizontal: spacing[1.5] },
+    detailButtonLabel: { fontSize: fontSizes.md, fontWeight: fontWeights.bold },
+    bottomSpacer: { height: 24 }
+  });
+}

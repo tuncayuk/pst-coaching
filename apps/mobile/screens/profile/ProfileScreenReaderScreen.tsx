@@ -1,9 +1,10 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { PActivityIndicator, PAvatar, PButton, PDivider, PSwitch, PText } from '../../components';
 import { getAccessibilitySettings, getPrimaryUser } from '../../data/mockSelectors';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -69,6 +70,9 @@ const TIP_ITEMS = [
 ];
 
 const StatusBadge = ({ status }: { status: SupportStatus }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const configs = {
     supported: { bg: '#E8F5E9', text: '#2E7D32', label: 'Destekleniyor' },
     partial: { bg: '#FFF8E1', text: '#F57F17', label: 'Kismi Destek' },
@@ -85,6 +89,9 @@ const StatusBadge = ({ status }: { status: SupportStatus }) => {
 };
 
 const ProfileScreenReaderContent = ({ isOffline }: { isOffline?: boolean }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const navigation = useNavigation<any>();
   const user = getPrimaryUser();
   const settings = getAccessibilitySettings().find((s: any) => s.user_id === user?.id);
@@ -259,59 +266,61 @@ export const ProfileScreenReaderScreen = ({ route }: { route?: { params?: { stat
   );
 };
 
-const styles = StyleSheet.create({
-  hint: {
-    opacity: 0.6,
-    marginBottom: 10,
-    lineHeight: 18
-  },
-  toggleRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingVertical: 8,
-    gap: 12
-  },
-  toggleText: { flex: 1 },
-  toggleLabel: { fontWeight: '600' },
-  toggleDesc: { opacity: 0.65, marginTop: 2, lineHeight: 18 },
-  featureRow: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    justifyContent: 'space-between',
-    paddingVertical: 10,
-    gap: 8
-  },
-  featureBody: { flex: 1 },
-  featureTitleRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginBottom: 3
-  },
-  featureTitle: { fontWeight: '600', flex: 1, marginRight: 8 },
-  featureAc: { opacity: 0.45, fontSize: 10 },
-  featureDesc: { opacity: 0.7, lineHeight: 18 },
-  statusBadge: {
-    borderRadius: 6,
-    paddingHorizontal: 8,
-    paddingVertical: 3,
-    alignSelf: 'flex-start',
-    minWidth: 90,
-    alignItems: 'center'
-  },
-  divider: { marginVertical: 2 },
-  formNote: { opacity: 0.7, lineHeight: 20 },
-  tipRow: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    paddingVertical: 10,
-    gap: 12
-  },
-  tipIcon: {
-    backgroundColor: '#EDE7F6'
-  },
-  tipBody: { flex: 1 },
-  tipTitle: { fontWeight: '600', marginBottom: 4 },
-  tipText: { opacity: 0.7, lineHeight: 18 }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    hint: {
+      opacity: 0.6,
+      marginBottom: 10,
+      lineHeight: 18
+    },
+    toggleRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      paddingVertical: spacing[1],
+      gap: spacing[1.5]
+    },
+    toggleText: { flex: 1 },
+    toggleLabel: { fontWeight: fontWeights.semiBold },
+    toggleDesc: { opacity: 0.65, marginTop: 2, lineHeight: 18 },
+    featureRow: {
+      flexDirection: 'row',
+      alignItems: 'flex-start',
+      justifyContent: 'space-between',
+      paddingVertical: 10,
+      gap: spacing[1]
+    },
+    featureBody: { flex: 1 },
+    featureTitleRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      marginBottom: 3
+    },
+    featureTitle: { fontWeight: fontWeights.semiBold, flex: 1, marginRight: 8 },
+    featureAc: { opacity: 0.45, fontSize: 10 },
+    featureDesc: { opacity: 0.7, lineHeight: 18 },
+    statusBadge: {
+      borderRadius: radii.sm,
+      paddingHorizontal: spacing[1],
+      paddingVertical: 3,
+      alignSelf: 'flex-start',
+      minWidth: 90,
+      alignItems: 'center'
+    },
+    divider: { marginVertical: 2 },
+    formNote: { opacity: 0.7, lineHeight: 20 },
+    tipRow: {
+      flexDirection: 'row',
+      alignItems: 'flex-start',
+      paddingVertical: 10,
+      gap: spacing[1.5]
+    },
+    tipIcon: {
+      backgroundColor: palette.purple50
+    },
+    tipBody: { flex: 1 },
+    tipTitle: { fontWeight: fontWeights.semiBold, marginBottom: 4 },
+    tipText: { opacity: 0.7, lineHeight: 18 }
+  });
+}

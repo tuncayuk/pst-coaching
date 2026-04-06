@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Alert, StyleSheet, View } from 'react-native';
 
 import { PButton, PCard, PChip, PText } from '../../components';
@@ -9,6 +9,7 @@ import {
   getPrimaryUser,
   getSubscriptionForUser
 } from '../../data/mockSelectors';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -35,6 +36,9 @@ const EXTRA_SEAT_PLANS = ['family', 'group'];
 const MOCK_USER_ROLE: 'owner' | 'member' = 'owner';
 
 const ProfileAddonsContent = ({ isOffline }: { isOffline?: boolean }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const user = getPrimaryUser();
   const subscription = getSubscriptionForUser(user?.id);
   const plan = getPlanForSubscription(subscription?.plan_id);
@@ -196,41 +200,43 @@ export const ProfileAddonsScreen = ({ route }: { route?: { params?: { state?: Sc
   );
 };
 
-const styles = StyleSheet.create({
-  roleBanner: {
-    backgroundColor: '#FEF3C7',
-    borderRadius: 8,
-    padding: 12,
-    marginBottom: 8
-  },
-  roleBannerText: {
-    color: '#92400E'
-  },
-  card: {
-    marginBottom: 12
-  },
-  cardRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center'
-  },
-  priceText: {
-    color: '#2B1B5D',
-    fontWeight: '700'
-  },
-  chipActive: {
-    backgroundColor: '#D1FAE5'
-  },
-  chipPassive: {
-    backgroundColor: '#F3F4F6'
-  },
-  benefit: {
-    color: '#374151',
-    marginBottom: 6,
-    lineHeight: 20
-  },
-  exploreButton: {
-    marginTop: 8,
-    minHeight: 44
-  }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    roleBanner: {
+      backgroundColor: c.warningContainer,
+      borderRadius: radii.md,
+      padding: spacing[1.5],
+      marginBottom: spacing[1]
+    },
+    roleBannerText: {
+      color: '#92400E'
+    },
+    card: {
+      marginBottom: spacing[1.5]
+    },
+    cardRow: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center'
+    },
+    priceText: {
+      color: c.textBrand,
+      fontWeight: fontWeights.bold
+    },
+    chipActive: {
+      backgroundColor: palette.emerald50
+    },
+    chipPassive: {
+      backgroundColor: '#F3F4F6'
+    },
+    benefit: {
+      color: '#374151',
+      marginBottom: 6,
+      lineHeight: 20
+    },
+    exploreButton: {
+      marginTop: spacing[1],
+      minHeight: 44
+    }
+  });
+}

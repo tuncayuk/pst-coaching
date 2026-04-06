@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { StyleSheet } from 'react-native';
 
 import { PActivityIndicator, PButton, PTextInput } from '../../components';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -10,6 +11,9 @@ import { SkeletonBlock } from '../components/SkeletonBlock';
 import { StateMessage } from '../components/StateMessage';
 
 const ProfileChangePasswordContent = ({ isOffline }: { isOffline?: boolean }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   return (
     <SectionCard title="Şifreyi Güncelle">
       <PTextInput label="Mevcut Şifre" mode="outlined" secureTextEntry style={styles.input} editable={!isOffline} />
@@ -86,8 +90,10 @@ export const ProfileChangePasswordScreen = ({ route }: { route?: { params?: { st
   );
 };
 
-const styles = StyleSheet.create({
-  input: {
-    marginBottom: 12
-  }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    input: {
+      marginBottom: spacing[1.5]
+    }
+  });
+}

@@ -1,9 +1,10 @@
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { PActivityIndicator, PButton, PCard, PChip, PText } from '../../components';
 import { getContentProgressForUser, getPrimaryUser } from '../../data/mockSelectors';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -30,6 +31,9 @@ const TYPE_BADGE: Record<string, string> = {
 };
 
 const ProgressWeeklySummaryContent = ({ isOffline }: { isOffline?: boolean }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const navigation = useNavigation<any>();
   const user = getPrimaryUser();
   const progressItems = getContentProgressForUser(user?.id);
@@ -179,95 +183,97 @@ export const ProgressWeeklySummaryScreen = ({ route }: { route?: { params?: { st
   );
 };
 
-const styles = StyleSheet.create({
-  barChart: {
-    flexDirection: 'row',
-    alignItems: 'flex-end',
-    justifyContent: 'space-between',
-    height: 100,
-    marginBottom: 8
-  },
-  barCol: {
-    flex: 1,
-    alignItems: 'center',
-    gap: 4
-  },
-  barValue: { fontSize: 10, color: '#737373' },
-  barTrack: {
-    flex: 1,
-    width: 20,
-    backgroundColor: '#E5E5E5',
-    borderRadius: 4,
-    overflow: 'hidden',
-    justifyContent: 'flex-end'
-  },
-  barFill: {
-    width: '100%',
-    backgroundColor: '#6B46C1',
-    borderRadius: 4
-  },
-  barEmpty: { backgroundColor: '#D4D4D4' },
-  barLabel: { fontSize: 10, color: '#737373' },
-  trendCard: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    gap: 10,
-    padding: 12,
-    backgroundColor: '#DCFCE7',
-    borderRadius: 10,
-    marginBottom: 10,
-    borderLeftWidth: 4,
-    borderLeftColor: '#16A34A'
-  },
-  trendChallenge: {
-    backgroundColor: '#FEF9C3',
-    borderLeftColor: '#CA8A04'
-  },
-  trendIcon: {
-    fontSize: 16,
-    fontWeight: '900',
-    color: '#15803D'
-  },
-  trendIconChallenge: {
-    fontSize: 16,
-    fontWeight: '900',
-    color: '#A16207'
-  },
-  trendInfo: { flex: 1 },
-  trendTitle: {
-    fontSize: 13,
-    fontWeight: '700',
-    color: '#15803D',
-    marginBottom: 2
-  },
-  trendTitleChallenge: { color: '#A16207' },
-  trendBody: {
-    fontSize: 12,
-    color: '#525252',
-    lineHeight: 18
-  },
-  suggestionBox: {
-    padding: 12,
-    backgroundColor: '#EDE7F6',
-    borderRadius: 10,
-    borderLeftWidth: 4,
-    borderLeftColor: '#6B46C1'
-  },
-  suggestionLabel: {
-    fontSize: 11,
-    fontWeight: '700',
-    color: '#6B46C1',
-    marginBottom: 4
-  },
-  suggestionText: {
-    fontSize: 13,
-    color: '#1F2937',
-    lineHeight: 18
-  },
-  completedCard: { marginBottom: 8 },
-  doneBadge: {
-    backgroundColor: '#DCFCE7',
-    marginRight: 8
-  },
-  emptyHint: { fontSize: 13, color: '#737373' }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    barChart: {
+      flexDirection: 'row',
+      alignItems: 'flex-end',
+      justifyContent: 'space-between',
+      height: 100,
+      marginBottom: spacing[1]
+    },
+    barCol: {
+      flex: 1,
+      alignItems: 'center',
+      gap: 4
+    },
+    barValue: { fontSize: 10, color: c.textTertiary },
+    barTrack: {
+      flex: 1,
+      width: 20,
+      backgroundColor: c.outlineVariant,
+      borderRadius: radii.sm,
+      overflow: 'hidden',
+      justifyContent: 'flex-end'
+    },
+    barFill: {
+      width: '100%',
+      backgroundColor: '#6B46C1',
+      borderRadius: radii.sm
+    },
+    barEmpty: { backgroundColor: c.outline },
+    barLabel: { fontSize: 10, color: c.textTertiary },
+    trendCard: {
+      flexDirection: 'row',
+      alignItems: 'flex-start',
+      gap: 10,
+      padding: spacing[1.5],
+      backgroundColor: '#DCFCE7',
+      borderRadius: radii.md,
+      marginBottom: 10,
+      borderLeftWidth: 4,
+      borderLeftColor: c.success
+    },
+    trendChallenge: {
+      backgroundColor: c.warningContainer,
+      borderLeftColor: '#CA8A04'
+    },
+    trendIcon: {
+      fontSize: fontSizes['2xl'],
+      fontWeight: fontWeights.black,
+      color: '#15803D'
+    },
+    trendIconChallenge: {
+      fontSize: fontSizes['2xl'],
+      fontWeight: fontWeights.black,
+      color: '#A16207'
+    },
+    trendInfo: { flex: 1 },
+    trendTitle: {
+      fontSize: fontSizes.md,
+      fontWeight: fontWeights.bold,
+      color: '#15803D',
+      marginBottom: 2
+    },
+    trendTitleChallenge: { color: '#A16207' },
+    trendBody: {
+      fontSize: fontSizes.base,
+      color: c.textSecondary,
+      lineHeight: 18
+    },
+    suggestionBox: {
+      padding: spacing[1.5],
+      backgroundColor: palette.purple50,
+      borderRadius: radii.md,
+      borderLeftWidth: 4,
+      borderLeftColor: '#6B46C1'
+    },
+    suggestionLabel: {
+      fontSize: fontSizes.sm,
+      fontWeight: fontWeights.bold,
+      color: '#6B46C1',
+      marginBottom: 4
+    },
+    suggestionText: {
+      fontSize: fontSizes.md,
+      color: '#1F2937',
+      lineHeight: 18
+    },
+    completedCard: { marginBottom: spacing[1] },
+    doneBadge: {
+      backgroundColor: '#DCFCE7',
+      marginRight: 8
+    },
+    emptyHint: { fontSize: fontSizes.md, color: c.textTertiary }
+  });
+}

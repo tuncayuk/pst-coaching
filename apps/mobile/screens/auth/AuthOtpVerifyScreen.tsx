@@ -1,9 +1,10 @@
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { PActivityIndicator, PButton, PText, PTextInput } from '../../components';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -12,6 +13,9 @@ import { SkeletonBlock } from '../components/SkeletonBlock';
 import { StateMessage } from '../components/StateMessage';
 
 const OtpVerifyContent = ({ isOffline, source }: { isOffline?: boolean; source?: 'register' | 'forgot-password' }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const navigation = useNavigation<any>();
   const [codes, setCodes] = React.useState(['', '', '', '', '', '']);
   const [otpError, setOtpError] = React.useState('');
@@ -197,99 +201,101 @@ export const AuthOtpVerifyScreen = ({
   return <OtpVerifyContent isOffline={false} source={source} />;
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#FAFAFA'
-  },
-  scrollContent: {
-    paddingHorizontal: 24,
-    paddingTop: 16,
-    paddingBottom: 32
-  },
-  backButton: {
-    width: 40,
-    height: 40,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 16
-  },
-  backButtonText: {
-    fontSize: 24,
-    color: '#171717'
-  },
-  iconContainer: {
-    alignItems: 'center',
-    marginBottom: 16
-  },
-  icon: {
-    fontSize: 64
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: '700',
-    color: '#2B1B5D',
-    marginBottom: 8,
-    textAlign: 'center'
-  },
-  description: {
-    fontSize: 15,
-    color: '#525252',
-    marginBottom: 32,
-    textAlign: 'center',
-    lineHeight: 24
-  },
-  emailText: {
-    fontWeight: '700'
-  },
-  codeContainer: {
-    flexDirection: 'row',
-    gap: 12,
-    marginBottom: 24,
-    justifyContent: 'center'
-  },
-  codeInput: {
-    width: 48,
-    height: 56,
-    fontSize: 24,
-    fontWeight: '700',
-    backgroundColor: '#FFFFFF'
-  },
-  codeInputOutline: {
-    borderWidth: 2,
-    borderRadius: 12,
-    borderColor: '#D4D4D4'
-  },
-  button: {
-    marginBottom: 16,
-    borderRadius: 12
-  },
-  errorContainer: {
-    backgroundColor: '#FEF2F2',
-    borderRadius: 8,
-    padding: 12,
-    marginBottom: 16,
-    borderLeftWidth: 3,
-    borderLeftColor: '#EF4444'
-  },
-  errorText: {
-    color: '#DC2626',
-    fontSize: 14
-  },
-  attemptText: {
-    color: '#DC2626',
-    fontSize: 12,
-    fontWeight: '600',
-    marginTop: 4
-  },
-  resendContainer: {
-    alignItems: 'center'
-  },
-  resendText: {
-    color: '#525252',
-    marginBottom: 8
-  },
-  resendButton: {
-    marginTop: 0
-  }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: c.background
+    },
+    scrollContent: {
+      paddingHorizontal: spacing[3],
+      paddingTop: 16,
+      paddingBottom: 32
+    },
+    backButton: {
+      width: 40,
+      height: 40,
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginBottom: spacing[2]
+    },
+    backButtonText: {
+      fontSize: fontSizes['6xl'],
+      color: c.textPrimary
+    },
+    iconContainer: {
+      alignItems: 'center',
+      marginBottom: spacing[2]
+    },
+    icon: {
+      fontSize: fontSizes['12xl']
+    },
+    title: {
+      fontSize: fontSizes['6xl'],
+      fontWeight: fontWeights.bold,
+      color: c.textBrand,
+      marginBottom: spacing[1],
+      textAlign: 'center'
+    },
+    description: {
+      fontSize: fontSizes.xl,
+      color: c.textSecondary,
+      marginBottom: spacing[4],
+      textAlign: 'center',
+      lineHeight: 24
+    },
+    emailText: {
+      fontWeight: fontWeights.bold
+    },
+    codeContainer: {
+      flexDirection: 'row',
+      gap: spacing[1.5],
+      marginBottom: spacing[3],
+      justifyContent: 'center'
+    },
+    codeInput: {
+      width: 48,
+      height: 56,
+      fontSize: fontSizes['6xl'],
+      fontWeight: fontWeights.bold,
+      backgroundColor: palette.white
+    },
+    codeInputOutline: {
+      borderWidth: 2,
+      borderRadius: radii.lg,
+      borderColor: c.outline
+    },
+    button: {
+      marginBottom: spacing[2],
+      borderRadius: radii.lg
+    },
+    errorContainer: {
+      backgroundColor: c.errorContainer,
+      borderRadius: radii.md,
+      padding: spacing[1.5],
+      marginBottom: spacing[2],
+      borderLeftWidth: 3,
+      borderLeftColor: palette.red500
+    },
+    errorText: {
+      color: palette.red600,
+      fontSize: fontSizes.lg
+    },
+    attemptText: {
+      color: palette.red600,
+      fontSize: fontSizes.base,
+      fontWeight: fontWeights.semiBold,
+      marginTop: 4
+    },
+    resendContainer: {
+      alignItems: 'center'
+    },
+    resendText: {
+      color: c.textSecondary,
+      marginBottom: spacing[1]
+    },
+    resendButton: {
+      marginTop: 0
+    }
+  });
+}

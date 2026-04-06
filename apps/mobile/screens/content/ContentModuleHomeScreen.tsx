@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -21,6 +21,7 @@ import {
   getPackagesForModule,
   getPrimaryUser
 } from '../../data/mockSelectors';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
 import { SkeletonBlock } from '../components/SkeletonBlock';
@@ -66,6 +67,9 @@ const STATUS_CONFIG: Record<
 };
 
 const ContentModuleHomeContent = ({ moduleId, isOffline }: { moduleId?: string; isOffline?: boolean }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const navigation = useNavigation<any>();
   const user = getPrimaryUser();
   const progress = getContentProgressForUser(user?.id);
@@ -276,6 +280,9 @@ const ContentModuleHomeContent = ({ moduleId, isOffline }: { moduleId?: string; 
 };
 
 export const ContentModuleHomeScreen = ({ route }: { route?: { params?: RouteParams } }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const state = resolveScreenState(route);
   const moduleId = route?.params?.id;
 
@@ -345,97 +352,99 @@ export const ContentModuleHomeScreen = ({ route }: { route?: { params?: RoutePar
   );
 };
 
-const styles = StyleSheet.create({
-  root: { flex: 1, backgroundColor: '#F8FAFC' },
-  page: { paddingBottom: 40 },
-  hero: {
-    backgroundColor: '#1E3A5F',
-    paddingTop: 16,
-    paddingBottom: 32,
-    paddingHorizontal: 24,
-    alignItems: 'center',
-    position: 'relative'
-  },
-  heroBack: {
-    position: 'absolute',
-    top: 8,
-    left: 8,
-    backgroundColor: 'rgba(255,255,255,0.12)',
-    borderRadius: 20
-  },
-  heroIcon: {
-    backgroundColor: '#0EA5E9',
-    marginBottom: 12,
-    marginTop: 8
-  },
-  heroTitle: {
-    fontSize: 22,
-    fontWeight: '800',
-    color: '#FFFFFF',
-    textAlign: 'center',
-    marginBottom: 6
-  },
-  heroDesc: {
-    fontSize: 14,
-    color: 'rgba(255,255,255,0.75)',
-    textAlign: 'center',
-    lineHeight: 20
-  },
-  content: { paddingHorizontal: 16, paddingTop: 20 },
-  progressCard: {
-    padding: 16,
-    borderRadius: 14,
-    marginBottom: 16,
-    backgroundColor: '#FFFFFF',
-    elevation: 1
-  },
-  progressHeader: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 8 },
-  progressLabel: { fontSize: 14, fontWeight: '600', color: '#525252' },
-  progressValue: { fontSize: 15, fontWeight: '700', color: '#0EA5E9' },
-  progressBar: { height: 8, borderRadius: 8, marginBottom: 6 },
-  progressMeta: { fontSize: 12, color: '#737373', textAlign: 'right' },
-  continueBtn: { marginBottom: 20, borderRadius: 12 },
-  sectionTitle: {
-    fontSize: 16,
-    fontWeight: '700',
-    color: '#1E3A5F',
-    marginBottom: 12
-  },
-  packageList: { gap: 10, marginBottom: 24 },
-  packageCard: {
-    borderRadius: 12,
-    borderLeftWidth: 4,
-    padding: 12,
-    backgroundColor: '#FFFFFF'
-  },
-  packageRow: { flexDirection: 'row', alignItems: 'center', gap: 12 },
-  pkgIconBg: { borderRadius: 18 },
-  packageInfo: { flex: 1 },
-  pkgTitleRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginBottom: 3,
-    gap: 6
-  },
-  packageTitle: { flex: 1, fontSize: 14, fontWeight: '600', color: '#1E293B' },
-  packageTitleLocked: { color: '#9CA3AF' },
-  statusBadge: {
-    borderRadius: 8,
-    paddingHorizontal: 7,
-    paddingVertical: 2
-  },
-  statusBadgeText: { fontSize: 10, fontWeight: '700' },
-  packageMeta: { fontSize: 12, color: '#737373', marginTop: 2, marginBottom: 4 },
-  pkgProgressBar: { height: 4, borderRadius: 4 },
-  emptyHint: { opacity: 0.6, textAlign: 'center', paddingVertical: 12 },
-  offlineNote: {
-    backgroundColor: '#FFF7ED',
-    borderRadius: 8,
-    padding: 12,
-    borderLeftWidth: 3,
-    borderLeftColor: '#F59E0B',
-    marginBottom: 16
-  },
-  offlineNoteText: { color: '#92400E' }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    root: { flex: 1, backgroundColor: '#F8FAFC' },
+    page: { paddingBottom: 40 },
+    hero: {
+      backgroundColor: '#1E3A5F',
+      paddingTop: 16,
+      paddingBottom: 32,
+      paddingHorizontal: spacing[3],
+      alignItems: 'center',
+      position: 'relative'
+    },
+    heroBack: {
+      position: 'absolute',
+      top: 8,
+      left: 8,
+      backgroundColor: 'rgba(255,255,255,0.12)',
+      borderRadius: radii['2xl']
+    },
+    heroIcon: {
+      backgroundColor: '#0EA5E9',
+      marginBottom: spacing[1.5],
+      marginTop: spacing[1]
+    },
+    heroTitle: {
+      fontSize: fontSizes['5xl'],
+      fontWeight: fontWeights.extraBold,
+      color: palette.white,
+      textAlign: 'center',
+      marginBottom: 6
+    },
+    heroDesc: {
+      fontSize: fontSizes.lg,
+      color: 'rgba(255,255,255,0.75)',
+      textAlign: 'center',
+      lineHeight: 20
+    },
+    content: { paddingHorizontal: spacing[2], paddingTop: 20 },
+    progressCard: {
+      padding: spacing[2],
+      borderRadius: radii.xl,
+      marginBottom: spacing[2],
+      backgroundColor: palette.white,
+      elevation: 1
+    },
+    progressHeader: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: spacing[1] },
+    progressLabel: { fontSize: fontSizes.lg, fontWeight: fontWeights.semiBold, color: c.textSecondary },
+    progressValue: { fontSize: fontSizes.xl, fontWeight: fontWeights.bold, color: '#0EA5E9' },
+    progressBar: { height: 8, borderRadius: radii.md, marginBottom: 6 },
+    progressMeta: { fontSize: fontSizes.base, color: c.textTertiary, textAlign: 'right' },
+    continueBtn: { marginBottom: spacing[2.5], borderRadius: radii.lg },
+    sectionTitle: {
+      fontSize: fontSizes['2xl'],
+      fontWeight: fontWeights.bold,
+      color: '#1E3A5F',
+      marginBottom: spacing[1.5]
+    },
+    packageList: { gap: 10, marginBottom: spacing[3] },
+    packageCard: {
+      borderRadius: radii.lg,
+      borderLeftWidth: 4,
+      padding: spacing[1.5],
+      backgroundColor: palette.white
+    },
+    packageRow: { flexDirection: 'row', alignItems: 'center', gap: spacing[1.5] },
+    pkgIconBg: { borderRadius: 18 },
+    packageInfo: { flex: 1 },
+    pkgTitleRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      marginBottom: 3,
+      gap: 6
+    },
+    packageTitle: { flex: 1, fontSize: fontSizes.lg, fontWeight: fontWeights.semiBold, color: '#1E293B' },
+    packageTitleLocked: { color: '#9CA3AF' },
+    statusBadge: {
+      borderRadius: radii.md,
+      paddingHorizontal: 7,
+      paddingVertical: 2
+    },
+    statusBadgeText: { fontSize: 10, fontWeight: fontWeights.bold },
+    packageMeta: { fontSize: fontSizes.base, color: c.textTertiary, marginTop: 2, marginBottom: 4 },
+    pkgProgressBar: { height: 4, borderRadius: radii.sm },
+    emptyHint: { opacity: 0.6, textAlign: 'center', paddingVertical: spacing[1.5] },
+    offlineNote: {
+      backgroundColor: '#FFF7ED',
+      borderRadius: radii.md,
+      padding: spacing[1.5],
+      borderLeftWidth: 3,
+      borderLeftColor: '#F59E0B',
+      marginBottom: spacing[2]
+    },
+    offlineNoteText: { color: '#92400E' }
+  });
+}

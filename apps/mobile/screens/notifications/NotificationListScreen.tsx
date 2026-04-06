@@ -6,11 +6,12 @@
  * AC-FR-E17-01-04: Bulk mark-all-read / clear all
  */
 import { useNavigation } from '@react-navigation/native';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 
 import { PActivityIndicator, PButton, PCard, PChip, PDivider, PIconButton, PText } from '../../components';
 import { MockNotification, getNotificationsForUser, getPrimaryUser } from '../../data/mockSelectors';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -34,34 +35,38 @@ const NotificationCard = ({
   notification: MockNotification;
   onRead: (id: string) => void;
   isOffline?: boolean;
-}) => (
-  <PCard
-    style={[styles.notifCard, notification.is_read && styles.notifCardRead]}
-    accessibilityLabel={`${notification.title}, ${notification.is_read ? 'okundu' : 'okunmadi'}`}
-  >
-    <View style={styles.notifRow}>
-      <View style={styles.notifBody}>
-        <View style={styles.notifTitleRow}>
-          <PText style={styles.notifTitle}>{notification.title}</PText>
-          {!notification.is_read && <View style={styles.unreadDot} accessibilityLabel="Okunmamis bildirim" />}
+}) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+  return (
+    <PCard
+      style={[styles.notifCard, notification.is_read && styles.notifCardRead]}
+      accessibilityLabel={`${notification.title}, ${notification.is_read ? 'okundu' : 'okunmadi'}`}
+    >
+      <View style={styles.notifRow}>
+        <View style={styles.notifBody}>
+          <View style={styles.notifTitleRow}>
+            <PText style={styles.notifTitle}>{notification.title}</PText>
+            {!notification.is_read && <View style={styles.unreadDot} accessibilityLabel="Okunmamis bildirim" />}
+          </View>
+          <PText style={styles.notifDesc}>{notification.description}</PText>
+          <PText style={styles.notifTime}>
+            {notification.created_at ? new Date(notification.created_at).toLocaleDateString('tr-TR') : ''}
+          </PText>
         </View>
-        <PText style={styles.notifDesc}>{notification.description}</PText>
-        <PText style={styles.notifTime}>
-          {notification.created_at ? new Date(notification.created_at).toLocaleDateString('tr-TR') : ''}
-        </PText>
+        {!notification.is_read && (
+          <PIconButton
+            icon="check-circle-outline"
+            size={20}
+            onPress={() => !isOffline && onRead(notification.id)}
+            disabled={isOffline}
+            accessibilityLabel="Okundu olarak isaretle"
+          />
+        )}
       </View>
-      {!notification.is_read && (
-        <PIconButton
-          icon="check-circle-outline"
-          size={20}
-          onPress={() => !isOffline && onRead(notification.id)}
-          disabled={isOffline}
-          accessibilityLabel="Okundu olarak isaretle"
-        />
-      )}
-    </View>
-  </PCard>
-);
+    </PCard>
+  );
+};
 
 const groupByType = (notifications: MockNotification[]): Record<string, MockNotification[]> => {
   return notifications.reduce(
@@ -75,6 +80,9 @@ const groupByType = (notifications: MockNotification[]): Record<string, MockNoti
 };
 
 const NotificationListContent = ({ isOffline }: { isOffline?: boolean }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const user = getPrimaryUser();
   const rawNotifs = getNotificationsForUser(user?.id);
   const [notifications, setNotifications] = useState<MockNotification[]>(rawNotifs);
@@ -210,32 +218,34 @@ export const NotificationListScreen = ({ route }: NotificationListScreenProps) =
   );
 };
 
-const styles = StyleSheet.create({
-  scroll: { flex: 1 },
-  scrollContent: { paddingBottom: 32 },
-  skeleton: { marginHorizontal: 16, marginBottom: 12 },
-  headerRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingVertical: 4
-  },
-  badgeChip: { backgroundColor: '#00B4D8' },
-  allReadText: { fontSize: 13, color: '#737373' },
-  bulkActions: { flexDirection: 'row', gap: 4 },
-  notifCard: { marginBottom: 4 },
-  notifCardRead: { opacity: 0.55 },
-  notifRow: { flexDirection: 'row', alignItems: 'flex-start', padding: 12 },
-  notifBody: { flex: 1 },
-  notifTitleRow: { flexDirection: 'row', alignItems: 'center', gap: 6 },
-  notifTitle: { fontWeight: '700', fontSize: 14, flex: 1 },
-  unreadDot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    backgroundColor: '#00B4D8'
-  },
-  notifDesc: { fontSize: 13, color: '#525252', marginTop: 2 },
-  notifTime: { fontSize: 11, color: '#A3A3A3', marginTop: 4 },
-  divider: { marginVertical: 2 }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    scroll: { flex: 1 },
+    scrollContent: { paddingBottom: 32 },
+    skeleton: { marginHorizontal: 16, marginBottom: spacing[1.5] },
+    headerRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      paddingVertical: 4
+    },
+    badgeChip: { backgroundColor: c.primary },
+    allReadText: { fontSize: fontSizes.md, color: c.textTertiary },
+    bulkActions: { flexDirection: 'row', gap: 4 },
+    notifCard: { marginBottom: 4 },
+    notifCardRead: { opacity: 0.55 },
+    notifRow: { flexDirection: 'row', alignItems: 'flex-start', padding: spacing[1.5] },
+    notifBody: { flex: 1 },
+    notifTitleRow: { flexDirection: 'row', alignItems: 'center', gap: 6 },
+    notifTitle: { fontWeight: fontWeights.bold, fontSize: fontSizes.lg, flex: 1 },
+    unreadDot: {
+      width: 8,
+      height: 8,
+      borderRadius: radii.sm,
+      backgroundColor: c.primary
+    },
+    notifDesc: { fontSize: fontSizes.md, color: c.textSecondary, marginTop: 2 },
+    notifTime: { fontSize: fontSizes.sm, color: '#A3A3A3', marginTop: 4 },
+    divider: { marginVertical: 2 }
+  });
+}

@@ -1,9 +1,10 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 
 import { PActivityIndicator, PButton, PChip, PDivider, PSwitch, PText } from '../../components';
 import { getDownloadsForUser, getPrimaryUser, getWorkshopById, getWorkshops } from '../../data/mockSelectors';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -54,6 +55,9 @@ const HARD_SCENARIOS = [
 ];
 
 const ContentWorkshopGuideContent = ({ workshopId, isOffline }: { workshopId?: string; isOffline?: boolean }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   // AC-FR-E8-05-02: facilitator mode toggle
   const [facilitatorMode, setFacilitatorMode] = useState(false);
   const user = getPrimaryUser();
@@ -226,83 +230,85 @@ export const ContentWorkshopGuideScreen = ({ route }: { route?: { params?: Route
   );
 };
 
-const styles = StyleSheet.create({
-  roleTag: {
-    flexDirection: 'row',
-    gap: 8,
-    marginBottom: 10,
-    flexWrap: 'wrap'
-  },
-  guideChip: {
-    backgroundColor: '#283593'
-  },
-  offlineChip: {
-    backgroundColor: '#2E7D32'
-  },
-  desc: {
-    opacity: 0.7,
-    lineHeight: 20
-  },
-  toggleRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between'
-  },
-  toggleLabel: {
-    flex: 1,
-    marginRight: 12
-  },
-  toggleDesc: {
-    opacity: 0.6,
-    marginTop: 2
-  },
-  modeActive: {
-    marginTop: 8,
-    color: '#F57C00'
-  },
-  scriptText: {
-    lineHeight: 22,
-    fontStyle: 'italic'
-  },
-  scriptTextLarge: {
-    fontSize: 18,
-    lineHeight: 28
-  },
-  divider: {
-    marginVertical: 8
-  },
-  sectionLabel: {
-    opacity: 0.55,
-    marginBottom: 4,
-    textTransform: 'uppercase',
-    letterSpacing: 0.5
-  },
-  responseText: {
-    lineHeight: 20,
-    marginBottom: 4
-  },
-  altText: {
-    opacity: 0.75,
-    lineHeight: 20
-  },
-  jumpBtn: {
-    marginTop: 10,
-    alignSelf: 'flex-start'
-  },
-  scenarioRow: {
-    marginBottom: 4
-  },
-  scenarioLabel: {
-    fontWeight: '700',
-    color: '#C62828',
-    marginBottom: 2
-  },
-  scenarioAction: {
-    opacity: 0.75,
-    lineHeight: 20
-  },
-  downloadBtn: {
-    marginTop: 10,
-    alignSelf: 'flex-start'
-  }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    roleTag: {
+      flexDirection: 'row',
+      gap: spacing[1],
+      marginBottom: 10,
+      flexWrap: 'wrap'
+    },
+    guideChip: {
+      backgroundColor: '#283593'
+    },
+    offlineChip: {
+      backgroundColor: '#2E7D32'
+    },
+    desc: {
+      opacity: 0.7,
+      lineHeight: 20
+    },
+    toggleRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between'
+    },
+    toggleLabel: {
+      flex: 1,
+      marginRight: 12
+    },
+    toggleDesc: {
+      opacity: 0.6,
+      marginTop: 2
+    },
+    modeActive: {
+      marginTop: spacing[1],
+      color: '#F57C00'
+    },
+    scriptText: {
+      lineHeight: 22,
+      fontStyle: 'italic'
+    },
+    scriptTextLarge: {
+      fontSize: fontSizes['3xl'],
+      lineHeight: 28
+    },
+    divider: {
+      marginVertical: 8
+    },
+    sectionLabel: {
+      opacity: 0.55,
+      marginBottom: 4,
+      textTransform: 'uppercase',
+      letterSpacing: 0.5
+    },
+    responseText: {
+      lineHeight: 20,
+      marginBottom: 4
+    },
+    altText: {
+      opacity: 0.75,
+      lineHeight: 20
+    },
+    jumpBtn: {
+      marginTop: 10,
+      alignSelf: 'flex-start'
+    },
+    scenarioRow: {
+      marginBottom: 4
+    },
+    scenarioLabel: {
+      fontWeight: fontWeights.bold,
+      color: '#C62828',
+      marginBottom: 2
+    },
+    scenarioAction: {
+      opacity: 0.75,
+      lineHeight: 20
+    },
+    downloadBtn: {
+      marginTop: 10,
+      alignSelf: 'flex-start'
+    }
+  });
+}

@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Alert, StyleSheet, View } from 'react-native';
 
 import { PButton, PCard, PChip, PDivider, PProgressBar, PText } from '../../components';
@@ -9,6 +9,7 @@ import {
   getSeatsForSubscription,
   getSubscriptionForUser
 } from '../../data/mockSelectors';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -31,6 +32,9 @@ const PLAN_PRICES: Record<string, string> = {
 };
 
 const ProfilePlanManagementContent = ({ isOffline }: { isOffline?: boolean }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const navigation = useNavigation<any>();
   const [cancelExpanded, setCancelExpanded] = useState(false);
 
@@ -237,84 +241,86 @@ export const ProfilePlanManagementScreen = ({ route }: { route?: { params?: { st
   );
 };
 
-const styles = StyleSheet.create({
-  card: {
-    marginBottom: 8
-  },
-  row: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 8
-  },
-  statusChip: {
-    alignSelf: 'flex-start'
-  },
-  chipActive: {
-    backgroundColor: '#D1FAE5'
-  },
-  chipTrial: {
-    backgroundColor: '#FEF3C7'
-  },
-  chipCancelled: {
-    backgroundColor: '#FEE2E2'
-  },
-  priceLabel: {
-    color: '#6B7280'
-  },
-  seatRow: {
-    marginBottom: 4
-  },
-  seatBar: {
-    height: 6,
-    borderRadius: 3
-  },
-  infoText: {
-    color: '#6B7280',
-    marginBottom: 12,
-    lineHeight: 20
-  },
-  actionButton: {
-    marginBottom: 4,
-    minHeight: 48
-  },
-  expandButton: {
-    alignSelf: 'flex-start',
-    marginBottom: 4
-  },
-  effectsList: {
-    marginTop: 8,
-    marginBottom: 8,
-    paddingHorizontal: 4
-  },
-  effectRow: {
-    flexDirection: 'row',
-    marginBottom: 6,
-    gap: 6
-  },
-  effectBullet: {
-    color: '#7C3AED',
-    fontWeight: '700',
-    minWidth: 16
-  },
-  effectText: {
-    flex: 1,
-    color: '#374151',
-    lineHeight: 18
-  },
-  accessNote: {
-    marginTop: 8,
-    backgroundColor: '#EDE9FE',
-    borderRadius: 8,
-    padding: 10
-  },
-  accessNoteText: {
-    color: '#4C1D95'
-  },
-  divider: {
-    marginVertical: 12
-  },
-  cancelButton: {
-    minHeight: 48
-  }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    card: {
+      marginBottom: spacing[1]
+    },
+    row: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginBottom: spacing[1]
+    },
+    statusChip: {
+      alignSelf: 'flex-start'
+    },
+    chipActive: {
+      backgroundColor: palette.emerald50
+    },
+    chipTrial: {
+      backgroundColor: c.warningContainer
+    },
+    chipCancelled: {
+      backgroundColor: palette.red50
+    },
+    priceLabel: {
+      color: c.textTertiary
+    },
+    seatRow: {
+      marginBottom: 4
+    },
+    seatBar: {
+      height: 6,
+      borderRadius: 3
+    },
+    infoText: {
+      color: c.textTertiary,
+      marginBottom: spacing[1.5],
+      lineHeight: 20
+    },
+    actionButton: {
+      marginBottom: 4,
+      minHeight: 48
+    },
+    expandButton: {
+      alignSelf: 'flex-start',
+      marginBottom: 4
+    },
+    effectsList: {
+      marginTop: spacing[1],
+      marginBottom: spacing[1],
+      paddingHorizontal: 4
+    },
+    effectRow: {
+      flexDirection: 'row',
+      marginBottom: 6,
+      gap: 6
+    },
+    effectBullet: {
+      color: '#7C3AED',
+      fontWeight: fontWeights.bold,
+      minWidth: 16
+    },
+    effectText: {
+      flex: 1,
+      color: '#374151',
+      lineHeight: 18
+    },
+    accessNote: {
+      marginTop: spacing[1],
+      backgroundColor: palette.purple50,
+      borderRadius: radii.md,
+      padding: 10
+    },
+    accessNoteText: {
+      color: '#4C1D95'
+    },
+    divider: {
+      marginVertical: 12
+    },
+    cancelButton: {
+      minHeight: 48
+    }
+  });
+}

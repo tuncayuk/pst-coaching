@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { PActivityIndicator, PButton, PCard, PRadioButton, PRadioButtonGroup, PText } from '../../components';
 import { getPrimaryUser } from '../../data/mockSelectors';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -17,6 +18,9 @@ const languages = [
 ];
 
 const ProfileLanguageContent = ({ isOffline }: { isOffline?: boolean }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const user = getPrimaryUser();
   const currentLanguage = user?.language ?? 'tr';
 
@@ -107,16 +111,18 @@ export const ProfileLanguageScreen = ({ route }: { route?: { params?: { state?: 
   );
 };
 
-const styles = StyleSheet.create({
-  subtleText: {
-    opacity: 0.7,
-    marginBottom: 8
-  },
-  card: {
-    marginBottom: 8
-  },
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center'
-  }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    subtleText: {
+      opacity: 0.7,
+      marginBottom: spacing[1]
+    },
+    card: {
+      marginBottom: spacing[1]
+    },
+    row: {
+      flexDirection: 'row',
+      alignItems: 'center'
+    }
+  });
+}

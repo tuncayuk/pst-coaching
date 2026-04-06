@@ -1,9 +1,10 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import { PActivityIndicator, PButton, PChip, PProgressBar, PText } from '../../components';
 import { getEbookById, getEbookChaptersForEbook, getHighlightsForUser, getPrimaryUser } from '../../data/mockSelectors';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -37,6 +38,9 @@ const ContentEbookReaderContent = ({
   ebookId?: string;
   chapterId?: string;
 }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const navigation = useNavigation<any>();
   const user = getPrimaryUser();
   const ebook = getEbookById(ebookId) ?? getEbookById(undefined);
@@ -318,46 +322,48 @@ export const ContentEbookReaderScreen = ({
   );
 };
 
-const styles = StyleSheet.create({
-  chapterTitle: { fontSize: 16, fontWeight: '700', color: '#1F2937', marginBottom: 4 },
-  pageRange: { fontSize: 12, color: '#9CA3AF', marginBottom: 8 },
-  progressBar: { marginBottom: 4 },
-  progressLabel: { fontSize: 11, color: '#737373', textAlign: 'right' },
-  paraBlock: { padding: 4, marginBottom: 2 },
-  paragraph: { fontSize: 15, color: '#1F2937', lineHeight: 26, marginBottom: 14 },
-  highlightBtn: { alignSelf: 'flex-start', marginTop: 4 },
-  colorPickerRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 10,
-    marginTop: 8,
-    marginBottom: 8
-  },
-  colorPickerLabel: { fontSize: 13, color: '#525252' },
-  colorSwatch: { width: 28, height: 28, borderRadius: 14, borderWidth: 1, borderColor: '#E5E7EB' },
-  highlightSaved: { fontSize: 12, color: '#15803D', marginTop: 4 },
-  noteRow: { marginBottom: 8 },
-  noteArea: {
-    borderWidth: 1,
-    borderColor: '#E5E7EB',
-    borderRadius: 10,
-    padding: 12,
-    minHeight: 60,
-    backgroundColor: '#FAFAFA'
-  },
-  notePlaceholder: { fontSize: 14, color: '#9CA3AF' },
-  noteText: { color: '#1F2937' },
-  noteActions: { flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center' },
-  noteSavedLabel: { fontSize: 12, color: '#15803D', marginRight: 8 },
-  audioRow: { flexDirection: 'row', alignItems: 'center', gap: 12, marginBottom: 12 },
-  audioPlayBtn: { flex: 0 },
-  audioSync: { flex: 1, fontSize: 13, color: '#525252', fontStyle: 'italic' },
-  speedRow: { flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 8 },
-  speedLabel: { fontSize: 13, color: '#525252' },
-  speedChip: {},
-  bgPlayHint: { fontSize: 12, color: '#6B46C1', fontStyle: 'italic' },
-  audioUnavailable: { fontSize: 13, color: '#9CA3AF' },
-  navRow: { flexDirection: 'row', gap: 10, marginBottom: 10 },
-  navBtn: { flex: 1 },
-  toolbarRow: { flexDirection: 'row', justifyContent: 'space-between' }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    chapterTitle: { fontSize: fontSizes['2xl'], fontWeight: fontWeights.bold, color: '#1F2937', marginBottom: 4 },
+    pageRange: { fontSize: fontSizes.base, color: '#9CA3AF', marginBottom: spacing[1] },
+    progressBar: { marginBottom: 4 },
+    progressLabel: { fontSize: fontSizes.sm, color: c.textTertiary, textAlign: 'right' },
+    paraBlock: { padding: 4, marginBottom: 2 },
+    paragraph: { fontSize: fontSizes.xl, color: '#1F2937', lineHeight: 26, marginBottom: 14 },
+    highlightBtn: { alignSelf: 'flex-start', marginTop: 4 },
+    colorPickerRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 10,
+      marginTop: spacing[1],
+      marginBottom: spacing[1]
+    },
+    colorPickerLabel: { fontSize: fontSizes.md, color: c.textSecondary },
+    colorSwatch: { width: 28, height: 28, borderRadius: radii.xl, borderWidth: 1, borderColor: '#E5E7EB' },
+    highlightSaved: { fontSize: fontSizes.base, color: '#15803D', marginTop: 4 },
+    noteRow: { marginBottom: spacing[1] },
+    noteArea: {
+      borderWidth: 1,
+      borderColor: '#E5E7EB',
+      borderRadius: radii.md,
+      padding: spacing[1.5],
+      minHeight: 60,
+      backgroundColor: c.background
+    },
+    notePlaceholder: { fontSize: fontSizes.lg, color: '#9CA3AF' },
+    noteText: { color: '#1F2937' },
+    noteActions: { flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center' },
+    noteSavedLabel: { fontSize: fontSizes.base, color: '#15803D', marginRight: 8 },
+    audioRow: { flexDirection: 'row', alignItems: 'center', gap: spacing[1.5], marginBottom: spacing[1.5] },
+    audioPlayBtn: { flex: 0 },
+    audioSync: { flex: 1, fontSize: fontSizes.md, color: c.textSecondary, fontStyle: 'italic' },
+    speedRow: { flexDirection: 'row', alignItems: 'center', gap: spacing[1], marginBottom: spacing[1] },
+    speedLabel: { fontSize: fontSizes.md, color: c.textSecondary },
+    speedChip: {},
+    bgPlayHint: { fontSize: fontSizes.base, color: '#6B46C1', fontStyle: 'italic' },
+    audioUnavailable: { fontSize: fontSizes.md, color: '#9CA3AF' },
+    navRow: { flexDirection: 'row', gap: 10, marginBottom: 10 },
+    navBtn: { flex: 1 },
+    toolbarRow: { flexDirection: 'row', justifyContent: 'space-between' }
+  });
+}

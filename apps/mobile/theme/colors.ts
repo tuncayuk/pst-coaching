@@ -166,4 +166,4 @@ export const dark = {
   outlineVariant: palette.neutral800
 } as const;
 
-export type ColorTokens = typeof light;
+export type ColorTokens = { readonly [K in keyof typeof light]: string };

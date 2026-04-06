@@ -1,9 +1,10 @@
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 
 import { PActivityIndicator, PButton, PCard, PChip, PIconButton, PText } from '../../components';
 import { getEbooks, getJourneyById, getModules, getWorkshops } from '../../data/mockSelectors';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -11,6 +12,9 @@ import { SkeletonBlock } from '../components/SkeletonBlock';
 import { StateMessage } from '../components/StateMessage';
 
 const ContentJourneyDetailContent = ({ journeyId, isOffline }: { journeyId?: string; isOffline?: boolean }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const navigation = useNavigation<any>();
   const journey = getJourneyById(journeyId);
   const modules = getModules().slice(0, 2);
@@ -158,118 +162,120 @@ export const ContentJourneyDetailScreen = ({
   );
 };
 
-const styles = StyleSheet.create({
-  root: {
-    flex: 1,
-    backgroundColor: '#FAFAFA'
-  },
-  page: {
-    paddingBottom: 24
-  },
-  hero: {
-    height: 200,
-    backgroundColor: '#FFDDC1',
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  heroEmoji: {
-    fontSize: 64
-  },
-  heroBack: {
-    position: 'absolute',
-    top: 16,
-    left: 16,
-    backgroundColor: 'rgba(0,0,0,0.3)'
-  },
-  heroFav: {
-    position: 'absolute',
-    top: 16,
-    right: 16,
-    backgroundColor: 'rgba(0,0,0,0.3)'
-  },
-  content: {
-    padding: 16
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: '800',
-    color: '#2B1B5D',
-    marginBottom: 12
-  },
-  tagRow: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 8,
-    marginBottom: 16
-  },
-  tagPrimary: {
-    backgroundColor: '#E0F7FA',
-    color: '#0096B8',
-    paddingHorizontal: 10,
-    paddingVertical: 6,
-    borderRadius: 8,
-    fontSize: 12,
-    fontWeight: '600'
-  },
-  tagSuccess: {
-    backgroundColor: '#D1FAE5',
-    color: '#065F46',
-    paddingHorizontal: 10,
-    paddingVertical: 6,
-    borderRadius: 8,
-    fontSize: 12,
-    fontWeight: '600'
-  },
-  tagSecondary: {
-    backgroundColor: '#EDE7F6',
-    color: '#2B1B5D',
-    paddingHorizontal: 10,
-    paddingVertical: 6,
-    borderRadius: 8,
-    fontSize: 12,
-    fontWeight: '600'
-  },
-  sectionCard: {
-    padding: 16,
-    borderRadius: 16,
-    marginBottom: 16
-  },
-  sectionTitle: {
-    fontSize: 16,
-    fontWeight: '700',
-    color: '#171717',
-    marginBottom: 8
-  },
-  paragraph: {
-    fontSize: 14,
-    color: '#525252',
-    lineHeight: 20
-  },
-  contentList: {
-    gap: 12
-  },
-  contentRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 12,
-    padding: 12,
-    borderRadius: 10,
-    backgroundColor: '#FAFAFA'
-  },
-  contentEmoji: {
-    fontSize: 20
-  },
-  contentInfo: {
-    flex: 1
-  },
-  contentTitle: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#171717',
-    marginBottom: 4
-  },
-  contentMeta: {
-    fontSize: 12,
-    color: '#525252'
-  }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    root: {
+      flex: 1,
+      backgroundColor: c.background
+    },
+    page: {
+      paddingBottom: 24
+    },
+    hero: {
+      height: 200,
+      backgroundColor: '#FFDDC1',
+      alignItems: 'center',
+      justifyContent: 'center'
+    },
+    heroEmoji: {
+      fontSize: fontSizes['12xl']
+    },
+    heroBack: {
+      position: 'absolute',
+      top: 16,
+      left: 16,
+      backgroundColor: 'rgba(0,0,0,0.3)'
+    },
+    heroFav: {
+      position: 'absolute',
+      top: 16,
+      right: 16,
+      backgroundColor: 'rgba(0,0,0,0.3)'
+    },
+    content: {
+      padding: spacing[2]
+    },
+    title: {
+      fontSize: fontSizes['6xl'],
+      fontWeight: fontWeights.extraBold,
+      color: c.textBrand,
+      marginBottom: spacing[1.5]
+    },
+    tagRow: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      gap: spacing[1],
+      marginBottom: spacing[2]
+    },
+    tagPrimary: {
+      backgroundColor: palette.cyan50,
+      color: '#0096B8',
+      paddingHorizontal: 10,
+      paddingVertical: 6,
+      borderRadius: radii.md,
+      fontSize: fontSizes.base,
+      fontWeight: fontWeights.semiBold
+    },
+    tagSuccess: {
+      backgroundColor: palette.emerald50,
+      color: '#065F46',
+      paddingHorizontal: 10,
+      paddingVertical: 6,
+      borderRadius: radii.md,
+      fontSize: fontSizes.base,
+      fontWeight: fontWeights.semiBold
+    },
+    tagSecondary: {
+      backgroundColor: palette.purple50,
+      color: c.textBrand,
+      paddingHorizontal: 10,
+      paddingVertical: 6,
+      borderRadius: radii.md,
+      fontSize: fontSizes.base,
+      fontWeight: fontWeights.semiBold
+    },
+    sectionCard: {
+      padding: spacing[2],
+      borderRadius: radii.xl,
+      marginBottom: spacing[2]
+    },
+    sectionTitle: {
+      fontSize: fontSizes['2xl'],
+      fontWeight: fontWeights.bold,
+      color: c.textPrimary,
+      marginBottom: spacing[1]
+    },
+    paragraph: {
+      fontSize: fontSizes.lg,
+      color: c.textSecondary,
+      lineHeight: 20
+    },
+    contentList: {
+      gap: spacing[1.5]
+    },
+    contentRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: spacing[1.5],
+      padding: spacing[1.5],
+      borderRadius: radii.md,
+      backgroundColor: c.background
+    },
+    contentEmoji: {
+      fontSize: fontSizes['4xl']
+    },
+    contentInfo: {
+      flex: 1
+    },
+    contentTitle: {
+      fontSize: fontSizes.lg,
+      fontWeight: fontWeights.semiBold,
+      color: c.textPrimary,
+      marginBottom: 4
+    },
+    contentMeta: {
+      fontSize: fontSizes.base,
+      color: c.textSecondary
+    }
+  });
+}

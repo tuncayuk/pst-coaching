@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { ScrollView, StyleSheet, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -14,6 +14,7 @@ import {
   PText
 } from '../../components';
 import { getContentItemsForParent, getExerciseSteps, getPrimaryUser } from '../../data/mockSelectors';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
 import { SkeletonBlock } from '../components/SkeletonBlock';
@@ -48,6 +49,9 @@ const FALLBACK_STEPS = [
 type StepStatus = 'done' | 'active' | 'locked';
 
 const ContentExerciseContent = ({ contentItemId, isOffline }: { contentItemId?: string; isOffline?: boolean }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const navigation = useNavigation<any>();
 
   // Load steps: prefer ExerciseStep records; fallback to static list
@@ -272,6 +276,9 @@ const ContentExerciseContent = ({ contentItemId, isOffline }: { contentItemId?: 
 };
 
 export const ContentExerciseScreen = ({ route }: { route?: { params?: RouteParams } }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const state = resolveScreenState(route);
   const id = route?.params?.id;
 
@@ -328,112 +335,119 @@ export const ContentExerciseScreen = ({ route }: { route?: { params?: RouteParam
   );
 };
 
-const styles = StyleSheet.create({
-  rootSafe: { flex: 1, backgroundColor: '#F8FAFC' },
-  wrapper: { flex: 1, backgroundColor: '#F8FAFC' },
-  header: {
-    backgroundColor: '#FFFFFF',
-    borderBottomWidth: 1,
-    borderBottomColor: '#E2E8F0',
-    paddingHorizontal: 4,
-    paddingTop: 4,
-    paddingBottom: 8
-  },
-  headerRow: { flexDirection: 'row', alignItems: 'center' },
-  headerCenter: { flex: 1, paddingRight: 8 },
-  headerTitle: { fontSize: 14, fontWeight: '700', color: '#1E3A5F' },
-  headerSubtitle: { fontSize: 11, color: '#64748B', marginTop: 1 },
-  progressBar: { height: 4, borderRadius: 0, marginTop: 6, marginHorizontal: 16 },
-  body: { paddingHorizontal: 16, paddingTop: 16, paddingBottom: 40 },
-  instructionCard: {
-    padding: 14,
-    borderRadius: 12,
-    marginBottom: 16,
-    backgroundColor: '#F5F3FF',
-    borderLeftWidth: 3,
-    borderLeftColor: '#7C4DFF'
-  },
-  instructionHeader: { flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 6 },
-  lightbulb: { backgroundColor: '#EDE9FE' },
-  instructionTitle: { fontSize: 13, fontWeight: '700', color: '#4C1D95' },
-  instructionText: { fontSize: 13, color: '#4C1D95', lineHeight: 20 },
-  stepList: { gap: 10 },
-  stepCard: {
-    borderRadius: 12,
-    padding: 14,
-    backgroundColor: '#FFFFFF',
-    borderWidth: 1,
-    borderColor: '#E2E8F0'
-  },
-  stepCardDone: {
-    backgroundColor: '#F0FDF4',
-    borderColor: '#86EFAC'
-  },
-  stepCardActive: {
-    backgroundColor: '#F0F9FF',
-    borderColor: '#7DD3FC',
-    shadowColor: '#0EA5E9',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.08,
-    shadowRadius: 6,
-    elevation: 2
-  },
-  stepCardLocked: {
-    backgroundColor: '#FAFAFA',
-    borderColor: '#E5E7EB',
-    opacity: 0.7
-  },
-  stepHeader: { flexDirection: 'row', alignItems: 'flex-start', gap: 10 },
-  stepBadge: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  stepBadgeText: { fontSize: 14, fontWeight: '700' },
-  stepInfo: { flex: 1 },
-  stepTitle: { fontSize: 14, fontWeight: '700', color: '#1E293B', marginBottom: 4 },
-  stepTitleLocked: { color: '#9CA3AF' },
-  stepDesc: { fontSize: 13, color: '#475569', lineHeight: 20 },
-  stepLockedHint: { fontSize: 12, color: '#9CA3AF', fontStyle: 'italic' },
-  noteArea: { marginTop: 4 },
-  noteDivider: { marginVertical: 10 },
-  noteLabel: { fontSize: 11, color: '#94A3B8', marginBottom: 4, fontWeight: '600' },
-  noteInput: {
-    borderWidth: 1,
-    borderColor: '#CBD5E1',
-    borderRadius: 8,
-    padding: 10,
-    minHeight: 72,
-    fontSize: 13,
-    textAlignVertical: 'top',
-    color: '#1E293B',
-    marginBottom: 6
-  },
-  noteSavedText: { fontSize: 11, color: '#16A34A', marginBottom: 4 },
-  stepActions: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center'
-  },
-  completionCard: {
-    padding: 24,
-    borderRadius: 16,
-    marginTop: 16,
-    backgroundColor: '#F0FDF4',
-    alignItems: 'center',
-    borderColor: '#86EFAC',
-    borderWidth: 1.5
-  },
-  completionIcon: { backgroundColor: '#D1FAE5', marginBottom: 12 },
-  completionTitle: { fontSize: 20, fontWeight: '800', color: '#15803D', marginBottom: 6 },
-  completionDesc: {
-    fontSize: 14,
-    color: '#166534',
-    lineHeight: 20,
-    textAlign: 'center',
-    marginBottom: 16
-  },
-  nextSectionBtn: { alignSelf: 'stretch', borderRadius: 12 }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    rootSafe: { flex: 1, backgroundColor: '#F8FAFC' },
+    wrapper: { flex: 1, backgroundColor: '#F8FAFC' },
+    header: {
+      backgroundColor: palette.white,
+      borderBottomWidth: 1,
+      borderBottomColor: '#E2E8F0',
+      paddingHorizontal: 4,
+      paddingTop: 4,
+      paddingBottom: 8
+    },
+    headerRow: { flexDirection: 'row', alignItems: 'center' },
+    headerCenter: { flex: 1, paddingRight: 8 },
+    headerTitle: { fontSize: fontSizes.lg, fontWeight: fontWeights.bold, color: '#1E3A5F' },
+    headerSubtitle: { fontSize: fontSizes.sm, color: '#64748B', marginTop: 1 },
+    progressBar: { height: 4, borderRadius: 0, marginTop: 6, marginHorizontal: 16 },
+    body: { paddingHorizontal: spacing[2], paddingTop: 16, paddingBottom: 40 },
+    instructionCard: {
+      padding: 14,
+      borderRadius: radii.lg,
+      marginBottom: spacing[2],
+      backgroundColor: '#F5F3FF',
+      borderLeftWidth: 3,
+      borderLeftColor: '#7C4DFF'
+    },
+    instructionHeader: { flexDirection: 'row', alignItems: 'center', gap: spacing[1], marginBottom: 6 },
+    lightbulb: { backgroundColor: palette.purple50 },
+    instructionTitle: { fontSize: fontSizes.md, fontWeight: fontWeights.bold, color: '#4C1D95' },
+    instructionText: { fontSize: fontSizes.md, color: '#4C1D95', lineHeight: 20 },
+    stepList: { gap: 10 },
+    stepCard: {
+      borderRadius: radii.lg,
+      padding: 14,
+      backgroundColor: palette.white,
+      borderWidth: 1,
+      borderColor: '#E2E8F0'
+    },
+    stepCardDone: {
+      backgroundColor: '#F0FDF4',
+      borderColor: '#86EFAC'
+    },
+    stepCardActive: {
+      backgroundColor: '#F0F9FF',
+      borderColor: '#7DD3FC',
+      shadowColor: '#0EA5E9',
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.08,
+      shadowRadius: 6,
+      elevation: 2
+    },
+    stepCardLocked: {
+      backgroundColor: c.background,
+      borderColor: '#E5E7EB',
+      opacity: 0.7
+    },
+    stepHeader: { flexDirection: 'row', alignItems: 'flex-start', gap: 10 },
+    stepBadge: {
+      width: 32,
+      height: 32,
+      borderRadius: radii.xl,
+      alignItems: 'center',
+      justifyContent: 'center'
+    },
+    stepBadgeText: { fontSize: fontSizes.lg, fontWeight: fontWeights.bold },
+    stepInfo: { flex: 1 },
+    stepTitle: { fontSize: fontSizes.lg, fontWeight: fontWeights.bold, color: '#1E293B', marginBottom: 4 },
+    stepTitleLocked: { color: '#9CA3AF' },
+    stepDesc: { fontSize: fontSizes.md, color: '#475569', lineHeight: 20 },
+    stepLockedHint: { fontSize: fontSizes.base, color: '#9CA3AF', fontStyle: 'italic' },
+    noteArea: { marginTop: 4 },
+    noteDivider: { marginVertical: 10 },
+    noteLabel: { fontSize: fontSizes.sm, color: '#94A3B8', marginBottom: 4, fontWeight: fontWeights.semiBold },
+    noteInput: {
+      borderWidth: 1,
+      borderColor: '#CBD5E1',
+      borderRadius: radii.md,
+      padding: 10,
+      minHeight: 72,
+      fontSize: fontSizes.md,
+      textAlignVertical: 'top',
+      color: '#1E293B',
+      marginBottom: 6
+    },
+    noteSavedText: { fontSize: fontSizes.sm, color: c.success, marginBottom: 4 },
+    stepActions: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center'
+    },
+    completionCard: {
+      padding: spacing[3],
+      borderRadius: radii.xl,
+      marginTop: spacing[2],
+      backgroundColor: '#F0FDF4',
+      alignItems: 'center',
+      borderColor: '#86EFAC',
+      borderWidth: 1.5
+    },
+    completionIcon: { backgroundColor: palette.emerald50, marginBottom: spacing[1.5] },
+    completionTitle: {
+      fontSize: fontSizes['4xl'],
+      fontWeight: fontWeights.extraBold,
+      color: '#15803D',
+      marginBottom: 6
+    },
+    completionDesc: {
+      fontSize: fontSizes.lg,
+      color: '#166534',
+      lineHeight: 20,
+      textAlign: 'center',
+      marginBottom: spacing[2]
+    },
+    nextSectionBtn: { alignSelf: 'stretch', borderRadius: radii.lg }
+  });
+}

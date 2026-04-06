@@ -1,9 +1,10 @@
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 
 import { PActivityIndicator, PButton, PCard, PText } from '../../components';
 import { getModules, getPackagesForModule } from '../../data/mockSelectors';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -22,6 +23,9 @@ const CARD_COLORS = ['#E0F7FA', '#D1FAE5', '#E9D5FF', '#FDE68A'];
 const TOPICS = ['gelisim', 'maneviyat', 'denge', 'gelisim'];
 
 const DiscoverModulesContent = ({ isOffline }: { isOffline?: boolean }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const navigation = useNavigation<any>();
   const modules = getModules();
   const [selectedSort, setSelectedSort] = React.useState('Tumu');
@@ -229,69 +233,71 @@ export const DiscoverModulesScreen = ({ route }: { route?: { params?: { state?: 
   );
 };
 
-const styles = StyleSheet.create({
-  chipsRow: { gap: 8, paddingBottom: 4, marginBottom: 12 },
-  chip: { borderRadius: 20, elevation: 0 },
-  chipContent: { height: 34, paddingHorizontal: 4 },
-  chipLabel: { fontSize: 12, fontWeight: '600' },
-  card: { borderRadius: 16, marginBottom: 16 },
-  cardInner: { borderRadius: 16, overflow: 'hidden' },
-  cardTop: { flexDirection: 'row', gap: 12, padding: 16 },
-  cardIcon: {
-    width: 64,
-    height: 64,
-    borderRadius: 12,
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexShrink: 0
-  },
-  cardEmoji: { fontSize: 28 },
-  cardInfo: { flex: 1 },
-  cardTitle: { fontSize: 16, fontWeight: '700', color: '#171717', marginBottom: 4 },
-  cardDescription: { fontSize: 12, color: '#737373', marginBottom: 6, lineHeight: 16 },
-  pkgCountRow: { flexDirection: 'row' },
-  pkgCountChip: {
-    backgroundColor: '#E0F7FA',
-    color: '#00758C',
-    fontSize: 11,
-    fontWeight: '700',
-    paddingHorizontal: 8,
-    paddingVertical: 2,
-    borderRadius: 6
-  },
-  pkgPreview: {
-    borderTopWidth: 1,
-    borderTopColor: '#F5F5F5',
-    paddingHorizontal: 16,
-    paddingTop: 10,
-    paddingBottom: 4
-  },
-  pkgRow: { flexDirection: 'row', alignItems: 'flex-start', gap: 8, marginBottom: 6 },
-  pkgIndex: {
-    fontSize: 11,
-    fontWeight: '700',
-    color: '#FFFFFF',
-    backgroundColor: '#2B1B5D',
-    width: 18,
-    height: 18,
-    borderRadius: 9,
-    textAlign: 'center',
-    lineHeight: 18,
-    flexShrink: 0
-  },
-  pkgInfo: { flex: 1 },
-  pkgTitle: { fontSize: 13, fontWeight: '600', color: '#171717' },
-  pkgDesc: { fontSize: 11, color: '#737373', marginTop: 1 },
-  moreText: { fontSize: 11, color: '#9CA3AF', marginBottom: 4 },
-  cardFooter: {
-    borderTopWidth: 1,
-    borderTopColor: '#F5F5F5',
-    paddingHorizontal: 16,
-    paddingVertical: 10,
-    alignItems: 'flex-start'
-  },
-  startButton: { borderRadius: 8, elevation: 0 },
-  startButtonContent: { height: 36, paddingHorizontal: 16 },
-  startButtonLabel: { fontSize: 13, fontWeight: '700' },
-  bottomSpacer: { height: 24 }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    chipsRow: { gap: spacing[1], paddingBottom: 4, marginBottom: spacing[1.5] },
+    chip: { borderRadius: radii['2xl'], elevation: 0 },
+    chipContent: { height: 34, paddingHorizontal: 4 },
+    chipLabel: { fontSize: fontSizes.base, fontWeight: fontWeights.semiBold },
+    card: { borderRadius: radii.xl, marginBottom: spacing[2] },
+    cardInner: { borderRadius: radii.xl, overflow: 'hidden' },
+    cardTop: { flexDirection: 'row', gap: spacing[1.5], padding: spacing[2] },
+    cardIcon: {
+      width: 64,
+      height: 64,
+      borderRadius: radii.lg,
+      alignItems: 'center',
+      justifyContent: 'center',
+      flexShrink: 0
+    },
+    cardEmoji: { fontSize: fontSizes['8xl'] },
+    cardInfo: { flex: 1 },
+    cardTitle: { fontSize: fontSizes['2xl'], fontWeight: fontWeights.bold, color: c.textPrimary, marginBottom: 4 },
+    cardDescription: { fontSize: fontSizes.base, color: c.textTertiary, marginBottom: 6, lineHeight: 16 },
+    pkgCountRow: { flexDirection: 'row' },
+    pkgCountChip: {
+      backgroundColor: palette.cyan50,
+      color: '#00758C',
+      fontSize: fontSizes.sm,
+      fontWeight: fontWeights.bold,
+      paddingHorizontal: spacing[1],
+      paddingVertical: 2,
+      borderRadius: radii.sm
+    },
+    pkgPreview: {
+      borderTopWidth: 1,
+      borderTopColor: c.surfaceVariant,
+      paddingHorizontal: spacing[2],
+      paddingTop: 10,
+      paddingBottom: 4
+    },
+    pkgRow: { flexDirection: 'row', alignItems: 'flex-start', gap: spacing[1], marginBottom: 6 },
+    pkgIndex: {
+      fontSize: fontSizes.sm,
+      fontWeight: fontWeights.bold,
+      color: palette.white,
+      backgroundColor: c.textBrand,
+      width: 18,
+      height: 18,
+      borderRadius: 9,
+      textAlign: 'center',
+      lineHeight: 18,
+      flexShrink: 0
+    },
+    pkgInfo: { flex: 1 },
+    pkgTitle: { fontSize: fontSizes.md, fontWeight: fontWeights.semiBold, color: c.textPrimary },
+    pkgDesc: { fontSize: fontSizes.sm, color: c.textTertiary, marginTop: 1 },
+    moreText: { fontSize: fontSizes.sm, color: '#9CA3AF', marginBottom: 4 },
+    cardFooter: {
+      borderTopWidth: 1,
+      borderTopColor: c.surfaceVariant,
+      paddingHorizontal: spacing[2],
+      paddingVertical: 10,
+      alignItems: 'flex-start'
+    },
+    startButton: { borderRadius: radii.md, elevation: 0 },
+    startButtonContent: { height: 36, paddingHorizontal: spacing[2] },
+    startButtonLabel: { fontSize: fontSizes.md, fontWeight: fontWeights.bold },
+    bottomSpacer: { height: 24 }
+  });
+}

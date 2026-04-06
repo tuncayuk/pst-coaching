@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Alert, Platform, StyleSheet, View } from 'react-native';
 
 import { trackCtaTap } from '../../analytics';
 import { PButton, PCard, PDivider, PListIcon, PListItem, PText, PTextInput } from '../../components';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -14,6 +15,9 @@ const PLATFORM_LABEL = Platform.OS === 'ios' ? 'Apple Uygulama Magazasi' : 'Goog
 const PLATFORM_ICON = Platform.OS === 'ios' ? 'apple' : 'google-play';
 
 const ProfileCheckoutContent = ({ isOffline }: { isOffline?: boolean }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const [couponCode, setCouponCode] = useState('');
   const [couponApplied, setCouponApplied] = useState(false);
   const [purchaseError, setPurchaseError] = useState<string | null>(null);
@@ -210,55 +214,57 @@ export const ProfileCheckoutScreen = ({ route }: { route?: { params?: { state?: 
   );
 };
 
-const styles = StyleSheet.create({
-  card: {
-    marginBottom: 12
-  },
-  priceRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 8
-  },
-  discountText: {
-    color: '#059669'
-  },
-  divider: {
-    marginVertical: 8
-  },
-  totalText: {
-    fontWeight: '700',
-    color: '#2B1B5D'
-  },
-  couponRow: {
-    flexDirection: 'row',
-    gap: 8,
-    marginBottom: 8,
-    alignItems: 'flex-end'
-  },
-  couponInput: {
-    flex: 1
-  },
-  couponButton: {
-    minHeight: 48,
-    alignSelf: 'flex-end'
-  },
-  errorBanner: {
-    backgroundColor: '#FEE2E2',
-    borderRadius: 8,
-    padding: 10,
-    marginBottom: 8
-  },
-  errorText: {
-    color: '#991B1B'
-  },
-  purchaseButton: {
-    minHeight: 52,
-    marginTop: 4,
-    marginBottom: 4
-  },
-  platformNote: {
-    color: '#6B7280',
-    textAlign: 'center',
-    lineHeight: 16
-  }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    card: {
+      marginBottom: spacing[1.5]
+    },
+    priceRow: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      marginBottom: spacing[1]
+    },
+    discountText: {
+      color: '#059669'
+    },
+    divider: {
+      marginVertical: 8
+    },
+    totalText: {
+      fontWeight: fontWeights.bold,
+      color: c.textBrand
+    },
+    couponRow: {
+      flexDirection: 'row',
+      gap: spacing[1],
+      marginBottom: spacing[1],
+      alignItems: 'flex-end'
+    },
+    couponInput: {
+      flex: 1
+    },
+    couponButton: {
+      minHeight: 48,
+      alignSelf: 'flex-end'
+    },
+    errorBanner: {
+      backgroundColor: palette.red50,
+      borderRadius: radii.md,
+      padding: 10,
+      marginBottom: spacing[1]
+    },
+    errorText: {
+      color: palette.red900
+    },
+    purchaseButton: {
+      minHeight: 52,
+      marginTop: 4,
+      marginBottom: 4
+    },
+    platformNote: {
+      color: c.textTertiary,
+      textAlign: 'center',
+      lineHeight: 16
+    }
+  });
+}

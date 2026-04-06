@@ -1,9 +1,10 @@
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { PActivityIndicator, PButton, PCard, PChip, PProgressBar, PText } from '../../components';
 import { getEbooks, getJourneys, getWorkshops } from '../../data/mockSelectors';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -19,6 +20,9 @@ const TYPE_CHIP_STYLES: Record<string, { bg: string; text: string }> = {
 };
 
 const HomeActiveContentListContent = ({ isOffline }: { isOffline?: boolean }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const navigation = useNavigation<any>();
   const journeys = getJourneys();
   const workshops = getWorkshops();
@@ -199,69 +203,71 @@ export const HomeActiveContentListScreen = ({ route }: { route?: { params?: { st
   );
 };
 
-const styles = StyleSheet.create({
-  card: {
-    marginBottom: 12
-  },
-  cardHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-    marginBottom: 6
-  },
-  typeChip: {
-    paddingHorizontal: 8,
-    paddingVertical: 3,
-    borderRadius: 999,
-    alignSelf: 'flex-start'
-  },
-  typeChipText: {
-    fontSize: 11,
-    fontWeight: '700'
-  },
-  lockedChip: {
-    backgroundColor: '#FEE2E2'
-  },
-  cardTitle: {
-    fontSize: 14,
-    fontWeight: '700',
-    color: '#171717',
-    marginBottom: 2
-  },
-  cardSubtitle: {
-    fontSize: 12,
-    color: '#525252',
-    marginBottom: 8
-  },
-  progressRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8
-  },
-  progress: {
-    flex: 1,
-    height: 8,
-    borderRadius: 999
-  },
-  progressPct: {
-    fontSize: 12,
-    fontWeight: '700',
-    color: '#00B4D8',
-    minWidth: 32,
-    textAlign: 'right'
-  },
-  seeAllButton: {
-    marginTop: 8,
-    alignSelf: 'flex-start',
-    minHeight: 48
-  },
-  planningText: {
-    color: '#525252',
-    marginBottom: 8
-  },
-  secondaryButton: {
-    marginTop: 4,
-    alignSelf: 'flex-start',
-    minHeight: 48
-  }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    card: {
+      marginBottom: spacing[1.5]
+    },
+    cardHeader: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: spacing[1],
+      marginBottom: 6
+    },
+    typeChip: {
+      paddingHorizontal: spacing[1],
+      paddingVertical: 3,
+      borderRadius: radii.full,
+      alignSelf: 'flex-start'
+    },
+    typeChipText: {
+      fontSize: fontSizes.sm,
+      fontWeight: fontWeights.bold
+    },
+    lockedChip: {
+      backgroundColor: palette.red50
+    },
+    cardTitle: {
+      fontSize: fontSizes.lg,
+      fontWeight: fontWeights.bold,
+      color: c.textPrimary,
+      marginBottom: 2
+    },
+    cardSubtitle: {
+      fontSize: fontSizes.base,
+      color: c.textSecondary,
+      marginBottom: spacing[1]
+    },
+    progressRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: spacing[1]
+    },
+    progress: {
+      flex: 1,
+      height: 8,
+      borderRadius: radii.full
+    },
+    progressPct: {
+      fontSize: fontSizes.base,
+      fontWeight: fontWeights.bold,
+      color: c.primary,
+      minWidth: 32,
+      textAlign: 'right'
+    },
+    seeAllButton: {
+      marginTop: spacing[1],
+      alignSelf: 'flex-start',
+      minHeight: 48
+    },
+    planningText: {
+      color: c.textSecondary,
+      marginBottom: spacing[1]
+    },
+    secondaryButton: {
+      marginTop: 4,
+      alignSelf: 'flex-start',
+      minHeight: 48
+    }
+  });
+}

@@ -2,57 +2,68 @@
  * PST Coaching — React Native Paper Theme
  *
  * Wires our design tokens into the Paper MD3 theme object.
- * Import `paperTheme` in App.tsx and pass it to <PaperProvider theme={paperTheme}>.
+ * Import `paperTheme` / `darkPaperTheme` in App.tsx and pass it to <PaperProvider>.
  *
  * By centralising this here, any colour or shape change automatically propagates
  * to every Paper component without touching individual screens.
  */
-import { MD3LightTheme as DefaultTheme } from 'react-native-paper';
+import { MD3LightTheme as DefaultTheme, MD3DarkTheme } from 'react-native-paper';
 
-import { light } from './colors';
+import { ColorTokens, dark, light } from './colors';
 import { radii } from './radii';
+
+function buildPaperColors(tokens: ColorTokens, base: typeof DefaultTheme.colors) {
+  return {
+    ...base,
+    // Brand
+    primary: tokens.primary,
+    onPrimary: tokens.onPrimary,
+    primaryContainer: tokens.primaryContainer,
+    onPrimaryContainer: tokens.onPrimaryContainer,
+
+    secondary: tokens.secondary,
+    onSecondary: tokens.onSecondary,
+    secondaryContainer: tokens.secondaryContainer,
+    onSecondaryContainer: tokens.onSecondaryContainer,
+
+    tertiary: tokens.tertiary,
+    onTertiary: tokens.onTertiary,
+    tertiaryContainer: tokens.tertiaryContainer,
+    onTertiaryContainer: tokens.onTertiaryContainer,
+
+    // Surfaces
+    background: tokens.background,
+    onBackground: tokens.onBackground,
+    surface: tokens.surface,
+    onSurface: tokens.onSurface,
+    surfaceVariant: tokens.surfaceVariant,
+    onSurfaceVariant: tokens.onSurfaceVariant,
+
+    // Error
+    error: tokens.error,
+    onError: tokens.onError,
+    errorContainer: tokens.errorContainer,
+    onErrorContainer: tokens.onErrorContainer,
+
+    // Borders
+    outline: tokens.outline,
+    outlineVariant: tokens.outlineVariant
+  };
+}
 
 export const paperTheme = {
   ...DefaultTheme,
   // roundness is the Paper shape multiplier.
   // We set it to 4 so theme.roundness * 3 = radii.lg (12), * 4 = radii.xl (16), etc.
   roundness: 4,
-  colors: {
-    ...DefaultTheme.colors,
-    // Brand
-    primary: light.primary,
-    onPrimary: light.onPrimary,
-    primaryContainer: light.primaryContainer,
-    onPrimaryContainer: light.onPrimaryContainer,
+  colors: buildPaperColors(light, DefaultTheme.colors)
+} as const;
 
-    secondary: light.secondary,
-    onSecondary: light.onSecondary,
-    secondaryContainer: light.secondaryContainer,
-    onSecondaryContainer: light.onSecondaryContainer,
-
-    tertiary: light.tertiary,
-    onTertiary: light.onTertiary,
-    tertiaryContainer: light.tertiaryContainer,
-    onTertiaryContainer: light.onTertiaryContainer,
-
-    // Surfaces
-    background: light.background,
-    onBackground: light.onBackground,
-    surface: light.surface,
-    onSurface: light.onSurface,
-    surfaceVariant: light.surfaceVariant,
-    onSurfaceVariant: light.onSurfaceVariant,
-
-    // Error
-    error: light.error,
-    onError: light.onError,
-    errorContainer: light.errorContainer,
-    onErrorContainer: light.onErrorContainer,
-
-    // Borders
-    outline: light.outline,
-    outlineVariant: light.outlineVariant
-  }
+export const darkPaperTheme = {
+  ...MD3DarkTheme,
+  roundness: 4,
+  dark: true,
+  colors: buildPaperColors(dark, MD3DarkTheme.colors)
 } as const;
 
 export type PaperTheme = typeof paperTheme;

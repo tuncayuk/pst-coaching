@@ -1,9 +1,10 @@
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { PActivityIndicator, PButton, PText, PTextInput } from '../../components';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -45,6 +46,9 @@ const COUNTRIES = [
 ];
 
 const DemographicsContent = ({ isOffline }: { isOffline?: boolean }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const [age, setAge] = React.useState('');
   const [gender, setGender] = React.useState<string | null>(null);
   const [country, setCountry] = React.useState('');
@@ -243,164 +247,166 @@ export const AuthDemographicsScreen = ({ route }: { route?: { params?: { state?:
   return <DemographicsContent />;
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#FAFAFA'
-  },
-  scrollContent: {
-    paddingHorizontal: 24,
-    paddingTop: 32,
-    paddingBottom: 32
-  },
-  iconContainer: {
-    alignItems: 'center',
-    marginBottom: 16
-  },
-  icon: {
-    fontSize: 56
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: '700',
-    color: '#2B1B5D',
-    marginBottom: 8,
-    textAlign: 'center'
-  },
-  subtitle: {
-    color: '#404040',
-    marginBottom: 24,
-    textAlign: 'center'
-  },
-  infoCard: {
-    backgroundColor: '#E0F7FA',
-    padding: 16,
-    borderRadius: 12,
-    marginBottom: 24,
-    borderLeftWidth: 4,
-    borderLeftColor: '#00B4D8'
-  },
-  infoText: {
-    color: '#171717',
-    lineHeight: 24
-  },
-  infoBold: {
-    fontWeight: '700'
-  },
-  inputGroup: {
-    marginBottom: 16
-  },
-  input: {
-    backgroundColor: '#FFFFFF'
-  },
-  inputContent: {
-    paddingVertical: 16
-  },
-  inputOutline: {
-    borderWidth: 2,
-    borderRadius: 12,
-    borderColor: '#D4D4D4'
-  },
-  helperText: {
-    color: '#525252',
-    marginTop: 6,
-    fontSize: 12
-  },
-  errorText: {
-    color: '#DC2626',
-    marginTop: 6,
-    fontSize: 12
-  },
-  inputOutlineError: {
-    borderColor: '#EF4444'
-  },
-  label: {
-    fontWeight: '600',
-    color: '#171717',
-    marginBottom: 8,
-    marginTop: 8
-  },
-  genderRow: {
-    flexDirection: 'row',
-    gap: 12,
-    marginBottom: 12
-  },
-  genderButton: {
-    flex: 1
-  },
-  genderButtonFull: {
-    marginBottom: 16
-  },
-  countrySelector: {
-    borderWidth: 2,
-    borderColor: '#D4D4D4',
-    borderRadius: 12,
-    padding: 16,
-    backgroundColor: '#FFFFFF',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center'
-  },
-  countrySelectorEmpty: {
-    borderColor: '#D4D4D4'
-  },
-  countryText: {
-    fontSize: 16,
-    color: '#171717'
-  },
-  countryPlaceholder: {
-    color: '#9CA3AF'
-  },
-  countryChevron: {
-    fontSize: 14,
-    color: '#525252'
-  },
-  dropdownContainer: {
-    marginTop: 4,
-    borderWidth: 1,
-    borderColor: '#D4D4D4',
-    borderRadius: 12,
-    backgroundColor: '#FFFFFF',
-    maxHeight: 240,
-    overflow: 'hidden'
-  },
-  searchInput: {
-    backgroundColor: '#FFFFFF',
-    margin: 8
-  },
-  searchOutline: {
-    borderWidth: 1,
-    borderRadius: 8,
-    borderColor: '#D4D4D4'
-  },
-  dropdownList: {
-    maxHeight: 180
-  },
-  dropdownItem: {
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: '#F5F5F5'
-  },
-  dropdownItemSelected: {
-    backgroundColor: '#E0F7FA'
-  },
-  dropdownItemText: {
-    fontSize: 15,
-    color: '#171717'
-  },
-  dropdownItemTextSelected: {
-    color: '#00B4D8',
-    fontWeight: '600'
-  },
-  button: {
-    marginBottom: 12,
-    borderRadius: 12
-  },
-  requiredText: {
-    textAlign: 'center',
-    color: '#525252',
-    marginTop: 8,
-    fontSize: 12
-  }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: c.background
+    },
+    scrollContent: {
+      paddingHorizontal: spacing[3],
+      paddingTop: spacing[4],
+      paddingBottom: spacing[4]
+    },
+    iconContainer: {
+      alignItems: 'center',
+      marginBottom: spacing[2]
+    },
+    icon: {
+      fontSize: fontSizes['12xl']
+    },
+    title: {
+      fontSize: fontSizes['6xl'],
+      fontWeight: fontWeights.bold,
+      color: c.textBrand,
+      marginBottom: spacing[1],
+      textAlign: 'center'
+    },
+    subtitle: {
+      color: c.textTertiary,
+      marginBottom: spacing[3],
+      textAlign: 'center'
+    },
+    infoCard: {
+      backgroundColor: palette.cyan50,
+      padding: spacing[2],
+      borderRadius: radii.lg,
+      marginBottom: spacing[3],
+      borderLeftWidth: 4,
+      borderLeftColor: c.primary
+    },
+    infoText: {
+      color: c.textPrimary,
+      lineHeight: 24
+    },
+    infoBold: {
+      fontWeight: fontWeights.bold
+    },
+    inputGroup: {
+      marginBottom: spacing[2]
+    },
+    input: {
+      backgroundColor: palette.white
+    },
+    inputContent: {
+      paddingVertical: spacing[2]
+    },
+    inputOutline: {
+      borderWidth: 2,
+      borderRadius: radii.lg,
+      borderColor: c.outline
+    },
+    helperText: {
+      color: c.textSecondary,
+      marginTop: 6,
+      fontSize: fontSizes.base
+    },
+    errorText: {
+      color: palette.red600,
+      marginTop: 6,
+      fontSize: fontSizes.base
+    },
+    inputOutlineError: {
+      borderColor: palette.red500
+    },
+    label: {
+      fontWeight: fontWeights.semiBold,
+      color: c.textPrimary,
+      marginBottom: spacing[1],
+      marginTop: spacing[1]
+    },
+    genderRow: {
+      flexDirection: 'row',
+      gap: spacing[1.5],
+      marginBottom: spacing[1.5]
+    },
+    genderButton: {
+      flex: 1
+    },
+    genderButtonFull: {
+      marginBottom: spacing[2]
+    },
+    countrySelector: {
+      borderWidth: 2,
+      borderColor: c.outline,
+      borderRadius: radii.lg,
+      padding: spacing[2],
+      backgroundColor: palette.white,
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center'
+    },
+    countrySelectorEmpty: {
+      borderColor: c.outline
+    },
+    countryText: {
+      fontSize: fontSizes['2xl'],
+      color: c.textPrimary
+    },
+    countryPlaceholder: {
+      color: palette.neutral400
+    },
+    countryChevron: {
+      fontSize: fontSizes.lg,
+      color: c.textSecondary
+    },
+    dropdownContainer: {
+      marginTop: 4,
+      borderWidth: 1,
+      borderColor: c.outline,
+      borderRadius: radii.lg,
+      backgroundColor: palette.white,
+      maxHeight: 240,
+      overflow: 'hidden'
+    },
+    searchInput: {
+      backgroundColor: palette.white,
+      margin: spacing[1]
+    },
+    searchOutline: {
+      borderWidth: 1,
+      borderRadius: radii.md,
+      borderColor: c.outline
+    },
+    dropdownList: {
+      maxHeight: 180
+    },
+    dropdownItem: {
+      paddingVertical: spacing[1.5],
+      paddingHorizontal: spacing[2],
+      borderBottomWidth: 1,
+      borderBottomColor: palette.neutral100
+    },
+    dropdownItemSelected: {
+      backgroundColor: palette.cyan50
+    },
+    dropdownItemText: {
+      fontSize: fontSizes.xl,
+      color: c.textPrimary
+    },
+    dropdownItemTextSelected: {
+      color: c.primary,
+      fontWeight: fontWeights.semiBold
+    },
+    button: {
+      marginBottom: spacing[1.5],
+      borderRadius: radii.lg
+    },
+    requiredText: {
+      textAlign: 'center',
+      color: c.textSecondary,
+      marginTop: spacing[1],
+      fontSize: fontSizes.base
+    }
+  });
+}

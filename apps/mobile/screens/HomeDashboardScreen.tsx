@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -22,6 +22,7 @@ import {
   getNotificationsForUser,
   getPrimaryUser
 } from '../data/mockSelectors';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../theme';
 import { OfflineNotice } from './components/OfflineNotice';
 import { ScreenState, resolveScreenState } from './components/ScreenState';
 import { SkeletonBlock } from './components/SkeletonBlock';
@@ -56,6 +57,9 @@ const SUBSCRIPTION_BADGE_CONFIG = {
 } as const;
 
 const HomeReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const navigation = useNavigation<any>();
   const user = getPrimaryUser();
   const displayName = user?.email ? user.email.split('@')[0] : 'Ahmet';
@@ -364,6 +368,9 @@ const HomeReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
 };
 
 export const HomeDashboardScreen = ({ route }: { route?: { params?: { state?: ScreenState } } }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const state = resolveScreenState(route);
   const navigation = useNavigation<any>();
 
@@ -440,323 +447,325 @@ export const HomeDashboardScreen = ({ route }: { route?: { params?: { state?: Sc
   );
 };
 
-const styles = StyleSheet.create({
-  root: {
-    flex: 1,
-    backgroundColor: '#FAFAFA'
-  },
-  content: {
-    padding: 16
-  },
-  headerRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
-    marginBottom: 20
-  },
-  headerLeft: {
-    flex: 1
-  },
-  greeting: {
-    fontSize: 14,
-    color: '#525252',
-    marginBottom: 2
-  },
-  nameRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-    flexWrap: 'wrap'
-  },
-  nameText: {
-    fontSize: 26,
-    fontWeight: '800',
-    color: '#2B1B5D'
-  },
-  subscriptionBadge: {
-    paddingHorizontal: 10,
-    paddingVertical: 3,
-    borderRadius: 999,
-    alignSelf: 'center'
-  },
-  subscriptionBadgeText: {
-    fontSize: 11,
-    fontWeight: '700'
-  },
-  notificationWrapper: {
-    position: 'relative',
-    marginTop: 4
-  },
-  notificationButton: {
-    backgroundColor: '#F5F5F5',
-    minWidth: 48,
-    minHeight: 48
-  },
-  notificationDot: {
-    position: 'absolute',
-    top: 8,
-    right: 8,
-    minWidth: 16,
-    height: 16,
-    borderRadius: 999,
-    borderWidth: 2,
-    borderColor: '#FFFFFF',
-    backgroundColor: '#EF4444',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingHorizontal: 2,
-    pointerEvents: 'none'
-  },
-  notificationDotText: {
-    fontSize: 9,
-    fontWeight: '800',
-    color: '#FFFFFF',
-    lineHeight: 12
-  },
-  searchWrapper: {
-    marginBottom: 20,
-    minHeight: 48
-  },
-  searchInput: {
-    backgroundColor: '#FFFFFF'
-  },
-  searchOutline: {
-    borderWidth: 2,
-    borderRadius: 16,
-    borderColor: '#D4D4D4'
-  },
-  searchContent: {
-    paddingVertical: 10
-  },
-  statsRow: {
-    flexDirection: 'row',
-    gap: 10,
-    marginBottom: 24
-  },
-  statCard: {
-    flex: 1,
-    borderRadius: 14,
-    padding: 12,
-    alignItems: 'center',
-    minHeight: 80,
-    justifyContent: 'center'
-  },
-  statPrimary: {
-    backgroundColor: '#E0F7FA'
-  },
-  statSuccess: {
-    backgroundColor: '#D1FAE5'
-  },
-  statWarning: {
-    backgroundColor: '#FEF3C7'
-  },
-  statValue: {
-    fontSize: 22,
-    fontWeight: '800',
-    color: '#2B1B5D',
-    marginBottom: 4
-  },
-  statLabel: {
-    fontSize: 11,
-    fontWeight: '600',
-    color: '#525252',
-    textAlign: 'center'
-  },
-  section: {
-    marginBottom: 24
-  },
-  sectionHeaderRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 10
-  },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: '700',
-    color: '#171717',
-    marginBottom: 10
-  },
-  countdownBadge: {
-    backgroundColor: '#FEF3C7',
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: '#FCD34D'
-  },
-  countdownText: {
-    fontSize: 13,
-    fontWeight: '700',
-    color: '#92400E'
-  },
-  continueCard: {
-    padding: 16
-  },
-  continueCardEmpty: {
-    padding: 16,
-    alignItems: 'center',
-    gap: 12
-  },
-  continueEmptyText: {
-    fontSize: 14,
-    color: '#525252',
-    marginBottom: 8
-  },
-  continueRow: {
-    flexDirection: 'row',
-    gap: 12,
-    marginBottom: 12
-  },
-  continueIcon: {
-    width: 56,
-    height: 56,
-    borderRadius: 12,
-    backgroundColor: '#E0F7FA',
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  continueIconText: {
-    fontSize: 22,
-    fontWeight: '800',
-    color: '#00B4D8'
-  },
-  continueInfo: {
-    flex: 1,
-    justifyContent: 'center'
-  },
-  continueTitle: {
-    fontSize: 15,
-    fontWeight: '700',
-    color: '#171717',
-    marginBottom: 4
-  },
-  continueSubtitle: {
-    fontSize: 12,
-    color: '#525252'
-  },
-  progressRow: {
-    marginBottom: 12
-  },
-  progressHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 6
-  },
-  progressLabel: {
-    fontSize: 13,
-    fontWeight: '600',
-    color: '#404040'
-  },
-  progressValue: {
-    fontSize: 13,
-    fontWeight: '700',
-    color: '#00B4D8'
-  },
-  progressBar: {
-    height: 8,
-    borderRadius: 999
-  },
-  contentNavGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 10
-  },
-  contentNavCard: {
-    width: '47%',
-    backgroundColor: '#FFFFFF',
-    borderRadius: 14,
-    padding: 16,
-    borderWidth: 1.5,
-    borderColor: '#E5E5E5',
-    minHeight: 72,
-    justifyContent: 'center'
-  },
-  contentNavLabel: {
-    fontSize: 14,
-    fontWeight: '700',
-    color: '#2B1B5D',
-    marginBottom: 4
-  },
-  contentNavCount: {
-    fontSize: 12,
-    color: '#525252'
-  },
-  programCard: {
-    padding: 14
-  },
-  programDescription: {
-    fontSize: 13,
-    color: '#404040',
-    marginBottom: 12,
-    lineHeight: 20
-  },
-  activeContentCard: {
-    padding: 14,
-    marginBottom: 0
-  },
-  activeContentRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 10,
-    marginBottom: 10
-  },
-  activeContentInfo: {
-    flex: 1
-  },
-  activeContentTitle: {
-    fontSize: 14,
-    fontWeight: '700',
-    color: '#171717'
-  },
-  activeContentMeta: {
-    fontSize: 12,
-    color: '#525252'
-  },
-  activeContentPct: {
-    fontSize: 13,
-    fontWeight: '700',
-    color: '#00B4D8'
-  },
-  activityCard: {
-    marginBottom: 10,
-    padding: 12
-  },
-  activityRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 12
-  },
-  activityInfo: {
-    flex: 1
-  },
-  activityTitle: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#171717',
-    marginBottom: 2
-  },
-  activityTime: {
-    fontSize: 12,
-    color: '#525252'
-  },
-  reminderNudge: {
-    backgroundColor: '#EDE9FE',
-    borderRadius: 12,
-    paddingVertical: 14,
-    paddingHorizontal: 16,
-    marginBottom: 16,
-    borderWidth: 1,
-    borderColor: '#DDD6FE',
-    minHeight: 48,
-    justifyContent: 'center'
-  },
-  reminderNudgeText: {
-    fontSize: 13,
-    color: '#5B21B6',
-    fontWeight: '600'
-  },
-  bottomSpacer: {
-    height: 24
-  }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    root: {
+      flex: 1,
+      backgroundColor: c.background
+    },
+    content: {
+      padding: spacing[2]
+    },
+    headerRow: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'flex-start',
+      marginBottom: spacing[2.5]
+    },
+    headerLeft: {
+      flex: 1
+    },
+    greeting: {
+      fontSize: fontSizes.lg,
+      color: c.textSecondary,
+      marginBottom: 2
+    },
+    nameRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: spacing[1],
+      flexWrap: 'wrap'
+    },
+    nameText: {
+      fontSize: fontSizes['7xl'],
+      fontWeight: fontWeights.extraBold,
+      color: c.textBrand
+    },
+    subscriptionBadge: {
+      paddingHorizontal: 10,
+      paddingVertical: 3,
+      borderRadius: radii.full,
+      alignSelf: 'center'
+    },
+    subscriptionBadgeText: {
+      fontSize: fontSizes.sm,
+      fontWeight: fontWeights.bold
+    },
+    notificationWrapper: {
+      position: 'relative',
+      marginTop: 4
+    },
+    notificationButton: {
+      backgroundColor: palette.neutral100,
+      minWidth: 48,
+      minHeight: 48
+    },
+    notificationDot: {
+      position: 'absolute',
+      top: spacing[1],
+      right: spacing[1],
+      minWidth: 16,
+      height: 16,
+      borderRadius: radii.full,
+      borderWidth: 2,
+      borderColor: palette.white,
+      backgroundColor: palette.red500,
+      alignItems: 'center',
+      justifyContent: 'center',
+      paddingHorizontal: 2,
+      pointerEvents: 'none'
+    },
+    notificationDotText: {
+      fontSize: fontSizes.xs,
+      fontWeight: fontWeights.extraBold,
+      color: palette.white,
+      lineHeight: 12
+    },
+    searchWrapper: {
+      marginBottom: spacing[2.5],
+      minHeight: 48
+    },
+    searchInput: {
+      backgroundColor: palette.white
+    },
+    searchOutline: {
+      borderWidth: 2,
+      borderRadius: radii.xl,
+      borderColor: c.outline
+    },
+    searchContent: {
+      paddingVertical: 10
+    },
+    statsRow: {
+      flexDirection: 'row',
+      gap: 10,
+      marginBottom: spacing[3]
+    },
+    statCard: {
+      flex: 1,
+      borderRadius: 14,
+      padding: spacing[1.5],
+      alignItems: 'center',
+      minHeight: 80,
+      justifyContent: 'center'
+    },
+    statPrimary: {
+      backgroundColor: palette.cyan50
+    },
+    statSuccess: {
+      backgroundColor: palette.emerald50
+    },
+    statWarning: {
+      backgroundColor: palette.amber50
+    },
+    statValue: {
+      fontSize: fontSizes['5xl'],
+      fontWeight: fontWeights.extraBold,
+      color: c.textBrand,
+      marginBottom: 4
+    },
+    statLabel: {
+      fontSize: fontSizes.sm,
+      fontWeight: fontWeights.semiBold,
+      color: c.textSecondary,
+      textAlign: 'center'
+    },
+    section: {
+      marginBottom: spacing[3]
+    },
+    sectionHeaderRow: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginBottom: 10
+    },
+    sectionTitle: {
+      fontSize: fontSizes['3xl'],
+      fontWeight: fontWeights.bold,
+      color: c.textPrimary,
+      marginBottom: 10
+    },
+    countdownBadge: {
+      backgroundColor: c.warningContainer,
+      paddingHorizontal: 10,
+      paddingVertical: 4,
+      borderRadius: radii.md,
+      borderWidth: 1,
+      borderColor: palette.amber200
+    },
+    countdownText: {
+      fontSize: fontSizes.md,
+      fontWeight: fontWeights.bold,
+      color: c.onWarningContainer
+    },
+    continueCard: {
+      padding: spacing[2]
+    },
+    continueCardEmpty: {
+      padding: spacing[2],
+      alignItems: 'center',
+      gap: spacing[1.5]
+    },
+    continueEmptyText: {
+      fontSize: fontSizes.lg,
+      color: c.textSecondary,
+      marginBottom: spacing[1]
+    },
+    continueRow: {
+      flexDirection: 'row',
+      gap: spacing[1.5],
+      marginBottom: spacing[1.5]
+    },
+    continueIcon: {
+      width: 56,
+      height: 56,
+      borderRadius: radii.lg,
+      backgroundColor: palette.cyan50,
+      alignItems: 'center',
+      justifyContent: 'center'
+    },
+    continueIconText: {
+      fontSize: fontSizes['5xl'],
+      fontWeight: fontWeights.extraBold,
+      color: c.primary
+    },
+    continueInfo: {
+      flex: 1,
+      justifyContent: 'center'
+    },
+    continueTitle: {
+      fontSize: fontSizes.xl,
+      fontWeight: fontWeights.bold,
+      color: c.textPrimary,
+      marginBottom: 4
+    },
+    continueSubtitle: {
+      fontSize: fontSizes.base,
+      color: c.textSecondary
+    },
+    progressRow: {
+      marginBottom: spacing[1.5]
+    },
+    progressHeader: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      marginBottom: 6
+    },
+    progressLabel: {
+      fontSize: fontSizes.md,
+      fontWeight: fontWeights.semiBold,
+      color: c.textTertiary
+    },
+    progressValue: {
+      fontSize: fontSizes.md,
+      fontWeight: fontWeights.bold,
+      color: c.primary
+    },
+    progressBar: {
+      height: spacing[1],
+      borderRadius: radii.full
+    },
+    contentNavGrid: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      gap: 10
+    },
+    contentNavCard: {
+      width: '47%',
+      backgroundColor: palette.white,
+      borderRadius: 14,
+      padding: spacing[2],
+      borderWidth: 1.5,
+      borderColor: c.outlineVariant,
+      minHeight: 72,
+      justifyContent: 'center'
+    },
+    contentNavLabel: {
+      fontSize: fontSizes.lg,
+      fontWeight: fontWeights.bold,
+      color: c.textBrand,
+      marginBottom: 4
+    },
+    contentNavCount: {
+      fontSize: fontSizes.base,
+      color: c.textSecondary
+    },
+    programCard: {
+      padding: 14
+    },
+    programDescription: {
+      fontSize: fontSizes.md,
+      color: c.textTertiary,
+      marginBottom: spacing[1.5],
+      lineHeight: 20
+    },
+    activeContentCard: {
+      padding: 14,
+      marginBottom: 0
+    },
+    activeContentRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 10,
+      marginBottom: 10
+    },
+    activeContentInfo: {
+      flex: 1
+    },
+    activeContentTitle: {
+      fontSize: fontSizes.lg,
+      fontWeight: fontWeights.bold,
+      color: c.textPrimary
+    },
+    activeContentMeta: {
+      fontSize: fontSizes.base,
+      color: c.textSecondary
+    },
+    activeContentPct: {
+      fontSize: fontSizes.md,
+      fontWeight: fontWeights.bold,
+      color: c.primary
+    },
+    activityCard: {
+      marginBottom: 10,
+      padding: spacing[1.5]
+    },
+    activityRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: spacing[1.5]
+    },
+    activityInfo: {
+      flex: 1
+    },
+    activityTitle: {
+      fontSize: fontSizes.lg,
+      fontWeight: fontWeights.semiBold,
+      color: c.textPrimary,
+      marginBottom: 2
+    },
+    activityTime: {
+      fontSize: fontSizes.base,
+      color: c.textSecondary
+    },
+    reminderNudge: {
+      backgroundColor: palette.purple50,
+      borderRadius: radii.lg,
+      paddingVertical: 14,
+      paddingHorizontal: spacing[2],
+      marginBottom: spacing[2],
+      borderWidth: 1,
+      borderColor: palette.purple100,
+      minHeight: 48,
+      justifyContent: 'center'
+    },
+    reminderNudgeText: {
+      fontSize: fontSizes.md,
+      color: palette.purple700,
+      fontWeight: fontWeights.semiBold
+    },
+    bottomSpacer: {
+      height: spacing[3]
+    }
+  });
+}

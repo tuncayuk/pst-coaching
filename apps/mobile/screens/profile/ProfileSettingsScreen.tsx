@@ -1,9 +1,10 @@
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { PActivityIndicator, PButton, PDivider, PListIcon, PListItem, PSwitch, PText } from '../../components';
 import { getAccessibilitySettings, getPrimaryUser, getReminderSettings } from '../../data/mockSelectors';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -12,6 +13,9 @@ import { SkeletonBlock } from '../components/SkeletonBlock';
 import { StateMessage } from '../components/StateMessage';
 
 const ProfileSettingsContent = ({ isOffline }: { isOffline?: boolean }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const navigation = useNavigation<any>();
   const user = getPrimaryUser();
   const accessibility = getAccessibilitySettings().find(item => item.user_id === user?.id);
@@ -144,15 +148,17 @@ export const ProfileSettingsScreen = ({ route }: { route?: { params?: { state?: 
   );
 };
 
-const styles = StyleSheet.create({
-  switchRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingVertical: 8
-  },
-  actionButton: {
-    marginTop: 12,
-    alignSelf: 'flex-start'
-  }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    switchRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      paddingVertical: spacing[1]
+    },
+    actionButton: {
+      marginTop: spacing[1.5],
+      alignSelf: 'flex-start'
+    }
+  });
+}

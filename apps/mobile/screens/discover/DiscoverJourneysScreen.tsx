@@ -1,9 +1,10 @@
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 
 import { PActivityIndicator, PButton, PCard, PIconButton, PText } from '../../components';
 import { getJourneys, getPackages } from '../../data/mockSelectors';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -32,6 +33,9 @@ const ORTA_KEYS = new Set(['orta', 'intermediate']);
 const ILERI_KEYS = new Set(['ileri', 'advanced']);
 
 const DiscoverJourneysContent = ({ isOffline }: { isOffline?: boolean }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const navigation = useNavigation<any>();
   const allJourneys = getJourneys();
   const packages = getPackages();
@@ -257,84 +261,100 @@ export const DiscoverJourneysScreen = ({ route }: { route?: { params?: { state?:
   );
 };
 
-const styles = StyleSheet.create({
-  root: { flex: 1, backgroundColor: '#FAFAFA' },
-  content: { paddingHorizontal: 20, paddingTop: 20, paddingBottom: 96 },
-  headerRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 16
-  },
-  headerLeft: { flexDirection: 'row', alignItems: 'center', gap: 4 },
-  title: { fontSize: 26, fontWeight: '800', color: '#2B1B5D' },
-  countBadge: {
-    backgroundColor: '#E0F7FA',
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: 12
-  },
-  countBadgeText: { fontSize: 12, fontWeight: '700', color: '#00758C' },
-  chipsRow: { gap: 8, paddingBottom: 4, marginBottom: 12 },
-  chip: { borderRadius: 20, elevation: 0 },
-  chipContent: { height: 34, paddingHorizontal: 4 },
-  chipLabel: { fontSize: 12, fontWeight: '600' },
-  card: { borderRadius: 16, marginBottom: 16 },
-  cardInner: { borderRadius: 16, overflow: 'hidden' },
-  cardTop: { flexDirection: 'row', gap: 12, padding: 16 },
-  cardIcon: {
-    width: 72,
-    height: 72,
-    borderRadius: 12,
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexShrink: 0
-  },
-  cardEmoji: { fontSize: 30 },
-  cardInfo: { flex: 1 },
-  cardTitle: { fontSize: 16, fontWeight: '700', color: '#171717', marginBottom: 4 },
-  cardMetaRow: { flexDirection: 'row', alignItems: 'center', gap: 6, marginBottom: 2 },
-  cardMeta: { fontSize: 12, color: '#737373' },
-  cardMetaSep: { fontSize: 12, color: '#D4D4D4' },
-  cardTarget: { fontSize: 11, color: '#00758C', fontWeight: '600', marginBottom: 6 },
-  chipRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 4 },
-  chipPrimary: {
-    backgroundColor: '#E0F7FA',
-    color: '#00758C',
-    fontSize: 11,
-    fontWeight: '600',
-    paddingHorizontal: 6,
-    paddingVertical: 2,
-    borderRadius: 4
-  },
-  chipSuccess: {
-    backgroundColor: '#D1FAE5',
-    color: '#065F46',
-    fontSize: 11,
-    fontWeight: '600',
-    paddingHorizontal: 6,
-    paddingVertical: 2,
-    borderRadius: 4
-  },
-  chipSecondary: {
-    backgroundColor: '#EDE7F6',
-    color: '#2B1B5D',
-    fontSize: 11,
-    fontWeight: '600',
-    paddingHorizontal: 6,
-    paddingVertical: 2,
-    borderRadius: 4
-  },
-  favButton: { margin: 0, alignSelf: 'flex-start' },
-  cardFooter: {
-    borderTopWidth: 1,
-    borderTopColor: '#F5F5F5',
-    paddingHorizontal: 16,
-    paddingVertical: 10,
-    alignItems: 'flex-start'
-  },
-  startButton: { borderRadius: 8, elevation: 0 },
-  startButtonContent: { height: 36, paddingHorizontal: 16 },
-  startButtonLabel: { fontSize: 13, fontWeight: '700' },
-  bottomSpacer: { height: 24 }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    root: { flex: 1, backgroundColor: c.background },
+    content: { paddingHorizontal: spacing[2.5], paddingTop: spacing[2.5], paddingBottom: 96 },
+    headerRow: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginBottom: spacing[2]
+    },
+    headerLeft: { flexDirection: 'row', alignItems: 'center', gap: 4 },
+    title: { fontSize: fontSizes['7xl'], fontWeight: fontWeights.extraBold, color: c.textBrand },
+    countBadge: {
+      backgroundColor: palette.cyan50,
+      paddingHorizontal: 10,
+      paddingVertical: 4,
+      borderRadius: radii.lg
+    },
+    countBadgeText: {
+      fontSize: fontSizes.base,
+      fontWeight: fontWeights.bold,
+      color: palette.cyan600
+    },
+    chipsRow: { gap: spacing[1], paddingBottom: 4, marginBottom: spacing[1.5] },
+    chip: { borderRadius: spacing[2.5], elevation: 0 },
+    chipContent: { height: 34, paddingHorizontal: 4 },
+    chipLabel: { fontSize: fontSizes.base, fontWeight: fontWeights.semiBold },
+    card: { borderRadius: radii.xl, marginBottom: spacing[2] },
+    cardInner: { borderRadius: radii.xl, overflow: 'hidden' },
+    cardTop: { flexDirection: 'row', gap: spacing[1.5], padding: spacing[2] },
+    cardIcon: {
+      width: 72,
+      height: 72,
+      borderRadius: radii.lg,
+      alignItems: 'center',
+      justifyContent: 'center',
+      flexShrink: 0
+    },
+    cardEmoji: { fontSize: fontSizes['8xl'] },
+    cardInfo: { flex: 1 },
+    cardTitle: {
+      fontSize: fontSizes['2xl'],
+      fontWeight: fontWeights.bold,
+      color: c.textPrimary,
+      marginBottom: 4
+    },
+    cardMetaRow: { flexDirection: 'row', alignItems: 'center', gap: 6, marginBottom: 2 },
+    cardMeta: { fontSize: fontSizes.base, color: c.textTertiary },
+    cardMetaSep: { fontSize: fontSizes.base, color: c.outline },
+    cardTarget: {
+      fontSize: fontSizes.sm,
+      color: palette.cyan600,
+      fontWeight: fontWeights.semiBold,
+      marginBottom: 6
+    },
+    chipRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 4 },
+    chipPrimary: {
+      backgroundColor: palette.cyan50,
+      color: palette.cyan600,
+      fontSize: fontSizes.sm,
+      fontWeight: fontWeights.semiBold,
+      paddingHorizontal: 6,
+      paddingVertical: 2,
+      borderRadius: radii.sm
+    },
+    chipSuccess: {
+      backgroundColor: palette.emerald50,
+      color: c.onTertiaryContainer,
+      fontSize: fontSizes.sm,
+      fontWeight: fontWeights.semiBold,
+      paddingHorizontal: 6,
+      paddingVertical: 2,
+      borderRadius: radii.sm
+    },
+    chipSecondary: {
+      backgroundColor: palette.purple200,
+      color: c.textBrand,
+      fontSize: fontSizes.sm,
+      fontWeight: fontWeights.semiBold,
+      paddingHorizontal: 6,
+      paddingVertical: 2,
+      borderRadius: radii.sm
+    },
+    favButton: { margin: 0, alignSelf: 'flex-start' },
+    cardFooter: {
+      borderTopWidth: 1,
+      borderTopColor: palette.neutral100,
+      paddingHorizontal: spacing[2],
+      paddingVertical: 10,
+      alignItems: 'flex-start'
+    },
+    startButton: { borderRadius: radii.md, elevation: 0 },
+    startButtonContent: { height: 36, paddingHorizontal: spacing[2] },
+    startButtonLabel: { fontSize: fontSizes.md, fontWeight: fontWeights.bold },
+    bottomSpacer: { height: spacing[3] }
+  });
+}

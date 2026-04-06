@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Alert, StyleSheet, View } from 'react-native';
 
 import { PButton, PCard, PChip, PText } from '../../components';
 import { getPaymentsForSubscription, getPrimaryUser, getSubscriptionForUser } from '../../data/mockSelectors';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -18,6 +19,9 @@ const TX_STATUS_CONFIG: Record<string, { label: string; bg: string; text: string
 };
 
 const ProfilePaymentHistoryContent = ({ isOffline }: { isOffline?: boolean }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const user = getPrimaryUser();
   const subscription = getSubscriptionForUser(user?.id);
   // AC-FR-E3-07-01: payments with date and amount
@@ -154,37 +158,39 @@ export const ProfilePaymentHistoryScreen = ({ route }: { route?: { params?: { st
   );
 };
 
-const styles = StyleSheet.create({
-  card: {
-    marginBottom: 10
-  },
-  cardRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center'
-  },
-  txInfo: {
-    flex: 1
-  },
-  txDate: {
-    fontWeight: '600',
-    color: '#1F2937'
-  },
-  txAmount: {
-    color: '#2B1B5D',
-    fontWeight: '700',
-    marginTop: 2
-  },
-  emptyText: {
-    color: '#6B7280',
-    textAlign: 'center',
-    paddingVertical: 16
-  },
-  infoText: {
-    color: '#6B7280',
-    marginBottom: 8
-  },
-  actionButton: {
-    minHeight: 44
-  }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    card: {
+      marginBottom: 10
+    },
+    cardRow: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center'
+    },
+    txInfo: {
+      flex: 1
+    },
+    txDate: {
+      fontWeight: fontWeights.semiBold,
+      color: '#1F2937'
+    },
+    txAmount: {
+      color: c.textBrand,
+      fontWeight: fontWeights.bold,
+      marginTop: 2
+    },
+    emptyText: {
+      color: c.textTertiary,
+      textAlign: 'center',
+      paddingVertical: spacing[2]
+    },
+    infoText: {
+      color: c.textTertiary,
+      marginBottom: spacing[1]
+    },
+    actionButton: {
+      minHeight: 44
+    }
+  });
+}

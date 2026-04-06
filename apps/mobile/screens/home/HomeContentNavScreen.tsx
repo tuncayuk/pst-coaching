@@ -1,8 +1,9 @@
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import { PActivityIndicator, PText } from '../../components';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -58,6 +59,9 @@ const CONTENT_AREAS: ContentAreaConfig[] = [
 ];
 
 const HomeContentNavGrid = ({ isOffline }: { isOffline?: boolean }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const navigation = useNavigation<any>();
 
   const handleAreaTap = (area: ContentAreaConfig) => {
@@ -100,6 +104,9 @@ const HomeContentNavGrid = ({ isOffline }: { isOffline?: boolean }) => {
 };
 
 export const HomeContentNavScreen = ({ route }: { route?: { params?: { state?: ScreenState } } }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const state = resolveScreenState(route);
 
   if (state === 'loading') {
@@ -163,59 +170,61 @@ export const HomeContentNavScreen = ({ route }: { route?: { params?: { state?: S
   );
 };
 
-const styles = StyleSheet.create({
-  grid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 12
-  },
-  skeletonGrid: {
-    flexDirection: 'row',
-    gap: 12,
-    marginBottom: 12
-  },
-  card: {
-    width: '47%',
-    borderRadius: 14,
-    borderWidth: 1.5,
-    overflow: 'hidden',
-    minHeight: 100,
-    position: 'relative'
-  },
-  accentBar: {
-    height: 4,
-    width: '100%'
-  },
-  cardBody: {
-    padding: 12
-  },
-  cardLabel: {
-    fontSize: 15,
-    fontWeight: '800',
-    marginBottom: 4
-  },
-  cardDescription: {
-    fontSize: 12,
-    color: '#525252',
-    marginBottom: 6
-  },
-  cardCount: {
-    fontSize: 12,
-    fontWeight: '700',
-    color: '#404040'
-  },
-  lockBadge: {
-    position: 'absolute',
-    top: 10,
-    right: 8,
-    backgroundColor: '#2B1B5D',
-    paddingHorizontal: 6,
-    paddingVertical: 2,
-    borderRadius: 999
-  },
-  lockBadgeText: {
-    fontSize: 10,
-    fontWeight: '700',
-    color: '#FFFFFF'
-  }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    grid: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      gap: spacing[1.5]
+    },
+    skeletonGrid: {
+      flexDirection: 'row',
+      gap: spacing[1.5],
+      marginBottom: spacing[1.5]
+    },
+    card: {
+      width: '47%',
+      borderRadius: radii.xl,
+      borderWidth: 1.5,
+      overflow: 'hidden',
+      minHeight: 100,
+      position: 'relative'
+    },
+    accentBar: {
+      height: 4,
+      width: '100%'
+    },
+    cardBody: {
+      padding: spacing[1.5]
+    },
+    cardLabel: {
+      fontSize: fontSizes.xl,
+      fontWeight: fontWeights.extraBold,
+      marginBottom: 4
+    },
+    cardDescription: {
+      fontSize: fontSizes.base,
+      color: c.textSecondary,
+      marginBottom: 6
+    },
+    cardCount: {
+      fontSize: fontSizes.base,
+      fontWeight: fontWeights.bold,
+      color: c.textTertiary
+    },
+    lockBadge: {
+      position: 'absolute',
+      top: 10,
+      right: 8,
+      backgroundColor: c.textBrand,
+      paddingHorizontal: 6,
+      paddingVertical: 2,
+      borderRadius: radii.full
+    },
+    lockBadgeText: {
+      fontSize: 10,
+      fontWeight: fontWeights.bold,
+      color: palette.white
+    }
+  });
+}

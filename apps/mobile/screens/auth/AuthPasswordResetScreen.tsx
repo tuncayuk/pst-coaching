@@ -1,9 +1,10 @@
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { PActivityIndicator, PButton, PIconButton, PText, PTextInput } from '../../components';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -12,6 +13,9 @@ import { SkeletonBlock } from '../components/SkeletonBlock';
 import { StateMessage } from '../components/StateMessage';
 
 const PasswordResetContent = ({ isOffline }: { isOffline?: boolean }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const [newPassword, setNewPassword] = React.useState('');
   const [confirmPassword, setConfirmPassword] = React.useState('');
   const [showPassword, setShowPassword] = React.useState(false);
@@ -210,131 +214,133 @@ export const AuthPasswordResetScreen = ({ route }: { route?: { params?: { state?
   return <PasswordResetContent />;
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#FAFAFA'
-  },
-  scrollContent: {
-    paddingHorizontal: 24,
-    paddingTop: 16,
-    paddingBottom: 32
-  },
-  backButton: {
-    width: 40,
-    height: 40,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 16
-  },
-  backButtonText: {
-    fontSize: 24,
-    color: '#171717'
-  },
-  iconContainer: {
-    alignItems: 'center',
-    marginBottom: 16
-  },
-  icon: {
-    fontSize: 64
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: '700',
-    color: '#2B1B5D',
-    marginBottom: 8,
-    textAlign: 'center'
-  },
-  description: {
-    fontSize: 15,
-    color: '#525252',
-    marginBottom: 24,
-    textAlign: 'center',
-    lineHeight: 24
-  },
-  inputGroup: {
-    marginBottom: 16
-  },
-  label: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#404040',
-    marginBottom: 8
-  },
-  passwordContainer: {
-    position: 'relative'
-  },
-  input: {
-    backgroundColor: '#FFFFFF'
-  },
-  inputContent: {
-    paddingVertical: 14
-  },
-  inputOutline: {
-    borderWidth: 2,
-    borderRadius: 12,
-    borderColor: '#E5E5E5'
-  },
-  passwordInput: {
-    paddingRight: 48
-  },
-  eyeIcon: {
-    position: 'absolute',
-    right: 8,
-    top: 8
-  },
-  strengthContainer: {
-    marginTop: 8
-  },
-  strengthBars: {
-    flexDirection: 'row',
-    gap: 4,
-    marginBottom: 4
-  },
-  strengthBar: {
-    flex: 1,
-    height: 4,
-    borderRadius: 2,
-    backgroundColor: '#E5E5E5'
-  },
-  strengthLabel: {
-    fontSize: 12,
-    fontWeight: '600'
-  },
-  errorText: {
-    color: '#EF4444',
-    fontSize: 12,
-    marginTop: 8
-  },
-  button: {
-    marginBottom: 16,
-    borderRadius: 12
-  },
-  successContainer: {
-    backgroundColor: '#F0FDF4',
-    borderRadius: 8,
-    padding: 12,
-    marginBottom: 16,
-    borderLeftWidth: 3,
-    borderLeftColor: '#10B981'
-  },
-  successText: {
-    color: '#065F46',
-    fontSize: 14
-  },
-  hintCard: {
-    backgroundColor: '#EDE7F6',
-    padding: 16,
-    borderRadius: 12,
-    borderLeftWidth: 4,
-    borderLeftColor: '#2B1B5D'
-  },
-  hintText: {
-    color: '#404040',
-    lineHeight: 20
-  },
-  hintBold: {
-    fontWeight: '700',
-    color: '#2B1B5D'
-  }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: c.background
+    },
+    scrollContent: {
+      paddingHorizontal: spacing[3],
+      paddingTop: 16,
+      paddingBottom: 32
+    },
+    backButton: {
+      width: 40,
+      height: 40,
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginBottom: spacing[2]
+    },
+    backButtonText: {
+      fontSize: fontSizes['6xl'],
+      color: c.textPrimary
+    },
+    iconContainer: {
+      alignItems: 'center',
+      marginBottom: spacing[2]
+    },
+    icon: {
+      fontSize: fontSizes['12xl']
+    },
+    title: {
+      fontSize: fontSizes['6xl'],
+      fontWeight: fontWeights.bold,
+      color: c.textBrand,
+      marginBottom: spacing[1],
+      textAlign: 'center'
+    },
+    description: {
+      fontSize: fontSizes.xl,
+      color: c.textSecondary,
+      marginBottom: spacing[3],
+      textAlign: 'center',
+      lineHeight: 24
+    },
+    inputGroup: {
+      marginBottom: spacing[2]
+    },
+    label: {
+      fontSize: fontSizes.lg,
+      fontWeight: fontWeights.semiBold,
+      color: c.textTertiary,
+      marginBottom: spacing[1]
+    },
+    passwordContainer: {
+      position: 'relative'
+    },
+    input: {
+      backgroundColor: palette.white
+    },
+    inputContent: {
+      paddingVertical: 14
+    },
+    inputOutline: {
+      borderWidth: 2,
+      borderRadius: radii.lg,
+      borderColor: c.outlineVariant
+    },
+    passwordInput: {
+      paddingRight: 48
+    },
+    eyeIcon: {
+      position: 'absolute',
+      right: 8,
+      top: 8
+    },
+    strengthContainer: {
+      marginTop: spacing[1]
+    },
+    strengthBars: {
+      flexDirection: 'row',
+      gap: 4,
+      marginBottom: 4
+    },
+    strengthBar: {
+      flex: 1,
+      height: 4,
+      borderRadius: radii.xs,
+      backgroundColor: c.outlineVariant
+    },
+    strengthLabel: {
+      fontSize: fontSizes.base,
+      fontWeight: fontWeights.semiBold
+    },
+    errorText: {
+      color: palette.red500,
+      fontSize: fontSizes.base,
+      marginTop: spacing[1]
+    },
+    button: {
+      marginBottom: spacing[2],
+      borderRadius: radii.lg
+    },
+    successContainer: {
+      backgroundColor: '#F0FDF4',
+      borderRadius: radii.md,
+      padding: spacing[1.5],
+      marginBottom: spacing[2],
+      borderLeftWidth: 3,
+      borderLeftColor: c.tertiary
+    },
+    successText: {
+      color: '#065F46',
+      fontSize: fontSizes.lg
+    },
+    hintCard: {
+      backgroundColor: palette.purple50,
+      padding: spacing[2],
+      borderRadius: radii.lg,
+      borderLeftWidth: 4,
+      borderLeftColor: c.textBrand
+    },
+    hintText: {
+      color: c.textTertiary,
+      lineHeight: 20
+    },
+    hintBold: {
+      fontWeight: fontWeights.bold,
+      color: c.textBrand
+    }
+  });
+}

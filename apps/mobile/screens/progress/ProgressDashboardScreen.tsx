@@ -1,10 +1,11 @@
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { trackCtaTap } from '../../analytics';
 import { PActivityIndicator, PButton, PCard, PChip, PListIcon, PListItem, PProgressBar, PText } from '../../components';
 import { getAchievements, getContentProgressForUser, getPrimaryUser } from '../../data/mockSelectors';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -26,6 +27,9 @@ const computeStreak = (items: ReturnType<typeof getContentProgressForUser>) => {
 };
 
 const ProgressReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const navigation = useNavigation<any>();
   const user = getPrimaryUser();
   const progressItems = getContentProgressForUser(user?.id);
@@ -259,68 +263,70 @@ export const ProgressDashboardScreen = ({ route }: { route?: { params?: { state?
   );
 };
 
-const styles = StyleSheet.create({
-  hero: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    backgroundColor: '#2B1B5D',
-    paddingHorizontal: 20,
-    paddingVertical: 20,
-    marginBottom: 0
-  },
-  heroLeft: { flex: 1 },
-  heroGreeting: { fontSize: 13, color: '#C4B5FD' },
-  heroName: { fontSize: 20, fontWeight: '800', color: '#FFFFFF', marginTop: 2 },
-  heroRight: {},
-  streakBadge: {
-    backgroundColor: '#6B46C1',
-    borderRadius: 12,
-    paddingHorizontal: 14,
-    paddingVertical: 8,
-    alignItems: 'center',
-    borderWidth: 2,
-    borderColor: '#C4B5FD'
-  },
-  streakNum: { fontSize: 22, fontWeight: '800', color: '#FFFFFF' },
-  streakLabel: { fontSize: 10, color: '#C4B5FD', marginTop: 2 },
-  typeRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 14,
-    gap: 10
-  },
-  typeIcon: {
-    width: 40,
-    height: 40,
-    borderRadius: 10,
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  typeIconText: { fontSize: 11, fontWeight: '700' },
-  typeInfo: { flex: 1 },
-  typeLabel: { fontSize: 13, fontWeight: '600', color: '#171717', marginBottom: 4 },
-  typeBar: { height: 6, borderRadius: 3 },
-  submissionRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-    marginTop: 12,
-    paddingTop: 12,
-    borderTopWidth: 1,
-    borderTopColor: '#E5E5E5'
-  },
-  submissionLabel: { fontSize: 12, color: '#525252', flexShrink: 0 },
-  submissionBar: { flex: 1, height: 6, borderRadius: 3 },
-  submissionPct: { fontSize: 12, fontWeight: '700', color: '#2B1B5D', flexShrink: 0 },
-  completedCount: { fontSize: 11, color: '#737373', marginTop: 8 },
-  navGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 8
-  },
-  navBtn: { flexShrink: 0 },
-  primaryButton: { marginTop: 8, alignSelf: 'flex-start' },
-  reviewHint: { fontSize: 13, color: '#525252', marginBottom: 8 },
-  emptyHint: { fontSize: 13, color: '#737373' }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    hero: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      backgroundColor: c.textBrand,
+      paddingHorizontal: spacing[2.5],
+      paddingVertical: spacing[2.5],
+      marginBottom: 0
+    },
+    heroLeft: { flex: 1 },
+    heroGreeting: { fontSize: fontSizes.md, color: '#C4B5FD' },
+    heroName: { fontSize: fontSizes['4xl'], fontWeight: fontWeights.extraBold, color: palette.white, marginTop: 2 },
+    heroRight: {},
+    streakBadge: {
+      backgroundColor: '#6B46C1',
+      borderRadius: radii.lg,
+      paddingHorizontal: 14,
+      paddingVertical: spacing[1],
+      alignItems: 'center',
+      borderWidth: 2,
+      borderColor: '#C4B5FD'
+    },
+    streakNum: { fontSize: fontSizes['5xl'], fontWeight: fontWeights.extraBold, color: palette.white },
+    streakLabel: { fontSize: 10, color: '#C4B5FD', marginTop: 2 },
+    typeRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginBottom: 14,
+      gap: 10
+    },
+    typeIcon: {
+      width: 40,
+      height: 40,
+      borderRadius: radii.md,
+      alignItems: 'center',
+      justifyContent: 'center'
+    },
+    typeIconText: { fontSize: fontSizes.sm, fontWeight: fontWeights.bold },
+    typeInfo: { flex: 1 },
+    typeLabel: { fontSize: fontSizes.md, fontWeight: fontWeights.semiBold, color: c.textPrimary, marginBottom: 4 },
+    typeBar: { height: 6, borderRadius: 3 },
+    submissionRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: spacing[1],
+      marginTop: spacing[1.5],
+      paddingTop: 12,
+      borderTopWidth: 1,
+      borderTopColor: c.outlineVariant
+    },
+    submissionLabel: { fontSize: fontSizes.base, color: c.textSecondary, flexShrink: 0 },
+    submissionBar: { flex: 1, height: 6, borderRadius: 3 },
+    submissionPct: { fontSize: fontSizes.base, fontWeight: fontWeights.bold, color: c.textBrand, flexShrink: 0 },
+    completedCount: { fontSize: fontSizes.sm, color: c.textTertiary, marginTop: spacing[1] },
+    navGrid: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      gap: spacing[1]
+    },
+    navBtn: { flexShrink: 0 },
+    primaryButton: { marginTop: spacing[1], alignSelf: 'flex-start' },
+    reviewHint: { fontSize: fontSizes.md, color: c.textSecondary, marginBottom: spacing[1] },
+    emptyHint: { fontSize: fontSizes.md, color: c.textTertiary }
+  });
+}

@@ -5,7 +5,7 @@
  * AC-FR-E17-03-03: Frequency selector (instant / daily summary / weekly)
  * AC-FR-E17-03-04: Sound + vibration independent toggles
  */
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 
 import {
@@ -17,6 +17,7 @@ import {
   PSwitch,
   PText
 } from '../../components';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -43,6 +44,9 @@ const FREQUENCY_OPTIONS: { label: string; value: Frequency }[] = [
 ];
 
 const NotificationSettingsContent = ({ isOffline }: { isOffline?: boolean }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   // AC-FR-E17-03-01: Type toggles
   const [typeToggles, setTypeToggles] = useState<Record<NotifType, boolean>>({
     journey: true,
@@ -259,31 +263,33 @@ export const NotificationSettingsScreen = ({ route }: NotificationSettingsScreen
   );
 };
 
-const styles = StyleSheet.create({
-  scroll: { flex: 1 },
-  scrollContent: { paddingBottom: 32 },
-  skeleton: { marginHorizontal: 16, marginBottom: 12 },
-  quietRow: { flexDirection: 'row', gap: 12, paddingVertical: 8 },
-  quietHalf: { flex: 1 },
-  quietLabel: {
-    fontSize: 12,
-    color: '#737373',
-    fontWeight: '600',
-    marginBottom: 6
-  },
-  timeChipRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 6 },
-  timeChip: {
-    borderRadius: 16,
-    borderWidth: 1,
-    borderColor: '#D4D4D4',
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    backgroundColor: '#FAFAFA'
-  },
-  timeChipSelected: {
-    borderColor: '#00B4D8',
-    backgroundColor: '#E0F7FA'
-  },
-  timeChipText: { fontSize: 12, color: '#525252' },
-  timeChipTextSelected: { color: '#00B4D8', fontWeight: '700' }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    scroll: { flex: 1 },
+    scrollContent: { paddingBottom: 32 },
+    skeleton: { marginHorizontal: 16, marginBottom: spacing[1.5] },
+    quietRow: { flexDirection: 'row', gap: spacing[1.5], paddingVertical: spacing[1] },
+    quietHalf: { flex: 1 },
+    quietLabel: {
+      fontSize: fontSizes.base,
+      color: c.textTertiary,
+      fontWeight: fontWeights.semiBold,
+      marginBottom: 6
+    },
+    timeChipRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 6 },
+    timeChip: {
+      borderRadius: radii.xl,
+      borderWidth: 1,
+      borderColor: c.outline,
+      paddingHorizontal: 10,
+      paddingVertical: 4,
+      backgroundColor: c.background
+    },
+    timeChipSelected: {
+      borderColor: c.primary,
+      backgroundColor: palette.cyan50
+    },
+    timeChipText: { fontSize: fontSizes.base, color: c.textSecondary },
+    timeChipTextSelected: { color: c.primary, fontWeight: fontWeights.bold }
+  });
+}

@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import { PButton, PChip, PText } from '../../components';
 import { getPrimaryUser, getReadingSettings } from '../../data/mockSelectors';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -26,6 +27,9 @@ const LINE_HEIGHT_MAP: Record<LineHeight, number> = {
 };
 
 const ContentEbookSettingsContent = ({ isOffline }: { isOffline?: boolean }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const user = getPrimaryUser();
   const readingSettings = getReadingSettings();
   const savedSettings = readingSettings.find((s: any) => s.user_id === user?.id);
@@ -177,31 +181,33 @@ export const ContentEbookSettingsScreen = ({
   );
 };
 
-const styles = StyleSheet.create({
-  stepRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 12 },
-  stepBtn: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    borderWidth: 1,
-    borderColor: '#6B46C1',
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  stepBtnDisabled: { borderColor: '#E5E7EB', opacity: 0.4 },
-  stepBtnLabel: { fontSize: 14, fontWeight: '700', color: '#6B46C1' },
-  stepValue: {
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    backgroundColor: '#EDE7F6',
-    borderRadius: 10
-  },
-  stepValueLabel: { fontSize: 18, fontWeight: '800', color: '#6B46C1' },
-  bgRow: { flexDirection: 'row', gap: 10, flexWrap: 'wrap' },
-  bgChip: { borderRadius: 10 },
-  lineHeightRow: { flexDirection: 'row', gap: 10, flexWrap: 'wrap' },
-  lineHChip: {},
-  preview: { padding: 16, borderRadius: 12, borderWidth: 1, borderColor: '#E5E7EB' },
-  previewText: { lineHeight: 26 },
-  savedLabel: { fontSize: 13, color: '#15803D', marginBottom: 8 }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    stepRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: spacing[1.5] },
+    stepBtn: {
+      width: 48,
+      height: 48,
+      borderRadius: radii['3xl'],
+      borderWidth: 1,
+      borderColor: '#6B46C1',
+      justifyContent: 'center',
+      alignItems: 'center'
+    },
+    stepBtnDisabled: { borderColor: '#E5E7EB', opacity: 0.4 },
+    stepBtnLabel: { fontSize: fontSizes.lg, fontWeight: fontWeights.bold, color: '#6B46C1' },
+    stepValue: {
+      paddingHorizontal: spacing[2],
+      paddingVertical: spacing[1],
+      backgroundColor: palette.purple50,
+      borderRadius: radii.md
+    },
+    stepValueLabel: { fontSize: fontSizes['3xl'], fontWeight: fontWeights.extraBold, color: '#6B46C1' },
+    bgRow: { flexDirection: 'row', gap: 10, flexWrap: 'wrap' },
+    bgChip: { borderRadius: radii.md },
+    lineHeightRow: { flexDirection: 'row', gap: 10, flexWrap: 'wrap' },
+    lineHChip: {},
+    preview: { padding: spacing[2], borderRadius: radii.lg, borderWidth: 1, borderColor: '#E5E7EB' },
+    previewText: { lineHeight: 26 },
+    savedLabel: { fontSize: fontSizes.md, color: '#15803D', marginBottom: spacing[1] }
+  });
+}

@@ -1,8 +1,9 @@
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { PActivityIndicator, PButton, PCard, PDivider, PProgressBar, PText } from '../../components';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -17,6 +18,9 @@ const outlineSteps = [
 ];
 
 const HomeVicdandanKaraktereContent = ({ isOffline }: { isOffline?: boolean }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const navigation = useNavigation<any>();
 
   return (
@@ -159,48 +163,50 @@ export const HomeVicdandanKaraktereDetailScreen = ({ route }: { route?: { params
   );
 };
 
-const styles = StyleSheet.create({
-  paragraph: {
-    marginBottom: 12,
-    lineHeight: 20
-  },
-  offlineCacheNote: {
-    fontSize: 11,
-    color: '#F59E0B',
-    fontStyle: 'italic',
-    marginBottom: 8
-  },
-  card: {
-    marginTop: 4
-  },
-  progress: {
-    marginTop: 8,
-    marginBottom: 12,
-    height: 8,
-    borderRadius: 999
-  },
-  rowItem: {
-    paddingVertical: 8
-  },
-  rowHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center'
-  },
-  stepDuration: {
-    color: '#525252'
-  },
-  divider: {
-    marginTop: 8
-  },
-  benefitItem: {
-    color: '#404040',
-    marginBottom: 4,
-    lineHeight: 20
-  },
-  secondaryButton: {
-    marginTop: 12,
-    alignSelf: 'flex-start',
-    minHeight: 48
-  }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    paragraph: {
+      marginBottom: spacing[1.5],
+      lineHeight: 20
+    },
+    offlineCacheNote: {
+      fontSize: fontSizes.sm,
+      color: '#F59E0B',
+      fontStyle: 'italic',
+      marginBottom: spacing[1]
+    },
+    card: {
+      marginTop: 4
+    },
+    progress: {
+      marginTop: spacing[1],
+      marginBottom: spacing[1.5],
+      height: 8,
+      borderRadius: radii.full
+    },
+    rowItem: {
+      paddingVertical: spacing[1]
+    },
+    rowHeader: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center'
+    },
+    stepDuration: {
+      color: c.textSecondary
+    },
+    divider: {
+      marginTop: spacing[1]
+    },
+    benefitItem: {
+      color: c.textTertiary,
+      marginBottom: 4,
+      lineHeight: 20
+    },
+    secondaryButton: {
+      marginTop: spacing[1.5],
+      alignSelf: 'flex-start',
+      minHeight: 48
+    }
+  });
+}

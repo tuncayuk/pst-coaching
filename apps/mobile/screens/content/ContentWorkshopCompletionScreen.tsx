@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { PActivityIndicator, PButton, PChip, PDivider, PProgressBar, PText } from '../../components';
@@ -11,6 +11,7 @@ import {
   getWorkshopById,
   getWorkshops
 } from '../../data/mockSelectors';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -35,6 +36,9 @@ const STAGE_LABELS: Record<number, string> = {
 };
 
 const ContentWorkshopCompletionContent = ({ workshopId, isOffline }: { workshopId?: string; isOffline?: boolean }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const navigation = useNavigation<any>();
   const user = getPrimaryUser();
   const workshop = getWorkshopById(workshopId) ?? getWorkshops()[0];
@@ -246,103 +250,105 @@ export const ContentWorkshopCompletionScreen = ({ route }: { route?: { params?: 
   );
 };
 
-const styles = StyleSheet.create({
-  celebrationBlock: {
-    alignItems: 'center',
-    paddingVertical: 24,
-    paddingHorizontal: 16
-  },
-  celebrationEmoji: {
-    fontSize: 48,
-    marginBottom: 12
-  },
-  celebrationTitle: {
-    textAlign: 'center',
-    fontWeight: '700',
-    marginBottom: 8
-  },
-  celebrationDesc: {
-    textAlign: 'center',
-    opacity: 0.75,
-    lineHeight: 22
-  },
-  metaRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 8
-  },
-  metaLabel: {
-    opacity: 0.6
-  },
-  progressBar: {
-    marginVertical: 6,
-    borderRadius: 4
-  },
-  divider: {
-    marginVertical: 8
-  },
-  createPlanBtn: {
-    alignSelf: 'flex-start',
-    marginTop: 4
-  },
-  stageRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 4,
-    gap: 10
-  },
-  stageNum: {
-    width: 24,
-    textAlign: 'center',
-    opacity: 0.4,
-    fontWeight: '700'
-  },
-  stageNumDone: {
-    color: '#4CAF50',
-    opacity: 1
-  },
-  stageLabel: {
-    flex: 1
-  },
-  stagePending: {
-    opacity: 0.45
-  },
-  badgeRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 12,
-    marginBottom: 10
-  },
-  badgeEmoji: {
-    fontSize: 36
-  },
-  badgeInfo: {
-    flex: 1
-  },
-  badgeDesc: {
-    opacity: 0.65,
-    marginTop: 2
-  },
-  certChip: {
-    alignSelf: 'flex-start',
-    marginBottom: 10
-  },
-  shareBtn: {
-    alignSelf: 'flex-start'
-  },
-  pendingBadge: {
-    opacity: 0.6,
-    lineHeight: 20
-  },
-  archiveDesc: {
-    opacity: 0.7,
-    lineHeight: 20,
-    marginBottom: 12
-  },
-  archiveButtons: {
-    gap: 10
-  },
-  archiveBtn: {
-    width: '100%'
-  }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    celebrationBlock: {
+      alignItems: 'center',
+      paddingVertical: spacing[3],
+      paddingHorizontal: spacing[2]
+    },
+    celebrationEmoji: {
+      fontSize: fontSizes['11xl'],
+      marginBottom: spacing[1.5]
+    },
+    celebrationTitle: {
+      textAlign: 'center',
+      fontWeight: fontWeights.bold,
+      marginBottom: spacing[1]
+    },
+    celebrationDesc: {
+      textAlign: 'center',
+      opacity: 0.75,
+      lineHeight: 22
+    },
+    metaRow: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      marginBottom: spacing[1]
+    },
+    metaLabel: {
+      opacity: 0.6
+    },
+    progressBar: {
+      marginVertical: 6,
+      borderRadius: radii.sm
+    },
+    divider: {
+      marginVertical: 8
+    },
+    createPlanBtn: {
+      alignSelf: 'flex-start',
+      marginTop: 4
+    },
+    stageRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      paddingVertical: 4,
+      gap: 10
+    },
+    stageNum: {
+      width: 24,
+      textAlign: 'center',
+      opacity: 0.4,
+      fontWeight: fontWeights.bold
+    },
+    stageNumDone: {
+      color: '#4CAF50',
+      opacity: 1
+    },
+    stageLabel: {
+      flex: 1
+    },
+    stagePending: {
+      opacity: 0.45
+    },
+    badgeRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: spacing[1.5],
+      marginBottom: 10
+    },
+    badgeEmoji: {
+      fontSize: fontSizes['10xl']
+    },
+    badgeInfo: {
+      flex: 1
+    },
+    badgeDesc: {
+      opacity: 0.65,
+      marginTop: 2
+    },
+    certChip: {
+      alignSelf: 'flex-start',
+      marginBottom: 10
+    },
+    shareBtn: {
+      alignSelf: 'flex-start'
+    },
+    pendingBadge: {
+      opacity: 0.6,
+      lineHeight: 20
+    },
+    archiveDesc: {
+      opacity: 0.7,
+      lineHeight: 20,
+      marginBottom: spacing[1.5]
+    },
+    archiveButtons: {
+      gap: 10
+    },
+    archiveBtn: {
+      width: '100%'
+    }
+  });
+}

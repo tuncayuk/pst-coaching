@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { StyleSheet } from 'react-native';
 import { useTheme } from 'react-native-paper';
 
 import { PSurface, PText } from '../../components';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 
 export const OfflineNotice = () => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const theme = useTheme();
 
   return (
@@ -19,10 +23,12 @@ export const OfflineNotice = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  notice: {
-    padding: 12,
-    borderRadius: 16,
-    marginBottom: 16
-  }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    notice: {
+      padding: spacing[1.5],
+      borderRadius: radii.xl,
+      marginBottom: spacing[2]
+    }
+  });
+}

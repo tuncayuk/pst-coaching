@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Alert, StyleSheet, View } from 'react-native';
 
 import { PButton, PCard, PChip, PText } from '../../components';
 import { getPaymentsForSubscription, getPrimaryUser, getSubscriptionForUser } from '../../data/mockSelectors';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -11,6 +12,9 @@ import { SkeletonBlock } from '../components/SkeletonBlock';
 import { StateMessage } from '../components/StateMessage';
 
 const ProfileRestorePurchasesContent = ({ isOffline }: { isOffline?: boolean }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const [restoring, setRestoring] = useState(false);
 
   const user = getPrimaryUser();
@@ -151,39 +155,41 @@ export const ProfileRestorePurchasesScreen = ({ route }: { route?: { params?: { 
   );
 };
 
-const styles = StyleSheet.create({
-  explainText: {
-    color: '#374151',
-    lineHeight: 20,
-    marginBottom: 14
-  },
-  restoreButton: {
-    marginBottom: 8,
-    minHeight: 52
-  },
-  card: {
-    marginBottom: 10
-  },
-  cardRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center'
-  },
-  txDate: {
-    fontWeight: '600',
-    color: '#1F2937'
-  },
-  txAmount: {
-    color: '#2B1B5D',
-    fontWeight: '700',
-    marginTop: 2
-  },
-  chipVerified: {
-    backgroundColor: '#D1FAE5'
-  },
-  emptyText: {
-    color: '#6B7280',
-    textAlign: 'center',
-    paddingVertical: 12
-  }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    explainText: {
+      color: '#374151',
+      lineHeight: 20,
+      marginBottom: 14
+    },
+    restoreButton: {
+      marginBottom: spacing[1],
+      minHeight: 52
+    },
+    card: {
+      marginBottom: 10
+    },
+    cardRow: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center'
+    },
+    txDate: {
+      fontWeight: fontWeights.semiBold,
+      color: '#1F2937'
+    },
+    txAmount: {
+      color: c.textBrand,
+      fontWeight: fontWeights.bold,
+      marginTop: 2
+    },
+    chipVerified: {
+      backgroundColor: palette.emerald50
+    },
+    emptyText: {
+      color: c.textTertiary,
+      textAlign: 'center',
+      paddingVertical: spacing[1.5]
+    }
+  });
+}

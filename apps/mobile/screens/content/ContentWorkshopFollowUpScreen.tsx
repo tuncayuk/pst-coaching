@@ -1,9 +1,10 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { StyleSheet, TextInput, View } from 'react-native';
 
 import { PActivityIndicator, PButton, PChip, PDivider, PSwitch, PText } from '../../components';
 import { getWorkshopById, getWorkshops } from '../../data/mockSelectors';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -45,6 +46,9 @@ const FOLLOW_UP_PHASES = [
 ];
 
 const ContentWorkshopFollowUpContent = ({ workshopId, isOffline }: { workshopId?: string; isOffline?: boolean }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const navigation = useNavigation<any>();
   const workshop = getWorkshopById(workshopId) ?? getWorkshops()[0];
 
@@ -265,70 +269,72 @@ export const ContentWorkshopFollowUpScreen = ({ route }: { route?: { params?: Ro
   );
 };
 
-const styles = StyleSheet.create({
-  desc: {
-    opacity: 0.7,
-    lineHeight: 20
-  },
-  phaseDesc: {
-    opacity: 0.7,
-    lineHeight: 20,
-    marginBottom: 6
-  },
-  divider: {
-    marginVertical: 8
-  },
-  stepRow: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    marginBottom: 6,
-    gap: 6
-  },
-  bullet: {
-    color: '#7C4DFF',
-    fontWeight: '700'
-  },
-  stepText: {
-    flex: 1,
-    lineHeight: 20
-  },
-  fieldLabel: {
-    opacity: 0.65,
-    marginBottom: 4
-  },
-  fieldSpacing: {
-    marginTop: 12
-  },
-  textInput: {
-    borderWidth: 1,
-    borderColor: '#DDD',
-    borderRadius: 8,
-    padding: 10,
-    fontSize: 14
-  },
-  stepInput: {
-    marginBottom: 8
-  },
-  savedNote: {
-    color: '#4CAF50',
-    marginTop: 4
-  },
-  saveBtn: {
-    marginTop: 10
-  },
-  toggleRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginTop: 10
-  },
-  chipRow: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 8,
-    marginTop: 8
-  },
-  timeChip: {
-    alignSelf: 'flex-start'
-  }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    desc: {
+      opacity: 0.7,
+      lineHeight: 20
+    },
+    phaseDesc: {
+      opacity: 0.7,
+      lineHeight: 20,
+      marginBottom: 6
+    },
+    divider: {
+      marginVertical: 8
+    },
+    stepRow: {
+      flexDirection: 'row',
+      alignItems: 'flex-start',
+      marginBottom: 6,
+      gap: 6
+    },
+    bullet: {
+      color: '#7C4DFF',
+      fontWeight: fontWeights.bold
+    },
+    stepText: {
+      flex: 1,
+      lineHeight: 20
+    },
+    fieldLabel: {
+      opacity: 0.65,
+      marginBottom: 4
+    },
+    fieldSpacing: {
+      marginTop: spacing[1.5]
+    },
+    textInput: {
+      borderWidth: 1,
+      borderColor: '#DDD',
+      borderRadius: radii.md,
+      padding: 10,
+      fontSize: fontSizes.lg
+    },
+    stepInput: {
+      marginBottom: spacing[1]
+    },
+    savedNote: {
+      color: '#4CAF50',
+      marginTop: 4
+    },
+    saveBtn: {
+      marginTop: 10
+    },
+    toggleRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      marginTop: 10
+    },
+    chipRow: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      gap: spacing[1],
+      marginTop: spacing[1]
+    },
+    timeChip: {
+      alignSelf: 'flex-start'
+    }
+  });
+}

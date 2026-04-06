@@ -1,8 +1,9 @@
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { PActivityIndicator, PButton, PCard, PText } from '../../components';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -22,6 +23,9 @@ const assistantSteps = [
 ];
 
 const DiscoverAssistantIntroContent = ({ isOffline }: { isOffline?: boolean }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const navigation = useNavigation<any>();
 
   return (
@@ -123,57 +127,59 @@ export const DiscoverAssistantIntroScreen = ({ route }: { route?: { params?: { s
   );
 };
 
-const styles = StyleSheet.create({
-  hero: {
-    alignItems: 'center',
-    marginBottom: 24
-  },
-  heroEmoji: {
-    fontSize: 52,
-    marginBottom: 12
-  },
-  heroTitle: {
-    fontSize: 20,
-    fontWeight: '700',
-    color: '#2B1B5D',
-    textAlign: 'center',
-    marginBottom: 6
-  },
-  heroSubtitle: {
-    fontSize: 15,
-    color: '#525252',
-    textAlign: 'center'
-  },
-  card: {
-    padding: 16,
-    borderRadius: 16,
-    marginBottom: 16
-  },
-  cardLabel: {
-    fontSize: 15,
-    fontWeight: '700',
-    color: '#171717',
-    marginBottom: 12
-  },
-  listItem: {
-    fontSize: 14,
-    color: '#525252',
-    marginBottom: 6
-  },
-  stepRow: {
-    marginBottom: 12
-  },
-  stepTitle: {
-    fontSize: 14,
-    fontWeight: '700',
-    color: '#171717',
-    marginBottom: 2
-  },
-  stepSubtitle: {
-    fontSize: 13,
-    color: '#737373'
-  },
-  primaryButton: {
-    marginBottom: 8
-  }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    hero: {
+      alignItems: 'center',
+      marginBottom: spacing[3]
+    },
+    heroEmoji: {
+      fontSize: 52,
+      marginBottom: spacing[1.5]
+    },
+    heroTitle: {
+      fontSize: fontSizes['4xl'],
+      fontWeight: fontWeights.bold,
+      color: c.textBrand,
+      textAlign: 'center',
+      marginBottom: 6
+    },
+    heroSubtitle: {
+      fontSize: fontSizes.xl,
+      color: c.textSecondary,
+      textAlign: 'center'
+    },
+    card: {
+      padding: spacing[2],
+      borderRadius: radii.xl,
+      marginBottom: spacing[2]
+    },
+    cardLabel: {
+      fontSize: fontSizes.xl,
+      fontWeight: fontWeights.bold,
+      color: c.textPrimary,
+      marginBottom: spacing[1.5]
+    },
+    listItem: {
+      fontSize: fontSizes.lg,
+      color: c.textSecondary,
+      marginBottom: 6
+    },
+    stepRow: {
+      marginBottom: spacing[1.5]
+    },
+    stepTitle: {
+      fontSize: fontSizes.lg,
+      fontWeight: fontWeights.bold,
+      color: c.textPrimary,
+      marginBottom: 2
+    },
+    stepSubtitle: {
+      fontSize: fontSizes.md,
+      color: c.textTertiary
+    },
+    primaryButton: {
+      marginBottom: spacing[1]
+    }
+  });
+}

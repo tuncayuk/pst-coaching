@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { PActivityIndicator, PButton, PCard, PChip, PDivider, PProgressBar, PText } from '../../components';
@@ -10,6 +10,7 @@ import {
   getJourneys,
   getPrimaryUser
 } from '../../data/mockSelectors';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -20,6 +21,9 @@ import { StateMessage } from '../components/StateMessage';
 type RouteParams = { state?: ScreenState; id?: string };
 
 const ContentJourneyHomeContent = ({ journeyId, isOffline }: { journeyId?: string; isOffline?: boolean }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const navigation = useNavigation<any>();
   const user = getPrimaryUser();
   const journey = getJourneyById(journeyId) ?? getJourneys()[0];
@@ -161,31 +165,33 @@ export const ContentJourneyHomeScreen = ({ route }: { route?: { params?: RoutePa
   );
 };
 
-const styles = StyleSheet.create({
-  chipRow: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    marginTop: 8
-  },
-  chip: {
-    marginRight: 8,
-    marginBottom: 8
-  },
-  subtleText: {
-    opacity: 0.7,
-    marginTop: 4
-  },
-  progress: {
-    marginTop: 12
-  },
-  primaryButton: {
-    marginTop: 12,
-    alignSelf: 'flex-start'
-  },
-  card: {
-    marginBottom: 12
-  },
-  divider: {
-    marginTop: 8
-  }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    chipRow: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      marginTop: spacing[1]
+    },
+    chip: {
+      marginRight: 8,
+      marginBottom: spacing[1]
+    },
+    subtleText: {
+      opacity: 0.7,
+      marginTop: 4
+    },
+    progress: {
+      marginTop: spacing[1.5]
+    },
+    primaryButton: {
+      marginTop: spacing[1.5],
+      alignSelf: 'flex-start'
+    },
+    card: {
+      marginBottom: spacing[1.5]
+    },
+    divider: {
+      marginTop: spacing[1]
+    }
+  });
+}

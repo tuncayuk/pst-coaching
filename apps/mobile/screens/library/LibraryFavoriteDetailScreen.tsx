@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { StyleSheet, TextInput, View } from 'react-native';
 
 import { PActivityIndicator, PButton, PChip, PDivider, PText } from '../../components';
@@ -13,6 +13,7 @@ import {
   getPrimaryUser,
   getWorkshops
 } from '../../data/mockSelectors';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -42,6 +43,9 @@ const TYPE_SCREEN: Record<string, string> = {
 };
 
 const LibraryFavoriteDetailContent = ({ favoriteId, isOffline }: { favoriteId?: string; isOffline?: boolean }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const navigation = useNavigation<any>();
   const user = getPrimaryUser();
   const favorite = getFavoritesForUser(user?.id).find((item: any) => item.id === favoriteId);
@@ -253,71 +257,73 @@ export const LibraryFavoriteDetailScreen = ({
   );
 };
 
-const styles = StyleSheet.create({
-  titleRow: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    gap: 10,
-    marginBottom: 10
-  },
-  typeBar: {
-    width: 4,
-    borderRadius: 2,
-    minHeight: 56
-  },
-  titleBody: {
-    flex: 1
-  },
-  title: {
-    fontWeight: '700',
-    marginBottom: 6
-  },
-  typeChip: {
-    alignSelf: 'flex-start'
-  },
-  description: {
-    opacity: 0.75,
-    lineHeight: 22,
-    marginBottom: 8
-  },
-  divider: {
-    marginVertical: 8
-  },
-  sourceBtn: {
-    alignSelf: 'flex-start'
-  },
-  highlightBar: {
-    borderLeftWidth: 3,
-    paddingLeft: 10,
-    paddingVertical: 4,
-    marginVertical: 4
-  },
-  highlightText: {
-    lineHeight: 20,
-    fontStyle: 'italic'
-  },
-  noteHint: {
-    opacity: 0.55,
-    marginBottom: 6
-  },
-  noteInput: {
-    borderWidth: 1,
-    borderColor: '#DDD',
-    borderRadius: 8,
-    padding: 10,
-    minHeight: 80,
-    fontSize: 14,
-    textAlignVertical: 'top',
-    marginBottom: 6
-  },
-  savedNote: {
-    color: '#4CAF50',
-    marginBottom: 4
-  },
-  saveNoteBtn: {
-    alignSelf: 'flex-start'
-  },
-  actionBtn: {
-    marginBottom: 8
-  }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    titleRow: {
+      flexDirection: 'row',
+      alignItems: 'flex-start',
+      gap: 10,
+      marginBottom: 10
+    },
+    typeBar: {
+      width: 4,
+      borderRadius: radii.xs,
+      minHeight: 56
+    },
+    titleBody: {
+      flex: 1
+    },
+    title: {
+      fontWeight: fontWeights.bold,
+      marginBottom: 6
+    },
+    typeChip: {
+      alignSelf: 'flex-start'
+    },
+    description: {
+      opacity: 0.75,
+      lineHeight: 22,
+      marginBottom: spacing[1]
+    },
+    divider: {
+      marginVertical: 8
+    },
+    sourceBtn: {
+      alignSelf: 'flex-start'
+    },
+    highlightBar: {
+      borderLeftWidth: 3,
+      paddingLeft: 10,
+      paddingVertical: 4,
+      marginVertical: 4
+    },
+    highlightText: {
+      lineHeight: 20,
+      fontStyle: 'italic'
+    },
+    noteHint: {
+      opacity: 0.55,
+      marginBottom: 6
+    },
+    noteInput: {
+      borderWidth: 1,
+      borderColor: '#DDD',
+      borderRadius: radii.md,
+      padding: 10,
+      minHeight: 80,
+      fontSize: fontSizes.lg,
+      textAlignVertical: 'top',
+      marginBottom: 6
+    },
+    savedNote: {
+      color: '#4CAF50',
+      marginBottom: 4
+    },
+    saveNoteBtn: {
+      alignSelf: 'flex-start'
+    },
+    actionBtn: {
+      marginBottom: spacing[1]
+    }
+  });
+}

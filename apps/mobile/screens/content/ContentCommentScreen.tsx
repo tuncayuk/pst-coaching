@@ -1,8 +1,9 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { PActivityIndicator, PButton, PChip, PText, PTextInput } from '../../components';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -18,6 +19,9 @@ type RouteParams = {
 };
 
 const ContentCommentContent = ({ isOffline, contentItemId }: { isOffline?: boolean; contentItemId?: string }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const navigation = useNavigation<any>();
   const [answer1, setAnswer1] = useState('');
   const [answer2, setAnswer2] = useState('');
@@ -211,52 +215,54 @@ export const ContentCommentScreen = ({ route }: { route?: { params?: RouteParams
   );
 };
 
-const styles = StyleSheet.create({
-  warningBanner: {
-    backgroundColor: '#FEF9C3',
-    paddingHorizontal: 16,
-    paddingVertical: 10,
-    borderLeftWidth: 4,
-    borderLeftColor: '#CA8A04',
-    marginBottom: 4
-  },
-  warningText: {
-    fontSize: 13,
-    color: '#A16207',
-    fontWeight: '600'
-  },
-  draftBanner: {
-    backgroundColor: '#DCFCE7',
-    paddingHorizontal: 16,
-    paddingVertical: 6,
-    borderLeftWidth: 4,
-    borderLeftColor: '#16A34A',
-    marginBottom: 4
-  },
-  draftText: {
-    fontSize: 12,
-    color: '#15803D',
-    fontWeight: '600'
-  },
-  input: {
-    marginTop: 8,
-    marginBottom: 4
-  },
-  wordCountRow: {
-    alignItems: 'flex-end',
-    marginBottom: 8
-  },
-  wordCount: {
-    fontSize: 11,
-    color: '#737373'
-  },
-  chipRow: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    marginBottom: 12
-  },
-  chip: {
-    marginRight: 8,
-    marginBottom: 8
-  }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    warningBanner: {
+      backgroundColor: c.warningContainer,
+      paddingHorizontal: spacing[2],
+      paddingVertical: 10,
+      borderLeftWidth: 4,
+      borderLeftColor: '#CA8A04',
+      marginBottom: 4
+    },
+    warningText: {
+      fontSize: fontSizes.md,
+      color: '#A16207',
+      fontWeight: fontWeights.semiBold
+    },
+    draftBanner: {
+      backgroundColor: '#DCFCE7',
+      paddingHorizontal: spacing[2],
+      paddingVertical: 6,
+      borderLeftWidth: 4,
+      borderLeftColor: c.success,
+      marginBottom: 4
+    },
+    draftText: {
+      fontSize: fontSizes.base,
+      color: '#15803D',
+      fontWeight: fontWeights.semiBold
+    },
+    input: {
+      marginTop: spacing[1],
+      marginBottom: 4
+    },
+    wordCountRow: {
+      alignItems: 'flex-end',
+      marginBottom: spacing[1]
+    },
+    wordCount: {
+      fontSize: fontSizes.sm,
+      color: c.textTertiary
+    },
+    chipRow: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      marginBottom: spacing[1.5]
+    },
+    chip: {
+      marginRight: 8,
+      marginBottom: spacing[1]
+    }
+  });
+}

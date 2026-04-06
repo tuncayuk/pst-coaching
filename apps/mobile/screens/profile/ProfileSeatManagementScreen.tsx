@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Alert, StyleSheet, View } from 'react-native';
 
 import { PButton, PCard, PChip, PDivider, PProgressBar, PText, PTextInput } from '../../components';
@@ -10,6 +10,7 @@ import {
   getSubscriptionForUser,
   getUsers
 } from '../../data/mockSelectors';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -21,6 +22,9 @@ import { StateMessage } from '../components/StateMessage';
 const MOCK_USER_ROLE: 'owner' | 'member' = 'owner';
 
 const ProfileSeatManagementContent = ({ isOffline }: { isOffline?: boolean }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const [inviteContact, setInviteContact] = useState('');
   const [inviteExpanded, setInviteExpanded] = useState(false);
 
@@ -271,94 +275,96 @@ export const ProfileSeatManagementScreen = ({ route }: { route?: { params?: { st
   );
 };
 
-const styles = StyleSheet.create({
-  gaugeRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 8
-  },
-  gaugeLabel: {
-    fontWeight: '600',
-    color: '#1F2937'
-  },
-  chipFull: {
-    backgroundColor: '#FEE2E2'
-  },
-  chipOk: {
-    backgroundColor: '#D1FAE5'
-  },
-  gaugeBar: {
-    height: 8,
-    borderRadius: 4,
-    marginBottom: 4
-  },
-  metaRow: {
-    marginTop: 4
-  },
-  metaText: {
-    color: '#6B7280'
-  },
-  upsellCard: {
-    backgroundColor: '#EDE9FE',
-    borderRadius: 10,
-    padding: 14
-  },
-  upsellTitle: {
-    fontWeight: '700',
-    color: '#4C1D95',
-    marginBottom: 4
-  },
-  upsellDesc: {
-    color: '#6D28D9',
-    marginBottom: 10,
-    lineHeight: 18
-  },
-  upsellButton: {
-    alignSelf: 'flex-start',
-    minHeight: 44
-  },
-  card: {
-    marginBottom: 4
-  },
-  cardRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center'
-  },
-  seatInfo: {
-    flex: 1
-  },
-  seatName: {
-    fontWeight: '600',
-    color: '#1F2937'
-  },
-  seatRole: {
-    color: '#6B7280',
-    marginTop: 2
-  },
-  chipActive: {
-    backgroundColor: '#D1FAE5'
-  },
-  chipEmpty: {
-    backgroundColor: '#F3F4F6'
-  },
-  divider: {
-    marginVertical: 4
-  },
-  inviteForm: {
-    marginTop: 12,
-    gap: 8
-  },
-  inviteInput: {
-    marginBottom: 4
-  },
-  inviteActions: {
-    flexDirection: 'row',
-    gap: 8
-  },
-  inviteButton: {
-    marginTop: 12,
-    minHeight: 48
-  }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    gaugeRow: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginBottom: spacing[1]
+    },
+    gaugeLabel: {
+      fontWeight: fontWeights.semiBold,
+      color: '#1F2937'
+    },
+    chipFull: {
+      backgroundColor: palette.red50
+    },
+    chipOk: {
+      backgroundColor: palette.emerald50
+    },
+    gaugeBar: {
+      height: 8,
+      borderRadius: radii.sm,
+      marginBottom: 4
+    },
+    metaRow: {
+      marginTop: 4
+    },
+    metaText: {
+      color: c.textTertiary
+    },
+    upsellCard: {
+      backgroundColor: palette.purple50,
+      borderRadius: radii.md,
+      padding: 14
+    },
+    upsellTitle: {
+      fontWeight: fontWeights.bold,
+      color: '#4C1D95',
+      marginBottom: 4
+    },
+    upsellDesc: {
+      color: '#6D28D9',
+      marginBottom: 10,
+      lineHeight: 18
+    },
+    upsellButton: {
+      alignSelf: 'flex-start',
+      minHeight: 44
+    },
+    card: {
+      marginBottom: 4
+    },
+    cardRow: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center'
+    },
+    seatInfo: {
+      flex: 1
+    },
+    seatName: {
+      fontWeight: fontWeights.semiBold,
+      color: '#1F2937'
+    },
+    seatRole: {
+      color: c.textTertiary,
+      marginTop: 2
+    },
+    chipActive: {
+      backgroundColor: palette.emerald50
+    },
+    chipEmpty: {
+      backgroundColor: '#F3F4F6'
+    },
+    divider: {
+      marginVertical: 4
+    },
+    inviteForm: {
+      marginTop: spacing[1.5],
+      gap: spacing[1]
+    },
+    inviteInput: {
+      marginBottom: 4
+    },
+    inviteActions: {
+      flexDirection: 'row',
+      gap: spacing[1]
+    },
+    inviteButton: {
+      marginTop: spacing[1.5],
+      minHeight: 48
+    }
+  });
+}

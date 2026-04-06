@@ -1,10 +1,14 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { Animated, Image, StyleSheet, View } from 'react-native';
 
 import { PText } from '../../components';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 
 export const AuthSplashScreen = () => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const navigation = useNavigation<any>();
   const pulseAnim1 = React.useRef(new Animated.Value(0.4)).current;
   const pulseAnim2 = React.useRef(new Animated.Value(0.4)).current;
@@ -71,47 +75,49 @@ export const AuthSplashScreen = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    // Gradient background - using primary color, can be enhanced with LinearGradient if needed
-    backgroundColor: '#00B4D8' // Primary color from mockup
-  },
-  content: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    flex: 1
-  },
-  logoContainer: {
-    marginBottom: 32,
-    alignItems: 'center'
-  },
-  logoImage: {
-    width: 128,
-    height: 75,
-    resizeMode: 'contain'
-  },
-  tagline: {
-    fontSize: 18,
-    fontWeight: '600',
-    textAlign: 'center',
-    maxWidth: 280,
-    lineHeight: 28,
-    marginBottom: 64,
-    color: 'rgba(255,255,255,0.95)'
-  },
-  loadingContainer: {
-    flexDirection: 'row',
-    gap: 8,
-    position: 'absolute',
-    bottom: 64
-  },
-  dot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    backgroundColor: 'rgba(255,255,255,0.5)'
-  }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    container: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      // Gradient background - using primary color, can be enhanced with LinearGradient if needed
+      backgroundColor: c.primary // Primary color from mockup
+    },
+    content: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      flex: 1
+    },
+    logoContainer: {
+      marginBottom: spacing[4],
+      alignItems: 'center'
+    },
+    logoImage: {
+      width: 128,
+      height: 75,
+      resizeMode: 'contain'
+    },
+    tagline: {
+      fontSize: fontSizes['3xl'],
+      fontWeight: fontWeights.semiBold,
+      textAlign: 'center',
+      maxWidth: 280,
+      lineHeight: 28,
+      marginBottom: 64,
+      color: 'rgba(255,255,255,0.95)'
+    },
+    loadingContainer: {
+      flexDirection: 'row',
+      gap: spacing[1],
+      position: 'absolute',
+      bottom: 64
+    },
+    dot: {
+      width: 8,
+      height: 8,
+      borderRadius: radii.sm,
+      backgroundColor: 'rgba(255,255,255,0.5)'
+    }
+  });
+}

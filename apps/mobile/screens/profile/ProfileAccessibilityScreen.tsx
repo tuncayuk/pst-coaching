@@ -1,9 +1,10 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import { PActivityIndicator, PButton, PDivider, PSwitch, PText } from '../../components';
 import { getAccessibilitySettings, getPrimaryUser } from '../../data/mockSelectors';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -24,28 +25,32 @@ const NavCard = ({
   onPress: () => void;
   disabled?: boolean;
   accessibilityLabel: string;
-}) => (
-  <TouchableOpacity
-    style={[styles.navCard, disabled && styles.navCardDisabled]}
-    onPress={onPress}
-    disabled={disabled}
-    accessibilityRole="button"
-    accessibilityLabel={accessibilityLabel}
-    accessibilityHint="Bu erisilebilirlik bolumunu acmak icin dokunun"
-  >
-    <View style={styles.navCardBody}>
-      <PText variant="titleSmall" style={styles.navCardTitle}>
-        {title}
+}) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+  return (
+    <TouchableOpacity
+      style={[styles.navCard, disabled && styles.navCardDisabled]}
+      onPress={onPress}
+      disabled={disabled}
+      accessibilityRole="button"
+      accessibilityLabel={accessibilityLabel}
+      accessibilityHint="Bu erisilebilirlik bolumunu acmak icin dokunun"
+    >
+      <View style={styles.navCardBody}>
+        <PText variant="titleSmall" style={styles.navCardTitle}>
+          {title}
+        </PText>
+        <PText variant="bodySmall" style={styles.navCardSub}>
+          {subtitle}
+        </PText>
+      </View>
+      <PText style={styles.navArrow} accessibilityElementsHidden>
+        {'>'}
       </PText>
-      <PText variant="bodySmall" style={styles.navCardSub}>
-        {subtitle}
-      </PText>
-    </View>
-    <PText style={styles.navArrow} accessibilityElementsHidden>
-      {'>'}
-    </PText>
-  </TouchableOpacity>
-);
+    </TouchableOpacity>
+  );
+};
 
 // Toggle row
 const ToggleRow = ({
@@ -62,26 +67,38 @@ const ToggleRow = ({
   onValueChange: (v: boolean) => void;
   disabled?: boolean;
   accessibilityLabel: string;
-}) => (
-  <View
-    style={styles.toggleRow}
-    accessibilityRole="switch"
-    accessibilityLabel={accessibilityLabel}
-    accessibilityState={{ checked: value, disabled }}
-  >
-    <View style={styles.toggleText}>
-      <PText variant="bodyMedium" style={styles.toggleLabel}>
-        {label}
-      </PText>
-      <PText variant="bodySmall" style={styles.toggleDesc}>
-        {description}
-      </PText>
+}) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+  return (
+    <View
+      style={styles.toggleRow}
+      accessibilityRole="switch"
+      accessibilityLabel={accessibilityLabel}
+      accessibilityState={{ checked: value, disabled }}
+    >
+      <View style={styles.toggleText}>
+        <PText variant="bodyMedium" style={styles.toggleLabel}>
+          {label}
+        </PText>
+        <PText variant="bodySmall" style={styles.toggleDesc}>
+          {description}
+        </PText>
+      </View>
+      <PSwitch
+        value={value}
+        onValueChange={onValueChange}
+        disabled={disabled}
+        accessibilityLabel={accessibilityLabel}
+      />
     </View>
-    <PSwitch value={value} onValueChange={onValueChange} disabled={disabled} accessibilityLabel={accessibilityLabel} />
-  </View>
-);
+  );
+};
 
 const ProfileAccessibilityContent = ({ isOffline }: { isOffline?: boolean }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const navigation = useNavigation<any>();
   const user = getPrimaryUser();
   const settings = getAccessibilitySettings().find((s: any) => s.user_id === user?.id);
@@ -234,65 +251,67 @@ export const ProfileAccessibilityScreen = ({ route }: { route?: { params?: { sta
   );
 };
 
-const styles = StyleSheet.create({
-  sectionHint: {
-    opacity: 0.6,
-    marginBottom: 12,
-    lineHeight: 18
-  },
-  toggleRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingVertical: 10,
-    gap: 12
-  },
-  toggleText: {
-    flex: 1
-  },
-  toggleLabel: {
-    fontWeight: '600'
-  },
-  toggleDesc: {
-    opacity: 0.65,
-    marginTop: 2,
-    lineHeight: 18
-  },
-  divider: {
-    marginVertical: 2
-  },
-  navCard: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingVertical: 14,
-    paddingHorizontal: 4
-  },
-  navCardDisabled: {
-    opacity: 0.5
-  },
-  navCardBody: {
-    flex: 1
-  },
-  navCardTitle: {
-    fontWeight: '600',
-    marginBottom: 2
-  },
-  navCardSub: {
-    opacity: 0.65,
-    lineHeight: 18
-  },
-  navArrow: {
-    fontSize: 22,
-    opacity: 0.4,
-    paddingLeft: 8
-  },
-  offlineNote: {
-    opacity: 0.65,
-    lineHeight: 20,
-    fontStyle: 'italic'
-  },
-  saveBtn: {
-    marginTop: 4
-  }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    sectionHint: {
+      opacity: 0.6,
+      marginBottom: spacing[1.5],
+      lineHeight: 18
+    },
+    toggleRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      paddingVertical: 10,
+      gap: spacing[1.5]
+    },
+    toggleText: {
+      flex: 1
+    },
+    toggleLabel: {
+      fontWeight: fontWeights.semiBold
+    },
+    toggleDesc: {
+      opacity: 0.65,
+      marginTop: 2,
+      lineHeight: 18
+    },
+    divider: {
+      marginVertical: 2
+    },
+    navCard: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      paddingVertical: 14,
+      paddingHorizontal: 4
+    },
+    navCardDisabled: {
+      opacity: 0.5
+    },
+    navCardBody: {
+      flex: 1
+    },
+    navCardTitle: {
+      fontWeight: fontWeights.semiBold,
+      marginBottom: 2
+    },
+    navCardSub: {
+      opacity: 0.65,
+      lineHeight: 18
+    },
+    navArrow: {
+      fontSize: fontSizes['5xl'],
+      opacity: 0.4,
+      paddingLeft: 8
+    },
+    offlineNote: {
+      opacity: 0.65,
+      lineHeight: 20,
+      fontStyle: 'italic'
+    },
+    saveBtn: {
+      marginTop: 4
+    }
+  });
+}

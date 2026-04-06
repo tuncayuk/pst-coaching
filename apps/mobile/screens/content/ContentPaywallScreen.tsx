@@ -1,10 +1,11 @@
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { StyleSheet } from 'react-native';
 
 import { trackCtaTap } from '../../analytics';
 import { PActivityIndicator, PButton, PCard, PDivider, PText } from '../../components';
 import { navigationRef } from '../../navigation/analytics';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -15,6 +16,9 @@ import { StateMessage } from '../components/StateMessage';
 const planBenefits = ['Sınırsız içerik erişimi', 'Yeni içerik bildirimleri', 'Çevrimdışı indirme'];
 
 const ContentPaywallContent = ({ isOffline }: { isOffline?: boolean }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const navigation = useNavigation<any>();
   return (
     <>
@@ -139,17 +143,19 @@ export const ContentPaywallScreen = ({ route }: { route?: { params?: { state?: S
   );
 };
 
-const styles = StyleSheet.create({
-  paragraph: {
-    marginBottom: 8
-  },
-  card: {
-    marginTop: 4
-  },
-  bullet: {
-    marginBottom: 6
-  },
-  divider: {
-    marginVertical: 12
-  }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    paragraph: {
+      marginBottom: spacing[1]
+    },
+    card: {
+      marginTop: 4
+    },
+    bullet: {
+      marginBottom: 6
+    },
+    divider: {
+      marginVertical: 12
+    }
+  });
+}

@@ -1,9 +1,10 @@
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Image, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { PActivityIndicator, PButton, PIconButton, PText, PTextInput } from '../../components';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -12,6 +13,9 @@ import { SkeletonBlock } from '../components/SkeletonBlock';
 import { StateMessage } from '../components/StateMessage';
 
 const LoginContent = ({ isOffline }: { isOffline?: boolean }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const [rememberMe, setRememberMe] = React.useState(true);
   const [showPassword, setShowPassword] = React.useState(false);
   const [email, setEmail] = React.useState('tuncay@bu.edu');
@@ -260,210 +264,212 @@ export const AuthLoginScreen = ({ route }: { route?: { params?: { state?: Screen
   return <LoginContent />;
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#FAFAFA'
-  },
-  scrollContent: {
-    paddingHorizontal: 24,
-    paddingTop: 32,
-    paddingBottom: 32
-  },
-  header: {
-    alignItems: 'center',
-    marginBottom: 40
-  },
-  logoContainer: {
-    marginBottom: 24,
-    alignItems: 'center'
-  },
-  logoImage: {
-    width: 200,
-    height: 60,
-    resizeMode: 'contain'
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: '700',
-    color: '#2B1B5D',
-    marginBottom: 8,
-    textAlign: 'center'
-  },
-  subtitle: {
-    fontSize: 15,
-    color: '#525252',
-    textAlign: 'center'
-  },
-  form: {
-    width: '100%'
-  },
-  inputGroup: {
-    marginBottom: 16
-  },
-  label: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#404040',
-    marginBottom: 8
-  },
-  input: {
-    backgroundColor: '#FFFFFF'
-  },
-  inputContent: {
-    paddingVertical: 16
-  },
-  inputOutline: {
-    borderWidth: 2,
-    borderRadius: 12,
-    borderColor: '#D4D4D4'
-  },
-  passwordContainer: {
-    position: 'relative'
-  },
-  passwordInput: {
-    paddingRight: 48
-  },
-  eyeIcon: {
-    position: 'absolute',
-    right: 8,
-    top: 8,
-    zIndex: 1
-  },
-  rememberRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 24
-  },
-  rememberCheckbox: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8
-  },
-  checkboxLabel: {
-    fontSize: 14,
-    color: '#404040'
-  },
-  forgotLink: {
-    color: '#00B4D8',
-    fontWeight: '600',
-    fontSize: 14
-  },
-  errorContainer: {
-    backgroundColor: '#FEF2F2',
-    borderRadius: 8,
-    padding: 12,
-    marginBottom: 16,
-    borderLeftWidth: 3,
-    borderLeftColor: '#EF4444'
-  },
-  errorText: {
-    color: '#DC2626',
-    fontSize: 14
-  },
-  attemptText: {
-    color: '#DC2626',
-    fontSize: 12,
-    fontWeight: '600',
-    marginTop: 4
-  },
-  loginButton: {
-    marginBottom: 24,
-    borderRadius: 12
-  },
-  checkboxBox: {
-    width: 24,
-    height: 24,
-    borderRadius: 6,
-    borderWidth: 2,
-    borderColor: '#D4D4D4',
-    backgroundColor: '#FFFFFF',
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  checkboxBoxChecked: {
-    borderColor: '#00B4D8',
-    backgroundColor: '#00B4D8'
-  },
-  checkboxCheck: {
-    color: '#FFFFFF',
-    fontSize: 12,
-    fontWeight: '700',
-    lineHeight: 12
-  },
-  divider: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 24
-  },
-  dividerLine: {
-    flex: 1,
-    height: 1,
-    backgroundColor: '#E5E5E5'
-  },
-  dividerText: {
-    marginHorizontal: 16,
-    color: '#525252',
-    fontSize: 14,
-    backgroundColor: '#FAFAFA',
-    paddingHorizontal: 8
-  },
-  socialButtons: {
-    flexDirection: 'row',
-    gap: 16,
-    marginBottom: 32
-  },
-  socialButton: {
-    flex: 1,
-    borderWidth: 2,
-    borderColor: '#E5E5E5'
-  },
-  socialButtonContent: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-    paddingVertical: 12
-  },
-  socialButtonLabel: {
-    fontSize: 16
-  },
-  socialIcon: {
-    fontSize: 20
-  },
-  socialText: {
-    fontSize: 16
-  },
-  signupRow: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  signupText: {
-    color: '#525252',
-    fontSize: 15
-  },
-  signupLink: {
-    color: '#00B4D8',
-    fontWeight: '600',
-    fontSize: 15
-  },
-  guestRow: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 24,
-    paddingTop: 24,
-    borderTopWidth: 1,
-    borderTopColor: '#E5E5E5'
-  },
-  guestText: {
-    color: '#525252',
-    fontSize: 15
-  },
-  guestLink: {
-    color: '#10B981',
-    fontWeight: '600',
-    fontSize: 15
-  }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: c.background
+    },
+    scrollContent: {
+      paddingHorizontal: spacing[3],
+      paddingTop: spacing[4],
+      paddingBottom: spacing[4]
+    },
+    header: {
+      alignItems: 'center',
+      marginBottom: spacing[5]
+    },
+    logoContainer: {
+      marginBottom: spacing[3],
+      alignItems: 'center'
+    },
+    logoImage: {
+      width: 200,
+      height: 60,
+      resizeMode: 'contain'
+    },
+    title: {
+      fontSize: fontSizes['6xl'],
+      fontWeight: fontWeights.bold,
+      color: c.textBrand,
+      marginBottom: spacing[1],
+      textAlign: 'center'
+    },
+    subtitle: {
+      fontSize: fontSizes.xl,
+      color: c.textSecondary,
+      textAlign: 'center'
+    },
+    form: {
+      width: '100%'
+    },
+    inputGroup: {
+      marginBottom: spacing[2]
+    },
+    label: {
+      fontSize: fontSizes.lg,
+      fontWeight: fontWeights.semiBold,
+      color: c.textTertiary,
+      marginBottom: spacing[1]
+    },
+    input: {
+      backgroundColor: palette.white
+    },
+    inputContent: {
+      paddingVertical: spacing[2]
+    },
+    inputOutline: {
+      borderWidth: 2,
+      borderRadius: radii.lg,
+      borderColor: c.outline
+    },
+    passwordContainer: {
+      position: 'relative'
+    },
+    passwordInput: {
+      paddingRight: 48
+    },
+    eyeIcon: {
+      position: 'absolute',
+      right: spacing[1],
+      top: spacing[1],
+      zIndex: 1
+    },
+    rememberRow: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginBottom: spacing[3]
+    },
+    rememberCheckbox: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: spacing[1]
+    },
+    checkboxLabel: {
+      fontSize: fontSizes.lg,
+      color: c.textTertiary
+    },
+    forgotLink: {
+      color: c.primary,
+      fontWeight: fontWeights.semiBold,
+      fontSize: fontSizes.lg
+    },
+    errorContainer: {
+      backgroundColor: palette.red50,
+      borderRadius: radii.md,
+      padding: spacing[1.5],
+      marginBottom: spacing[2],
+      borderLeftWidth: 3,
+      borderLeftColor: palette.red500
+    },
+    errorText: {
+      color: palette.red600,
+      fontSize: fontSizes.lg
+    },
+    attemptText: {
+      color: palette.red600,
+      fontSize: fontSizes.base,
+      fontWeight: fontWeights.semiBold,
+      marginTop: 4
+    },
+    loginButton: {
+      marginBottom: spacing[3],
+      borderRadius: radii.lg
+    },
+    checkboxBox: {
+      width: 24,
+      height: 24,
+      borderRadius: radii.sm,
+      borderWidth: 2,
+      borderColor: c.outline,
+      backgroundColor: palette.white,
+      alignItems: 'center',
+      justifyContent: 'center'
+    },
+    checkboxBoxChecked: {
+      borderColor: c.primary,
+      backgroundColor: c.primary
+    },
+    checkboxCheck: {
+      color: palette.white,
+      fontSize: fontSizes.base,
+      fontWeight: fontWeights.bold,
+      lineHeight: 12
+    },
+    divider: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginBottom: spacing[3]
+    },
+    dividerLine: {
+      flex: 1,
+      height: 1,
+      backgroundColor: c.outlineVariant
+    },
+    dividerText: {
+      marginHorizontal: spacing[2],
+      color: c.textSecondary,
+      fontSize: fontSizes.lg,
+      backgroundColor: c.background,
+      paddingHorizontal: spacing[1]
+    },
+    socialButtons: {
+      flexDirection: 'row',
+      gap: spacing[2],
+      marginBottom: spacing[4]
+    },
+    socialButton: {
+      flex: 1,
+      borderWidth: 2,
+      borderColor: c.outlineVariant
+    },
+    socialButtonContent: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: spacing[1],
+      paddingVertical: spacing[1.5]
+    },
+    socialButtonLabel: {
+      fontSize: fontSizes['2xl']
+    },
+    socialIcon: {
+      fontSize: fontSizes['4xl']
+    },
+    socialText: {
+      fontSize: fontSizes['2xl']
+    },
+    signupRow: {
+      flexDirection: 'row',
+      justifyContent: 'center',
+      alignItems: 'center'
+    },
+    signupText: {
+      color: c.textSecondary,
+      fontSize: fontSizes.xl
+    },
+    signupLink: {
+      color: c.primary,
+      fontWeight: fontWeights.semiBold,
+      fontSize: fontSizes.xl
+    },
+    guestRow: {
+      flexDirection: 'row',
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginTop: spacing[3],
+      paddingTop: spacing[3],
+      borderTopWidth: 1,
+      borderTopColor: c.outlineVariant
+    },
+    guestText: {
+      color: c.textSecondary,
+      fontSize: fontSizes.xl
+    },
+    guestLink: {
+      color: c.tertiary,
+      fontWeight: fontWeights.semiBold,
+      fontSize: fontSizes.xl
+    }
+  });
+}

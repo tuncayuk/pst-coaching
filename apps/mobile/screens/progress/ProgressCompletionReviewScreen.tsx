@@ -1,8 +1,9 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
 
 import { PActivityIndicator, PButton, PCard, PText } from '../../components';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -19,6 +20,9 @@ const NEXT_SUGGESTION = {
 };
 
 const ProgressCompletionReviewContent = ({ isOffline }: { isOffline?: boolean }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const navigation = useNavigation<any>();
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState('');
@@ -171,93 +175,95 @@ export const ProgressCompletionReviewScreen = ({
   );
 };
 
-const styles = StyleSheet.create({
-  prompt: {
-    fontSize: 15,
-    fontWeight: '600',
-    color: '#1F2937',
-    marginBottom: 16
-  },
-  starRow: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    gap: 8,
-    marginBottom: 8
-  },
-  starButton: {
-    padding: 4
-  },
-  star: {
-    fontSize: 36,
-    color: '#D4D4D4'
-  },
-  starFilled: {
-    color: '#F59E0B'
-  },
-  ratingLabel: {
-    textAlign: 'center',
-    fontSize: 13,
-    color: '#737373',
-    marginBottom: 4
-  },
-  textInput: {
-    borderWidth: 1,
-    borderColor: '#E5E7EB',
-    borderRadius: 10,
-    padding: 12,
-    fontSize: 14,
-    color: '#1F2937',
-    minHeight: 80,
-    textAlignVertical: 'top',
-    backgroundColor: '#FAFAFA'
-  },
-  charCount: {
-    fontSize: 11,
-    color: '#9CA3AF',
-    textAlign: 'right',
-    marginTop: 4
-  },
-  action: { marginBottom: 8 },
-  deferButton: { marginTop: 4 },
-  successHero: {
-    alignItems: 'center',
-    paddingVertical: 20,
-    gap: 8
-  },
-  successIcon: {
-    fontSize: 48,
-    color: '#16A34A',
-    fontWeight: '800'
-  },
-  successTitle: {
-    fontSize: 22,
-    fontWeight: '800',
-    color: '#1F2937'
-  },
-  successBody: {
-    fontSize: 14,
-    color: '#525252',
-    textAlign: 'center',
-    lineHeight: 20
-  },
-  suggestionCard: {
-    backgroundColor: '#F5F3FF',
-    borderRadius: 14,
-    marginTop: 12,
-    marginBottom: 8
-  },
-  suggestionLabel: {
-    fontSize: 11,
-    fontWeight: '700',
-    color: '#6B46C1',
-    marginBottom: 4
-  },
-  suggestionTitle: {
-    fontSize: 15,
-    fontWeight: '700',
-    color: '#1F2937',
-    marginBottom: 12
-  },
-  ctaButton: { alignSelf: 'flex-start' },
-  dashboardLink: { alignSelf: 'center', marginTop: 8 }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    prompt: {
+      fontSize: fontSizes.xl,
+      fontWeight: fontWeights.semiBold,
+      color: '#1F2937',
+      marginBottom: spacing[2]
+    },
+    starRow: {
+      flexDirection: 'row',
+      justifyContent: 'center',
+      gap: spacing[1],
+      marginBottom: spacing[1]
+    },
+    starButton: {
+      padding: 4
+    },
+    star: {
+      fontSize: fontSizes['10xl'],
+      color: c.outline
+    },
+    starFilled: {
+      color: '#F59E0B'
+    },
+    ratingLabel: {
+      textAlign: 'center',
+      fontSize: fontSizes.md,
+      color: c.textTertiary,
+      marginBottom: 4
+    },
+    textInput: {
+      borderWidth: 1,
+      borderColor: '#E5E7EB',
+      borderRadius: radii.md,
+      padding: spacing[1.5],
+      fontSize: fontSizes.lg,
+      color: '#1F2937',
+      minHeight: 80,
+      textAlignVertical: 'top',
+      backgroundColor: c.background
+    },
+    charCount: {
+      fontSize: fontSizes.sm,
+      color: '#9CA3AF',
+      textAlign: 'right',
+      marginTop: 4
+    },
+    action: { marginBottom: spacing[1] },
+    deferButton: { marginTop: 4 },
+    successHero: {
+      alignItems: 'center',
+      paddingVertical: spacing[2.5],
+      gap: spacing[1]
+    },
+    successIcon: {
+      fontSize: fontSizes['11xl'],
+      color: c.success,
+      fontWeight: fontWeights.extraBold
+    },
+    successTitle: {
+      fontSize: fontSizes['5xl'],
+      fontWeight: fontWeights.extraBold,
+      color: '#1F2937'
+    },
+    successBody: {
+      fontSize: fontSizes.lg,
+      color: c.textSecondary,
+      textAlign: 'center',
+      lineHeight: 20
+    },
+    suggestionCard: {
+      backgroundColor: '#F5F3FF',
+      borderRadius: radii.xl,
+      marginTop: spacing[1.5],
+      marginBottom: spacing[1]
+    },
+    suggestionLabel: {
+      fontSize: fontSizes.sm,
+      fontWeight: fontWeights.bold,
+      color: '#6B46C1',
+      marginBottom: 4
+    },
+    suggestionTitle: {
+      fontSize: fontSizes.xl,
+      fontWeight: fontWeights.bold,
+      color: '#1F2937',
+      marginBottom: spacing[1.5]
+    },
+    ctaButton: { alignSelf: 'flex-start' },
+    dashboardLink: { alignSelf: 'center', marginTop: spacing[1] }
+  });
+}

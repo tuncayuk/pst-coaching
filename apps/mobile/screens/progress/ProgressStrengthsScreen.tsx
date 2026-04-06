@@ -1,8 +1,9 @@
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { PActivityIndicator, PButton, PCard, PProgressBar, PText } from '../../components';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -42,6 +43,9 @@ const developmentAreas = [
 ];
 
 const ProgressStrengthsContent = ({ isOffline }: { isOffline?: boolean }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const navigation = useNavigation<any>();
 
   return (
@@ -165,38 +169,40 @@ export const ProgressStrengthsScreen = ({ route }: { route?: { params?: { state?
   );
 };
 
-const styles = StyleSheet.create({
-  card: {
-    marginBottom: 12
-  },
-  devCard: {
-    borderWidth: 1,
-    borderColor: '#FCD34D',
-    backgroundColor: '#FFFBEB'
-  },
-  bar: {
-    marginTop: 6,
-    marginBottom: 8,
-    height: 6,
-    borderRadius: 3
-  },
-  description: {
-    fontSize: 12,
-    color: '#737373'
-  },
-  suggestion: {
-    fontSize: 13,
-    color: '#1F2937',
-    marginBottom: 4
-  },
-  contentRef: {
-    fontSize: 11,
-    color: '#6B46C1',
-    fontWeight: '600'
-  },
-  planHint: {
-    fontSize: 13,
-    color: '#525252',
-    marginBottom: 10
-  }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    card: {
+      marginBottom: spacing[1.5]
+    },
+    devCard: {
+      borderWidth: 1,
+      borderColor: '#FCD34D',
+      backgroundColor: '#FFFBEB'
+    },
+    bar: {
+      marginTop: 6,
+      marginBottom: spacing[1],
+      height: 6,
+      borderRadius: 3
+    },
+    description: {
+      fontSize: fontSizes.base,
+      color: c.textTertiary
+    },
+    suggestion: {
+      fontSize: fontSizes.md,
+      color: '#1F2937',
+      marginBottom: 4
+    },
+    contentRef: {
+      fontSize: fontSizes.sm,
+      color: '#6B46C1',
+      fontWeight: fontWeights.semiBold
+    },
+    planHint: {
+      fontSize: fontSizes.md,
+      color: c.textSecondary,
+      marginBottom: 10
+    }
+  });
+}

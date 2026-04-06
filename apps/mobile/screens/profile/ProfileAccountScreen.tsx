@@ -1,9 +1,10 @@
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { PActivityIndicator, PAvatar, PButton, PDivider, PListIcon, PListItem, PText } from '../../components';
 import { getPrimaryUser } from '../../data/mockSelectors';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -12,6 +13,9 @@ import { SkeletonBlock } from '../components/SkeletonBlock';
 import { StateMessage } from '../components/StateMessage';
 
 const ProfileAccountContent = ({ isOffline }: { isOffline?: boolean }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const navigation = useNavigation<any>();
   const user = getPrimaryUser();
 
@@ -129,17 +133,19 @@ export const ProfileAccountScreen = ({ route }: { route?: { params?: { state?: S
   );
 };
 
-const styles = StyleSheet.create({
-  profileHeader: {
-    flexDirection: 'row',
-    alignItems: 'center'
-  },
-  profileInfo: {
-    marginLeft: 12,
-    flex: 1
-  },
-  actionButton: {
-    marginTop: 12,
-    alignSelf: 'flex-start'
-  }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    profileHeader: {
+      flexDirection: 'row',
+      alignItems: 'center'
+    },
+    profileInfo: {
+      marginLeft: 12,
+      flex: 1
+    },
+    actionButton: {
+      marginTop: spacing[1.5],
+      alignSelf: 'flex-start'
+    }
+  });
+}

@@ -1,8 +1,9 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useRef, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import { StyleSheet, TextInput, View } from 'react-native';
 
 import { PActivityIndicator, PButton, PCard, PChip, PTextInput } from '../../components';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -20,6 +21,9 @@ const popularTopics = [
 ];
 
 const HomeSearchContent = ({ isOffline }: { isOffline?: boolean }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const navigation = useNavigation<any>();
   const [query, setQuery] = useState('');
   const [activeFilter, setActiveFilter] = useState<QuickFilter>(null);
@@ -181,24 +185,26 @@ export const HomeSearchScreen = ({ route }: { route?: { params?: { state?: Scree
   );
 };
 
-const styles = StyleSheet.create({
-  input: {
-    marginBottom: 12
-  },
-  chipRow: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 8,
-    marginBottom: 12
-  },
-  chip: {
-    minHeight: 36
-  },
-  chipActive: {
-    borderWidth: 2,
-    borderColor: '#00B4D8'
-  },
-  card: {
-    marginBottom: 12
-  }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    input: {
+      marginBottom: spacing[1.5]
+    },
+    chipRow: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      gap: spacing[1],
+      marginBottom: spacing[1.5]
+    },
+    chip: {
+      minHeight: 36
+    },
+    chipActive: {
+      borderWidth: 2,
+      borderColor: c.primary
+    },
+    card: {
+      marginBottom: spacing[1.5]
+    }
+  });
+}

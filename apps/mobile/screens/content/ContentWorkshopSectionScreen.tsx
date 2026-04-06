@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { StyleSheet, TextInput, View } from 'react-native';
 
 import { PActivityIndicator, PButton, PChip, PDivider, PText } from '../../components';
@@ -11,6 +11,7 @@ import {
   getPrimaryUser,
   getWorkshopById
 } from '../../data/mockSelectors';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -59,6 +60,9 @@ const ContentWorkshopSectionContent = ({
   sectionId?: string;
   isOffline?: boolean;
 }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const navigation = useNavigation<any>();
   const user = getPrimaryUser();
   const workshop = getWorkshopById(workshopId);
@@ -283,70 +287,72 @@ export const ContentWorkshopSectionScreen = ({ route }: { route?: { params?: Rou
   );
 };
 
-const styles = StyleSheet.create({
-  subtleText: {
-    opacity: 0.65,
-    marginBottom: 8
-  },
-  actionRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 12,
-    marginTop: 6
-  },
-  favChip: {
-    alignSelf: 'flex-start'
-  },
-  highlightCount: {
-    opacity: 0.6
-  },
-  blockText: {
-    lineHeight: 22
-  },
-  verseText: {
-    fontStyle: 'italic',
-    lineHeight: 24
-  },
-  outputText: {
-    fontWeight: '600'
-  },
-  practiceBtn: {
-    marginTop: 10,
-    alignSelf: 'flex-start'
-  },
-  divider: {
-    marginVertical: 10
-  },
-  noteInput: {
-    borderWidth: 1,
-    borderColor: '#E0E0E0',
-    borderRadius: 8,
-    padding: 10,
-    minHeight: 80,
-    fontSize: 14,
-    textAlignVertical: 'top',
-    marginBottom: 8
-  },
-  savedNote: {
-    color: '#4CAF50',
-    marginBottom: 4
-  },
-  saveBtn: {
-    alignSelf: 'flex-start'
-  },
-  summaryText: {
-    lineHeight: 20,
-    opacity: 0.75
-  },
-  completeBtn: {
-    marginTop: 12
-  },
-  completedText: {
-    color: '#4CAF50',
-    marginTop: 12,
-    fontWeight: '700'
-  },
-  nextBtn: {
-    marginTop: 10
-  }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    subtleText: {
+      opacity: 0.65,
+      marginBottom: spacing[1]
+    },
+    actionRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: spacing[1.5],
+      marginTop: 6
+    },
+    favChip: {
+      alignSelf: 'flex-start'
+    },
+    highlightCount: {
+      opacity: 0.6
+    },
+    blockText: {
+      lineHeight: 22
+    },
+    verseText: {
+      fontStyle: 'italic',
+      lineHeight: 24
+    },
+    outputText: {
+      fontWeight: fontWeights.semiBold
+    },
+    practiceBtn: {
+      marginTop: 10,
+      alignSelf: 'flex-start'
+    },
+    divider: {
+      marginVertical: 10
+    },
+    noteInput: {
+      borderWidth: 1,
+      borderColor: '#E0E0E0',
+      borderRadius: radii.md,
+      padding: 10,
+      minHeight: 80,
+      fontSize: fontSizes.lg,
+      textAlignVertical: 'top',
+      marginBottom: spacing[1]
+    },
+    savedNote: {
+      color: '#4CAF50',
+      marginBottom: 4
+    },
+    saveBtn: {
+      alignSelf: 'flex-start'
+    },
+    summaryText: {
+      lineHeight: 20,
+      opacity: 0.75
+    },
+    completeBtn: {
+      marginTop: spacing[1.5]
+    },
+    completedText: {
+      color: '#4CAF50',
+      marginTop: spacing[1.5],
+      fontWeight: fontWeights.bold
+    },
+    nextBtn: {
+      marginTop: 10
+    }
+  });
+}

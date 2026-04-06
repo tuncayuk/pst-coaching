@@ -1,8 +1,9 @@
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { PActivityIndicator, PButton, PCard, PRadioButtonGroup, PRadioButtonItem, PText } from '../../components';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -28,6 +29,9 @@ const PREFERENCE_OPTIONS = [
 ];
 
 const DiscoverAssistantQuestionsContent = ({ isOffline }: { isOffline?: boolean }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const navigation = useNavigation<any>();
   const [goal, setGoal] = React.useState('personal');
   const [duration, setDuration] = React.useState('20');
@@ -181,28 +185,35 @@ export const DiscoverAssistantQuestionsScreen = ({ route }: { route?: { params?:
   );
 };
 
-const styles = StyleSheet.create({
-  progressRow: { marginBottom: 12 },
-  progressLabel: { textAlign: 'center' },
-  hero: { alignItems: 'center', marginBottom: 20 },
-  heroEmoji: { fontSize: 48, marginBottom: 10 },
-  heroTitle: {
-    fontSize: 20,
-    fontWeight: '700',
-    color: '#2B1B5D',
-    textAlign: 'center',
-    marginBottom: 4
-  },
-  heroSubtitle: { fontSize: 14, color: '#525252', textAlign: 'center' },
-  card: { padding: 16, borderRadius: 16, marginBottom: 16 },
-  cardLabel: { fontSize: 15, fontWeight: '600', color: '#171717', marginBottom: 12 },
-  radioItem: { borderWidth: 2, borderRadius: 12, marginBottom: 8 },
-  radioItemActive: { borderColor: '#2B1B5D', backgroundColor: '#EDE7F6' },
-  radioItemIdle: { borderColor: '#E5E5E5', backgroundColor: '#FFFFFF' },
-  durationGrid: { flexDirection: 'row', gap: 8 },
-  durationButton: { flex: 1 },
-  prefGrid: { gap: 8 },
-  prefButton: { borderRadius: 12 },
-  prefButtonContent: { height: 40 },
-  primaryButton: { marginBottom: 8, borderRadius: 12 }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    progressRow: { marginBottom: spacing[1.5] },
+    progressLabel: { textAlign: 'center' },
+    hero: { alignItems: 'center', marginBottom: spacing[2.5] },
+    heroEmoji: { fontSize: fontSizes['11xl'], marginBottom: 10 },
+    heroTitle: {
+      fontSize: fontSizes['4xl'],
+      fontWeight: fontWeights.bold,
+      color: c.textBrand,
+      textAlign: 'center',
+      marginBottom: 4
+    },
+    heroSubtitle: { fontSize: fontSizes.lg, color: c.textSecondary, textAlign: 'center' },
+    card: { padding: spacing[2], borderRadius: radii.xl, marginBottom: spacing[2] },
+    cardLabel: {
+      fontSize: fontSizes.xl,
+      fontWeight: fontWeights.semiBold,
+      color: c.textPrimary,
+      marginBottom: spacing[1.5]
+    },
+    radioItem: { borderWidth: 2, borderRadius: radii.lg, marginBottom: spacing[1] },
+    radioItemActive: { borderColor: c.textBrand, backgroundColor: palette.purple50 },
+    radioItemIdle: { borderColor: c.outlineVariant, backgroundColor: palette.white },
+    durationGrid: { flexDirection: 'row', gap: spacing[1] },
+    durationButton: { flex: 1 },
+    prefGrid: { gap: spacing[1] },
+    prefButton: { borderRadius: radii.lg },
+    prefButtonContent: { height: 40 },
+    primaryButton: { marginBottom: spacing[1], borderRadius: radii.lg }
+  });
+}

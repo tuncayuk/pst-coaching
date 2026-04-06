@@ -1,9 +1,10 @@
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { PActivityIndicator, PButton, PRadioButtonGroup, PRadioButtonItem, PText } from '../../components';
 import { getPrimaryUser } from '../../data/mockSelectors';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -12,6 +13,9 @@ import { SkeletonBlock } from '../components/SkeletonBlock';
 import { StateMessage } from '../components/StateMessage';
 
 const LanguageSelectContent = ({ isOffline }: { isOffline?: boolean }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const navigation = useNavigation<any>();
   const user = getPrimaryUser();
   const [selectedLanguage, setSelectedLanguage] = React.useState(user?.language ?? 'tr');
@@ -104,15 +108,17 @@ export const OnboardingLanguageSelectScreen = ({ route }: { route?: { params?: {
   );
 };
 
-const styles = StyleSheet.create({
-  helperText: {
-    marginBottom: 12
-  },
-  primaryButton: {
-    marginTop: 16,
-    alignSelf: 'flex-start'
-  },
-  bodyText: {
-    lineHeight: 20
-  }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    helperText: {
+      marginBottom: spacing[1.5]
+    },
+    primaryButton: {
+      marginTop: spacing[2],
+      alignSelf: 'flex-start'
+    },
+    bodyText: {
+      lineHeight: 20
+    }
+  });
+}

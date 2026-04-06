@@ -1,8 +1,9 @@
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { PActivityIndicator, PButton, PCard, PChip, PDivider, PText } from '../../components';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -27,6 +28,9 @@ const MOCK_ADDONS = [
 ];
 
 const HomeSubscriptionContent = ({ isOffline }: { isOffline?: boolean }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const navigation = useNavigation<any>();
   // Mock: in real app this comes from auth/subscription state
   const status: SubscriptionStatus = 'active';
@@ -166,79 +170,81 @@ export const HomeSubscriptionScreen = ({ route }: { route?: { params?: { state?:
   );
 };
 
-const styles = StyleSheet.create({
-  planHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 12,
-    marginBottom: 12
-  },
-  statusBadge: {
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 999,
-    borderWidth: 1.5,
-    alignSelf: 'flex-start'
-  },
-  statusBadgeText: {
-    fontSize: 13,
-    fontWeight: '700'
-  },
-  planInfo: {
-    flex: 1
-  },
-  planName: {
-    fontSize: 16,
-    fontWeight: '700',
-    color: '#171717',
-    marginBottom: 2
-  },
-  planRenewal: {
-    fontSize: 12,
-    color: '#525252'
-  },
-  divider: {
-    marginBottom: 12
-  },
-  manageButton: {
-    alignSelf: 'flex-start',
-    minHeight: 48
-  },
-  addonCard: {
-    marginBottom: 8,
-    padding: 12
-  },
-  addonRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center'
-  },
-  addonName: {
-    fontSize: 14,
-    color: '#171717',
-    flex: 1,
-    marginRight: 8
-  },
-  addonActiveChip: {
-    backgroundColor: '#D1FAE5'
-  },
-  addonInactiveChip: {
-    backgroundColor: '#F5F5F5'
-  },
-  upgradeButton: {
-    marginTop: 4,
-    alignSelf: 'flex-start',
-    minHeight: 48
-  },
-  paywallInfoCard: {
-    backgroundColor: '#F0F9FF',
-    borderLeftWidth: 4,
-    borderLeftColor: '#00B4D8',
-    padding: 14
-  },
-  paywallInfoText: {
-    fontSize: 13,
-    color: '#0C4A6E',
-    lineHeight: 20
-  }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    planHeader: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: spacing[1.5],
+      marginBottom: spacing[1.5]
+    },
+    statusBadge: {
+      paddingHorizontal: spacing[1.5],
+      paddingVertical: 6,
+      borderRadius: radii.full,
+      borderWidth: 1.5,
+      alignSelf: 'flex-start'
+    },
+    statusBadgeText: {
+      fontSize: fontSizes.md,
+      fontWeight: fontWeights.bold
+    },
+    planInfo: {
+      flex: 1
+    },
+    planName: {
+      fontSize: fontSizes['2xl'],
+      fontWeight: fontWeights.bold,
+      color: c.textPrimary,
+      marginBottom: 2
+    },
+    planRenewal: {
+      fontSize: fontSizes.base,
+      color: c.textSecondary
+    },
+    divider: {
+      marginBottom: spacing[1.5]
+    },
+    manageButton: {
+      alignSelf: 'flex-start',
+      minHeight: 48
+    },
+    addonCard: {
+      marginBottom: spacing[1],
+      padding: spacing[1.5]
+    },
+    addonRow: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center'
+    },
+    addonName: {
+      fontSize: fontSizes.lg,
+      color: c.textPrimary,
+      flex: 1,
+      marginRight: 8
+    },
+    addonActiveChip: {
+      backgroundColor: palette.emerald50
+    },
+    addonInactiveChip: {
+      backgroundColor: c.surfaceVariant
+    },
+    upgradeButton: {
+      marginTop: 4,
+      alignSelf: 'flex-start',
+      minHeight: 48
+    },
+    paywallInfoCard: {
+      backgroundColor: '#F0F9FF',
+      borderLeftWidth: 4,
+      borderLeftColor: c.primary,
+      padding: 14
+    },
+    paywallInfoText: {
+      fontSize: fontSizes.md,
+      color: '#0C4A6E',
+      lineHeight: 20
+    }
+  });
+}

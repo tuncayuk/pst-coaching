@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -21,6 +21,7 @@ import {
   getPackagesForModule,
   getPrimaryUser
 } from '../../data/mockSelectors';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
 import { SkeletonBlock } from '../components/SkeletonBlock';
@@ -59,6 +60,9 @@ const LockedPackageView = ({
   prevPkg: { id: string; title: string } | null;
   navigation: any;
 }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const countdown = hoursUntil8am();
 
   return (
@@ -158,6 +162,9 @@ const PackageDetailView = ({
   isOffline?: boolean;
   navigation: any;
 }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const user = getPrimaryUser();
   const progress = getContentProgressForUser(user?.id);
   const items = [...getContentItemsForParent('package', pkg.id)].sort(
@@ -289,6 +296,9 @@ const PackageDetailView = ({
 };
 
 const ContentPackageDetailContent = ({ packageId, isOffline }: { packageId?: string; isOffline?: boolean }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const navigation = useNavigation<any>();
   const user = getPrimaryUser();
   const progress = getContentProgressForUser(user?.id);
@@ -347,6 +357,9 @@ const ContentPackageDetailContent = ({ packageId, isOffline }: { packageId?: str
 };
 
 export const ContentPackageDetailScreen = ({ route }: { route?: { params?: RouteParams } }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const state = resolveScreenState(route);
   const packageId = route?.params?.id;
 
@@ -414,126 +427,138 @@ export const ContentPackageDetailScreen = ({ route }: { route?: { params?: Route
   );
 };
 
-const styles = StyleSheet.create({
-  root: { flex: 1, backgroundColor: '#F8FAFC' },
-  page: { paddingBottom: 40 },
-  hero: {
-    height: 140,
-    backgroundColor: '#1E3A5F',
-    alignItems: 'center',
-    justifyContent: 'center',
-    position: 'relative'
-  },
-  heroLocked: { backgroundColor: '#4B5563' },
-  heroBack: {
-    position: 'absolute',
-    top: 8,
-    left: 8,
-    backgroundColor: 'rgba(255,255,255,0.15)',
-    borderRadius: 20
-  },
-  heroAvatar: { backgroundColor: 'rgba(255,255,255,0.15)' },
-  content: { paddingHorizontal: 16, paddingTop: 20 },
-  // locked styles
-  lockedHeader: { alignItems: 'center', marginBottom: 24 },
-  lockIcon: { backgroundColor: '#F4F4F5', marginBottom: 12 },
-  lockedTitle: {
-    fontSize: 22,
-    fontWeight: '800',
-    color: '#374151',
-    marginBottom: 4
-  },
-  lockedSubtitle: { fontSize: 14, color: '#6B7280', textAlign: 'center' },
-  lockReasonCard: {
-    padding: 16,
-    borderRadius: 12,
-    marginBottom: 12,
-    backgroundColor: '#EFF6FF',
-    borderLeftWidth: 4,
-    borderLeftColor: '#1D4ED8'
-  },
-  lockReasonHeader: { flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 8 },
-  infoIcon: { backgroundColor: '#DBEAFE' },
-  lockReasonTitle: { fontSize: 14, fontWeight: '700', color: '#1E40AF' },
-  lockReasonText: { fontSize: 13, color: '#1E3A5F', lineHeight: 20, marginBottom: 12 },
-  prereqBox: { backgroundColor: '#FFFFFF', borderRadius: 8, padding: 10 },
-  prereqLabel: { fontSize: 11, color: '#6B7280', marginBottom: 6 },
-  prereqRow: { flexDirection: 'row', alignItems: 'center', gap: 8 },
-  prereqIcon: { backgroundColor: '#E0F2FE' },
-  prereqTitle: { fontSize: 13, fontWeight: '600', color: '#1E293B' },
-  countdownCard: {
-    padding: 16,
-    borderRadius: 12,
-    marginBottom: 16,
-    backgroundColor: '#FFFBEB',
-    borderLeftWidth: 4,
-    borderLeftColor: '#F59E0B'
-  },
-  countdownHeader: { flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 8 },
-  clockIcon: { backgroundColor: '#FEF3C7' },
-  countdownTitle: { fontSize: 14, fontWeight: '700', color: '#92400E' },
-  countdownText: { fontSize: 13, color: '#78350F', lineHeight: 20, marginBottom: 10 },
-  countdownRow: { flexDirection: 'row', alignItems: 'center', gap: 8 },
-  countdownLabel: { fontSize: 13, color: '#92400E' },
-  countdownValue: { fontSize: 18, fontWeight: '800', color: '#D97706' },
-  goToPrereqBtn: { marginBottom: 10 },
-  // active/detail styles
-  packageTitle: {
-    fontSize: 20,
-    fontWeight: '800',
-    color: '#1E3A5F',
-    marginBottom: 10
-  },
-  pkgProgressRow: { marginBottom: 12 },
-  pkgProgressBar: { height: 6, borderRadius: 6, marginBottom: 4 },
-  pkgProgressLabel: { fontSize: 12, color: '#0EA5E9', textAlign: 'right', fontWeight: '600' },
-  objectivesCard: {
-    padding: 14,
-    borderRadius: 12,
-    marginBottom: 12,
-    backgroundColor: '#F5F3FF',
-    borderLeftWidth: 3,
-    borderLeftColor: '#7C4DFF'
-  },
-  objectivesHeader: { flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 8 },
-  targetIcon: { backgroundColor: '#EDE9FE' },
-  objectivesTitle: { fontSize: 14, fontWeight: '700', color: '#4C1D95' },
-  objRow: { flexDirection: 'row', alignItems: 'flex-start', gap: 6, marginBottom: 4 },
-  objBullet: { fontSize: 16, color: '#7C4DFF', lineHeight: 20, marginTop: 1 },
-  objText: { flex: 1, fontSize: 13, color: '#4C1D95', lineHeight: 20 },
-  sectionsCard: {
-    padding: 14,
-    borderRadius: 12,
-    marginBottom: 16,
-    backgroundColor: '#FFFFFF'
-  },
-  sectionsTitle: { fontSize: 14, fontWeight: '700', color: '#1E293B', marginBottom: 12 },
-  sectionRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 8,
-    gap: 10
-  },
-  sectionRowNext: {
-    backgroundColor: '#F0F9FF',
-    borderRadius: 8,
-    paddingHorizontal: 8,
-    marginHorizontal: -8
-  },
-  sectionIcon: { borderRadius: 14 },
-  sectionInfo: { flex: 1 },
-  sectionTitle: { fontSize: 13, fontWeight: '600', color: '#1E293B' },
-  sectionTitleDone: { color: '#6B7280' },
-  sectionMeta: { fontSize: 11, color: '#9CA3AF', marginTop: 2 },
-  nextBadge: {
-    backgroundColor: '#0EA5E9',
-    borderRadius: 6,
-    paddingHorizontal: 6,
-    paddingVertical: 2
-  },
-  nextBadgeText: { fontSize: 10, fontWeight: '700', color: '#FFFFFF' },
-  doneCheck: { fontSize: 18, color: '#16A34A', fontWeight: '700' },
-  sectionDivider: { marginVertical: 2 },
-  startBtn: { marginBottom: 10, borderRadius: 12 },
-  backBtn: { borderRadius: 12 }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    root: { flex: 1, backgroundColor: '#F8FAFC' },
+    page: { paddingBottom: 40 },
+    hero: {
+      height: 140,
+      backgroundColor: '#1E3A5F',
+      alignItems: 'center',
+      justifyContent: 'center',
+      position: 'relative'
+    },
+    heroLocked: { backgroundColor: '#4B5563' },
+    heroBack: {
+      position: 'absolute',
+      top: 8,
+      left: 8,
+      backgroundColor: 'rgba(255,255,255,0.15)',
+      borderRadius: radii['2xl']
+    },
+    heroAvatar: { backgroundColor: 'rgba(255,255,255,0.15)' },
+    content: { paddingHorizontal: spacing[2], paddingTop: 20 },
+    // locked styles
+    lockedHeader: { alignItems: 'center', marginBottom: spacing[3] },
+    lockIcon: { backgroundColor: '#F4F4F5', marginBottom: spacing[1.5] },
+    lockedTitle: {
+      fontSize: fontSizes['5xl'],
+      fontWeight: fontWeights.extraBold,
+      color: '#374151',
+      marginBottom: 4
+    },
+    lockedSubtitle: { fontSize: fontSizes.lg, color: c.textTertiary, textAlign: 'center' },
+    lockReasonCard: {
+      padding: spacing[2],
+      borderRadius: radii.lg,
+      marginBottom: spacing[1.5],
+      backgroundColor: '#EFF6FF',
+      borderLeftWidth: 4,
+      borderLeftColor: '#1D4ED8'
+    },
+    lockReasonHeader: { flexDirection: 'row', alignItems: 'center', gap: spacing[1], marginBottom: spacing[1] },
+    infoIcon: { backgroundColor: '#DBEAFE' },
+    lockReasonTitle: { fontSize: fontSizes.lg, fontWeight: fontWeights.bold, color: '#1E40AF' },
+    lockReasonText: { fontSize: fontSizes.md, color: '#1E3A5F', lineHeight: 20, marginBottom: spacing[1.5] },
+    prereqBox: { backgroundColor: palette.white, borderRadius: radii.md, padding: 10 },
+    prereqLabel: { fontSize: fontSizes.sm, color: c.textTertiary, marginBottom: 6 },
+    prereqRow: { flexDirection: 'row', alignItems: 'center', gap: spacing[1] },
+    prereqIcon: { backgroundColor: '#E0F2FE' },
+    prereqTitle: { fontSize: fontSizes.md, fontWeight: fontWeights.semiBold, color: '#1E293B' },
+    countdownCard: {
+      padding: spacing[2],
+      borderRadius: radii.lg,
+      marginBottom: spacing[2],
+      backgroundColor: '#FFFBEB',
+      borderLeftWidth: 4,
+      borderLeftColor: '#F59E0B'
+    },
+    countdownHeader: { flexDirection: 'row', alignItems: 'center', gap: spacing[1], marginBottom: spacing[1] },
+    clockIcon: { backgroundColor: c.warningContainer },
+    countdownTitle: { fontSize: fontSizes.lg, fontWeight: fontWeights.bold, color: '#92400E' },
+    countdownText: { fontSize: fontSizes.md, color: '#78350F', lineHeight: 20, marginBottom: 10 },
+    countdownRow: { flexDirection: 'row', alignItems: 'center', gap: spacing[1] },
+    countdownLabel: { fontSize: fontSizes.md, color: '#92400E' },
+    countdownValue: { fontSize: fontSizes['3xl'], fontWeight: fontWeights.extraBold, color: '#D97706' },
+    goToPrereqBtn: { marginBottom: 10 },
+    // active/detail styles
+    packageTitle: {
+      fontSize: fontSizes['4xl'],
+      fontWeight: fontWeights.extraBold,
+      color: '#1E3A5F',
+      marginBottom: 10
+    },
+    pkgProgressRow: { marginBottom: spacing[1.5] },
+    pkgProgressBar: { height: 6, borderRadius: radii.sm, marginBottom: 4 },
+    pkgProgressLabel: {
+      fontSize: fontSizes.base,
+      color: '#0EA5E9',
+      textAlign: 'right',
+      fontWeight: fontWeights.semiBold
+    },
+    objectivesCard: {
+      padding: 14,
+      borderRadius: radii.lg,
+      marginBottom: spacing[1.5],
+      backgroundColor: '#F5F3FF',
+      borderLeftWidth: 3,
+      borderLeftColor: '#7C4DFF'
+    },
+    objectivesHeader: { flexDirection: 'row', alignItems: 'center', gap: spacing[1], marginBottom: spacing[1] },
+    targetIcon: { backgroundColor: palette.purple50 },
+    objectivesTitle: { fontSize: fontSizes.lg, fontWeight: fontWeights.bold, color: '#4C1D95' },
+    objRow: { flexDirection: 'row', alignItems: 'flex-start', gap: 6, marginBottom: 4 },
+    objBullet: { fontSize: fontSizes['2xl'], color: '#7C4DFF', lineHeight: 20, marginTop: 1 },
+    objText: { flex: 1, fontSize: fontSizes.md, color: '#4C1D95', lineHeight: 20 },
+    sectionsCard: {
+      padding: 14,
+      borderRadius: radii.lg,
+      marginBottom: spacing[2],
+      backgroundColor: palette.white
+    },
+    sectionsTitle: {
+      fontSize: fontSizes.lg,
+      fontWeight: fontWeights.bold,
+      color: '#1E293B',
+      marginBottom: spacing[1.5]
+    },
+    sectionRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      paddingVertical: spacing[1],
+      gap: 10
+    },
+    sectionRowNext: {
+      backgroundColor: '#F0F9FF',
+      borderRadius: radii.md,
+      paddingHorizontal: spacing[1],
+      marginHorizontal: -8
+    },
+    sectionIcon: { borderRadius: radii.xl },
+    sectionInfo: { flex: 1 },
+    sectionTitle: { fontSize: fontSizes.md, fontWeight: fontWeights.semiBold, color: '#1E293B' },
+    sectionTitleDone: { color: c.textTertiary },
+    sectionMeta: { fontSize: fontSizes.sm, color: '#9CA3AF', marginTop: 2 },
+    nextBadge: {
+      backgroundColor: '#0EA5E9',
+      borderRadius: radii.sm,
+      paddingHorizontal: 6,
+      paddingVertical: 2
+    },
+    nextBadgeText: { fontSize: 10, fontWeight: fontWeights.bold, color: palette.white },
+    doneCheck: { fontSize: fontSizes['3xl'], color: c.success, fontWeight: fontWeights.bold },
+    sectionDivider: { marginVertical: 2 },
+    startBtn: { marginBottom: 10, borderRadius: radii.lg },
+    backBtn: { borderRadius: radii.lg }
+  });
+}

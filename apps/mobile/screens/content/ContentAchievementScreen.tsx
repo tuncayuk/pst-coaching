@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -11,6 +11,7 @@ import {
   getPackagesForModule,
   getPrimaryUser
 } from '../../data/mockSelectors';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
 import { SkeletonBlock } from '../components/SkeletonBlock';
@@ -19,6 +20,9 @@ import { StateMessage } from '../components/StateMessage';
 type RouteParams = { state?: ScreenState; id?: string };
 
 const ContentAchievementContent = ({ achievementId, isOffline }: { achievementId?: string; isOffline?: boolean }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const navigation = useNavigation<any>();
   const user = getPrimaryUser();
 
@@ -176,6 +180,9 @@ const ContentAchievementContent = ({ achievementId, isOffline }: { achievementId
 };
 
 export const ContentAchievementScreen = ({ route }: { route?: { params?: RouteParams } }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const state = resolveScreenState(route);
   const achievementId = route?.params?.id;
 
@@ -242,112 +249,129 @@ export const ContentAchievementScreen = ({ route }: { route?: { params?: RoutePa
   );
 };
 
-const styles = StyleSheet.create({
-  root: { flex: 1, backgroundColor: '#F8FAFC' },
-  page: { paddingBottom: 40 },
-  body: { flex: 1 },
-  celebrationHeader: {
-    backgroundColor: '#1E3A5F',
-    paddingTop: 36,
-    paddingBottom: 40,
-    alignItems: 'center'
-  },
-  medalIcon: {
-    backgroundColor: '#F59E0B',
-    marginBottom: 16,
-    width: 96,
-    height: 96,
-    borderRadius: 48
-  },
-  celebrationTitle: {
-    fontSize: 28,
-    fontWeight: '900',
-    color: '#FFFFFF',
-    marginBottom: 6
-  },
-  celebrationSubtitle: {
-    fontSize: 15,
-    color: 'rgba(255,255,255,0.8)',
-    textAlign: 'center',
-    paddingHorizontal: 32
-  },
-  content: { paddingHorizontal: 16, paddingTop: 20 },
-  certCard: {
-    padding: 16,
-    borderRadius: 16,
-    marginBottom: 12,
-    backgroundColor: '#FFFBEB',
-    borderWidth: 1,
-    borderColor: '#FCD34D'
-  },
-  certHeader: { flexDirection: 'row', alignItems: 'center', gap: 10, marginBottom: 10 },
-  certIconBg: { backgroundColor: '#FEF3C7' },
-  certTitle: { fontSize: 16, fontWeight: '800', color: '#92400E' },
-  certDivider: { marginBottom: 12 },
-  statsRow: { flexDirection: 'row', justifyContent: 'space-around', marginBottom: 12 },
-  statItem: { alignItems: 'center', flex: 1 },
-  statBorder: {
-    borderLeftWidth: 1,
-    borderRightWidth: 1,
-    borderColor: '#FCD34D'
-  },
-  statValue: { fontSize: 22, fontWeight: '800', color: '#92400E' },
-  statLabel: { fontSize: 11, color: '#B45309', marginTop: 2 },
-  xpRow: { flexDirection: 'row', gap: 10, justifyContent: 'center' },
-  xpBadge: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 4,
-    backgroundColor: '#FEF9C3',
-    borderRadius: 8,
-    paddingHorizontal: 10,
-    paddingVertical: 4
-  },
-  xpIcon: { backgroundColor: 'transparent' },
-  xpText: { fontSize: 12, fontWeight: '700', color: '#92400E' },
-  rozetBadge: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 4,
-    backgroundColor: '#EDE9FE',
-    borderRadius: 8,
-    paddingHorizontal: 10,
-    paddingVertical: 4
-  },
-  rozetIcon: { backgroundColor: 'transparent' },
-  rozetText: { fontSize: 12, fontWeight: '700', color: '#4C1D95' },
-  dashboardCard: {
-    padding: 14,
-    borderRadius: 12,
-    marginBottom: 12,
-    backgroundColor: '#F0F9FF',
-    borderLeftWidth: 3,
-    borderLeftColor: '#0EA5E9'
-  },
-  dashboardRow: { flexDirection: 'row', alignItems: 'flex-start', gap: 10 },
-  dashIcon: { backgroundColor: '#E0F2FE' },
-  dashInfo: { flex: 1 },
-  dashTitle: { fontSize: 13, fontWeight: '700', color: '#0369A1', marginBottom: 4 },
-  dashDesc: { fontSize: 12, color: '#0C4A6E', lineHeight: 18 },
-  nextCard: {
-    padding: 16,
-    borderRadius: 12,
-    marginBottom: 16,
-    backgroundColor: '#F5F3FF',
-    borderLeftWidth: 3,
-    borderLeftColor: '#7C4DFF'
-  },
-  nextHeader: { flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 8 },
-  nextIcon: { backgroundColor: '#EDE9FE' },
-  nextTitle: { fontSize: 12, fontWeight: '700', color: '#6D28D9' },
-  nextModuleName: { fontSize: 15, fontWeight: '700', color: '#1E3A5F', marginBottom: 4 },
-  nextModuleDesc: {
-    fontSize: 13,
-    color: '#4C1D95',
-    lineHeight: 18,
-    marginBottom: 12,
-    opacity: 0.85
-  },
-  goNextBtn: { alignSelf: 'flex-start', borderRadius: 10 },
-  actionBtn: { marginBottom: 8 }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    root: { flex: 1, backgroundColor: '#F8FAFC' },
+    page: { paddingBottom: 40 },
+    body: { flex: 1 },
+    celebrationHeader: {
+      backgroundColor: '#1E3A5F',
+      paddingTop: 36,
+      paddingBottom: 40,
+      alignItems: 'center'
+    },
+    medalIcon: {
+      backgroundColor: '#F59E0B',
+      marginBottom: spacing[2],
+      width: 96,
+      height: 96,
+      borderRadius: 48
+    },
+    celebrationTitle: {
+      fontSize: fontSizes['8xl'],
+      fontWeight: fontWeights.black,
+      color: palette.white,
+      marginBottom: 6
+    },
+    celebrationSubtitle: {
+      fontSize: fontSizes.xl,
+      color: 'rgba(255,255,255,0.8)',
+      textAlign: 'center',
+      paddingHorizontal: spacing[4]
+    },
+    content: { paddingHorizontal: spacing[2], paddingTop: 20 },
+    certCard: {
+      padding: spacing[2],
+      borderRadius: radii.xl,
+      marginBottom: spacing[1.5],
+      backgroundColor: '#FFFBEB',
+      borderWidth: 1,
+      borderColor: '#FCD34D'
+    },
+    certHeader: { flexDirection: 'row', alignItems: 'center', gap: 10, marginBottom: 10 },
+    certIconBg: { backgroundColor: c.warningContainer },
+    certTitle: { fontSize: fontSizes['2xl'], fontWeight: fontWeights.extraBold, color: '#92400E' },
+    certDivider: { marginBottom: spacing[1.5] },
+    statsRow: { flexDirection: 'row', justifyContent: 'space-around', marginBottom: spacing[1.5] },
+    statItem: { alignItems: 'center', flex: 1 },
+    statBorder: {
+      borderLeftWidth: 1,
+      borderRightWidth: 1,
+      borderColor: '#FCD34D'
+    },
+    statValue: { fontSize: fontSizes['5xl'], fontWeight: fontWeights.extraBold, color: '#92400E' },
+    statLabel: { fontSize: fontSizes.sm, color: '#B45309', marginTop: 2 },
+    xpRow: { flexDirection: 'row', gap: 10, justifyContent: 'center' },
+    xpBadge: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 4,
+      backgroundColor: c.warningContainer,
+      borderRadius: radii.md,
+      paddingHorizontal: 10,
+      paddingVertical: 4
+    },
+    xpIcon: { backgroundColor: 'transparent' },
+    xpText: { fontSize: fontSizes.base, fontWeight: fontWeights.bold, color: '#92400E' },
+    rozetBadge: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 4,
+      backgroundColor: palette.purple50,
+      borderRadius: radii.md,
+      paddingHorizontal: 10,
+      paddingVertical: 4
+    },
+    rozetIcon: { backgroundColor: 'transparent' },
+    rozetText: { fontSize: fontSizes.base, fontWeight: fontWeights.bold, color: '#4C1D95' },
+    dashboardCard: {
+      padding: 14,
+      borderRadius: radii.lg,
+      marginBottom: spacing[1.5],
+      backgroundColor: '#F0F9FF',
+      borderLeftWidth: 3,
+      borderLeftColor: '#0EA5E9'
+    },
+    dashboardRow: { flexDirection: 'row', alignItems: 'flex-start', gap: 10 },
+    dashIcon: { backgroundColor: '#E0F2FE' },
+    dashInfo: { flex: 1 },
+    dashTitle: {
+      fontSize: fontSizes.md,
+      fontWeight: fontWeights.bold,
+      color: '#0369A1',
+      marginBottom: 4
+    },
+    dashDesc: { fontSize: fontSizes.base, color: '#0C4A6E', lineHeight: 18 },
+    nextCard: {
+      padding: spacing[2],
+      borderRadius: radii.lg,
+      marginBottom: spacing[2],
+      backgroundColor: '#F5F3FF',
+      borderLeftWidth: 3,
+      borderLeftColor: '#7C4DFF'
+    },
+    nextHeader: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: spacing[1],
+      marginBottom: spacing[1]
+    },
+    nextIcon: { backgroundColor: palette.purple50 },
+    nextTitle: { fontSize: fontSizes.base, fontWeight: fontWeights.bold, color: '#6D28D9' },
+    nextModuleName: {
+      fontSize: fontSizes.xl,
+      fontWeight: fontWeights.bold,
+      color: '#1E3A5F',
+      marginBottom: 4
+    },
+    nextModuleDesc: {
+      fontSize: fontSizes.md,
+      color: '#4C1D95',
+      lineHeight: 18,
+      marginBottom: spacing[1.5],
+      opacity: 0.85
+    },
+    goNextBtn: { alignSelf: 'flex-start', borderRadius: radii.md },
+    actionBtn: { marginBottom: spacing[1] }
+  });
+}

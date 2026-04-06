@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
 
 import { PActivityIndicator, PButton, PChip, PDivider, PText } from '../../components';
@@ -11,6 +11,7 @@ import {
   getPrimaryUser,
   getWorkshops
 } from '../../data/mockSelectors';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -37,6 +38,9 @@ const TYPE_COLOR: Record<string, string> = {
 };
 
 const LibraryFavoritesContent = ({ isOffline }: { isOffline?: boolean }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const navigation = useNavigation<any>();
   const user = getPrimaryUser();
   const favorites = getFavoritesForUser(user?.id);
@@ -266,90 +270,92 @@ export const LibraryFavoritesScreen = ({ route }: { route?: { params?: { state?:
   );
 };
 
-const styles = StyleSheet.create({
-  searchRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-    marginBottom: 10
-  },
-  searchInput: {
-    flex: 1,
-    borderWidth: 1,
-    borderColor: '#DDD',
-    borderRadius: 8,
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    fontSize: 14
-  },
-  clearBtn: {
-    paddingHorizontal: 8,
-    paddingVertical: 6
-  },
-  clearText: {
-    color: '#7C4DFF'
-  },
-  chipRow: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 8
-  },
-  filterChip: {
-    marginBottom: 4
-  },
-  emptyText: {
-    opacity: 0.6,
-    textAlign: 'center',
-    paddingVertical: 12
-  },
-  favItem: {
-    flexDirection: 'row',
-    paddingVertical: 10,
-    gap: 10
-  },
-  typeBar: {
-    width: 4,
-    borderRadius: 2,
-    minHeight: 48
-  },
-  favBody: {
-    flex: 1
-  },
-  favTitleRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    flexWrap: 'wrap',
-    gap: 6
-  },
-  favTitle: {
-    flex: 1,
-    fontWeight: '600',
-    marginRight: 6
-  },
-  typeChip: {
-    height: 24
-  },
-  favDesc: {
-    opacity: 0.65,
-    marginTop: 3,
-    lineHeight: 18
-  },
-  favActions: {
-    flexDirection: 'row',
-    marginTop: 8,
-    gap: 8
-  },
-  openBtn: {
-    flex: 0
-  },
-  exportBtn: {
-    flex: 0
-  },
-  divider: {
-    marginHorizontal: 0
-  },
-  archiveBtn: {
-    marginBottom: 10
-  }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    searchRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: spacing[1],
+      marginBottom: 10
+    },
+    searchInput: {
+      flex: 1,
+      borderWidth: 1,
+      borderColor: '#DDD',
+      borderRadius: radii.md,
+      paddingHorizontal: spacing[1.5],
+      paddingVertical: spacing[1],
+      fontSize: fontSizes.lg
+    },
+    clearBtn: {
+      paddingHorizontal: spacing[1],
+      paddingVertical: 6
+    },
+    clearText: {
+      color: '#7C4DFF'
+    },
+    chipRow: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      gap: spacing[1]
+    },
+    filterChip: {
+      marginBottom: 4
+    },
+    emptyText: {
+      opacity: 0.6,
+      textAlign: 'center',
+      paddingVertical: spacing[1.5]
+    },
+    favItem: {
+      flexDirection: 'row',
+      paddingVertical: 10,
+      gap: 10
+    },
+    typeBar: {
+      width: 4,
+      borderRadius: radii.xs,
+      minHeight: 48
+    },
+    favBody: {
+      flex: 1
+    },
+    favTitleRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      flexWrap: 'wrap',
+      gap: 6
+    },
+    favTitle: {
+      flex: 1,
+      fontWeight: fontWeights.semiBold,
+      marginRight: 6
+    },
+    typeChip: {
+      height: 24
+    },
+    favDesc: {
+      opacity: 0.65,
+      marginTop: 3,
+      lineHeight: 18
+    },
+    favActions: {
+      flexDirection: 'row',
+      marginTop: spacing[1],
+      gap: spacing[1]
+    },
+    openBtn: {
+      flex: 0
+    },
+    exportBtn: {
+      flex: 0
+    },
+    divider: {
+      marginHorizontal: 0
+    },
+    archiveBtn: {
+      marginBottom: 10
+    }
+  });
+}

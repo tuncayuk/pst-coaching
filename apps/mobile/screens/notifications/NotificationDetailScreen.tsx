@@ -6,11 +6,12 @@
  * AC-FR-E17-02-04: Timestamp shown in detail
  */
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { PActivityIndicator, PButton, PCard, PChip, PDivider, PText } from '../../components';
 import { MockNotification, getNotificationsForUser, getPrimaryUser } from '../../data/mockSelectors';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -53,6 +54,9 @@ const NotificationDetailContent = ({
   notification: MockNotification;
   isOffline?: boolean;
 }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const navigation = useNavigation<any>();
 
   const handleCTA = () => {
@@ -192,27 +196,29 @@ export const NotificationDetailScreen = ({ route }: NotificationDetailScreenProp
   );
 };
 
-const styles = StyleSheet.create({
-  skeleton: { marginHorizontal: 16, marginBottom: 12 },
-  titleRow: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    gap: 8,
-    marginBottom: 8
-  },
-  title: { fontWeight: '700', fontSize: 16, flex: 1 },
-  typeChip: { backgroundColor: '#E0F7FA' },
-  description: { fontSize: 14, color: '#404040', lineHeight: 20 },
-  divider: { marginVertical: 12 },
-  metaRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 6
-  },
-  metaLabel: { fontSize: 12, color: '#737373', fontWeight: '600' },
-  metaValue: { fontSize: 12, color: '#404040', flex: 1, textAlign: 'right' },
-  ctaButton: { marginTop: 4 },
-  summaryCard: { padding: 12 },
-  summaryType: { fontSize: 13, color: '#525252', marginBottom: 4 },
-  summaryId: { fontSize: 11, color: '#A3A3A3' }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    skeleton: { marginHorizontal: 16, marginBottom: spacing[1.5] },
+    titleRow: {
+      flexDirection: 'row',
+      alignItems: 'flex-start',
+      gap: spacing[1],
+      marginBottom: spacing[1]
+    },
+    title: { fontWeight: fontWeights.bold, fontSize: fontSizes['2xl'], flex: 1 },
+    typeChip: { backgroundColor: palette.cyan50 },
+    description: { fontSize: fontSizes.lg, color: c.textTertiary, lineHeight: 20 },
+    divider: { marginVertical: 12 },
+    metaRow: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      marginBottom: 6
+    },
+    metaLabel: { fontSize: fontSizes.base, color: c.textTertiary, fontWeight: fontWeights.semiBold },
+    metaValue: { fontSize: fontSizes.base, color: c.textTertiary, flex: 1, textAlign: 'right' },
+    ctaButton: { marginTop: 4 },
+    summaryCard: { padding: spacing[1.5] },
+    summaryType: { fontSize: fontSizes.md, color: c.textSecondary, marginBottom: 4 },
+    summaryId: { fontSize: fontSizes.sm, color: '#A3A3A3' }
+  });
+}

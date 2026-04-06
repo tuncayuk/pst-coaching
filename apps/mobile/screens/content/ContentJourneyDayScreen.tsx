@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { PActivityIndicator, PButton, PCard, PChip, PText } from '../../components';
@@ -9,6 +9,7 @@ import {
   getJourneyDaysForJourney,
   getJourneys
 } from '../../data/mockSelectors';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -27,6 +28,9 @@ const ContentJourneyDayContent = ({
   dayNumber?: number;
   isOffline?: boolean;
 }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const navigation = useNavigation<any>();
   const journey = getJourneyById(journeyId);
   const days = getJourneyDaysForJourney(journey?.id);
@@ -201,64 +205,66 @@ export const ContentJourneyDayScreen = ({ route }: { route?: { params?: RoutePar
   );
 };
 
-const styles = StyleSheet.create({
-  chipRow: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    marginTop: 8
-  },
-  chip: {
-    marginRight: 8,
-    marginBottom: 8
-  },
-  chipDeadline: {
-    backgroundColor: '#DCFCE7'
-  },
-  subtleText: {
-    opacity: 0.7,
-    marginTop: 4
-  },
-  card: {
-    marginBottom: 12
-  },
-  completedBanner: {
-    backgroundColor: '#DCFCE7',
-    borderRadius: 10,
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-    borderWidth: 1,
-    borderColor: '#16A34A',
-    marginTop: 8,
-    marginBottom: 4
-  },
-  completedText: {
-    fontSize: 13,
-    fontWeight: '700',
-    color: '#15803D',
-    textAlign: 'center'
-  },
-  completeBtn: {
-    marginTop: 10
-  },
-  lockedBanner: {
-    padding: 16,
-    backgroundColor: '#F5F3FF',
-    borderRadius: 12,
-    borderWidth: 2,
-    borderColor: '#8B5CF6',
-    alignItems: 'center'
-  },
-  lockedTitle: {
-    fontSize: 15,
-    fontWeight: '700',
-    color: '#5B21B6',
-    marginBottom: 6,
-    textAlign: 'center'
-  },
-  lockedCountdown: {
-    fontSize: 20,
-    fontWeight: '700',
-    color: '#7C3AED',
-    marginBottom: 8
-  }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    chipRow: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      marginTop: spacing[1]
+    },
+    chip: {
+      marginRight: 8,
+      marginBottom: spacing[1]
+    },
+    chipDeadline: {
+      backgroundColor: '#DCFCE7'
+    },
+    subtleText: {
+      opacity: 0.7,
+      marginTop: 4
+    },
+    card: {
+      marginBottom: spacing[1.5]
+    },
+    completedBanner: {
+      backgroundColor: '#DCFCE7',
+      borderRadius: radii.md,
+      paddingVertical: spacing[1],
+      paddingHorizontal: spacing[1.5],
+      borderWidth: 1,
+      borderColor: c.success,
+      marginTop: spacing[1],
+      marginBottom: 4
+    },
+    completedText: {
+      fontSize: fontSizes.md,
+      fontWeight: fontWeights.bold,
+      color: '#15803D',
+      textAlign: 'center'
+    },
+    completeBtn: {
+      marginTop: 10
+    },
+    lockedBanner: {
+      padding: spacing[2],
+      backgroundColor: '#F5F3FF',
+      borderRadius: radii.lg,
+      borderWidth: 2,
+      borderColor: '#8B5CF6',
+      alignItems: 'center'
+    },
+    lockedTitle: {
+      fontSize: fontSizes.xl,
+      fontWeight: fontWeights.bold,
+      color: '#5B21B6',
+      marginBottom: 6,
+      textAlign: 'center'
+    },
+    lockedCountdown: {
+      fontSize: fontSizes['4xl'],
+      fontWeight: fontWeights.bold,
+      color: '#7C3AED',
+      marginBottom: spacing[1]
+    }
+  });
+}

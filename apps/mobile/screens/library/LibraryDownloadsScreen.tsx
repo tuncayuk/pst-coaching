@@ -1,9 +1,10 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { PActivityIndicator, PButton, PChip, PDivider, PText } from '../../components';
 import { getDownloadsForUser, getEbookById, getPrimaryUser, getWorkshopById } from '../../data/mockSelectors';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -20,6 +21,9 @@ const TYPE_ICON: Record<string, string> = {
 };
 
 const LibraryDownloadsContent = ({ isOffline }: { isOffline?: boolean }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const navigation = useNavigation<any>();
   const user = getPrimaryUser();
   const rawDownloads = getDownloadsForUser(user?.id);
@@ -249,36 +253,38 @@ export const LibraryDownloadsScreen = ({ route }: { route?: { params?: { state?:
   );
 };
 
-const styles = StyleSheet.create({
-  storageRow: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 8 },
-  storageLabel: { opacity: 0.6 },
-  warnBox: {
-    backgroundColor: '#FFF3E0',
-    borderRadius: 8,
-    padding: 12,
-    marginBottom: 10,
-    borderLeftWidth: 3,
-    borderLeftColor: '#F57C00'
-  },
-  warnTitle: { color: '#E65100', fontWeight: '700', marginBottom: 4 },
-  warnText: { color: '#BF360C', lineHeight: 18 },
-  syncBtn: { alignSelf: 'flex-start', marginTop: 4 },
-  offlineNote: { opacity: 0.55, marginTop: 6, fontStyle: 'italic' },
-  downloadItem: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    justifyContent: 'space-between',
-    paddingVertical: 10,
-    gap: 10
-  },
-  downloadInfo: { flex: 1 },
-  downloadTitle: { fontWeight: '600', marginBottom: 6 },
-  downloadMeta: { flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap', gap: 6 },
-  typeChip: {},
-  sizeText: { opacity: 0.55 },
-  statusChip: {},
-  doneChip: { backgroundColor: '#E8F5E9' },
-  pendingChip: { backgroundColor: '#FFF9C4' },
-  downloadActions: { flexDirection: 'column', gap: 4 },
-  divider: { marginHorizontal: 0 }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    storageRow: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: spacing[1] },
+    storageLabel: { opacity: 0.6 },
+    warnBox: {
+      backgroundColor: '#FFF3E0',
+      borderRadius: radii.md,
+      padding: spacing[1.5],
+      marginBottom: 10,
+      borderLeftWidth: 3,
+      borderLeftColor: '#F57C00'
+    },
+    warnTitle: { color: '#E65100', fontWeight: fontWeights.bold, marginBottom: 4 },
+    warnText: { color: '#BF360C', lineHeight: 18 },
+    syncBtn: { alignSelf: 'flex-start', marginTop: 4 },
+    offlineNote: { opacity: 0.55, marginTop: 6, fontStyle: 'italic' },
+    downloadItem: {
+      flexDirection: 'row',
+      alignItems: 'flex-start',
+      justifyContent: 'space-between',
+      paddingVertical: 10,
+      gap: 10
+    },
+    downloadInfo: { flex: 1 },
+    downloadTitle: { fontWeight: fontWeights.semiBold, marginBottom: 6 },
+    downloadMeta: { flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap', gap: 6 },
+    typeChip: {},
+    sizeText: { opacity: 0.55 },
+    statusChip: {},
+    doneChip: { backgroundColor: '#E8F5E9' },
+    pendingChip: { backgroundColor: '#FFF9C4' },
+    downloadActions: { flexDirection: 'column', gap: 4 },
+    divider: { marginHorizontal: 0 }
+  });
+}

@@ -1,9 +1,10 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { NativeScrollEvent, NativeSyntheticEvent, ScrollView, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { PActivityIndicator, PButton, PCard, PIconButton, PText } from '../../components';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
 import { SkeletonBlock } from '../components/SkeletonBlock';
@@ -17,6 +18,9 @@ const AUDIO_SPEEDS = ['0.75x', '1x', '1.25x'];
 const FONT_ORDER: FontSizeKey[] = ['small', 'medium', 'large'];
 
 const ContentReadingContent = ({ isOffline, id }: { isOffline?: boolean; id?: string }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const navigation = useNavigation<any>();
   const [readingProgress, setReadingProgress] = useState(0);
   const [audioPlaying, setAudioPlaying] = useState(false);
@@ -159,6 +163,9 @@ const ContentReadingContent = ({ isOffline, id }: { isOffline?: boolean; id?: st
 };
 
 export const ContentReadingScreen = ({ route }: { route?: { params?: RouteParams } }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const state = resolveScreenState(route);
   const id = route?.params?.id;
 
@@ -222,174 +229,176 @@ export const ContentReadingScreen = ({ route }: { route?: { params?: RouteParams
   );
 };
 
-const styles = StyleSheet.create({
-  root: {
-    flex: 1,
-    backgroundColor: '#FFFFFF'
-  },
-  wrapper: {
-    flex: 1
-  },
-  scroll: {
-    flex: 1
-  },
-  page: {
-    paddingBottom: 32
-  },
-  // Progress bar
-  progressTrack: {
-    height: 4,
-    backgroundColor: '#E5E5E5'
-  },
-  progressFill: {
-    height: 4,
-    backgroundColor: '#6B46C1'
-  },
-  // Header
-  header: {
-    backgroundColor: '#FFFFFF',
-    paddingHorizontal: 20,
-    paddingTop: 10,
-    paddingBottom: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: '#E5E5E5'
-  },
-  headerRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginBottom: 6
-  },
-  headerCenter: {
-    flex: 1,
-    alignItems: 'center',
-    paddingHorizontal: 8
-  },
-  headerTitle: {
-    fontSize: 13,
-    fontWeight: '700',
-    color: '#2B1B5D'
-  },
-  headerSubtitle: {
-    fontSize: 11,
-    color: '#737373',
-    marginTop: 2
-  },
-  headerMetaRow: {
-    flexDirection: 'row',
-    gap: 6,
-    alignItems: 'center',
-    flexWrap: 'wrap'
-  },
-  chip: {
-    fontSize: 10,
-    fontWeight: '600',
-    paddingHorizontal: 8,
-    paddingVertical: 3,
-    borderRadius: 8,
-    overflow: 'hidden'
-  },
-  chipReading: {
-    backgroundColor: '#DBEAFE',
-    color: '#1D4ED8'
-  },
-  chipDeadline: {
-    backgroundColor: '#DCFCE7',
-    color: '#15803D'
-  },
-  chipWarning: {
-    backgroundColor: '#FEF9C3',
-    color: '#A16207'
-  },
-  headerMeta: {
-    fontSize: 11,
-    color: '#737373'
-  },
-  // Audio bar
-  audioBar: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    backgroundColor: '#F5F3FF',
-    borderBottomWidth: 1,
-    borderBottomColor: '#E5E5E5',
-    gap: 8
-  },
-  audioLabel: {
-    fontSize: 12,
-    color: '#2B1B5D',
-    flex: 1
-  },
-  speedRow: {
-    flexDirection: 'row',
-    gap: 4
-  },
-  speedBtn: {
-    minWidth: 44
-  },
-  // Highlight toolbar
-  highlightBar: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    gap: 6,
-    backgroundColor: '#FFFBEB',
-    borderBottomWidth: 1,
-    borderBottomColor: '#E5E5E5'
-  },
-  highlightBarLabel: {
-    fontSize: 11,
-    color: '#737373'
-  },
-  hlBtn: {
-    minWidth: 60
-  },
-  // Body
-  body: {
-    paddingHorizontal: 24,
-    paddingTop: 20
-  },
-  bodyTitle: {
-    fontWeight: '700',
-    color: '#2B1B5D',
-    marginBottom: 16
-  },
-  bodyParagraph: {
-    color: '#171717',
-    marginBottom: 16,
-    textAlign: 'justify'
-  },
-  bodyHighlight: {
-    backgroundColor: '#FDE68A',
-    color: '#111827'
-  },
-  calloutCard: {
-    padding: 16,
-    borderRadius: 16,
-    backgroundColor: '#DBEAFE',
-    borderLeftWidth: 4,
-    borderLeftColor: '#1D4ED8',
-    marginVertical: 12
-  },
-  calloutTitle: {
-    fontSize: 14,
-    fontWeight: '700',
-    color: '#1D4ED8',
-    marginBottom: 8
-  },
-  calloutItem: {
-    fontSize: 14,
-    color: '#1F2937',
-    marginBottom: 6
-  },
-  // Footer
-  footer: {
-    paddingHorizontal: 24,
-    paddingTop: 16
-  },
-  footerButton: {
-    width: '100%'
-  }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    root: {
+      flex: 1,
+      backgroundColor: palette.white
+    },
+    wrapper: {
+      flex: 1
+    },
+    scroll: {
+      flex: 1
+    },
+    page: {
+      paddingBottom: 32
+    },
+    // Progress bar
+    progressTrack: {
+      height: 4,
+      backgroundColor: c.outlineVariant
+    },
+    progressFill: {
+      height: 4,
+      backgroundColor: '#6B46C1'
+    },
+    // Header
+    header: {
+      backgroundColor: palette.white,
+      paddingHorizontal: spacing[2.5],
+      paddingTop: 10,
+      paddingBottom: 10,
+      borderBottomWidth: 1,
+      borderBottomColor: c.outlineVariant
+    },
+    headerRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      marginBottom: 6
+    },
+    headerCenter: {
+      flex: 1,
+      alignItems: 'center',
+      paddingHorizontal: spacing[1]
+    },
+    headerTitle: {
+      fontSize: fontSizes.md,
+      fontWeight: fontWeights.bold,
+      color: c.textBrand
+    },
+    headerSubtitle: {
+      fontSize: fontSizes.sm,
+      color: c.textTertiary,
+      marginTop: 2
+    },
+    headerMetaRow: {
+      flexDirection: 'row',
+      gap: 6,
+      alignItems: 'center',
+      flexWrap: 'wrap'
+    },
+    chip: {
+      fontSize: 10,
+      fontWeight: fontWeights.semiBold,
+      paddingHorizontal: spacing[1],
+      paddingVertical: 3,
+      borderRadius: radii.md,
+      overflow: 'hidden'
+    },
+    chipReading: {
+      backgroundColor: '#DBEAFE',
+      color: '#1D4ED8'
+    },
+    chipDeadline: {
+      backgroundColor: '#DCFCE7',
+      color: '#15803D'
+    },
+    chipWarning: {
+      backgroundColor: c.warningContainer,
+      color: '#A16207'
+    },
+    headerMeta: {
+      fontSize: fontSizes.sm,
+      color: c.textTertiary
+    },
+    // Audio bar
+    audioBar: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      paddingHorizontal: spacing[1.5],
+      paddingVertical: 6,
+      backgroundColor: '#F5F3FF',
+      borderBottomWidth: 1,
+      borderBottomColor: c.outlineVariant,
+      gap: spacing[1]
+    },
+    audioLabel: {
+      fontSize: fontSizes.base,
+      color: c.textBrand,
+      flex: 1
+    },
+    speedRow: {
+      flexDirection: 'row',
+      gap: 4
+    },
+    speedBtn: {
+      minWidth: 44
+    },
+    // Highlight toolbar
+    highlightBar: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      paddingHorizontal: spacing[1.5],
+      paddingVertical: 6,
+      gap: 6,
+      backgroundColor: '#FFFBEB',
+      borderBottomWidth: 1,
+      borderBottomColor: c.outlineVariant
+    },
+    highlightBarLabel: {
+      fontSize: fontSizes.sm,
+      color: c.textTertiary
+    },
+    hlBtn: {
+      minWidth: 60
+    },
+    // Body
+    body: {
+      paddingHorizontal: spacing[3],
+      paddingTop: 20
+    },
+    bodyTitle: {
+      fontWeight: fontWeights.bold,
+      color: c.textBrand,
+      marginBottom: spacing[2]
+    },
+    bodyParagraph: {
+      color: c.textPrimary,
+      marginBottom: spacing[2],
+      textAlign: 'justify'
+    },
+    bodyHighlight: {
+      backgroundColor: '#FDE68A',
+      color: '#111827'
+    },
+    calloutCard: {
+      padding: spacing[2],
+      borderRadius: radii.xl,
+      backgroundColor: '#DBEAFE',
+      borderLeftWidth: 4,
+      borderLeftColor: '#1D4ED8',
+      marginVertical: 12
+    },
+    calloutTitle: {
+      fontSize: fontSizes.lg,
+      fontWeight: fontWeights.bold,
+      color: '#1D4ED8',
+      marginBottom: spacing[1]
+    },
+    calloutItem: {
+      fontSize: fontSizes.lg,
+      color: '#1F2937',
+      marginBottom: 6
+    },
+    // Footer
+    footer: {
+      paddingHorizontal: spacing[3],
+      paddingTop: 16
+    },
+    footerButton: {
+      width: '100%'
+    }
+  });
+}

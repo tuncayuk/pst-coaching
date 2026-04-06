@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import { PActivityIndicator, PButton, PCard, PChip, PDivider, PText } from '../../components';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -27,6 +28,9 @@ function formatTime(h: number, m: number): string {
 }
 
 const HomeReminderContent = ({ isOffline }: { isOffline?: boolean }) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const [selectedHour, setSelectedHour] = useState(DEFAULT_REMINDER_HOUR);
   const [selectedMinute, setSelectedMinute] = useState(DEFAULT_REMINDER_MINUTE);
   const [permissionRequested, setPermissionRequested] = useState(false);
@@ -209,108 +213,110 @@ export const HomeReminderSettingScreen = ({ route }: { route?: { params?: { stat
   );
 };
 
-const styles = StyleSheet.create({
-  explanationCard: {
-    backgroundColor: '#F0F9FF',
-    borderLeftWidth: 4,
-    borderLeftColor: '#00B4D8',
-    padding: 14,
-    marginBottom: 16
-  },
-  explanationTitle: {
-    fontSize: 14,
-    fontWeight: '700',
-    color: '#0C4A6E',
-    marginBottom: 6
-  },
-  explanationBody: {
-    fontSize: 13,
-    color: '#1E40AF',
-    lineHeight: 20
-  },
-  completedRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-    marginBottom: 12
-  },
-  completedChip: {
-    backgroundColor: '#D1FAE5'
-  },
-  completedNote: {
-    fontSize: 12,
-    color: '#065F46'
-  },
-  permissionButton: {
-    minHeight: 48
-  },
-  permissionGrantedCard: {
-    backgroundColor: '#D1FAE5',
-    padding: 12,
-    borderRadius: 10
-  },
-  permissionGrantedText: {
-    fontSize: 13,
-    color: '#065F46',
-    fontWeight: '600'
-  },
-  timeGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 10,
-    marginBottom: 12
-  },
-  timeChip: {
-    paddingHorizontal: 18,
-    paddingVertical: 12,
-    borderRadius: 12,
-    borderWidth: 1.5,
-    borderColor: '#D4D4D4',
-    backgroundColor: '#FFFFFF',
-    minWidth: 72,
-    alignItems: 'center',
-    minHeight: 48,
-    justifyContent: 'center'
-  },
-  timeChipSelected: {
-    borderColor: '#00B4D8',
-    backgroundColor: '#E0F7FA'
-  },
-  timeChipText: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#404040'
-  },
-  timeChipTextSelected: {
-    color: '#0096B8',
-    fontWeight: '800'
-  },
-  selectedTimeNote: {
-    fontSize: 13,
-    color: '#525252',
-    marginBottom: 12
-  },
-  selectedTimeBold: {
-    fontWeight: '700',
-    color: '#0096B8'
-  },
-  divider: {
-    marginBottom: 12
-  },
-  savedCard: {
-    backgroundColor: '#D1FAE5',
-    borderLeftWidth: 4,
-    borderLeftColor: '#10B981',
-    padding: 14
-  },
-  savedText: {
-    fontSize: 13,
-    color: '#065F46',
-    fontWeight: '600'
-  },
-  phaseNote: {
-    fontSize: 12,
-    color: '#525252',
-    lineHeight: 18
-  }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    explanationCard: {
+      backgroundColor: '#F0F9FF',
+      borderLeftWidth: 4,
+      borderLeftColor: c.primary,
+      padding: 14,
+      marginBottom: spacing[2]
+    },
+    explanationTitle: {
+      fontSize: fontSizes.lg,
+      fontWeight: fontWeights.bold,
+      color: '#0C4A6E',
+      marginBottom: 6
+    },
+    explanationBody: {
+      fontSize: fontSizes.md,
+      color: '#1E40AF',
+      lineHeight: 20
+    },
+    completedRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: spacing[1],
+      marginBottom: spacing[1.5]
+    },
+    completedChip: {
+      backgroundColor: palette.emerald50
+    },
+    completedNote: {
+      fontSize: fontSizes.base,
+      color: '#065F46'
+    },
+    permissionButton: {
+      minHeight: 48
+    },
+    permissionGrantedCard: {
+      backgroundColor: palette.emerald50,
+      padding: spacing[1.5],
+      borderRadius: radii.md
+    },
+    permissionGrantedText: {
+      fontSize: fontSizes.md,
+      color: '#065F46',
+      fontWeight: fontWeights.semiBold
+    },
+    timeGrid: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      gap: 10,
+      marginBottom: spacing[1.5]
+    },
+    timeChip: {
+      paddingHorizontal: 18,
+      paddingVertical: spacing[1.5],
+      borderRadius: radii.lg,
+      borderWidth: 1.5,
+      borderColor: c.outline,
+      backgroundColor: palette.white,
+      minWidth: 72,
+      alignItems: 'center',
+      minHeight: 48,
+      justifyContent: 'center'
+    },
+    timeChipSelected: {
+      borderColor: c.primary,
+      backgroundColor: palette.cyan50
+    },
+    timeChipText: {
+      fontSize: fontSizes.lg,
+      fontWeight: fontWeights.semiBold,
+      color: c.textTertiary
+    },
+    timeChipTextSelected: {
+      color: '#0096B8',
+      fontWeight: fontWeights.extraBold
+    },
+    selectedTimeNote: {
+      fontSize: fontSizes.md,
+      color: c.textSecondary,
+      marginBottom: spacing[1.5]
+    },
+    selectedTimeBold: {
+      fontWeight: fontWeights.bold,
+      color: '#0096B8'
+    },
+    divider: {
+      marginBottom: spacing[1.5]
+    },
+    savedCard: {
+      backgroundColor: palette.emerald50,
+      borderLeftWidth: 4,
+      borderLeftColor: c.tertiary,
+      padding: 14
+    },
+    savedText: {
+      fontSize: fontSizes.md,
+      color: '#065F46',
+      fontWeight: fontWeights.semiBold
+    },
+    phaseNote: {
+      fontSize: fontSizes.base,
+      color: c.textSecondary,
+      lineHeight: 18
+    }
+  });
+}

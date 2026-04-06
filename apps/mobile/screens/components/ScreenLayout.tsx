@@ -1,10 +1,11 @@
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, View, ViewStyle } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { PIconButton, PSurface, PText } from '../../components';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 
 const SPACING = 16;
 
@@ -29,6 +30,9 @@ export const ScreenLayout = ({
   edges = ['top', 'left', 'right'],
   contentStyle
 }: ScreenLayoutProps) => {
+  const { colors: c } = useAppTheme();
+  const styles = useMemo(() => makeStyles(c), [c]);
+
   const theme = useTheme();
   const navigation = useNavigation();
   const canGoBack = navigation.canGoBack();
@@ -93,18 +97,20 @@ export const ScreenLayout = ({
   );
 };
 
-const styles = StyleSheet.create({
-  root: { flex: 1 },
-  content: { padding: SPACING, paddingBottom: SPACING * 3 },
-  header: {
-    paddingVertical: 12,
-    paddingRight: SPACING,
-    paddingLeft: 8,
-    marginBottom: SPACING,
-    borderBottomWidth: 1
-  },
-  titleRow: { flexDirection: 'row', alignItems: 'center' },
-  backButton: { margin: 0, marginRight: 4 },
-  titleText: { flex: 1 },
-  rightAction: { marginLeft: 8 }
-});
+function makeStyles(c: ColorTokens) {
+  return StyleSheet.create({
+    root: { flex: 1 },
+    content: { padding: SPACING, paddingBottom: SPACING * 3 },
+    header: {
+      paddingVertical: spacing[1.5],
+      paddingRight: SPACING,
+      paddingLeft: 8,
+      marginBottom: SPACING,
+      borderBottomWidth: 1
+    },
+    titleRow: { flexDirection: 'row', alignItems: 'center' },
+    backButton: { margin: 0, marginRight: 4 },
+    titleText: { flex: 1 },
+    rightAction: { marginLeft: 8 }
+  });
+}

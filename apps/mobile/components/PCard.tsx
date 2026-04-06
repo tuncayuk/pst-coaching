@@ -1,8 +1,8 @@
-import React from "react";
-import { StyleSheet, TouchableOpacity, View } from "react-native";
-import { Card, useTheme } from "react-native-paper";
+import React from 'react';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Card, useTheme } from 'react-native-paper';
 
-import { PText } from "./PText";
+import { PText } from './PText';
 
 const SPACING = 16;
 const ACTION_HIT_SLOP = { top: 8, bottom: 8, left: 8, right: 8 };
@@ -33,19 +33,13 @@ const BasePCard = ({
   ...rest
 }: PCardProps) => {
   const theme = useTheme();
-  const accentStyle = accentColor
-    ? { borderLeftWidth: 4, borderLeftColor: accentColor }
-    : undefined;
+  const accentStyle = accentColor ? { borderLeftWidth: 4, borderLeftColor: accentColor } : undefined;
 
   if (sectionTitle) {
     return (
       <Card
         {...rest}
-        style={[
-          { borderRadius: theme.roundness * 2.5, padding: SPACING, marginBottom: SPACING },
-          accentStyle,
-          style,
-        ]}
+        style={[{ borderRadius: theme.roundness * 2.5, padding: SPACING, marginBottom: SPACING }, accentStyle, style]}
       >
         <View style={styles.headerRow}>
           <PText variant="titleMedium" accessibilityRole="header">
@@ -63,7 +57,7 @@ const BasePCard = ({
               <PText
                 variant="labelLarge"
                 style={{
-                  color: onSectionAction ? theme.colors.primary : theme.colors.onSurfaceVariant,
+                  color: onSectionAction ? theme.colors.primary : theme.colors.onSurfaceVariant
                 }}
               >
                 {sectionActionLabel}
@@ -87,14 +81,14 @@ export const PCard = Object.assign(BasePCard, {
   Title: Card.Title,
   Content: Card.Content,
   Actions: Card.Actions,
-  Cover: Card.Cover,
+  Cover: Card.Cover
 }) as PCardComponent;
 
 const styles = StyleSheet.create({
   headerRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 12,
-  },
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 12
+  }
 });
