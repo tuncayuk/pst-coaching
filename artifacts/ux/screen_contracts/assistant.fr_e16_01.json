@@ -1,10 +1,11 @@
 {
   "id": "assistant.fr_e16_01",
-  "title": "AI sohbet girisi ve mesaj akisi",
-  "route": "/assistant/chat",
-  "purpose": "Implements FR-E16-01: AI sohbet girisi ve mesaj akisi.",
+  "title": "AI asistan giris ve gecmis",
+  "route": "/discover/ai-assistant/intro",
+  "purpose": "Implements FR-E16-01: AI asistan giris noktasi — gecmis konusmalar, serbest metin sorusu girisi, hizli oneri cipleri ve onaylanan kaynak bildirimi.",
+  "componentName": "DiscoverAIAssistantIntroScreen",
   "entryPoints": [
-    "content.reader"
+    "discover.catalog"
   ],
   "inputs": [
     {
@@ -33,25 +34,29 @@
   ],
   "uiStates": {
     "loading": {
-      "description": "Skeleton placeholders are shown while loading FR-E16-01 data."
+      "description": "Skeleton placeholders cover gecmis ve oneri listesi yuklenirken gosterilir."
     },
     "ready": {
-      "description": "FR-E16-01 flows are fully interactive with primary CTA available when prerequisites are met."
+      "description": "Gecmis oturumlar, serbest metin girisi, hizli oneri cipleri ve kaynak bildirimi goruntulenir. Kullanici soru gonderebilir veya gecmis oturuma girebilir."
     },
     "empty": {
-      "description": "Empty state explains why no data is available and points to next best action."
+      "description": "Hic gecmis yoksa 'Ilk sorunuzu sorun' inline banner ve quick suggestion cipleri gosterilir; arama girisi tam anlamıyla calisir."
     },
     "error": {
-      "description": "Error state is recoverable with user-safe messaging and a retry action."
+      "description": "Hata durumunda kullanici dostu mesaj ve yeniden deneme butonu gosterilir."
     },
     "offline": {
-      "description": "Offline state shows last synchronized data and queues write actions for later sync."
+      "description": "Son senkronize edilen gecmis gosterilir; yeni soru gonderme islemi cevrimici olunca kuyruga alinir."
     }
   },
   "analytics": {
-    "screenView": "assistant_fr_e16_01_viewed",
+    "screenView": "ai_assistant_intro_viewed",
     "events": [
-      "assistant_fr_e16_01_viewed"
+      "ai_assistant_intro_viewed",
+      "ai_assistant_question_submitted",
+      "ai_assistant_suggestion_tapped",
+      "ai_assistant_history_tapped",
+      "ai_assistant_insights_nav_tapped"
     ]
   },
   "acceptanceCriteriaRefs": [

@@ -1,21 +1,22 @@
 {
   "id": "assistant.fr_e16_03",
-  "title": "Kaynak referansi ve izlenebilirlik",
-  "route": "/assistant/sources",
-  "purpose": "Implements FR-E16-03: Kaynak referansi ve izlenebilirlik.",
+  "title": "AI kaynak referansi ve izlenebilirlik",
+  "route": "/discover/ai-assistant/sources",
+  "purpose": "Implements FR-E16-03: Kaynak karti listesi — tur rozeti, baslik, icerik yolu, alinat, ilgi skoru cubugu ve orijinal icericicige derin baglanti.",
+  "componentName": "DiscoverAIAssistantResultsScreen",
   "entryPoints": [
-    "content.reader"
+    "assistant.ai_answer"
   ],
   "inputs": [
     {
-      "name": "answerId",
+      "name": "userId",
       "type": "uuid",
       "required": true,
-      "source": "navigation"
+      "source": "session"
     },
     {
-      "name": "sourceId",
-      "type": "uuid",
+      "name": "question",
+      "type": "string",
       "required": false,
       "source": "navigation"
     },
@@ -30,29 +31,32 @@
     "AiSourceRef",
     "Journey",
     "Workshop",
-    "Ebook"
+    "Ebook",
+    "Module"
   ],
   "uiStates": {
     "loading": {
-      "description": "Skeleton placeholders are shown while loading FR-E16-03 data."
+      "description": "Skeleton kartlari kaynak listesi yuklenirken gosterilir."
     },
     "ready": {
-      "description": "FR-E16-03 flows are fully interactive with primary CTA available when prerequisites are met."
+      "description": "Kaynak karti listesi: tema uyumlu tur rozeti, baslik, icerik yolu, italik alinat (sol vurgu siniri), ilgi skoru yuzde metni + 8 px ilerleme cubugu ve 44 pt derin baglanti butonu. Alt CTA: 'AI Icgorulerimi Gor'."
     },
     "empty": {
-      "description": "Empty state explains why no data is available and points to next best action."
+      "description": "Ilgili kaynak bulunamazsa 'Bu konuda kaynak yok' mesaji ve yeni soru sor navigasyonu gosterilir."
     },
     "error": {
-      "description": "Error state is recoverable with user-safe messaging and a retry action."
+      "description": "Kaynak yukleme hatasi durumunda kullanici dostu mesaj ve geri don butonu gosterilir."
     },
     "offline": {
-      "description": "Offline state shows last synchronized data and queues write actions for later sync."
+      "description": "Cevrimdisi modda onbelleklenmis kaynak karti bilgileri gosterilir."
     }
   },
   "analytics": {
-    "screenView": "assistant_fr_e16_03_viewed",
+    "screenView": "ai_assistant_sources_viewed",
     "events": [
-      "assistant_fr_e16_03_viewed"
+      "ai_assistant_sources_viewed",
+      "ai_assistant_source_deep_linked",
+      "ai_assistant_insights_nav_tapped"
     ]
   },
   "acceptanceCriteriaRefs": [

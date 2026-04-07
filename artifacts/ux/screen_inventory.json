@@ -1765,7 +1765,7 @@
     },
     {
       "id": "assistant.fr_e16_01",
-      "route": "/assistant/chat",
+      "route": "/discover/ai-assistant/intro",
       "title": "AI sohbet girisi ve mesaj akisi",
       "type": "stack",
       "states": [
@@ -1780,11 +1780,12 @@
         "subscription"
       ],
       "epicId": "EPIC-16",
-      "requirementId": "FR-E16-01"
+      "requirementId": "FR-E16-01",
+      "componentName": "DiscoverAIAssistantIntroScreen"
     },
     {
       "id": "assistant.fr_e16_02",
-      "route": "/assistant/rag-response",
+      "route": "/discover/ai-assistant/answer",
       "title": "RAG yaniti ve baglam sentezi",
       "type": "stack",
       "states": [
@@ -1799,11 +1800,12 @@
         "subscription"
       ],
       "epicId": "EPIC-16",
-      "requirementId": "FR-E16-02"
+      "requirementId": "FR-E16-02",
+      "componentName": "DiscoverAIAssistantQuestionsScreen"
     },
     {
       "id": "assistant.fr_e16_03",
-      "route": "/assistant/sources",
+      "route": "/discover/ai-assistant/sources",
       "title": "Kaynak referansi ve izlenebilirlik",
       "type": "stack",
       "states": [
@@ -1818,11 +1820,12 @@
         "subscription"
       ],
       "epicId": "EPIC-16",
-      "requirementId": "FR-E16-03"
+      "requirementId": "FR-E16-03",
+      "componentName": "DiscoverAIAssistantResultsScreen"
     },
     {
       "id": "assistant.fr_e16_04",
-      "route": "/assistant/insights",
+      "route": "/discover/ai-assistant/insights",
       "title": "AI icgoruleri ve kisisel oneriler",
       "type": "stack",
       "states": [
@@ -1837,7 +1840,8 @@
         "subscription"
       ],
       "epicId": "EPIC-16",
-      "requirementId": "FR-E16-04"
+      "requirementId": "FR-E16-04",
+      "componentName": "DiscoverAssistantInsightsScreen"
     },
     {
       "id": "notifications.fr_e17_01",

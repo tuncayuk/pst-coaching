@@ -1,10 +1,12 @@
 {
   "id": "assistant.fr_e16_04",
-  "title": "AI icgoruleri ve kisisel oneriler",
-  "route": "/assistant/insights",
-  "purpose": "Implements FR-E16-04: AI icgoruleri ve kisisel oneriler.",
+  "title": "AI ilerleme icgorusu ve kisisel oneriler",
+  "route": "/discover/ai-assistant/insights",
+  "purpose": "Implements FR-E16-04: Kullanicinin icerik ilerleme verileri ve yorumlarindan AI tarafindan uretilen icgoruler, duygu analizi, davranis kaliplari ve bir sonraki adim onerileri.",
+  "componentName": "DiscoverAssistantInsightsScreen",
   "entryPoints": [
-    "content.reader"
+    "assistant.ai_intro",
+    "assistant.ai_sources"
   ],
   "inputs": [
     {
@@ -14,10 +16,10 @@
       "source": "session"
     },
     {
-      "name": "insightWindow",
-      "type": "InsightWindow",
-      "required": true,
-      "source": "query"
+      "name": "question",
+      "type": "string",
+      "required": false,
+      "source": "navigation"
     },
     {
       "name": "locale",
@@ -30,29 +32,32 @@
     "AiInsight",
     "ProgressSnapshot",
     "CommentSentiment",
-    "Recommendation"
+    "Recommendation",
+    "Journey",
+    "Workshop"
   ],
   "uiStates": {
     "loading": {
-      "description": "Skeleton placeholders are shown while loading FR-E16-04 data."
+      "description": "Skeleton kartlari icgoru, his analizi ve oneri bolum basliklarinin altinda gosterilir."
     },
     "ready": {
-      "description": "FR-E16-04 flows are fully interactive with primary CTA available when prerequisites are met."
+      "description": "Dort bolum: (1) Ilerleme icgoru kartlari — tamamlanan icerik ve rozet sayisi; (2) His analizi — pozitif/notr/gelisim 8 px cubugu; (3) Davranis kaliplari — 44 pt pill rozeti listesi; (4) Sonraki adim onerileri — navige edilebilir PButton listesi."
     },
     "empty": {
-      "description": "Empty state explains why no data is available and points to next best action."
+      "description": "Yeterli veri yoksa 'Daha fazla icerik tamamlayin' mesaji ve katalog CTA'si gosterilir."
     },
     "error": {
-      "description": "Error state is recoverable with user-safe messaging and a retry action."
+      "description": "Icgoru yukleme hatasi durumunda kullanici dostu mesaj ve geri don butonu gosterilir."
     },
     "offline": {
-      "description": "Offline state shows last synchronized data and queues write actions for later sync."
+      "description": "Cevrimdisi modda daha onceki icgoru snapshot onbellekten gosterilir."
     }
   },
   "analytics": {
-    "screenView": "assistant_fr_e16_04_viewed",
+    "screenView": "ai_assistant_insights_viewed",
     "events": [
-      "assistant_fr_e16_04_viewed"
+      "ai_assistant_insights_viewed",
+      "ai_assistant_recommendation_tapped"
     ]
   },
   "acceptanceCriteriaRefs": [

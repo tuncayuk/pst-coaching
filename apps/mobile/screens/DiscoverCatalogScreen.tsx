@@ -100,6 +100,15 @@ const DiscoverReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
     navigation.navigate('DiscoverAssistantIntro');
   };
 
+  const handleAIAssistantPress = () => {
+    if (requiresSubscription) {
+      handlePaywall();
+      return;
+    }
+    trackCtaTap('discover.catalog', 'ai_assistant_tapped');
+    navigation.navigate('DiscoverAIAssistantIntro');
+  };
+
   return (
     <View>
       {/* Header */}
@@ -115,27 +124,39 @@ const DiscoverReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
         )}
       </View>
 
-      {/* Assistant CTA */}
-      <PCard
-        style={styles.assistantCard}
-        onPress={handleAssistantPress}
-        accessibilityLabel="Icerik Asistani"
-        accessibilityHint="Kisisel icerik onerisi almak icin asistani baslat"
-        accessibilityRole="button"
-      >
-        <View style={styles.assistantRow}>
-          <View style={styles.assistantIconWrap}>
-            <PText style={styles.assistantEmoji}>🤖</PText>
-          </View>
-          <View style={styles.assistantInfo}>
-            <PText style={styles.assistantTitle}>Icerik Asistani</PText>
-            <PText style={styles.assistantSubtitle}>Size ozel oneri alalim</PText>
-          </View>
-          <View style={styles.assistantArrowWrap}>
-            <PText style={styles.assistantArrow}>›</PText>
-          </View>
-        </View>
-      </PCard>
+      {/* Asistanlar — dual entry: quiz-based + AI free-text */}
+      <PText style={styles.sectionTitle}>Asistanlar</PText>
+      <View style={styles.assistantPair}>
+        {/* FR-E4: quiz-based content assistant */}
+        <PCard
+          style={[styles.assistantTile, styles.assistantTileContent]}
+          onPress={handleAssistantPress}
+          accessibilityLabel="Icerik Asistani"
+          accessibilityHint="Kisa test ile kisisel icerik onerisi al"
+          accessibilityRole="button"
+        >
+          <PText style={styles.assistantTileEmoji}>🤖</PText>
+          <PText style={styles.assistantTileTitle}>Icerik{'\n'}Asistani</PText>
+          <PText style={styles.assistantTileDesc}>Test ile oneri al</PText>
+        </PCard>
+
+        {/* FR-E16: AI free-text assistant */}
+        <PCard
+          style={[styles.assistantTile, styles.assistantTileAI]}
+          onPress={handleAIAssistantPress}
+          accessibilityLabel="AI Asistani"
+          accessibilityHint="Dogal dil ile soru sor, kaynaklardan cevap al"
+          accessibilityRole="button"
+        >
+          <PText style={styles.assistantTileEmoji}>✦</PText>
+          <PText style={[styles.assistantTileTitle, styles.assistantTileTitleAI]}>
+            AI{'\n'}Asistani
+          </PText>
+          <PText style={[styles.assistantTileDesc, styles.assistantTileDescAI]}>
+            Serbest soru sor
+          </PText>
+        </PCard>
+      </View>
 
       {/* Content Mosaic */}
       <PText style={styles.sectionTitle}>Icerik Turleri</PText>
@@ -350,43 +371,46 @@ function makeStyles(c: ColorTokens) {
       fontWeight: fontWeights.bold,
       color: c.onWarningContainer
     },
-    assistantCard: {
-      marginBottom: spacing[2.5],
+    // Dual assistant section
+    assistantPair: {
+      flexDirection: 'row',
+      gap: spacing[1.5],
+      marginBottom: spacing[2.5]
+    },
+    assistantTile: {
+      flex: 1,
       borderRadius: radii.xl,
+      padding: spacing[2],
+      minHeight: 130,
+      justifyContent: 'space-between'
+    },
+    assistantTileContent: {
       backgroundColor: c.secondary
     },
-    assistantRow: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      gap: spacing[1.5],
-      padding: spacing[2]
+    assistantTileAI: {
+      backgroundColor: c.primary
     },
-    assistantIconWrap: {
-      width: 48,
-      height: 48,
-      borderRadius: radii.lg,
-      backgroundColor: 'rgba(255,255,255,0.15)',
-      alignItems: 'center',
-      justifyContent: 'center'
+    assistantTileEmoji: {
+      fontSize: fontSizes['6xl'],
+      marginBottom: spacing[1]
     },
-    assistantEmoji: { fontSize: fontSizes['6xl'] },
-    assistantInfo: { flex: 1 },
-    assistantTitle: {
+    assistantTileTitle: {
       fontSize: fontSizes['2xl'],
       fontWeight: fontWeights.bold,
       color: palette.white,
-      marginBottom: 2
+      marginBottom: 4,
+      lineHeight: 24
     },
-    assistantSubtitle: { fontSize: fontSizes.md, color: 'rgba(255,255,255,0.7)' },
-    assistantArrowWrap: {
-      width: 28,
-      height: 28,
-      borderRadius: 14,
-      backgroundColor: 'rgba(255,255,255,0.2)',
-      alignItems: 'center',
-      justifyContent: 'center'
+    assistantTileTitleAI: {
+      color: palette.white
     },
-    assistantArrow: { fontSize: fontSizes['4xl'], color: palette.white, lineHeight: 22 },
+    assistantTileDesc: {
+      fontSize: fontSizes.base,
+      color: 'rgba(255,255,255,0.75)'
+    },
+    assistantTileDescAI: {
+      color: 'rgba(255,255,255,0.75)'
+    },
     sectionLabel: {
       fontSize: fontSizes.sm,
       fontWeight: fontWeights.bold,
