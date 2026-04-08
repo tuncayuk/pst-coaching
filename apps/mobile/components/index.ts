@@ -1,3 +1,11 @@
+export { DiscoverAssistantPair } from './DiscoverAssistantPair';
+export type { DiscoverAssistantPairProps } from './DiscoverAssistantPair';
+export { DiscoverContentMosaicGrid } from './DiscoverContentMosaicGrid';
+export type { DiscoverContentMosaicGridProps, MosaicTab } from './DiscoverContentMosaicGrid';
+export { DiscoverEbookCard } from './DiscoverEbookCard';
+export type { DiscoverEbookCardItem, DiscoverEbookCardProps } from './DiscoverEbookCard';
+export { DiscoverJourneyCard } from './DiscoverJourneyCard';
+export type { DiscoverJourneyCardItem, DiscoverJourneyCardProps } from './DiscoverJourneyCard';
 export { HomeActivityFeed } from './HomeActivityFeed';
 export type { ActivityItem, ActivityTone } from './HomeActivityFeed';
 export { HomeContentNavCard } from './HomeContentNavCard';
