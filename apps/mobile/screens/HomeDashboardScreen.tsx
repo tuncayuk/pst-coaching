@@ -1,10 +1,15 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Icon } from 'react-native-paper';
 
 import { trackCtaTap } from '../analytics';
 import {
-  PActivityIndicator,
+  ActivityItem,
+  HomeActivityFeed,
+  HomeContentNavCard,
+  HomeReminderNudge,
+  HomeStatCard,
   PButton,
   PCard,
   PChip,
@@ -21,7 +26,7 @@ import {
   getNotificationsForUser,
   getPrimaryUser
 } from '../data/mockSelectors';
-import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../theme';
+import { ColorTokens, fontSizes, fontWeights, radii, spacing, useAppTheme } from '../theme';
 import { OfflineNotice } from './components/OfflineNotice';
 import { ScreenLayout } from './components/ScreenLayout';
 import { ScreenState, resolveScreenState } from './components/ScreenState';
@@ -43,18 +48,34 @@ function formatCountdown(secs: number): string {
   return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
 }
 
+/** Returns a contextual greeting based on the local hour. */
+function getGreetingText(): string {
+  const hour = new Date().getHours();
+  if (hour < 12) return 'Gunaydin,';
+  if (hour < 18) return 'Iyi gunler,';
+  return 'Iyi aksamlar,';
+}
+
 const CONTENT_AREAS = [
   { label: 'Yolculuklar', icon: 'map-marker-path', route: 'DiscoverJourneys', count: '12 program' },
   { label: 'Atolyeler', icon: 'school-outline', route: 'DiscoverWorkshops', count: '8 atolye' },
   { label: 'e-Kitaplar', icon: 'book-open-variant', route: 'DiscoverEbooks', count: '24 kitap' },
-  { label: 'Kocluk Okulu', icon: 'account-school', route: 'DiscoverCatalog', count: '5 kurs' }
+  { label: 'Kocluk Okulu', icon: 'human-male-board', route: 'DiscoverCatalog', count: '5 kurs' }
 ] as const;
 
-const SUBSCRIPTION_BADGE_CONFIG = {
-  active: { label: 'Aktif', bg: '#D1FAE5', text: '#065F46' },
-  trial: { label: 'Deneme', bg: '#FEF3C7', text: '#92400E' },
-  cancelled: { label: 'Iptal', bg: '#FEE2E2', text: '#991B1B' }
-} as const;
+/** Returns subscription badge colors from semantic tokens — dark-mode safe. */
+function getSubscriptionBadgeConfig(c: ColorTokens) {
+  return {
+    active: { label: 'Aktif', bg: c.tertiaryContainer, text: c.onTertiaryContainer },
+    trial: { label: 'Deneme', bg: c.warningContainer, text: c.onWarningContainer },
+    cancelled: { label: 'Iptal', bg: c.errorContainer, text: c.onErrorContainer }
+  } as const;
+}
+
+const ACTIVITIES: ActivityItem[] = [
+  { title: 'Modul 3 tamamlandi', time: '2 saat once', icon: 'check-circle-outline', tone: 'success' },
+  { title: 'Yeni rozet kazandiniz!', time: '1 gun once', icon: 'trophy-outline', tone: 'warning' }
+];
 
 const HomeReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
   const { colors: c } = useAppTheme();
@@ -82,19 +103,16 @@ const HomeReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
     };
   }, []);
 
-  const subscriptionStatus: keyof typeof SUBSCRIPTION_BADGE_CONFIG = 'active';
-  const badge = SUBSCRIPTION_BADGE_CONFIG[subscriptionStatus];
+  // AC-FR-E2-08-01: dismissible reminder nudge
+  const [reminderDismissed, setReminderDismissed] = useState(false);
 
-  const stats = [
-    { label: 'Gun Serisi', value: 12, icon: 'fire', tone: 'primary' as const },
-    { label: 'Tamamlanan', value: 28, icon: 'check-circle', tone: 'success' as const },
-    { label: 'Rozetler', value: 8, icon: 'trophy', tone: 'warning' as const }
-  ];
+  const subscriptionStatus: keyof ReturnType<typeof getSubscriptionBadgeConfig> = 'active';
+  const badge = getSubscriptionBadgeConfig(c)[subscriptionStatus];
 
-  const activities = [
-    { title: 'Modul 3 tamamlandi', time: '2 saat once', icon: 'check-circle-outline' },
-    { title: 'Yeni rozet kazandiniz!', time: '1 gun once', icon: 'trophy-outline' }
-  ];
+  // Dynamic progress from real data.
+  const completedItems = progressItems.filter(i => i.status === 'completed');
+  const progressFraction = progressItems.length > 0 ? completedItems.length / progressItems.length : 0;
+  const progressPct = Math.round(progressFraction * 100);
 
   const handleContinue = () => {
     if (!nextStep) {
@@ -106,10 +124,7 @@ const HomeReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
     if (nextStep.content_type === 'journey_day') {
       navigation.navigate('Content', {
         screen: 'ContentJourneyDay',
-        params: {
-          id: nextJourney?.id,
-          day: String(nextJourneyDay?.day_number ?? 1)
-        }
+        params: { id: nextJourney?.id, day: String(nextJourneyDay?.day_number ?? 1) }
       });
       return;
     }
@@ -124,7 +139,7 @@ const HomeReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
       {/* Header row: greeting + subscription badge + notification bell */}
       <View style={styles.headerRow}>
         <View style={styles.headerLeft}>
-          <PText style={styles.greeting}>Merhaba,</PText>
+          <PText style={styles.greeting}>{getGreetingText()}</PText>
           <View style={styles.nameRow}>
             <PText style={styles.nameText}>{displayName}</PText>
             {/* AC-FR-E2-02-01: subscription status badge */}
@@ -162,7 +177,7 @@ const HomeReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
         </View>
       </View>
 
-      {/* Search bar - AC-FR-E2-05-01: tap opens search screen */}
+      {/* Search bar - AC-FR-E2-05-01 */}
       <TouchableOpacity
         onPress={() => {
           if (!isOffline) {
@@ -170,15 +185,15 @@ const HomeReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
             navigation.navigate('HomeSearch');
           }
         }}
-        activeOpacity={0.7}
-        accessibilityLabel="Icerik ara"
+        activeOpacity={isOffline ? 1 : 0.7}
+        accessibilityLabel={isOffline ? 'Arama cevrimdisi modda kullanamaz' : 'Icerik ara'}
         accessibilityRole="search"
-        accessibilityHint="Arama ekranini acar"
-        style={styles.searchWrapper}
+        accessibilityHint={isOffline ? undefined : 'Arama ekranini acar'}
+        style={[styles.searchWrapper, isOffline && styles.searchWrapperDisabled]}
       >
         <PTextInput
           mode="outlined"
-          placeholder="Ne aramak istersiniz?"
+          placeholder={isOffline ? 'Arama cevrimdisi devre disi' : 'Ne aramak istersiniz?'}
           left={<PTextInputIcon icon="magnify" />}
           style={styles.searchInput}
           outlineStyle={styles.searchOutline}
@@ -188,51 +203,67 @@ const HomeReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
         />
       </TouchableOpacity>
 
-      {/* Stats row */}
+      {/* Stats row — AC-FR-E2-02-01 */}
       <View style={styles.statsRow}>
-        {stats.map(stat => (
-          <View
-            key={stat.label}
-            style={[
-              styles.statCard,
-              stat.tone === 'primary' && styles.statPrimary,
-              stat.tone === 'success' && styles.statSuccess,
-              stat.tone === 'warning' && styles.statWarning
-            ]}
-            accessibilityLabel={`${stat.label}: ${stat.value}`}
-            accessibilityRole="text"
-          >
-            <PText style={styles.statValue}>{stat.value}</PText>
-            <PText style={styles.statLabel}>{stat.label}</PText>
-          </View>
-        ))}
+        <HomeStatCard
+          label="Gun Serisi"
+          value={12}
+          icon="fire"
+          tone="primary"
+          onPress={() => trackCtaTap('home.dashboard', 'stat_tapped', { stat: 'Gun Serisi' })}
+        />
+        <HomeStatCard
+          label="Tamamlanan"
+          value={completedItems.length}
+          icon="check-circle"
+          tone="success"
+          onPress={() => trackCtaTap('home.dashboard', 'stat_tapped', { stat: 'Tamamlanan' })}
+        />
+        <HomeStatCard
+          label="Rozetler"
+          value={8}
+          icon="trophy"
+          tone="warning"
+          onPress={() => trackCtaTap('home.dashboard', 'stat_tapped', { stat: 'Rozetler' })}
+        />
       </View>
 
       {/* AC-FR-E2-01-01/02: Today's CTA with countdown */}
       <View style={styles.section}>
         <View style={styles.sectionHeaderRow}>
           <PText style={styles.sectionTitle}>Bugun Devam Et</PText>
-          <View style={styles.countdownBadge} accessibilityLabel={`Kalan sure: ${formatCountdown(countdown)}`}>
+          <View
+            style={styles.countdownBadge}
+            accessibilityLabel={`Kalan sure: ${formatCountdown(countdown)}`}
+            accessibilityLiveRegion="polite"
+          >
+            <View accessibilityElementsHidden>
+              <Icon source="clock-outline" size={12} color={c.onWarningContainer} />
+            </View>
             <PText style={styles.countdownText}>{formatCountdown(countdown)}</PText>
           </View>
         </View>
         {nextStep ? (
-          <PCard accentColor="#00B4D8" style={styles.continueCard}>
+          <PCard accentColor={c.primary} style={styles.continueCard}>
             <View style={styles.continueRow}>
               <View style={styles.continueIcon} accessibilityElementsHidden>
-                <PText style={styles.continueIconText}>H</PText>
+                <PText style={styles.continueIconText}>
+                  {(nextJourney?.title ?? 'H')[0].toUpperCase()}
+                </PText>
               </View>
               <View style={styles.continueInfo}>
-                <PText style={styles.continueTitle}>{nextJourney?.title ?? 'Hedef Belirleme'}</PText>
-                <PText style={styles.continueSubtitle}>Coaching Programi -- Modul 3/8</PText>
+                <PText style={styles.continueTitle} numberOfLines={1}>
+                  {nextJourney?.title ?? 'Hedef Belirleme'}
+                </PText>
+                <PText style={styles.continueSubtitle}>Coaching Programi · Modul 3/8</PText>
               </View>
             </View>
             <View style={styles.progressRow}>
               <View style={styles.progressHeader}>
                 <PText style={styles.progressLabel}>Ilerleme</PText>
-                <PText style={styles.progressValue}>37%</PText>
+                <PText style={styles.progressValue}>{progressPct}%</PText>
               </View>
-              <PProgressBar progress={0.37} style={styles.progressBar} />
+              <PProgressBar progress={progressFraction} style={styles.progressBar} />
             </View>
             <PButton
               mode="contained"
@@ -246,9 +277,15 @@ const HomeReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
           </PCard>
         ) : (
           <PCard style={styles.continueCardEmpty}>
-            <PText style={styles.continueEmptyText}>Bugunki hedefini secmedin.</PText>
+            <View accessibilityElementsHidden>
+              <Icon source="compass-outline" size={40} color={c.textTertiary} />
+            </View>
+            <PText style={styles.continueEmptyTitle}>Bugunku hedefini henuz secmedin</PText>
+            <PText style={styles.continueEmptyDesc}>
+              Icerikleri kesfedin ve baslamak istediginizi secin.
+            </PText>
             <PButton
-              mode="outlined"
+              mode="contained"
               onPress={() => navigation.navigate('Discover')}
               accessibilityLabel="Kesfe cik ve icerik sec"
             >
@@ -260,26 +297,24 @@ const HomeReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
 
       {/* AC-FR-E2-03-01/02: Content area navigation grid */}
       <View style={styles.section}>
-        <PText style={styles.sectionTitle}>Icerik Alanlari</PText>
+        <PText style={[styles.sectionTitle, styles.sectionTitleBlock]}>Icerik Alanlari</PText>
         <View style={styles.contentNavGrid}>
-          {CONTENT_AREAS.map(area => (
-            <TouchableOpacity
-              key={area.label}
-              style={styles.contentNavCard}
-              onPress={() => {
-                if (!isOffline) {
-                  trackCtaTap('home.dashboard', 'content_area_tapped', { route: area.route });
-                  navigation.navigate(area.route as any);
-                }
-              }}
-              accessibilityLabel={`${area.label}, ${area.count}`}
-              accessibilityRole="button"
-              accessibilityHint={`${area.label} katalna gider`}
-              activeOpacity={0.75}
-            >
-              <PText style={styles.contentNavLabel}>{area.label}</PText>
-              <PText style={styles.contentNavCount}>{area.count}</PText>
-            </TouchableOpacity>
+          {[CONTENT_AREAS.slice(0, 2), CONTENT_AREAS.slice(2, 4)].map((row, rowIdx) => (
+            <View key={rowIdx} style={styles.contentNavRow}>
+              {row.map(area => (
+                <HomeContentNavCard
+                  key={area.label}
+                  label={area.label}
+                  icon={area.icon}
+                  count={area.count}
+                  disabled={isOffline}
+                  onPress={() => {
+                    trackCtaTap('home.dashboard', 'content_area_tapped', { route: area.route });
+                    navigation.navigate(area.route as any);
+                  }}
+                />
+              ))}
+            </View>
           ))}
         </View>
       </View>
@@ -296,8 +331,10 @@ const HomeReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
             Detaylar
           </PButton>
         </View>
-        <PCard accentColor="#10B981" style={styles.programCard}>
-          <PText style={styles.programDescription}>Ic sesini guclendir ve degerlerinle uyumlu kararlar al.</PText>
+        <PCard accentColor={c.tertiary} style={styles.programCard}>
+          <PText style={styles.programDescription} numberOfLines={2}>
+            Ic sesini guclendir ve degerlerinle uyumlu kararlar al.
+          </PText>
           <View style={styles.progressRow}>
             <View style={styles.progressHeader}>
               <PText style={styles.progressLabel}>3/8 bolum</PText>
@@ -308,7 +345,7 @@ const HomeReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
         </PCard>
       </View>
 
-      {/* AC-FR-E2-06-01: Active content list (max 3) */}
+      {/* AC-FR-E2-06-01: Active content list */}
       <View style={styles.section}>
         <View style={styles.sectionHeaderRow}>
           <PText style={styles.sectionTitle}>Aktif Iceriklerim</PText>
@@ -326,8 +363,10 @@ const HomeReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
               Yolculuk
             </PChip>
             <View style={styles.activeContentInfo}>
-              <PText style={styles.activeContentTitle}>Hedef Belirleme</PText>
-              <PText style={styles.activeContentMeta}>Gun 3 -- 12 dk</PText>
+              <PText style={styles.activeContentTitle} numberOfLines={1}>
+                Hedef Belirleme
+              </PText>
+              <PText style={styles.activeContentMeta}>Gun 3 · 12 dk</PText>
             </View>
             <PText style={styles.activeContentPct}>42%</PText>
           </View>
@@ -337,30 +376,22 @@ const HomeReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
 
       {/* Son Aktiviteler */}
       <View style={styles.section}>
-        <PText style={styles.sectionTitle}>Son Aktiviteler</PText>
-        {activities.map(activity => (
-          <PCard key={activity.title} style={styles.activityCard}>
-            <View style={styles.activityRow}>
-              <View style={styles.activityInfo}>
-                <PText style={styles.activityTitle}>{activity.title}</PText>
-                <PText style={styles.activityTime}>{activity.time}</PText>
-              </View>
-            </View>
-          </PCard>
-        ))}
+        <PText style={[styles.sectionTitle, styles.sectionTitleBlock]}>Son Aktiviteler</PText>
+        <HomeActivityFeed activities={ACTIVITIES} />
       </View>
 
-      {/* Reminder nudge - AC-FR-E2-08-01 */}
-      <TouchableOpacity
-        style={styles.reminderNudge}
-        onPress={() => !isOffline && navigation.navigate('HomeReminderSetting')}
-        accessibilityLabel="Gunluk hatirlatici ayarla"
-        accessibilityRole="button"
-        accessibilityHint="Hatirlatici ayarlari ekranini acar"
-        activeOpacity={0.75}
-      >
-        <PText style={styles.reminderNudgeText}>Gunluk hatirlaticini ayarla -- 20:00 onerilen</PText>
-      </TouchableOpacity>
+      {/* AC-FR-E2-08-01: Dismissible reminder nudge */}
+      {!reminderDismissed && (
+        <HomeReminderNudge
+          label="Gunluk hatirlaticini ayarla · 20:00 onerilen"
+          disabled={isOffline}
+          onPress={() => {
+            trackCtaTap('home.dashboard', 'reminder_nudge_tapped');
+            navigation.navigate('HomeReminderSetting');
+          }}
+          onDismiss={() => setReminderDismissed(true)}
+        />
+      )}
 
       <View style={styles.bottomSpacer} />
     </View>
@@ -377,16 +408,33 @@ export const HomeDashboardScreen = ({ route }: { route?: { params?: { state?: Sc
   if (state === 'loading') {
     return (
       <ScreenLayout title="Ana Sayfa" headerVariant="none">
-        <View style={styles.section}>
-          <PActivityIndicator animating />
-          <SkeletonBlock height={20} />
-          <SkeletonBlock height={20} />
+        <View style={styles.headerRow}>
+          <View style={styles.headerLeft}>
+            <SkeletonBlock height={16} />
+            <SkeletonBlock height={36} />
+          </View>
+          <SkeletonBlock height={48} />
+        </View>
+        <SkeletonBlock height={48} />
+        <View style={styles.statsRow}>
+          <View style={{ flex: 1 }}><SkeletonBlock height={88} /></View>
+          <View style={{ flex: 1 }}><SkeletonBlock height={88} /></View>
+          <View style={{ flex: 1 }}><SkeletonBlock height={88} /></View>
         </View>
         <View style={styles.section}>
-          <SkeletonBlock height={120} />
+          <SkeletonBlock height={24} />
+          <SkeletonBlock height={160} />
         </View>
         <View style={styles.section}>
-          <SkeletonBlock height={120} />
+          <SkeletonBlock height={24} />
+          <View style={styles.contentNavRow}>
+            <View style={{ flex: 1 }}><SkeletonBlock height={88} /></View>
+            <View style={{ flex: 1 }}><SkeletonBlock height={88} /></View>
+          </View>
+          <View style={styles.contentNavRow}>
+            <View style={{ flex: 1 }}><SkeletonBlock height={88} /></View>
+            <View style={{ flex: 1 }}><SkeletonBlock height={88} /></View>
+          </View>
         </View>
       </ScreenLayout>
     );
@@ -465,8 +513,8 @@ function makeStyles(c: ColorTokens) {
       color: c.textBrand
     },
     subscriptionBadge: {
-      paddingHorizontal: 10,
-      paddingVertical: 3,
+      paddingHorizontal: spacing[1],
+      paddingVertical: spacing[0.5],
       borderRadius: radii.full,
       alignSelf: 'center'
     },
@@ -476,7 +524,7 @@ function makeStyles(c: ColorTokens) {
     },
     notificationWrapper: {
       position: 'relative',
-      marginTop: 4
+      marginTop: spacing[0.5]
     },
     notificationButton: {
       backgroundColor: c.surfaceVariant,
@@ -491,8 +539,8 @@ function makeStyles(c: ColorTokens) {
       height: 16,
       borderRadius: radii.full,
       borderWidth: 2,
-      borderColor: palette.white,
-      backgroundColor: palette.red500,
+      borderColor: c.surface,
+      backgroundColor: c.error,
       alignItems: 'center',
       justifyContent: 'center',
       paddingHorizontal: 2,
@@ -501,12 +549,15 @@ function makeStyles(c: ColorTokens) {
     notificationDotText: {
       fontSize: fontSizes.xs,
       fontWeight: fontWeights.extraBold,
-      color: palette.white,
+      color: c.onError,
       lineHeight: 12
     },
     searchWrapper: {
       marginBottom: spacing[2.5],
       minHeight: 48
+    },
+    searchWrapperDisabled: {
+      opacity: 0.45
     },
     searchInput: {
       backgroundColor: c.surface
@@ -517,41 +568,12 @@ function makeStyles(c: ColorTokens) {
       borderColor: c.outline
     },
     searchContent: {
-      paddingVertical: 10
+      paddingVertical: spacing[1]
     },
     statsRow: {
       flexDirection: 'row',
-      gap: 10,
+      gap: spacing[1],
       marginBottom: spacing[3]
-    },
-    statCard: {
-      flex: 1,
-      borderRadius: 14,
-      padding: spacing[1.5],
-      alignItems: 'center',
-      minHeight: 80,
-      justifyContent: 'center'
-    },
-    statPrimary: {
-      backgroundColor: c.primaryContainer
-    },
-    statSuccess: {
-      backgroundColor: c.tertiaryContainer
-    },
-    statWarning: {
-      backgroundColor: c.warningContainer
-    },
-    statValue: {
-      fontSize: fontSizes['5xl'],
-      fontWeight: fontWeights.extraBold,
-      color: c.textBrand,
-      marginBottom: 4
-    },
-    statLabel: {
-      fontSize: fontSizes.sm,
-      fontWeight: fontWeights.semiBold,
-      color: c.textSecondary,
-      textAlign: 'center'
     },
     section: {
       marginBottom: spacing[3]
@@ -560,21 +582,26 @@ function makeStyles(c: ColorTokens) {
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
-      marginBottom: 10
+      marginBottom: spacing[1]
     },
     sectionTitle: {
       fontSize: fontSizes['3xl'],
       fontWeight: fontWeights.bold,
-      color: c.textPrimary,
-      marginBottom: 10
+      color: c.textPrimary
+    },
+    sectionTitleBlock: {
+      marginBottom: spacing[1]
     },
     countdownBadge: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: spacing[0.5],
       backgroundColor: c.warningContainer,
-      paddingHorizontal: 10,
-      paddingVertical: 4,
+      paddingHorizontal: spacing[1],
+      paddingVertical: spacing[0.5],
       borderRadius: radii.md,
       borderWidth: 1,
-      borderColor: palette.amber200
+      borderColor: c.accentWarning
     },
     countdownText: {
       fontSize: fontSizes.md,
@@ -585,14 +612,21 @@ function makeStyles(c: ColorTokens) {
       padding: spacing[2]
     },
     continueCardEmpty: {
-      padding: spacing[2],
+      padding: spacing[2.5],
       alignItems: 'center',
       gap: spacing[1.5]
     },
-    continueEmptyText: {
+    continueEmptyTitle: {
       fontSize: fontSizes.lg,
+      fontWeight: fontWeights.bold,
+      color: c.textPrimary,
+      textAlign: 'center'
+    },
+    continueEmptyDesc: {
+      fontSize: fontSizes.base,
       color: c.textSecondary,
-      marginBottom: spacing[1]
+      textAlign: 'center',
+      lineHeight: 20
     },
     continueRow: {
       flexDirection: 'row',
@@ -620,7 +654,7 @@ function makeStyles(c: ColorTokens) {
       fontSize: fontSizes.xl,
       fontWeight: fontWeights.bold,
       color: c.textPrimary,
-      marginBottom: 4
+      marginBottom: spacing[0.5]
     },
     continueSubtitle: {
       fontSize: fontSizes.base,
@@ -632,7 +666,7 @@ function makeStyles(c: ColorTokens) {
     progressHeader: {
       flexDirection: 'row',
       justifyContent: 'space-between',
-      marginBottom: 6
+      marginBottom: spacing[1]
     },
     progressLabel: {
       fontSize: fontSizes.md,
@@ -649,32 +683,14 @@ function makeStyles(c: ColorTokens) {
       borderRadius: radii.full
     },
     contentNavGrid: {
+      gap: spacing[1]
+    },
+    contentNavRow: {
       flexDirection: 'row',
-      flexWrap: 'wrap',
-      gap: 10
-    },
-    contentNavCard: {
-      width: '47%',
-      backgroundColor: c.surface,
-      borderRadius: 14,
-      padding: spacing[2],
-      borderWidth: 1.5,
-      borderColor: c.outlineVariant,
-      minHeight: 72,
-      justifyContent: 'center'
-    },
-    contentNavLabel: {
-      fontSize: fontSizes.lg,
-      fontWeight: fontWeights.bold,
-      color: c.textBrand,
-      marginBottom: 4
-    },
-    contentNavCount: {
-      fontSize: fontSizes.base,
-      color: c.textSecondary
+      gap: spacing[1]
     },
     programCard: {
-      padding: 14
+      padding: spacing[1.5]
     },
     programDescription: {
       fontSize: fontSizes.md,
@@ -683,14 +699,14 @@ function makeStyles(c: ColorTokens) {
       lineHeight: 20
     },
     activeContentCard: {
-      padding: 14,
+      padding: spacing[1.5],
       marginBottom: 0
     },
     activeContentRow: {
       flexDirection: 'row',
       alignItems: 'center',
-      gap: 10,
-      marginBottom: 10
+      gap: spacing[1],
+      marginBottom: spacing[1]
     },
     activeContentInfo: {
       flex: 1
@@ -708,44 +724,6 @@ function makeStyles(c: ColorTokens) {
       fontSize: fontSizes.md,
       fontWeight: fontWeights.bold,
       color: c.primary
-    },
-    activityCard: {
-      marginBottom: 10,
-      padding: spacing[1.5]
-    },
-    activityRow: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      gap: spacing[1.5]
-    },
-    activityInfo: {
-      flex: 1
-    },
-    activityTitle: {
-      fontSize: fontSizes.lg,
-      fontWeight: fontWeights.semiBold,
-      color: c.textPrimary,
-      marginBottom: 2
-    },
-    activityTime: {
-      fontSize: fontSizes.base,
-      color: c.textSecondary
-    },
-    reminderNudge: {
-      backgroundColor: c.secondaryContainer,
-      borderRadius: radii.lg,
-      paddingVertical: 14,
-      paddingHorizontal: spacing[2],
-      marginBottom: spacing[2],
-      borderWidth: 1,
-      borderColor: palette.purple100,
-      minHeight: 48,
-      justifyContent: 'center'
-    },
-    reminderNudgeText: {
-      fontSize: fontSizes.md,
-      color: palette.purple700,
-      fontWeight: fontWeights.semiBold
     },
     bottomSpacer: {
       height: spacing[3]

@@ -1,3 +1,11 @@
+export { HomeActivityFeed } from './HomeActivityFeed';
+export type { ActivityItem, ActivityTone } from './HomeActivityFeed';
+export { HomeContentNavCard } from './HomeContentNavCard';
+export type { HomeContentNavCardProps } from './HomeContentNavCard';
+export { HomeReminderNudge } from './HomeReminderNudge';
+export type { HomeReminderNudgeProps } from './HomeReminderNudge';
+export { HomeStatCard } from './HomeStatCard';
+export type { HomeStatCardProps, StatTone } from './HomeStatCard';
 export { PButton } from './PButton';
 export { PCard } from './PCard';
 export { PActivityIndicator } from './PActivityIndicator';
