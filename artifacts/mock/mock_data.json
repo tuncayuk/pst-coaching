@@ -132,7 +132,11 @@
       "id": "55555555-5555-5555-5555-555555555555",
       "code": "ai_package",
       "name": "AI Paketi",
-      "eligible_plan_types": ["individual", "family", "group"]
+      "eligible_plan_types": [
+        "individual",
+        "family",
+        "group"
+      ]
     }
   ],
   "subscription_add_ons": [
@@ -189,7 +193,7 @@
     {
       "id": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
       "title": "Ozsefkat Yolculugu",
-      "description": "Duygusal dayan\u0131kl\u0131l\u0131k i\u00e7in 14 gunluk program.",
+      "description": "Duygusal dayanıklılık için 14 gunluk program.",
       "level": "baslangic",
       "duration_days": 14,
       "daily_target": "10 dk okuma",
@@ -200,8 +204,13 @@
         "cccccccc-0000-0000-0000-000000000001",
         "cccccccc-0000-0000-0000-000000000002"
       ],
-      "featured_workshops": ["eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee", "eeeeeeee-0000-0000-0000-000000000001"],
-      "featured_ebooks": ["eeeeeeee-1111-2222-3333-444444444444"]
+      "featured_workshops": [
+        "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee",
+        "eeeeeeee-0000-0000-0000-000000000001"
+      ],
+      "featured_ebooks": [
+        "eeeeeeee-1111-2222-3333-444444444444"
+      ]
     },
     {
       "id": "abababab-0000-0000-0000-000000000001",
@@ -217,8 +226,13 @@
         "cccccccc-0000-0000-0000-000000000003",
         "cccccccc-0000-0000-0000-000000000004"
       ],
-      "featured_workshops": ["eeeeeeee-0000-0000-0000-000000000002", "eeeeeeee-0000-0000-0000-000000000003"],
-      "featured_ebooks": ["eeeeeeee-5555-6666-7777-888888888888"]
+      "featured_workshops": [
+        "eeeeeeee-0000-0000-0000-000000000002",
+        "eeeeeeee-0000-0000-0000-000000000003"
+      ],
+      "featured_ebooks": [
+        "eeeeeeee-5555-6666-7777-888888888888"
+      ]
     },
     {
       "id": "abababab-0000-0000-0000-000000000002",
@@ -234,8 +248,13 @@
         "cccccccc-0000-0000-0000-000000000005",
         "cccccccc-0000-0000-0000-000000000006"
       ],
-      "featured_workshops": ["eeeeeeee-0000-0000-0000-000000000004", "eeeeeeee-0000-0000-0000-000000000005"],
-      "featured_ebooks": ["eeeeeeee-9999-aaaa-bbbb-cccccccccccc"]
+      "featured_workshops": [
+        "eeeeeeee-0000-0000-0000-000000000004",
+        "eeeeeeee-0000-0000-0000-000000000005"
+      ],
+      "featured_ebooks": [
+        "eeeeeeee-9999-aaaa-bbbb-cccccccccccc"
+      ]
     },
     {
       "id": "abababab-0000-0000-0000-000000000003",
@@ -251,8 +270,13 @@
         "cccccccc-0000-0000-0000-000000000007",
         "cccccccc-0000-0000-0000-000000000008"
       ],
-      "featured_workshops": ["eeeeeeee-0000-0000-0000-000000000006", "eeeeeeee-0000-0000-0000-000000000007"],
-      "featured_ebooks": ["eeeeeeee-dddd-eeee-ffff-000000000000"]
+      "featured_workshops": [
+        "eeeeeeee-0000-0000-0000-000000000006",
+        "eeeeeeee-0000-0000-0000-000000000007"
+      ],
+      "featured_ebooks": [
+        "eeeeeeee-dddd-eeee-ffff-000000000000"
+      ]
     },
     {
       "id": "abababab-0000-0000-0000-000000000004",
@@ -268,8 +292,13 @@
         "cccccccc-0000-0000-0000-000000000009",
         "cccccccc-0000-0000-0000-000000000010"
       ],
-      "featured_workshops": ["eeeeeeee-0000-0000-0000-000000000008", "eeeeeeee-0000-0000-0000-000000000009"],
-      "featured_ebooks": ["ffffffff-ffff-ffff-ffff-ffffffffffff"]
+      "featured_workshops": [
+        "eeeeeeee-0000-0000-0000-000000000008",
+        "eeeeeeee-0000-0000-0000-000000000009"
+      ],
+      "featured_ebooks": [
+        "ffffffff-ffff-ffff-ffff-ffffffffffff"
+      ]
     }
   ],
   "journey_days": [
@@ -529,76 +558,761 @@
   "workshops": [
     {
       "id": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee",
-      "title": "Duygusal Dayaniklilik Atolyesi",
-      "description": "Canli uygulamalar ve okuma.",
-      "language": "tr"
+      "title": "Mutlak Muhtaçlık ve Dua Bilinci",
+      "description": "İnsan çoğu zaman en çok yorulduğu şeyi yanlış isimlendirir. Bu atölye; Fâtır 15, Bakara 255, Rahman 29 ve Mü'min 60 ekseninde mutlak fakr, kayyûmiyet ve dua bilinciyle yüzleşmeye ve dönüşmeye davet ediyor. Tespit · Çözüm · İnşa.",
+      "language": "tr",
+      "type": "kamp",
+      "emoji": "🤲",
+      "color": "#EDE9FE",
+      "duration_label": "3 Gün Kamp",
+      "session_count": 9,
+      "age_target": "18+",
+      "stage_count": 11,
+      "has_camp": true,
+      "has_guide": true,
+      "has_workbook": true,
+      "facilitator": "PST Coaching Eğitmen Ekibi",
+      "scheduled_date": "2026-04-25",
+      "is_upcoming": true,
+      "category": "canli",
+      "is_recommended": true,
+      "is_popular": true,
+      "attendee_count": 347,
+      "difficulty": "ileri",
+      "tags": [
+        "dua",
+        "tevekkul",
+        "kayyumiyet",
+        "donusum",
+        "kamp"
+      ]
     },
     {
       "id": "eeeeeeee-0000-0000-0000-000000000001",
-      "title": "Sukrun Gucu Atolyesi",
-      "description": "Sukur pratikleri ve paylasimlar.",
-      "language": "tr"
+      "title": "Şükrün Gücü: Minnetin Sırrı",
+      "description": "Şükür yalnızca bir ibadet formu değil, zihnin yeniden çerçevelenmesidir. Bu atölye; İbrahim 7, Sebe' 15 ve modern pozitif psikoloji (Seligman, Emmons) ile şükür pratiğini kalıcı bir karakter özelliğine dönüştürmeyi hedefler.",
+      "language": "tr",
+      "type": "kamp",
+      "emoji": "✨",
+      "color": "#FEF9C3",
+      "duration_label": "3 Gün Kamp",
+      "session_count": 9,
+      "age_target": "18+",
+      "stage_count": 11,
+      "has_camp": true,
+      "has_guide": true,
+      "has_workbook": true,
+      "facilitator": "PST Coaching Eğitmen Ekibi",
+      "scheduled_date": "2026-05-09",
+      "is_upcoming": true,
+      "category": "canli",
+      "is_recommended": true,
+      "is_popular": true,
+      "attendee_count": 289,
+      "difficulty": "orta",
+      "tags": [
+        "sukur",
+        "minnet",
+        "pozitif psikoloji",
+        "kamp"
+      ]
     },
     {
       "id": "eeeeeeee-0000-0000-0000-000000000002",
-      "title": "Empati ve Iletisim Atolyesi",
-      "description": "Iliskilerde empati kurma becerileri.",
-      "language": "tr"
+      "title": "Empati ve Derin İletişim",
+      "description": "Dinleyebilmek, anlaşılmadan önce anlamayı seçmektir. Bu atölye; Hucurât 11-13 rehberliğinde empatik dinleme, sözsüz iletişim ve çatışma dönüşümünü Carl Rogers'ın koşulsuz kabul modeli ile bütünleştirir.",
+      "language": "tr",
+      "type": "rehber",
+      "emoji": "🫂",
+      "color": "#D1FAE5",
+      "duration_label": "1 Gün Rehber",
+      "session_count": 4,
+      "age_target": "18+",
+      "stage_count": 11,
+      "has_camp": false,
+      "has_guide": true,
+      "has_workbook": true,
+      "facilitator": "Dr. Merve Çelik",
+      "scheduled_date": "2026-04-20",
+      "is_upcoming": true,
+      "category": "canli",
+      "is_recommended": true,
+      "is_popular": false,
+      "attendee_count": 124,
+      "difficulty": "orta",
+      "tags": [
+        "empati",
+        "iletisim",
+        "iliskiler",
+        "dinleme"
+      ]
     },
     {
       "id": "eeeeeeee-0000-0000-0000-000000000003",
-      "title": "Stresle Bas Etme Atolyesi",
-      "description": "Zihinsel yukun azaltilmasi.",
-      "language": "tr"
+      "title": "Sabır ve Teslimiyet: Beş Vaktin Bilgeliği",
+      "description": "Sabır pasif bir bekleme değil, aktif bir irade pratiğidir. Bakara 153, Zümer 10 ve İbn Atâullah İskenderî'nin Hikem'i üzerinden sabrın üç boyutu — musibette, itaatte, masiyetten uzaklaşmada — hayata entegre edilir.",
+      "language": "tr",
+      "type": "kamp",
+      "emoji": "🌿",
+      "color": "#D1FAE5",
+      "duration_label": "3 Gün Kamp",
+      "session_count": 9,
+      "age_target": "18+",
+      "stage_count": 11,
+      "has_camp": true,
+      "has_guide": true,
+      "has_workbook": true,
+      "facilitator": "PST Coaching Eğitmen Ekibi",
+      "scheduled_date": "2026-05-23",
+      "is_upcoming": true,
+      "category": "canli",
+      "is_recommended": false,
+      "is_popular": true,
+      "attendee_count": 198,
+      "difficulty": "orta",
+      "tags": [
+        "sabir",
+        "teslimiyet",
+        "kamp",
+        "hikmet"
+      ]
     },
     {
       "id": "eeeeeeee-0000-0000-0000-000000000004",
-      "title": "Mindfulness Nefes Atolyesi",
-      "description": "Nefesle sakinlesme uygulamalari.",
-      "language": "tr"
+      "title": "Tövbe ve Dönüşüm: Yeniden Başlamak",
+      "description": "Tövbe, Allah'ın kuluna açık bıraktığı en büyük kapıdır. Zümer 53, Nisâ 110 ve Hud 114 üzerinden tövbenin psikolojik boyutları (Beck bilişsel yeniden yapılandırma) ile günahın değil dönüşümün odağa alındığı bir kamp deneyimi.",
+      "language": "tr",
+      "type": "kamp",
+      "emoji": "🌅",
+      "color": "#FEE2E2",
+      "duration_label": "3 Gün Kamp",
+      "session_count": 9,
+      "age_target": "18+",
+      "stage_count": 11,
+      "has_camp": true,
+      "has_guide": true,
+      "has_workbook": true,
+      "facilitator": "PST Coaching Eğitmen Ekibi",
+      "scheduled_date": "2026-06-06",
+      "is_upcoming": true,
+      "category": "canli",
+      "is_recommended": true,
+      "is_popular": false,
+      "attendee_count": 156,
+      "difficulty": "ileri",
+      "tags": [
+        "tovbe",
+        "donusum",
+        "affedilme",
+        "kamp"
+      ]
     },
     {
       "id": "eeeeeeee-0000-0000-0000-000000000005",
-      "title": "Odak ve Dikkat Atolyesi",
-      "description": "Odaklanma ve dikkat guclendirme.",
-      "language": "tr"
+      "title": "Öz-Şefkat: Kendine İyi Davranmak",
+      "description": "Sürekli eleştiren iç ses çoğu zaman en büyük engelimizdir. Bu çalışma kitabı; İsrâ 70'ten hareketle insan onuru, Kristin Neff'in öz-şefkat modeli ve günlük pratiklerle içsel sertliğin nazikliğe dönüştürülmesini sunar.",
+      "language": "tr",
+      "type": "calisma_kitabi",
+      "emoji": "💛",
+      "color": "#FEF3C7",
+      "duration_label": "Çalışma Kitabı",
+      "session_count": 3,
+      "age_target": "18+",
+      "stage_count": 11,
+      "has_camp": false,
+      "has_guide": false,
+      "has_workbook": true,
+      "facilitator": "PST Coaching Eğitmen Ekibi",
+      "scheduled_date": null,
+      "is_upcoming": false,
+      "category": "kayit",
+      "is_recommended": true,
+      "is_popular": false,
+      "attendee_count": 412,
+      "difficulty": "baslangic",
+      "tags": [
+        "oz-sefkat",
+        "ic ses",
+        "ozguven",
+        "calisma kitabi"
+      ]
     },
     {
       "id": "eeeeeeee-0000-0000-0000-000000000006",
-      "title": "Oz Sefkat Atolyesi",
-      "description": "Kendine iyi davranma pratikleri.",
-      "language": "tr"
+      "title": "Öfke ve Dönüşümü: Ateşi Söndürmek",
+      "description": "Öfke yanlış bir duygu değil, yanlış yönlendirilmiş bir enerjidir. Âl-i İmrân 134 ve modern duygu düzenleme teorileri (DBT, ACT) eşliğinde öfkenin kaynağını, tetikleyicilerini ve sağlıklı dışavurumunu keşfeden derin bir kamp.",
+      "language": "tr",
+      "type": "kamp",
+      "emoji": "🔥",
+      "color": "#FEE2E2",
+      "duration_label": "3 Gün Kamp",
+      "session_count": 9,
+      "age_target": "18+",
+      "stage_count": 11,
+      "has_camp": true,
+      "has_guide": true,
+      "has_workbook": true,
+      "facilitator": "PST Coaching Eğitmen Ekibi",
+      "scheduled_date": "2026-06-20",
+      "is_upcoming": true,
+      "category": "canli",
+      "is_recommended": false,
+      "is_popular": true,
+      "attendee_count": 231,
+      "difficulty": "orta",
+      "tags": [
+        "ofke",
+        "duygu duzenleme",
+        "kamp",
+        "donusum"
+      ]
     },
     {
       "id": "eeeeeeee-0000-0000-0000-000000000007",
-      "title": "Sinir Koyma Atolyesi",
-      "description": "Saglikli sinirlar belirleme.",
-      "language": "tr"
+      "title": "Sınır Koyma ve Hayır Diyebilmek",
+      "description": "Sınır koyamayan insan hem kendine hem çevresine zarar verir. Bu çalışma kitabı; İsrâ 36 ve Harris'in ACT değer odaklı davranış modeliyle sağlıklı sınırları belirlemeyi ve bunu korumayı öğretir.",
+      "language": "tr",
+      "type": "calisma_kitabi",
+      "emoji": "🛡️",
+      "color": "#E0F2FE",
+      "duration_label": "Çalışma Kitabı",
+      "session_count": 3,
+      "age_target": "18+",
+      "stage_count": 11,
+      "has_camp": false,
+      "has_guide": false,
+      "has_workbook": true,
+      "facilitator": "PST Coaching Eğitmen Ekibi",
+      "scheduled_date": null,
+      "is_upcoming": false,
+      "category": "kayit",
+      "is_recommended": false,
+      "is_popular": false,
+      "attendee_count": 189,
+      "difficulty": "baslangic",
+      "tags": [
+        "sinir",
+        "hayir demek",
+        "ACT",
+        "calisma kitabi"
+      ]
     },
     {
       "id": "eeeeeeee-0000-0000-0000-000000000008",
-      "title": "Motivasyon ve Hedef Atolyesi",
-      "description": "Hedef netlestirme ve ilerleme.",
-      "language": "tr"
+      "title": "Korku ve Cesaret: Güven'e Yürümek",
+      "description": "Her korku içinde bir ihtiyaç gizlidir. İbrahim 12, Âl-i İmrân 175 ve Jung'un gölge entegrasyonu üzerinden korkuyu bastırmak yerine anlamlandırmayı ve cesarete dönüştürmeyi keşfeden bir dönüşüm kampı.",
+      "language": "tr",
+      "type": "kamp",
+      "emoji": "🦁",
+      "color": "#FDE68A",
+      "duration_label": "3 Gün Kamp",
+      "session_count": 9,
+      "age_target": "18+",
+      "stage_count": 11,
+      "has_camp": true,
+      "has_guide": true,
+      "has_workbook": true,
+      "facilitator": "PST Coaching Eğitmen Ekibi",
+      "scheduled_date": "2026-07-04",
+      "is_upcoming": true,
+      "category": "canli",
+      "is_recommended": true,
+      "is_popular": false,
+      "attendee_count": 143,
+      "difficulty": "orta",
+      "tags": [
+        "korku",
+        "cesaret",
+        "guven",
+        "kamp"
+      ]
     },
     {
       "id": "eeeeeeee-0000-0000-0000-000000000009",
-      "title": "Rutin ve Aliskanlik Atolyesi",
-      "description": "Gunluk rutin olusturma adimlari.",
-      "language": "tr"
+      "title": "Kimlik ve Varoluş: Ben Kimim?",
+      "description": "Kimlik krizi modern insanın en derin yaralarından biridir. Zariyât 56 ve Heidegger'in otantik varoluş felsefesi üzerinden Kur'ân'ın insan tanımı, 'kulluk kimliği' ve sahte benlik kalıplarının dönüştürülmesi için yoğun bir kamp.",
+      "language": "tr",
+      "type": "kamp",
+      "emoji": "🪞",
+      "color": "#EDE9FE",
+      "duration_label": "3 Gün Kamp",
+      "session_count": 9,
+      "age_target": "18+",
+      "stage_count": 11,
+      "has_camp": true,
+      "has_guide": true,
+      "has_workbook": true,
+      "facilitator": "PST Coaching Eğitmen Ekibi",
+      "scheduled_date": "2026-07-18",
+      "is_upcoming": true,
+      "category": "canli",
+      "is_recommended": false,
+      "is_popular": false,
+      "attendee_count": 97,
+      "difficulty": "ileri",
+      "tags": [
+        "kimlik",
+        "varolis",
+        "kulluk",
+        "kamp"
+      ]
     },
     {
       "id": "eeeeeeee-0000-0000-0000-000000000010",
-      "title": "Duygusal Denge Atolyesi",
-      "description": "Duygulari dengeleme teknikleri.",
-      "language": "tr"
+      "title": "Aile ve Bağ: İlişkilerde Şifa",
+      "description": "En derin yaralar en yakınlarımızdan gelir. Rûm 21 ve Bowlby'nin bağlanma teorisi ekseninde ebeveyn-çocuk ilişkisi, nesiller arası örüntüler ve sağlıklı bağ kurmanın Kur'ânî temelleri üzerine derinleşen bir kamp.",
+      "language": "tr",
+      "type": "kamp",
+      "emoji": "👨‍👩‍👧",
+      "color": "#D1FAE5",
+      "duration_label": "3 Gün Kamp",
+      "session_count": 9,
+      "age_target": "Aile",
+      "stage_count": 11,
+      "has_camp": true,
+      "has_guide": true,
+      "has_workbook": true,
+      "facilitator": "PST Coaching Eğitmen Ekibi",
+      "scheduled_date": "2026-08-01",
+      "is_upcoming": true,
+      "category": "canli",
+      "is_recommended": true,
+      "is_popular": true,
+      "attendee_count": 264,
+      "difficulty": "orta",
+      "tags": [
+        "aile",
+        "bag",
+        "iliski",
+        "kamp"
+      ]
+    },
+    {
+      "id": "eeeeeeee-0000-0000-0000-000000000011",
+      "title": "Keder ve Kayıp: Yas Bilinci",
+      "description": "Kayıp yaşanmış olsa da, yas tıkanmış olmamalı. Bakara 156 ve Elizabeth Kübler-Ross'un yas aşamaları ile Kur'ân'ın insana özgü hüznü nasıl dönüştürdüğünü; güçten değil, anlam ve kabulden geçen şifa yolunu keşfedersiniz.",
+      "language": "tr",
+      "type": "kamp",
+      "emoji": "🌧️",
+      "color": "#BFDBFE",
+      "duration_label": "3 Gün Kamp",
+      "session_count": 9,
+      "age_target": "18+",
+      "stage_count": 11,
+      "has_camp": true,
+      "has_guide": true,
+      "has_workbook": true,
+      "facilitator": "PST Coaching Eğitmen Ekibi",
+      "scheduled_date": "2026-08-15",
+      "is_upcoming": true,
+      "category": "canli",
+      "is_recommended": false,
+      "is_popular": false,
+      "attendee_count": 88,
+      "difficulty": "ileri",
+      "tags": [
+        "keder",
+        "kayip",
+        "yas",
+        "kamp"
+      ]
+    },
+    {
+      "id": "eeeeeeee-0000-0000-0000-000000000012",
+      "title": "Motivasyon ve Hedef İnşası",
+      "description": "Motivasyon iç kaynaklı olmadıkça kalıcı olmaz. Kehf 110 ve Deci-Ryan'ın öz-belirleme teorisi üzerinden; anlam odaklı hedef belirleme, engel aşma ve uzun vadeli sürdürülebilir hareket için yoğun bir kamp deneyimi.",
+      "language": "tr",
+      "type": "kamp",
+      "emoji": "🎯",
+      "color": "#D1FAE5",
+      "duration_label": "3 Gün Kamp",
+      "session_count": 9,
+      "age_target": "18+",
+      "stage_count": 11,
+      "has_camp": true,
+      "has_guide": true,
+      "has_workbook": true,
+      "facilitator": "PST Coaching Eğitmen Ekibi",
+      "scheduled_date": "2026-09-05",
+      "is_upcoming": true,
+      "category": "canli",
+      "is_recommended": true,
+      "is_popular": true,
+      "attendee_count": 318,
+      "difficulty": "orta",
+      "tags": [
+        "motivasyon",
+        "hedef",
+        "anlam",
+        "kamp"
+      ]
+    },
+    {
+      "id": "eeeeeeee-0000-0000-0000-000000000013",
+      "title": "Zaman ve Dikkat Yönetimi",
+      "description": "Asr Sûresi yalnızca üç âyette insan hayatının özünü verir: zaman, iman, amel ve sabır. Bu çalışma kitabı; dikkat dağılması çağında derinlik ve odak pratiğini, 'şimdiki an' farkındalığını ve zamanla barışık olmayı sunar.",
+      "language": "tr",
+      "type": "calisma_kitabi",
+      "emoji": "⏳",
+      "color": "#FEF3C7",
+      "duration_label": "Çalışma Kitabı",
+      "session_count": 3,
+      "age_target": "18+",
+      "stage_count": 11,
+      "has_camp": false,
+      "has_guide": false,
+      "has_workbook": true,
+      "facilitator": "PST Coaching Eğitmen Ekibi",
+      "scheduled_date": null,
+      "is_upcoming": false,
+      "category": "kayit",
+      "is_recommended": false,
+      "is_popular": false,
+      "attendee_count": 203,
+      "difficulty": "baslangic",
+      "tags": [
+        "zaman",
+        "dikkat",
+        "odak",
+        "calisma kitabi"
+      ]
+    },
+    {
+      "id": "eeeeeeee-0000-0000-0000-000000000014",
+      "title": "Güven ve Mahremiyet: Açılabilmek",
+      "description": "Güven yaralandığında insanlar kapanır. Bu rehber atölyesi; Tevbe 119 ve Brené Brown'ın 'savunmasızlık' teorisi ile güveni yeniden inşa etme, sağlıklı mahremiyeti koruma ve gerçek yakınlığa adım atma pratiğini sunar.",
+      "language": "tr",
+      "type": "rehber",
+      "emoji": "🔑",
+      "color": "#E0F2FE",
+      "duration_label": "1 Gün Rehber",
+      "session_count": 4,
+      "age_target": "18+",
+      "stage_count": 11,
+      "has_camp": false,
+      "has_guide": true,
+      "has_workbook": true,
+      "facilitator": "Dr. Merve Çelik",
+      "scheduled_date": "2026-04-27",
+      "is_upcoming": true,
+      "category": "canli",
+      "is_recommended": false,
+      "is_popular": false,
+      "attendee_count": 76,
+      "difficulty": "orta",
+      "tags": [
+        "guven",
+        "mahremiyet",
+        "iliski",
+        "rehber"
+      ]
+    },
+    {
+      "id": "eeeeeeee-0000-0000-0000-000000000015",
+      "title": "Evlilik ve Derinleşme: Birlikte Büyümek",
+      "description": "Evlilik bir varış noktası değil, birlikte inşa edilen bir yolculuktur. Rûm 21 üzerinden eşler arası 'meveddet ve rahmet' kültürü, çatışma döngülerini kırmak ve ortak bir anlam çerçevesi oluşturmak için tasarlanmış bir çift kampı.",
+      "language": "tr",
+      "type": "kamp",
+      "emoji": "💍",
+      "color": "#FCE7F3",
+      "duration_label": "3 Gün Kamp",
+      "session_count": 9,
+      "age_target": "Çift",
+      "stage_count": 11,
+      "has_camp": true,
+      "has_guide": true,
+      "has_workbook": true,
+      "facilitator": "PST Coaching Eğitmen Ekibi",
+      "scheduled_date": "2026-09-19",
+      "is_upcoming": true,
+      "category": "canli",
+      "is_recommended": true,
+      "is_popular": true,
+      "attendee_count": 275,
+      "difficulty": "orta",
+      "tags": [
+        "evlilik",
+        "cift",
+        "iliski",
+        "kamp"
+      ]
+    },
+    {
+      "id": "eeeeeeee-0000-0000-0000-000000000016",
+      "title": "Ergenlik ve Özgürlük: Kendin Olmak",
+      "description": "Ergenlik hem kopuş hem de inşa zamanıdır. Bu rehber; Kehf Sûresi'ndeki genç yolculuklardan hareketle kimlik arayışı, ebeveyn-ergen sınırları, akran baskısı ve 'kişilik inşası' için genç bireyler ve aileleri birlikte çalışmaya davet eder.",
+      "language": "tr",
+      "type": "rehber",
+      "emoji": "🌱",
+      "color": "#D1FAE5",
+      "duration_label": "1 Gün Rehber",
+      "session_count": 5,
+      "age_target": "14-18",
+      "stage_count": 11,
+      "has_camp": false,
+      "has_guide": true,
+      "has_workbook": true,
+      "facilitator": "Dr. Merve Çelik",
+      "scheduled_date": "2026-05-03",
+      "is_upcoming": true,
+      "category": "canli",
+      "is_recommended": false,
+      "is_popular": false,
+      "attendee_count": 112,
+      "difficulty": "baslangic",
+      "tags": [
+        "ergenlik",
+        "kimlik",
+        "aile",
+        "rehber"
+      ]
+    },
+    {
+      "id": "eeeeeeee-0000-0000-0000-000000000017",
+      "title": "Liderlik ve Sorumluluk: Öncü Olmak",
+      "description": "Gerçek lider, güç arayan değil — hizmet eden kişidir. Bakara 30 ve Aristoteles'in etik liderlik teorisi ile Kur'ân'ın 'halife' kavramı üzerinden sorumluluk bilinci, ekip yönetimi ve kararların hesabını verme farkındalığı için bir rehber atölyesi.",
+      "language": "tr",
+      "type": "rehber",
+      "emoji": "🧭",
+      "color": "#E0F2FE",
+      "duration_label": "1 Gün Rehber",
+      "session_count": 5,
+      "age_target": "25+",
+      "stage_count": 11,
+      "has_camp": false,
+      "has_guide": true,
+      "has_workbook": true,
+      "facilitator": "Dr. Merve Çelik",
+      "scheduled_date": "2026-05-17",
+      "is_upcoming": true,
+      "category": "canli",
+      "is_recommended": true,
+      "is_popular": false,
+      "attendee_count": 134,
+      "difficulty": "orta",
+      "tags": [
+        "liderlik",
+        "sorumluluk",
+        "hizmet",
+        "rehber"
+      ]
+    },
+    {
+      "id": "eeeeeeee-0000-0000-0000-000000000018",
+      "title": "Yaratıcılık ve Anlam: Eser Vermek",
+      "description": "Her insan bir şey üretmek için yaratılmıştır. Bu çalışma kitabı; Rahman 3-4'teki 'öğretti, ifade etti' ekseninde yaratıcılık engelleri, iç eleştirmeni susturmak ve anlam dolu eserler vermenin psikolojik zeminini sunar.",
+      "language": "tr",
+      "type": "calisma_kitabi",
+      "emoji": "🎨",
+      "color": "#FEE2E2",
+      "duration_label": "Çalışma Kitabı",
+      "session_count": 3,
+      "age_target": "18+",
+      "stage_count": 11,
+      "has_camp": false,
+      "has_guide": false,
+      "has_workbook": true,
+      "facilitator": "PST Coaching Eğitmen Ekibi",
+      "scheduled_date": null,
+      "is_upcoming": false,
+      "category": "kayit",
+      "is_recommended": false,
+      "is_popular": false,
+      "attendee_count": 167,
+      "difficulty": "baslangic",
+      "tags": [
+        "yaraticilik",
+        "anlam",
+        "eser",
+        "calisma kitabi"
+      ]
+    },
+    {
+      "id": "eeeeeeee-0000-0000-0000-000000000019",
+      "title": "Dua ve Yakîn: Kalp ile Konuşmak",
+      "description": "Dua bilgi olmaktan çıkıp kalpten taşan bir yöneliş hâline gelebilir. Mü'min 60, İsrâ 110 ve tasavvuf geleneğinin 'huzurla dua' anlayışı üzerinden; duanın önündeki engeller, esmâ bilinci ve gece duasının dönüştürücü gücü için derin bir kamp.",
+      "language": "tr",
+      "type": "kamp",
+      "emoji": "🌙",
+      "color": "#EDE9FE",
+      "duration_label": "3 Gün Kamp",
+      "session_count": 9,
+      "age_target": "18+",
+      "stage_count": 11,
+      "has_camp": true,
+      "has_guide": true,
+      "has_workbook": true,
+      "facilitator": "PST Coaching Eğitmen Ekibi",
+      "scheduled_date": "2026-10-03",
+      "is_upcoming": true,
+      "category": "canli",
+      "is_recommended": true,
+      "is_popular": false,
+      "attendee_count": 176,
+      "difficulty": "ileri",
+      "tags": [
+        "dua",
+        "yakin",
+        "kalp",
+        "kamp"
+      ]
+    },
+    {
+      "id": "eeeeeeee-0000-0000-0000-000000000020",
+      "title": "Özgüven: İç Ses ile Barışmak",
+      "description": "Özgüven dışarıdan alınan onaya değil, içeriden kazanılan anlama dayanır. Bu rehber atölyesi; Tin 4-6 ve Adler'in aşağılık duygusu modeliyle iç eleştirmen, özgüven engelleri ve sahici benliği kabul etme yolculuğunu sunar.",
+      "language": "tr",
+      "type": "rehber",
+      "emoji": "💪",
+      "color": "#FEF3C7",
+      "duration_label": "1 Gün Rehber",
+      "session_count": 4,
+      "age_target": "18+",
+      "stage_count": 11,
+      "has_camp": false,
+      "has_guide": true,
+      "has_workbook": true,
+      "facilitator": "Dr. Merve Çelik",
+      "scheduled_date": "2026-06-14",
+      "is_upcoming": true,
+      "category": "canli",
+      "is_recommended": false,
+      "is_popular": true,
+      "attendee_count": 222,
+      "difficulty": "baslangic",
+      "tags": [
+        "ozguven",
+        "ic ses",
+        "kabul",
+        "rehber"
+      ]
+    },
+    {
+      "id": "eeeeeeee-0000-0000-0000-000000000021",
+      "title": "Şifa ve Yeniden Başlamak",
+      "description": "Bazı yaralar geçmez; taşınır. Bu kamp; Şuarâ 80 ve Viktor Frankl'ın logoterapi anlayışı ile acıya anlam yükleyip hayatı yeniden sahiplenmeyi, başarısızlıktan karakter inşa etmeyi ve yeniden başlamanın nasıl mümkün olduğunu keşfeder.",
+      "language": "tr",
+      "type": "kamp",
+      "emoji": "🌸",
+      "color": "#FCE7F3",
+      "duration_label": "3 Gün Kamp",
+      "session_count": 9,
+      "age_target": "18+",
+      "stage_count": 11,
+      "has_camp": true,
+      "has_guide": true,
+      "has_workbook": true,
+      "facilitator": "PST Coaching Eğitmen Ekibi",
+      "scheduled_date": "2026-10-17",
+      "is_upcoming": true,
+      "category": "canli",
+      "is_recommended": true,
+      "is_popular": true,
+      "attendee_count": 294,
+      "difficulty": "orta",
+      "tags": [
+        "sifa",
+        "yeniden baslama",
+        "anlam",
+        "kamp"
+      ]
+    },
+    {
+      "id": "eeeeeeee-0000-0000-0000-000000000022",
+      "title": "Bağımlılık ve Özgürlük: Zincirleri Kırmak",
+      "description": "Bağımlılık madde değil, anlam boşluğuyla beslenir. Bu kamp; Mâide 90 ve modern bağımlılık nörobilimi üzerinden dijital bağımlılık, onay arayışı, ilişki bağımlılığı ve bunların Kur'ânî perspektiften dönüştürülme yollarını inceler.",
+      "language": "tr",
+      "type": "kamp",
+      "emoji": "⛓️",
+      "color": "#FEE2E2",
+      "duration_label": "3 Gün Kamp",
+      "session_count": 9,
+      "age_target": "18+",
+      "stage_count": 11,
+      "has_camp": true,
+      "has_guide": true,
+      "has_workbook": true,
+      "facilitator": "PST Coaching Eğitmen Ekibi",
+      "scheduled_date": "2026-11-01",
+      "is_upcoming": true,
+      "category": "canli",
+      "is_recommended": false,
+      "is_popular": false,
+      "attendee_count": 119,
+      "difficulty": "ileri",
+      "tags": [
+        "bagimlilik",
+        "ozgurluk",
+        "dijital",
+        "kamp"
+      ]
+    },
+    {
+      "id": "eeeeeeee-0000-0000-0000-000000000023",
+      "title": "Odak ve Derin Çalışma",
+      "description": "Bilgi çağında en nadir kaynak dikkat ve derin odaktır. Bu çalışma kitabı; Kalem Sûresi'nden ilham alarak dağınık zihinleri toparlamak, 'derin çalışma' (Cal Newport) pratiği ve anlam odaklı verimlilik için yapılandırılmış alıştırmalar sunar.",
+      "language": "tr",
+      "type": "calisma_kitabi",
+      "emoji": "🧘",
+      "color": "#D1FAE5",
+      "duration_label": "Çalışma Kitabı",
+      "session_count": 3,
+      "age_target": "18+",
+      "stage_count": 11,
+      "has_camp": false,
+      "has_guide": false,
+      "has_workbook": true,
+      "facilitator": "PST Coaching Eğitmen Ekibi",
+      "scheduled_date": null,
+      "is_upcoming": false,
+      "category": "kayit",
+      "is_recommended": false,
+      "is_popular": false,
+      "attendee_count": 178,
+      "difficulty": "orta",
+      "tags": [
+        "odak",
+        "derin calisma",
+        "dikkat",
+        "calisma kitabi"
+      ]
+    },
+    {
+      "id": "eeeeeeee-0000-0000-0000-000000000024",
+      "title": "Nefis Terbiyesi: İçsel Disiplin",
+      "description": "Nefis düşman değil, terbiye bekleyen bir yolcu gibidir. Şems 7-10 üzerinden nefsin tezkiyesi; Freud'un id-ego-süperego modeli ve İslâm ahlâk geleneğinin 'mücahede' pratiği ile içsel disiplini gündelik hayata taşımanın yolunu sunar.",
+      "language": "tr",
+      "type": "kamp",
+      "emoji": "🌊",
+      "color": "#BFDBFE",
+      "duration_label": "3 Gün Kamp",
+      "session_count": 9,
+      "age_target": "18+",
+      "stage_count": 11,
+      "has_camp": true,
+      "has_guide": true,
+      "has_workbook": true,
+      "facilitator": "PST Coaching Eğitmen Ekibi",
+      "scheduled_date": "2026-11-15",
+      "is_upcoming": true,
+      "category": "canli",
+      "is_recommended": true,
+      "is_popular": false,
+      "attendee_count": 161,
+      "difficulty": "ileri",
+      "tags": [
+        "nefis",
+        "terbiye",
+        "disiplin",
+        "kamp"
+      ]
     }
   ],
   "ebooks": [
     {
       "id": "eeeeeeee-1111-2222-3333-444444444444",
-      "title": "S\u00fck\u00fcr \u015eifresi",
-      "category": "\u015f\u00fck\u00fcr",
+      "title": "Sükür Şifresi",
+      "category": "şükür",
       "total_pages": 184,
       "has_audio": false,
       "language": "tr",
@@ -606,8 +1320,8 @@
     },
     {
       "id": "eeeeeeee-5555-6666-7777-888888888888",
-      "title": "Kalbimin Beyaz\u0131",
-      "category": "ki\u015fisel geli\u015fim",
+      "title": "Kalbimin Beyazı",
+      "category": "kişisel gelişim",
       "total_pages": 256,
       "has_audio": false,
       "language": "tr",
@@ -616,7 +1330,7 @@
     {
       "id": "eeeeeeee-9999-aaaa-bbbb-cccccccccccc",
       "title": "Yolcu",
-      "category": "ki\u015fisel geli\u015fim",
+      "category": "kişisel gelişim",
       "total_pages": 312,
       "has_audio": false,
       "language": "tr",
@@ -624,8 +1338,8 @@
     },
     {
       "id": "eeeeeeee-dddd-eeee-ffff-000000000000",
-      "title": "Fark\u0131ndal\u0131\u011f\u0131n Aynas\u0131",
-      "category": "fark\u0131ndal\u0131k",
+      "title": "Farkındalığın Aynası",
+      "category": "farkındalık",
       "total_pages": 198,
       "has_audio": false,
       "language": "tr",
@@ -652,7 +1366,7 @@
     {
       "id": "ch-ebook-1-1",
       "ebook_id": "eeeeeeee-1111-2222-3333-444444444444",
-      "title": "\u015e\u00fck\u00fcr\u00fcn Temelleri",
+      "title": "Şükürün Temelleri",
       "order_index": 1,
       "page_start": 1,
       "page_end": 18
@@ -660,7 +1374,7 @@
     {
       "id": "ch-ebook-1-2",
       "ebook_id": "eeeeeeee-1111-2222-3333-444444444444",
-      "title": "G\u00fcnl\u00fck \u015e\u00fck\u00fcr Prati\u011fi",
+      "title": "Günlük Şükür Pratiği",
       "order_index": 2,
       "page_start": 19,
       "page_end": 42
@@ -668,7 +1382,7 @@
     {
       "id": "ch-ebook-1-3",
       "ebook_id": "eeeeeeee-1111-2222-3333-444444444444",
-      "title": "Zorlukta \u015e\u00fck\u00fcr",
+      "title": "Zorlukta Şükür",
       "order_index": 3,
       "page_start": 43,
       "page_end": 68
@@ -676,7 +1390,7 @@
     {
       "id": "ch-ebook-1-4",
       "ebook_id": "eeeeeeee-1111-2222-3333-444444444444",
-      "title": "\u015e\u00fck\u00fcr ve \u0130li\u015fkiler",
+      "title": "Şükür ve İlişkiler",
       "order_index": 4,
       "page_start": 69,
       "page_end": 96
@@ -684,7 +1398,7 @@
     {
       "id": "ch-ebook-1-5",
       "ebook_id": "eeeeeeee-1111-2222-3333-444444444444",
-      "title": "\u015e\u00fck\u00fcrle D\u00f6n\u00fc\u015f\u00fcm",
+      "title": "Şükürle Dönüşüm",
       "order_index": 5,
       "page_start": 97,
       "page_end": 120
@@ -742,16 +1456,6 @@
       "has_audio": false
     },
     {
-      "id": "c1c1c1c1-0000-0000-0000-000000000004",
-      "parent_type": "workshop",
-      "parent_id": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee",
-      "content_type": "reading",
-      "title": "workshop reading item 4",
-      "body": "Okuma metni ornegi 4.",
-      "order_index": 4,
-      "has_audio": true
-    },
-    {
       "id": "c1c1c1c1-0000-0000-0000-000000000005",
       "parent_type": "journey_day",
       "parent_id": "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb",
@@ -780,16 +1484,6 @@
       "body": "Okuma metni ornegi 7.",
       "order_index": 7,
       "has_audio": false
-    },
-    {
-      "id": "c1c1c1c1-0000-0000-0000-000000000008",
-      "parent_type": "workshop",
-      "parent_id": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee",
-      "content_type": "exercise",
-      "title": "workshop exercise item 8",
-      "body": "Uygulama aciklamasi 8.",
-      "order_index": 8,
-      "has_audio": true
     },
     {
       "id": "c1c1c1c1-0000-0000-0000-000000000009",
@@ -822,16 +1516,6 @@
       "has_audio": false
     },
     {
-      "id": "c1c1c1c1-0000-0000-0000-000000000012",
-      "parent_type": "workshop",
-      "parent_id": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee",
-      "content_type": "question",
-      "title": "workshop question item 12",
-      "body": "Soru ornegi 12.",
-      "order_index": 12,
-      "has_audio": true
-    },
-    {
       "id": "c1c1c1c1-0000-0000-0000-000000000013",
       "parent_type": "journey_day",
       "parent_id": "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb",
@@ -860,16 +1544,6 @@
       "body": "Soru ornegi 15.",
       "order_index": 15,
       "has_audio": false
-    },
-    {
-      "id": "c1c1c1c1-0000-0000-0000-000000000016",
-      "parent_type": "workshop",
-      "parent_id": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee",
-      "content_type": "reading",
-      "title": "workshop reading item 16",
-      "body": "Okuma metni ornegi 16.",
-      "order_index": 16,
-      "has_audio": true
     },
     {
       "id": "c1c1c1c1-0000-0000-0000-000000000017",
@@ -902,16 +1576,6 @@
       "has_audio": false
     },
     {
-      "id": "c1c1c1c1-0000-0000-0000-000000000020",
-      "parent_type": "workshop",
-      "parent_id": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee",
-      "content_type": "exercise",
-      "title": "workshop exercise item 20",
-      "body": "Uygulama aciklamasi 20.",
-      "order_index": 20,
-      "has_audio": true
-    },
-    {
       "id": "c1c1c1c1-0000-0000-0000-000000000021",
       "parent_type": "journey_day",
       "parent_id": "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb",
@@ -940,16 +1604,6 @@
       "body": "Uygulama aciklamasi 23.",
       "order_index": 23,
       "has_audio": false
-    },
-    {
-      "id": "c1c1c1c1-0000-0000-0000-000000000024",
-      "parent_type": "workshop",
-      "parent_id": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee",
-      "content_type": "question",
-      "title": "workshop question item 24",
-      "body": "Soru ornegi 24.",
-      "order_index": 24,
-      "has_audio": true
     },
     {
       "id": "c1c1c1c1-0000-0000-0000-000000000025",
@@ -982,16 +1636,6 @@
       "has_audio": false
     },
     {
-      "id": "c1c1c1c1-0000-0000-0000-000000000028",
-      "parent_type": "workshop",
-      "parent_id": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee",
-      "content_type": "reading",
-      "title": "workshop reading item 28",
-      "body": "Okuma metni ornegi 28.",
-      "order_index": 28,
-      "has_audio": true
-    },
-    {
       "id": "c1c1c1c1-0000-0000-0000-000000000029",
       "parent_type": "journey_day",
       "parent_id": "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb",
@@ -1020,16 +1664,6 @@
       "body": "Okuma metni ornegi 31.",
       "order_index": 31,
       "has_audio": false
-    },
-    {
-      "id": "c1c1c1c1-0000-0000-0000-000000000032",
-      "parent_type": "workshop",
-      "parent_id": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee",
-      "content_type": "exercise",
-      "title": "workshop exercise item 32",
-      "body": "Uygulama aciklamasi 32.",
-      "order_index": 32,
-      "has_audio": true
     },
     {
       "id": "c1c1c1c1-0000-0000-0000-000000000033",
@@ -1062,16 +1696,6 @@
       "has_audio": false
     },
     {
-      "id": "c1c1c1c1-0000-0000-0000-000000000036",
-      "parent_type": "workshop",
-      "parent_id": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee",
-      "content_type": "question",
-      "title": "workshop question item 36",
-      "body": "Soru ornegi 36.",
-      "order_index": 36,
-      "has_audio": true
-    },
-    {
       "id": "c1c1c1c1-0000-0000-0000-000000000037",
       "parent_type": "journey_day",
       "parent_id": "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb",
@@ -1100,16 +1724,6 @@
       "body": "Soru ornegi 39.",
       "order_index": 39,
       "has_audio": false
-    },
-    {
-      "id": "c1c1c1c1-0000-0000-0000-000000000040",
-      "parent_type": "workshop",
-      "parent_id": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee",
-      "content_type": "reading",
-      "title": "workshop reading item 40",
-      "body": "Okuma metni ornegi 40.",
-      "order_index": 40,
-      "has_audio": true
     },
     {
       "id": "c1c1c1c1-0000-0000-0000-000000000041",
@@ -1142,16 +1756,6 @@
       "has_audio": false
     },
     {
-      "id": "c1c1c1c1-0000-0000-0000-000000000044",
-      "parent_type": "workshop",
-      "parent_id": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee",
-      "content_type": "exercise",
-      "title": "workshop exercise item 44",
-      "body": "Uygulama aciklamasi 44.",
-      "order_index": 44,
-      "has_audio": true
-    },
-    {
       "id": "c1c1c1c1-0000-0000-0000-000000000045",
       "parent_type": "journey_day",
       "parent_id": "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb",
@@ -1180,16 +1784,6 @@
       "body": "Uygulama aciklamasi 47.",
       "order_index": 47,
       "has_audio": false
-    },
-    {
-      "id": "c1c1c1c1-0000-0000-0000-000000000048",
-      "parent_type": "workshop",
-      "parent_id": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee",
-      "content_type": "question",
-      "title": "workshop question item 48",
-      "body": "Soru ornegi 48.",
-      "order_index": 48,
-      "has_audio": true
     },
     {
       "id": "c1c1c1c1-0000-0000-0000-000000000049",
@@ -1239,6 +1833,336 @@
       "title": "Bilissel Carpitmalar",
       "body": "Dusunce carpitmalarini tanima.",
       "order_index": 3,
+      "has_audio": false
+    },
+    {
+      "id": "ws-mutlak-stage-01",
+      "parent_type": "workshop",
+      "parent_id": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee",
+      "content_type": "reading",
+      "title": "Kavram İnşası — Zemin Kurulumu",
+      "body": "Kavram İnşası — Zemin Kurulumu icin yapilandirilmis icerik. Bu asama; Mutlak Muhtaçlık ve Dua Bilinci atolyesinin 1. asamasidir.",
+      "order_index": 1,
+      "has_audio": true
+    },
+    {
+      "id": "ws-mutlak-stage-02",
+      "parent_type": "workshop",
+      "parent_id": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee",
+      "content_type": "reading",
+      "title": "Kur'ân Analizi — Siyak-Sibak",
+      "body": "Kur'ân Analizi — Siyak-Sibak icin yapilandirilmis icerik. Bu asama; Mutlak Muhtaçlık ve Dua Bilinci atolyesinin 2. asamasidir.",
+      "order_index": 2,
+      "has_audio": true
+    },
+    {
+      "id": "ws-mutlak-stage-03",
+      "parent_type": "workshop",
+      "parent_id": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee",
+      "content_type": "reading",
+      "title": "Ayet Aynalama — Bütüncül Sistem",
+      "body": "Ayet Aynalama — Bütüncül Sistem icin yapilandirilmis icerik. Bu asama; Mutlak Muhtaçlık ve Dua Bilinci atolyesinin 3. asamasidir.",
+      "order_index": 3,
+      "has_audio": true
+    },
+    {
+      "id": "ws-mutlak-stage-04",
+      "parent_type": "workshop",
+      "parent_id": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee",
+      "content_type": "reading",
+      "title": "Müfessirler — Alim Perspektifleri",
+      "body": "Müfessirler — Alim Perspektifleri icin yapilandirilmis icerik. Bu asama; Mutlak Muhtaçlık ve Dua Bilinci atolyesinin 4. asamasidir.",
+      "order_index": 4,
+      "has_audio": true
+    },
+    {
+      "id": "ws-mutlak-stage-05",
+      "parent_type": "workshop",
+      "parent_id": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee",
+      "content_type": "exercise",
+      "title": "Vicdandan Karaktere Modeli",
+      "body": "Vicdandan Karaktere Modeli icin yapilandirilmis icerik. Bu asama; Mutlak Muhtaçlık ve Dua Bilinci atolyesinin 5. asamasidir.",
+      "order_index": 5,
+      "has_audio": false
+    },
+    {
+      "id": "ws-mutlak-stage-06",
+      "parent_type": "workshop",
+      "parent_id": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee",
+      "content_type": "exercise",
+      "title": "Psikoloji Köprüsü",
+      "body": "Psikoloji Köprüsü icin yapilandirilmis icerik. Bu asama; Mutlak Muhtaçlık ve Dua Bilinci atolyesinin 6. asamasidir.",
+      "order_index": 6,
+      "has_audio": false
+    },
+    {
+      "id": "ws-mutlak-stage-07",
+      "parent_type": "workshop",
+      "parent_id": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee",
+      "content_type": "reading",
+      "title": "Felsefe Köprüsü",
+      "body": "Felsefe Köprüsü icin yapilandirilmis icerik. Bu asama; Mutlak Muhtaçlık ve Dua Bilinci atolyesinin 7. asamasidir.",
+      "order_index": 7,
+      "has_audio": true
+    },
+    {
+      "id": "ws-mutlak-stage-08",
+      "parent_type": "workshop",
+      "parent_id": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee",
+      "content_type": "exercise",
+      "title": "3-Günlük Kamp",
+      "body": "3-Günlük Kamp icin yapilandirilmis icerik. Bu asama; Mutlak Muhtaçlık ve Dua Bilinci atolyesinin 8. asamasidir.",
+      "order_index": 8,
+      "has_audio": false
+    },
+    {
+      "id": "ws-mutlak-stage-09",
+      "parent_type": "workshop",
+      "parent_id": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee",
+      "content_type": "reading",
+      "title": "Eğitmen Rehberi",
+      "body": "Eğitmen Rehberi icin yapilandirilmis icerik. Bu asama; Mutlak Muhtaçlık ve Dua Bilinci atolyesinin 9. asamasidir.",
+      "order_index": 9,
+      "has_audio": true
+    },
+    {
+      "id": "ws-mutlak-stage-10",
+      "parent_type": "workshop",
+      "parent_id": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee",
+      "content_type": "exercise",
+      "title": "Çalışma Kitabı",
+      "body": "Çalışma Kitabı icin yapilandirilmis icerik. Bu asama; Mutlak Muhtaçlık ve Dua Bilinci atolyesinin 10. asamasidir.",
+      "order_index": 10,
+      "has_audio": false
+    },
+    {
+      "id": "ws-mutlak-stage-11",
+      "parent_type": "workshop",
+      "parent_id": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee",
+      "content_type": "exercise",
+      "title": "Kapanış ve Hayata Uygulama",
+      "body": "Kapanış ve Hayata Uygulama icin yapilandirilmis icerik. Bu asama; Mutlak Muhtaçlık ve Dua Bilinci atolyesinin 11. asamasidir.",
+      "order_index": 11,
+      "has_audio": false
+    },
+    {
+      "id": "ws-sukur-stage-01",
+      "parent_type": "workshop",
+      "parent_id": "eeeeeeee-0000-0000-0000-000000000001",
+      "content_type": "reading",
+      "title": "Kavram İnşası — Zemin Kurulumu",
+      "body": "Kavram İnşası — Zemin Kurulumu icin yapilandirilmis icerik. Bu asama; Şükrün Gücü: Minnetin Sırrı atolyesinin 1. asamasidir.",
+      "order_index": 1,
+      "has_audio": true
+    },
+    {
+      "id": "ws-sukur-stage-02",
+      "parent_type": "workshop",
+      "parent_id": "eeeeeeee-0000-0000-0000-000000000001",
+      "content_type": "reading",
+      "title": "Kur'ân Analizi — Siyak-Sibak",
+      "body": "Kur'ân Analizi — Siyak-Sibak icin yapilandirilmis icerik. Bu asama; Şükrün Gücü: Minnetin Sırrı atolyesinin 2. asamasidir.",
+      "order_index": 2,
+      "has_audio": true
+    },
+    {
+      "id": "ws-sukur-stage-03",
+      "parent_type": "workshop",
+      "parent_id": "eeeeeeee-0000-0000-0000-000000000001",
+      "content_type": "reading",
+      "title": "Ayet Aynalama — Bütüncül Sistem",
+      "body": "Ayet Aynalama — Bütüncül Sistem icin yapilandirilmis icerik. Bu asama; Şükrün Gücü: Minnetin Sırrı atolyesinin 3. asamasidir.",
+      "order_index": 3,
+      "has_audio": true
+    },
+    {
+      "id": "ws-sukur-stage-04",
+      "parent_type": "workshop",
+      "parent_id": "eeeeeeee-0000-0000-0000-000000000001",
+      "content_type": "reading",
+      "title": "Müfessirler — Alim Perspektifleri",
+      "body": "Müfessirler — Alim Perspektifleri icin yapilandirilmis icerik. Bu asama; Şükrün Gücü: Minnetin Sırrı atolyesinin 4. asamasidir.",
+      "order_index": 4,
+      "has_audio": true
+    },
+    {
+      "id": "ws-sukur-stage-05",
+      "parent_type": "workshop",
+      "parent_id": "eeeeeeee-0000-0000-0000-000000000001",
+      "content_type": "exercise",
+      "title": "Vicdandan Karaktere Modeli",
+      "body": "Vicdandan Karaktere Modeli icin yapilandirilmis icerik. Bu asama; Şükrün Gücü: Minnetin Sırrı atolyesinin 5. asamasidir.",
+      "order_index": 5,
+      "has_audio": false
+    },
+    {
+      "id": "ws-sukur-stage-06",
+      "parent_type": "workshop",
+      "parent_id": "eeeeeeee-0000-0000-0000-000000000001",
+      "content_type": "exercise",
+      "title": "Psikoloji Köprüsü",
+      "body": "Psikoloji Köprüsü icin yapilandirilmis icerik. Bu asama; Şükrün Gücü: Minnetin Sırrı atolyesinin 6. asamasidir.",
+      "order_index": 6,
+      "has_audio": false
+    },
+    {
+      "id": "ws-sukur-stage-07",
+      "parent_type": "workshop",
+      "parent_id": "eeeeeeee-0000-0000-0000-000000000001",
+      "content_type": "reading",
+      "title": "Felsefe Köprüsü",
+      "body": "Felsefe Köprüsü icin yapilandirilmis icerik. Bu asama; Şükrün Gücü: Minnetin Sırrı atolyesinin 7. asamasidir.",
+      "order_index": 7,
+      "has_audio": true
+    },
+    {
+      "id": "ws-sukur-stage-08",
+      "parent_type": "workshop",
+      "parent_id": "eeeeeeee-0000-0000-0000-000000000001",
+      "content_type": "exercise",
+      "title": "3-Günlük Kamp",
+      "body": "3-Günlük Kamp icin yapilandirilmis icerik. Bu asama; Şükrün Gücü: Minnetin Sırrı atolyesinin 8. asamasidir.",
+      "order_index": 8,
+      "has_audio": false
+    },
+    {
+      "id": "ws-sukur-stage-09",
+      "parent_type": "workshop",
+      "parent_id": "eeeeeeee-0000-0000-0000-000000000001",
+      "content_type": "reading",
+      "title": "Eğitmen Rehberi",
+      "body": "Eğitmen Rehberi icin yapilandirilmis icerik. Bu asama; Şükrün Gücü: Minnetin Sırrı atolyesinin 9. asamasidir.",
+      "order_index": 9,
+      "has_audio": true
+    },
+    {
+      "id": "ws-sukur-stage-10",
+      "parent_type": "workshop",
+      "parent_id": "eeeeeeee-0000-0000-0000-000000000001",
+      "content_type": "exercise",
+      "title": "Çalışma Kitabı",
+      "body": "Çalışma Kitabı icin yapilandirilmis icerik. Bu asama; Şükrün Gücü: Minnetin Sırrı atolyesinin 10. asamasidir.",
+      "order_index": 10,
+      "has_audio": false
+    },
+    {
+      "id": "ws-sukur-stage-11",
+      "parent_type": "workshop",
+      "parent_id": "eeeeeeee-0000-0000-0000-000000000001",
+      "content_type": "exercise",
+      "title": "Kapanış ve Hayata Uygulama",
+      "body": "Kapanış ve Hayata Uygulama icin yapilandirilmis icerik. Bu asama; Şükrün Gücü: Minnetin Sırrı atolyesinin 11. asamasidir.",
+      "order_index": 11,
+      "has_audio": false
+    },
+    {
+      "id": "ws-empati-stage-01",
+      "parent_type": "workshop",
+      "parent_id": "eeeeeeee-0000-0000-0000-000000000002",
+      "content_type": "reading",
+      "title": "Kavram İnşası — Zemin Kurulumu",
+      "body": "Kavram İnşası — Zemin Kurulumu icin yapilandirilmis icerik. Bu asama; Empati ve Derin İletişim atolyesinin 1. asamasidir.",
+      "order_index": 1,
+      "has_audio": true
+    },
+    {
+      "id": "ws-empati-stage-02",
+      "parent_type": "workshop",
+      "parent_id": "eeeeeeee-0000-0000-0000-000000000002",
+      "content_type": "reading",
+      "title": "Kur'ân Analizi — Siyak-Sibak",
+      "body": "Kur'ân Analizi — Siyak-Sibak icin yapilandirilmis icerik. Bu asama; Empati ve Derin İletişim atolyesinin 2. asamasidir.",
+      "order_index": 2,
+      "has_audio": true
+    },
+    {
+      "id": "ws-empati-stage-03",
+      "parent_type": "workshop",
+      "parent_id": "eeeeeeee-0000-0000-0000-000000000002",
+      "content_type": "reading",
+      "title": "Ayet Aynalama — Bütüncül Sistem",
+      "body": "Ayet Aynalama — Bütüncül Sistem icin yapilandirilmis icerik. Bu asama; Empati ve Derin İletişim atolyesinin 3. asamasidir.",
+      "order_index": 3,
+      "has_audio": true
+    },
+    {
+      "id": "ws-empati-stage-04",
+      "parent_type": "workshop",
+      "parent_id": "eeeeeeee-0000-0000-0000-000000000002",
+      "content_type": "reading",
+      "title": "Müfessirler — Alim Perspektifleri",
+      "body": "Müfessirler — Alim Perspektifleri icin yapilandirilmis icerik. Bu asama; Empati ve Derin İletişim atolyesinin 4. asamasidir.",
+      "order_index": 4,
+      "has_audio": true
+    },
+    {
+      "id": "ws-empati-stage-05",
+      "parent_type": "workshop",
+      "parent_id": "eeeeeeee-0000-0000-0000-000000000002",
+      "content_type": "exercise",
+      "title": "Vicdandan Karaktere Modeli",
+      "body": "Vicdandan Karaktere Modeli icin yapilandirilmis icerik. Bu asama; Empati ve Derin İletişim atolyesinin 5. asamasidir.",
+      "order_index": 5,
+      "has_audio": false
+    },
+    {
+      "id": "ws-empati-stage-06",
+      "parent_type": "workshop",
+      "parent_id": "eeeeeeee-0000-0000-0000-000000000002",
+      "content_type": "exercise",
+      "title": "Psikoloji Köprüsü",
+      "body": "Psikoloji Köprüsü icin yapilandirilmis icerik. Bu asama; Empati ve Derin İletişim atolyesinin 6. asamasidir.",
+      "order_index": 6,
+      "has_audio": false
+    },
+    {
+      "id": "ws-empati-stage-07",
+      "parent_type": "workshop",
+      "parent_id": "eeeeeeee-0000-0000-0000-000000000002",
+      "content_type": "reading",
+      "title": "Felsefe Köprüsü",
+      "body": "Felsefe Köprüsü icin yapilandirilmis icerik. Bu asama; Empati ve Derin İletişim atolyesinin 7. asamasidir.",
+      "order_index": 7,
+      "has_audio": true
+    },
+    {
+      "id": "ws-empati-stage-08",
+      "parent_type": "workshop",
+      "parent_id": "eeeeeeee-0000-0000-0000-000000000002",
+      "content_type": "exercise",
+      "title": "3-Günlük Kamp",
+      "body": "3-Günlük Kamp icin yapilandirilmis icerik. Bu asama; Empati ve Derin İletişim atolyesinin 8. asamasidir.",
+      "order_index": 8,
+      "has_audio": false
+    },
+    {
+      "id": "ws-empati-stage-09",
+      "parent_type": "workshop",
+      "parent_id": "eeeeeeee-0000-0000-0000-000000000002",
+      "content_type": "reading",
+      "title": "Eğitmen Rehberi",
+      "body": "Eğitmen Rehberi icin yapilandirilmis icerik. Bu asama; Empati ve Derin İletişim atolyesinin 9. asamasidir.",
+      "order_index": 9,
+      "has_audio": true
+    },
+    {
+      "id": "ws-empati-stage-10",
+      "parent_type": "workshop",
+      "parent_id": "eeeeeeee-0000-0000-0000-000000000002",
+      "content_type": "exercise",
+      "title": "Çalışma Kitabı",
+      "body": "Çalışma Kitabı icin yapilandirilmis icerik. Bu asama; Empati ve Derin İletişim atolyesinin 10. asamasidir.",
+      "order_index": 10,
+      "has_audio": false
+    },
+    {
+      "id": "ws-empati-stage-11",
+      "parent_type": "workshop",
+      "parent_id": "eeeeeeee-0000-0000-0000-000000000002",
+      "content_type": "exercise",
+      "title": "Kapanış ve Hayata Uygulama",
+      "body": "Kapanış ve Hayata Uygulama icin yapilandirilmis icerik. Bu asama; Empati ve Derin İletişim atolyesinin 11. asamasidir.",
+      "order_index": 11,
       "has_audio": false
     }
   ],

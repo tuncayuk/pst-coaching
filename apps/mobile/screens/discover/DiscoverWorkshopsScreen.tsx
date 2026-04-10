@@ -4,25 +4,27 @@ import { ScrollView, StyleSheet, View } from 'react-native';
 
 import { PActivityIndicator, PButton, PCard, PText } from '../../components';
 import { getWorkshops } from '../../data/mockSelectors';
-import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
+import { ColorTokens, fontSizes, fontWeights, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
 import { SkeletonBlock } from '../components/SkeletonBlock';
 import { StateMessage } from '../components/StateMessage';
 
-const SORT_OPTIONS = ['Tumu', 'Onerilen', 'Populer', 'Yeni'];
+type Workshop = ReturnType<typeof getWorkshops>[number];
+
+const SORT_OPTIONS = ['Tümü', 'Önerilen', 'Popüler', 'Yeni'] as const;
 const TYPE_OPTIONS = [
-  { key: 'tumu', label: 'Tumu' },
+  { key: 'tumu', label: 'Tümü' },
   { key: 'kamp', label: 'Kamp' },
   { key: 'rehber', label: 'Rehber' },
-  { key: 'calisma_kitabi', label: 'Calisma Kitabi' }
-];
-const WORKSHOP_TYPES = ['kamp', 'rehber', 'calisma_kitabi'];
+  { key: 'calisma_kitabi', label: 'Çalışma Kitabı' }
+] as const;
+
 const TYPE_LABELS: Record<string, string> = {
   kamp: 'Kamp',
   rehber: 'Rehber',
-  calisma_kitabi: 'Calisma Kitabi'
+  calisma_kitabi: 'Çalışma Kitabı'
 };
 const TYPE_BG: Record<string, string> = {
   kamp: '#FEE2E2',
@@ -34,11 +36,19 @@ const TYPE_FG: Record<string, string> = {
   rehber: '#065F46',
   calisma_kitabi: '#4C1D95'
 };
-const CARD_EMOJIS = ['🎨', '🧠', '🗣️', '🕊️'];
-const CARD_COLORS = ['#FFE4E6', '#D1FAE5', '#E0F2FE', '#FDE68A'];
-const SESSION_COUNTS = [3, 5, 4, 6, 3, 5];
-const DURATIONS = ['90 dk', '120 dk', '60 dk', '150 dk', '90 dk', '120 dk'];
-const AGE_TARGETS = ['14-18', '18+', 'Yetiskin', 'Aile', '14+', '18-35'];
+const DIFFICULTY_LABELS: Record<string, string> = {
+  baslangic: 'Başlangıç',
+  orta: 'Orta',
+  ileri: 'İleri'
+};
+const DIFFICULTY_COLOR: Record<string, string> = {
+  baslangic: '#065F46',
+  orta: '#92400E',
+  ileri: '#7C2D12'
+};
+
+const getField = <T,>(w: Workshop, key: string, fallback: T): T =>
+  ((w as any)[key] ?? fallback) as T;
 
 const DiscoverWorkshopsContent = ({ isOffline }: { isOffline?: boolean }) => {
   const { colors: c } = useAppTheme();
@@ -46,18 +56,18 @@ const DiscoverWorkshopsContent = ({ isOffline }: { isOffline?: boolean }) => {
 
   const navigation = useNavigation<any>();
   const workshops = getWorkshops();
-  const [selectedSort, setSelectedSort] = React.useState('Tumu');
-  const [selectedType, setSelectedType] = React.useState('tumu');
+  const [selectedSort, setSelectedSort] = React.useState<string>('Tümü');
+  const [selectedType, setSelectedType] = React.useState<string>('tumu');
 
-  const workshopType = (index: number) => WORKSHOP_TYPES[index % WORKSHOP_TYPES.length];
-
-  const filtered = workshops.filter((_w, i) => (selectedType === 'tumu' ? true : workshopType(i) === selectedType));
-
-  const sorted = [...filtered].sort((a, b) => {
-    if (selectedSort === 'Populer') return b.id.localeCompare(a.id);
-    if (selectedSort === 'Yeni') return a.id.localeCompare(b.id);
-    return 0;
-  });
+  const filtered = useMemo(() => {
+    let list = workshops.filter(w =>
+      selectedType === 'tumu' ? true : getField(w, 'type', '') === selectedType
+    );
+    if (selectedSort === 'Önerilen') list = list.filter(w => getField(w, 'is_recommended', false));
+    if (selectedSort === 'Popüler') list = [...list].sort((a, b) => getField(b, 'attendee_count', 0) - getField(a, 'attendee_count', 0));
+    if (selectedSort === 'Yeni') list = [...list].filter(w => getField(w, 'is_upcoming', false));
+    return list;
+  }, [workshops, selectedSort, selectedType]);
 
   return (
     <View>
@@ -101,22 +111,29 @@ const DiscoverWorkshopsContent = ({ isOffline }: { isOffline?: boolean }) => {
         ))}
       </ScrollView>
 
-      {sorted.length === 0 ? (
+      {filtered.length === 0 ? (
         <StateMessage
-          title="Sonuc bulunamadi"
-          description="Baska bir tur filtresi deneyin."
-          actionLabel="Tumu Goster"
+          title="Sonuç bulunamadı"
+          description="Başka bir tür filtresi deneyin."
+          actionLabel="Tümünü Göster"
           icon="filter-remove-outline"
+          onAction={() => { setSelectedSort('Tümü'); setSelectedType('tumu'); }}
         />
       ) : (
-        sorted.map(item => {
-          const origIndex = workshops.findIndex(w => w.id === item.id);
-          const wType = workshopType(origIndex);
-          const sessions = SESSION_COUNTS[origIndex % SESSION_COUNTS.length];
-          const duration = DURATIONS[origIndex % DURATIONS.length];
-          const ageTarget = AGE_TARGETS[origIndex % AGE_TARGETS.length];
-          const color = CARD_COLORS[origIndex % CARD_COLORS.length];
-          const emoji = CARD_EMOJIS[origIndex % CARD_EMOJIS.length];
+        filtered.map(item => {
+          const wType: string = getField(item, 'type', 'kamp');
+          const emoji: string = getField(item, 'emoji', '🎓');
+          const color: string = getField(item, 'color', '#F3F4F6');
+          const durationLabel: string = getField(item, 'duration_label', '—');
+          const sessionCount: number = getField(item, 'session_count', 0);
+          const ageTarget: string = getField(item, 'age_target', '18+');
+          const isRecommended: boolean = getField(item, 'is_recommended', false);
+          const isPopular: boolean = getField(item, 'is_popular', false);
+          const attendeeCount: number = getField(item, 'attendee_count', 0);
+          const difficulty: string = getField(item, 'difficulty', 'orta');
+          const scheduledDate: string | null = getField(item, 'scheduled_date', null);
+          const hasWorkbook: boolean = getField(item, 'has_workbook', false);
+          const hasCamp: boolean = getField(item, 'has_camp', false);
 
           return (
             <PCard
@@ -129,31 +146,85 @@ const DiscoverWorkshopsContent = ({ isOffline }: { isOffline?: boolean }) => {
                 })
               }
               accessibilityLabel={item.title}
-              accessibilityHint="Atolye detaylarini acmak icin dokun"
+              accessibilityHint="Atölye detaylarını açmak için dokun"
               accessibilityRole="button"
             >
               <View style={styles.cardInner}>
+                {/* Badge row */}
+                {(isRecommended || isPopular) && (
+                  <View style={styles.badgeRow}>
+                    {isRecommended && (
+                      <View style={styles.badgeRecommended}>
+                        <PText style={styles.badgeText}>★ Önerilen</PText>
+                      </View>
+                    )}
+                    {isPopular && (
+                      <View style={styles.badgePopular}>
+                        <PText style={styles.badgeText}>🔥 Popüler</PText>
+                      </View>
+                    )}
+                  </View>
+                )}
+
+                {/* Card top */}
                 <View style={styles.cardTop}>
                   <View style={[styles.cardIcon, { backgroundColor: color }]}>
                     <PText style={styles.cardEmoji}>{emoji}</PText>
                   </View>
                   <View style={styles.cardInfo}>
                     <PText style={styles.cardTitle}>{item.title}</PText>
-                    <View style={styles.cardMetaRow}>
-                      <PText style={styles.cardMeta}>⏱ {duration}</PText>
-                      <PText style={styles.cardMetaSep}>·</PText>
-                      <PText style={styles.cardMeta}>👥 {ageTarget}</PText>
-                      <PText style={styles.cardMetaSep}>·</PText>
-                      <PText style={styles.cardMeta}>📋 {sessions} oturum</PText>
-                    </View>
-                    <View style={styles.typeChipRow}>
-                      <View style={[styles.typeChip, { backgroundColor: TYPE_BG[wType] }]}>
-                        <PText style={[styles.typeChipText, { color: TYPE_FG[wType] }]}>{TYPE_LABELS[wType]}</PText>
-                      </View>
-                    </View>
+                    <PText style={styles.cardDesc} numberOfLines={2}>
+                      {(item as any).description ?? ''}
+                    </PText>
                   </View>
                 </View>
+
+                {/* Meta row */}
+                <View style={styles.metaRow}>
+                  <PText style={styles.metaItem}>⏱ {durationLabel}</PText>
+                  <PText style={styles.metaSep}>·</PText>
+                  <PText style={styles.metaItem}>👥 {ageTarget}</PText>
+                  <PText style={styles.metaSep}>·</PText>
+                  <PText style={styles.metaItem}>📋 {sessionCount} oturum</PText>
+                  {attendeeCount > 0 && (
+                    <>
+                      <PText style={styles.metaSep}>·</PText>
+                      <PText style={styles.metaItem}>👤 {attendeeCount}</PText>
+                    </>
+                  )}
+                </View>
+
+                {/* Chip row */}
+                <View style={styles.chipTagRow}>
+                  <View style={[styles.typeChip, { backgroundColor: TYPE_BG[wType] ?? '#F3F4F6' }]}>
+                    <PText style={[styles.typeChipText, { color: TYPE_FG[wType] ?? '#111' }]}>
+                      {TYPE_LABELS[wType] ?? wType}
+                    </PText>
+                  </View>
+                  <View style={[styles.diffChip, { backgroundColor: '#F3F4F6' }]}>
+                    <PText style={[styles.typeChipText, { color: DIFFICULTY_COLOR[difficulty] ?? '#555' }]}>
+                      {DIFFICULTY_LABELS[difficulty] ?? difficulty}
+                    </PText>
+                  </View>
+                  {hasCamp && (
+                    <View style={styles.featureChip}>
+                      <PText style={styles.featureChipText}>⛺ Kamp</PText>
+                    </View>
+                  )}
+                  {hasWorkbook && (
+                    <View style={styles.featureChip}>
+                      <PText style={styles.featureChipText}>📓 Defter</PText>
+                    </View>
+                  )}
+                </View>
+
+                {/* Footer */}
                 <View style={styles.cardFooter}>
+                  {scheduledDate ? (
+                    <PText style={styles.dateText}>📅 {scheduledDate}</PText>
+                  ) : (
+                    <PText style={styles.dateText}>Kendi hızında</PText>
+                  )}
                   <PButton
                     mode="outlined"
                     compact
@@ -168,7 +239,7 @@ const DiscoverWorkshopsContent = ({ isOffline }: { isOffline?: boolean }) => {
                       })
                     }
                   >
-                    Detaylari Gor
+                    Detayları Gör
                   </PButton>
                 </View>
               </View>
@@ -186,23 +257,24 @@ export const DiscoverWorkshopsScreen = ({ route }: { route?: { params?: { state?
 
   if (state === 'loading') {
     return (
-      <ScreenLayout title="Atolyeler">
+      <ScreenLayout title="Atölyeler">
         <PActivityIndicator animating />
-        <SkeletonBlock height={18} />
-        <SkeletonBlock height={36} />
-        <SkeletonBlock height={120} />
-        <SkeletonBlock height={120} />
+        <SkeletonBlock height={34} />
+        <SkeletonBlock height={34} />
+        <SkeletonBlock height={140} />
+        <SkeletonBlock height={140} />
+        <SkeletonBlock height={140} />
       </ScreenLayout>
     );
   }
 
   if (state === 'empty') {
     return (
-      <ScreenLayout title="Atolyeler">
+      <ScreenLayout title="Atölyeler">
         <StateMessage
-          title="Atolye bulunamadi"
-          description="Yeni atolyeler kisa sure icinde eklenecek."
-          actionLabel="Bildirimleri Ac"
+          title="Atölye bulunamadı"
+          description="Yeni atölyeler kısa süre içinde eklenecek."
+          actionLabel="Bildirimleri Aç"
           icon="bell-outline"
         />
       </ScreenLayout>
@@ -211,10 +283,10 @@ export const DiscoverWorkshopsScreen = ({ route }: { route?: { params?: { state?
 
   if (state === 'error') {
     return (
-      <ScreenLayout title="Atolyeler">
+      <ScreenLayout title="Atölyeler">
         <StateMessage
-          title="Atolyeler yuklenemedi"
-          description="Baglantini kontrol edip tekrar dene."
+          title="Atölyeler yüklenemedi"
+          description="Bağlantını kontrol edip tekrar dene."
           actionLabel="Tekrar Dene"
           icon="alert-circle-outline"
           tone="error"
@@ -225,7 +297,7 @@ export const DiscoverWorkshopsScreen = ({ route }: { route?: { params?: { state?
 
   if (state === 'offline') {
     return (
-      <ScreenLayout title="Atolyeler">
+      <ScreenLayout title="Atölyeler">
         <OfflineNotice />
         <DiscoverWorkshopsContent isOffline />
       </ScreenLayout>
@@ -233,7 +305,7 @@ export const DiscoverWorkshopsScreen = ({ route }: { route?: { params?: { state?
   }
 
   return (
-    <ScreenLayout title="Atolyeler">
+    <ScreenLayout title="Atölyeler" subtitle={`${getWorkshops().length} atölye`}>
       <DiscoverWorkshopsContent />
     </ScreenLayout>
   );
@@ -241,43 +313,82 @@ export const DiscoverWorkshopsScreen = ({ route }: { route?: { params?: { state?
 
 function makeStyles(c: ColorTokens) {
   return StyleSheet.create({
-    chipsRow: { gap: spacing[1], paddingBottom: 4, marginBottom: spacing[1.5] },
+    chipsRow: { gap: spacing[1], paddingBottom: 4, marginBottom: spacing[1] },
     chip: { borderRadius: radii['2xl'], elevation: 0 },
     chipContent: { height: 34, paddingHorizontal: 4 },
     chipLabel: { fontSize: fontSizes.base, fontWeight: fontWeights.semiBold },
-    card: { borderRadius: radii.xl, marginBottom: spacing[2] },
+    card: { borderRadius: radii.xl, marginBottom: spacing[2], overflow: 'hidden' },
     cardInner: { borderRadius: radii.xl, overflow: 'hidden' },
-    cardTop: { flexDirection: 'row', gap: spacing[1.5], padding: spacing[2] },
+    badgeRow: {
+      flexDirection: 'row',
+      gap: spacing[1],
+      paddingHorizontal: spacing[2],
+      paddingTop: spacing[1.5],
+      paddingBottom: 0
+    },
+    badgeRecommended: {
+      backgroundColor: '#FEF3C7',
+      paddingHorizontal: 8,
+      paddingVertical: 3,
+      borderRadius: radii.sm
+    },
+    badgePopular: {
+      backgroundColor: '#FEE2E2',
+      paddingHorizontal: 8,
+      paddingVertical: 3,
+      borderRadius: radii.sm
+    },
+    badgeText: { fontSize: fontSizes.sm, fontWeight: fontWeights.bold, color: '#92400E' },
+    cardTop: { flexDirection: 'row', gap: spacing[1.5], padding: spacing[2], paddingTop: spacing[1.5] },
     cardIcon: {
-      width: 64,
-      height: 64,
+      width: 56,
+      height: 56,
       borderRadius: radii.lg,
       alignItems: 'center',
       justifyContent: 'center',
       flexShrink: 0
     },
-    cardEmoji: { fontSize: fontSizes['8xl'] },
+    cardEmoji: { fontSize: fontSizes['6xl'] },
     cardInfo: { flex: 1 },
     cardTitle: { fontSize: fontSizes['2xl'], fontWeight: fontWeights.bold, color: c.textPrimary, marginBottom: 4 },
-    cardMetaRow: {
+    cardDesc: { fontSize: fontSizes.base, color: c.textSecondary, lineHeight: 19 },
+    metaRow: {
       flexDirection: 'row',
       alignItems: 'center',
-      gap: 4,
       flexWrap: 'wrap',
-      marginBottom: 6
+      gap: 4,
+      paddingHorizontal: spacing[2],
+      marginBottom: spacing[1]
     },
-    cardMeta: { fontSize: fontSizes.base, color: c.textTertiary },
-    cardMetaSep: { fontSize: fontSizes.base, color: c.outline },
-    typeChipRow: { flexDirection: 'row', gap: 4 },
+    metaItem: { fontSize: fontSizes.sm, color: c.textTertiary },
+    metaSep: { fontSize: fontSizes.sm, color: c.outline },
+    chipTagRow: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      gap: 6,
+      paddingHorizontal: spacing[2],
+      marginBottom: spacing[1]
+    },
     typeChip: { paddingHorizontal: spacing[1], paddingVertical: 3, borderRadius: radii.sm },
+    diffChip: { paddingHorizontal: spacing[1], paddingVertical: 3, borderRadius: radii.sm },
+    featureChip: {
+      paddingHorizontal: spacing[1],
+      paddingVertical: 3,
+      borderRadius: radii.sm,
+      backgroundColor: '#F0FDF4'
+    },
     typeChipText: { fontSize: fontSizes.sm, fontWeight: fontWeights.bold },
+    featureChipText: { fontSize: fontSizes.sm, color: '#166534' },
     cardFooter: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
       borderTopWidth: 1,
       borderTopColor: c.surfaceVariant,
       paddingHorizontal: spacing[2],
-      paddingVertical: 10,
-      alignItems: 'flex-start'
+      paddingVertical: 10
     },
+    dateText: { fontSize: fontSizes.sm, color: c.textTertiary },
     detailButton: { borderRadius: radii.md },
     detailButtonContent: { height: 36, paddingHorizontal: spacing[1.5] },
     detailButtonLabel: { fontSize: fontSizes.md, fontWeight: fontWeights.bold },
