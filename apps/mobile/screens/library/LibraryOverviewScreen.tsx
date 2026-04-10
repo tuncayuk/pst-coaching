@@ -2,7 +2,15 @@ import { useNavigation } from '@react-navigation/native';
 import React, { useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import { PActivityIndicator, PButton, PCard, PChip, PListIcon, PListItem, PProgressBar, PText } from '../../components';
+import {
+  ContentProgressRow,
+  PActivityIndicator,
+  PButton,
+  PCard,
+  PListIcon,
+  PListItem,
+  PText
+} from '../../components';
 import {
   getCollectionsForUser,
   getDownloadsForUser,
@@ -12,7 +20,7 @@ import {
   getHighlightsForUser,
   getPrimaryUser
 } from '../../data/mockSelectors';
-import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
+import { ColorTokens, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -67,13 +75,7 @@ const LibraryReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
 
       <SectionCard title="Devam Edenler" actionLabel="Tümü">
         {readingProgress.map(item => (
-          <View key={item.title} style={styles.progressRow}>
-            <View style={styles.progressHeader}>
-              <PText variant="titleSmall">{item.title}</PText>
-              <PChip compact>{Math.round(item.progress * 100)}%</PChip>
-            </View>
-            <PProgressBar progress={item.progress} />
-          </View>
+          <ContentProgressRow key={item.title} title={item.title} progress={item.progress} />
         ))}
       </SectionCard>
 
@@ -96,7 +98,7 @@ const LibraryReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
       <SectionCard title="Vurgular & Notlar" actionLabel="Tümü">
         <View style={styles.noteBox}>
           <PText variant="bodyMedium" style={{ color: c.onSurfaceVariant }}>
-            “{highlights[0]?.quote ?? 'Kendine karşı nazik olmak, dönüşümün ilk adımıdır.'}”
+            "{highlights[0]?.quote ?? 'Kendine karşı nazik olmak, dönüşümün ilk adımıdır.'}"
           </PText>
           <PText variant="labelSmall" style={{ color: c.primary }}>
             {getEbookById(highlights[0]?.source_id)?.title ?? 'Kişisel Notlar'}
@@ -179,22 +181,13 @@ function makeStyles(c: ColorTokens) {
       marginTop: spacing[1],
       alignSelf: 'flex-start'
     },
-    progressRow: {
-      marginBottom: spacing[1.5]
-    },
-    progressHeader: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      marginBottom: spacing[1]
-    },
     card: {
       marginBottom: spacing[1.5]
     },
     noteBox: {
       padding: spacing[1.5],
       borderRadius: radii.xl,
-      backgroundColor: 'rgba(0,0,0,0.04)'
+      backgroundColor: c.surfaceVariant
     }
   });
 }

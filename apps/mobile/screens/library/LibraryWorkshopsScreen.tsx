@@ -1,10 +1,10 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useMemo } from 'react';
-import { StyleSheet, View } from 'react-native';
+import React, { useMemo, useState } from 'react';
+import { StyleSheet } from 'react-native';
 
-import { PActivityIndicator, PButton, PCard, PChip, PText } from '../../components';
+import { FilterChipBar, PActivityIndicator, PButton, PCard } from '../../components';
 import { getWorkshops } from '../../data/mockSelectors';
-import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
+import { ColorTokens, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -12,34 +12,31 @@ import { SectionCard } from '../components/SectionCard';
 import { SkeletonBlock } from '../components/SkeletonBlock';
 import { StateMessage } from '../components/StateMessage';
 
-const categories = ['Canlı', 'Kayıt', 'Mini', 'Toplu'];
+const CATEGORIES = ['Canlı', 'Kayıt', 'Mini', 'Toplu'] as const;
 
 const LibraryWorkshopsContent = ({ isOffline }: { isOffline?: boolean }) => {
   const { colors: c } = useAppTheme();
   const styles = useMemo(() => makeStyles(c), [c]);
 
   const navigation = useNavigation<any>();
+  const [activeCategory, setActiveCategory] = useState<string>(CATEGORIES[0]);
   const upcomingWorkshops = getWorkshops();
 
   return (
     <>
       <SectionCard title="Kategoriler" actionLabel="Filtre">
-        <View style={styles.chipRow}>
-          {categories.map(label => (
-            <PChip key={label} style={styles.chip} disabled={isOffline}>
-              {label}
-            </PChip>
-          ))}
-        </View>
+        <FilterChipBar
+          options={CATEGORIES}
+          activeOption={activeCategory}
+          onOptionPress={setActiveCategory}
+          disabled={isOffline}
+        />
       </SectionCard>
 
       <SectionCard title="Yaklaşan Atölyeler" actionLabel="Takvim">
         {upcomingWorkshops.map(workshop => (
           <PCard key={workshop.id} style={styles.card}>
             <PCard.Title title={workshop.title} subtitle={workshop.description} />
-            <PCard.Content>
-              <PText variant="bodySmall">Bugün 20:00</PText>
-            </PCard.Content>
             <PCard.Actions>
               <PButton
                 mode="outlined"
@@ -123,16 +120,8 @@ export const LibraryWorkshopsScreen = ({ route }: { route?: { params?: { state?:
   );
 };
 
-function makeStyles(c: ColorTokens) {
+function makeStyles(_c: ColorTokens) {
   return StyleSheet.create({
-    chipRow: {
-      flexDirection: 'row',
-      flexWrap: 'wrap'
-    },
-    chip: {
-      marginRight: 8,
-      marginBottom: spacing[1]
-    },
     card: {
       marginBottom: spacing[1.5]
     }

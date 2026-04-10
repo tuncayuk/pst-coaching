@@ -2,17 +2,19 @@ import { useNavigation } from '@react-navigation/native';
 import React, { useMemo, useState } from 'react';
 import { Modal, StyleSheet, TextInput, View } from 'react-native';
 
-import { PActivityIndicator, PButton, PDivider, PText } from '../../components';
+import {
+  InlineSnackbar,
+  PActivityIndicator,
+  PButton,
+  PDivider,
+  PText
+} from '../../components';
 import {
   getCollectionItems,
   getCollectionsForUser,
-  getFavoritesForUser,
-  getJourneys,
-  getModules,
-  getPrimaryUser,
-  getWorkshops
+  getPrimaryUser
 } from '../../data/mockSelectors';
-import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
+import { ColorTokens, fontSizes, fontWeights, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -20,11 +22,7 @@ import { SectionCard } from '../components/SectionCard';
 import { SkeletonBlock } from '../components/SkeletonBlock';
 import { StateMessage } from '../components/StateMessage';
 
-type CollectionEntry = {
-  id: string;
-  name: string;
-  itemCount: number;
-};
+type CollectionEntry = { id: string; name: string; itemCount: number };
 
 const LibraryCollectionsContent = ({ isOffline }: { isOffline?: boolean }) => {
   const { colors: c } = useAppTheme();
@@ -37,10 +35,10 @@ const LibraryCollectionsContent = ({ isOffline }: { isOffline?: boolean }) => {
 
   // AC-FR-E9-03-01: local state for creation
   const [collections, setCollections] = useState<CollectionEntry[]>(
-    collectionsRaw.map((c: any) => ({
-      id: c.id,
-      name: c.name,
-      itemCount: collectionItems.filter((ci: any) => ci.collection_id === c.id).length
+    collectionsRaw.map((col: any) => ({
+      id: col.id,
+      name: col.name,
+      itemCount: collectionItems.filter((ci: any) => ci.collection_id === col.id).length
     }))
   );
 
@@ -54,27 +52,19 @@ const LibraryCollectionsContent = ({ isOffline }: { isOffline?: boolean }) => {
 
   const handleCreate = () => {
     if (!newName.trim()) return;
-    const newCollection: CollectionEntry = {
-      id: 'new-' + Date.now(),
-      name: newName.trim(),
-      itemCount: 0
-    };
-    setCollections(prev => [newCollection, ...prev]);
+    setCollections(prev => [{ id: 'new-' + Date.now(), name: newName.trim(), itemCount: 0 }, ...prev]);
     setNewName('');
     setShowCreate(false);
   };
 
   const handleDelete = (id: string) => {
-    const target = collections.find(c => c.id === id);
+    const target = collections.find(col => col.id === id);
     if (!target) return;
-    setCollections(prev => prev.filter(c => c.id !== id));
+    setCollections(prev => prev.filter(col => col.id !== id));
     setDeletedCollection(target);
     setUndoVisible(true);
     // AC-FR-E9-03-03: 4-6 sec snackbar window
-    setTimeout(() => {
-      setUndoVisible(false);
-      setDeletedCollection(null);
-    }, 5000);
+    setTimeout(() => { setUndoVisible(false); setDeletedCollection(null); }, 5000);
   };
 
   const handleUndo = () => {
@@ -86,7 +76,7 @@ const LibraryCollectionsContent = ({ isOffline }: { isOffline?: boolean }) => {
 
   return (
     <>
-      <SectionCard title="Koleksiyonlarim" actionLabel="">
+      <SectionCard title="Koleksiyonlarim">
         <PButton
           mode="contained"
           disabled={isOffline}
@@ -99,22 +89,18 @@ const LibraryCollectionsContent = ({ isOffline }: { isOffline?: boolean }) => {
       </SectionCard>
 
       {/* AC-FR-E9-03-01/02/03: collection list */}
-      <SectionCard title={'Tum Koleksiyonlar (' + collections.length + ')'}>
+      <SectionCard title={`Tum Koleksiyonlar (${collections.length})`}>
         {collections.length === 0 ? (
           <PText variant="bodySmall" style={styles.emptyText}>
-            Henuz koleksiyon olusturulmadiı. Yukaridaki buton ile baslayabilirsin.
+            Henuz koleksiyon olusturulmadi. Yukaridaki buton ile baslayabilirsin.
           </PText>
         ) : (
           collections.map((col, idx) => (
             <View key={col.id}>
               <View style={styles.colRow}>
                 <View style={styles.colInfo}>
-                  <PText variant="titleSmall" style={styles.colName}>
-                    {col.name}
-                  </PText>
-                  <PText variant="labelSmall" style={styles.colMeta}>
-                    {col.itemCount} icerik
-                  </PText>
+                  <PText style={styles.colName}>{col.name}</PText>
+                  <PText style={styles.colMeta}>{col.itemCount} icerik</PText>
                 </View>
                 <View style={styles.colActions}>
                   <PButton
@@ -122,39 +108,34 @@ const LibraryCollectionsContent = ({ isOffline }: { isOffline?: boolean }) => {
                     compact
                     disabled={isOffline}
                     onPress={() => navigation.navigate('LibraryCollectionDetail', { id: col.id })}
-                    accessibilityLabel={'Koleksiyonu ac: ' + col.name}
+                    accessibilityLabel={`Koleksiyonu ac: ${col.name}`}
                   >
                     Ac
                   </PButton>
-                  {/* AC-FR-E9-03-03: delete triggers undo snackbar */}
                   <PButton
                     mode="text"
                     compact
                     disabled={isOffline}
                     onPress={() => handleDelete(col.id)}
-                    accessibilityLabel={'Koleksiyonu sil: ' + col.name}
+                    accessibilityLabel={`Koleksiyonu sil: ${col.name}`}
                   >
                     Sil
                   </PButton>
                 </View>
               </View>
-              {idx < collections.length - 1 && <PDivider style={styles.divider} />}
+              {idx < collections.length - 1 && <PDivider />}
             </View>
           ))
         )}
       </SectionCard>
 
       {/* AC-FR-E9-03-03: undo snackbar */}
-      {undoVisible && deletedCollection && (
-        <View style={styles.snackbar}>
-          <PText variant="bodySmall" style={styles.snackbarText}>
-            Koleksiyon silindi: {deletedCollection.name}
-          </PText>
-          <PButton mode="text" compact style={styles.undoBtn} onPress={handleUndo} accessibilityLabel="Silmeyi geri al">
-            Geri Al
-          </PButton>
-        </View>
-      )}
+      <InlineSnackbar
+        visible={undoVisible && !!deletedCollection}
+        message={`Koleksiyon silindi: ${deletedCollection?.name ?? ''}`}
+        actionLabel="Geri Al"
+        onAction={handleUndo}
+      />
 
       {/* AC-FR-E9-03-01: create modal */}
       <Modal visible={showCreate} transparent animationType="slide" onRequestClose={() => setShowCreate(false)}>
@@ -166,6 +147,7 @@ const LibraryCollectionsContent = ({ isOffline }: { isOffline?: boolean }) => {
             <TextInput
               style={styles.nameInput}
               placeholder="Koleksiyon adi..."
+              placeholderTextColor={c.textTertiary}
               value={newName}
               onChangeText={setNewName}
               autoFocus
@@ -250,7 +232,7 @@ function makeStyles(c: ColorTokens) {
       alignSelf: 'flex-start'
     },
     emptyText: {
-      opacity: 0.6,
+      color: c.textTertiary,
       paddingVertical: spacing[1],
       lineHeight: 20
     },
@@ -259,42 +241,24 @@ function makeStyles(c: ColorTokens) {
       alignItems: 'center',
       justifyContent: 'space-between',
       paddingVertical: spacing[1],
-      gap: 10
+      gap: spacing[1]
     },
     colInfo: {
       flex: 1
     },
     colName: {
-      fontWeight: fontWeights.semiBold
+      fontSize: fontSizes.lg,
+      fontWeight: fontWeights.semiBold,
+      color: c.textPrimary
     },
     colMeta: {
-      opacity: 0.55,
+      fontSize: fontSizes.base,
+      color: c.textTertiary,
       marginTop: 2
     },
     colActions: {
       flexDirection: 'row',
-      gap: 4
-    },
-    divider: {
-      marginHorizontal: 0
-    },
-    snackbar: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      backgroundColor: '#323232',
-      borderRadius: radii.md,
-      paddingHorizontal: spacing[2],
-      paddingVertical: 10,
-      marginHorizontal: 16,
-      marginBottom: spacing[2]
-    },
-    snackbarText: {
-      color: '#FFF',
-      flex: 1
-    },
-    undoBtn: {
-      marginLeft: 8
+      gap: spacing[0.5]
     },
     modalOverlay: {
       flex: 1,
@@ -302,26 +266,27 @@ function makeStyles(c: ColorTokens) {
       justifyContent: 'flex-end'
     },
     modalCard: {
-      backgroundColor: '#FFF',
-      borderTopLeftRadius: 20,
-      borderTopRightRadius: 20,
+      backgroundColor: c.surface,
+      borderTopLeftRadius: radii['3xl'],
+      borderTopRightRadius: radii['3xl'],
       padding: spacing[3],
       paddingBottom: 36
     },
     modalTitle: {
       fontWeight: fontWeights.bold,
-      marginBottom: 14
+      marginBottom: spacing[1.5]
     },
     nameInput: {
       borderWidth: 1,
-      borderColor: '#DDD',
-      borderRadius: radii.md,
+      borderColor: c.outline,
+      borderRadius: radii.lg,
       padding: spacing[1.5],
       fontSize: fontSizes['2xl'],
+      color: c.textPrimary,
       marginBottom: spacing[2]
     },
     modalActions: {
-      gap: 10
+      gap: spacing[1]
     }
   });
 }

@@ -1,10 +1,15 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useMemo } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 
-import { PActivityIndicator, PButton, PCard, PChip, PProgressBar, PText } from '../../components';
+import {
+  ContentProgressRow,
+  PActivityIndicator,
+  PButton,
+  PCard
+} from '../../components';
 import { getJourneys } from '../../data/mockSelectors';
-import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
+import { ColorTokens, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -22,7 +27,7 @@ const LibraryJourneysContent = ({ isOffline }: { isOffline?: boolean }) => {
     id: journey.id,
     title: journey.title,
     progress: 0.2 + index * 0.2,
-    next: `Gün ${index + 1} · ${journey.daily_target ?? '10 dk'}`
+    subtitle: `Gün ${index + 1} · ${journey.daily_target ?? '10 dk'}`
   }));
   const suggestedJourneys = journeys.slice(2, 4).map(journey => ({
     id: journey.id,
@@ -34,16 +39,12 @@ const LibraryJourneysContent = ({ isOffline }: { isOffline?: boolean }) => {
     <>
       <SectionCard title="Aktif Yolculuklar" actionLabel="Tümü">
         {activeJourneys.map(journey => (
-          <View key={journey.title} style={styles.progressBlock}>
-            <View style={styles.progressHeader}>
-              <PText variant="titleSmall">{journey.title}</PText>
-              <PChip compact>{Math.round(journey.progress * 100)}%</PChip>
-            </View>
-            <PText variant="bodySmall" style={styles.subtitle}>
-              {journey.next}
-            </PText>
-            <PProgressBar progress={journey.progress} />
-          </View>
+          <ContentProgressRow
+            key={journey.id}
+            title={journey.title}
+            progress={journey.progress}
+            subtitle={journey.subtitle}
+          />
         ))}
         <PButton
           mode="contained"
@@ -62,7 +63,7 @@ const LibraryJourneysContent = ({ isOffline }: { isOffline?: boolean }) => {
 
       <SectionCard title="Önerilen Yolculuklar" actionLabel="Keşfet">
         {suggestedJourneys.map(journey => (
-          <PCard key={journey.title} style={styles.card}>
+          <PCard key={journey.id} style={styles.card}>
             <PCard.Title title={journey.title} subtitle={journey.subtitle} />
             <PCard.Actions>
               <PButton
@@ -149,18 +150,6 @@ export const LibraryJourneysScreen = ({ route }: { route?: { params?: { state?: 
 
 function makeStyles(c: ColorTokens) {
   return StyleSheet.create({
-    progressBlock: {
-      marginBottom: spacing[2]
-    },
-    progressHeader: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      marginBottom: spacing[1]
-    },
-    subtitle: {
-      marginBottom: spacing[1]
-    },
     primaryButton: {
       marginTop: spacing[1],
       alignSelf: 'flex-start'

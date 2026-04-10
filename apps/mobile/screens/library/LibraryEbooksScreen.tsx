@@ -1,10 +1,17 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useMemo } from 'react';
-import { StyleSheet, View } from 'react-native';
+import React, { useMemo, useState } from 'react';
+import { StyleSheet } from 'react-native';
 
-import { PActivityIndicator, PButton, PCard, PChip, PProgressBar, PText } from '../../components';
+import {
+  FilterChipBar,
+  PActivityIndicator,
+  PButton,
+  PCard,
+  PProgressBar,
+  PText
+} from '../../components';
 import { getEbookProgressForUser, getEbooks, getPrimaryUser } from '../../data/mockSelectors';
-import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
+import { ColorTokens, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -12,7 +19,7 @@ import { SectionCard } from '../components/SectionCard';
 import { SkeletonBlock } from '../components/SkeletonBlock';
 import { StateMessage } from '../components/StateMessage';
 
-const filters = ['Yeni', 'Devam Eden', 'Tamamlanan', 'İndirilen'];
+const FILTERS = ['Yeni', 'Devam Eden', 'Tamamlanan', 'İndirilen'] as const;
 
 const LibraryEbooksContent = ({ isOffline }: { isOffline?: boolean }) => {
   const { colors: c } = useAppTheme();
@@ -22,24 +29,22 @@ const LibraryEbooksContent = ({ isOffline }: { isOffline?: boolean }) => {
   const user = getPrimaryUser();
   const ebooks = getEbooks();
   const progress = getEbookProgressForUser(user?.id);
+  const [activeFilter, setActiveFilter] = useState<string>(FILTERS[0]);
+
   const ebooksWithProgress = ebooks.map(book => {
     const found = progress.find(item => item.ebook_id === book.id);
-    return {
-      ...book,
-      progress: (found?.progress_percent ?? 0) / 100
-    };
+    return { ...book, progress: (found?.progress_percent ?? 0) / 100 };
   });
 
   return (
     <>
       <SectionCard title="Filtre" actionLabel="Sırala">
-        <View style={styles.chipRow}>
-          {filters.map(label => (
-            <PChip key={label} style={styles.chip} disabled={isOffline}>
-              {label}
-            </PChip>
-          ))}
-        </View>
+        <FilterChipBar
+          options={FILTERS}
+          activeOption={activeFilter}
+          onOptionPress={setActiveFilter}
+          disabled={isOffline}
+        />
       </SectionCard>
 
       <SectionCard title="e-Kitaplar" actionLabel="Tümü">
@@ -137,14 +142,6 @@ export const LibraryEbooksScreen = ({ route }: { route?: { params?: { state?: Sc
 
 function makeStyles(c: ColorTokens) {
   return StyleSheet.create({
-    chipRow: {
-      flexDirection: 'row',
-      flexWrap: 'wrap'
-    },
-    chip: {
-      marginRight: 8,
-      marginBottom: spacing[1]
-    },
     card: {
       marginBottom: spacing[1.5]
     },

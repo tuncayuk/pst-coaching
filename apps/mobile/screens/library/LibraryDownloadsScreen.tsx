@@ -2,9 +2,16 @@ import { useNavigation } from '@react-navigation/native';
 import React, { useMemo, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import { PActivityIndicator, PButton, PChip, PDivider, PText } from '../../components';
+import {
+  InlineWarningBanner,
+  PActivityIndicator,
+  PButton,
+  PChip,
+  PDivider,
+  PText
+} from '../../components';
 import { getDownloadsForUser, getEbookById, getPrimaryUser, getWorkshopById } from '../../data/mockSelectors';
-import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
+import { ColorTokens, fontSizes, fontWeights, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -13,12 +20,7 @@ import { SkeletonBlock } from '../components/SkeletonBlock';
 import { StateMessage } from '../components/StateMessage';
 
 const LOW_STORAGE_MB = 200;
-const TOTAL_STORAGE_MB = 512; // simulated device storage
-
-const TYPE_ICON: Record<string, string> = {
-  ebook: 'book-open-outline',
-  workshop: 'account-group-outline'
-};
+const TOTAL_STORAGE_MB = 512;
 
 const LibraryDownloadsContent = ({ isOffline }: { isOffline?: boolean }) => {
   const { colors: c } = useAppTheme();
@@ -38,23 +40,16 @@ const LibraryDownloadsContent = ({ isOffline }: { isOffline?: boolean }) => {
     }))
   );
 
-  // Simulate used storage
   const usedMb = downloads.reduce((acc: number, d: any) => acc + parseFloat(d.sizeMb || '0'), 0);
   const freeMb = TOTAL_STORAGE_MB - usedMb;
-
-  // AC-FR-E9-06-03: storage warning
   const showStorageWarning = freeMb < LOW_STORAGE_MB;
 
-  // AC-FR-E9-06-02: simulate sync
   const [syncing, setSyncing] = useState(false);
   const [syncDone, setSyncDone] = useState(false);
 
   const handleSync = () => {
     setSyncing(true);
-    setTimeout(() => {
-      setSyncing(false);
-      setSyncDone(true);
-    }, 1500);
+    setTimeout(() => { setSyncing(false); setSyncDone(true); }, 1500);
   };
 
   const handleDelete = (id: string) => {
@@ -62,37 +57,25 @@ const LibraryDownloadsContent = ({ isOffline }: { isOffline?: boolean }) => {
   };
 
   const resolveTitle = (d: any): string => {
-    if (d.contentType === 'ebook') {
-      return getEbookById(d.contentId)?.title ?? 'e-Kitap';
-    }
-    if (d.contentType === 'workshop') {
-      return getWorkshopById(d.contentId)?.title ?? 'Atolye';
-    }
+    if (d.contentType === 'ebook') return getEbookById(d.contentId)?.title ?? 'e-Kitap';
+    if (d.contentType === 'workshop') return getWorkshopById(d.contentId)?.title ?? 'Atolye';
     return 'Icerik';
   };
 
   return (
     <>
-      {/* Storage summary */}
+      {/* AC-FR-E9-06-03: Storage summary + warning */}
       <SectionCard title="Depolama Durumu">
         <View style={styles.storageRow}>
-          <PText variant="labelMedium" style={styles.storageLabel}>
-            Kullanilanlar
-          </PText>
-          <PText variant="bodySmall">
-            {usedMb.toFixed(1)} MB / {TOTAL_STORAGE_MB} MB
-          </PText>
+          <PText variant="labelMedium" style={styles.storageLabel}>Kullanilanlar</PText>
+          <PText variant="bodySmall">{usedMb.toFixed(1)} MB / {TOTAL_STORAGE_MB} MB</PText>
         </View>
-        {/* AC-FR-E9-06-03: low storage warning */}
         {showStorageWarning && (
-          <View style={styles.warnBox}>
-            <PText variant="labelMedium" style={styles.warnTitle}>
-              Depolama Uyarisi
-            </PText>
-            <PText variant="bodySmall" style={styles.warnText}>
-              Yalnizca {freeMb.toFixed(0)} MB bos alan kaldi. Yeni indirmeden once eski dosyalari temizle.
-            </PText>
-          </View>
+          <InlineWarningBanner
+            tone="warning"
+            title="Depolama Uyarisi"
+            message={`Yalnizca ${freeMb.toFixed(0)} MB bos alan kaldi. Yeni indirmeden once eski dosyalari temizle.`}
+          />
         )}
         {/* AC-FR-E9-06-02: sync trigger */}
         <PButton
@@ -112,8 +95,8 @@ const LibraryDownloadsContent = ({ isOffline }: { isOffline?: boolean }) => {
         )}
       </SectionCard>
 
-      {/* AC-FR-E9-06-01: downloaded content list */}
-      <SectionCard title={'Indirilenler (' + downloads.length + ')'} actionLabel="Temizle">
+      {/* AC-FR-E9-06-01: Downloaded content list */}
+      <SectionCard title={`Indirilenler (${downloads.length})`} actionLabel="Temizle">
         {downloads.length === 0 ? (
           <StateMessage
             title="Indirilen icerik yok"
@@ -124,28 +107,22 @@ const LibraryDownloadsContent = ({ isOffline }: { isOffline?: boolean }) => {
         ) : (
           downloads.map((item: any, idx: number) => {
             const title = resolveTitle(item);
+            const isDone = item.statusRaw === 'downloaded';
             return (
               <View key={item.id}>
                 <View style={styles.downloadItem}>
                   <View style={styles.downloadInfo}>
-                    <PText variant="titleSmall" style={styles.downloadTitle}>
-                      {title}
-                    </PText>
+                    <PText style={styles.downloadTitle}>{title}</PText>
                     <View style={styles.downloadMeta}>
-                      <PChip compact style={styles.typeChip}>
+                      <PChip compact>
                         {item.contentType === 'ebook' ? 'e-Kitap' : 'Atolye'}
                       </PChip>
-                      <PText variant="labelSmall" style={styles.sizeText}>
-                        {item.sizeMb} MB
-                      </PText>
+                      <PText variant="labelSmall" style={styles.sizeText}>{item.sizeMb} MB</PText>
                       <PChip
                         compact
-                        style={[
-                          styles.statusChip,
-                          item.statusRaw === 'downloaded' ? styles.doneChip : styles.pendingChip
-                        ]}
+                        style={isDone ? styles.doneChip : styles.pendingChip}
                       >
-                        {item.statusRaw === 'downloaded' ? 'Tamamlandi' : 'Bekliyor'}
+                        {isDone ? 'Tamamlandi' : 'Bekliyor'}
                       </PChip>
                     </View>
                   </View>
@@ -153,21 +130,15 @@ const LibraryDownloadsContent = ({ isOffline }: { isOffline?: boolean }) => {
                     <PButton
                       mode="outlined"
                       compact
-                      disabled={isOffline && item.statusRaw !== 'downloaded'}
+                      disabled={isOffline && !isDone}
                       onPress={() => {
                         if (item.contentType === 'ebook') {
-                          navigation.navigate('Content', {
-                            screen: 'ContentEbookDetail',
-                            params: { id: item.contentId }
-                          });
+                          navigation.navigate('Content', { screen: 'ContentEbookDetail', params: { id: item.contentId } });
                         } else {
-                          navigation.navigate('Content', {
-                            screen: 'ContentWorkshopDetail',
-                            params: { id: item.contentId }
-                          });
+                          navigation.navigate('Content', { screen: 'ContentWorkshopDetail', params: { id: item.contentId } });
                         }
                       }}
-                      accessibilityLabel={'Ac: ' + title}
+                      accessibilityLabel={`Ac: ${title}`}
                     >
                       Ac
                     </PButton>
@@ -176,13 +147,13 @@ const LibraryDownloadsContent = ({ isOffline }: { isOffline?: boolean }) => {
                       compact
                       disabled={isOffline}
                       onPress={() => handleDelete(item.id)}
-                      accessibilityLabel={'Sil: ' + title}
+                      accessibilityLabel={`Sil: ${title}`}
                     >
                       Sil
                     </PButton>
                   </View>
                 </View>
-                {idx < downloads.length - 1 && <PDivider style={styles.divider} />}
+                {idx < downloads.length - 1 && <PDivider />}
               </View>
             );
           })
@@ -255,36 +226,57 @@ export const LibraryDownloadsScreen = ({ route }: { route?: { params?: { state?:
 
 function makeStyles(c: ColorTokens) {
   return StyleSheet.create({
-    storageRow: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: spacing[1] },
-    storageLabel: { opacity: 0.6 },
-    warnBox: {
-      backgroundColor: '#FFF3E0',
-      borderRadius: radii.md,
-      padding: spacing[1.5],
-      marginBottom: 10,
-      borderLeftWidth: 3,
-      borderLeftColor: '#F57C00'
+    storageRow: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      marginBottom: spacing[1]
     },
-    warnTitle: { color: '#E65100', fontWeight: fontWeights.bold, marginBottom: 4 },
-    warnText: { color: '#BF360C', lineHeight: 18 },
-    syncBtn: { alignSelf: 'flex-start', marginTop: 4 },
-    offlineNote: { opacity: 0.55, marginTop: 6, fontStyle: 'italic' },
+    storageLabel: {
+      color: c.textTertiary
+    },
+    syncBtn: {
+      alignSelf: 'flex-start',
+      marginTop: spacing[0.5]
+    },
+    offlineNote: {
+      color: c.textTertiary,
+      marginTop: spacing[1],
+      fontStyle: 'italic'
+    },
     downloadItem: {
       flexDirection: 'row',
       alignItems: 'flex-start',
       justifyContent: 'space-between',
-      paddingVertical: 10,
-      gap: 10
+      paddingVertical: spacing[1.5],
+      gap: spacing[1]
     },
-    downloadInfo: { flex: 1 },
-    downloadTitle: { fontWeight: fontWeights.semiBold, marginBottom: 6 },
-    downloadMeta: { flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap', gap: 6 },
-    typeChip: {},
-    sizeText: { opacity: 0.55 },
-    statusChip: {},
-    doneChip: { backgroundColor: '#E8F5E9' },
-    pendingChip: { backgroundColor: '#FFF9C4' },
-    downloadActions: { flexDirection: 'column', gap: 4 },
-    divider: { marginHorizontal: 0 }
+    downloadInfo: {
+      flex: 1
+    },
+    downloadTitle: {
+      fontSize: fontSizes.lg,
+      fontWeight: fontWeights.semiBold,
+      color: c.textPrimary,
+      marginBottom: spacing[1]
+    },
+    downloadMeta: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      flexWrap: 'wrap',
+      gap: spacing[1]
+    },
+    sizeText: {
+      color: c.textTertiary
+    },
+    doneChip: {
+      backgroundColor: c.tertiaryContainer
+    },
+    pendingChip: {
+      backgroundColor: c.warningContainer
+    },
+    downloadActions: {
+      flexDirection: 'column',
+      gap: spacing[0.5]
+    }
   });
 }

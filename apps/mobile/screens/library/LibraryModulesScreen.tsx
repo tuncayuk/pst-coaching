@@ -1,10 +1,10 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useMemo } from 'react';
-import { StyleSheet, View } from 'react-native';
+import React, { useMemo, useState } from 'react';
+import { StyleSheet } from 'react-native';
 
-import { PActivityIndicator, PButton, PCard, PChip, PProgressBar } from '../../components';
+import { FilterChipBar, PActivityIndicator, PButton, PCard, PProgressBar } from '../../components';
 import { getModules } from '../../data/mockSelectors';
-import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
+import { ColorTokens, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -12,13 +12,14 @@ import { SectionCard } from '../components/SectionCard';
 import { SkeletonBlock } from '../components/SkeletonBlock';
 import { StateMessage } from '../components/StateMessage';
 
-const focusAreas = ['Sınırlar', 'Kendine Şefkat', 'Kaygı', 'İletişim'];
+const FOCUS_AREAS = ['Sınırlar', 'Kendine Şefkat', 'Kaygı', 'İletişim'] as const;
 
 const LibraryModulesContent = ({ isOffline }: { isOffline?: boolean }) => {
   const { colors: c } = useAppTheme();
   const styles = useMemo(() => makeStyles(c), [c]);
 
   const navigation = useNavigation<any>();
+  const [activeArea, setActiveArea] = useState<string>(FOCUS_AREAS[0]);
   const modules = getModules();
   const moduleProgress = modules.map((module, index) => ({
     id: module.id,
@@ -30,18 +31,17 @@ const LibraryModulesContent = ({ isOffline }: { isOffline?: boolean }) => {
   return (
     <>
       <SectionCard title="Odak Alanları" actionLabel="Filtrele">
-        <View style={styles.chipRow}>
-          {focusAreas.map(label => (
-            <PChip key={label} style={styles.chip} disabled={isOffline}>
-              {label}
-            </PChip>
-          ))}
-        </View>
+        <FilterChipBar
+          options={FOCUS_AREAS}
+          activeOption={activeArea}
+          onOptionPress={setActiveArea}
+          disabled={isOffline}
+        />
       </SectionCard>
 
       <SectionCard title="Modül İlerlemesi" actionLabel="Tümü">
         {moduleProgress.map(module => (
-          <PCard key={module.title} style={styles.card}>
+          <PCard key={module.id} style={styles.card}>
             <PCard.Title title={module.title} subtitle={module.subtitle} />
             <PCard.Content>
               <PProgressBar progress={module.progress} />
@@ -129,16 +129,8 @@ export const LibraryModulesScreen = ({ route }: { route?: { params?: { state?: S
   );
 };
 
-function makeStyles(c: ColorTokens) {
+function makeStyles(_c: ColorTokens) {
   return StyleSheet.create({
-    chipRow: {
-      flexDirection: 'row',
-      flexWrap: 'wrap'
-    },
-    chip: {
-      marginRight: 8,
-      marginBottom: spacing[1]
-    },
     card: {
       marginBottom: spacing[1.5]
     }

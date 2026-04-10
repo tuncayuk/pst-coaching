@@ -2,7 +2,15 @@ import { useNavigation } from '@react-navigation/native';
 import React, { useMemo, useState } from 'react';
 import { StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
 
-import { PActivityIndicator, PButton, PChip, PDivider, PText } from '../../components';
+import {
+  ContentItemType,
+  ContentTypeRow,
+  FilterChipBar,
+  PActivityIndicator,
+  PButton,
+  PDivider,
+  PText
+} from '../../components';
 import {
   getEbooks,
   getFavoritesForUser,
@@ -11,7 +19,7 @@ import {
   getPrimaryUser,
   getWorkshops
 } from '../../data/mockSelectors';
-import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
+import { ColorTokens, fontSizes, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -19,22 +27,13 @@ import { SectionCard } from '../components/SectionCard';
 import { SkeletonBlock } from '../components/SkeletonBlock';
 import { StateMessage } from '../components/StateMessage';
 
-// AC-FR-E9-01-02, AC-FR-E9-04-02: content type filter options
-const FILTER_OPTIONS = ['Tumü', 'Yolculuk', 'Atolye', 'Modul', 'e-Kitap'];
+const FILTER_OPTIONS = ['Tumü', 'Yolculuk', 'Atolye', 'Modul', 'e-Kitap'] as const;
 
-// Source type → display label
 const TYPE_LABEL: Record<string, string> = {
   journey: 'Yolculuk',
   workshop: 'Atolye',
   module: 'Modul',
   ebook: 'e-Kitap'
-};
-
-const TYPE_COLOR: Record<string, string> = {
-  journey: '#7C4DFF',
-  workshop: '#C62828',
-  module: '#2E7D32',
-  ebook: '#00897B'
 };
 
 const LibraryFavoritesContent = ({ isOffline }: { isOffline?: boolean }) => {
@@ -49,7 +48,6 @@ const LibraryFavoritesContent = ({ isOffline }: { isOffline?: boolean }) => {
   const modules = getModules();
   const ebooks = getEbooks();
 
-  // Build enriched favorites list
   const enriched = favorites.map((fav: any) => {
     const journey = journeys.find(j => j.id === fav.item_id);
     const workshop = workshops.find(w => w.id === fav.item_id);
@@ -62,15 +60,13 @@ const LibraryFavoritesContent = ({ isOffline }: { isOffline?: boolean }) => {
       itemId: fav.item_id,
       title: (item as any)?.title ?? 'Favori',
       description: (item as any)?.description ?? '',
-      type,
+      type: type as ContentItemType,
       createdAt: fav.created_at
     };
   });
 
-  // AC-FR-E9-04-01: search by title
   const [query, setQuery] = useState('');
-  // AC-FR-E9-04-02: content type filter
-  const [activeFilter, setActiveFilter] = useState('Tumü');
+  const [activeFilter, setActiveFilter] = useState<string>(FILTER_OPTIONS[0]);
 
   const filtered = enriched.filter(item => {
     const matchesQuery = !query || item.title.toLowerCase().includes(query.toLowerCase());
@@ -78,16 +74,12 @@ const LibraryFavoritesContent = ({ isOffline }: { isOffline?: boolean }) => {
     return matchesQuery && matchesFilter;
   });
 
-  // AC-FR-E9-04-03: clear filters
-  const clearFilters = () => {
-    setQuery('');
-    setActiveFilter('Tumü');
-  };
   const hasActiveFilters = query || activeFilter !== 'Tumü';
+  const clearFilters = () => { setQuery(''); setActiveFilter('Tumü'); };
 
   return (
     <>
-      {/* AC-FR-E9-04-01: Search bar */}
+      {/* AC-FR-E9-04-01/02/03: Search + filter bar */}
       <SectionCard title="Arama">
         <View style={styles.searchRow}>
           <TextInput
@@ -106,31 +98,20 @@ const LibraryFavoritesContent = ({ isOffline }: { isOffline?: boolean }) => {
               accessibilityLabel="Filtreleri temizle"
               accessibilityRole="button"
             >
-              <PText variant="labelMedium" style={styles.clearText}>
-                Temizle
-              </PText>
+              <PText style={styles.clearText}>Temizle</PText>
             </TouchableOpacity>
           )}
         </View>
-        {/* AC-FR-E9-04-02: type filter chips */}
-        <View style={styles.chipRow}>
-          {FILTER_OPTIONS.map(label => (
-            <TouchableOpacity
-              key={label}
-              onPress={() => setActiveFilter(label)}
-              accessibilityRole="button"
-              accessibilityLabel={label + ' filtresi'}
-            >
-              <PChip selected={activeFilter === label} style={styles.filterChip}>
-                {label}
-              </PChip>
-            </TouchableOpacity>
-          ))}
-        </View>
+        <FilterChipBar
+          options={FILTER_OPTIONS}
+          activeOption={activeFilter}
+          onOptionPress={setActiveFilter}
+          disabled={isOffline}
+        />
       </SectionCard>
 
       {/* AC-FR-E9-01-01: labeled favorites list */}
-      <SectionCard title={'Favoriler (' + filtered.length + ')'}>
+      <SectionCard title={`Favoriler (${filtered.length})`}>
         {filtered.length === 0 ? (
           <PText variant="bodySmall" style={styles.emptyText}>
             {hasActiveFilters ? 'Bu filtrelerle esleyen favori bulunamadi.' : 'Favori eklenmedi.'}
@@ -138,31 +119,18 @@ const LibraryFavoritesContent = ({ isOffline }: { isOffline?: boolean }) => {
         ) : (
           filtered.map((item, idx) => (
             <View key={item.id}>
-              <View style={styles.favItem}>
-                <View style={[styles.typeBar, { backgroundColor: TYPE_COLOR[item.type] ?? '#9E9E9E' }]} />
-                <View style={styles.favBody}>
-                  <View style={styles.favTitleRow}>
-                    <PText variant="titleSmall" style={styles.favTitle}>
-                      {item.title}
-                    </PText>
-                    {/* AC-FR-E9-01-01: source type label */}
-                    <PChip compact style={[styles.typeChip, { borderColor: TYPE_COLOR[item.type] ?? '#9E9E9E' }]}>
-                      {TYPE_LABEL[item.type] ?? 'Icerik'}
-                    </PChip>
-                  </View>
-                  {item.description ? (
-                    <PText variant="bodySmall" style={styles.favDesc} numberOfLines={2}>
-                      {item.description}
-                    </PText>
-                  ) : null}
-                  <View style={styles.favActions}>
+              <ContentTypeRow
+                title={item.title}
+                type={item.type}
+                description={item.description}
+                actions={
+                  <>
                     <PButton
                       mode="outlined"
                       compact
                       disabled={isOffline}
-                      style={styles.openBtn}
                       onPress={() => navigation.navigate('LibraryFavoriteDetail', { id: item.id })}
-                      accessibilityLabel={'Detay: ' + item.title}
+                      accessibilityLabel={`Detay: ${item.title}`}
                     >
                       Detay
                     </PButton>
@@ -170,22 +138,20 @@ const LibraryFavoritesContent = ({ isOffline }: { isOffline?: boolean }) => {
                       mode="text"
                       compact
                       disabled={isOffline}
-                      style={styles.exportBtn}
                       onPress={() => navigation.navigate('LibraryShareExport', { id: item.id })}
                       accessibilityLabel="Disari aktar"
                     >
                       Aktar
                     </PButton>
-                  </View>
-                </View>
-              </View>
-              {idx < filtered.length - 1 && <PDivider style={styles.divider} />}
+                  </>
+                }
+              />
+              {idx < filtered.length - 1 && <PDivider />}
             </View>
           ))
         )}
       </SectionCard>
 
-      {/* Quick links */}
       <SectionCard title="Arsiv">
         <PButton
           mode="outlined"
@@ -213,7 +179,7 @@ export const LibraryFavoritesScreen = ({ route }: { route?: { params?: { state?:
 
   if (state === 'loading') {
     return (
-      <ScreenLayout title="Favoriler" subtitle="Hazirlanıyor">
+      <ScreenLayout title="Favoriler" subtitle="Hazırlanıyor">
         <SectionCard title="Arama">
           <SkeletonBlock height={40} />
           <SkeletonBlock height={36} />
@@ -276,86 +242,34 @@ function makeStyles(c: ColorTokens) {
       flexDirection: 'row',
       alignItems: 'center',
       gap: spacing[1],
-      marginBottom: 10
+      marginBottom: spacing[1]
     },
     searchInput: {
       flex: 1,
       borderWidth: 1,
-      borderColor: '#DDD',
-      borderRadius: radii.md,
+      borderColor: c.outline,
+      borderRadius: radii.lg,
       paddingHorizontal: spacing[1.5],
       paddingVertical: spacing[1],
-      fontSize: fontSizes.lg
+      fontSize: fontSizes.lg,
+      color: c.textPrimary,
+      backgroundColor: c.surface
     },
     clearBtn: {
       paddingHorizontal: spacing[1],
       paddingVertical: 6
     },
     clearText: {
-      color: '#7C4DFF'
-    },
-    chipRow: {
-      flexDirection: 'row',
-      flexWrap: 'wrap',
-      gap: spacing[1]
-    },
-    filterChip: {
-      marginBottom: 4
+      fontSize: fontSizes.base,
+      color: c.primary
     },
     emptyText: {
       opacity: 0.6,
       textAlign: 'center',
       paddingVertical: spacing[1.5]
     },
-    favItem: {
-      flexDirection: 'row',
-      paddingVertical: 10,
-      gap: 10
-    },
-    typeBar: {
-      width: 4,
-      borderRadius: radii.xs,
-      minHeight: 48
-    },
-    favBody: {
-      flex: 1
-    },
-    favTitleRow: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      flexWrap: 'wrap',
-      gap: 6
-    },
-    favTitle: {
-      flex: 1,
-      fontWeight: fontWeights.semiBold,
-      marginRight: 6
-    },
-    typeChip: {
-      height: 24
-    },
-    favDesc: {
-      opacity: 0.65,
-      marginTop: 3,
-      lineHeight: 18
-    },
-    favActions: {
-      flexDirection: 'row',
-      marginTop: spacing[1],
-      gap: spacing[1]
-    },
-    openBtn: {
-      flex: 0
-    },
-    exportBtn: {
-      flex: 0
-    },
-    divider: {
-      marginHorizontal: 0
-    },
     archiveBtn: {
-      marginBottom: 10
+      marginBottom: spacing[1]
     }
   });
 }

@@ -310,7 +310,7 @@ const HomeReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
                   disabled={isOffline}
                   onPress={() => {
                     trackCtaTap('home.dashboard', 'content_area_tapped', { route: area.route });
-                    navigation.navigate(area.route as any);
+                    navigation.navigate('Discover', { screen: area.route });
                   }}
                 />
               ))}
