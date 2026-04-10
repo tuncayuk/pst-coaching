@@ -14,81 +14,86 @@ import { StateMessage } from '../components/StateMessage';
 
 type RouteParams = { state?: ScreenState; id?: string };
 
-// AC-FR-E8-04-01/02: Camp day + session structure
+// AC-FR-E8-04-01/02: Camp day + session structure — aligned with Mutlak.docx 3-Day Camp
+// Day 1: TESPİT (Discovery) — "Ben gerçekten neye güveniyorum?"
+// Day 2: ÇÖZÜM (Solution) — Verse/hadith transformation + prayer practice
+// Day 3: İNŞA (Building) — Daily life plan + 30-day character system
 const CAMP_DAYS = [
   {
     day: 1,
-    label: '1. Gun',
+    label: '1. Gun — Tespit',
+    theme: 'Kontrol illüzyonu ve ic kibir haritasi',
     sessions: [
       {
         id: 'd1-sabah',
         slot: 'Sabah',
-        title: 'Acilis ve Niyet',
-        purpose: 'Katilimcilari hazirlamak ve niyet belirlemek',
+        title: 'Acilis: Ben Gercekten Neye Guveniyorum?',
+        purpose: 'Katilimcilari hazirlamak; gizli guven kaynaklarini yuzey altinda tespit etmek',
         duration: '60 dk',
-        flow: 'Karsilama, tanisma, kural belirleme, niyet yazimi',
-        output: 'Kisisel niyet karti',
-        worksheets: ['Niyet Formu'],
+        flow: 'Karsilama + kural belirleme → niyet yazimi → "Hayatimda kontrolu birakmakta zorlandigim 3 alan" egzersizi → ikili paylasim',
+        output: 'Kisisel niyet karti + ilk tespit notu',
+        worksheets: ['Niyet Formu', 'Benim Dayanaklarim Haritasi'],
         completed: false
       },
       {
         id: 'd1-ogle',
         slot: 'Ogle',
-        title: 'Referans Okuma ve Tartisma',
-        purpose: 'Kuransal referanslari hayata tasimak',
+        title: 'Kontrol Illüzyonu Calismalari',
+        purpose: 'Sahte buyukluk ve kontrol baskisinin kaynagini gorunur kilmak',
         duration: '90 dk',
-        flow: 'Okuma, kucuk grup tartismasi, paylasim',
-        output: 'Ayet cikti notu',
-        worksheets: ['Ayet Yansima Sayfasi'],
+        flow: 'Fatir 15 uzerinde derin okuma → "Kontrolumde oldugunu sandim ama olmayan" tablosu → Beck bilissel carpitma analizi → grup tartismasi',
+        output: 'Kontrol illüzyonu tablosu (doldurulmus)',
+        worksheets: ['Kontrol Illuzyonum Tablosu'],
         completed: false
       },
       {
         id: 'd1-aksam',
         slot: 'Aksam',
-        title: 'Butunleme ve Kapalis',
-        purpose: 'Gunun kazanimlarini butunlestirmek',
-        duration: '45 dk',
-        flow: 'Ozet, gunluk yazmak, kapalis duasi',
-        output: 'Gun ozeti',
-        worksheets: [],
+        title: 'Ic Kibir Haritasi ve Gunun Ozeti',
+        purpose: 'Kibrin farkinda olunmayan bicimlerini haritalandirmak; gunu butunlestirmek',
+        duration: '60 dk',
+        flow: 'Ic kibir haritasi calismas → sessizlik aninda yansima → gunluk yazimi → kapalis duasi (Fatir 15 ile)',
+        output: 'Ic kibir haritasi + gun ozeti',
+        worksheets: ['Ic Kibir Haritasi'],
         completed: false
       }
     ]
   },
   {
     day: 2,
-    label: '2. Gun',
+    label: '2. Gun — Cozum',
+    theme: 'Ayet ve hadislerle donusum + dua pratigi',
     sessions: [
       {
         id: 'd2-sabah',
         slot: 'Sabah',
-        title: 'Derin Ic Calisma',
-        purpose: 'Psikoloji koprulerini pratikte uygulamak',
-        duration: '75 dk',
-        flow: 'Meditasyon, kisisel yansima, ikili paylasim',
-        output: 'Ic calisma notu',
-        worksheets: ['Burden Haritasi'],
+        title: 'Ayet ve Hadislerle Donusum',
+        purpose: 'Birinci gunun tespitlerini Kurani hakikatlerle donusturmek',
+        duration: '90 dk',
+        flow: 'Bakara 255 (Kayyumiyet) derinlemesine → Rahman 29 (sen) → "Dun tespit ettigim yukler artik kimin elinde?" sorusu → Ic cumle donusum calismas',
+        output: 'Donusturulmus ic cumleler (calisma kagidinda)',
+        worksheets: ['Ic Cumle Donusum Tablosu'],
         completed: false
       },
       {
         id: 'd2-ogle',
         slot: 'Ogle',
-        title: 'Grup Uygulamasi',
-        purpose: 'Toplulukla pratik yapmak',
+        title: 'Derin Dua Pratigi',
+        purpose: 'Duayi bilgi olmaktan cikarmak, kalbin temel istikameti haline getirmek',
         duration: '90 dk',
-        flow: 'Egzersiz, rol calismalari, geri bildirim',
-        output: 'Grup uygulama ozeti',
-        worksheets: ['Ic Cumle Donusum Tablosu'],
+        flow: 'Mu\'min 60 analizi (dua = ibadet) → sesli dua egzersizi (bireysel) → Esma bilinci: Allah\'a hangi isimle yoneliyorum? → partner check-in',
+        output: 'Kisisel dua karti (kalp sesi ile yazilmis)',
+        worksheets: ['Dua Gunlugu', 'Kriz Ani Dua Karti'],
         completed: false
       },
       {
         id: 'd2-aksam',
         slot: 'Aksam',
-        title: 'Duygusal Isleme',
-        purpose: 'Gunun duygusal yogunlugunu islemek',
+        title: 'Teslimiyet Egzersizleri',
+        purpose: 'Tevekkulu kelime olmaktan cikarmak, bedensel ve duygusal pratiğe donusturmek',
         duration: '60 dk',
-        flow: 'Duygu paylasimi, tevekkul egzersizi, sessizlik',
-        output: 'Duygu notu',
+        flow: 'Tevekkul dengesi calismas → "Birakabilirim / Birakamam" ayrimi → Fatir 41 (imsak) uzerine sessizlik → duygusal isleme paylasimi → gun kapanisi',
+        output: 'Tevekkul dengesi calisma kagidi',
         worksheets: ['Tevekkul Dengesi'],
         completed: false
       }
@@ -96,38 +101,39 @@ const CAMP_DAYS = [
   },
   {
     day: 3,
-    label: '3. Gun',
+    label: '3. Gun — Insa',
+    theme: '21 gunluk donusum plani + karakter insasi',
     sessions: [
       {
         id: 'd3-sabah',
         slot: 'Sabah',
-        title: 'Entegrasyon',
-        purpose: 'Tum gunlerin kazanimlarini birlestirir',
+        title: 'Gunluk Hayat Plani',
+        purpose: 'Kamp kazanimlarini gundelik rutinlere entegre etmek',
         duration: '90 dk',
-        flow: 'Kisisel ozet, icerik haritalama, paylasim',
+        flow: 'Kisisel ozet: "2 gunde ne degisti?" → aile/arkadaslik/yalnizlik/kriz icin birer aksiyon → entegrasyon haritasi → paylasim',
         output: 'Kisisel entegrasyon haritasi',
-        worksheets: ['Butunleme Formu'],
+        worksheets: ['Entegrasyon Haritasi'],
         completed: false
       },
       {
         id: 'd3-ogle',
         slot: 'Ogle',
-        title: 'Taahhu ve Niyet',
-        purpose: '30 gunluk plan icin taahhut',
-        duration: '75 dk',
-        flow: 'Kucuk adimlar yazimi, partner check-in, imza',
-        output: '30 Gunluk niyet plani',
-        worksheets: ['Donus Plani'],
+        title: '21 Gunluk ve 30 Gunluk Sistem',
+        purpose: 'Surdurulebilir karakter insasi icin somut eylem plani olusturmak',
+        duration: '90 dk',
+        flow: '21 gunluk donusum plani doldurmak → 30 gunluk karakter insa cizelgesi → partner taahhut seremonisi → imza ritueli',
+        output: '21 gunluk plan + 30 gunluk cizelge (imzalanmis)',
+        worksheets: ['21 Gunluk Donusum Plani', '30 Gunluk Karakter Insa Cizelgesi'],
         completed: false
       },
       {
         id: 'd3-aksam',
         slot: 'Aksam',
-        title: 'Kapanis ve Sertifika',
-        purpose: 'Kutlama ve anlam pekistirme',
+        title: 'Kapanis Seremonisi ve Katilim Belgesi',
+        purpose: 'Kutlama, anlam pekistirme ve yeni baslangic',
         duration: '60 dk',
-        flow: 'Paylasim, dua, sertifika seremonisi',
-        output: 'Katilim belgesi',
+        flow: '"Bu kamptan tasiyacagim tek cumle" paylasimi → toplu dua → sertifika seremonisi → vedalar',
+        output: 'Katilim belgesi + kisisel kapalis cumlesi',
         worksheets: [],
         completed: false
       }
@@ -242,9 +248,12 @@ const ContentWorkshopCampContent = ({ workshopId, isOffline }: { workshopId?: st
 
   return (
     <>
-      <SectionCard title={'3 Gunluk Kamp -- ' + (workshop?.title ?? 'Atolye')}>
+      <SectionCard title={'3 Gunluk Kamp — ' + (workshop?.title ?? 'Atolye')}>
         <PText variant="bodySmall" style={styles.campDesc}>
-          3 gunde her gun sabah, ogle ve aksam oturumlarini tamamla.
+          Gun 1: Tespit · Gun 2: Cozum · Gun 3: Insa
+        </PText>
+        <PText variant="bodySmall" style={styles.campDesc}>
+          Her gun sabah, ogle ve aksam oturumlarini tamamla. Kamp, atolyenin en kritik asamasidir.
         </PText>
       </SectionCard>
 
@@ -266,7 +275,7 @@ const ContentWorkshopCampContent = ({ workshopId, isOffline }: { workshopId?: st
       </View>
 
       {/* AC-FR-E8-04-01/02/03: sessions for selected day */}
-      <SectionCard title={dayData.label + ' Oturumlari'}>
+      <SectionCard title={dayData.label + ' — ' + dayData.theme}>
         <PText variant="labelSmall" style={styles.dayProgress}>
           {dayCompletedCount}/{dayData.sessions.length} oturum tamamlandi
         </PText>

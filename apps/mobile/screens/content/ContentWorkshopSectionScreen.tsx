@@ -21,33 +21,40 @@ import { StateMessage } from '../components/StateMessage';
 
 type RouteParams = { state?: ScreenState; id?: string; sectionId?: string };
 
-// AC-FR-E8-03-01: structured content blocks
+// AC-FR-E8-03-01: structured content blocks — aligned with Mutlak.docx stage structure
+// Each stage follows: Giris → Ayet (Arapca + Turkce) → Kelime Analizi → Psikolojik Yansima → Uygulama → Cikti
 const MOCK_BLOCKS = [
-  { type: 'intro', label: 'Giris', text: 'Bu asamada icesel donusum sureci ele alinmaktadir.' },
   {
-    type: 'verse',
-    label: 'Ayet / Hadis',
-    text: "'Elbette zorlukla birlikte kolaylik vardir.' (94:6)"
+    type: 'intro',
+    label: 'Giris',
+    text: 'Insan cogu zaman en cok yoruldugu seyi yanlis isimlendiriyor. Yorgunlugunu is cokluğuna bagliyor, ic baskisini sartlarin agirligiyla acikliyor. Oysa bazen insani asil yoran sey, yasadiklarin cokluğu degil; kendisini tasiyamayacagi kadar buyuk bir merkeze yerlestirmesidir.'
   },
   {
-    type: 'explanation',
-    label: 'Aciklama',
-    text: 'Zorluk anlarindaki dayaniklilik, iman kavramiyla derinlesir.'
+    type: 'verse',
+    label: 'Ayet',
+    arabic: 'يَا أَيُّهَا النَّاسُ أَنتُمُ الْفُقَرَاءُ إِلَى اللَّهِ',
+    text: '"Ey insanlar! Siz hepiniz Allah\'a muhtacsınız." — Fatir 15',
+    transliteration: 'Ya eyyuhân nâsu entumul fukarâu ilâllâh'
+  },
+  {
+    type: 'word-analysis',
+    label: 'Kelime Analizi',
+    text: 'Fakr (فَقْر): Lugat anlami "yoksulluk" degil, "kendi kendine yetememe" halidir. Bu kelime insani kucultmez; yanlıs buyuklukten kurtarir. Insan sadece maddi degil, varlik olarak muhtactir — kendi kalbini yonetemez, kendi gelecegini garanti edemez.'
   },
   {
     type: 'bridge',
-    label: 'Psikoloji / Felsefe Koprusu',
-    text: 'Bilissel yeniden cerceveleme teknigi ile olumsuz dusunce donusturulebilir.'
+    label: 'Psikoloji Koprusu',
+    text: 'Beck\'in bilissel carpitma modeline gore "kontrol etmesi gerekiyor" inanci kaygının temel kaynagindan biridir. Seligman\'in ogrenilemis caresilik arastirmalari gosteriyor ki: gercek guc, her seyi kontrol etmekte degil; kontrol edemediginde nereye yonelmek gerektigini bilmektedir.'
   },
   {
     type: 'practice',
     label: 'Uygulama',
-    text: 'Suanda yasadigin bir zorlugu yaz ve 3 farkli bakis acisi gelistir.'
+    text: 'Simdi bir kagit al veya dua gunlugunu ac. Cevapla:\n1. Suanda en cok hangi alanda kontrol etmeye calisiyorsun?\n2. Bu alanda Allah\'a muhtac oldugun bir an oldu mu?\n3. O anda ne hissettin?'
   },
   {
     type: 'output',
     label: 'Cikti / Kazanim',
-    text: 'Bu bolum sonunda kisisel bir donusum cumlesi olusturmus olacaksin.'
+    text: 'Bu asama sonunda su cumleyi tamamlayabilmelisin: "Hayatimin [___] alaninda, kendimi asil yoranin kontrol illüzyonum oldugunu gordüm. Su an Fatir 15 bana sunu soyluyor: [___]."'
   }
 ];
 
@@ -111,16 +118,25 @@ const ContentWorkshopSectionContent = ({
       {/* AC-FR-E8-03-01/02: structured content blocks */}
       {MOCK_BLOCKS.map((block, idx) => (
         <SectionCard key={block.type} title={block.label}>
+          {block.type === 'verse' && 'arabic' in block && (
+            <PText style={styles.arabicText}>{block.arabic}</PText>
+          )}
           <PText
             variant={block.type === 'verse' ? 'titleSmall' : 'bodyMedium'}
             style={[
               styles.blockText,
               block.type === 'verse' && styles.verseText,
+              block.type === 'word-analysis' && styles.analysisText,
               block.type === 'output' && styles.outputText
             ]}
           >
             {block.text}
           </PText>
+          {block.type === 'verse' && 'transliteration' in block && (
+            <PText variant="labelSmall" style={styles.transliterationText}>
+              {block.transliteration}
+            </PText>
+          )}
           {block.type === 'practice' && (
             <PButton
               mode="outlined"
@@ -311,6 +327,22 @@ function makeStyles(c: ColorTokens) {
     verseText: {
       fontStyle: 'italic',
       lineHeight: 24
+    },
+    arabicText: {
+      fontSize: fontSizes['3xl'],
+      textAlign: 'right',
+      lineHeight: 40,
+      marginBottom: 8,
+      writingDirection: 'rtl'
+    },
+    transliterationText: {
+      fontStyle: 'italic',
+      opacity: 0.55,
+      marginTop: 4
+    },
+    analysisText: {
+      lineHeight: 22,
+      fontStyle: 'italic'
     },
     outputText: {
       fontWeight: fontWeights.semiBold

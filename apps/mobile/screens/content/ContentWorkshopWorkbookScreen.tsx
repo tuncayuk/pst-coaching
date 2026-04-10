@@ -23,6 +23,62 @@ type WorksheetEntry = {
 
 const WORKSHEETS: WorksheetEntry[] = [
   {
+    id: 'my-foundations',
+    title: 'Benim Dayanaklarim Haritasi',
+    description: 'Hayatinda gercekten dayandiklarin neler? Hangi kaynaklara guveniyorsun? (Mutlak.docx — Asama 1 Giris)',
+    fields: [
+      {
+        key: 'foundations_material',
+        label: 'Maddi dayanaklarim',
+        placeholder: 'Para, pozisyon, saglik, iliski...',
+        multiline: true
+      },
+      {
+        key: 'foundations_inner',
+        label: 'Ic dayanaklarim',
+        placeholder: 'Ozguven, zeka, guc, kontrol...',
+        multiline: true
+      },
+      {
+        key: 'foundations_divine',
+        label: 'Allah\'a dayandigi anlarin',
+        placeholder: 'Ne zaman gercekten O\'na yoneldim?',
+        multiline: true
+      }
+    ]
+  },
+  {
+    id: 'control-illusion',
+    title: 'Kontrol Illuzyonum Tablosu',
+    description: 'Kontrolunde oldugunu sandim ama aslinda olmayan alanlari goz onune ser. (Mutlak.docx — Asama 8/Kamp 1. Gun)',
+    fields: [
+      {
+        key: 'illusion_area',
+        label: 'Kontrol etmeye calistigim alan',
+        placeholder: 'Iliskiler, is ciktisi, diger insanlar...',
+        multiline: false
+      },
+      {
+        key: 'illusion_belief',
+        label: 'Altindaki inanc',
+        placeholder: 'Eger kontrol etmezsem...',
+        multiline: false
+      },
+      {
+        key: 'illusion_cost',
+        label: 'Bu illüzyonun bedeli',
+        placeholder: 'Kaygi, tukenmislik, iliskisel gerginlik...',
+        multiline: false
+      },
+      {
+        key: 'illusion_truth',
+        label: 'Kurani hakikat (Fatir 15)',
+        placeholder: '"Sen Allah\'a muhtacsın..." bu alanda ne anlama gelir?',
+        multiline: true
+      }
+    ]
+  },
+  {
     id: 'burden-map',
     title: 'Yuk Haritasi',
     description: 'Simdi tasidigin duygusal, zihinsel ve fiziksel yukleri haritalandir.',
@@ -50,7 +106,7 @@ const WORKSHEETS: WorksheetEntry[] = [
   {
     id: 'inner-sentence',
     title: 'Ic Cumle Donusum Tablosu',
-    description: 'Olumsuz ic cumlelerini donusturmek icin her satiri doldur.',
+    description: 'Olumsuz ic cumlelerini donusturmek icin her satiri doldur. (Mutlak.docx — Asama 8/Kamp 2. Gun)',
     fields: [
       {
         key: 'negative',
@@ -73,10 +129,54 @@ const WORKSHEETS: WorksheetEntry[] = [
     ]
   },
   {
-    id: 'prayer-card',
-    title: 'Dua Karti',
-    description: 'Bu deneyimden sonra kalp sesini dua olarak yaz.',
-    fields: [{ key: 'dua', label: 'Duan', placeholder: 'Rabbim, bu deneyimden...', multiline: true }]
+    id: 'prayer-journal',
+    title: 'Dua Gunlugu',
+    description: 'Gunluk dua pratigi icin kayit alani. Her gun doldur. (Mutlak.docx — Mu\'min 60: Dua = ibadet)',
+    fields: [
+      {
+        key: 'esma',
+        label: 'Bugun hangi isimle yoneldim?',
+        placeholder: 'Ya Rahman, Ya Kayyum, Ya Gani...',
+        multiline: false
+      },
+      {
+        key: 'dua_text',
+        label: 'Kalp sesimle dua',
+        placeholder: 'Rabbim, bugun...',
+        multiline: true
+      },
+      {
+        key: 'dua_feeling',
+        label: 'Dua sonrasi his',
+        placeholder: 'Hafiflik, huzur, hala agirlik...',
+        multiline: false
+      }
+    ]
+  },
+  {
+    id: 'crisis-prayer',
+    title: 'Kriz Ani Dua Karti',
+    description: 'Bir kriz aninda hemen devreye giren hatirlatma karti. Onceden doldur, ihtiyacinda ac. (Mutlak.docx — Asama 10)',
+    fields: [
+      {
+        key: 'crisis_trigger',
+        label: 'Benim kriz tetikleyicilerim',
+        placeholder: 'Belirsizlik, elestirilme, kontrol kaybi...',
+        multiline: false
+      },
+      {
+        key: 'crisis_verse',
+        label: 'Bu anda bana dokunan ayet',
+        placeholder: 'Rahman 29 veya Bakara 255 veya...',
+        multiline: false
+      },
+      {
+        key: 'crisis_action',
+        label: 'Kriz aninda 3 adimim',
+        placeholder: '1. Dur ve nefes al\n2. Bu ayeti hatirla\n3. Dua et...',
+        multiline: true
+      }
+    ]
   },
   {
     id: 'tawakkul',
@@ -93,6 +193,74 @@ const WORKSHEETS: WorksheetEntry[] = [
         key: 'surrender',
         label: 'Birakabileceklerim',
         placeholder: 'Sonucu, zamanlamami...',
+        multiline: true
+      }
+    ]
+  },
+  {
+    id: 'transformation-21',
+    title: '21 Gunluk Donusum Plani',
+    description: '21 gunluk aliskanlık donusumu: her hafta bir kucuk adim. (Mutlak.docx — Asama 8/Kamp 3. Gun)',
+    fields: [
+      {
+        key: 'w1_habit',
+        label: '1. Hafta: Gunluk mikro aliskanlik',
+        placeholder: 'Her sabah Fatir 15\'i oku ve "Ben muhtacim" de...',
+        multiline: false
+      },
+      {
+        key: 'w2_habit',
+        label: '2. Hafta: Iliskisel uygulama',
+        placeholder: 'Kontrolu biraktim hissettiren bir durumda...',
+        multiline: false
+      },
+      {
+        key: 'w3_habit',
+        label: '3. Hafta: Topluluk paylasimi',
+        placeholder: 'Bir insanla bu deneyimi paylasacagim...',
+        multiline: false
+      },
+      {
+        key: 'daily_sentence',
+        label: '21 gun boyunca tekrar edecegim cumle',
+        placeholder: 'Rabbim, ben muhtacim; sen Gani\'sin...',
+        multiline: false
+      }
+    ]
+  },
+  {
+    id: 'character-30',
+    title: '30 Gunluk Karakter Insa Cizelgesi',
+    description: 'Karakter donusumunu takip et: her gun bir kutucuk. (Mutlak.docx — Vicdandan Karaktere Modeli)',
+    fields: [
+      {
+        key: 'character_goal',
+        label: '30 gunde ulasacagim karakter hedefi',
+        placeholder: 'Tevekkulu icsellestirmis, duayi kabimlayan biri olmak...',
+        multiline: true
+      },
+      {
+        key: 'week1_check',
+        label: '7. Gun: Nerede oldugunun notu',
+        placeholder: 'Ilk haftada ne degisti?',
+        multiline: true
+      },
+      {
+        key: 'week2_check',
+        label: '14. Gun: Nerede oldugunun notu',
+        placeholder: 'Ikinci haftada ne degisti?',
+        multiline: true
+      },
+      {
+        key: 'week3_check',
+        label: '21. Gun: Nerede oldugunun notu',
+        placeholder: 'Ucuncu haftada ne degisti?',
+        multiline: true
+      },
+      {
+        key: 'day30_reflection',
+        label: '30. Gun: Donusum yansimasi',
+        placeholder: '30 gunde kim oldum?',
         multiline: true
       }
     ]

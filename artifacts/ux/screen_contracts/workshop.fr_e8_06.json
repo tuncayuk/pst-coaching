@@ -2,7 +2,19 @@
   "id": "workshop.fr_e8_06",
   "title": "Katilimci defteri ve calisma kagitlari",
   "route": "/workshop/workbook",
-  "purpose": "Implements FR-E8-06: Yapilandirilmis calisma kagitlari, otomatik kayit, devam et ve gizlilik onayi ile disari aktarim.",
+  "purpose": "Implements FR-E8-06: 10 yapilandirilmis calisma kagidi (Benim Dayanaklarim, Kontrol Illuzyonum, Yuk Haritasi, Ic Cumle Donusum, Dua Gunlugu, Kriz Ani Dua Karti, Tevekkul Dengesi, 21 Gunluk Plan, 30 Gunluk Cizelge, Donus Plani), otomatik kayit, devam et ve gizlilik onayi ile disari aktarim.",
+  "worksheets": [
+    "Benim Dayanaklarim Haritasi",
+    "Kontrol Illuzyonum Tablosu",
+    "Yuk Haritasi",
+    "Ic Cumle Donusum Tablosu",
+    "Dua Gunlugu",
+    "Kriz Ani Dua Karti",
+    "Tevekkul Dengesi",
+    "21 Gunluk Donusum Plani",
+    "30 Gunluk Karakter Insa Cizelgesi",
+    "Donus Plani"
+  ],
   "entryPoints": ["workshop.phases", "workshop.section"],
   "inputs": [
     {

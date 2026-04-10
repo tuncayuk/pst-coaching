@@ -21,18 +21,19 @@ import { StateMessage } from '../components/StateMessage';
 
 type RouteParams = { state?: ScreenState; id?: string };
 
+// Mutlak.docx aligned 11-stage labels
 const STAGE_LABELS: Record<number, string> = {
-  1: 'Referans',
-  2: 'Icgoru',
-  3: 'Referans',
-  4: 'Icgoru',
-  5: 'Referans',
-  6: 'Icgoru',
-  7: 'Entegrasyon',
+  1: 'Kavram Insasi',
+  2: 'Kuran Analizi',
+  3: 'Ayet Aynalama',
+  4: 'Mufessirler',
+  5: 'Vicdan-Karakter Modeli',
+  6: 'Psikoloji Koprusu',
+  7: 'Felsefe Koprusu',
   8: '3-Gun Kamp',
   9: 'Egitmen Rehberi',
   10: 'Calisma Kitabi',
-  11: 'Kapanis'
+  11: 'Kapanis & Hayata Uygulama'
 };
 
 const ContentWorkshopCompletionContent = ({ workshopId, isOffline }: { workshopId?: string; isOffline?: boolean }) => {
@@ -61,7 +62,7 @@ const ContentWorkshopCompletionContent = ({ workshopId, isOffline }: { workshopI
     <>
       {/* Celebration header */}
       <View style={styles.celebrationBlock}>
-        <PText style={styles.celebrationEmoji}>{workshopCompleted ? '[Kupa]' : '[Filiz]'}</PText>
+        <PText style={styles.celebrationEmoji}>{workshopCompleted ? '\uD83C\uDFC6' : '\uD83C\uDF31'}</PText>
         <PText variant="headlineMedium" style={styles.celebrationTitle}>
           {workshopCompleted ? 'Atolye Tamamlandi!' : 'Atolye Devam Ediyor'}
         </PText>
@@ -136,7 +137,7 @@ const ContentWorkshopCompletionContent = ({ workshopId, isOffline }: { workshopI
       {workshopCompleted ? (
         <SectionCard title="Sertifika ve Rozet">
           <View style={styles.badgeRow}>
-            <PText style={styles.badgeEmoji}>[Altin]</PText>
+            <PText style={styles.badgeEmoji}>{'\uD83C\uDF1F'}</PText>
             <View style={styles.badgeInfo}>
               <PText variant="titleSmall">Atolye Tamamlama Rozeti</PText>
               <PText variant="bodySmall" style={styles.badgeDesc}>

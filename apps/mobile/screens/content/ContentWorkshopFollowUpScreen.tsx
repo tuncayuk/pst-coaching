@@ -88,7 +88,7 @@ const ContentWorkshopFollowUpContent = ({ workshopId, isOffline }: { workshopId?
           <PDivider style={styles.divider} />
           {phase.steps.map((step, si) => (
             <View key={si} style={styles.stepRow}>
-              <PText style={styles.bullet}>*</PText>
+              <PText style={styles.bullet}>·</PText>
               <PText variant="bodySmall" style={styles.stepText}>
                 {step}
               </PText>

@@ -2,7 +2,23 @@
   "id": "workshop.fr_e8_03",
   "title": "Asama icerik ekrani",
   "route": "/workshop/section",
-  "purpose": "Implements FR-E8-03: Yapilandirilmis icerik bloklari, vurgulama/not/favori ve asama sonunda gecis.",
+  "purpose": "Implements FR-E8-03: Yapilandirilmis icerik bloklari (Giris > Ayet+Arapca > Kelime Analizi > Psikoloji Koprusu > Uygulama > Cikti), vurgulama/not/favori ve asama sonunda gecis.",
+  "contentBlockSchema": {
+    "intro": "Giris — baglam ve zemin",
+    "verse": "Ayet — Arapca metin, Turkce meal, transliterasyon",
+    "word-analysis": "Kelime Analizi — lugat, istilah, Kur'an baglami, psikolojik karsilik",
+    "bridge": "Psikoloji/Felsefe Koprusu — modern entegrasyon",
+    "practice": "Uygulama — kisisel egzersiz, calisma kitabina baglanti",
+    "output": "Cikti/Kazanim — tamamlama cumlesi"
+  },
+  "stageAlignment": {
+    "stages_1_4": "Teorik bloklar — Kavram Insasi, Kuran Analizi, Ayet Aynalama, Mufessirler",
+    "stages_5_7": "Model bloklari — Vicdan-Karakter, Psikoloji Koprusu, Felsefe Koprusu",
+    "stage_8": "Kamp ekranina (workshop.fr_e8_04) yonlendirir",
+    "stage_9": "Egitmen rehberi ekranina (workshop.fr_e8_05) yonlendirir",
+    "stage_10": "Calisma kitabi ekranina (workshop.fr_e8_06) yonlendirir",
+    "stage_11": "Takip plani ekranina (workshop.fr_e8_07) yonlendirir"
+  },
   "entryPoints": ["workshop.phases"],
   "inputs": [
     {
@@ -13,6 +29,12 @@
     },
     {
       "name": "workshopId",
+      "type": "uuid",
+      "required": true,
+      "source": "route_param"
+    },
+    {
+      "name": "sectionId",
       "type": "uuid",
       "required": true,
       "source": "route_param"

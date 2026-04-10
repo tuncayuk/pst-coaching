@@ -2,7 +2,12 @@
   "id": "workshop.fr_e8_04",
   "title": "3 gunluk kamp ve oturum plani",
   "route": "/workshop/camp",
-  "purpose": "Implements FR-E8-04: Gun 1/2/3 sekmeleri, sabah/ogle/aksam oturumu kartlari ve oturum tamamlama.",
+  "purpose": "Implements FR-E8-04: 3-Gun Kamp — Gun 1 Tespit / Gun 2 Cozum / Gun 3 Insa. Sabah/ogle/aksam oturum kartlari (amac, akis, cikti, calisma-kagidi) ve oturum tamamlama.",
+  "campStructure": {
+    "day1": { "theme": "Tespit — Ben gercekten neye guveniyorum?", "worksheets": ["Benim Dayanaklarim Haritasi", "Kontrol Illuzyonum Tablosu", "Ic Kibir Haritasi"] },
+    "day2": { "theme": "Cozum — Ayet/hadis donusumu + dua pratigi", "worksheets": ["Ic Cumle Donusum Tablosu", "Dua Gunlugu", "Kriz Ani Dua Karti", "Tevekkul Dengesi"] },
+    "day3": { "theme": "Insa — 21 gunluk + 30 gunluk sistem", "worksheets": ["Entegrasyon Haritasi", "21 Gunluk Donusum Plani", "30 Gunluk Karakter Insa Cizelgesi"] }
+  },
   "entryPoints": ["workshop.phases"],
   "inputs": [
     {

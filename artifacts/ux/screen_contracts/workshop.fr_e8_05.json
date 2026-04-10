@@ -2,7 +2,9 @@
   "id": "workshop.fr_e8_05",
   "title": "Egitmen rehberi ve facilitator mode",
   "route": "/workshop/guide",
-  "purpose": "Implements FR-E8-05: Dakika/dakika akis, cumle onerileri, facilitator mode ve cevrimdisi erisim.",
+  "purpose": "Implements FR-E8-05: Asama bazli tam profesyonel facilitasyon scripti (6 bolum: Asama 1-4, 2-3, 4, 5-7, 8 Kamp, 11 Kapanis), olasi tepkiler, mikro beceriler, 7 zor senaryo kisayolu, facilitator mode ve cevrimdisi erisim.",
+  "guideSections": ["Asama 1-4 Kavramsal Zemin", "Asama 2-3 Ayet Analizi", "Asama 4 Mufessirler", "Asama 5-7 Model+Psikoloji+Felsefe", "Asama 8 Kamp Facilitasyonu", "Asama 11 Kapanis"],
+  "hardScenarios": ["Aglamak/Duygusal kriz", "Katilimci kapaniyor", "Alay/entelektuel savunma", "Grup polarizasyonu", "Katilimci cikiyor", "Dini bilgi domine", "Teknik sorun"],
   "entryPoints": ["workshop.landing", "workshop.phases"],
   "inputs": [
     {

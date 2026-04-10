@@ -10,7 +10,7 @@ import {
   getWorkshopById,
   getWorkshops
 } from '../../data/mockSelectors';
-import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
+import { ColorTokens, fontSizes, fontWeights, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -20,30 +20,30 @@ import { StateMessage } from '../components/StateMessage';
 
 type RouteParams = { state?: ScreenState; id?: string };
 
-// AC-FR-E8-02-02: stage type labels
-const STAGE_TYPE_MAP: Record<number, { label: string; color: string }> = {
-  1: { label: 'Referans', color: '#7C4DFF' },
-  2: { label: 'Icgoru', color: '#00897B' },
-  3: { label: 'Referans', color: '#7C4DFF' },
-  4: { label: 'Icgoru', color: '#00897B' },
-  5: { label: 'Referans', color: '#7C4DFF' },
-  6: { label: 'Icgoru', color: '#00897B' },
-  7: { label: 'Entegrasyon', color: '#F57C00' },
-  8: { label: '3-Gun Kamp', color: '#C62828' },
-  9: { label: 'Egitmen Rehberi', color: '#283593' },
-  10: { label: 'Calisma Kitabi', color: '#2E7D32' },
-  11: { label: 'Kapanis', color: '#6D4C41' }
+// AC-FR-E8-02-02: stage type labels aligned with Mutlak.docx 11-stage structure
+const STAGE_TYPE_MAP: Record<number, { label: string; color: string; desc: string }> = {
+  1: { label: 'Kavram Insasi', color: '#7C4DFF', desc: 'Fakr, Gina, Kayyumiyet, Sen, Imsak, Dua, Esma' },
+  2: { label: 'Kuran Analizi', color: '#00897B', desc: '8 ayetin derinlemesine siyak-sibak analizi' },
+  3: { label: 'Ayet Aynalama', color: '#00838F', desc: 'Ayetler arasi butuncul baglanti kurma' },
+  4: { label: 'Mufessirler', color: '#5E35B1', desc: 'Razi, Alusi, Ibn Kesir, Ibn Asur, Nursi' },
+  5: { label: 'Vicdan-Karakter', color: '#F57C00', desc: 'Dusunce > Vicdan > Duygu > Anlam > Karakter' },
+  6: { label: 'Psikoloji Koprusu', color: '#0288D1', desc: 'Freud, Adler, Jung, Beck, Seligman entegrasyonu' },
+  7: { label: 'Felsefe Koprusu', color: '#6D4C41', desc: 'Stoacilar, Platon, Aristoteles, Heidegger' },
+  8: { label: '3-Gun Kamp', color: '#C62828', desc: 'Tespit > Cozum > Insa — en kritik asama' },
+  9: { label: 'Egitmen Rehberi', color: '#283593', desc: 'Tam profesyonel senaryo ve facilitasyon scripti' },
+  10: { label: 'Calisma Kitabi', color: '#2E7D32', desc: 'Kisisel defter ve calisma kagitlari' },
+  11: { label: 'Kapanis', color: '#4E342E', desc: 'Kapalis konusmasi ve hayata entegrasyon' }
 };
 
-// AC-FR-E8-02-03: lock conditions
+// AC-FR-E8-02-03: lock conditions aligned with stage dependencies
 const LOCK_REASON: Record<number, string> = {
-  5: 'Asama 4 tamamlanmali',
-  6: 'Asama 5 tamamlanmali',
-  7: 'Asama 6 tamamlanmali',
-  8: 'Abonelik ve onceki asamalar gerekli',
-  9: 'Kamp tamamlanmali',
-  10: 'Egitmen onaylanmali',
-  11: 'Calisma kitabi doldurulmali'
+  5: 'Asama 1-4 tamamlanmali (teorik zemin)',
+  6: 'Asama 5 (Vicdan-Karakter modeli) tamamlanmali',
+  7: 'Asama 6 (Psikoloji koprusu) tamamlanmali',
+  8: 'Abonelik + Asama 1-7 tamamlanmali (kamp on kosulu)',
+  9: 'Kamp (Asama 8) tamamlanmali',
+  10: 'Kamp (Asama 8) tamamlanmali',
+  11: 'Calisma kitabi (Asama 10) doldurulmali'
 };
 
 const ContentWorkshopHomeContent = ({ workshopId, isOffline }: { workshopId?: string; isOffline?: boolean }) => {
@@ -60,8 +60,7 @@ const ContentWorkshopHomeContent = ({ workshopId, isOffline }: { workshopId?: st
     (s: any) => progressList.find((p: any) => p.content_id === s.id)?.status === 'completed'
   ).length;
 
-  // AC-FR-E8-02-04: "Devam Et" goes to last stage
-  const resumeSection = sections[completedCount] ?? sections[0];
+  // AC-FR-E8-02-04: "Devam Et" goes to last incomplete stage
 
   // Build 11 stage entries (pad with mock stage names if fewer sections)
   const totalStages = 11;
@@ -244,7 +243,7 @@ export const ContentWorkshopHomeScreen = ({ route }: { route?: { params?: RouteP
   );
 };
 
-function makeStyles(c: ColorTokens) {
+function makeStyles(_c: ColorTokens) {
   return StyleSheet.create({
     resumeText: {
       opacity: 0.7,

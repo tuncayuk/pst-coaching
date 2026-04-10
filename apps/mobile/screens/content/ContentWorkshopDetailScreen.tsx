@@ -10,7 +10,7 @@ import {
   getWorkshopById,
   getWorkshops
 } from '../../data/mockSelectors';
-import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
+import { ColorTokens, fontSizes, fontWeights, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
@@ -24,18 +24,19 @@ const STAGE_COUNT = 11;
 const CAMP_DAYS = 3;
 
 // Simulated stage type labels for display (AC-FR-E8-02-02)
+// Mutlak.docx aligned 11-stage labels
 const STAGE_LABELS: Record<number, string> = {
-  1: 'Referans',
-  2: 'Icgoru',
-  3: 'Referans',
-  4: 'Icgoru',
-  5: 'Referans',
-  6: 'Icgoru',
-  7: 'Entegrasyon',
-  8: 'Kamp',
-  9: 'Rehber',
+  1: 'Kavram Insasi',
+  2: 'Kuran Analizi',
+  3: 'Ayet Aynalama',
+  4: 'Mufessirler',
+  5: 'Vicdan-Karakter Modeli',
+  6: 'Psikoloji Koprusu',
+  7: 'Felsefe Koprusu',
+  8: '3-Gun Kamp (En Kritik)',
+  9: 'Egitmen Rehberi',
   10: 'Calisma Kitabi',
-  11: 'Kapanis'
+  11: 'Kapanis & Hayata Uygulama'
 };
 
 const ContentWorkshopDetailContent = ({ workshopId, isOffline }: { workshopId?: string; isOffline?: boolean }) => {

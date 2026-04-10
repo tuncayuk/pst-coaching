@@ -2,7 +2,20 @@
   "id": "workshop.fr_e8_02",
   "title": "Asama navigasyonu ve ilerleme modeli",
   "route": "/workshop/phases",
-  "purpose": "Implements FR-E8-02: Asama listesi/zaman cizelgesi, tip bazli etiketler, kilit durumu ve Devam Et aksiyonu.",
+  "purpose": "Implements FR-E8-02: 11-asama listesi/zaman cizelgesi, Mutlak.docx aligned tip etiketleri, kilit kurallari ve Devam Et aksiyonu.",
+  "stageTypes": {
+    "1": "Kavram Insasi — Fakr, Gina, Kayyumiyet, Sen, Imsak, Dua, Esma",
+    "2": "Kuran Analizi — 8 ayetin siyak-sibak analizi",
+    "3": "Ayet Aynalama — Ayetler arasi butuncul sistem",
+    "4": "Mufessirler — Razi, Alusi, Ibn Kesir, Nursi",
+    "5": "Vicdan-Karakter Modeli — Dusunce→Karakter donusum zinciri",
+    "6": "Psikoloji Koprusu — Freud, Adler, Jung, Beck, Seligman",
+    "7": "Felsefe Koprusu — Stoacilar, Platon, Aristoteles, Heidegger",
+    "8": "3-Gun Kamp — Tespit/Cozum/Insa (subscription + asama 1-7)",
+    "9": "Egitmen Rehberi — Kamp tamamlanmali",
+    "10": "Calisma Kitabi — Kamp tamamlanmali",
+    "11": "Kapanis & Hayata Uygulama — Calisma kitabi doldurulmali"
+  },
   "entryPoints": ["workshop.landing"],
   "inputs": [
     {
