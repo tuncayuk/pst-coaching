@@ -21,10 +21,14 @@ import {
 } from '../components';
 import {
   getContentProgressForUser,
+  getEbooks,
   getJourneyById,
   getJourneyDays,
+  getJourneys,
+  getModules,
   getNotificationsForUser,
-  getPrimaryUser
+  getPrimaryUser,
+  getWorkshops
 } from '../data/mockSelectors';
 import { ColorTokens, fontSizes, fontWeights, radii, spacing, useAppTheme } from '../theme';
 import { OfflineNotice } from './components/OfflineNotice';
@@ -57,10 +61,10 @@ function getGreetingText(): string {
 }
 
 const CONTENT_AREAS = [
-  { label: 'Yolculuklar', icon: 'map-marker-path', route: 'DiscoverJourneys', count: '12 program' },
-  { label: 'Atolyeler', icon: 'school-outline', route: 'DiscoverWorkshops', count: '8 atolye' },
-  { label: 'e-Kitaplar', icon: 'book-open-variant', route: 'DiscoverEbooks', count: '24 kitap' },
-  { label: 'Kocluk Okulu', icon: 'human-male-board', route: 'DiscoverCatalog', count: '5 kurs' }
+  { label: 'Yolculuklar', icon: 'map-marker-path', route: 'DiscoverJourneys', suffix: 'program' },
+  { label: 'Atolyeler', icon: 'school-outline', route: 'DiscoverWorkshops', suffix: 'atolye' },
+  { label: 'e-Kitaplar', icon: 'book-open-variant', route: 'DiscoverEbooks', suffix: 'kitap' },
+  { label: 'Moduller', icon: 'human-male-board', route: 'DiscoverModules', suffix: 'modul' }
 ] as const;
 
 /** Returns subscription badge colors from semantic tokens — dark-mode safe. */
@@ -84,6 +88,12 @@ const HomeReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
   const navigation = useNavigation<any>();
   const user = getPrimaryUser();
   const displayName = user?.email ? user.email.split('@')[0] : 'Ahmet';
+  const contentAreaCounts = [
+    getJourneys().length,
+    getWorkshops().length,
+    getEbooks().length,
+    getModules().length
+  ];
   const journeyDays = getJourneyDays();
   const progressItems = getContentProgressForUser(user?.id);
   const unreadCount = getNotificationsForUser(user?.id).filter(n => !n.is_read).length;
@@ -301,19 +311,22 @@ const HomeReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
         <View style={styles.contentNavGrid}>
           {[CONTENT_AREAS.slice(0, 2), CONTENT_AREAS.slice(2, 4)].map((row, rowIdx) => (
             <View key={rowIdx} style={styles.contentNavRow}>
-              {row.map(area => (
-                <HomeContentNavCard
-                  key={area.label}
-                  label={area.label}
-                  icon={area.icon}
-                  count={area.count}
-                  disabled={isOffline}
-                  onPress={() => {
-                    trackCtaTap('home.dashboard', 'content_area_tapped', { route: area.route });
-                    navigation.navigate('Discover', { screen: area.route });
-                  }}
-                />
-              ))}
+              {row.map((area, colIdx) => {
+                const idx = rowIdx * 2 + colIdx;
+                return (
+                  <HomeContentNavCard
+                    key={area.label}
+                    label={area.label}
+                    icon={area.icon}
+                    count={`${contentAreaCounts[idx]} ${area.suffix}`}
+                    disabled={isOffline}
+                    onPress={() => {
+                      trackCtaTap('home.dashboard', 'content_area_tapped', { route: area.route });
+                      navigation.navigate('Discover', { screen: area.route });
+                    }}
+                  />
+                );
+              })}
             </View>
           ))}
         </View>

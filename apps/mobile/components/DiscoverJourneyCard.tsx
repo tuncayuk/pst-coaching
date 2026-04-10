@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
+import { Icon } from 'react-native-paper';
 
 import { ColorTokens, fontSizes, fontWeights, radii, spacing, useAppTheme } from '../theme';
 import { PCard } from './PCard';
@@ -8,9 +9,11 @@ import { PText } from './PText';
 export type DiscoverJourneyCardItem = {
   id: string;
   title: string;
+  description?: string;
   duration_days: number;
   level: string;
   daily_target?: string;
+  featured?: boolean;
 };
 
 export type DiscoverJourneyCardProps = {
@@ -20,25 +23,30 @@ export type DiscoverJourneyCardProps = {
   onPress: () => void;
 };
 
-const JOURNEY_COLORS = ['#FFDDC1', '#D1FAE5', '#E9D5FF', '#FDE68A'];
-const JOURNEY_EMOJIS = ['🎯', '🙏', '🌿', '🧘'];
+const ICON_PALETTES: { bg: string; emoji: string }[] = [
+  { bg: '#DBEAFE', emoji: '🎯' },
+  { bg: '#D1FAE5', emoji: '🙏' },
+  { bg: '#EDE9FE', emoji: '🌿' },
+  { bg: '#FEF3C7', emoji: '🧘' },
+  { bg: '#FCE7F3', emoji: '✨' }
+];
 
-const LEVEL_LABELS: Record<string, string> = {
-  baslangic: 'Baslangic',
-  beginner: 'Baslangic',
-  orta: 'Orta',
-  intermediate: 'Orta',
-  ileri: 'Ileri',
-  advanced: 'Ileri'
+const LEVEL_CONFIG: Record<string, { label: string; bg: string; text: string }> = {
+  baslangic: { label: 'Başlangıç', bg: '#D1FAE5', text: '#065F46' },
+  beginner:  { label: 'Başlangıç', bg: '#D1FAE5', text: '#065F46' },
+  basico:    { label: 'Başlangıç', bg: '#D1FAE5', text: '#065F46' },
+  orta:      { label: 'Orta',      bg: '#FEF3C7', text: '#92400E' },
+  intermediate: { label: 'Orta',   bg: '#FEF3C7', text: '#92400E' },
+  ileri:     { label: 'İleri',     bg: '#FEE2E2', text: '#991B1B' },
+  advanced:  { label: 'İleri',     bg: '#FEE2E2', text: '#991B1B' }
 };
 
 export const DiscoverJourneyCard = ({ journey, index, showFreeBadge, onPress }: DiscoverJourneyCardProps) => {
   const { colors: c } = useAppTheme();
   const styles = useMemo(() => makeStyles(c), [c]);
 
-  const iconBg = JOURNEY_COLORS[index % JOURNEY_COLORS.length];
-  const emoji = JOURNEY_EMOJIS[index % JOURNEY_EMOJIS.length];
-  const levelLabel = LEVEL_LABELS[journey.level] ?? journey.level;
+  const palette = ICON_PALETTES[index % ICON_PALETTES.length];
+  const levelCfg = LEVEL_CONFIG[journey.level] ?? { label: journey.level, bg: '#F3F4F6', text: '#374151' };
 
   return (
     <PCard
@@ -48,29 +56,52 @@ export const DiscoverJourneyCard = ({ journey, index, showFreeBadge, onPress }: 
       accessibilityHint="Yolculuk detaylarini acmak icin dokun"
       accessibilityRole="button"
     >
-      <View style={styles.row}>
-        <View style={[styles.icon, { backgroundColor: iconBg }]} accessibilityElementsHidden>
-          <PText style={styles.emoji}>{emoji}</PText>
+      <View style={styles.inner}>
+        {/* Icon */}
+        <View style={[styles.icon, { backgroundColor: palette.bg }]} accessibilityElementsHidden>
+          <PText style={styles.emoji}>{palette.emoji}</PText>
         </View>
-        <View style={styles.info}>
+
+        {/* Content */}
+        <View style={styles.content}>
+          {/* Title row */}
           <View style={styles.titleRow}>
-            <PText style={styles.title} numberOfLines={2}>
+            <PText style={styles.title} numberOfLines={1}>
               {journey.title}
             </PText>
             {showFreeBadge && (
               <View style={styles.freeBadge}>
-                <PText style={styles.freeBadgeText}>Ucretsiz</PText>
+                <PText style={styles.freeBadgeText}>Ücretsiz</PText>
               </View>
             )}
           </View>
-          <View style={styles.metaRow}>
-            <PText style={styles.metaText}>⏱ {journey.duration_days} gun</PText>
-            <PText style={styles.metaDot}>·</PText>
-            <PText style={styles.metaText}>📊 {levelLabel}</PText>
-          </View>
-          {!!journey.daily_target && (
-            <PText style={styles.dailyTarget}>{journey.daily_target}</PText>
+
+          {/* Description */}
+          {!!journey.description && (
+            <PText style={styles.description} numberOfLines={1}>
+              {journey.description}
+            </PText>
           )}
+
+          {/* Meta row */}
+          <View style={styles.metaRow}>
+            <PText style={styles.metaText}>⏱ {journey.duration_days} gün</PText>
+            <View style={[styles.levelChip, { backgroundColor: levelCfg.bg }]}>
+              <PText style={[styles.levelText, { color: levelCfg.text }]}>{levelCfg.label}</PText>
+            </View>
+          </View>
+
+          {/* Daily target */}
+          {!!journey.daily_target && (
+            <View style={styles.targetPill}>
+              <PText style={styles.targetText}>{journey.daily_target}</PText>
+            </View>
+          )}
+        </View>
+
+        {/* Chevron */}
+        <View style={styles.chevron} accessibilityElementsHidden>
+          <Icon source="chevron-right" size={20} color={c.textDisabled} />
         </View>
       </View>
     </PCard>
@@ -83,8 +114,9 @@ function makeStyles(c: ColorTokens) {
       borderRadius: radii.xl,
       marginBottom: spacing[1.5]
     },
-    row: {
+    inner: {
       flexDirection: 'row',
+      alignItems: 'center',
       gap: spacing[1.5],
       padding: spacing[1.5]
     },
@@ -99,18 +131,18 @@ function makeStyles(c: ColorTokens) {
     emoji: {
       fontSize: fontSizes['8xl']
     },
-    info: {
-      flex: 1
+    content: {
+      flex: 1,
+      gap: 4
     },
     titleRow: {
       flexDirection: 'row',
-      alignItems: 'flex-start',
+      alignItems: 'center',
       justifyContent: 'space-between',
-      gap: spacing[1],
-      marginBottom: 4
+      gap: spacing[1]
     },
     title: {
-      fontSize: fontSizes.xl,
+      fontSize: fontSizes.lg,
       fontWeight: fontWeights.bold,
       color: c.textPrimary,
       flex: 1
@@ -126,24 +158,44 @@ function makeStyles(c: ColorTokens) {
       fontWeight: fontWeights.bold,
       color: c.onTertiaryContainer
     },
+    description: {
+      fontSize: fontSizes.sm,
+      color: c.textSecondary,
+      lineHeight: 17
+    },
     metaRow: {
       flexDirection: 'row',
       alignItems: 'center',
-      gap: 6,
-      marginBottom: 2
+      gap: 8
     },
     metaText: {
-      fontSize: fontSizes.base,
+      fontSize: fontSizes.sm,
       color: c.textTertiary
     },
-    metaDot: {
-      fontSize: fontSizes.base,
-      color: c.outline
+    levelChip: {
+      paddingHorizontal: 7,
+      paddingVertical: 2,
+      borderRadius: radii.sm
     },
-    dailyTarget: {
-      fontSize: fontSizes.sm,
-      color: c.onPrimaryContainer,
-      fontWeight: fontWeights.semiBold
+    levelText: {
+      fontSize: fontSizes.xs,
+      fontWeight: fontWeights.bold
+    },
+    targetPill: {
+      alignSelf: 'flex-start',
+      backgroundColor: c.primaryContainer,
+      paddingHorizontal: 8,
+      paddingVertical: 3,
+      borderRadius: radii.sm
+    },
+    targetText: {
+      fontSize: fontSizes.xs,
+      fontWeight: fontWeights.semiBold,
+      color: c.onPrimaryContainer
+    },
+    chevron: {
+      flexShrink: 0,
+      opacity: 0.5
     }
   });
 }

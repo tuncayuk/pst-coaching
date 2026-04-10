@@ -317,7 +317,7 @@ function makeStyles(c: ColorTokens) {
     chip: { borderRadius: radii['2xl'], elevation: 0 },
     chipContent: { height: 34, paddingHorizontal: 4 },
     chipLabel: { fontSize: fontSizes.base, fontWeight: fontWeights.semiBold },
-    card: { borderRadius: radii.xl, marginBottom: spacing[2], overflow: 'hidden' },
+    card: { borderRadius: radii.xl, marginBottom: spacing[2] },
     cardInner: { borderRadius: radii.xl, overflow: 'hidden' },
     badgeRow: {
       flexDirection: 'row',
