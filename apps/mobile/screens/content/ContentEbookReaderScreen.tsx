@@ -1,33 +1,113 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useMemo, useState } from 'react';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import React, { useMemo, useRef, useState } from 'react';
+import { StyleSheet, TextInput, View } from 'react-native';
 
-import { PActivityIndicator, PButton, PChip, PProgressBar, PText } from '../../components';
-import { getEbookById, getEbookChaptersForEbook, getHighlightsForUser, getPrimaryUser } from '../../data/mockSelectors';
-import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
-import { OfflineNotice } from '../components/OfflineNotice';
+import { PButton, PText } from '../../components';
+import {
+  getEbookById,
+  getEbookChaptersForEbook,
+  getHighlightsForUser,
+  getPrimaryUser
+} from '../../data/mockSelectors';
+import { ColorTokens, fontSizes, fontWeights, radii, spacing, useAppTheme } from '../../theme';
+import { PremiumReaderLayout } from '../components/PremiumReaderLayout';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
-import { SectionCard } from '../components/SectionCard';
 import { SkeletonBlock } from '../components/SkeletonBlock';
 import { StateMessage } from '../components/StateMessage';
 
-const READING_PARAGRAPHS = [
-  'Kendine karsi nazik olmak, zorlayici anlarda ic sesini yumusatmanin ilk adimidir.',
-  'Nefesini sayarken omuzlarinin gevsettigini fark et. Zihin baska yerlere gittiginde yargilamadan geri getir.',
-  'Okuma sonrasi dusuncelerini not etmek icin birkas dakika ayir. Bu kisa refleksiyon, ogrenmeyi kalici hale getirir.',
-  'Her sayfada kendi hikayeni gor. Sukur hem bir eylem hem de bir baki acisidir.'
-];
+// ─────────────────────────────────────────────
+// Types & constants
+// ─────────────────────────────────────────────
 
-const HIGHLIGHT_COLORS = [
-  { key: 'yellow', label: 'Sari', color: '#FDE68A' },
-  { key: 'green', label: 'Yesil', color: '#BBF7D0' },
-  { key: 'blue', label: 'Mavi', color: '#BAE6FD' },
-  { key: 'pink', label: 'Pembe', color: '#FBCFE8' }
-];
-
+type RouteParams = { state?: ScreenState; id?: string; chapterId?: string };
+type FontKey = 'small' | 'medium' | 'large';
+const FONT_SIZES: Record<FontKey, number> = { small: 14, medium: 16, large: 19 };
+const FONT_ORDER: FontKey[] = ['small', 'medium', 'large'];
 const AUDIO_SPEEDS = ['0.75x', '1x', '1.25x'] as const;
-type AudioSpeed = (typeof AUDIO_SPEEDS)[number];
+const HIGHLIGHT_COLORS = [
+  { key: 'yellow', color: '#FDE68A', label: 'Sarı' },
+  { key: 'green',  color: '#BBF7D0', label: 'Yeşil' },
+  { key: 'blue',   color: '#BAE6FD', label: 'Mavi' },
+  { key: 'pink',   color: '#FBCFE8', label: 'Pembe' }
+] as const;
+
+const READING_PARAGRAPHS = [
+  'Kendine karşı nazik olmak, zorlu anlarda iç sesini yumuşatmanın ilk adımıdır. Bunu pratiğe dökmek bazen uzun soluklu bir yolculuk gerektirir; ama her gün birkaç dakika yeterlidir.',
+  'Nefesini sayarken omuzlarının gevşediğini fark et. Zihin başka yerlere gittiğinde yargılamadan geri getir — bu küçük jest, öz-şefkatin somut bir ifadesidir.',
+  'Okuma sonrası düşüncelerini not etmek için birkaç dakika ayır. Bu kısa refleksiyon, öğrenmeyi kalıcı hale getirir ve yeni alışkanlıkların sindirilmesini kolaylaştırır.',
+  'Her sayfada kendi hikayeni gör. Şükür hem bir eylem hem de bir bakış açısıdır — günlük hayatın küçük ayrıntılarında büyük anlamlar saklıdır.'
+];
+
+// ─────────────────────────────────────────────
+// Audio bar (conditional on has_audio)
+// ─────────────────────────────────────────────
+
+const EbookAudioBar = ({
+  isPlaying,
+  speedIndex,
+  onToggle,
+  onSpeed,
+  disabled
+}: {
+  isPlaying: boolean;
+  speedIndex: number;
+  onToggle: () => void;
+  onSpeed: (i: number) => void;
+  disabled?: boolean;
+}) => {
+  const { colors: c } = useAppTheme();
+  return (
+    <View style={[abStyles.bar, { backgroundColor: '#F5F3FF', borderBottomColor: c.outlineVariant }]}>
+      <PButton
+        mode="text"
+        compact
+        icon={isPlaying ? 'pause-circle' : 'play-circle'}
+        onPress={onToggle}
+        disabled={disabled}
+      >
+        {isPlaying ? 'Duraklat' : 'Sesli Kitap'}
+      </PButton>
+      <View style={abStyles.speeds}>
+        {AUDIO_SPEEDS.map((s, i) => (
+          <PButton
+            key={s}
+            mode={speedIndex === i ? 'contained' : 'text'}
+            compact
+            disabled={disabled}
+            onPress={() => onSpeed(i)}
+            style={abStyles.speedBtn}
+            labelStyle={abStyles.speedLabel}
+          >
+            {s}
+          </PButton>
+        ))}
+      </View>
+      {isPlaying && (
+        <PText style={[abStyles.hint, { color: '#6B46C1' }]}>Arka planda devam eder</PText>
+      )}
+    </View>
+  );
+};
+
+const abStyles = StyleSheet.create({
+  bar: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: spacing[1.5],
+    paddingVertical: 6,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    gap: spacing[1]
+  },
+  speeds: { flexDirection: 'row', gap: 2 },
+  speedBtn: { minWidth: 42 },
+  speedLabel: { fontSize: fontSizes.xs },
+  hint: { fontSize: fontSizes.xs, fontStyle: 'italic', flex: 1, textAlign: 'right' }
+});
+
+// ─────────────────────────────────────────────
+// Content
+// ─────────────────────────────────────────────
 
 const ContentEbookReaderContent = ({
   isOffline,
@@ -40,229 +120,197 @@ const ContentEbookReaderContent = ({
 }) => {
   const { colors: c } = useAppTheme();
   const styles = useMemo(() => makeStyles(c), [c]);
-
   const navigation = useNavigation<any>();
+
   const user = getPrimaryUser();
-  const ebook = getEbookById(ebookId) ?? getEbookById(undefined);
+  const ebook = getEbookById(ebookId);
   const chapters = getEbookChaptersForEbook(ebook?.id ?? ebookId);
   const userHighlights = getHighlightsForUser(user?.id);
+  const highlightCount = userHighlights.filter((h: any) => h.source_id === chapterId).length;
 
-  const currentIndex = chapterId ? chapters.findIndex((c: any) => c.id === chapterId) : 0;
-  const safeIndex = currentIndex < 0 ? 0 : currentIndex;
+  const currentIndex = chapterId ? chapters.findIndex((ch: any) => ch.id === chapterId) : 0;
+  const safeIndex = Math.max(0, currentIndex);
   const current = chapters[safeIndex] ?? chapters[0];
   const prev = chapters[safeIndex - 1];
   const next = chapters[safeIndex + 1];
-  // AC-FR-E7-02-04: progress bar
   const progress = chapters.length > 0 ? (safeIndex + 1) / chapters.length : 0;
 
-  // AC-FR-E7-04-01: highlight color picker state
-  const [showHighlightPicker, setShowHighlightPicker] = useState(false);
-  const [selectedColor, setSelectedColor] = useState<string | null>(null);
-  const [addedHighlight, setAddedHighlight] = useState(false);
-  // AC-FR-E7-04-02: note auto-save state
-  const [note, setNote] = useState('');
-  const [noteSaved, setNoteSaved] = useState(false);
+  // Font size
+  const [fontKey, setFontKey] = useState<FontKey>('medium');
+  const cycleFontSize = () =>
+    setFontKey(prev => FONT_ORDER[(FONT_ORDER.indexOf(prev) + 1) % FONT_ORDER.length]);
+  const fontSize = FONT_SIZES[fontKey];
 
-  // AC-FR-E7-06-01/03/04: audio state
+  // Audio
   const hasAudio = ebook?.has_audio ?? false;
   const [isPlaying, setIsPlaying] = useState(false);
-  const [audioSpeed, setAudioSpeed] = useState<AudioSpeed>('1x');
+  const [speedIndex, setSpeedIndex] = useState(1);
 
-  const handleAddHighlight = (colorKey: string) => {
-    setSelectedColor(colorKey);
-    setAddedHighlight(true);
-    setShowHighlightPicker(false);
-  };
+  // Highlight picker
+  const [showHighlightPicker, setShowHighlightPicker] = useState(false);
+  const [highlightColor, setHighlightColor] = useState<string | null>(null);
 
+  // Note
+  const [noteText, setNoteText] = useState('');
+  const [noteSaved, setNoteSaved] = useState(false);
+  const noteRef = useRef<TextInput>(null);
   const handleSaveNote = () => {
-    // AC-FR-E7-04-02 BR-12: auto-save
     setNoteSaved(true);
     setTimeout(() => setNoteSaved(false), 2000);
   };
 
+  // Bookmark
+  const [bookmarked, setBookmarked] = useState(false);
+
+  const pageLabel = chapters.length > 0 ? `${safeIndex + 1} / ${chapters.length}` : 'e-Kitap';
+  const chapterTitle = current
+    ? `Bölüm ${current.order_index ?? safeIndex + 1}: ${current.title}`
+    : `Bölüm ${safeIndex + 1}`;
+
+  const hlBg = highlightColor
+    ? HIGHLIGHT_COLORS.find(h => h.key === highlightColor)?.color
+    : undefined;
+
   return (
-    <>
-      {/* AC-FR-E7-01-02: Book + chapter title + page range */}
-      <SectionCard title={ebook?.title ?? 'e-Kitap'}>
-        <PText style={styles.chapterTitle}>
-          {current
-            ? 'Bolum ' + (current.order_index ?? safeIndex + 1) + ': ' + current.title
-            : 'Bolum ' + (safeIndex + 1)}
-        </PText>
+    <PremiumReaderLayout
+      title={ebook?.title ?? 'e-Kitap'}
+      subtitle={chapterTitle}
+      progress={progress}
+      pageLabel={pageLabel}
+      accentColor="#1D4ED8"
+      canGoPrev={!!prev}
+      canGoNext={!!next}
+      onPrev={() => prev && navigation.navigate('Content', { screen: 'ContentEbookReader', params: { id: ebookId ?? '', chapterId: prev.id } })}
+      onNext={() => next && navigation.navigate('Content', { screen: 'ContentEbookReader', params: { id: ebookId ?? '', chapterId: next.id } })}
+      isBookmarked={bookmarked}
+      onBookmark={() => setBookmarked(v => !v)}
+      onHighlight={() => setShowHighlightPicker(v => !v)}
+      onNote={() => noteRef.current?.focus()}
+      fontSize={fontSize}
+      onFontSizeCycle={cycleFontSize}
+      audioBarSlot={
+        hasAudio ? (
+          <EbookAudioBar
+            isPlaying={isPlaying}
+            speedIndex={speedIndex}
+            onToggle={() => !isOffline && setIsPlaying(p => !p)}
+            onSpeed={setSpeedIndex}
+            disabled={isOffline}
+          />
+        ) : undefined
+      }
+      isOffline={isOffline}
+    >
+      {/* ── Chapter meta ── */}
+      <View style={styles.chapterMeta}>
         {current?.page_start != null && (
-          <PText style={styles.pageRange}>
-            Sayfa {current.page_start}-{current.page_end}
+          <PText style={[styles.pageRange, { color: c.textDisabled }]}>
+            Sayfa {current.page_start}–{current.page_end}
           </PText>
         )}
-        {/* AC-FR-E7-02-04: progress bar */}
-        <PProgressBar
-          progress={progress}
-          style={styles.progressBar}
-          accessibilityLabel={'Okuma ilerlemesi yuzde ' + Math.round(progress * 100)}
-        />
-        <PText style={styles.progressLabel}>
-          {safeIndex + 1} / {chapters.length} bolum ({Math.round(progress * 100)}% tamamlandi)
-        </PText>
-      </SectionCard>
+        {highlightCount > 0 && (
+          <PText style={[styles.highlightCount, { color: c.textTertiary }]}>
+            {highlightCount} vurgu
+          </PText>
+        )}
+      </View>
 
-      {/* Reading content */}
-      <SectionCard title="Icerik">
-        {READING_PARAGRAPHS.map((para, i) => (
-          <View
-            key={i}
-            style={[
-              styles.paraBlock,
-              selectedColor
-                ? { backgroundColor: HIGHLIGHT_COLORS.find(h => h.key === selectedColor)?.color }
-                : undefined
-            ]}
-          >
-            <PText style={styles.paragraph}>{para}</PText>
-          </View>
-        ))}
-        {/* AC-FR-E7-04-01: simulated text selection highlight picker */}
-        {!showHighlightPicker && !addedHighlight && (
-          <PButton mode="text" compact onPress={() => setShowHighlightPicker(true)} style={styles.highlightBtn}>
-            Metin Sec ve Vurgula
-          </PButton>
-        )}
-        {showHighlightPicker && (
-          <View style={styles.colorPickerRow}>
-            <PText style={styles.colorPickerLabel}>Renk sec:</PText>
-            {HIGHLIGHT_COLORS.map(hc => (
-              <TouchableOpacity
-                key={hc.key}
-                onPress={() => handleAddHighlight(hc.key)}
-                style={[styles.colorSwatch, { backgroundColor: hc.color }]}
-                accessibilityLabel={hc.label}
-              />
-            ))}
-          </View>
-        )}
-        {addedHighlight && (
-          <PText style={styles.highlightSaved}>Vurgu eklendi! Vurgularim ekraninda gorulebilir.</PText>
-        )}
-      </SectionCard>
-
-      {/* AC-FR-E7-04-02: note adding with auto-save (BR-12) */}
-      <SectionCard title="Not Ekle">
-        <View style={styles.noteRow}>
-          <TouchableOpacity
-            style={styles.noteArea}
-            onPress={() => setNote(note.length ? note : 'Not yazin...')}
-            accessibilityLabel="Not alani"
-          >
-            <PText style={[styles.notePlaceholder, !!note && styles.noteText]}>
-              {note || 'Okuma notunuzu buraya yazin...'}
-            </PText>
-          </TouchableOpacity>
+      {/* ── Highlight picker ── */}
+      {showHighlightPicker && (
+        <View style={[styles.highlightPicker, { backgroundColor: c.surfaceVariant }]}>
+          <PText style={[styles.pickerLabel, { color: c.textTertiary }]}>Renk seç:</PText>
+          {HIGHLIGHT_COLORS.map(h => (
+            <PButton
+              key={h.key}
+              mode={highlightColor === h.key ? 'contained' : 'outlined'}
+              compact
+              buttonColor={h.color}
+              textColor="#111"
+              style={[styles.swatchBtn, { borderColor: h.color }]}
+              onPress={() => { setHighlightColor(h.key); setShowHighlightPicker(false); }}
+            >
+              {h.label}
+            </PButton>
+          ))}
         </View>
+      )}
+
+      {/* ── Reading paragraphs ── */}
+      {READING_PARAGRAPHS.map((para, i) => (
+        <View
+          key={i}
+          style={[
+            styles.paraWrap,
+            hlBg ? { backgroundColor: hlBg, borderRadius: radii.sm } : undefined
+          ]}
+        >
+          <PText style={[styles.para, { fontSize, lineHeight: fontSize * 1.75, color: c.textPrimary }]}>
+            {para}
+          </PText>
+        </View>
+      ))}
+
+      {/* ── Note ── */}
+      <View style={[styles.noteSection, { borderColor: c.outlineVariant, backgroundColor: c.surfaceVariant }]}>
+        <PText style={[styles.noteLabel, { color: c.textTertiary }]}>Notum</PText>
+        <TextInput
+          ref={noteRef}
+          style={[styles.noteInput, { fontSize, color: c.textPrimary }]}
+          multiline
+          value={noteText}
+          onChangeText={setNoteText}
+          placeholder="Bu bölüm hakkında notunuzu yazın..."
+          placeholderTextColor={c.textDisabled}
+          editable={!isOffline}
+          accessibilityLabel="Not alanı"
+        />
         <View style={styles.noteActions}>
-          {noteSaved && <PText style={styles.noteSavedLabel}>Kaydedildi</PText>}
-          <PButton mode="text" compact onPress={handleSaveNote} disabled={isOffline}>
+          {noteSaved && <PText style={styles.savedText}>Kaydedildi</PText>}
+          <PButton mode="text" compact disabled={isOffline || !noteText} onPress={handleSaveNote}>
             Kaydet
           </PButton>
         </View>
-      </SectionCard>
+      </View>
 
-      {/* AC-FR-E7-06-01/02/03/04: audio player panel — shown only if has_audio */}
-      {hasAudio ? (
-        <SectionCard title="Sesli Kitap">
-          <View style={styles.audioRow}>
-            <PButton
-              mode={isPlaying ? 'contained' : 'outlined'}
-              icon={isPlaying ? 'pause' : 'play'}
-              onPress={() => setIsPlaying(!isPlaying)}
-              disabled={isOffline}
-              style={styles.audioPlayBtn}
-            >
-              {isPlaying ? 'Duraklat' : 'Dinle'}
-            </PButton>
-            <PText style={styles.audioSync}>{isPlaying ? 'Metin takip ediliyor...' : 'Baslatmak icin tiklayin'}</PText>
-          </View>
-          {/* AC-FR-E7-06-03: speed selector */}
-          <View style={styles.speedRow}>
-            <PText style={styles.speedLabel}>Hiz:</PText>
-            {AUDIO_SPEEDS.map(spd => (
-              <PChip
-                key={spd}
-                compact
-                selected={audioSpeed === spd}
-                onPress={() => setAudioSpeed(spd)}
-                style={styles.speedChip}
-              >
-                {spd}
-              </PChip>
-            ))}
-          </View>
-          {/* AC-FR-E7-06-04: background play hint */}
-          {isPlaying && <PText style={styles.bgPlayHint}>Uygulamadan ciksan da ses arka planda devam eder.</PText>}
-        </SectionCard>
-      ) : (
-        <SectionCard title="Sesli Kitap">
-          <PText style={styles.audioUnavailable}>Bu kitabin sesli versiyonu mevcut degil.</PText>
-        </SectionCard>
-      )}
-
-      {/* Chapter navigation + quick tools */}
-      <SectionCard title="Navigasyon">
-        <View style={styles.navRow}>
-          <PButton
-            mode="outlined"
-            icon="chevron-left"
-            compact
-            style={styles.navBtn}
-            disabled={!prev || isOffline}
-            onPress={() => prev && navigation.navigate('ContentEbookReader', { id: ebookId ?? '', chapterId: prev.id })}
-          >
-            Onceki
-          </PButton>
-          <PButton
-            mode="contained"
-            icon="chevron-right"
-            compact
-            style={styles.navBtn}
-            disabled={!next || isOffline}
-            onPress={() => next && navigation.navigate('ContentEbookReader', { id: ebookId ?? '', chapterId: next.id })}
-          >
-            Sonraki
-          </PButton>
-        </View>
-        <View style={styles.toolbarRow}>
-          <PButton
-            mode="text"
-            compact
-            icon="format-list-bulleted"
-            onPress={() => navigation.navigate('ContentEbookToc', { id: ebookId ?? '' })}
-          >
-            Icindekiler
-          </PButton>
-          <PButton
-            mode="text"
-            compact
-            icon="marker"
-            onPress={() => navigation.navigate('ContentEbookHighlights', { id: ebookId ?? '' })}
-          >
-            Vurgularim
-          </PButton>
-          <PButton
-            mode="text"
-            compact
-            icon="cog"
-            onPress={() => navigation.navigate('ContentEbookSettings', { id: ebookId ?? '' })}
-          >
-            Ayarlar
-          </PButton>
-        </View>
-      </SectionCard>
-    </>
+      {/* ── Quick links ── */}
+      <View style={[styles.quickLinks, { borderTopColor: c.outlineVariant }]}>
+        <PButton
+          mode="text"
+          compact
+          icon="format-list-bulleted"
+          onPress={() => navigation.navigate('Content', { screen: 'ContentEbookToc', params: { id: ebookId ?? '' } })}
+        >
+          İçindekiler
+        </PButton>
+        <PButton
+          mode="text"
+          compact
+          icon="marker"
+          onPress={() => navigation.navigate('Content', { screen: 'ContentEbookHighlights', params: { id: ebookId ?? '' } })}
+        >
+          Vurgularım
+        </PButton>
+        <PButton
+          mode="text"
+          compact
+          icon="cog-outline"
+          onPress={() => navigation.navigate('Content', { screen: 'ContentEbookSettings', params: { id: ebookId ?? '' } })}
+        >
+          Ayarlar
+        </PButton>
+      </View>
+    </PremiumReaderLayout>
   );
 };
+
+// ─────────────────────────────────────────────
+// Screen
+// ─────────────────────────────────────────────
 
 export const ContentEbookReaderScreen = ({
   route
 }: {
-  route?: { params?: { state?: ScreenState; id?: string; chapterId?: string } };
+  route?: { params?: RouteParams };
 }) => {
   const state = resolveScreenState(route);
   const ebookId = route?.params?.id;
@@ -270,25 +318,20 @@ export const ContentEbookReaderScreen = ({
 
   if (state === 'loading') {
     return (
-      <ScreenLayout title="e-Kitap Okuyucu" subtitle="Hazirlaniyor">
-        <SectionCard title="Yukleniyor">
-          <PActivityIndicator animating />
-          <SkeletonBlock height={40} />
-        </SectionCard>
-        <SectionCard title="Icerik">
-          <SkeletonBlock height={120} />
-          <SkeletonBlock height={80} />
-        </SectionCard>
+      <ScreenLayout title="e-Kitap" headerVariant="none">
+        <SkeletonBlock height={20} />
+        <SkeletonBlock height={120} />
+        <SkeletonBlock height={80} />
       </ScreenLayout>
     );
   }
   if (state === 'empty') {
     return (
-      <ScreenLayout title="e-Kitap Okuyucu" subtitle="Icerik bulunamadi">
+      <ScreenLayout title="e-Kitap" headerVariant="none">
         <StateMessage
-          title="Bolum bulunamadi"
-          description="Bu bolum su anda erisebilir degil."
-          actionLabel="Icindekiler"
+          title="Bölüm bulunamadı"
+          description="Bu bölüm şu anda erişilebilir değil."
+          actionLabel="İçindekiler"
           icon="book-open-variant"
         />
       </ScreenLayout>
@@ -296,10 +339,10 @@ export const ContentEbookReaderScreen = ({
   }
   if (state === 'error') {
     return (
-      <ScreenLayout title="e-Kitap Okuyucu" subtitle="Bir sorun olustu">
+      <ScreenLayout title="e-Kitap" headerVariant="none">
         <StateMessage
-          title="Okuyucu yuklenemedi"
-          description="Baglantiyi kontrol edip tekrar dene."
+          title="Okuyucu yüklenemedi"
+          description="Bağlantını kontrol edip tekrar dene."
           actionLabel="Tekrar Dene"
           icon="alert-circle-outline"
           tone="error"
@@ -307,63 +350,76 @@ export const ContentEbookReaderScreen = ({
       </ScreenLayout>
     );
   }
-  if (state === 'offline') {
-    return (
-      <ScreenLayout title="e-Kitap Okuyucu" subtitle="Onbellekteki icerik">
-        <OfflineNotice />
-        <ContentEbookReaderContent isOffline ebookId={ebookId} chapterId={chapterId} />
-      </ScreenLayout>
-    );
-  }
+
   return (
-    <ScreenLayout title="e-Kitap Okuyucu" subtitle="Okumaya devam et">
-      <ContentEbookReaderContent ebookId={ebookId} chapterId={chapterId} />
-    </ScreenLayout>
+    <ContentEbookReaderContent
+      ebookId={ebookId}
+      chapterId={chapterId}
+      isOffline={state === 'offline'}
+    />
   );
 };
 
-function makeStyles(c: ColorTokens) {
+// ─────────────────────────────────────────────
+// Styles
+// ─────────────────────────────────────────────
+
+function makeStyles(_c: ColorTokens) {
   return StyleSheet.create({
-    chapterTitle: { fontSize: fontSizes['2xl'], fontWeight: fontWeights.bold, color: '#1F2937', marginBottom: 4 },
-    pageRange: { fontSize: fontSizes.base, color: '#9CA3AF', marginBottom: spacing[1] },
-    progressBar: { marginBottom: 4 },
-    progressLabel: { fontSize: fontSizes.sm, color: c.textTertiary, textAlign: 'right' },
-    paraBlock: { padding: 4, marginBottom: 2 },
-    paragraph: { fontSize: fontSizes.xl, color: '#1F2937', lineHeight: 26, marginBottom: 14 },
-    highlightBtn: { alignSelf: 'flex-start', marginTop: 4 },
-    colorPickerRow: {
+    chapterMeta: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      marginBottom: spacing[2]
+    },
+    pageRange: { fontSize: fontSizes.sm },
+    highlightCount: { fontSize: fontSizes.sm },
+    highlightPicker: {
       flexDirection: 'row',
       alignItems: 'center',
-      gap: 10,
-      marginTop: spacing[1],
-      marginBottom: spacing[1]
-    },
-    colorPickerLabel: { fontSize: fontSizes.md, color: c.textSecondary },
-    colorSwatch: { width: 28, height: 28, borderRadius: radii.xl, borderWidth: 1, borderColor: '#E5E7EB' },
-    highlightSaved: { fontSize: fontSizes.base, color: '#15803D', marginTop: 4 },
-    noteRow: { marginBottom: spacing[1] },
-    noteArea: {
-      borderWidth: 1,
-      borderColor: '#E5E7EB',
-      borderRadius: radii.md,
+      gap: 8,
+      flexWrap: 'wrap',
+      marginBottom: spacing[2],
       padding: spacing[1.5],
-      minHeight: 60,
-      backgroundColor: c.background
+      borderRadius: radii.lg
     },
-    notePlaceholder: { fontSize: fontSizes.lg, color: '#9CA3AF' },
-    noteText: { color: '#1F2937' },
-    noteActions: { flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center' },
-    noteSavedLabel: { fontSize: fontSizes.base, color: '#15803D', marginRight: 8 },
-    audioRow: { flexDirection: 'row', alignItems: 'center', gap: spacing[1.5], marginBottom: spacing[1.5] },
-    audioPlayBtn: { flex: 0 },
-    audioSync: { flex: 1, fontSize: fontSizes.md, color: c.textSecondary, fontStyle: 'italic' },
-    speedRow: { flexDirection: 'row', alignItems: 'center', gap: spacing[1], marginBottom: spacing[1] },
-    speedLabel: { fontSize: fontSizes.md, color: c.textSecondary },
-    speedChip: {},
-    bgPlayHint: { fontSize: fontSizes.base, color: '#6B46C1', fontStyle: 'italic' },
-    audioUnavailable: { fontSize: fontSizes.md, color: '#9CA3AF' },
-    navRow: { flexDirection: 'row', gap: 10, marginBottom: 10 },
-    navBtn: { flex: 1 },
-    toolbarRow: { flexDirection: 'row', justifyContent: 'space-between' }
+    pickerLabel: { fontSize: fontSizes.sm, fontWeight: fontWeights.semiBold },
+    swatchBtn: { borderWidth: 2 },
+    paraWrap: { marginBottom: spacing[1] },
+    para: {
+      marginBottom: spacing[1.5],
+      textAlign: 'justify'
+    },
+    noteSection: {
+      borderWidth: 1,
+      borderRadius: radii.xl,
+      padding: spacing[1.5],
+      marginTop: spacing[2.5]
+    },
+    noteLabel: {
+      fontSize: fontSizes.xs,
+      fontWeight: fontWeights.bold,
+      textTransform: 'uppercase',
+      letterSpacing: 0.5,
+      marginBottom: 6
+    },
+    noteInput: {
+      minHeight: 72,
+      textAlignVertical: 'top',
+      lineHeight: 22
+    },
+    noteActions: {
+      flexDirection: 'row',
+      justifyContent: 'flex-end',
+      alignItems: 'center',
+      marginTop: 4
+    },
+    savedText: { fontSize: fontSizes.sm, color: '#15803D', marginRight: 8 },
+    quickLinks: {
+      flexDirection: 'row',
+      justifyContent: 'space-around',
+      borderTopWidth: StyleSheet.hairlineWidth,
+      marginTop: spacing[2.5],
+      paddingTop: spacing[1]
+    }
   });
 }
