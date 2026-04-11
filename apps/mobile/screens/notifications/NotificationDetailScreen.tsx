@@ -62,9 +62,7 @@ const NotificationDetailContent = ({
   const handleCTA = () => {
     if (isOffline) return;
     // AC-FR-E17-02-03: Deep link to target content
-    if (notification.content_type === 'journey_day') {
-      navigation.navigate('Content');
-    } else if (notification.content_type === 'journey') {
+    if (notification.content_type === 'journey') {
       navigation.navigate('Content');
     } else {
       navigation.navigate('MainTabs');

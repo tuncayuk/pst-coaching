@@ -228,7 +228,11 @@
       "created_by": null,
       "updated_by": null,
       "created_at": "2025-12-15T10:00:00Z",
-      "updated_at": "2025-12-15T10:00:00Z"
+      "updated_at": "2025-12-15T10:00:00Z",
+      "amount": "149.99",
+      "currency": "TRY",
+      "status": "verified",
+      "purchased_at": "2025-12-15T10:00:00Z"
     }
   ],
   "journeys": [
@@ -239,7 +243,8 @@
       "created_by": null,
       "updated_by": null,
       "created_at": "2025-12-01T10:00:00Z",
-      "updated_at": "2025-12-01T10:00:00Z"
+      "updated_at": "2025-12-01T10:00:00Z",
+      "title": "Farkindalik Yolculugu"
     },
     {
       "content_item_id": "abababab-0000-0000-0000-000000000001",
@@ -248,7 +253,8 @@
       "created_by": null,
       "updated_by": null,
       "created_at": "2025-12-01T10:00:00Z",
-      "updated_at": "2025-12-01T10:00:00Z"
+      "updated_at": "2025-12-01T10:00:00Z",
+      "title": "Huzur ve Oz-Kabul"
     },
     {
       "content_item_id": "abababab-0000-0000-0000-000000000002",
@@ -257,7 +263,8 @@
       "created_by": null,
       "updated_by": null,
       "created_at": "2025-12-01T10:00:00Z",
-      "updated_at": "2025-12-01T10:00:00Z"
+      "updated_at": "2025-12-01T10:00:00Z",
+      "title": "Derin Donusum"
     },
     {
       "content_item_id": "abababab-0000-0000-0000-000000000003",
@@ -266,7 +273,8 @@
       "created_by": null,
       "updated_by": null,
       "created_at": "2025-12-01T10:00:00Z",
-      "updated_at": "2025-12-01T10:00:00Z"
+      "updated_at": "2025-12-01T10:00:00Z",
+      "title": "Oz-Kesfetme"
     },
     {
       "content_item_id": "abababab-0000-0000-0000-000000000004",
@@ -275,7 +283,8 @@
       "created_by": null,
       "updated_by": null,
       "created_at": "2025-12-01T10:00:00Z",
-      "updated_at": "2025-12-01T10:00:00Z"
+      "updated_at": "2025-12-01T10:00:00Z",
+      "title": "Baslangiç Yolculugu"
     }
   ],
   "modules": [
@@ -285,7 +294,8 @@
       "created_by": null,
       "updated_by": null,
       "created_at": "2025-12-01T10:00:00Z",
-      "updated_at": "2025-12-01T10:00:00Z"
+      "updated_at": "2025-12-01T10:00:00Z",
+      "title": "Oz-Farkindalik"
     },
     {
       "content_item_id": "cccccccc-0000-0000-0000-000000000001",
@@ -293,7 +303,8 @@
       "created_by": null,
       "updated_by": null,
       "created_at": "2025-12-01T10:00:00Z",
-      "updated_at": "2025-12-01T10:00:00Z"
+      "updated_at": "2025-12-01T10:00:00Z",
+      "title": "Duygusal Farkindalik"
     },
     {
       "content_item_id": "cccccccc-0000-0000-0000-000000000002",
@@ -301,7 +312,8 @@
       "created_by": null,
       "updated_by": null,
       "created_at": "2025-12-01T10:00:00Z",
-      "updated_at": "2025-12-01T10:00:00Z"
+      "updated_at": "2025-12-01T10:00:00Z",
+      "title": "Sukur Pratikleri"
     },
     {
       "content_item_id": "cccccccc-0000-0000-0000-000000000003",
@@ -309,7 +321,8 @@
       "created_by": null,
       "updated_by": null,
       "created_at": "2025-12-01T10:00:00Z",
-      "updated_at": "2025-12-01T10:00:00Z"
+      "updated_at": "2025-12-01T10:00:00Z",
+      "title": "Empati Temelli Iletisim"
     },
     {
       "content_item_id": "cccccccc-0000-0000-0000-000000000004",
@@ -317,7 +330,8 @@
       "created_by": null,
       "updated_by": null,
       "created_at": "2025-12-01T10:00:00Z",
-      "updated_at": "2025-12-01T10:00:00Z"
+      "updated_at": "2025-12-01T10:00:00Z",
+      "title": "Odaklanma ve Planlama"
     },
     {
       "content_item_id": "cccccccc-0000-0000-0000-000000000005",
@@ -325,7 +339,8 @@
       "created_by": null,
       "updated_by": null,
       "created_at": "2025-12-01T10:00:00Z",
-      "updated_at": "2025-12-01T10:00:00Z"
+      "updated_at": "2025-12-01T10:00:00Z",
+      "title": "Sinir Belirleme"
     },
     {
       "content_item_id": "cccccccc-0000-0000-0000-000000000006",
@@ -333,7 +348,8 @@
       "created_by": null,
       "updated_by": null,
       "created_at": "2025-12-01T10:00:00Z",
-      "updated_at": "2025-12-01T10:00:00Z"
+      "updated_at": "2025-12-01T10:00:00Z",
+      "title": "Nefes ve Mindfulness"
     },
     {
       "content_item_id": "cccccccc-0000-0000-0000-000000000007",
@@ -341,7 +357,8 @@
       "created_by": null,
       "updated_by": null,
       "created_at": "2025-12-01T10:00:00Z",
-      "updated_at": "2025-12-01T10:00:00Z"
+      "updated_at": "2025-12-01T10:00:00Z",
+      "title": "Hedef Netlestirme"
     },
     {
       "content_item_id": "cccccccc-0000-0000-0000-000000000008",
@@ -349,7 +366,8 @@
       "created_by": null,
       "updated_by": null,
       "created_at": "2025-12-01T10:00:00Z",
-      "updated_at": "2025-12-01T10:00:00Z"
+      "updated_at": "2025-12-01T10:00:00Z",
+      "title": "Zorluklara Karsi Direnc"
     },
     {
       "content_item_id": "cccccccc-0000-0000-0000-000000000009",
@@ -357,7 +375,8 @@
       "created_by": null,
       "updated_by": null,
       "created_at": "2025-12-01T10:00:00Z",
-      "updated_at": "2025-12-01T10:00:00Z"
+      "updated_at": "2025-12-01T10:00:00Z",
+      "title": "Stres Azaltma"
     },
     {
       "content_item_id": "cccccccc-0000-0000-0000-000000000010",
@@ -365,7 +384,8 @@
       "created_by": null,
       "updated_by": null,
       "created_at": "2025-12-01T10:00:00Z",
-      "updated_at": "2025-12-01T10:00:00Z"
+      "updated_at": "2025-12-01T10:00:00Z",
+      "title": "Oz-Sefkat ve Kabul"
     }
   ],
   "packages": [
@@ -670,7 +690,8 @@
       "created_by": null,
       "updated_by": null,
       "created_at": "2026-01-01T00:00:00Z",
-      "updated_at": "2026-01-01T00:00:00Z"
+      "updated_at": "2026-01-01T00:00:00Z",
+      "title": "Mutlak Muhtaçlık ve Dua Bilinci"
     },
     {
       "content_item_id": "eeeeeeee-0000-0000-0000-000000000001",
@@ -683,7 +704,8 @@
       "created_by": null,
       "updated_by": null,
       "created_at": "2026-01-01T00:00:00Z",
-      "updated_at": "2026-01-01T00:00:00Z"
+      "updated_at": "2026-01-01T00:00:00Z",
+      "title": "Şükrün Gücü: Minnetin Sırrı"
     },
     {
       "content_item_id": "eeeeeeee-0000-0000-0000-000000000002",
@@ -696,7 +718,8 @@
       "created_by": null,
       "updated_by": null,
       "created_at": "2026-01-01T00:00:00Z",
-      "updated_at": "2026-01-01T00:00:00Z"
+      "updated_at": "2026-01-01T00:00:00Z",
+      "title": "Empati ve Derin İletişim"
     },
     {
       "content_item_id": "eeeeeeee-0000-0000-0000-000000000003",
@@ -709,7 +732,8 @@
       "created_by": null,
       "updated_by": null,
       "created_at": "2026-01-01T00:00:00Z",
-      "updated_at": "2026-01-01T00:00:00Z"
+      "updated_at": "2026-01-01T00:00:00Z",
+      "title": "Sabır ve Teslimiyet: Beş Vaktin Bilgeliği"
     },
     {
       "content_item_id": "eeeeeeee-0000-0000-0000-000000000004",
@@ -722,7 +746,8 @@
       "created_by": null,
       "updated_by": null,
       "created_at": "2026-01-01T00:00:00Z",
-      "updated_at": "2026-01-01T00:00:00Z"
+      "updated_at": "2026-01-01T00:00:00Z",
+      "title": "Tövbe ve Dönüşüm: Yeniden Başlamak"
     },
     {
       "content_item_id": "eeeeeeee-0000-0000-0000-000000000005",
@@ -735,7 +760,8 @@
       "created_by": null,
       "updated_by": null,
       "created_at": "2026-01-01T00:00:00Z",
-      "updated_at": "2026-01-01T00:00:00Z"
+      "updated_at": "2026-01-01T00:00:00Z",
+      "title": "Öz-Şefkat: Kendine İyi Davranmak"
     },
     {
       "content_item_id": "eeeeeeee-0000-0000-0000-000000000006",
@@ -748,7 +774,8 @@
       "created_by": null,
       "updated_by": null,
       "created_at": "2026-01-01T00:00:00Z",
-      "updated_at": "2026-01-01T00:00:00Z"
+      "updated_at": "2026-01-01T00:00:00Z",
+      "title": "Öfke ve Dönüşümü: Ateşi Söndürmek"
     },
     {
       "content_item_id": "eeeeeeee-0000-0000-0000-000000000007",
@@ -761,7 +788,8 @@
       "created_by": null,
       "updated_by": null,
       "created_at": "2026-01-01T00:00:00Z",
-      "updated_at": "2026-01-01T00:00:00Z"
+      "updated_at": "2026-01-01T00:00:00Z",
+      "title": "Sınır Koyma ve Hayır Diyebilmek"
     },
     {
       "content_item_id": "eeeeeeee-0000-0000-0000-000000000008",
@@ -774,7 +802,8 @@
       "created_by": null,
       "updated_by": null,
       "created_at": "2026-01-01T00:00:00Z",
-      "updated_at": "2026-01-01T00:00:00Z"
+      "updated_at": "2026-01-01T00:00:00Z",
+      "title": "Korku ve Cesaret: Güven'e Yürümek"
     },
     {
       "content_item_id": "eeeeeeee-0000-0000-0000-000000000009",
@@ -787,7 +816,8 @@
       "created_by": null,
       "updated_by": null,
       "created_at": "2026-01-01T00:00:00Z",
-      "updated_at": "2026-01-01T00:00:00Z"
+      "updated_at": "2026-01-01T00:00:00Z",
+      "title": "Kimlik ve Varoluş: Ben Kimim?"
     },
     {
       "content_item_id": "eeeeeeee-0000-0000-0000-000000000010",
@@ -800,7 +830,8 @@
       "created_by": null,
       "updated_by": null,
       "created_at": "2026-01-01T00:00:00Z",
-      "updated_at": "2026-01-01T00:00:00Z"
+      "updated_at": "2026-01-01T00:00:00Z",
+      "title": "Aile ve Bağ: İlişkilerde Şifa"
     },
     {
       "content_item_id": "eeeeeeee-0000-0000-0000-000000000011",
@@ -813,7 +844,8 @@
       "created_by": null,
       "updated_by": null,
       "created_at": "2026-01-01T00:00:00Z",
-      "updated_at": "2026-01-01T00:00:00Z"
+      "updated_at": "2026-01-01T00:00:00Z",
+      "title": "Keder ve Kayıp: Yas Bilinci"
     },
     {
       "content_item_id": "eeeeeeee-0000-0000-0000-000000000012",
@@ -826,7 +858,8 @@
       "created_by": null,
       "updated_by": null,
       "created_at": "2026-01-01T00:00:00Z",
-      "updated_at": "2026-01-01T00:00:00Z"
+      "updated_at": "2026-01-01T00:00:00Z",
+      "title": "Motivasyon ve Hedef İnşası"
     },
     {
       "content_item_id": "eeeeeeee-0000-0000-0000-000000000013",
@@ -839,7 +872,8 @@
       "created_by": null,
       "updated_by": null,
       "created_at": "2026-01-01T00:00:00Z",
-      "updated_at": "2026-01-01T00:00:00Z"
+      "updated_at": "2026-01-01T00:00:00Z",
+      "title": "Zaman ve Dikkat Yönetimi"
     },
     {
       "content_item_id": "eeeeeeee-0000-0000-0000-000000000014",
@@ -852,7 +886,8 @@
       "created_by": null,
       "updated_by": null,
       "created_at": "2026-01-01T00:00:00Z",
-      "updated_at": "2026-01-01T00:00:00Z"
+      "updated_at": "2026-01-01T00:00:00Z",
+      "title": "Güven ve Mahremiyet: Açılabilmek"
     },
     {
       "content_item_id": "eeeeeeee-0000-0000-0000-000000000015",
@@ -865,7 +900,8 @@
       "created_by": null,
       "updated_by": null,
       "created_at": "2026-01-01T00:00:00Z",
-      "updated_at": "2026-01-01T00:00:00Z"
+      "updated_at": "2026-01-01T00:00:00Z",
+      "title": "Evlilik ve Derinleşme: Birlikte Büyümek"
     },
     {
       "content_item_id": "eeeeeeee-0000-0000-0000-000000000016",
@@ -878,7 +914,8 @@
       "created_by": null,
       "updated_by": null,
       "created_at": "2026-01-01T00:00:00Z",
-      "updated_at": "2026-01-01T00:00:00Z"
+      "updated_at": "2026-01-01T00:00:00Z",
+      "title": "Ergenlik ve Özgürlük: Kendin Olmak"
     },
     {
       "content_item_id": "eeeeeeee-0000-0000-0000-000000000017",
@@ -891,7 +928,8 @@
       "created_by": null,
       "updated_by": null,
       "created_at": "2026-01-01T00:00:00Z",
-      "updated_at": "2026-01-01T00:00:00Z"
+      "updated_at": "2026-01-01T00:00:00Z",
+      "title": "Liderlik ve Sorumluluk: Öncü Olmak"
     },
     {
       "content_item_id": "eeeeeeee-0000-0000-0000-000000000018",
@@ -904,7 +942,8 @@
       "created_by": null,
       "updated_by": null,
       "created_at": "2026-01-01T00:00:00Z",
-      "updated_at": "2026-01-01T00:00:00Z"
+      "updated_at": "2026-01-01T00:00:00Z",
+      "title": "Yaratıcılık ve Anlam: Eser Vermek"
     },
     {
       "content_item_id": "eeeeeeee-0000-0000-0000-000000000019",
@@ -917,7 +956,8 @@
       "created_by": null,
       "updated_by": null,
       "created_at": "2026-01-01T00:00:00Z",
-      "updated_at": "2026-01-01T00:00:00Z"
+      "updated_at": "2026-01-01T00:00:00Z",
+      "title": "Dua ve Yakîn: Kalp ile Konuşmak"
     },
     {
       "content_item_id": "eeeeeeee-0000-0000-0000-000000000020",
@@ -930,7 +970,8 @@
       "created_by": null,
       "updated_by": null,
       "created_at": "2026-01-01T00:00:00Z",
-      "updated_at": "2026-01-01T00:00:00Z"
+      "updated_at": "2026-01-01T00:00:00Z",
+      "title": "Özgüven: İç Ses ile Barışmak"
     },
     {
       "content_item_id": "eeeeeeee-0000-0000-0000-000000000021",
@@ -943,7 +984,8 @@
       "created_by": null,
       "updated_by": null,
       "created_at": "2026-01-01T00:00:00Z",
-      "updated_at": "2026-01-01T00:00:00Z"
+      "updated_at": "2026-01-01T00:00:00Z",
+      "title": "Şifa ve Yeniden Başlamak"
     },
     {
       "content_item_id": "eeeeeeee-0000-0000-0000-000000000022",
@@ -956,7 +998,8 @@
       "created_by": null,
       "updated_by": null,
       "created_at": "2026-01-01T00:00:00Z",
-      "updated_at": "2026-01-01T00:00:00Z"
+      "updated_at": "2026-01-01T00:00:00Z",
+      "title": "Bağımlılık ve Özgürlük: Zincirleri Kırmak"
     },
     {
       "content_item_id": "eeeeeeee-0000-0000-0000-000000000023",
@@ -969,7 +1012,8 @@
       "created_by": null,
       "updated_by": null,
       "created_at": "2026-01-01T00:00:00Z",
-      "updated_at": "2026-01-01T00:00:00Z"
+      "updated_at": "2026-01-01T00:00:00Z",
+      "title": "Odak ve Derin Çalışma"
     },
     {
       "content_item_id": "eeeeeeee-0000-0000-0000-000000000024",
@@ -982,7 +1026,8 @@
       "created_by": null,
       "updated_by": null,
       "created_at": "2026-01-01T00:00:00Z",
-      "updated_at": "2026-01-01T00:00:00Z"
+      "updated_at": "2026-01-01T00:00:00Z",
+      "title": "Nefis Terbiyesi: İçsel Disiplin"
     }
   ],
   "ebooks": [
@@ -996,7 +1041,8 @@
       "created_by": null,
       "updated_by": null,
       "created_at": "2025-12-01T10:00:00Z",
-      "updated_at": "2025-12-01T10:00:00Z"
+      "updated_at": "2025-12-01T10:00:00Z",
+      "title": "Sukur: Kalbin Anahtari"
     },
     {
       "content_item_id": "eeeeeeee-5555-6666-7777-888888888888",
@@ -1008,7 +1054,8 @@
       "created_by": null,
       "updated_by": null,
       "created_at": "2025-12-01T10:00:00Z",
-      "updated_at": "2025-12-01T10:00:00Z"
+      "updated_at": "2025-12-01T10:00:00Z",
+      "title": "Kendini Kesfet"
     },
     {
       "content_item_id": "eeeeeeee-9999-aaaa-bbbb-cccccccccccc",
@@ -1020,7 +1067,8 @@
       "created_by": null,
       "updated_by": null,
       "created_at": "2025-12-01T10:00:00Z",
-      "updated_at": "2025-12-01T10:00:00Z"
+      "updated_at": "2025-12-01T10:00:00Z",
+      "title": "Derinlemesine Buyume"
     },
     {
       "content_item_id": "eeeeeeee-dddd-eeee-ffff-000000000000",
@@ -1032,7 +1080,8 @@
       "created_by": null,
       "updated_by": null,
       "created_at": "2025-12-01T10:00:00Z",
-      "updated_at": "2025-12-01T10:00:00Z"
+      "updated_at": "2025-12-01T10:00:00Z",
+      "title": "Anin Farkindaligi"
     },
     {
       "content_item_id": "ffffffff-ffff-ffff-ffff-ffffffffffff",
@@ -1044,7 +1093,8 @@
       "created_by": null,
       "updated_by": null,
       "created_at": "2025-12-01T10:00:00Z",
-      "updated_at": "2025-12-01T10:00:00Z"
+      "updated_at": "2025-12-01T10:00:00Z",
+      "title": "Icsel Huzur Rehberi"
     }
   ],
   "ebook_chapters": [

@@ -308,7 +308,7 @@ const ContentPackageDetailContent = ({ packageId, isOffline }: { packageId?: str
   if (!pkg) return null;
 
   // Find the module this package belongs to and sibling packages
-  const modulePackages = getPackagesForModule(pkg.module_id).sort(
+  const modulePackages = getPackagesForModule(pkg.module_content_item_id).sort(
     (a, b) => (a.order_index ?? 0) - (b.order_index ?? 0)
   );
   const myIndex = modulePackages.findIndex(p => p.id === pkg.id);

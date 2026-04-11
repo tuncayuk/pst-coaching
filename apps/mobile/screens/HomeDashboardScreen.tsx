@@ -23,7 +23,6 @@ import {
   getContentProgressForUser,
   getEbooks,
   getJourneyById,
-  getJourneyDays,
   getJourneys,
   getModules,
   getNotificationsForUser,
@@ -94,12 +93,14 @@ const HomeReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
     getEbooks().length,
     getModules().length
   ];
-  const journeyDays = getJourneyDays();
   const progressItems = getContentProgressForUser(user?.id);
   const unreadCount = getNotificationsForUser(user?.id).filter(n => !n.is_read).length;
   const nextStep = progressItems.find(item => item.status === 'in_progress') ?? progressItems[0];
-  const nextJourneyDay = journeyDays.find(day => day.id === nextStep?.content_id);
-  const nextJourney = getJourneyById(nextJourneyDay?.journey_id);
+  // Derive next journey directly from content_progress (journey_days removed from schema)
+  const nextJourney =
+    nextStep?.content_type === 'journey'
+      ? getJourneyById(nextStep.content_item_id)
+      : getJourneyById(progressItems.find(p => p.content_type === 'journey')?.content_item_id);
 
   // AC-FR-E2-01-01: countdown timer to 23:59
   const [countdown, setCountdown] = useState(secondsUntilMidnight);
@@ -131,16 +132,16 @@ const HomeReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
       return;
     }
     trackCtaTap('home.dashboard', 'continue_cta_tapped', { hasProgress: true });
-    if (nextStep.content_type === 'journey_day') {
+    if (nextStep.content_type === 'journey') {
       navigation.navigate('Content', {
-        screen: 'ContentJourneyDay',
-        params: { id: nextJourney?.id, day: String(nextJourneyDay?.day_number ?? 1) }
+        screen: 'ContentJourneyHome',
+        params: { id: nextJourney?.id ?? nextStep.content_item_id }
       });
       return;
     }
     navigation.navigate('Content', {
       screen: 'ContentWorkshopHome',
-      params: { id: nextStep.content_id }
+      params: { id: nextStep.content_item_id }
     });
   };
 

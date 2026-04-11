@@ -4,11 +4,9 @@ import { StyleSheet, View } from 'react-native';
 
 import { PActivityIndicator, PAvatar, PButton, PCard, PDivider, PText } from '../../components';
 import {
-  getAchievements,
   getContentItemsForParent,
   getModules,
-  getPackagesForModule,
-  getPrimaryUser
+  getPackagesForModule
 } from '../../data/mockSelectors';
 import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
@@ -24,15 +22,12 @@ const ContentAchievementContent = ({ achievementId, isOffline }: { achievementId
   const styles = useMemo(() => makeStyles(c), [c]);
 
   const navigation = useNavigation<any>();
-  const user = getPrimaryUser();
 
-  // Find achievement by id or fall back to user's first achievement
-  const achievement =
-    getAchievements().find((a: any) => a.id === achievementId) ??
-    getAchievements().find((a: any) => a.user_id === user?.id);
-
-  // Resolve completed module info
-  const completedModule = getModules().find(m => m.id === achievement?.source_id) ?? getModules()[0];
+  // Resolve completed module: user_badges no longer store a module ref directly;
+  // use achievementId hint if available, otherwise fall back to the first module.
+  const allModulesList = getModules();
+  const completedModule =
+    allModulesList.find(m => m.id === achievementId) ?? allModulesList[0];
 
   // Derive stats from real data
   const modulePackages = completedModule ? getPackagesForModule(completedModule.id) : [];

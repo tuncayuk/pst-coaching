@@ -7,101 +7,328 @@ const getData = (): MockData | null => getMockData();
 
 const getList = <T>(list?: T[]): T[] => list ?? [];
 
+// ---------------------------------------------------------------------------
+// Raw entity accessors (internal)
+// ---------------------------------------------------------------------------
+
+const getRawJourneys = () => getList(getData()?.journeys);
+const getRawModules = () => getList(getData()?.modules);
+const getRawWorkshops = () => getList(getData()?.workshops);
+const getRawEbooks = () => getList(getData()?.ebooks);
+
+// ---------------------------------------------------------------------------
+// Entity normalization helpers
+// Adds `id` alias for `content_item_id` and `title` from domain fields so
+// screens written for the old flat schema still work.
+// ---------------------------------------------------------------------------
+
+type Normalized<T extends object> = T & { id: string; title: string };
+
+const normalizeJourney = (j: any): Normalized<typeof j> => ({
+  ...j,
+  id: j.content_item_id,
+  title: j.title ?? `Yolculuk (${j.duration_days} gun, ${j.level})`,
+});
+
+const normalizeModule = (m: any): Normalized<typeof m> => ({
+  ...m,
+  id: m.content_item_id,
+  title: m.title ?? m.description ?? 'Modul',
+});
+
+const normalizeWorkshop = (w: any): Normalized<typeof w> => ({
+  ...w,
+  id: w.content_item_id,
+  title: w.title ?? w.theme ?? 'Atolye',
+});
+
+const normalizeEbook = (e: any): Normalized<typeof e> => ({
+  ...e,
+  id: e.content_item_id,
+  title: e.title ?? e.category ?? 'e-Kitap',
+});
+
+// ---------------------------------------------------------------------------
+// User / session
+// ---------------------------------------------------------------------------
+
 export const getUsers = () => getList(getData()?.users);
 export const getPrimaryUser = () => getUsers()[0];
+export const getUserSessions = () => getList(getData()?.user_sessions as any[]);
+export const getSessionsForUser = (userId?: string) =>
+  getUserSessions().filter((s: any) => s.user_id === userId);
 
-export const getSubscriptions = () => getList(getData()?.subscriptions);
-export const getSubscriptionPlans = () => getList(getData()?.subscription_plans);
-export const getAddOns = () => getList(getData()?.add_ons);
-export const getSubscriptionAddOns = () => getList(getData()?.subscription_add_ons);
-export const getSeats = () => getList(getData()?.seats);
-export const getInvitations = () => getList(getData()?.invitations);
-export const getPaymentTransactions = () => getList(getData()?.payment_transactions);
+// ---------------------------------------------------------------------------
+// Settings
+// ---------------------------------------------------------------------------
 
-export const getJourneys = () => getList(getData()?.journeys);
-export const getJourneyDays = () => getList(getData()?.journey_days);
-export const getModules = () => getList(getData()?.modules);
-export const getPackages = () => getList(getData()?.packages);
-export const getWorkshops = () => getList(getData()?.workshops);
-export const getEbooks = () => getList(getData()?.ebooks);
-export const getEbookChapters = () => getList(getData()?.ebook_chapters);
-export const getContentItems = () => getList(getData()?.content_items);
-export const getExerciseSteps = () => getList(getData()?.exercise_steps);
-export const getContentProgress = () => getList(getData()?.content_progress);
-export const getComments = () => getList(getData()?.comments);
-export const getHighlights = () => getList(getData()?.highlights);
-export const getNotes = () => getList(getData()?.notes);
-export const getFavorites = () => getList(getData()?.favorites);
-export const getCollections = () => getList(getData()?.collections);
-export const getCollectionItems = () => getList(getData()?.collection_items);
-export const getEbookProgress = () => getList(getData()?.ebook_progress);
-export const getDownloads = () => getList(getData()?.downloads);
-export const getAchievements = () => getList(getData()?.achievements);
-export const getContentReviews = () => getList(getData()?.content_reviews);
 export const getAccessibilitySettings = () => getList(getData()?.accessibility_settings);
 export const getReadingSettings = () => getList(getData()?.reading_settings);
 export const getReminderSettings = () => getList(getData()?.reminder_settings);
 
+// ---------------------------------------------------------------------------
+// Subscription / billing
+// ---------------------------------------------------------------------------
+
+export const getSubscriptionPlans = () => getList(getData()?.subscription_plans);
+export const getSubscriptions = () => getList(getData()?.subscriptions);
+
+/** Subscription add-ons junction table (subscription_addons). */
+export const getSubscriptionAddOns = () => getList(getData()?.subscription_addons as any[]);
+
+/** Stub: no invitations in current mock data. */
+export const getInvitations = (): any[] => [];
+
+/**
+ * Synthetic add-on catalog derived from known addon_type values.
+ * Replaces the old `add_ons` table which no longer exists in mock_data.json.
+ */
+const ADDON_CATALOG = [
+  { id: 'addon-ai-package', code: 'ai_package', addon_type: 'ai_package', name: 'AI Paketi' },
+  { id: 'addon-extra-seat', code: 'extra_seat', addon_type: 'extra_seat', name: 'Ek Kisi' },
+];
+export const getAddOns = () => ADDON_CATALOG;
+
+export const getSeats = () => getList(getData()?.seats);
+
+/**
+ * Purchase receipts (replaces old payment_transactions).
+ * Returns purchase_receipts enriched with compatibility fields so screens
+ * expecting `amount`, `currency`, `status`, and `purchased_at` still work.
+ */
+export const getPaymentTransactions = () =>
+  getList(getData()?.purchase_receipts as any[]).map((r: any) => ({
+    ...r,
+    status: r.verification_status ?? 'completed',
+    purchased_at: r.verified_at ?? r.created_at,
+    amount: r.amount ?? null,
+    currency: r.currency ?? null,
+  }));
+
+// ---------------------------------------------------------------------------
+// Content entities (normalized with id + title)
+// ---------------------------------------------------------------------------
+
+export const getJourneys = () => getRawJourneys().map(normalizeJourney);
+export const getModules = () => getRawModules().map(normalizeModule);
+export const getPackages = () => getList(getData()?.packages);
+export const getWorkshops = () => getRawWorkshops().map(normalizeWorkshop);
+export const getEbooks = () => getRawEbooks().map(normalizeEbook);
+export const getEbookChapters = () => getList(getData()?.ebook_chapters);
+export const getContentAssets = () => getList(getData()?.content_assets as any[]);
+
+/**
+ * Content blocks (_content_blocks) – sub-items within journeys, packages,
+ * workshops. Replaces the old `content_items` table.
+ */
+export const getContentItems = () => getList(getData()?._content_blocks as any[]);
+
+/** Stub: exercise steps removed from current schema. */
+export const getExerciseSteps = (): any[] => [];
+
+/** Stub: journey days removed from current schema. */
+export const getJourneyDays = (): any[] => [];
+
+// ---------------------------------------------------------------------------
+// User content / progress
+// ---------------------------------------------------------------------------
+
+/**
+ * Content progress.
+ * Adds `content_id` as a compatibility alias for `content_item_id` so screens
+ * written with the old field name still work.
+ */
+export const getContentProgress = () =>
+  getList(getData()?.content_progress).map((p: any) => ({
+    ...p,
+    content_id: p.content_item_id,
+    // `content_type` alias for `target_type` (old progress schema)
+    content_type: p.target_type ?? p.content_type,
+  }));
+
+/**
+ * Comment submissions (replaces old `comments` table).
+ * Provides a `content_item_id` compatibility alias pointing at
+ * `target_content_item_id` so old screens continue to work.
+ */
+export const getComments = () =>
+  getList(getData()?.comment_submissions as any[]).map((c: any) => ({
+    ...c,
+    content_item_id: c.target_content_item_id ?? c.content_item_id,
+  }));
+
+/**
+ * Highlights. Adds `source_id` / `source_type` compatibility aliases.
+ */
+export const getHighlights = () =>
+  getList(getData()?.highlights).map((h: any) => ({
+    ...h,
+    source_id: h.content_item_id,
+    source_type: 'ebook',
+  }));
+
+/**
+ * Notes. Adds `source_id` compatibility alias and `text` alias for `body`.
+ */
+export const getNotes = () =>
+  getList(getData()?.notes).map((n: any) => ({
+    ...n,
+    source_id: n.content_item_id,
+    text: n.body,
+  }));
+
+/**
+ * Favorite items (replaces old `favorites` table).
+ * Exposes a `content_id` compatibility alias derived from the typed FK columns.
+ */
+export const getFavorites = () =>
+  getList(getData()?.favorite_items as any[]).map((f: any) => ({
+    ...f,
+    // Compatibility: derive a single content_id / item_id from typed FKs
+    content_id: f.content_item_ref_id ?? f.highlight_ref_id ?? f.note_ref_id ?? null,
+    item_id: f.content_item_ref_id ?? f.highlight_ref_id ?? f.note_ref_id ?? null,
+  }));
+
+export const getCollections = () => getList(getData()?.collections);
+export const getCollectionItems = () => getList(getData()?.collection_items);
+
+/**
+ * Reading positions (replaces old `ebook_progress` table).
+ * Exposes `ebook_id` as a compatibility alias for `content_item_id`.
+ */
+export const getEbookProgress = () =>
+  getList(getData()?.reading_positions as any[]).map((p: any) => ({
+    ...p,
+    ebook_id: p.content_item_id,
+    percent_complete: p.progress_percent,
+  }));
+
+export const getDownloads = () => {
+  const ebookIds = new Set(getRawEbooks().map((e: any) => e.content_item_id));
+  const workshopIds = new Set(getRawWorkshops().map((w: any) => w.content_item_id));
+  const journeyIds = new Set(getRawJourneys().map((j: any) => j.content_item_id));
+  return getList(getData()?.downloads as any[]).map((d: any) => {
+    let content_type = d.content_type ?? 'content';
+    if (!d.content_type) {
+      if (ebookIds.has(d.content_item_id)) content_type = 'ebook';
+      else if (workshopIds.has(d.content_item_id)) content_type = 'workshop';
+      else if (journeyIds.has(d.content_item_id)) content_type = 'journey';
+    }
+    return {
+      ...d,
+      // Compatibility aliases
+      content_id: d.content_item_id,
+      content_type,
+      status: d.download_status,
+      size_bytes: d.byte_size,
+    };
+  });
+};
+
+/**
+ * User badges (replaces old `achievements` table).
+ * Exposes compatibility fields: `source_id`, `source_type`, `issued_at`.
+ */
+export const getAchievements = () =>
+  getList(getData()?.user_badges as any[]).map((b: any) => ({
+    ...b,
+    // Compatibility aliases for screens expecting old achievement shape
+    source_id: b.badge_definition_id,
+    source_type: b.badge_definition?.category ?? 'badge',
+    issued_at: b.awarded_at,
+  }));
+
+export const getBadgeDefinitions = () => getList(getData()?.badge_definitions as any[]);
+
+/** Stub: content reviews not in current schema. */
+export const getContentReviews = (): any[] => [];
+
+export const getCoachAssignments = () => getList(getData()?.coach_assignments as any[]);
+
+// ---------------------------------------------------------------------------
+// Filtered / relational helpers
+// ---------------------------------------------------------------------------
+
 export const getSubscriptionForUser = (userId?: string) =>
-  getSubscriptions().find(subscription => subscription.owner_user_id === userId);
+  getSubscriptions().find(s => s.owner_user_id === userId);
 
-export const getPlanForSubscription = (planId?: string) => getSubscriptionPlans().find(plan => plan.id === planId);
+export const getPlanForSubscription = (planId?: string) =>
+  getSubscriptionPlans().find(p => p.id === planId);
 
+/**
+ * Returns catalog add-on entries that are active for the given subscription.
+ * Matches by `addon_type` against the subscription_addons junction table.
+ */
 export const getAddOnsForSubscription = (subscriptionId?: string) => {
-  const activeAddOnIds = new Set(
+  const activeAddonTypes = new Set(
     getSubscriptionAddOns()
-      .filter(item => item.subscription_id === subscriptionId)
-      .map(item => item.addon_id)
+      .filter((item: any) => item.subscription_id === subscriptionId)
+      .map((item: any) => item.addon_type),
   );
-  return getAddOns().filter(addon => activeAddOnIds.has(addon.id));
+  return ADDON_CATALOG.filter(addon => activeAddonTypes.has(addon.addon_type));
 };
 
 export const getSeatsForSubscription = (subscriptionId?: string) =>
   getSeats().filter(seat => seat.subscription_id === subscriptionId);
 
-export const getInvitesForSubscription = (subscriptionId?: string) =>
-  getInvitations().filter(invite => invite.subscription_id === subscriptionId);
+export const getInvitesForSubscription = (_subscriptionId?: string): any[] => [];
 
 export const getPaymentsForSubscription = (subscriptionId?: string) =>
-  getPaymentTransactions().filter(tx => tx.subscription_id === subscriptionId);
+  getPaymentTransactions().filter((tx: any) => tx.subscription_id === subscriptionId);
 
-export const getJourneyById = (id?: string) => getJourneys().find(journey => journey.id === id);
-export const getJourneyDaysForJourney = (journeyId?: string) =>
-  getJourneyDays().filter(day => day.journey_id === journeyId);
-export const getModuleById = (id?: string) => getModules().find(module => module.id === id);
-export const getPackagesForModule = (moduleId?: string) => getPackages().filter(pkg => pkg.module_id === moduleId);
-export const getWorkshopById = (id?: string) => getWorkshops().find(workshop => workshop.id === id);
-export const getEbookById = (id?: string) => getEbooks().find(ebook => ebook.id === id);
+// Content entity lookups (by id = content_item_id after normalization)
+export const getJourneyById = (id?: string) => getJourneys().find(j => j.id === id);
+
+export const getJourneyDaysForJourney = (_journeyId?: string): any[] => [];
+
+export const getModuleById = (id?: string) => getModules().find(m => m.id === id);
+
+/** Packages for a module. Uses `module_content_item_id` FK. */
+export const getPackagesForModule = (moduleId?: string) =>
+  getPackages().filter((pkg: any) => pkg.module_content_item_id === moduleId);
+
+export const getWorkshopById = (id?: string) => getWorkshops().find(w => w.id === id);
+
+export const getEbookById = (id?: string) => getEbooks().find(e => e.id === id);
+
+/** Ebook chapters. Uses `ebook_content_item_id` FK. */
 export const getEbookChaptersForEbook = (ebookId?: string) =>
-  getEbookChapters().filter(chapter => chapter.ebook_id === ebookId);
+  getEbookChapters().filter((ch: any) => ch.ebook_content_item_id === ebookId);
 
+/** Content blocks by parent type / id. */
 export const getContentItemsForParent = (parentType: string, parentId?: string) =>
-  getContentItems().filter(item => item.parent_type === parentType && item.parent_id === parentId);
+  getContentItems().filter(
+    (item: any) => item.parent_type === parentType && item.parent_id === parentId,
+  );
 
 export const getContentProgressForUser = (userId?: string) =>
-  getContentProgress().filter(progress => progress.user_id === userId);
+  getContentProgress().filter(p => p.user_id === userId);
 
 export const getEbookProgressForUser = (userId?: string) =>
-  getEbookProgress().filter(progress => progress.user_id === userId);
+  getEbookProgress().filter((p: any) => p.user_id === userId);
 
 export const getHighlightsForUser = (userId?: string) =>
-  getHighlights().filter(highlight => highlight.user_id === userId);
+  getHighlights().filter(h => h.user_id === userId);
 
-export const getNotesForUser = (userId?: string) => getNotes().filter(note => note.user_id === userId);
+export const getNotesForUser = (userId?: string) =>
+  getNotes().filter(n => n.user_id === userId);
 
-export const getFavoritesForUser = (userId?: string) => getFavorites().filter(favorite => favorite.user_id === userId);
+export const getFavoritesForUser = (userId?: string) =>
+  getFavorites().filter((f: any) => f.user_id === userId);
 
 export const getCollectionsForUser = (userId?: string) =>
-  getCollections().filter(collection => collection.user_id === userId);
+  getCollections().filter(c => c.user_id === userId);
 
-export const getDownloadsForUser = (userId?: string) => getDownloads().filter(download => download.user_id === userId);
+export const getDownloadsForUser = (userId?: string) =>
+  getDownloads().filter((d: any) => d.user_id === userId);
 
-export const getCoachAssignments = () => getList(getData()?.coach_assignments as any[]);
+// ---------------------------------------------------------------------------
+// Coach helpers
+// ---------------------------------------------------------------------------
 
 export const getClientsForCoach = (coachUserId?: string) => {
   const assignments = getCoachAssignments().filter((a: any) => a.coach_user_id === coachUserId);
   const clientIds = new Set(assignments.map((a: any) => a.client_user_id));
-  // Mock: if no specific assignments, return all non-primary users for demo
   if (clientIds.size === 0) {
     return getUsers().filter(u => u.id !== coachUserId);
   }
@@ -111,11 +338,9 @@ export const getClientsForCoach = (coachUserId?: string) => {
 export const getCommentsForClient = (clientUserId?: string) =>
   getComments().filter((c: any) => c.user_id === clientUserId);
 
-export const getUserSessions = () => getList(getData()?.user_sessions as any[]);
-
-export const getSessionsForUser = (userId?: string) => getUserSessions().filter((s: any) => s.user_id === userId);
-
-// --- EPIC-17: Notification + Reminder selectors ---
+// ---------------------------------------------------------------------------
+// EPIC-17: Notification + Reminder selectors
+// ---------------------------------------------------------------------------
 
 export type MockNotification = {
   id: string;
@@ -129,11 +354,12 @@ export type MockNotification = {
   created_at: string;
 };
 
-/** FR-E17-01/02: Simulate notifications from achievements, completed progress, and comments. */
+/** FR-E17-01/02: Simulate notifications from badges, completed progress, and comments. */
 export const getNotificationsForUser = (userId?: string): MockNotification[] => {
   const uid = userId ?? getPrimaryUser()?.id;
   const results: MockNotification[] = [];
 
+  // Achievements (user_badges)
   getAchievements()
     .filter((a: any) => a.user_id === uid)
     .forEach((a: any) => {
@@ -143,29 +369,31 @@ export const getNotificationsForUser = (userId?: string): MockNotification[] => 
         type: 'achievement',
         title: 'Rozet Kazanildi',
         description: 'Yeni bir basarim rozeti kazandiniz.',
-        content_id: a.source_id,
-        content_type: a.source_type,
+        content_id: a.badge_definition_id,
+        content_type: 'badge',
         is_read: false,
-        created_at: a.issued_at
+        created_at: a.awarded_at ?? a.created_at,
       });
     });
 
+  // Completed content progress
   getContentProgress()
-    .filter((p: any) => p.user_id === uid && p.status === 'completed')
-    .forEach((p: any) => {
+    .filter(p => p.user_id === uid && p.status === 'completed')
+    .forEach(p => {
       results.push({
         id: 'notif-prog-' + p.id,
         user_id: p.user_id,
         type: 'journey',
         title: 'Icerik Tamamlandi',
         description: 'Bir icerik basariyla tamamlandi.',
-        content_id: p.content_id,
-        content_type: p.content_type,
+        content_id: p.content_item_id,
+        content_type: p.target_type,
         is_read: false,
-        created_at: p.completed_at ?? p.started_at
+        created_at: (p as any).completed_at ?? (p as any).started_at,
       });
     });
 
+  // Submitted comments
   getComments()
     .filter((c: any) => c.user_id === uid && c.status === 'submitted')
     .forEach((c: any) => {
@@ -175,10 +403,10 @@ export const getNotificationsForUser = (userId?: string): MockNotification[] => 
         type: 'social',
         title: 'Yorum Gonderildi',
         description: 'Yorumunuz basariyla gonderildi.',
-        content_id: c.content_item_id,
-        content_type: 'content_item',
+        content_id: c.target_content_item_id ?? c.content_item_id,
+        content_type: c.target_type ?? 'content_item',
         is_read: false,
-        created_at: c.submitted_at ?? c.updated_at
+        created_at: c.submitted_at ?? c.updated_at,
       });
     });
 

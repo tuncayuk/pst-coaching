@@ -24,8 +24,8 @@ const dailyStats = [
 const MAX_DAILY = Math.max(...dailyStats.map(d => d.value), 1);
 
 const TYPE_BADGE: Record<string, string> = {
-  journey_day: 'Yolculuk',
-  package: 'Paket',
+  journey: 'Yolculuk',
+  module: 'Modul',
   workshop: 'Atolye',
   ebook: 'e-Kitap'
 };

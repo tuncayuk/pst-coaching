@@ -74,7 +74,7 @@ const CoachClientProfileContent = ({ clientId, isOffline }: { clientId?: string;
   // AC-FR-E12-02-01: active goal - derive from in-progress content
   const activeGoal = progress.find(p => p.status === 'in_progress');
   const activeGoalLabel = activeGoal
-    ? (activeGoal.content_type === 'journey_day' ? 'Yolculuk gunu' : 'Icerik') + ' devam ediyor'
+    ? (activeGoal.content_type === 'journey' ? 'Yolculuk' : 'Icerik') + ' devam ediyor'
     : 'Hedef belirlenmemis';
 
   // AC-FR-E12-02-03: session count + 7-day activity

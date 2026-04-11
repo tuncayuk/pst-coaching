@@ -28,9 +28,11 @@ const ContentJourneyHomeContent = ({ journeyId, isOffline }: { journeyId?: strin
   const user = getPrimaryUser();
   const journey = getJourneyById(journeyId) ?? getJourneys()[0];
   const days = getJourneyDaysForJourney(journey?.id);
-  const progressItems = getContentProgressForUser(user?.id).filter(item => item.content_type === 'journey_day');
-  const completedCount = days.filter(day => progressItems.some(item => item.content_id === day.id)).length;
-  const progress = days.length > 0 ? completedCount / days.length : 0;
+  const journeyProgress = getContentProgressForUser(user?.id).find(
+    item => item.content_type === 'journey' && item.content_item_id === journey?.id
+  );
+  const completedCount = 0; // journey days removed from schema; use journey-level progress
+  const progress = journeyProgress?.status === 'completed' ? 1 : 0;
 
   return (
     <>
@@ -52,20 +54,18 @@ const ContentJourneyHomeContent = ({ journeyId, isOffline }: { journeyId?: strin
         </View>
         <PProgressBar progress={progress} style={styles.progress} />
         <PText variant="bodySmall" style={styles.subtleText}>
-          {completedCount}/{days.length} gün tamamlandı
+          {journeyProgress?.status === 'completed' ? 'Tamamlandi' : 'Devam ediyor'}
         </PText>
         <PButton
           mode="contained"
           style={styles.primaryButton}
-          disabled={isOffline || days.length === 0}
-          onPress={() => {
-            if (days[0]) {
-              navigation.navigate('Content', {
-                screen: 'ContentJourneyDay',
-                params: { id: journey?.id, day: String(days[0].day_number) }
-              });
-            }
-          }}
+          disabled={isOffline}
+          onPress={() =>
+            navigation.navigate('Content', {
+              screen: 'ContentJourneyDetail',
+              params: { id: journey?.id }
+            })
+          }
         >
           Devam Et
         </PButton>

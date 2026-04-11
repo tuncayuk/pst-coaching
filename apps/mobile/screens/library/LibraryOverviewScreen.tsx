@@ -39,8 +39,8 @@ const LibraryReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
   const ebookProgress = getEbookProgressForUser(user?.id);
   const downloads = getDownloadsForUser(user?.id);
   const highlights = getHighlightsForUser(user?.id);
-  const readingProgress = ebookProgress.slice(0, 2).map(item => ({
-    title: getEbookById(item.ebook_id)?.title ?? 'e-Kitap',
+  const readingProgress = ebookProgress.slice(0, 2).map((item: any) => ({
+    title: getEbookById(item.content_item_id)?.title ?? 'e-Kitap',
     progress: (item.progress_percent ?? 0) / 100
   }));
 
@@ -101,7 +101,7 @@ const LibraryReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
             "{highlights[0]?.quote ?? 'Kendine karşı nazik olmak, dönüşümün ilk adımıdır.'}"
           </PText>
           <PText variant="labelSmall" style={{ color: c.primary }}>
-            {getEbookById(highlights[0]?.source_id)?.title ?? 'Kişisel Notlar'}
+            {getEbookById(highlights[0]?.content_item_id)?.title ?? 'Kişisel Notlar'}
           </PText>
         </View>
       </SectionCard>

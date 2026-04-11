@@ -127,7 +127,7 @@ const DiscoverJourneysContent = ({ isOffline }: { isOffline?: boolean }) => {
           const duration = item.duration_days ?? 40;
           const level = LEVEL_LABELS[item.level] ?? item.level;
           const pkgCount =
-            packages.filter(p => item.featured_modules?.some((mid: string) => p.module_id === mid)).length ||
+            packages.filter(p => item.featured_modules?.some((mid: string) => p.module_content_item_id === mid)).length ||
             3 + (origIndex % 2);
           const workshopCount = item.featured_workshops?.length || 2 + (origIndex % 2);
           const ebookCount = item.featured_ebooks?.length || 1;

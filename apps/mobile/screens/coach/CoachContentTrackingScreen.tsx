@@ -52,19 +52,18 @@ const CoachContentTrackingContent = ({ clientId, isOffline }: { clientId?: strin
   const workshops = getWorkshops();
   const ebooks = getEbooks();
 
-  // Group progress by content_type
-  const journeyProgress = progress.filter(p => p.content_type === 'journey_day');
-  const workshopProgress = progress.filter(p => p.content_type === 'workshop' || p.content_type === 'workshop_section');
-  const completedIds = new Set(progress.filter(p => p.status === 'completed').map(p => p.content_id));
+  // Group progress by content_type (target_type aliased as content_type in selector)
+  const journeyProgress = progress.filter(p => p.content_type === 'journey');
+  const workshopProgress = progress.filter(p => p.content_type === 'workshop');
+  const completedIds = new Set(progress.filter(p => p.status === 'completed').map(p => p.content_item_id));
 
   // AC-FR-E12-03-03: compute completion % per journey
   const journeyStats = journeys.map(j => {
-    const days = progress.filter(p => p.content_type === 'journey_day' && p.content_id.startsWith('b'));
-    const done = progress.filter(p => p.status === 'completed' && p.content_type === 'journey_day').length;
-    const total = Math.max(progress.length, 1);
+    const days = progress.filter(p => p.content_type === 'journey' && p.content_item_id === j.id);
+    const done = days.filter(p => p.status === 'completed').length;
+    const total = Math.max(days.length, 1);
     const pct = total > 0 ? done / total : 0;
-    const lastP = progress
-      .filter(p => p.content_type === 'journey_day')
+    const lastP = days
       .sort((a, b) => new Date(b.started_at ?? 0).getTime() - new Date(a.started_at ?? 0).getTime())[0];
     // AC-FR-E12-03-04: time spent estimate
     const estMins = done * EST_MINS_PER_ITEM;

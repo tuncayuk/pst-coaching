@@ -14,8 +14,8 @@ import { SkeletonBlock } from '../components/SkeletonBlock';
 import { StateMessage } from '../components/StateMessage';
 
 const TYPE_META: Record<string, { label: string; icon: string; color: string }> = {
-  journey_day: { label: 'Yolculuk', icon: 'map-marker-path', color: '#6B46C1' },
-  package: { label: 'Paket', icon: 'cube-outline', color: '#0096B8' },
+  journey: { label: 'Yolculuk', icon: 'map-marker-path', color: '#6B46C1' },
+  module: { label: 'Modul', icon: 'cube-outline', color: '#0096B8' },
   workshop: { label: 'Atolye', icon: 'account-group-outline', color: '#D97706' },
   ebook: { label: 'e-Kitap', icon: 'book-open-variant', color: '#16A34A' }
 };
