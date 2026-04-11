@@ -17,6 +17,7 @@
 begin;
 
 create extension if not exists pgcrypto;
+create extension if not exists vector;
 create schema if not exists pst;
 set search_path to pst, public;
 
@@ -272,6 +273,28 @@ create type video_difficulty as enum (
   'advanced'
 );
 
+-- Group member role used by reading_groups and book_clubs
+create type group_member_role as enum (
+  'admin',
+  'moderator',
+  'member'
+);
+
+-- Status for materials assigned to a reading group
+create type group_material_status as enum (
+  'pending',
+  'active',
+  'completed',
+  'archived'
+);
+
+-- Status for book club discussion topics
+create type book_club_topic_status as enum (
+  'open',
+  'closed',
+  'archived'
+);
+
 -- ---------------------------------------------------------------------------
 -- Content, source, publishing, and composition
 -- ---------------------------------------------------------------------------
@@ -286,9 +309,13 @@ create table source_documents (
   checksum text not null unique,
   language_code text not null,
   import_status import_status not null default 'pending',
-  imported_at timestamptz not null default now(),
-  imported_by text,
+  created_at timestamptz not null default now(),
+  completed_at timestamptz,
+  imported_by uuid,
   metadata jsonb not null default '{}'::jsonb,
+  created_by uuid,
+  updated_by uuid,
+  updated_at timestamptz not null default now(),
   check (char_length(language_code) between 2 and 16),
   check (original_uri is not null or payload_json is not null),
   check (source_type <> 'rich_text_json' or payload_json is not null)
@@ -317,6 +344,16 @@ create table content_items (
   check (char_length(locale) between 2 and 16)
 );
 
+-- Declares which subscription plan types may access a content item when
+-- visibility = 'subscription'. Absence of rows means all active subscribers
+-- can access it. Multiple rows allow the same item to be unlocked by more
+-- than one plan type (e.g. family + group).
+create table content_plan_access (
+  content_item_id uuid      not null references content_items(id) on delete cascade,
+  plan_type        plan_type not null,
+  primary key (content_item_id, plan_type)
+);
+
 create table content_versions (
   id uuid primary key default gen_random_uuid(),
   content_item_id uuid not null references content_items(id) on delete cascade,
@@ -325,7 +362,7 @@ create table content_versions (
   structured_payload_ref text,
   metadata jsonb not null default '{}'::jsonb,
   published_at timestamptz,
-  published_by text,
+  published_by uuid,
   change_summary text,
   created_at timestamptz not null default now(),
   unique (content_item_id, version_no),
@@ -369,7 +406,8 @@ create table content_tags (
   tag_type text not null,
   label text not null,
   slug text not null unique,
-  created_at timestamptz not null default now()
+  created_at timestamptz not null default now(),
+  unique (tag_type, label)
 );
 
 create table content_item_tags (
@@ -462,6 +500,12 @@ create table spiritual_lesson_collections (
   check (lesson_count is null or lesson_count >= 0)
 );
 
+create table reflection_prompt_sets (
+  id uuid primary key default gen_random_uuid(),
+  title text not null,
+  created_at timestamptz not null default now()
+);
+
 create table spiritual_lessons (
   id uuid primary key default gen_random_uuid(),
   collection_content_item_id uuid not null references spiritual_lesson_collections(content_item_id) on delete cascade,
@@ -469,7 +513,7 @@ create table spiritual_lessons (
   lesson_no integer,
   estimated_minutes integer,
   has_audio boolean not null default false,
-  reflection_prompt_set_id uuid,
+  reflection_prompt_set_id uuid references reflection_prompt_sets(id) on delete set null,
   created_at timestamptz not null default now(),
   check (lesson_no is null or lesson_no > 0),
   check (estimated_minutes is null or estimated_minutes >= 0)
@@ -625,11 +669,14 @@ create table hadith_source_citations (
 
 create table users (
   id uuid primary key default gen_random_uuid(),
+  email text not null unique,
+  external_auth_id text unique,
+  auth_provider text not null default 'password',
   role user_role not null default 'member',
   language_code text not null default 'tr',
-  subscription_status subscription_status not null default 'inactive',
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now(),
+  check (char_length(email) > 0),
   check (char_length(language_code) between 2 and 16)
 );
 
@@ -697,8 +744,9 @@ create table seats (
   subscription_id uuid not null references subscriptions(id) on delete cascade,
   assigned_user_id uuid references users(id) on delete set null,
   status seat_status not null default 'available',
-  created_at timestamptz not null default now(),
-  unique (subscription_id, assigned_user_id)
+  created_at timestamptz not null default now()
+  -- unique index on (subscription_id, assigned_user_id) WHERE assigned_user_id IS NOT NULL
+  -- is created below to allow multiple unassigned (NULL) seats per subscription
 );
 
 create table entitlement_grants (
@@ -710,7 +758,13 @@ create table entitlement_grants (
   source_addon_id uuid references subscription_addons(id) on delete set null,
   starts_at timestamptz not null default now(),
   ends_at timestamptz,
-  created_at timestamptz not null default now()
+  created_at timestamptz not null default now(),
+  check (char_length(target_scope) > 0),
+  check (
+    (entitlement_type = 'role'  and target_scope in ('guest','member','plan_owner','coach','admin')) or
+    (entitlement_type = 'addon' and target_scope in ('ai_package','coaching_training','extra_seat')) or
+    (entitlement_type in ('subscription','seat','content_bundle'))
+  )
 );
 
 create table purchase_receipts (
@@ -824,6 +878,7 @@ create table highlights (
   anchor_locator text not null,
   selected_text_hash text,
   color text,
+  deleted_at timestamptz,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
@@ -835,6 +890,7 @@ create table notes (
   content_version_id uuid references content_versions(id) on delete set null,
   anchor_locator text,
   body text not null,
+  deleted_at timestamptz,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
@@ -842,11 +898,13 @@ create table notes (
 create table comment_submissions (
   id uuid primary key default gen_random_uuid(),
   user_id uuid not null references users(id) on delete cascade,
+  parent_comment_id uuid references comment_submissions(id) on delete cascade,
   target_type content_item_kind not null,
   target_content_item_id uuid not null references content_items(id) on delete cascade,
   content text not null,
   status comment_status not null default 'draft',
   submitted_at timestamptz,
+  deleted_at timestamptz,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
@@ -855,10 +913,18 @@ create table favorite_items (
   id uuid primary key default gen_random_uuid(),
   user_id uuid not null references users(id) on delete cascade,
   source_type favorite_source_type not null,
-  source_ref_id uuid not null,
+  -- Typed FK columns replace the untyped source_ref_id; exactly one must be non-null
+  content_item_ref_id uuid references content_items(id) on delete cascade,
+  highlight_ref_id     uuid references highlights(id)     on delete cascade,
+  note_ref_id          uuid references notes(id)          on delete cascade,
   note text,
   created_at timestamptz not null default now(),
-  unique (user_id, source_type, source_ref_id)
+  check (
+    (source_type = 'content_item' and content_item_ref_id is not null and highlight_ref_id is null and note_ref_id is null) or
+    (source_type = 'highlight'    and highlight_ref_id is not null    and content_item_ref_id is null and note_ref_id is null) or
+    (source_type = 'note'         and note_ref_id is not null         and content_item_ref_id is null and highlight_ref_id is null)
+  )
+  -- Partial unique indexes are created below (inline partial unique not supported in DDL)
 );
 
 create table collections (
@@ -899,9 +965,11 @@ create table workbook_entries (
   status workbook_entry_status not null default 'draft',
   version_no integer not null default 1,
   payload_json jsonb not null default '{}'::jsonb,
+  deleted_at timestamptz,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now(),
   check (version_no > 0)
+  -- Partial unique index on (user_id, workshop_stage_id) WHERE status = 'draft' is created below
 );
 
 create table workshop_followup_plans (
@@ -935,6 +1003,7 @@ create table coach_assignments (
 
 create table coach_feedback (
   id uuid primary key default gen_random_uuid(),
+  assignment_id uuid not null references coach_assignments(id) on delete cascade,
   coach_user_id uuid not null references users(id) on delete cascade,
   client_user_id uuid not null references users(id) on delete cascade,
   target_content_item_id uuid references content_items(id) on delete set null,
@@ -968,7 +1037,7 @@ create table reading_group_members (
   id uuid primary key default gen_random_uuid(),
   reading_group_id uuid not null references reading_groups(id) on delete cascade,
   user_id uuid not null references users(id) on delete cascade,
-  role text not null default 'member',
+  role group_member_role not null default 'member',
   created_at timestamptz not null default now(),
   unique (reading_group_id, user_id)
 );
@@ -978,7 +1047,7 @@ create table reading_group_materials (
   reading_group_id uuid not null references reading_groups(id) on delete cascade,
   content_item_id uuid not null references content_items(id) on delete cascade,
   material_type text not null,
-  status text not null,
+  status group_material_status not null default 'pending',
   created_at timestamptz not null default now(),
   unique (reading_group_id, content_item_id)
 );
@@ -1011,7 +1080,7 @@ create table book_club_members (
   id uuid primary key default gen_random_uuid(),
   book_club_id uuid not null references book_clubs(id) on delete cascade,
   user_id uuid not null references users(id) on delete cascade,
-  role text not null default 'member',
+  role group_member_role not null default 'member',
   created_at timestamptz not null default now(),
   unique (book_club_id, user_id)
 );
@@ -1020,7 +1089,7 @@ create table book_club_topics (
   id uuid primary key default gen_random_uuid(),
   book_club_id uuid not null references book_clubs(id) on delete cascade,
   title text not null,
-  status text not null,
+  status book_club_topic_status not null default 'open',
   created_at timestamptz not null default now()
 );
 
@@ -1085,7 +1154,9 @@ create table user_levels (
   id uuid primary key default gen_random_uuid(),
   user_id uuid not null unique references users(id) on delete cascade,
   level_definition_id uuid not null references level_definitions(id) on delete restrict,
-  reached_at timestamptz not null default now()
+  total_xp integer not null default 0,
+  reached_at timestamptz not null default now(),
+  check (total_xp >= 0)
 );
 
 -- ---------------------------------------------------------------------------
@@ -1096,6 +1167,7 @@ create table ai_conversations (
   id uuid primary key default gen_random_uuid(),
   user_id uuid not null references users(id) on delete cascade,
   title text,
+  deleted_at timestamptz,
   created_at timestamptz not null default now()
 );
 
@@ -1104,6 +1176,7 @@ create table ai_messages (
   ai_conversation_id uuid not null references ai_conversations(id) on delete cascade,
   role ai_message_role not null,
   body text not null,
+  deleted_at timestamptz,
   created_at timestamptz not null default now()
 );
 
@@ -1125,7 +1198,8 @@ create table embedding_chunks (
   chunk_order integer not null,
   locator_ref text,
   chunk_hash text not null,
-  chunk_text text,
+  chunk_text text not null,
+  embedding vector(1536),
   created_at timestamptz not null default now(),
   unique (embedding_document_id, chunk_order),
   check (chunk_order >= 0)
@@ -1216,6 +1290,7 @@ create table video_downloads (
 
 create index idx_content_items_kind_status on content_items (kind, status);
 create index idx_content_items_visibility on content_items (visibility);
+create index idx_content_plan_access_plan on content_plan_access (plan_type);
 create index idx_content_versions_content_item on content_versions (content_item_id, version_no desc);
 create index idx_content_assets_content_item on content_assets (content_item_id, asset_type);
 create index idx_content_relations_from on content_relations (from_content_item_id, relation_type, sort_order);
@@ -1263,5 +1338,45 @@ create index idx_ai_response_citations_message on ai_response_citations (ai_mess
 
 create index idx_video_progress_user on video_progress (user_id, updated_at desc);
 create index idx_video_transcript_segments_video on video_transcript_segments (video_content_item_id, start_second);
+
+-- Partial unique index: each user can only be assigned once per subscription (NULLs excluded)
+create unique index uq_seats_assigned_user
+  on seats (subscription_id, assigned_user_id)
+  where assigned_user_id is not null;
+
+-- Partial unique indexes for polymorphic favorite_items FK columns
+create unique index uq_favorite_items_content
+  on favorite_items (user_id, content_item_ref_id)
+  where content_item_ref_id is not null;
+create unique index uq_favorite_items_highlight
+  on favorite_items (user_id, highlight_ref_id)
+  where highlight_ref_id is not null;
+create unique index uq_favorite_items_note
+  on favorite_items (user_id, note_ref_id)
+  where note_ref_id is not null;
+
+-- Partial unique index: one open draft per user per workshop stage
+create unique index uq_workbook_entries_open_draft
+  on workbook_entries (user_id, workshop_stage_id)
+  where status = 'draft' and workshop_stage_id is not null;
+
+-- Vector similarity search index for RAG
+create index idx_embedding_chunks_vector
+  on embedding_chunks using ivfflat (embedding vector_cosine_ops)
+  with (lists = 100);
+
+-- ---------------------------------------------------------------------------
+-- Deferred FK constraints (referencing tables defined later in the file)
+-- ---------------------------------------------------------------------------
+
+-- source_documents.imported_by → users.id
+alter table source_documents
+  add constraint fk_source_documents_imported_by
+  foreign key (imported_by) references users(id) on delete set null;
+
+-- content_versions.published_by → users.id
+alter table content_versions
+  add constraint fk_content_versions_published_by
+  foreign key (published_by) references users(id) on delete set null;
 
 commit;

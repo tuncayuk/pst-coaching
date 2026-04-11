@@ -2348,6 +2348,35 @@ insert into content_items (
   )
 on conflict do nothing;
 
+-- ---------------------------------------------------------------------------
+-- content_plan_access
+--
+-- Absence of a row means the content is accessible to all active subscribers.
+-- Rows restrict access to specific plan types only.
+--
+-- Taxonomy applied:
+--   group only      — deep intensive workshop best suited for facilitated group setting
+--   family + group  — relationship / community-oriented content; not a solo-individual fit
+--   (no rows)       — all other subscription content remains open to every plan type
+-- ---------------------------------------------------------------------------
+
+insert into content_plan_access (content_item_id, plan_type) values
+  -- Mutlak Muhtaclik Atolyesi (240 min, deep applied workshop) — group sessions only
+  ('11111111-1111-1111-1111-111111111003', 'group'),
+
+  -- Iliski Onarimi Atolyesi (relationship repair workshop) — family and group
+  ('11111111-1111-1111-1111-000000000041', 'family'),
+  ('11111111-1111-1111-1111-000000000041', 'group'),
+
+  -- Yalnizlik ve Aidiyet Atolyesi (loneliness & belonging workshop) — family and group
+  ('11111111-1111-1111-1111-000000000044', 'family'),
+  ('11111111-1111-1111-1111-000000000044', 'group'),
+
+  -- Aidiyet ve Sohbet Yolculugu (belonging & conversation journey) — family and group
+  ('11111111-1111-1111-1111-000000000018', 'family'),
+  ('11111111-1111-1111-1111-000000000018', 'group')
+on conflict do nothing;
+
 insert into content_versions (
   id, content_item_id, source_document_id, version_no, structured_payload_ref,
   metadata, published_at, published_by, change_summary, created_at
