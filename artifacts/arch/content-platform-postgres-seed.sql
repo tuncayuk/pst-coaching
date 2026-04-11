@@ -15,14 +15,14 @@ set search_path to pst, public;
 
 insert into source_documents (
   id, source_type, domain_type, title, original_uri, payload_json, checksum, language_code,
-  import_status, imported_at, imported_by, metadata
+  import_status, created_at, completed_at, imported_by, metadata
 ) values
   (
     '33333333-3333-3333-3333-333333333001', 'markdown', 'journey',
     'Inner Balance Journey Outline',
     's3://pst/editorial/journeys/inner-balance-journey.md', null,
     'sha256:journey-inner-balance-v1', 'tr', 'imported',
-    '2026-04-11 09:00:00+00', 'editorial.lead',
+    '2026-04-11 09:00:00+00', '2026-04-11 09:00:00+00', null,
     '{"source_truths":["kesifler_yolculugu","duygular_evreni","atolyeler","ebooks","hadith_analizleri"]}'::jsonb
   ),
   (
@@ -30,7 +30,7 @@ insert into source_documents (
     'Kesifler Awareness Module Source',
     's3://pst/editorial/modules/kesifler-awareness.docx', null,
     'sha256:module-kesifler-awareness-v1', 'tr', 'imported',
-    '2026-04-11 09:05:00+00', 'editorial.lead',
+    '2026-04-11 09:05:00+00', '2026-04-11 09:05:00+00', null,
     '{"backing_library":"kesifler_yolculugu"}'::jsonb
   ),
   (
@@ -38,7 +38,7 @@ insert into source_documents (
     'Emotion Regulation Module Source',
     's3://pst/editorial/modules/emotion-regulation.docx', null,
     'sha256:module-emotion-regulation-v1', 'tr', 'imported',
-    '2026-04-11 09:06:00+00', 'editorial.lead',
+    '2026-04-11 09:06:00+00', '2026-04-11 09:06:00+00', null,
     '{"backing_library":"duygular_evreni"}'::jsonb
   ),
   (
@@ -46,7 +46,7 @@ insert into source_documents (
     'Kalbimin Beyazi',
     's3://pst/editorial/ebooks/kalbimin-beyazi.epub', null,
     'sha256:ebook-kalbimin-beyazi-v3', 'tr', 'imported',
-    '2026-04-11 09:10:00+00', 'editorial.lead',
+    '2026-04-11 09:10:00+00', '2026-04-11 09:10:00+00', null,
     '{"page_count":248}'::jsonb
   ),
   (
@@ -54,7 +54,7 @@ insert into source_documents (
     'Kesifler Yolculugu Master Manuscript',
     's3://pst/editorial/kesifler/master-kesifler.docx', null,
     'sha256:kesifler-master-v7', 'tr', 'imported',
-    '2026-04-11 09:12:00+00', 'editorial.lead',
+    '2026-04-11 09:12:00+00', '2026-04-11 09:12:00+00', null,
     '{"lesson_count":400}'::jsonb
   ),
   (
@@ -62,7 +62,7 @@ insert into source_documents (
     'Duygular Evreni Master Manuscript',
     's3://pst/editorial/emotions/master-duygular-evreni.docx', null,
     'sha256:duygular-master-v4', 'tr', 'imported',
-    '2026-04-11 09:15:00+00', 'editorial.lead',
+    '2026-04-11 09:15:00+00', '2026-04-11 09:15:00+00', null,
     '{"emotion_count":200}'::jsonb
   ),
   (
@@ -70,7 +70,7 @@ insert into source_documents (
     'Mutlak Muhtaclik Workshop',
     's3://pst/editorial/workshops/mutlak-muhtaclik.docx', null,
     'sha256:workshop-mutlak-v5', 'tr', 'imported',
-    '2026-04-11 09:18:00+00', 'editorial.lead',
+    '2026-04-11 09:18:00+00', '2026-04-11 09:18:00+00', null,
     '{"stage_model":"rev4"}'::jsonb
   ),
   (
@@ -78,7 +78,7 @@ insert into source_documents (
     'Hadis Analizi: Kuvvetli Mumin',
     's3://pst/editorial/hadith/hadith-analysis-kuvvetli-mumin.docx', null,
     'sha256:hadith-kuvvetli-mumin-v2', 'tr', 'imported',
-    '2026-04-11 09:20:00+00', 'editorial.lead',
+    '2026-04-11 09:20:00+00', '2026-04-11 09:20:00+00', null,
     '{"source_file":"HadithAnalysis.docx"}'::jsonb
   ),
   (
@@ -86,7 +86,7 @@ insert into source_documents (
     'Emotional Resilience Video Transcript',
     's3://pst/editorial/video/emotional-resilience-transcript.json', null,
     'sha256:video-emotional-resilience-v1', 'tr', 'imported',
-    '2026-04-11 09:25:00+00', 'media.team',
+    '2026-04-11 09:25:00+00', '2026-04-11 09:25:00+00', null,
     '{"captions":["tr","en"]}'::jsonb
   ),
   (
@@ -95,7 +95,7 @@ insert into source_documents (
     null,
     '{"root":{"type":"root","children":[{"type":"heading","tag":"h1","children":[{"text":"Sebat ve Tazelenme"}]},{"type":"paragraph","children":[{"text":"Sebat, niyeti koruyan kucuk ama tekrarli adimlarin ruhudur."}]},{"type":"callout","variant":"reflection","children":[{"type":"paragraph","children":[{"text":"Bugun seni sabit tutan tek davranisi kaydet."}]}]},{"type":"bulleted_list","children":[{"type":"list_item","children":[{"text":"Niyetini sabah tazele"}]},{"type":"list_item","children":[{"text":"Aksam mini muhasebe yap"}]}]}]}}'::jsonb,
     'sha256:module-steadiness-richtext-v1', 'tr', 'imported',
-    '2026-04-11 09:26:00+00', 'editorial.lead',
+    '2026-04-11 09:26:00+00', '2026-04-11 09:26:00+00', null,
     '{"editor_family":"lexical","schema_version":"1","normalization_target":"published_content_blocks","storage_pattern":"db_source_jsonb_to_published_s3"}'::jsonb
   ),
   (
@@ -103,7 +103,7 @@ insert into source_documents (
     'Emotion Library Editorial Manuscript',
     's3://pst/editorial/emotions/emotion-library-manuscript.md', null,
     'sha256:emotion-library-manuscript-v1', 'tr', 'imported',
-    '2026-04-11 09:27:00+00', 'data.ops',
+    '2026-04-11 09:27:00+00', '2026-04-11 09:27:00+00', null,
     '{"normalization_target":"emotion_entry_records","editorial_shape":"taxonomy_markdown"}'::jsonb
   )
 on conflict do nothing;
@@ -341,7 +341,7 @@ insert into content_versions (
     '33333333-3333-3333-3333-333333333001', 1,
     's3://pst/published/journeys/inner-balance/v1.json',
     '{"contains":["module","module","workshop","ebook"]}'::jsonb,
-    '2026-04-11 10:00:00+00', 'release.bot', 'Initial journey publish',
+    '2026-04-11 10:00:00+00', null, 'Initial journey publish',
     '2026-04-11 10:00:00+00'
   ),
   (
@@ -349,7 +349,7 @@ insert into content_versions (
     '33333333-3333-3333-3333-333333333002', 1,
     's3://pst/published/modules/kesifler-awareness/v1.json',
     '{"composition":"spiritual_lesson_packages"}'::jsonb,
-    '2026-04-11 10:01:00+00', 'release.bot', 'Initial module publish',
+    '2026-04-11 10:01:00+00', null, 'Initial module publish',
     '2026-04-11 10:01:00+00'
   ),
   (
@@ -357,7 +357,7 @@ insert into content_versions (
     '33333333-3333-3333-3333-333333333007', 2,
     's3://pst/published/workshops/mutlak-muhtaclik/v2.json',
     '{"stage_count":3,"has_workbook":true,"has_facilitator_guide":true}'::jsonb,
-    '2026-04-11 10:02:00+00', 'release.bot', 'Workshop rev4 publish',
+    '2026-04-11 10:02:00+00', null, 'Workshop rev4 publish',
     '2026-04-11 10:02:00+00'
   ),
   (
@@ -365,7 +365,7 @@ insert into content_versions (
     '33333333-3333-3333-3333-333333333004', 3,
     's3://pst/published/ebooks/kalbimin-beyazi/v3.json',
     '{"toc_depth":2,"audio_available":true}'::jsonb,
-    '2026-04-11 10:03:00+00', 'release.bot', 'Ebook refresh with audio markers',
+    '2026-04-11 10:03:00+00', null, 'Ebook refresh with audio markers',
     '2026-04-11 10:03:00+00'
   ),
   (
@@ -373,7 +373,7 @@ insert into content_versions (
     '33333333-3333-3333-3333-333333333005', 1,
     's3://pst/published/source/kesifler-library/v1.json',
     '{"lesson_count":400}'::jsonb,
-    '2026-04-11 10:04:00+00', 'release.bot', 'Source library publish',
+    '2026-04-11 10:04:00+00', null, 'Source library publish',
     '2026-04-11 10:04:00+00'
   ),
   (
@@ -381,7 +381,7 @@ insert into content_versions (
     '33333333-3333-3333-3333-333333333005', 1,
     's3://pst/published/kesifler/sabir-farkindalik/v1.json',
     '{"module_ready":true}'::jsonb,
-    '2026-04-11 10:05:00+00', 'release.bot', 'Lesson extracted from source library',
+    '2026-04-11 10:05:00+00', null, 'Lesson extracted from source library',
     '2026-04-11 10:05:00+00'
   ),
   (
@@ -389,7 +389,7 @@ insert into content_versions (
     '33333333-3333-3333-3333-333333333005', 1,
     's3://pst/published/kesifler/niyet-devam/v1.json',
     '{"module_ready":true}'::jsonb,
-    '2026-04-11 10:06:00+00', 'release.bot', 'Lesson extracted from source library',
+    '2026-04-11 10:06:00+00', null, 'Lesson extracted from source library',
     '2026-04-11 10:06:00+00'
   ),
   (
@@ -397,7 +397,7 @@ insert into content_versions (
     '33333333-3333-3333-3333-333333333006', 1,
     's3://pst/published/source/duygular-library/v1.json',
     '{"emotion_count":200}'::jsonb,
-    '2026-04-11 10:07:00+00', 'release.bot', 'Source library publish',
+    '2026-04-11 10:07:00+00', null, 'Source library publish',
     '2026-04-11 10:07:00+00'
   ),
   (
@@ -405,7 +405,7 @@ insert into content_versions (
     '33333333-3333-3333-3333-333333333006', 1,
     's3://pst/published/duygular/kaygi/v1.json',
     '{"recommended_module":"emotion-regulation-module"}'::jsonb,
-    '2026-04-11 10:08:00+00', 'release.bot', 'Emotion item publish',
+    '2026-04-11 10:08:00+00', null, 'Emotion item publish',
     '2026-04-11 10:08:00+00'
   ),
   (
@@ -413,7 +413,7 @@ insert into content_versions (
     '33333333-3333-3333-3333-333333333006', 1,
     's3://pst/published/duygular/sukunet/v1.json',
     '{"recommended_module":"emotion-regulation-module"}'::jsonb,
-    '2026-04-11 10:09:00+00', 'release.bot', 'Emotion item publish',
+    '2026-04-11 10:09:00+00', null, 'Emotion item publish',
     '2026-04-11 10:09:00+00'
   ),
   (
@@ -421,7 +421,7 @@ insert into content_versions (
     '33333333-3333-3333-3333-333333333008', 2,
     's3://pst/published/hadith/kuvvetli-mumin/v2.json',
     '{"supports":["module","workshop"]}'::jsonb,
-    '2026-04-11 10:10:00+00', 'release.bot', 'Hadith analysis publish with psychology bridge',
+    '2026-04-11 10:10:00+00', null, 'Hadith analysis publish with psychology bridge',
     '2026-04-11 10:10:00+00'
   ),
   (
@@ -429,7 +429,7 @@ insert into content_versions (
     '33333333-3333-3333-3333-333333333009', 1,
     's3://pst/published/video/emotional-resilience/v1.json',
     '{"captions":["tr","en"],"transcript_linked":true}'::jsonb,
-    '2026-04-11 10:11:00+00', 'release.bot', 'Video publish',
+    '2026-04-11 10:11:00+00', null, 'Video publish',
     '2026-04-11 10:11:00+00'
   ),
   (
@@ -437,7 +437,7 @@ insert into content_versions (
     '33333333-3333-3333-3333-333333333003', 1,
     's3://pst/published/modules/emotion-regulation/v1.json',
     '{"composition":"emotion_entry_packages"}'::jsonb,
-    '2026-04-11 10:12:00+00', 'release.bot', 'Emotion-based module publish',
+    '2026-04-11 10:12:00+00', null, 'Emotion-based module publish',
     '2026-04-11 10:12:00+00'
   )
 on conflict do nothing;
@@ -445,102 +445,102 @@ on conflict do nothing;
 insert into content_versions (
   id, content_item_id, source_document_id, version_no, structured_payload_ref, metadata, published_at, published_by, change_summary, created_at
 ) values
-  ('22222222-2222-2222-2222-000000000010', '11111111-1111-1111-1111-000000000010', '33333333-3333-3333-3333-333333333001', 1, 's3://pst/published/journeys/sabahla-baslayan-denge-yolculugu/v1.json', '{"contains":["module","module","workshop","ebook"]}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded discovery seed publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-000000000011', '11111111-1111-1111-1111-000000000011', '33333333-3333-3333-3333-333333333001', 1, 's3://pst/published/journeys/kaygidan-netlige-yolculuk/v1.json', '{"contains":["module","module","workshop","ebook"]}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded discovery seed publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-000000000012', '11111111-1111-1111-1111-000000000012', '33333333-3333-3333-3333-333333333001', 1, 's3://pst/published/journeys/niyet-ve-devam-yolculugu/v1.json', '{"contains":["module","module","workshop","ebook"]}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded discovery seed publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-000000000013', '11111111-1111-1111-1111-000000000013', '33333333-3333-3333-3333-333333333001', 1, 's3://pst/published/journeys/sukrun-rengi-yolculugu/v1.json', '{"contains":["module","module","workshop","ebook"]}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded discovery seed publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-000000000014', '11111111-1111-1111-1111-000000000014', '33333333-3333-3333-3333-333333333001', 1, 's3://pst/published/journeys/belirsizlikte-guven-yolculugu/v1.json', '{"contains":["module","module","workshop","ebook"]}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded discovery seed publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-000000000015', '11111111-1111-1111-1111-000000000015', '33333333-3333-3333-3333-333333333001', 1, 's3://pst/published/journeys/yavaslama-ve-farkindalik-yolculugu/v1.json', '{"contains":["module","module","workshop","ebook"]}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded discovery seed publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-000000000016', '11111111-1111-1111-1111-000000000016', '33333333-3333-3333-3333-333333333001', 1, 's3://pst/published/journeys/merhametli-kalp-yolculugu/v1.json', '{"contains":["module","module","workshop","ebook"]}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded discovery seed publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-000000000017', '11111111-1111-1111-1111-000000000017', '33333333-3333-3333-3333-333333333001', 1, 's3://pst/published/journeys/korkudan-cesarete-yolculuk/v1.json', '{"contains":["module","module","workshop","ebook"]}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded discovery seed publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-000000000018', '11111111-1111-1111-1111-000000000018', '33333333-3333-3333-3333-333333333001', 1, 's3://pst/published/journeys/aidiyet-ve-sohbet-yolculugu/v1.json', '{"contains":["module","module","workshop","ebook"]}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded discovery seed publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-000000000019', '11111111-1111-1111-1111-000000000019', '33333333-3333-3333-3333-333333333001', 1, 's3://pst/published/journeys/yorgunluktan-toparlanmaya-yolculuk/v1.json', '{"contains":["module","module","workshop","ebook"]}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded discovery seed publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-00000000001a', '11111111-1111-1111-1111-00000000001a', '33333333-3333-3333-3333-333333333001', 1, 's3://pst/published/journeys/sessizlikte-tefekkur-yolculugu/v1.json', '{"contains":["module","module","workshop","ebook"]}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded discovery seed publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-00000000001b', '11111111-1111-1111-1111-00000000001b', '33333333-3333-3333-3333-333333333001', 1, 's3://pst/published/journeys/dua-ile-yakinlik-yolculugu/v1.json', '{"contains":["module","module","workshop","ebook"]}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded discovery seed publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-00000000001c', '11111111-1111-1111-1111-00000000001c', '33333333-3333-3333-3333-333333333001', 1, 's3://pst/published/journeys/kalp-temizligi-yolculugu/v1.json', '{"contains":["module","module","workshop","ebook"]}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded discovery seed publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-00000000001d', '11111111-1111-1111-1111-00000000001d', '33333333-3333-3333-3333-333333333001', 1, 's3://pst/published/journeys/ferahliga-acilan-yolculuk/v1.json', '{"contains":["module","module","workshop","ebook"]}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded discovery seed publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-00000000001e', '11111111-1111-1111-1111-00000000001e', '33333333-3333-3333-3333-333333333001', 1, 's3://pst/published/journeys/teslimiyet-ve-gayret-yolculugu/v1.json', '{"contains":["module","module","workshop","ebook"]}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded discovery seed publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-00000000001f', '11111111-1111-1111-1111-00000000001f', '33333333-3333-3333-3333-333333333001', 1, 's3://pst/published/journeys/sabitlik-ve-sebat-yolculugu/v1.json', '{"contains":["module","module","workshop","ebook"]}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded discovery seed publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-000000000020', '11111111-1111-1111-1111-000000000020', '33333333-3333-3333-3333-333333333001', 1, 's3://pst/published/journeys/huzunden-umuda-yolculuk/v1.json', '{"contains":["module","module","workshop","ebook"]}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded discovery seed publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-000000000021', '11111111-1111-1111-1111-000000000021', '33333333-3333-3333-3333-333333333001', 1, 's3://pst/published/journeys/gunluk-denge-yolculugu/v1.json', '{"contains":["module","module","workshop","ebook"]}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded discovery seed publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-000000000022', '11111111-1111-1111-1111-000000000022', '33333333-3333-3333-3333-333333333001', 1, 's3://pst/published/journeys/ic-dayaniklilik-yolculugu/v1.json', '{"contains":["module","module","workshop","ebook"]}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded discovery seed publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-000000000030', '11111111-1111-1111-1111-000000000030', '33333333-3333-3333-3333-333333333002', 1, 's3://pst/published/modules/sabri-derinlestirme-modulu/v1.json', '{"composition":"spiritual_lesson_packages","discovery_type":"module"}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded module publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-000000000031', '11111111-1111-1111-1111-000000000031', '33333333-3333-3333-3333-333333333002', 1, 's3://pst/published/modules/dua-ve-yakinlik-modulu/v1.json', '{"composition":"spiritual_lesson_packages","discovery_type":"module"}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded module publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-000000000032', '11111111-1111-1111-1111-000000000032', '33333333-3333-3333-3333-333333333002', 1, 's3://pst/published/modules/tevazu-ve-hizmet-modulu/v1.json', '{"composition":"spiritual_lesson_packages","discovery_type":"module"}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded module publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-000000000033', '11111111-1111-1111-1111-000000000033', '33333333-3333-3333-3333-333333333002', 1, 's3://pst/published/modules/belirsizlikte-guven-modulu/v1.json', '{"composition":"spiritual_lesson_packages","discovery_type":"module"}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded module publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-000000000034', '11111111-1111-1111-1111-000000000034', '33333333-3333-3333-3333-333333333002', 1, 's3://pst/published/modules/kirilganliktan-hikmete-modulu/v1.json', '{"composition":"spiritual_lesson_packages","discovery_type":"module"}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded module publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-000000000035', '11111111-1111-1111-1111-000000000035', '33333333-3333-3333-3333-333333333010', 1, 's3://pst/published/modules/sebat-ve-tazelenme-modulu/v1.json', '{"composition":"spiritual_lesson_packages","discovery_type":"module","published_from":"rich_text_json","reader_delivery":"structured_payload_ref","rag_source":"published_payload"}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded module publish from in-db rich text source to published reader payload', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-000000000036', '11111111-1111-1111-1111-000000000036', '33333333-3333-3333-3333-333333333002', 1, 's3://pst/published/modules/merhametli-bakis-modulu/v1.json', '{"composition":"spiritual_lesson_packages","discovery_type":"module"}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded module publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-000000000037', '11111111-1111-1111-1111-000000000037', '33333333-3333-3333-3333-333333333003', 1, 's3://pst/published/modules/umut-ve-cesaret-modulu/v1.json', '{"composition":"emotion_entry_packages","discovery_type":"module"}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded module publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-000000000038', '11111111-1111-1111-1111-000000000038', '33333333-3333-3333-3333-333333333003', 1, 's3://pst/published/modules/korku-ve-tedirginlik-modulu/v1.json', '{"composition":"emotion_entry_packages","discovery_type":"module"}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded module publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-000000000039', '11111111-1111-1111-1111-000000000039', '33333333-3333-3333-3333-333333333003', 1, 's3://pst/published/modules/huzun-ve-ozlem-modulu/v1.json', '{"composition":"emotion_entry_packages","discovery_type":"module"}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded module publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-00000000003a', '11111111-1111-1111-1111-00000000003a', '33333333-3333-3333-3333-333333333003', 1, 's3://pst/published/modules/sucluluk-ve-mahcubiyet-modulu/v1.json', '{"composition":"emotion_entry_packages","discovery_type":"module"}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded module publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-00000000003b', '11111111-1111-1111-1111-00000000003b', '33333333-3333-3333-3333-333333333003', 1, 's3://pst/published/modules/aidiyet-ve-yalnizlik-modulu/v1.json', '{"composition":"emotion_entry_packages","discovery_type":"module"}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded module publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-00000000003c', '11111111-1111-1111-1111-00000000003c', '33333333-3333-3333-3333-333333333003', 1, 's3://pst/published/modules/ferahlama-ve-rahatlama-modulu/v1.json', '{"composition":"emotion_entry_packages","discovery_type":"module"}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded module publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-000000000040', '11111111-1111-1111-1111-000000000040', '33333333-3333-3333-3333-333333333007', 1, 's3://pst/published/workshops/kaygi-aninda-denge-atolyesi/v1.json', '{"stage_count":1,"has_workbook":true,"discovery_type":"workshop"}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded workshop publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-000000000041', '11111111-1111-1111-1111-000000000041', '33333333-3333-3333-3333-333333333007', 1, 's3://pst/published/workshops/iliski-onarimi-atolyesi/v1.json', '{"stage_count":1,"has_workbook":true,"discovery_type":"workshop"}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded workshop publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-000000000042', '11111111-1111-1111-1111-000000000042', '33333333-3333-3333-3333-333333333007', 1, 's3://pst/published/workshops/belirsizlikle-yasama-atolyesi/v1.json', '{"stage_count":1,"has_workbook":true,"discovery_type":"workshop"}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded workshop publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-000000000043', '11111111-1111-1111-1111-000000000043', '33333333-3333-3333-3333-333333333007', 1, 's3://pst/published/workshops/sukrun-ritmi-atolyesi/v1.json', '{"stage_count":1,"has_workbook":true,"discovery_type":"workshop"}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded workshop publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-000000000044', '11111111-1111-1111-1111-000000000044', '33333333-3333-3333-3333-333333333007', 1, 's3://pst/published/workshops/yalnizlik-ve-aidiyet-atolyesi/v1.json', '{"stage_count":1,"has_workbook":true,"discovery_type":"workshop"}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded workshop publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-000000000045', '11111111-1111-1111-1111-000000000045', '33333333-3333-3333-3333-333333333007', 1, 's3://pst/published/workshops/yorgun-kalbi-toparlama-atolyesi/v1.json', '{"stage_count":1,"has_workbook":true,"discovery_type":"workshop"}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded workshop publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-000000000046', '11111111-1111-1111-1111-000000000046', '33333333-3333-3333-3333-333333333007', 1, 's3://pst/published/workshops/niyet-tazeleme-atolyesi/v1.json', '{"stage_count":1,"has_workbook":true,"discovery_type":"workshop"}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded workshop publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-000000000047', '11111111-1111-1111-1111-000000000047', '33333333-3333-3333-3333-333333333007', 1, 's3://pst/published/workshops/sinir-ve-merhamet-atolyesi/v1.json', '{"stage_count":1,"has_workbook":true,"discovery_type":"workshop"}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded workshop publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-000000000048', '11111111-1111-1111-1111-000000000048', '33333333-3333-3333-3333-333333333007', 1, 's3://pst/published/workshops/cesaretle-adim-atma-atolyesi/v1.json', '{"stage_count":1,"has_workbook":true,"discovery_type":"workshop"}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded workshop publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-000000000050', '11111111-1111-1111-1111-000000000050', '33333333-3333-3333-3333-333333333004', 1, 's3://pst/published/ebooks/belirsizlikte-yurumek/v1.json', '{"toc_depth":2,"audio_available":true,"discovery_type":"ebook"}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded ebook publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-000000000051', '11111111-1111-1111-1111-000000000051', '33333333-3333-3333-3333-333333333004', 1, 's3://pst/published/ebooks/merhametin-dili/v1.json', '{"toc_depth":2,"audio_available":false,"discovery_type":"ebook"}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded ebook publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-000000000052', '11111111-1111-1111-1111-000000000052', '33333333-3333-3333-3333-333333333004', 1, 's3://pst/published/ebooks/kaygidan-dengeye-notlar/v1.json', '{"toc_depth":2,"audio_available":true,"discovery_type":"ebook"}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded ebook publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-000000000053', '11111111-1111-1111-1111-000000000053', '33333333-3333-3333-3333-333333333004', 1, 's3://pst/published/ebooks/sessizlik-ve-tefekkur/v1.json', '{"toc_depth":2,"audio_available":false,"discovery_type":"ebook"}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded ebook publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-000000000060', '11111111-1111-1111-1111-000000000060', '33333333-3333-3333-3333-333333333005', 1, 's3://pst/published/kesifler/tefekkurde-derinlesmek/v1.json', '{"module_ready":true,"discovery_type":"spiritual_lesson"}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded lesson publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-000000000061', '11111111-1111-1111-1111-000000000061', '33333333-3333-3333-3333-333333333005', 1, 's3://pst/published/kesifler/sukretmek-ve-gormek/v1.json', '{"module_ready":true,"discovery_type":"spiritual_lesson"}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded lesson publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-000000000062', '11111111-1111-1111-1111-000000000062', '33333333-3333-3333-3333-333333333005', 1, 's3://pst/published/kesifler/teslimiyet-ve-gayret/v1.json', '{"module_ready":true,"discovery_type":"spiritual_lesson"}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded lesson publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-000000000063', '11111111-1111-1111-1111-000000000063', '33333333-3333-3333-3333-333333333005', 1, 's3://pst/published/kesifler/kalp-temizligi/v1.json', '{"module_ready":true,"discovery_type":"spiritual_lesson"}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded lesson publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-000000000064', '11111111-1111-1111-1111-000000000064', '33333333-3333-3333-3333-333333333005', 1, 's3://pst/published/kesifler/dua-ile-yakinlik/v1.json', '{"module_ready":true,"discovery_type":"spiritual_lesson"}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded lesson publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-000000000065', '11111111-1111-1111-1111-000000000065', '33333333-3333-3333-3333-333333333005', 1, 's3://pst/published/kesifler/merhametli-bakis/v1.json', '{"module_ready":true,"discovery_type":"spiritual_lesson"}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded lesson publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-000000000066', '11111111-1111-1111-1111-000000000066', '33333333-3333-3333-3333-333333333005', 1, 's3://pst/published/kesifler/ic-muhasebe/v1.json', '{"module_ready":true,"discovery_type":"spiritual_lesson"}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded lesson publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-000000000067', '11111111-1111-1111-1111-000000000067', '33333333-3333-3333-3333-333333333005', 1, 's3://pst/published/kesifler/gonul-yorgunlugunu-fark-etmek/v1.json', '{"module_ready":true,"discovery_type":"spiritual_lesson"}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded lesson publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-000000000068', '11111111-1111-1111-1111-000000000068', '33333333-3333-3333-3333-333333333005', 1, 's3://pst/published/kesifler/sabitlik-ve-sebat/v1.json', '{"module_ready":true,"discovery_type":"spiritual_lesson"}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded lesson publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-000000000069', '11111111-1111-1111-1111-000000000069', '33333333-3333-3333-3333-333333333005', 1, 's3://pst/published/kesifler/tevazu-ve-dayaniklilik/v1.json', '{"module_ready":true,"discovery_type":"spiritual_lesson"}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded lesson publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-00000000006a', '11111111-1111-1111-1111-00000000006a', '33333333-3333-3333-3333-333333333005', 1, 's3://pst/published/kesifler/hizmet-bilinci/v1.json', '{"module_ready":true,"discovery_type":"spiritual_lesson"}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded lesson publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-00000000006b', '11111111-1111-1111-1111-00000000006b', '33333333-3333-3333-3333-333333333005', 1, 's3://pst/published/kesifler/affetmeye-yaklasmak/v1.json', '{"module_ready":true,"discovery_type":"spiritual_lesson"}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded lesson publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-00000000006c', '11111111-1111-1111-1111-00000000006c', '33333333-3333-3333-3333-333333333005', 1, 's3://pst/published/kesifler/gecikmeye-tahammul/v1.json', '{"module_ready":true,"discovery_type":"spiritual_lesson"}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded lesson publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-00000000006d', '11111111-1111-1111-1111-00000000006d', '33333333-3333-3333-3333-333333333005', 1, 's3://pst/published/kesifler/nimetin-izini-surmek/v1.json', '{"module_ready":true,"discovery_type":"spiritual_lesson"}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded lesson publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-00000000006e', '11111111-1111-1111-1111-00000000006e', '33333333-3333-3333-3333-333333333005', 1, 's3://pst/published/kesifler/yalnizlikta-saglam-kalmak/v1.json', '{"module_ready":true,"discovery_type":"spiritual_lesson"}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded lesson publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-00000000006f', '11111111-1111-1111-1111-00000000006f', '33333333-3333-3333-3333-333333333005', 1, 's3://pst/published/kesifler/sohbetin-bereketi/v1.json', '{"module_ready":true,"discovery_type":"spiritual_lesson"}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded lesson publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-000000000070', '11111111-1111-1111-1111-000000000070', '33333333-3333-3333-3333-333333333005', 1, 's3://pst/published/kesifler/korkudan-emanete/v1.json', '{"module_ready":true,"discovery_type":"spiritual_lesson"}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded lesson publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-000000000071', '11111111-1111-1111-1111-000000000071', '33333333-3333-3333-3333-333333333005', 1, 's3://pst/published/kesifler/belirsizlikte-guven/v1.json', '{"module_ready":true,"discovery_type":"spiritual_lesson"}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded lesson publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-000000000072', '11111111-1111-1111-1111-000000000072', '33333333-3333-3333-3333-333333333005', 1, 's3://pst/published/kesifler/hedefi-tazelemek/v1.json', '{"module_ready":true,"discovery_type":"spiritual_lesson"}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded lesson publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-000000000073', '11111111-1111-1111-1111-000000000073', '33333333-3333-3333-3333-333333333005', 1, 's3://pst/published/kesifler/kirikliktan-hikmete/v1.json', '{"module_ready":true,"discovery_type":"spiritual_lesson"}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded lesson publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-000000000074', '11111111-1111-1111-1111-000000000074', '33333333-3333-3333-3333-333333333005', 1, 's3://pst/published/kesifler/yoldan-dusunce-toparlanmak/v1.json', '{"module_ready":true,"discovery_type":"spiritual_lesson"}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded lesson publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-000000000075', '11111111-1111-1111-1111-000000000075', '33333333-3333-3333-3333-333333333005', 1, 's3://pst/published/kesifler/sessizlikte-dinlemek/v1.json', '{"module_ready":true,"discovery_type":"spiritual_lesson"}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded lesson publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-000000000076', '11111111-1111-1111-1111-000000000076', '33333333-3333-3333-3333-333333333005', 1, 's3://pst/published/kesifler/sukrun-pratigi/v1.json', '{"module_ready":true,"discovery_type":"spiritual_lesson"}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded lesson publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-000000000080', '11111111-1111-1111-1111-000000000080', '33333333-3333-3333-3333-333333333006', 1, 's3://pst/published/duygular/umut/v1.json', '{"recommended_surface":"discovery_emotion","discovery_type":"emotion"}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded emotion publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-000000000081', '11111111-1111-1111-1111-000000000081', '33333333-3333-3333-3333-333333333006', 1, 's3://pst/published/duygular/ozlem/v1.json', '{"recommended_surface":"discovery_emotion","discovery_type":"emotion"}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded emotion publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-000000000082', '11111111-1111-1111-1111-000000000082', '33333333-3333-3333-3333-333333333006', 1, 's3://pst/published/duygular/mahcubiyet/v1.json', '{"recommended_surface":"discovery_emotion","discovery_type":"emotion"}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded emotion publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-000000000083', '11111111-1111-1111-1111-000000000083', '33333333-3333-3333-3333-333333333006', 1, 's3://pst/published/duygular/minnet/v1.json', '{"recommended_surface":"discovery_emotion","discovery_type":"emotion"}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded emotion publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-000000000084', '11111111-1111-1111-1111-000000000084', '33333333-3333-3333-3333-333333333006', 1, 's3://pst/published/duygular/yalnizlik/v1.json', '{"recommended_surface":"discovery_emotion","discovery_type":"emotion"}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded emotion publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-000000000085', '11111111-1111-1111-1111-000000000085', '33333333-3333-3333-3333-333333333006', 1, 's3://pst/published/duygular/bunalmislik/v1.json', '{"recommended_surface":"discovery_emotion","discovery_type":"emotion"}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded emotion publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-000000000086', '11111111-1111-1111-1111-000000000086', '33333333-3333-3333-3333-333333333006', 1, 's3://pst/published/duygular/hayal-kirikligi/v1.json', '{"recommended_surface":"discovery_emotion","discovery_type":"emotion"}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded emotion publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-000000000087', '11111111-1111-1111-1111-000000000087', '33333333-3333-3333-3333-333333333006', 1, 's3://pst/published/duygular/guvende-hissetme/v1.json', '{"recommended_surface":"discovery_emotion","discovery_type":"emotion"}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded emotion publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-000000000088', '11111111-1111-1111-1111-000000000088', '33333333-3333-3333-3333-333333333006', 1, 's3://pst/published/duygular/korku/v1.json', '{"recommended_surface":"discovery_emotion","discovery_type":"emotion"}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded emotion publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-000000000089', '11111111-1111-1111-1111-000000000089', '33333333-3333-3333-3333-333333333006', 1, 's3://pst/published/duygular/merak/v1.json', '{"recommended_surface":"discovery_emotion","discovery_type":"emotion"}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded emotion publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-00000000008a', '11111111-1111-1111-1111-00000000008a', '33333333-3333-3333-3333-333333333006', 1, 's3://pst/published/duygular/kararsizlik/v1.json', '{"recommended_surface":"discovery_emotion","discovery_type":"emotion"}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded emotion publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-00000000008b', '11111111-1111-1111-1111-00000000008b', '33333333-3333-3333-3333-333333333006', 1, 's3://pst/published/duygular/sevinc/v1.json', '{"recommended_surface":"discovery_emotion","discovery_type":"emotion"}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded emotion publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-00000000008c', '11111111-1111-1111-1111-00000000008c', '33333333-3333-3333-3333-333333333006', 1, 's3://pst/published/duygular/huzun/v1.json', '{"recommended_surface":"discovery_emotion","discovery_type":"emotion"}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded emotion publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-00000000008d', '11111111-1111-1111-1111-00000000008d', '33333333-3333-3333-3333-333333333006', 1, 's3://pst/published/duygular/sucluluk/v1.json', '{"recommended_surface":"discovery_emotion","discovery_type":"emotion"}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded emotion publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-00000000008e', '11111111-1111-1111-1111-00000000008e', '33333333-3333-3333-3333-333333333006', 1, 's3://pst/published/duygular/rahatlama/v1.json', '{"recommended_surface":"discovery_emotion","discovery_type":"emotion"}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded emotion publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-00000000008f', '11111111-1111-1111-1111-00000000008f', '33333333-3333-3333-3333-333333333006', 1, 's3://pst/published/duygular/caresizlik/v1.json', '{"recommended_surface":"discovery_emotion","discovery_type":"emotion"}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded emotion publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-000000000090', '11111111-1111-1111-1111-000000000090', '33333333-3333-3333-3333-333333333006', 1, 's3://pst/published/duygular/sabirsizlik/v1.json', '{"recommended_surface":"discovery_emotion","discovery_type":"emotion"}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded emotion publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-000000000091', '11111111-1111-1111-1111-000000000091', '33333333-3333-3333-3333-333333333006', 1, 's3://pst/published/duygular/guven/v1.json', '{"recommended_surface":"discovery_emotion","discovery_type":"emotion"}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded emotion publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-000000000092', '11111111-1111-1111-1111-000000000092', '33333333-3333-3333-3333-333333333006', 1, 's3://pst/published/duygular/direnc/v1.json', '{"recommended_surface":"discovery_emotion","discovery_type":"emotion"}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded emotion publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-000000000093', '11111111-1111-1111-1111-000000000093', '33333333-3333-3333-3333-333333333006', 1, 's3://pst/published/duygular/sikisiklik/v1.json', '{"recommended_surface":"discovery_emotion","discovery_type":"emotion"}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded emotion publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-000000000094', '11111111-1111-1111-1111-000000000094', '33333333-3333-3333-3333-333333333006', 1, 's3://pst/published/duygular/utanc/v1.json', '{"recommended_surface":"discovery_emotion","discovery_type":"emotion"}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded emotion publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-000000000095', '11111111-1111-1111-1111-000000000095', '33333333-3333-3333-3333-333333333006', 1, 's3://pst/published/duygular/aidiyet/v1.json', '{"recommended_surface":"discovery_emotion","discovery_type":"emotion"}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded emotion publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-000000000096', '11111111-1111-1111-1111-000000000096', '33333333-3333-3333-3333-333333333006', 1, 's3://pst/published/duygular/kiskanclik/v1.json', '{"recommended_surface":"discovery_emotion","discovery_type":"emotion"}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded emotion publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-000000000097', '11111111-1111-1111-1111-000000000097', '33333333-3333-3333-3333-333333333006', 1, 's3://pst/published/duygular/hayranlik/v1.json', '{"recommended_surface":"discovery_emotion","discovery_type":"emotion"}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded emotion publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-000000000098', '11111111-1111-1111-1111-000000000098', '33333333-3333-3333-3333-333333333006', 1, 's3://pst/published/duygular/yorgunluk/v1.json', '{"recommended_surface":"discovery_emotion","discovery_type":"emotion"}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded emotion publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-000000000099', '11111111-1111-1111-1111-000000000099', '33333333-3333-3333-3333-333333333006', 1, 's3://pst/published/duygular/ferahlik/v1.json', '{"recommended_surface":"discovery_emotion","discovery_type":"emotion"}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded emotion publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-00000000009a', '11111111-1111-1111-1111-00000000009a', '33333333-3333-3333-3333-333333333006', 1, 's3://pst/published/duygular/tedirginlik/v1.json', '{"recommended_surface":"discovery_emotion","discovery_type":"emotion"}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded emotion publish', '2026-04-12 09:20:00+00'),
-  ('22222222-2222-2222-2222-00000000009b', '11111111-1111-1111-1111-00000000009b', '33333333-3333-3333-3333-333333333006', 1, 's3://pst/published/duygular/cesaret/v1.json', '{"recommended_surface":"discovery_emotion","discovery_type":"emotion"}'::jsonb, '2026-04-12 09:20:00+00', 'release.bot', 'Expanded emotion publish', '2026-04-12 09:20:00+00')
+  ('22222222-2222-2222-2222-000000000010', '11111111-1111-1111-1111-000000000010', '33333333-3333-3333-3333-333333333001', 1, 's3://pst/published/journeys/sabahla-baslayan-denge-yolculugu/v1.json', '{"contains":["module","module","workshop","ebook"]}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded discovery seed publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-000000000011', '11111111-1111-1111-1111-000000000011', '33333333-3333-3333-3333-333333333001', 1, 's3://pst/published/journeys/kaygidan-netlige-yolculuk/v1.json', '{"contains":["module","module","workshop","ebook"]}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded discovery seed publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-000000000012', '11111111-1111-1111-1111-000000000012', '33333333-3333-3333-3333-333333333001', 1, 's3://pst/published/journeys/niyet-ve-devam-yolculugu/v1.json', '{"contains":["module","module","workshop","ebook"]}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded discovery seed publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-000000000013', '11111111-1111-1111-1111-000000000013', '33333333-3333-3333-3333-333333333001', 1, 's3://pst/published/journeys/sukrun-rengi-yolculugu/v1.json', '{"contains":["module","module","workshop","ebook"]}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded discovery seed publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-000000000014', '11111111-1111-1111-1111-000000000014', '33333333-3333-3333-3333-333333333001', 1, 's3://pst/published/journeys/belirsizlikte-guven-yolculugu/v1.json', '{"contains":["module","module","workshop","ebook"]}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded discovery seed publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-000000000015', '11111111-1111-1111-1111-000000000015', '33333333-3333-3333-3333-333333333001', 1, 's3://pst/published/journeys/yavaslama-ve-farkindalik-yolculugu/v1.json', '{"contains":["module","module","workshop","ebook"]}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded discovery seed publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-000000000016', '11111111-1111-1111-1111-000000000016', '33333333-3333-3333-3333-333333333001', 1, 's3://pst/published/journeys/merhametli-kalp-yolculugu/v1.json', '{"contains":["module","module","workshop","ebook"]}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded discovery seed publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-000000000017', '11111111-1111-1111-1111-000000000017', '33333333-3333-3333-3333-333333333001', 1, 's3://pst/published/journeys/korkudan-cesarete-yolculuk/v1.json', '{"contains":["module","module","workshop","ebook"]}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded discovery seed publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-000000000018', '11111111-1111-1111-1111-000000000018', '33333333-3333-3333-3333-333333333001', 1, 's3://pst/published/journeys/aidiyet-ve-sohbet-yolculugu/v1.json', '{"contains":["module","module","workshop","ebook"]}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded discovery seed publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-000000000019', '11111111-1111-1111-1111-000000000019', '33333333-3333-3333-3333-333333333001', 1, 's3://pst/published/journeys/yorgunluktan-toparlanmaya-yolculuk/v1.json', '{"contains":["module","module","workshop","ebook"]}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded discovery seed publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-00000000001a', '11111111-1111-1111-1111-00000000001a', '33333333-3333-3333-3333-333333333001', 1, 's3://pst/published/journeys/sessizlikte-tefekkur-yolculugu/v1.json', '{"contains":["module","module","workshop","ebook"]}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded discovery seed publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-00000000001b', '11111111-1111-1111-1111-00000000001b', '33333333-3333-3333-3333-333333333001', 1, 's3://pst/published/journeys/dua-ile-yakinlik-yolculugu/v1.json', '{"contains":["module","module","workshop","ebook"]}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded discovery seed publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-00000000001c', '11111111-1111-1111-1111-00000000001c', '33333333-3333-3333-3333-333333333001', 1, 's3://pst/published/journeys/kalp-temizligi-yolculugu/v1.json', '{"contains":["module","module","workshop","ebook"]}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded discovery seed publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-00000000001d', '11111111-1111-1111-1111-00000000001d', '33333333-3333-3333-3333-333333333001', 1, 's3://pst/published/journeys/ferahliga-acilan-yolculuk/v1.json', '{"contains":["module","module","workshop","ebook"]}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded discovery seed publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-00000000001e', '11111111-1111-1111-1111-00000000001e', '33333333-3333-3333-3333-333333333001', 1, 's3://pst/published/journeys/teslimiyet-ve-gayret-yolculugu/v1.json', '{"contains":["module","module","workshop","ebook"]}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded discovery seed publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-00000000001f', '11111111-1111-1111-1111-00000000001f', '33333333-3333-3333-3333-333333333001', 1, 's3://pst/published/journeys/sabitlik-ve-sebat-yolculugu/v1.json', '{"contains":["module","module","workshop","ebook"]}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded discovery seed publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-000000000020', '11111111-1111-1111-1111-000000000020', '33333333-3333-3333-3333-333333333001', 1, 's3://pst/published/journeys/huzunden-umuda-yolculuk/v1.json', '{"contains":["module","module","workshop","ebook"]}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded discovery seed publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-000000000021', '11111111-1111-1111-1111-000000000021', '33333333-3333-3333-3333-333333333001', 1, 's3://pst/published/journeys/gunluk-denge-yolculugu/v1.json', '{"contains":["module","module","workshop","ebook"]}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded discovery seed publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-000000000022', '11111111-1111-1111-1111-000000000022', '33333333-3333-3333-3333-333333333001', 1, 's3://pst/published/journeys/ic-dayaniklilik-yolculugu/v1.json', '{"contains":["module","module","workshop","ebook"]}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded discovery seed publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-000000000030', '11111111-1111-1111-1111-000000000030', '33333333-3333-3333-3333-333333333002', 1, 's3://pst/published/modules/sabri-derinlestirme-modulu/v1.json', '{"composition":"spiritual_lesson_packages","discovery_type":"module"}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded module publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-000000000031', '11111111-1111-1111-1111-000000000031', '33333333-3333-3333-3333-333333333002', 1, 's3://pst/published/modules/dua-ve-yakinlik-modulu/v1.json', '{"composition":"spiritual_lesson_packages","discovery_type":"module"}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded module publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-000000000032', '11111111-1111-1111-1111-000000000032', '33333333-3333-3333-3333-333333333002', 1, 's3://pst/published/modules/tevazu-ve-hizmet-modulu/v1.json', '{"composition":"spiritual_lesson_packages","discovery_type":"module"}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded module publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-000000000033', '11111111-1111-1111-1111-000000000033', '33333333-3333-3333-3333-333333333002', 1, 's3://pst/published/modules/belirsizlikte-guven-modulu/v1.json', '{"composition":"spiritual_lesson_packages","discovery_type":"module"}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded module publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-000000000034', '11111111-1111-1111-1111-000000000034', '33333333-3333-3333-3333-333333333002', 1, 's3://pst/published/modules/kirilganliktan-hikmete-modulu/v1.json', '{"composition":"spiritual_lesson_packages","discovery_type":"module"}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded module publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-000000000035', '11111111-1111-1111-1111-000000000035', '33333333-3333-3333-3333-333333333010', 1, 's3://pst/published/modules/sebat-ve-tazelenme-modulu/v1.json', '{"composition":"spiritual_lesson_packages","discovery_type":"module","published_from":"rich_text_json","reader_delivery":"structured_payload_ref","rag_source":"published_payload"}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded module publish from in-db rich text source to published reader payload', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-000000000036', '11111111-1111-1111-1111-000000000036', '33333333-3333-3333-3333-333333333002', 1, 's3://pst/published/modules/merhametli-bakis-modulu/v1.json', '{"composition":"spiritual_lesson_packages","discovery_type":"module"}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded module publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-000000000037', '11111111-1111-1111-1111-000000000037', '33333333-3333-3333-3333-333333333003', 1, 's3://pst/published/modules/umut-ve-cesaret-modulu/v1.json', '{"composition":"emotion_entry_packages","discovery_type":"module"}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded module publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-000000000038', '11111111-1111-1111-1111-000000000038', '33333333-3333-3333-3333-333333333003', 1, 's3://pst/published/modules/korku-ve-tedirginlik-modulu/v1.json', '{"composition":"emotion_entry_packages","discovery_type":"module"}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded module publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-000000000039', '11111111-1111-1111-1111-000000000039', '33333333-3333-3333-3333-333333333003', 1, 's3://pst/published/modules/huzun-ve-ozlem-modulu/v1.json', '{"composition":"emotion_entry_packages","discovery_type":"module"}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded module publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-00000000003a', '11111111-1111-1111-1111-00000000003a', '33333333-3333-3333-3333-333333333003', 1, 's3://pst/published/modules/sucluluk-ve-mahcubiyet-modulu/v1.json', '{"composition":"emotion_entry_packages","discovery_type":"module"}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded module publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-00000000003b', '11111111-1111-1111-1111-00000000003b', '33333333-3333-3333-3333-333333333003', 1, 's3://pst/published/modules/aidiyet-ve-yalnizlik-modulu/v1.json', '{"composition":"emotion_entry_packages","discovery_type":"module"}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded module publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-00000000003c', '11111111-1111-1111-1111-00000000003c', '33333333-3333-3333-3333-333333333003', 1, 's3://pst/published/modules/ferahlama-ve-rahatlama-modulu/v1.json', '{"composition":"emotion_entry_packages","discovery_type":"module"}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded module publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-000000000040', '11111111-1111-1111-1111-000000000040', '33333333-3333-3333-3333-333333333007', 1, 's3://pst/published/workshops/kaygi-aninda-denge-atolyesi/v1.json', '{"stage_count":1,"has_workbook":true,"discovery_type":"workshop"}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded workshop publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-000000000041', '11111111-1111-1111-1111-000000000041', '33333333-3333-3333-3333-333333333007', 1, 's3://pst/published/workshops/iliski-onarimi-atolyesi/v1.json', '{"stage_count":1,"has_workbook":true,"discovery_type":"workshop"}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded workshop publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-000000000042', '11111111-1111-1111-1111-000000000042', '33333333-3333-3333-3333-333333333007', 1, 's3://pst/published/workshops/belirsizlikle-yasama-atolyesi/v1.json', '{"stage_count":1,"has_workbook":true,"discovery_type":"workshop"}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded workshop publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-000000000043', '11111111-1111-1111-1111-000000000043', '33333333-3333-3333-3333-333333333007', 1, 's3://pst/published/workshops/sukrun-ritmi-atolyesi/v1.json', '{"stage_count":1,"has_workbook":true,"discovery_type":"workshop"}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded workshop publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-000000000044', '11111111-1111-1111-1111-000000000044', '33333333-3333-3333-3333-333333333007', 1, 's3://pst/published/workshops/yalnizlik-ve-aidiyet-atolyesi/v1.json', '{"stage_count":1,"has_workbook":true,"discovery_type":"workshop"}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded workshop publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-000000000045', '11111111-1111-1111-1111-000000000045', '33333333-3333-3333-3333-333333333007', 1, 's3://pst/published/workshops/yorgun-kalbi-toparlama-atolyesi/v1.json', '{"stage_count":1,"has_workbook":true,"discovery_type":"workshop"}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded workshop publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-000000000046', '11111111-1111-1111-1111-000000000046', '33333333-3333-3333-3333-333333333007', 1, 's3://pst/published/workshops/niyet-tazeleme-atolyesi/v1.json', '{"stage_count":1,"has_workbook":true,"discovery_type":"workshop"}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded workshop publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-000000000047', '11111111-1111-1111-1111-000000000047', '33333333-3333-3333-3333-333333333007', 1, 's3://pst/published/workshops/sinir-ve-merhamet-atolyesi/v1.json', '{"stage_count":1,"has_workbook":true,"discovery_type":"workshop"}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded workshop publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-000000000048', '11111111-1111-1111-1111-000000000048', '33333333-3333-3333-3333-333333333007', 1, 's3://pst/published/workshops/cesaretle-adim-atma-atolyesi/v1.json', '{"stage_count":1,"has_workbook":true,"discovery_type":"workshop"}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded workshop publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-000000000050', '11111111-1111-1111-1111-000000000050', '33333333-3333-3333-3333-333333333004', 1, 's3://pst/published/ebooks/belirsizlikte-yurumek/v1.json', '{"toc_depth":2,"audio_available":true,"discovery_type":"ebook"}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded ebook publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-000000000051', '11111111-1111-1111-1111-000000000051', '33333333-3333-3333-3333-333333333004', 1, 's3://pst/published/ebooks/merhametin-dili/v1.json', '{"toc_depth":2,"audio_available":false,"discovery_type":"ebook"}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded ebook publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-000000000052', '11111111-1111-1111-1111-000000000052', '33333333-3333-3333-3333-333333333004', 1, 's3://pst/published/ebooks/kaygidan-dengeye-notlar/v1.json', '{"toc_depth":2,"audio_available":true,"discovery_type":"ebook"}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded ebook publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-000000000053', '11111111-1111-1111-1111-000000000053', '33333333-3333-3333-3333-333333333004', 1, 's3://pst/published/ebooks/sessizlik-ve-tefekkur/v1.json', '{"toc_depth":2,"audio_available":false,"discovery_type":"ebook"}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded ebook publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-000000000060', '11111111-1111-1111-1111-000000000060', '33333333-3333-3333-3333-333333333005', 1, 's3://pst/published/kesifler/tefekkurde-derinlesmek/v1.json', '{"module_ready":true,"discovery_type":"spiritual_lesson"}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded lesson publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-000000000061', '11111111-1111-1111-1111-000000000061', '33333333-3333-3333-3333-333333333005', 1, 's3://pst/published/kesifler/sukretmek-ve-gormek/v1.json', '{"module_ready":true,"discovery_type":"spiritual_lesson"}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded lesson publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-000000000062', '11111111-1111-1111-1111-000000000062', '33333333-3333-3333-3333-333333333005', 1, 's3://pst/published/kesifler/teslimiyet-ve-gayret/v1.json', '{"module_ready":true,"discovery_type":"spiritual_lesson"}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded lesson publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-000000000063', '11111111-1111-1111-1111-000000000063', '33333333-3333-3333-3333-333333333005', 1, 's3://pst/published/kesifler/kalp-temizligi/v1.json', '{"module_ready":true,"discovery_type":"spiritual_lesson"}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded lesson publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-000000000064', '11111111-1111-1111-1111-000000000064', '33333333-3333-3333-3333-333333333005', 1, 's3://pst/published/kesifler/dua-ile-yakinlik/v1.json', '{"module_ready":true,"discovery_type":"spiritual_lesson"}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded lesson publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-000000000065', '11111111-1111-1111-1111-000000000065', '33333333-3333-3333-3333-333333333005', 1, 's3://pst/published/kesifler/merhametli-bakis/v1.json', '{"module_ready":true,"discovery_type":"spiritual_lesson"}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded lesson publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-000000000066', '11111111-1111-1111-1111-000000000066', '33333333-3333-3333-3333-333333333005', 1, 's3://pst/published/kesifler/ic-muhasebe/v1.json', '{"module_ready":true,"discovery_type":"spiritual_lesson"}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded lesson publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-000000000067', '11111111-1111-1111-1111-000000000067', '33333333-3333-3333-3333-333333333005', 1, 's3://pst/published/kesifler/gonul-yorgunlugunu-fark-etmek/v1.json', '{"module_ready":true,"discovery_type":"spiritual_lesson"}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded lesson publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-000000000068', '11111111-1111-1111-1111-000000000068', '33333333-3333-3333-3333-333333333005', 1, 's3://pst/published/kesifler/sabitlik-ve-sebat/v1.json', '{"module_ready":true,"discovery_type":"spiritual_lesson"}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded lesson publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-000000000069', '11111111-1111-1111-1111-000000000069', '33333333-3333-3333-3333-333333333005', 1, 's3://pst/published/kesifler/tevazu-ve-dayaniklilik/v1.json', '{"module_ready":true,"discovery_type":"spiritual_lesson"}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded lesson publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-00000000006a', '11111111-1111-1111-1111-00000000006a', '33333333-3333-3333-3333-333333333005', 1, 's3://pst/published/kesifler/hizmet-bilinci/v1.json', '{"module_ready":true,"discovery_type":"spiritual_lesson"}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded lesson publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-00000000006b', '11111111-1111-1111-1111-00000000006b', '33333333-3333-3333-3333-333333333005', 1, 's3://pst/published/kesifler/affetmeye-yaklasmak/v1.json', '{"module_ready":true,"discovery_type":"spiritual_lesson"}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded lesson publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-00000000006c', '11111111-1111-1111-1111-00000000006c', '33333333-3333-3333-3333-333333333005', 1, 's3://pst/published/kesifler/gecikmeye-tahammul/v1.json', '{"module_ready":true,"discovery_type":"spiritual_lesson"}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded lesson publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-00000000006d', '11111111-1111-1111-1111-00000000006d', '33333333-3333-3333-3333-333333333005', 1, 's3://pst/published/kesifler/nimetin-izini-surmek/v1.json', '{"module_ready":true,"discovery_type":"spiritual_lesson"}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded lesson publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-00000000006e', '11111111-1111-1111-1111-00000000006e', '33333333-3333-3333-3333-333333333005', 1, 's3://pst/published/kesifler/yalnizlikta-saglam-kalmak/v1.json', '{"module_ready":true,"discovery_type":"spiritual_lesson"}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded lesson publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-00000000006f', '11111111-1111-1111-1111-00000000006f', '33333333-3333-3333-3333-333333333005', 1, 's3://pst/published/kesifler/sohbetin-bereketi/v1.json', '{"module_ready":true,"discovery_type":"spiritual_lesson"}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded lesson publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-000000000070', '11111111-1111-1111-1111-000000000070', '33333333-3333-3333-3333-333333333005', 1, 's3://pst/published/kesifler/korkudan-emanete/v1.json', '{"module_ready":true,"discovery_type":"spiritual_lesson"}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded lesson publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-000000000071', '11111111-1111-1111-1111-000000000071', '33333333-3333-3333-3333-333333333005', 1, 's3://pst/published/kesifler/belirsizlikte-guven/v1.json', '{"module_ready":true,"discovery_type":"spiritual_lesson"}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded lesson publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-000000000072', '11111111-1111-1111-1111-000000000072', '33333333-3333-3333-3333-333333333005', 1, 's3://pst/published/kesifler/hedefi-tazelemek/v1.json', '{"module_ready":true,"discovery_type":"spiritual_lesson"}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded lesson publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-000000000073', '11111111-1111-1111-1111-000000000073', '33333333-3333-3333-3333-333333333005', 1, 's3://pst/published/kesifler/kirikliktan-hikmete/v1.json', '{"module_ready":true,"discovery_type":"spiritual_lesson"}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded lesson publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-000000000074', '11111111-1111-1111-1111-000000000074', '33333333-3333-3333-3333-333333333005', 1, 's3://pst/published/kesifler/yoldan-dusunce-toparlanmak/v1.json', '{"module_ready":true,"discovery_type":"spiritual_lesson"}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded lesson publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-000000000075', '11111111-1111-1111-1111-000000000075', '33333333-3333-3333-3333-333333333005', 1, 's3://pst/published/kesifler/sessizlikte-dinlemek/v1.json', '{"module_ready":true,"discovery_type":"spiritual_lesson"}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded lesson publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-000000000076', '11111111-1111-1111-1111-000000000076', '33333333-3333-3333-3333-333333333005', 1, 's3://pst/published/kesifler/sukrun-pratigi/v1.json', '{"module_ready":true,"discovery_type":"spiritual_lesson"}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded lesson publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-000000000080', '11111111-1111-1111-1111-000000000080', '33333333-3333-3333-3333-333333333006', 1, 's3://pst/published/duygular/umut/v1.json', '{"recommended_surface":"discovery_emotion","discovery_type":"emotion"}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded emotion publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-000000000081', '11111111-1111-1111-1111-000000000081', '33333333-3333-3333-3333-333333333006', 1, 's3://pst/published/duygular/ozlem/v1.json', '{"recommended_surface":"discovery_emotion","discovery_type":"emotion"}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded emotion publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-000000000082', '11111111-1111-1111-1111-000000000082', '33333333-3333-3333-3333-333333333006', 1, 's3://pst/published/duygular/mahcubiyet/v1.json', '{"recommended_surface":"discovery_emotion","discovery_type":"emotion"}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded emotion publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-000000000083', '11111111-1111-1111-1111-000000000083', '33333333-3333-3333-3333-333333333006', 1, 's3://pst/published/duygular/minnet/v1.json', '{"recommended_surface":"discovery_emotion","discovery_type":"emotion"}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded emotion publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-000000000084', '11111111-1111-1111-1111-000000000084', '33333333-3333-3333-3333-333333333006', 1, 's3://pst/published/duygular/yalnizlik/v1.json', '{"recommended_surface":"discovery_emotion","discovery_type":"emotion"}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded emotion publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-000000000085', '11111111-1111-1111-1111-000000000085', '33333333-3333-3333-3333-333333333006', 1, 's3://pst/published/duygular/bunalmislik/v1.json', '{"recommended_surface":"discovery_emotion","discovery_type":"emotion"}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded emotion publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-000000000086', '11111111-1111-1111-1111-000000000086', '33333333-3333-3333-3333-333333333006', 1, 's3://pst/published/duygular/hayal-kirikligi/v1.json', '{"recommended_surface":"discovery_emotion","discovery_type":"emotion"}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded emotion publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-000000000087', '11111111-1111-1111-1111-000000000087', '33333333-3333-3333-3333-333333333006', 1, 's3://pst/published/duygular/guvende-hissetme/v1.json', '{"recommended_surface":"discovery_emotion","discovery_type":"emotion"}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded emotion publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-000000000088', '11111111-1111-1111-1111-000000000088', '33333333-3333-3333-3333-333333333006', 1, 's3://pst/published/duygular/korku/v1.json', '{"recommended_surface":"discovery_emotion","discovery_type":"emotion"}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded emotion publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-000000000089', '11111111-1111-1111-1111-000000000089', '33333333-3333-3333-3333-333333333006', 1, 's3://pst/published/duygular/merak/v1.json', '{"recommended_surface":"discovery_emotion","discovery_type":"emotion"}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded emotion publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-00000000008a', '11111111-1111-1111-1111-00000000008a', '33333333-3333-3333-3333-333333333006', 1, 's3://pst/published/duygular/kararsizlik/v1.json', '{"recommended_surface":"discovery_emotion","discovery_type":"emotion"}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded emotion publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-00000000008b', '11111111-1111-1111-1111-00000000008b', '33333333-3333-3333-3333-333333333006', 1, 's3://pst/published/duygular/sevinc/v1.json', '{"recommended_surface":"discovery_emotion","discovery_type":"emotion"}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded emotion publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-00000000008c', '11111111-1111-1111-1111-00000000008c', '33333333-3333-3333-3333-333333333006', 1, 's3://pst/published/duygular/huzun/v1.json', '{"recommended_surface":"discovery_emotion","discovery_type":"emotion"}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded emotion publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-00000000008d', '11111111-1111-1111-1111-00000000008d', '33333333-3333-3333-3333-333333333006', 1, 's3://pst/published/duygular/sucluluk/v1.json', '{"recommended_surface":"discovery_emotion","discovery_type":"emotion"}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded emotion publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-00000000008e', '11111111-1111-1111-1111-00000000008e', '33333333-3333-3333-3333-333333333006', 1, 's3://pst/published/duygular/rahatlama/v1.json', '{"recommended_surface":"discovery_emotion","discovery_type":"emotion"}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded emotion publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-00000000008f', '11111111-1111-1111-1111-00000000008f', '33333333-3333-3333-3333-333333333006', 1, 's3://pst/published/duygular/caresizlik/v1.json', '{"recommended_surface":"discovery_emotion","discovery_type":"emotion"}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded emotion publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-000000000090', '11111111-1111-1111-1111-000000000090', '33333333-3333-3333-3333-333333333006', 1, 's3://pst/published/duygular/sabirsizlik/v1.json', '{"recommended_surface":"discovery_emotion","discovery_type":"emotion"}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded emotion publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-000000000091', '11111111-1111-1111-1111-000000000091', '33333333-3333-3333-3333-333333333006', 1, 's3://pst/published/duygular/guven/v1.json', '{"recommended_surface":"discovery_emotion","discovery_type":"emotion"}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded emotion publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-000000000092', '11111111-1111-1111-1111-000000000092', '33333333-3333-3333-3333-333333333006', 1, 's3://pst/published/duygular/direnc/v1.json', '{"recommended_surface":"discovery_emotion","discovery_type":"emotion"}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded emotion publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-000000000093', '11111111-1111-1111-1111-000000000093', '33333333-3333-3333-3333-333333333006', 1, 's3://pst/published/duygular/sikisiklik/v1.json', '{"recommended_surface":"discovery_emotion","discovery_type":"emotion"}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded emotion publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-000000000094', '11111111-1111-1111-1111-000000000094', '33333333-3333-3333-3333-333333333006', 1, 's3://pst/published/duygular/utanc/v1.json', '{"recommended_surface":"discovery_emotion","discovery_type":"emotion"}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded emotion publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-000000000095', '11111111-1111-1111-1111-000000000095', '33333333-3333-3333-3333-333333333006', 1, 's3://pst/published/duygular/aidiyet/v1.json', '{"recommended_surface":"discovery_emotion","discovery_type":"emotion"}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded emotion publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-000000000096', '11111111-1111-1111-1111-000000000096', '33333333-3333-3333-3333-333333333006', 1, 's3://pst/published/duygular/kiskanclik/v1.json', '{"recommended_surface":"discovery_emotion","discovery_type":"emotion"}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded emotion publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-000000000097', '11111111-1111-1111-1111-000000000097', '33333333-3333-3333-3333-333333333006', 1, 's3://pst/published/duygular/hayranlik/v1.json', '{"recommended_surface":"discovery_emotion","discovery_type":"emotion"}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded emotion publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-000000000098', '11111111-1111-1111-1111-000000000098', '33333333-3333-3333-3333-333333333006', 1, 's3://pst/published/duygular/yorgunluk/v1.json', '{"recommended_surface":"discovery_emotion","discovery_type":"emotion"}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded emotion publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-000000000099', '11111111-1111-1111-1111-000000000099', '33333333-3333-3333-3333-333333333006', 1, 's3://pst/published/duygular/ferahlik/v1.json', '{"recommended_surface":"discovery_emotion","discovery_type":"emotion"}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded emotion publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-00000000009a', '11111111-1111-1111-1111-00000000009a', '33333333-3333-3333-3333-333333333006', 1, 's3://pst/published/duygular/tedirginlik/v1.json', '{"recommended_surface":"discovery_emotion","discovery_type":"emotion"}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded emotion publish', '2026-04-12 09:20:00+00'),
+  ('22222222-2222-2222-2222-00000000009b', '11111111-1111-1111-1111-00000000009b', '33333333-3333-3333-3333-333333333006', 1, 's3://pst/published/duygular/cesaret/v1.json', '{"recommended_surface":"discovery_emotion","discovery_type":"emotion"}'::jsonb, '2026-04-12 09:20:00+00', null, 'Expanded emotion publish', '2026-04-12 09:20:00+00')
 on conflict do nothing;
 
 insert into content_assets (
@@ -1487,22 +1487,22 @@ insert into hadith_source_citations (
 on conflict do nothing;
 
 insert into users (
-  id, role, language_code, subscription_status, created_at, updated_at
+  id, email, external_auth_id, auth_provider, role, language_code, created_at, updated_at
 ) values
   (
-    '88888888-8888-8888-8888-888888888001', 'plan_owner', 'tr', 'active',
+    '88888888-8888-8888-8888-888888888001', 'plan.owner.01@pstcoaching.app', null, 'password', 'plan_owner', 'tr',
     '2026-04-01 08:00:00+00', '2026-04-11 11:05:00+00'
   ),
   (
-    '88888888-8888-8888-8888-888888888002', 'member', 'tr', 'active',
+    '88888888-8888-8888-8888-888888888002', 'member.02@pstcoaching.app', null, 'password', 'member', 'tr',
     '2026-04-02 08:00:00+00', '2026-04-11 11:05:00+00'
   ),
   (
-    '88888888-8888-8888-8888-888888888003', 'coach', 'tr', 'inactive',
+    '88888888-8888-8888-8888-888888888003', 'coach.03@pstcoaching.app', null, 'password', 'coach', 'tr',
     '2026-04-03 08:00:00+00', '2026-04-11 11:05:00+00'
   ),
   (
-    '88888888-8888-8888-8888-888888888004', 'admin', 'en', 'inactive',
+    '88888888-8888-8888-8888-888888888004', 'admin.04@pstcoaching.app', null, 'password', 'admin', 'en',
     '2026-04-04 08:00:00+00', '2026-04-11 11:05:00+00'
   )
 on conflict do nothing;
@@ -1794,21 +1794,21 @@ insert into comment_submissions (
 on conflict do nothing;
 
 insert into favorite_items (
-  id, user_id, source_type, source_ref_id, note, created_at
+  id, user_id, source_type, content_item_ref_id, highlight_ref_id, note_ref_id, note, created_at
 ) values
   (
     '99999999-9999-9999-9999-999999999051', '88888888-8888-8888-8888-888888888001',
-    'highlight', '99999999-9999-9999-9999-999999999021',
+    'highlight', null, '99999999-9999-9999-9999-999999999021', null,
     'Ebook icindeki en cok dondugum pasaj.', '2026-04-11 08:00:00+00'
   ),
   (
     '99999999-9999-9999-9999-999999999052', '88888888-8888-8888-8888-888888888001',
-    'note', '99999999-9999-9999-9999-999999999032',
+    'note', null, null, '99999999-9999-9999-9999-999999999032',
     'Workshop notunu hizli erisim icin arsivledim.', '2026-04-11 09:21:00+00'
   ),
   (
     '99999999-9999-9999-9999-999999999053', '88888888-8888-8888-8888-888888888001',
-    'content_item', '11111111-1111-1111-1111-11111111100b',
+    'content_item', '11111111-1111-1111-1111-11111111100b', null, null,
     'Bu hadisi AI sohbetinde tekrar kullanmak istiyorum.', '2026-04-11 08:15:00+00'
   )
 on conflict do nothing;
@@ -1889,10 +1889,11 @@ insert into coach_assignments (
 on conflict do nothing;
 
 insert into coach_feedback (
-  id, coach_user_id, client_user_id, target_content_item_id, body, created_at
+  id, assignment_id, coach_user_id, client_user_id, target_content_item_id, body, created_at
 ) values
   (
-    '99999999-9999-9999-9999-999999999111', '88888888-8888-8888-8888-888888888003',
+    '99999999-9999-9999-9999-999999999111', '99999999-9999-9999-9999-999999999101',
+    '88888888-8888-8888-8888-888888888003',
     '88888888-8888-8888-8888-888888888001', '11111111-1111-1111-1111-111111111003',
     'Workbook girisindeki ic cumleni daha somut tetikleyicilerle eslestirirsen 72 saatlik plan daha uygulanabilir hale gelir.',
     '2026-04-11 09:28:00+00'
@@ -1924,7 +1925,7 @@ insert into reading_group_members (
 ) values
   (
     '99999999-9999-9999-9999-999999999141', '99999999-9999-9999-9999-999999999131',
-    '88888888-8888-8888-8888-888888888001', 'owner', '2026-04-08 18:01:00+00'
+    '88888888-8888-8888-8888-888888888001', 'admin', '2026-04-08 18:01:00+00'
   ),
   (
     '99999999-9999-9999-9999-999999999142', '99999999-9999-9999-9999-999999999131',
@@ -2254,14 +2255,14 @@ on conflict do nothing;
 
 insert into source_documents (
   id, source_type, domain_type, title, original_uri, payload_json, checksum, language_code,
-  import_status, imported_at, imported_by, metadata
+  import_status, created_at, completed_at, imported_by, metadata
 ) values
   (
     '33333333-3333-3333-3333-333333333012', 'html', 'module',
     'Coach Observation Review Import',
     's3://pst/editorial/modules/coach-observation-review.html', null,
     'sha256:module-coach-observation-html-v1', 'tr', 'imported',
-    '2026-04-11 12:00:00+00', 'editorial.review',
+    '2026-04-11 12:00:00+00', '2026-04-11 12:00:00+00', null,
     '{"workflow":"editorial_review","source_origin":"legacy_web_export"}'::jsonb
   ),
   (
@@ -2269,7 +2270,7 @@ insert into source_documents (
     'Basic Breathing Practice Transcript',
     's3://pst/editorial/video/basic-breathing-practice.txt', null,
     'sha256:video-basic-breathing-txt-v1', 'tr', 'imported',
-    '2026-04-11 12:02:00+00', 'media.team',
+    '2026-04-11 12:02:00+00', '2026-04-11 12:02:00+00', null,
     '{"normalization_target":"caption_blocks","speaker":"guided_audio"}'::jsonb
   ),
   (
@@ -2277,7 +2278,7 @@ insert into source_documents (
     'Draft Hadith Companion HTML Import',
     's3://pst/editorial/hadith/draft-hadith-companion.html', null,
     'sha256:hadith-companion-html-v1', 'tr', 'pending',
-    '2026-04-11 12:03:00+00', 'editorial.ops',
+    '2026-04-11 12:03:00+00', null, null,
     '{"expected_target":"addon_only","reason":"awaiting_editor_assignment"}'::jsonb
   ),
   (
@@ -2285,7 +2286,7 @@ insert into source_documents (
     'Workshop Hotline Notes Import',
     's3://pst/editorial/workshops/hotline-notes-raw.txt', null,
     'sha256:workshop-hotline-notes-txt-v1', 'tr', 'processing',
-    '2026-04-11 12:04:00+00', 'ingest.bot',
+    '2026-04-11 12:04:00+00', null, null,
     '{"pipeline_stage":"normalizing_sections","target_workshop":"mutlak-muhtaclik"}'::jsonb
   ),
   (
@@ -2293,7 +2294,7 @@ insert into source_documents (
     'Broken Ebook OCR Rescue Text',
     's3://pst/editorial/ebooks/archived-ocr-rescue.txt', null,
     'sha256:ebook-ocr-rescue-v1', 'tr', 'failed',
-    '2026-04-11 12:05:00+00', 'ocr.pipeline',
+    '2026-04-11 12:05:00+00', null, null,
     '{"failure_reason":"page_map_alignment_failed","next_action":"manual_reimport"}'::jsonb
   ),
   (
@@ -2301,7 +2302,7 @@ insert into source_documents (
     'Archived Coach Lab Transcript',
     's3://pst/editorial/video/coach-lab-transcript.txt', null,
     'sha256:video-coach-lab-txt-v1', 'tr', 'imported',
-    '2026-04-11 12:06:00+00', 'media.team',
+    '2026-04-11 12:06:00+00', '2026-04-11 12:06:00+00', null,
     '{"visibility":"role_restricted","audience":"coach_only"}'::jsonb
   )
 on conflict do nothing;
@@ -2386,7 +2387,7 @@ insert into content_versions (
     '33333333-3333-3333-3333-333333333013', 1,
     's3://pst/published/video/temel-nefes-pratigi/v1.json',
     '{"surface":"free_onboarding","difficulty":"beginner","reader_delivery":"structured_payload_ref"}'::jsonb,
-    '2026-04-11 12:14:00+00', 'release.bot', 'Published free starter video',
+    '2026-04-11 12:14:00+00', null, 'Published free starter video',
     '2026-04-11 12:14:00+00'
   ),
   (
@@ -2402,7 +2403,7 @@ insert into content_versions (
     '33333333-3333-3333-3333-333333333017', 1,
     's3://pst/published/video/kriz-ani-koc-laboratuvari/v1.json',
     '{"surface":"coach_archive","difficulty":"advanced","visibility":"role_restricted"}'::jsonb,
-    '2025-12-10 09:00:00+00', 'archive.bot', 'Archived coach training cut',
+    '2025-12-10 09:00:00+00', null, 'Archived coach training cut',
     '2025-12-10 09:00:00+00'
   )
 on conflict do nothing;
@@ -2426,14 +2427,14 @@ insert into content_assets (
 on conflict do nothing;
 
 insert into users (
-  id, role, language_code, subscription_status, created_at, updated_at
+  id, email, external_auth_id, auth_provider, role, language_code, created_at, updated_at
 ) values
   (
-    '88888888-8888-8888-8888-888888888005', 'guest', 'tr', 'trial',
+    '88888888-8888-8888-8888-888888888005', 'guest.05@pstcoaching.app', null, 'password', 'guest', 'tr',
     '2026-04-11 12:18:00+00', '2026-04-11 12:18:00+00'
   ),
   (
-    '88888888-8888-8888-8888-888888888006', 'plan_owner', 'tr', 'canceled',
+    '88888888-8888-8888-8888-888888888006', 'plan.owner.06@pstcoaching.app', null, 'password', 'plan_owner', 'tr',
     '2026-03-01 09:00:00+00', '2026-04-11 12:18:00+00'
   )
 on conflict do nothing;

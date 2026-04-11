@@ -336,6 +336,8 @@ create table content_items (
   estimated_minutes integer,
   analytics_key text,
   metadata jsonb not null default '{}'::jsonb,
+  created_by uuid,
+  updated_by uuid,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now(),
   unique (current_version_id),
@@ -351,6 +353,10 @@ create table content_items (
 create table content_plan_access (
   content_item_id uuid      not null references content_items(id) on delete cascade,
   plan_type        plan_type not null,
+  created_by uuid,
+  updated_by uuid,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
   primary key (content_item_id, plan_type)
 );
 
@@ -364,7 +370,10 @@ create table content_versions (
   published_at timestamptz,
   published_by uuid,
   change_summary text,
+  created_by uuid,
+  updated_by uuid,
   created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
   unique (content_item_id, version_no),
   check (version_no > 0)
 );
@@ -386,7 +395,10 @@ create table content_assets (
   byte_size bigint,
   checksum text,
   download_policy text,
+  created_by uuid,
+  updated_by uuid,
   created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
   check (byte_size is null or byte_size >= 0)
 );
 
@@ -397,7 +409,10 @@ create table content_relations (
   relation_type text not null,
   sort_order integer,
   metadata jsonb not null default '{}'::jsonb,
+  created_by uuid,
+  updated_by uuid,
   created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
   unique (from_content_item_id, relation_type, to_content_item_id)
 );
 
@@ -406,13 +421,20 @@ create table content_tags (
   tag_type text not null,
   label text not null,
   slug text not null unique,
+  created_by uuid,
+  updated_by uuid,
   created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
   unique (tag_type, label)
 );
 
 create table content_item_tags (
   content_item_id uuid not null references content_items(id) on delete cascade,
   content_tag_id uuid not null references content_tags(id) on delete cascade,
+  created_by uuid,
+  updated_by uuid,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
   primary key (content_item_id, content_tag_id)
 );
 
@@ -420,7 +442,10 @@ create table journeys (
   content_item_id uuid primary key references content_items(id) on delete cascade,
   duration_days integer,
   level text,
+  created_by uuid,
+  updated_by uuid,
   created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
   check (duration_days is null or duration_days > 0)
 );
 
@@ -431,7 +456,10 @@ create table journey_items (
   child_type journey_child_type not null,
   order_index integer not null,
   is_required boolean not null default true,
+  created_by uuid,
+  updated_by uuid,
   created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
   unique (journey_content_item_id, order_index),
   unique (journey_content_item_id, child_content_item_id),
   check (order_index > 0)
@@ -440,7 +468,10 @@ create table journey_items (
 create table modules (
   content_item_id uuid primary key references content_items(id) on delete cascade,
   description text,
-  created_at timestamptz not null default now()
+  created_by uuid,
+  updated_by uuid,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
 );
 
 create table packages (
@@ -450,7 +481,10 @@ create table packages (
   source_domain_type package_source_domain_type not null,
   title text not null,
   order_index integer not null,
+  created_by uuid,
+  updated_by uuid,
   created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
   unique (module_content_item_id, order_index),
   unique (module_content_item_id, source_content_item_id),
   check (order_index > 0)
@@ -463,7 +497,10 @@ create table ebooks (
   total_pages integer not null,
   has_audio boolean not null default false,
   download_package_asset_id uuid references content_assets(id) on delete set null,
+  created_by uuid,
+  updated_by uuid,
   created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
   check (total_pages > 0)
 );
 
@@ -475,7 +512,10 @@ create table ebook_chapters (
   order_index integer not null,
   start_locator text,
   end_locator text,
+  created_by uuid,
+  updated_by uuid,
   created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
   unique (ebook_content_item_id, order_index),
   check (order_index > 0)
 );
@@ -486,7 +526,10 @@ create table ebook_page_maps (
   page_number integer not null,
   locator text not null,
   chapter_id uuid references ebook_chapters(id) on delete set null,
+  created_by uuid,
+  updated_by uuid,
   created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
   unique (ebook_content_item_id, page_number),
   check (page_number > 0)
 );
@@ -496,14 +539,20 @@ create table spiritual_lesson_collections (
   lesson_count integer,
   audience text,
   difficulty text,
+  created_by uuid,
+  updated_by uuid,
   created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
   check (lesson_count is null or lesson_count >= 0)
 );
 
 create table reflection_prompt_sets (
   id uuid primary key default gen_random_uuid(),
   title text not null,
-  created_at timestamptz not null default now()
+  created_by uuid,
+  updated_by uuid,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
 );
 
 create table spiritual_lessons (
@@ -514,7 +563,10 @@ create table spiritual_lessons (
   estimated_minutes integer,
   has_audio boolean not null default false,
   reflection_prompt_set_id uuid references reflection_prompt_sets(id) on delete set null,
+  created_by uuid,
+  updated_by uuid,
   created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
   check (lesson_no is null or lesson_no > 0),
   check (estimated_minutes is null or estimated_minutes >= 0)
 );
@@ -526,7 +578,10 @@ create table lesson_sections (
   title text,
   body_rich_text text,
   order_index integer not null,
+  created_by uuid,
+  updated_by uuid,
   created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
   unique (spiritual_lesson_id, order_index),
   check (order_index > 0)
 );
@@ -534,7 +589,10 @@ create table lesson_sections (
 create table emotion_libraries (
   content_item_id uuid primary key references content_items(id) on delete cascade,
   emotion_count integer,
+  created_by uuid,
+  updated_by uuid,
   created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
   check (emotion_count is null or emotion_count >= 0)
 );
 
@@ -546,7 +604,10 @@ create table emotion_entries (
   emotion_group text,
   intensity_level text,
   primary_color_token text,
-  created_at timestamptz not null default now()
+  created_by uuid,
+  updated_by uuid,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
 );
 
 create table emotion_sections (
@@ -555,7 +616,10 @@ create table emotion_sections (
   section_type text not null,
   body_rich_text text,
   order_index integer not null,
+  created_by uuid,
+  updated_by uuid,
   created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
   unique (emotion_entry_id, order_index),
   check (order_index > 0)
 );
@@ -568,7 +632,10 @@ create table workshops (
   delivery_mode text,
   facilitator_guide_asset_id uuid references content_assets(id) on delete set null,
   participant_workbook_asset_id uuid references content_assets(id) on delete set null,
+  created_by uuid,
+  updated_by uuid,
   created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
   check (total_duration_minutes is null or total_duration_minutes >= 0)
 );
 
@@ -581,7 +648,10 @@ create table workshop_stages (
   unlock_rule text,
   summary_text text,
   expected_output_count integer,
+  created_by uuid,
+  updated_by uuid,
   created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
   unique (workshop_content_item_id, stage_number),
   check (stage_number > 0),
   check (expected_output_count is null or expected_output_count >= 0)
@@ -595,7 +665,10 @@ create table workshop_sessions (
   duration_minutes integer,
   session_goal text,
   schedule_template text,
+  created_by uuid,
+  updated_by uuid,
   created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
   check (day_index is null or day_index > 0),
   check (duration_minutes is null or duration_minutes >= 0)
 );
@@ -610,7 +683,10 @@ create table workshop_content_blocks (
   callout_style text,
   citation_ref text,
   order_index integer not null,
+  created_by uuid,
+  updated_by uuid,
   created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
   unique (workshop_stage_id, order_index),
   check (order_index > 0)
 );
@@ -624,7 +700,10 @@ create table workshop_artifacts (
   storage_uri text,
   artifact_schema jsonb not null default '{}'::jsonb,
   role_scope text,
+  created_by uuid,
+  updated_by uuid,
   created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
   check (version > 0)
 );
 
@@ -637,7 +716,10 @@ create table hadith_analyses (
   recorded_at timestamptz,
   duration_seconds integer,
   speaker text,
+  created_by uuid,
+  updated_by uuid,
   created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
   check (duration_seconds is null or duration_seconds >= 0)
 );
 
@@ -648,7 +730,10 @@ create table hadith_analysis_sections (
   title text,
   body_rich_text text,
   order_index integer not null,
+  created_by uuid,
+  updated_by uuid,
   created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
   unique (hadith_analysis_content_item_id, order_index),
   check (order_index > 0)
 );
@@ -660,7 +745,10 @@ create table hadith_source_citations (
   book_ref text,
   chapter_ref text,
   hadith_ref text,
-  created_at timestamptz not null default now()
+  created_by uuid,
+  updated_by uuid,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
 );
 
 -- ---------------------------------------------------------------------------
@@ -674,6 +762,8 @@ create table users (
   auth_provider text not null default 'password',
   role user_role not null default 'member',
   language_code text not null default 'tr',
+  created_by uuid,
+  updated_by uuid,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now(),
   check (char_length(email) > 0),
@@ -685,7 +775,10 @@ create table user_sessions (
   user_id uuid not null references users(id) on delete cascade,
   expires_at timestamptz not null,
   last_active_at timestamptz not null,
-  created_at timestamptz not null default now()
+  created_by uuid,
+  updated_by uuid,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
 );
 
 create table demographic_profiles (
@@ -693,6 +786,9 @@ create table demographic_profiles (
   age integer not null,
   gender text,
   country_code text not null,
+  created_by uuid,
+  updated_by uuid,
+  created_at timestamptz not null default now(),
   updated_at timestamptz not null default now(),
   check (age between 13 and 120),
   check (char_length(country_code) between 2 and 3)
@@ -704,6 +800,9 @@ create table accessibility_settings (
   high_contrast boolean not null default false,
   reduce_motion boolean not null default false,
   theme text not null default 'system',
+  created_by uuid,
+  updated_by uuid,
+  created_at timestamptz not null default now(),
   updated_at timestamptz not null default now(),
   check (text_scale > 0)
 );
@@ -713,7 +812,10 @@ create table subscription_plans (
   plan_type plan_type not null,
   seat_limit integer not null,
   student_discount_eligible boolean not null default false,
+  created_by uuid,
+  updated_by uuid,
   created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
   unique (plan_type),
   check (seat_limit > 0)
 );
@@ -725,6 +827,8 @@ create table subscriptions (
   status subscription_status not null,
   renewal_at timestamptz,
   period_end_at timestamptz,
+  created_by uuid,
+  updated_by uuid,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
@@ -734,6 +838,8 @@ create table subscription_addons (
   subscription_id uuid not null references subscriptions(id) on delete cascade,
   addon_type addon_type not null,
   status addon_status not null default 'inactive',
+  created_by uuid,
+  updated_by uuid,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now(),
   unique (subscription_id, addon_type)
@@ -744,7 +850,10 @@ create table seats (
   subscription_id uuid not null references subscriptions(id) on delete cascade,
   assigned_user_id uuid references users(id) on delete set null,
   status seat_status not null default 'available',
-  created_at timestamptz not null default now()
+  created_by uuid,
+  updated_by uuid,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
   -- unique index on (subscription_id, assigned_user_id) WHERE assigned_user_id IS NOT NULL
   -- is created below to allow multiple unassigned (NULL) seats per subscription
 );
@@ -758,7 +867,10 @@ create table entitlement_grants (
   source_addon_id uuid references subscription_addons(id) on delete set null,
   starts_at timestamptz not null default now(),
   ends_at timestamptz,
+  created_by uuid,
+  updated_by uuid,
   created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
   check (char_length(target_scope) > 0),
   check (
     (entitlement_type = 'role'  and target_scope in ('guest','member','plan_owner','coach','admin')) or
@@ -775,7 +887,10 @@ create table purchase_receipts (
   verification_status text not null,
   payload jsonb not null default '{}'::jsonb,
   verified_at timestamptz,
-  created_at timestamptz not null default now()
+  created_by uuid,
+  updated_by uuid,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
 );
 
 create table reading_settings (
@@ -783,6 +898,9 @@ create table reading_settings (
   font_scale numeric(4,2) not null default 1.00,
   background_mode text not null default 'system',
   line_spacing numeric(4,2) not null default 1.50,
+  created_by uuid,
+  updated_by uuid,
+  created_at timestamptz not null default now(),
   updated_at timestamptz not null default now(),
   check (font_scale > 0),
   check (line_spacing > 0)
@@ -793,6 +911,8 @@ create table reminder_settings (
   user_id uuid not null unique references users(id) on delete cascade,
   daily_enabled boolean not null default true,
   workshop_followup_enabled boolean not null default false,
+  created_by uuid,
+  updated_by uuid,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
@@ -803,7 +923,10 @@ create table reminder_schedules (
   reminder_type reminder_type not null,
   scheduled_local_time time not null,
   enabled boolean not null default true,
+  created_by uuid,
+  updated_by uuid,
   created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
   unique (user_id, reminder_type, scheduled_local_time)
 );
 
@@ -813,6 +936,8 @@ create table notification_preferences (
   preference_type notification_preference_type not null,
   enabled boolean not null default true,
   frequency notification_frequency not null default 'instant',
+  created_by uuid,
+  updated_by uuid,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now(),
   unique (user_id, preference_type)
@@ -822,6 +947,9 @@ create table quiet_hours (
   user_id uuid primary key references users(id) on delete cascade,
   start_time time not null,
   end_time time not null,
+  created_by uuid,
+  updated_by uuid,
+  created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
 
@@ -834,7 +962,10 @@ create table notifications (
   deep_link text,
   is_read boolean not null default false,
   sent_at timestamptz not null default now(),
-  created_at timestamptz not null default now()
+  created_by uuid,
+  updated_by uuid,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
 );
 
 -- ---------------------------------------------------------------------------
@@ -850,6 +981,8 @@ create table content_progress (
   progress_percent numeric(5,2) not null default 0,
   started_at timestamptz,
   completed_at timestamptz,
+  created_by uuid,
+  updated_by uuid,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now(),
   unique (user_id, content_item_id),
@@ -864,6 +997,8 @@ create table reading_positions (
   locator_value text not null,
   progress_percent numeric(5,2) not null default 0,
   last_read_at timestamptz not null default now(),
+  created_by uuid,
+  updated_by uuid,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now(),
   unique (user_id, content_item_id),
@@ -879,6 +1014,8 @@ create table highlights (
   selected_text_hash text,
   color text,
   deleted_at timestamptz,
+  created_by uuid,
+  updated_by uuid,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
@@ -891,6 +1028,8 @@ create table notes (
   anchor_locator text,
   body text not null,
   deleted_at timestamptz,
+  created_by uuid,
+  updated_by uuid,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
@@ -905,6 +1044,8 @@ create table comment_submissions (
   status comment_status not null default 'draft',
   submitted_at timestamptz,
   deleted_at timestamptz,
+  created_by uuid,
+  updated_by uuid,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
@@ -918,7 +1059,10 @@ create table favorite_items (
   highlight_ref_id     uuid references highlights(id)     on delete cascade,
   note_ref_id          uuid references notes(id)          on delete cascade,
   note text,
+  created_by uuid,
+  updated_by uuid,
   created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
   check (
     (source_type = 'content_item' and content_item_ref_id is not null and highlight_ref_id is null and note_ref_id is null) or
     (source_type = 'highlight'    and highlight_ref_id is not null    and content_item_ref_id is null and note_ref_id is null) or
@@ -931,14 +1075,20 @@ create table collections (
   id uuid primary key default gen_random_uuid(),
   user_id uuid not null references users(id) on delete cascade,
   name text not null,
+  created_by uuid,
+  updated_by uuid,
   created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
   unique (user_id, name)
 );
 
 create table collection_items (
   collection_id uuid not null references collections(id) on delete cascade,
   favorite_item_id uuid not null references favorite_items(id) on delete cascade,
+  created_by uuid,
+  updated_by uuid,
   created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
   primary key (collection_id, favorite_item_id)
 );
 
@@ -950,6 +1100,8 @@ create table downloads (
   download_status download_status not null default 'queued',
   local_path text,
   byte_size bigint,
+  created_by uuid,
+  updated_by uuid,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now(),
   unique (user_id, content_item_id, asset_id),
@@ -966,6 +1118,8 @@ create table workbook_entries (
   version_no integer not null default 1,
   payload_json jsonb not null default '{}'::jsonb,
   deleted_at timestamptz,
+  created_by uuid,
+  updated_by uuid,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now(),
   check (version_no > 0)
@@ -981,6 +1135,8 @@ create table workshop_followup_plans (
   daily_phrase text,
   small_step text,
   status followup_status not null default 'draft',
+  created_by uuid,
+  updated_by uuid,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now(),
   unique (user_id, workshop_content_item_id, window_type)
@@ -995,6 +1151,8 @@ create table coach_assignments (
   coach_user_id uuid not null references users(id) on delete cascade,
   client_user_id uuid not null references users(id) on delete cascade,
   status coach_assignment_status not null default 'active',
+  created_by uuid,
+  updated_by uuid,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now(),
   unique (coach_user_id, client_user_id),
@@ -1008,7 +1166,10 @@ create table coach_feedback (
   client_user_id uuid not null references users(id) on delete cascade,
   target_content_item_id uuid references content_items(id) on delete set null,
   body text not null,
+  created_by uuid,
+  updated_by uuid,
   created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
   check (coach_user_id <> client_user_id)
 );
 
@@ -1018,7 +1179,11 @@ create table risk_signals (
   risk_level risk_level not null,
   source_type text not null,
   detected_at timestamptz not null default now(),
-  metadata jsonb not null default '{}'::jsonb
+  metadata jsonb not null default '{}'::jsonb,
+  created_by uuid,
+  updated_by uuid,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
 );
 
 -- ---------------------------------------------------------------------------
@@ -1030,7 +1195,10 @@ create table reading_groups (
   name text not null,
   privacy privacy_type not null default 'private',
   active_material_content_item_id uuid references content_items(id) on delete set null,
-  created_at timestamptz not null default now()
+  created_by uuid,
+  updated_by uuid,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
 );
 
 create table reading_group_members (
@@ -1038,7 +1206,10 @@ create table reading_group_members (
   reading_group_id uuid not null references reading_groups(id) on delete cascade,
   user_id uuid not null references users(id) on delete cascade,
   role group_member_role not null default 'member',
+  created_by uuid,
+  updated_by uuid,
   created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
   unique (reading_group_id, user_id)
 );
 
@@ -1048,7 +1219,10 @@ create table reading_group_materials (
   content_item_id uuid not null references content_items(id) on delete cascade,
   material_type text not null,
   status group_material_status not null default 'pending',
+  created_by uuid,
+  updated_by uuid,
   created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
   unique (reading_group_id, content_item_id)
 );
 
@@ -1057,7 +1231,10 @@ create table reading_group_messages (
   reading_group_id uuid not null references reading_groups(id) on delete cascade,
   author_user_id uuid not null references users(id) on delete cascade,
   body text not null,
-  created_at timestamptz not null default now()
+  created_by uuid,
+  updated_by uuid,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
 );
 
 create table reading_group_schedules (
@@ -1065,7 +1242,10 @@ create table reading_group_schedules (
   reading_group_id uuid not null references reading_groups(id) on delete cascade,
   starts_at timestamptz not null,
   cadence text,
-  created_at timestamptz not null default now()
+  created_by uuid,
+  updated_by uuid,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
 );
 
 create table book_clubs (
@@ -1073,7 +1253,10 @@ create table book_clubs (
   name text not null,
   privacy privacy_type not null default 'private',
   ebook_content_item_id uuid references content_items(id) on delete set null,
-  created_at timestamptz not null default now()
+  created_by uuid,
+  updated_by uuid,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
 );
 
 create table book_club_members (
@@ -1081,7 +1264,10 @@ create table book_club_members (
   book_club_id uuid not null references book_clubs(id) on delete cascade,
   user_id uuid not null references users(id) on delete cascade,
   role group_member_role not null default 'member',
+  created_by uuid,
+  updated_by uuid,
   created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
   unique (book_club_id, user_id)
 );
 
@@ -1090,7 +1276,10 @@ create table book_club_topics (
   book_club_id uuid not null references book_clubs(id) on delete cascade,
   title text not null,
   status book_club_topic_status not null default 'open',
-  created_at timestamptz not null default now()
+  created_by uuid,
+  updated_by uuid,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
 );
 
 create table book_club_messages (
@@ -1099,7 +1288,10 @@ create table book_club_messages (
   author_user_id uuid not null references users(id) on delete cascade,
   topic_id uuid references book_club_topics(id) on delete set null,
   body text not null,
-  created_at timestamptz not null default now()
+  created_by uuid,
+  updated_by uuid,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
 );
 
 create table book_club_events (
@@ -1107,7 +1299,10 @@ create table book_club_events (
   book_club_id uuid not null references book_clubs(id) on delete cascade,
   starts_at timestamptz not null,
   event_type text not null,
-  created_at timestamptz not null default now()
+  created_by uuid,
+  updated_by uuid,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
 );
 
 -- ---------------------------------------------------------------------------
@@ -1119,7 +1314,10 @@ create table badge_definitions (
   category badge_category not null,
   name text not null,
   xp_reward integer not null default 0,
+  created_by uuid,
+  updated_by uuid,
   created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
   unique (category, name),
   check (xp_reward >= 0)
 );
@@ -1129,6 +1327,10 @@ create table user_badges (
   user_id uuid not null references users(id) on delete cascade,
   badge_definition_id uuid not null references badge_definitions(id) on delete cascade,
   awarded_at timestamptz not null default now(),
+  created_by uuid,
+  updated_by uuid,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
   unique (user_id, badge_definition_id)
 );
 
@@ -1137,7 +1339,10 @@ create table xp_ledger (
   user_id uuid not null references users(id) on delete cascade,
   delta_xp integer not null,
   reason_code text not null,
-  created_at timestamptz not null default now()
+  created_by uuid,
+  updated_by uuid,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
 );
 
 create table level_definitions (
@@ -1145,7 +1350,10 @@ create table level_definitions (
   level_no integer not null unique,
   required_xp integer not null,
   label text not null,
+  created_by uuid,
+  updated_by uuid,
   created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
   check (level_no > 0),
   check (required_xp >= 0)
 );
@@ -1156,6 +1364,10 @@ create table user_levels (
   level_definition_id uuid not null references level_definitions(id) on delete restrict,
   total_xp integer not null default 0,
   reached_at timestamptz not null default now(),
+  created_by uuid,
+  updated_by uuid,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
   check (total_xp >= 0)
 );
 
@@ -1168,7 +1380,10 @@ create table ai_conversations (
   user_id uuid not null references users(id) on delete cascade,
   title text,
   deleted_at timestamptz,
-  created_at timestamptz not null default now()
+  created_by uuid,
+  updated_by uuid,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
 );
 
 create table ai_messages (
@@ -1177,7 +1392,10 @@ create table ai_messages (
   role ai_message_role not null,
   body text not null,
   deleted_at timestamptz,
-  created_at timestamptz not null default now()
+  created_by uuid,
+  updated_by uuid,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
 );
 
 create table embedding_documents (
@@ -1186,6 +1404,8 @@ create table embedding_documents (
   content_version_id uuid not null unique references content_versions(id) on delete cascade,
   status embedding_status not null default 'pending',
   vector_backend text,
+  created_by uuid,
+  updated_by uuid,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
@@ -1200,7 +1420,10 @@ create table embedding_chunks (
   chunk_hash text not null,
   chunk_text text not null,
   embedding vector(1536),
+  created_by uuid,
+  updated_by uuid,
   created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
   unique (embedding_document_id, chunk_order),
   check (chunk_order >= 0)
 );
@@ -1212,7 +1435,10 @@ create table retrieval_traces (
   retrieval_strategy text not null,
   rank_order integer,
   score numeric(8,4),
+  created_by uuid,
+  updated_by uuid,
   created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
   check (rank_order is null or rank_order >= 1)
 );
 
@@ -1223,7 +1449,10 @@ create table ai_response_citations (
   relevance_score numeric(8,4),
   locator_ref text,
   quoted_excerpt text,
+  created_by uuid,
+  updated_by uuid,
   created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
   unique (ai_message_id, embedding_chunk_id)
 );
 
@@ -1236,7 +1465,10 @@ create table videos (
   duration_seconds integer,
   difficulty video_difficulty,
   stream_uri text,
+  created_by uuid,
+  updated_by uuid,
   created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
   check (duration_seconds is null or duration_seconds >= 0)
 );
 
@@ -1245,7 +1477,10 @@ create table video_caption_tracks (
   video_content_item_id uuid not null references videos(content_item_id) on delete cascade,
   language_code text not null,
   file_uri text not null,
+  created_by uuid,
+  updated_by uuid,
   created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
   unique (video_content_item_id, language_code),
   check (char_length(language_code) between 2 and 16)
 );
@@ -1256,7 +1491,10 @@ create table video_transcript_segments (
   start_second integer not null,
   end_second integer not null,
   transcript_text text not null,
+  created_by uuid,
+  updated_by uuid,
   created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
   check (start_second >= 0),
   check (end_second >= start_second)
 );
@@ -1267,6 +1505,9 @@ create table video_progress (
   video_content_item_id uuid not null references videos(content_item_id) on delete cascade,
   last_position_seconds integer not null default 0,
   progress_percent numeric(5,2) not null default 0,
+  created_by uuid,
+  updated_by uuid,
+  created_at timestamptz not null default now(),
   updated_at timestamptz not null default now(),
   unique (user_id, video_content_item_id),
   check (last_position_seconds >= 0),
@@ -1279,6 +1520,8 @@ create table video_downloads (
   video_content_item_id uuid not null references videos(content_item_id) on delete cascade,
   local_path text,
   download_status download_status not null default 'queued',
+  created_by uuid,
+  updated_by uuid,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now(),
   unique (user_id, video_content_item_id)
