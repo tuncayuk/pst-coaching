@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 
-import { getMockData, isMockDataEnabled } from '../config/mockData';
+import { isMockDataEnabled } from '../config/mockData';
+import { getJourneys } from './mockSelectors';
 import { queryKeys } from './queryKeys';
 
 export type Journey = {
@@ -14,8 +15,7 @@ export type Journey = {
 };
 
 const loadMockJourneys = async (): Promise<Journey[]> => {
-  const data = getMockData();
-  return data?.journeys ?? [];
+  return getJourneys();
 };
 
 export const useJourneys = () => {
@@ -29,6 +29,5 @@ export const useJourneys = () => {
 };
 
 export const getMockJourneys = (): Journey[] => {
-  const data = getMockData();
-  return data?.journeys ?? [];
+  return getJourneys();
 };

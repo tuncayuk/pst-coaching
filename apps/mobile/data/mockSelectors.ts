@@ -52,7 +52,14 @@ const normalizeEbook = (e: any): Normalized<typeof e> => ({
 // User / session
 // ---------------------------------------------------------------------------
 
-export const getUsers = () => getList(getData()?.users);
+export const getUsers = () =>
+  getList(getData()?.users).map((u: any) => ({
+    ...u,
+    // Compatibility aliases
+    language: u.language_code,
+    phone: u.phone ?? null,
+    status: u.status ?? 'active',
+  }));
 export const getPrimaryUser = () => getUsers()[0];
 export const getUserSessions = () => getList(getData()?.user_sessions as any[]);
 export const getSessionsForUser = (userId?: string) =>
@@ -62,15 +69,40 @@ export const getSessionsForUser = (userId?: string) =>
 // Settings
 // ---------------------------------------------------------------------------
 
-export const getAccessibilitySettings = () => getList(getData()?.accessibility_settings);
-export const getReadingSettings = () => getList(getData()?.reading_settings);
-export const getReminderSettings = () => getList(getData()?.reminder_settings);
+export const getAccessibilitySettings = () =>
+  getList(getData()?.accessibility_settings).map((s: any) => ({
+    ...s,
+    // Compatibility aliases
+    text_size: s.text_scale,
+  }));
+
+export const getReadingSettings = () =>
+  getList(getData()?.reading_settings).map((s: any) => ({
+    ...s,
+    // Compatibility aliases
+    font_size: Math.round(s.font_scale * 16),
+    background: s.background_mode,
+    line_height: String(s.line_spacing),
+  }));
+
+export const getReminderSettings = () =>
+  getList(getData()?.reminder_settings).map((s: any) => ({
+    ...s,
+    // Compatibility aliases
+    enabled: s.daily_enabled,
+    time_local: s.time_local ?? '20:00',
+  }));
 
 // ---------------------------------------------------------------------------
 // Subscription / billing
 // ---------------------------------------------------------------------------
 
-export const getSubscriptionPlans = () => getList(getData()?.subscription_plans);
+export const getSubscriptionPlans = () =>
+  getList(getData()?.subscription_plans).map((p: any) => ({
+    ...p,
+    // Compatibility alias
+    name: p.name ?? p.plan_type,
+  }));
 export const getSubscriptions = () => getList(getData()?.subscriptions);
 
 /** Subscription add-ons junction table (subscription_addons). */
@@ -89,7 +121,12 @@ const ADDON_CATALOG = [
 ];
 export const getAddOns = () => ADDON_CATALOG;
 
-export const getSeats = () => getList(getData()?.seats);
+export const getSeats = () =>
+  getList(getData()?.seats).map((s: any) => ({
+    ...s,
+    // Compatibility alias
+    user_id: s.user_id ?? s.assigned_user_id,
+  }));
 
 /**
  * Purchase receipts (replaces old payment_transactions).
@@ -111,10 +148,21 @@ export const getPaymentTransactions = () =>
 
 export const getJourneys = () => getRawJourneys().map(normalizeJourney);
 export const getModules = () => getRawModules().map(normalizeModule);
-export const getPackages = () => getList(getData()?.packages);
+export const getPackages = () =>
+  getList(getData()?.packages).map((p: any) => ({
+    ...p,
+    // Compatibility alias
+    description: p.description ?? null,
+  }));
 export const getWorkshops = () => getRawWorkshops().map(normalizeWorkshop);
 export const getEbooks = () => getRawEbooks().map(normalizeEbook);
-export const getEbookChapters = () => getList(getData()?.ebook_chapters);
+export const getEbookChapters = () =>
+  getList(getData()?.ebook_chapters).map((ch: any) => ({
+    ...ch,
+    // Compatibility aliases
+    page_start: ch.page_start ?? null,
+    page_end: ch.page_end ?? null,
+  }));
 export const getContentAssets = () => getList(getData()?.content_assets as any[]);
 
 /**
