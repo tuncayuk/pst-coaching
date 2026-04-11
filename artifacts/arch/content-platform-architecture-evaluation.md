@@ -61,6 +61,127 @@ The options below are ranked against these criteria:
 - `Delivery speed`: Can it be built without unnecessary complexity?
 - `Operational complexity`: Is the ongoing maintenance reasonable?
 
+## Source Document Type Strategy
+
+Recommended `source_document_type` ranking for this product and future AI/RAG use:
+
+| Rank | Type | Primary Use | RAG Fit | Recommendation |
+| --- | --- | --- | --- | --- |
+| 1 | `rich_text_json` | Rich editor-authored content with headings, callouts, lists, citations, embeds | Very strong after normalization | Use as the default source document type for new editor-created content |
+| 2 | `markdown` | Editorial authoring, long-form lesson/book content | Excellent | Keep as a strong authoring format because it is simple, diff-friendly, and chunks cleanly |
+| 3 | `html` | Imported web/native rich documents | Strong after cleanup | Keep for interoperable publishing and migration cases |
+| 4 | `plain_text` | Transcript fallback, normalization output, rescue extraction | Excellent | Add for deterministic retrieval pipelines and audit/debug workflows |
+| 5 | `docx` | Legacy editorial intake and manual manuscript imports | Good after conversion | Keep because current source material already exists in this format |
+| 6 | `epub` | Ebook ingestion and packaging source | Moderate | Keep because it is important for long-form ebook distribution |
+| 7 | `audio_transcript` | Human-reviewed transcript documents | Strong | Keep for audio/video AI retrieval inputs |
+
+The source format list is intentionally narrow so ingestion stays predictable and editorial tooling stays simple.
+
+Recommended default behavior:
+- `database default`: `rich_text_json`
+- `editor-created content default`: `rich_text_json`
+- `retrieval/chunking preference`: normalized plain text derived from `rich_text_json` or `markdown`
+
+## RAG Normalization Strategy
+
+All supported source document types should pass through a normalization pipeline before publishing and before entering retrieval.
+
+Recommended ingestion path:
+
+1. `Preserve original source`
+   - store the original source document and checksum in `source_document`
+2. `Normalize into canonical blocks`
+   - convert the source into stable block/section nodes with semantic roles such as heading, paragraph, quote, worksheet prompt, citation, page locator, and timestamp locator
+3. `Extract clean retrieval text`
+   - generate chunkable plain text from the normalized blocks
+   - strip layout noise, decorative markup, and editor-specific wrappers
+4. `Attach trace metadata`
+   - preserve source document id, version id, block id, page or timestamp locator, and citation metadata for every chunk
+5. `Publish structured payload`
+   - store the normalized output as the published content payload referenced by `content_version.structured_payload_ref`
+6. `Embed only approved text`
+   - embeddings and retrieval chunks must come from the normalized published representation, not directly from raw `docx`, `epub`, or editor JSON
+
+Practical rules:
+- default new source documents to `rich_text_json`
+- store editor-authored rich text in `source_document.payload_json` as Postgres `jsonb`
+- treat `content_version.structured_payload_ref` as the canonical reader and RAG delivery pointer
+- prefer normalized plain text for chunk generation
+- use `rich_text_json` for editing, not as the retrieval format itself
+- keep raw `docx` and `epub` as intake formats, not primary AI retrieval sources
+
+## Rich Text Storage Options
+
+Question being answered:
+- should a rich editor source such as `s3://pst/editorial/modules/steadiness-rich-text.json` stay in S3, move into Postgres `jsonb`, or use both?
+- keep in mind the app must render content in the reader screen
+
+Short answer:
+- yes, it can make sense to store `rich_text_json` in Postgres `jsonb`
+- no, the reader screen should usually not read the raw editor document directly
+- the best design is to separate:
+  - `editor source`
+  - `published reader payload`
+  - `offline/mobile delivery`
+
+Adopted option for this project:
+- keep source `rich_text_json` in Postgres `jsonb`
+- publish a normalized reader payload to `S3/CDN`
+- point to it from `content_version.structured_payload_ref`
+- render the reader from the published payload
+- use the published normalized payload for RAG and chunking
+
+Recommended ranking for this project:
+
+| Rank | Option | Source Storage | Reader Storage | Why It Ranks Here |
+| --- | --- | --- | --- | --- |
+| 1 | `Hybrid recommended` | `rich_text_json` source in Postgres `jsonb` | normalized published payload in `S3/CDN`, with Postgres metadata/version pointers | Best balance of editor UX, versioning, reader performance, offline packaging, and RAG traceability |
+| 2 | `DB-first published blocks` | source in Postgres `jsonb` | normalized reader blocks/sections in Postgres tables | Excellent if the API wants chunk-level DB queries; more modeling effort than option 1 |
+| 3 | `CMS source + published object payload` | source in CMS or Postgres document store | normalized published payload in `S3/CDN` | Strong for editorial teams using a CMS, but adds platform moving parts |
+| 4 | `All in Postgres with cache` | source in Postgres `jsonb` | published payload also in Postgres `jsonb`, fronted by cache/CDN | Acceptable for moderate scale, but less ideal for large immutable reader packages |
+| 5 | `S3 source + DB published blocks` | raw source in S3 | normalized reader blocks in Postgres | Fine when editor tooling already writes files to object storage, but weak for in-DB editing/version diffs |
+| 6 | `S3 source + S3 published payload` | source in S3 | published payload in S3, Postgres only keeps metadata | Cheap and simple, but weaker for queryability, content introspection, and chunk-level governance |
+| 7 | `Relational blocks only` | no stored rich source, only normalized rows | normalized rows in Postgres | Good for reader and RAG queries, bad for preserving editor fidelity and round-tripping authored content |
+| 8 | `Single large JSONB document only` | source in one Postgres `jsonb` blob | same blob used for reader delivery | Easy to start, but poor for partial updates, citations, transforms, and reader-specific optimization |
+| 9 | `DynamoDB documents + S3` | source in document store | published payload in S3 or DynamoDB | Harder to manage joins, editorial traceability, and chunk-level citations than Postgres |
+| 10 | `Search index as source of truth` | source in OpenSearch/vector store | reader derived from search index | Not recommended; search and embeddings should never be the canonical editorial store |
+
+### Recommendation
+
+Choose `Option 1`.
+
+For this project, the cleanest separation is:
+
+1. `Source document`
+   - keep editor-authored `rich_text_json` in Postgres `jsonb` when the document is actively edited and versioned
+   - keep `original_uri` if there is also a file snapshot/export in S3
+2. `Published reader payload`
+   - publish an immutable reader-friendly JSON payload to `S3/CDN`
+   - store its pointer in `content_version.structured_payload_ref`
+3. `Reader screen`
+   - read the published normalized payload, not the raw editor JSON
+4. `Offline mobile`
+   - cache the published reader payload or a device-optimized derivative in SQLite/file storage
+5. `RAG`
+   - chunk and cite from the normalized published payload, not from the raw editor document
+
+### Why raw editor JSON should not be the reader payload
+
+The reader screen usually needs:
+- stable blocks and sections
+- pagination/locator support
+- highlights and notes anchors
+- offline-friendly deterministic payloads
+- a sanitized shape without editor-only marks, history, comments, or transient UI metadata
+
+Raw editor JSON is often too editor-specific for that.
+
+### Practical rule of thumb
+
+- `rich_text_json` in Postgres `jsonb`: good for authoring and versioning
+- `structured_payload_ref` to `S3/CDN`: good for published reader delivery
+- `SQLite/file cache on device`: good for offline reading
+
 ## Ranked Architecture Options
 
 | Rank | Option | Summary | Why It Ranks Here |
@@ -173,15 +294,57 @@ This is the best fit because the real complexity is not just mobile UI. It is th
 
 If the team needs the fastest practical version with the smallest platform team, choose `Option 2` as the fallback.
 
+## Content Access Model
+
+The product model should separate:
+
+1. `Source truth libraries`
+   - the 5 authoritative content domains the organization maintains
+2. `User-facing content types`
+   - the 4 Discovery entry points users browse inside the app
+
+### Source Truth Libraries
+
+- `e-Books`
+- `Kesifler Yolculugu`
+- `Duygular Evreni`
+- `Atolyeler`
+- `Hadis Analizleri`
+
+### User-Facing Discovery Content Types
+
+- `Journeys / Yolculuklar`
+- `Workshops / Atolyeler`
+- `Modules / Moduller`
+- `e-Books / e-Kitaplar`
+
+### Containment Rules
+
+- `Journey` can contain `Module`, `Workshop`, and `Ebook`
+- `Workshop` contains only `Workshop`
+- `Module` contains source content from `Kesifler Yolculugu` or `Duygular Evreni`
+- `Ebook` contains only `Ebook`
+
+### Current Hadith Access Assumption
+
+Because the current Discovery model has 4 content types and does not define a standalone `Hadis Analizleri` tab, the recommended assumption is:
+
+- `Hadith Analizleri` remains a source truth library
+- hadith analysis items are linked into `Journeys`, `Modules`, and `Workshops` as supporting/reference content through `content_relation`
+- if the product later wants direct browsing of hadith analyses, add a fifth Discovery content type or a dedicated sub-catalog under one of the existing types
+
 ## Target Information Architecture
 
-The app should expose the 5 content domains as primary top-level content areas, while still preserving the PRD tab structure.
+The app should preserve the PRD tab structure while distinguishing between:
+- `what users browse`: 4 Discovery content types
+- `what the platform is built from`: 5 source truth libraries
 
 ### Home Screen
 
 The home screen should include:
 - `Continue learning`: current item, last position, countdown or next action
-- `5 source libraries`: 5 cards for `e-Books`, `Kesifler Yolculugu`, `Duygular Evreni`, `Atolyeler`, `Hadis Analizleri`
+- `4 primary entry cards`: `Journeys`, `Workshops`, `Modules`, `e-Books`
+- `Source truth explainer`: a short section that explains the app is powered by `e-Books`, `Kesifler Yolculugu`, `Duygular Evreni`, `Atolyeler`, and `Hadis Analizleri`
 - `My active content`: up to 3 active items from any type
 - `Recent activity`: recent lesson/book/emotion/workshop/hadith analysis access
 - `Progress summary`: type-based totals across ebook, lesson, emotion, workshop, hadith
@@ -189,18 +352,29 @@ The home screen should include:
 
 ### Discover / Catalog
 
-Catalog should be filterable by `content domain` first, then by sub-type.
+Catalog should be organized first by `user-facing content type`, then by contained items and filters.
 
-Recommended domain mapping:
-- `e-Books` -> ebook catalog and reader
-- `Kesifler Yolculugu` -> journey or lesson catalog
-- `Duygular Evreni` -> emotion catalog
-- `Atolyeler` -> workshop catalog
-- `Hadis Analizleri` -> hadith analysis catalog
+Recommended content type mapping:
+- `Journeys` -> catalogs curated programs that contain `Module`, `Workshop`, and `Ebook`
+- `Workshops` -> catalogs standalone `Workshop`
+- `Modules` -> catalogs standalone `Module`
+- `e-Books` -> catalogs standalone `Ebook`
+
+Recommended source truth mapping:
+- `e-Books` feeds `Ebook` and can also be included in `Journey`
+- `Kesifler Yolculugu` feeds `Module`, and modules can also be included in `Journey`
+- `Duygular Evreni` feeds `Module`, and modules can also be included in `Journey`
+- `Atolyeler` feeds `Workshop`, and workshops can also be included in `Journey`
+- `Hadis Analizleri` feeds linked/supportive content attached to journeys, modules, and workshops unless a separate Discovery type is added later
 
 ## Canonical Content Model
 
-A good architecture should not force all 5 domains into identical shapes. It should use a shared root plus domain-specific children.
+A good architecture should not force all 5 source libraries and 4 product content types into one flat shape.
+
+The correct model is:
+- `source content entities`: the authoritative knowledge/content libraries
+- `delivery content entities`: the user-facing containers exposed in Discovery
+- `composition entities`: the tables that define what a journey or module contains
 
 ### Shared Core
 
@@ -224,13 +398,26 @@ Every content item has:
 - analytics key
 - search index metadata
 
-### Domain-Specific Shapes
+### Delivery Content Shapes
+
+- `journey` -> curated delivery object containing `module`, `workshop`, and `ebook`
+- `workshop` -> standalone delivery object wrapping one workshop program
+- `module` -> standalone delivery object composed from `spiritual_lesson` or `emotion_entry` source content
+- `ebook` -> standalone delivery object wrapping one ebook
+
+### Source Content Shapes
 
 - `ebook` -> book, chapter, page range, downloadable package, audio linkage
 - `spiritual_lesson` -> lesson collection, lesson, section, reflection prompts
 - `emotion_entry` -> emotion, subtopics, coping guidance, related lessons/books/hadiths
 - `workshop` -> workshop, stage, session, content block, artifact, workbook entry, follow-up plan
 - `hadith_analysis` -> hadith, source citation, transcript/analysis blocks, tags, cross-links to emotions, lessons, workshops, books
+
+### Composition Shapes
+
+- `journey_item` -> ordered references from `journey` to `module`, `workshop`, or `ebook`
+- `package` -> ordered references from `module` to its underlying source content
+- `content_relation` -> lateral cross-links such as `hadith_analysis -> workshop` or `hadith_analysis -> module`
 
 ## Proposed Database Design
 
@@ -262,19 +449,27 @@ Use a search/vector index for retrieval:
 ### B. Core Tables for Content Source and Publishing
 
 #### `source_document`
-Tracks original editorial files.
+Tracks original editorial files and in-database rich text authoring payloads.
 
 Key columns:
 - `id`
-- `source_type` (`docx`, `markdown`, `html`, `epub`, `pdf`, `audio_transcript`)
-- `domain_type` (`ebook`, `spiritual_lesson`, `emotion_entry`, `workshop`, `hadith_analysis`)
+- `source_type` (`docx`, `markdown`, `rich_text_json`, `plain_text`, `html`, `epub`, `audio_transcript`)
+- `domain_type` (any `content_item_kind`, commonly `journey`, `module`, `workshop`, `ebook`, `spiritual_lesson_collection`, `spiritual_lesson`, `emotion_library`, `emotion_entry`, `hadith_analysis`, `video`)
 - `title`
-- `original_uri`
+- `original_uri` (optional for imported files or editorial exports)
+- `payload_json` (`jsonb`, used when the source of truth is editor-authored `rich_text_json` stored in Postgres)
 - `checksum`
 - `language_code`
 - `import_status`
 - `imported_at`
 - `imported_by`
+
+Recommended default:
+- `source_type default`: `rich_text_json`
+
+Adopted delivery rule:
+- authoring lives in `source_document.payload_json` when the source is `rich_text_json`
+- reader delivery and RAG retrieval use the normalized payload referenced by `content_version.structured_payload_ref`
 
 #### `content_item`
 Universal registry for all published content.
@@ -353,7 +548,54 @@ Key columns:
 #### `content_item_tag`
 Join table for tagging.
 
-### C. Domain Tables for the 5 Source Libraries
+### C. Delivery and Composition Tables
+
+These tables represent the 4 user-facing Discovery content types and how they compose the underlying source truth libraries.
+
+#### `journey`
+Extends the current `Journey` entity as a delivery container.
+
+Key columns:
+- `content_item_id`
+- `duration_days`
+- `level`
+
+#### `journey_item`
+Ordered composition table for `Journey`.
+
+Rules:
+- a journey item may point only to `module`, `workshop`, or `ebook`
+
+Key columns:
+- `id`
+- `journey_content_item_id`
+- `child_content_item_id`
+- `child_type` (`module`, `workshop`, `ebook`)
+- `order_index`
+- `is_required`
+
+#### `module`
+Extends the current `Module` entity as a delivery container.
+
+Key columns:
+- `content_item_id`
+- `description`
+
+#### `package`
+Extends the current `Package` entity as the ordered composition unit inside a module.
+
+Rules:
+- a package should point to source content from `spiritual_lesson` or `emotion_entry`
+
+Key columns:
+- `id`
+- `module_content_item_id`
+- `source_content_item_id`
+- `source_domain_type` (`spiritual_lesson`, `emotion_entry`)
+- `title`
+- `order_index`
+
+### D. Source Library Tables
 
 #### 1. `ebook`
 Extends current `Ebook` entity.
@@ -496,7 +738,7 @@ Recommended tables:
 - `chapter_ref`
 - `hadith_ref`
 
-### D. Operational Tables for All EPICs
+### E. Operational Tables for All EPICs
 
 The current `domain_model.json` already covers some of this, but it does not yet cover all future epics. The database should include the following areas.
 
@@ -644,7 +886,7 @@ Recommended tables:
 - `video_progress`
 - `video_download`
 
-### E. Mobile Local Database Design
+### F. Mobile Local Database Design
 
 Recommended local database: `SQLite`
 
@@ -673,12 +915,12 @@ Why this matters:
 - Workshop workbooks and follow-up plans must autosave locally.
 - Video and ebook downloads need device-specific paths and verification state.
 
-### F. Content Ingestion Pipeline
+### G. Content Ingestion Pipeline
 
 For the listed source materials, especially `.docx`, the architecture should include a publishing pipeline:
 
 1. `Import`
-   - Upload `.docx`, `.md`, `.epub`, `.pdf`, transcript, or structured JSON
+   - Upload `.docx`, `.md`, rich-text editor JSON, `.epub`, HTML, plain text, or transcript content
 2. `Parse`
    - Extract headings, sections, citations, tables, and metadata
 3. `Normalize`
@@ -719,9 +961,11 @@ Current `artifacts/domain/domain_model.json` already includes:
 - `ReminderSetting`
 
 But it is still missing explicit support for:
+- `JourneyItem`
 - `HadithAnalysis`
 - `SpiritualLesson` / `Kesifler Yolculugu`
 - `EmotionEntry` / `Duygular Evreni`
+- `Package.source_content_item_id`
 - `Download`
 - `ReadingPosition`
 - `Highlight`
@@ -757,4 +1001,3 @@ This architecture gives the team:
 - future-safe AI citation tracing
 - a practical offline mobile experience
 - enough room for coach, social, notifications, gamification, and video features
-

@@ -36,6 +36,18 @@ This architecture supports the screen contracts and PRD requirements for offline
   - List/detail queries seed from SQLite if available, then refresh in background.
   - E-book reading uses local file + metadata to avoid network dependency.
 
+### Source Normalization for AI/RAG
+
+- **Supported intake formats:** `docx`, `markdown`, `rich_text_json`, `plain_text`, `html`, `epub`, `audio_transcript`.
+- **Default authoring format:** use `rich_text_json` as the default for new source documents created in editor flows.
+- **Editorial guidance:** use `rich_text_json` for editor-authored rich blocks and `markdown` for simple long-form authoring where a lightweight text-first workflow is preferred.
+- **Adopted storage pattern:** keep `rich_text_json` source documents in Postgres `jsonb`, then publish a normalized reader payload to `S3/CDN` and reference it from `content_version.structured_payload_ref`.
+- **Canonical publish shape:** normalize all source documents into stable content blocks before publishing to the app.
+- **Reader contract:** the mobile reader renders the published normalized payload, not the raw editor JSON stored in Postgres.
+- **RAG rule:** embeddings and retrieval chunks must be generated from normalized published text, not directly from raw `docx`, `epub`, or editor-specific JSON.
+- **Traceability:** each normalized block and retrieval chunk should preserve source document id, content version id, locator (`page`, `chapter`, `section`, `timestamp`), and citation metadata.
+- **Retrieval fallback:** keep a plain-text extraction output for deterministic chunking, debugging, and safety review.
+
 ### Offline Strategy (high level)
 
 - **Offline-first:** render cached content and progress state when offline.
