@@ -127,6 +127,7 @@
     {
       "id": "bbbbbbbb-3333-4444-5555-666666666666",
       "plan_type": "family",
+      "name": "PST Aile Paketi",
       "seat_limit": 5,
       "student_discount_eligible": false,
       "created_by": null,
