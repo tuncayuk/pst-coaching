@@ -3,7 +3,14 @@ import React, { useMemo } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 
 import { PActivityIndicator, PButton, PCard, PIconButton, PText } from '../../components';
-import { getJourneys, getPackages } from '../../data/mockSelectors';
+import {
+  getDiscoverJourneyCardColors,
+  getDiscoverJourneyCardEmojis,
+  getDiscoverJourneyLevelOptions,
+  getDiscoverJourneySortOptions,
+  getJourneys,
+  getPackages,
+} from '../../data/mockSelectors';
 import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
@@ -11,15 +18,6 @@ import { ScreenState, resolveScreenState } from '../components/ScreenState';
 import { SkeletonBlock } from '../components/SkeletonBlock';
 import { StateMessage } from '../components/StateMessage';
 
-const SORT_OPTIONS = ['Tumu', 'Onerilen', 'Populer', 'Yeni'];
-const LEVEL_OPTIONS = [
-  { key: 'tumu', label: 'Tumu' },
-  { key: 'baslangic', label: 'Baslangic' },
-  { key: 'orta', label: 'Orta' },
-  { key: 'ileri', label: 'Ileri' }
-];
-const CARD_EMOJIS = ['🎯', '🙏', '🌿', '🧘'];
-const CARD_COLORS = ['#FFDDC1', '#D1FAE5', '#E9D5FF', '#FDE68A'];
 const LEVEL_LABELS: Record<string, string> = {
   baslangic: 'Baslangic',
   beginner: 'Baslangic',
@@ -39,8 +37,12 @@ const DiscoverJourneysContent = ({ isOffline }: { isOffline?: boolean }) => {
   const navigation = useNavigation<any>();
   const allJourneys = getJourneys();
   const packages = getPackages();
-  const [selectedSort, setSelectedSort] = React.useState('Tumu');
-  const [selectedLevel, setSelectedLevel] = React.useState('tumu');
+  const sortOptions = getDiscoverJourneySortOptions();
+  const levelOptions = getDiscoverJourneyLevelOptions();
+  const cardEmojis = getDiscoverJourneyCardEmojis();
+  const cardColors = getDiscoverJourneyCardColors();
+  const [selectedSort, setSelectedSort] = React.useState(sortOptions[0] ?? 'Tumu');
+  const [selectedLevel, setSelectedLevel] = React.useState(levelOptions[0]?.key ?? 'tumu');
   const [favorites, setFavorites] = React.useState<Set<string>>(new Set());
 
   const toggleFavorite = (id: string) => {
@@ -76,7 +78,7 @@ const DiscoverJourneysContent = ({ isOffline }: { isOffline?: boolean }) => {
     <View>
       {/* Sort chips */}
       <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.chipsRow}>
-        {SORT_OPTIONS.map(label => (
+        {sortOptions.map(label => (
           <PButton
             key={label}
             mode="contained"
@@ -96,7 +98,7 @@ const DiscoverJourneysContent = ({ isOffline }: { isOffline?: boolean }) => {
 
       {/* Level filter */}
       <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.chipsRow}>
-        {LEVEL_OPTIONS.map(lvl => (
+        {levelOptions.map(lvl => (
           <PButton
             key={lvl.key}
             mode={selectedLevel === lvl.key ? 'contained' : 'outlined'}
@@ -132,8 +134,9 @@ const DiscoverJourneysContent = ({ isOffline }: { isOffline?: boolean }) => {
           const workshopCount = item.featured_workshops?.length || 2 + (origIndex % 2);
           const ebookCount = item.featured_ebooks?.length || 1;
           const isFav = favorites.has(item.id);
-          const color = CARD_COLORS[origIndex % CARD_COLORS.length];
-          const emoji = CARD_EMOJIS[origIndex % CARD_EMOJIS.length];
+          const color =
+            cardColors.length > 0 ? cardColors[origIndex % cardColors.length] : c.surfaceVariant;
+          const emoji = cardEmojis.length > 0 ? cardEmojis[origIndex % cardEmojis.length] : '🎯';
 
           return (
             <PCard

@@ -650,3 +650,159 @@ export const getWorkshopCampDays = () =>
       }>;
     }>,
   );
+
+const getDiscoverMock = () => getContentScreenMock().discover_mock ?? {};
+
+export const getDiscoverAssistantIntroBenefits = (): string[] =>
+  getList(getDiscoverMock().assistant_intro_benefits as string[]);
+
+export const getDiscoverAssistantIntroSteps = () =>
+  getList(
+    getDiscoverMock().assistant_intro_steps as Array<{
+      title: string;
+      subtitle: string;
+    }>,
+  );
+
+export const getDiscoverAssistantGoalOptions = () =>
+  getList(
+    getDiscoverMock().assistant_question_goal_options as Array<{
+      label: string;
+      value: string;
+    }>,
+  );
+
+export const getDiscoverAssistantDurationOptions = () =>
+  getList(
+    getDiscoverMock().assistant_question_duration_options as Array<{
+      label: string;
+      value: string;
+    }>,
+  );
+
+export const getDiscoverAssistantPreferenceOptions = () =>
+  getList(
+    getDiscoverMock().assistant_question_preference_options as Array<{
+      label: string;
+      value: string;
+      emoji: string;
+    }>,
+  );
+
+export const getDiscoverAIAssistantHistory = () =>
+  getList(
+    getDiscoverMock().ai_assistant_intro_history as Array<{
+      id: string;
+      question: string;
+      preview: string;
+      time: string;
+      sourceCount: number;
+    }>,
+  );
+
+export const getDiscoverAIAssistantQuickSuggestions = (): string[] =>
+  getList(getDiscoverMock().ai_assistant_intro_quick_suggestions as string[]);
+
+export const getDiscoverAIAssistantFollowUpSuggestions = (): string[] =>
+  getList(getDiscoverMock().ai_assistant_follow_up_suggestions as string[]);
+
+export const getDiscoverAIAssistantSourceTypes = () =>
+  getList(
+    getDiscoverMock().ai_assistant_source_types as Array<{
+      icon: string;
+      label: string;
+      type: string;
+    }>,
+  );
+
+export const getDiscoverAssistantInsightPatterns = () =>
+  getList(
+    getDiscoverMock().assistant_insight_patterns as Array<{
+      id: string;
+      label: string;
+      count: number;
+      icon: string;
+    }>,
+  );
+
+export const getDiscoverJourneySortOptions = (): string[] =>
+  getList(getDiscoverMock().journeys_sort_options as string[]);
+
+export const getDiscoverJourneyLevelOptions = () =>
+  getList(
+    getDiscoverMock().journeys_level_options as Array<{
+      key: string;
+      label: string;
+    }>,
+  );
+
+export const getDiscoverJourneyCardEmojis = (): string[] =>
+  getList(getDiscoverMock().journeys_card_emojis as string[]);
+
+export const getDiscoverJourneyCardColors = (): string[] =>
+  getList(getDiscoverMock().journeys_card_colors as string[]);
+
+export const getDiscoverEbookSortOptions = (): string[] =>
+  getList(getDiscoverMock().ebooks_sort_options as string[]);
+
+export const getDiscoverEbookCoverColors = (): string[] =>
+  getList(getDiscoverMock().ebooks_cover_colors as string[]);
+
+export const getDiscoverEbookCoverEmojis = (): string[] =>
+  getList(getDiscoverMock().ebooks_cover_emojis as string[]);
+
+export const getDiscoverWorkshopSortOptions = (): string[] =>
+  getList(getDiscoverMock().workshops_sort_options as string[]);
+
+export const getDiscoverWorkshopTypeOptions = () =>
+  getList(
+    getDiscoverMock().workshops_type_options as Array<{
+      key: string;
+      label: string;
+    }>,
+  );
+
+export const getDiscoverWorkshopTypeLabels = () =>
+  (getDiscoverMock().workshops_type_labels as Record<string, string>) ?? {};
+
+export const getDiscoverWorkshopTypeBackgroundColors = () =>
+  (getDiscoverMock().workshops_type_bg as Record<string, string>) ?? {};
+
+export const getDiscoverWorkshopTypeForegroundColors = () =>
+  (getDiscoverMock().workshops_type_fg as Record<string, string>) ?? {};
+
+export const getDiscoverWorkshopDifficultyLabels = () =>
+  (getDiscoverMock().workshops_difficulty_labels as Record<string, string>) ?? {};
+
+export const getDiscoverWorkshopDifficultyColors = () =>
+  (getDiscoverMock().workshops_difficulty_colors as Record<string, string>) ?? {};
+
+export const getDiscoverModuleSortOptions = (): string[] =>
+  getList(getDiscoverMock().modules_sort_options as string[]);
+
+export const getDiscoverModuleTopicOptions = () =>
+  getList(
+    getDiscoverMock().modules_topic_options as Array<{
+      key: string;
+      label: string;
+    }>,
+  );
+
+export const getDiscoverModuleCardEmojis = (): string[] =>
+  getList(getDiscoverMock().modules_card_emojis as string[]);
+
+export const getDiscoverModuleCardColors = (): string[] =>
+  getList(getDiscoverMock().modules_card_colors as string[]);
+
+export const getDiscoverModuleTopics = (): string[] =>
+  getList(getDiscoverMock().modules_topics as string[]);
+
+export const getDiscoverCatalogTabs = () =>
+  getList(
+    getDiscoverMock().catalog_tabs as Array<{
+      key: string;
+      label: string;
+      emoji: string;
+      route: string;
+    }>,
+  );

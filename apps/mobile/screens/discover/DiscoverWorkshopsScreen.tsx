@@ -3,7 +3,16 @@ import React, { useMemo } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 
 import { PActivityIndicator, PButton, PCard, PText } from '../../components';
-import { getWorkshops } from '../../data/mockSelectors';
+import {
+  getDiscoverWorkshopDifficultyColors,
+  getDiscoverWorkshopDifficultyLabels,
+  getDiscoverWorkshopSortOptions,
+  getDiscoverWorkshopTypeBackgroundColors,
+  getDiscoverWorkshopTypeForegroundColors,
+  getDiscoverWorkshopTypeLabels,
+  getDiscoverWorkshopTypeOptions,
+  getWorkshops,
+} from '../../data/mockSelectors';
 import { ColorTokens, fontSizes, fontWeights, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
@@ -12,40 +21,6 @@ import { SkeletonBlock } from '../components/SkeletonBlock';
 import { StateMessage } from '../components/StateMessage';
 
 type Workshop = ReturnType<typeof getWorkshops>[number];
-
-const SORT_OPTIONS = ['Tümü', 'Önerilen', 'Popüler', 'Yeni'] as const;
-const TYPE_OPTIONS = [
-  { key: 'tumu', label: 'Tümü' },
-  { key: 'kamp', label: 'Kamp' },
-  { key: 'rehber', label: 'Rehber' },
-  { key: 'calisma_kitabi', label: 'Çalışma Kitabı' }
-] as const;
-
-const TYPE_LABELS: Record<string, string> = {
-  kamp: 'Kamp',
-  rehber: 'Rehber',
-  calisma_kitabi: 'Çalışma Kitabı'
-};
-const TYPE_BG: Record<string, string> = {
-  kamp: '#FEE2E2',
-  rehber: '#D1FAE5',
-  calisma_kitabi: '#EDE7F6'
-};
-const TYPE_FG: Record<string, string> = {
-  kamp: '#B91C1C',
-  rehber: '#065F46',
-  calisma_kitabi: '#4C1D95'
-};
-const DIFFICULTY_LABELS: Record<string, string> = {
-  baslangic: 'Başlangıç',
-  orta: 'Orta',
-  ileri: 'İleri'
-};
-const DIFFICULTY_COLOR: Record<string, string> = {
-  baslangic: '#065F46',
-  orta: '#92400E',
-  ileri: '#7C2D12'
-};
 
 const getField = <T,>(w: Workshop, key: string, fallback: T): T =>
   ((w as any)[key] ?? fallback) as T;
@@ -56,15 +31,22 @@ const DiscoverWorkshopsContent = ({ isOffline }: { isOffline?: boolean }) => {
 
   const navigation = useNavigation<any>();
   const workshops = getWorkshops();
-  const [selectedSort, setSelectedSort] = React.useState<string>('Tümü');
-  const [selectedType, setSelectedType] = React.useState<string>('tumu');
+  const sortOptions = getDiscoverWorkshopSortOptions();
+  const typeOptions = getDiscoverWorkshopTypeOptions();
+  const typeLabels = getDiscoverWorkshopTypeLabels();
+  const typeBg = getDiscoverWorkshopTypeBackgroundColors();
+  const typeFg = getDiscoverWorkshopTypeForegroundColors();
+  const difficultyLabels = getDiscoverWorkshopDifficultyLabels();
+  const difficultyColors = getDiscoverWorkshopDifficultyColors();
+  const [selectedSort, setSelectedSort] = React.useState<string>(sortOptions[0] ?? 'Tumu');
+  const [selectedType, setSelectedType] = React.useState<string>(typeOptions[0]?.key ?? 'tumu');
 
   const filtered = useMemo(() => {
     let list = workshops.filter(w =>
       selectedType === 'tumu' ? true : getField(w, 'type', '') === selectedType
     );
-    if (selectedSort === 'Önerilen') list = list.filter(w => getField(w, 'is_recommended', false));
-    if (selectedSort === 'Popüler') list = [...list].sort((a, b) => getField(b, 'attendee_count', 0) - getField(a, 'attendee_count', 0));
+    if (selectedSort === 'Onerilen') list = list.filter(w => getField(w, 'is_recommended', false));
+    if (selectedSort === 'Populer') list = [...list].sort((a, b) => getField(b, 'attendee_count', 0) - getField(a, 'attendee_count', 0));
     if (selectedSort === 'Yeni') list = [...list].filter(w => getField(w, 'is_upcoming', false));
     return list;
   }, [workshops, selectedSort, selectedType]);
@@ -73,7 +55,7 @@ const DiscoverWorkshopsContent = ({ isOffline }: { isOffline?: boolean }) => {
     <View>
       {/* Sort chips */}
       <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.chipsRow}>
-        {SORT_OPTIONS.map(label => (
+        {sortOptions.map(label => (
           <PButton
             key={label}
             mode="contained"
@@ -93,7 +75,7 @@ const DiscoverWorkshopsContent = ({ isOffline }: { isOffline?: boolean }) => {
 
       {/* Type filter */}
       <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.chipsRow}>
-        {TYPE_OPTIONS.map(opt => (
+        {typeOptions.map(opt => (
           <PButton
             key={opt.key}
             mode={selectedType === opt.key ? 'contained' : 'outlined'}
@@ -117,7 +99,10 @@ const DiscoverWorkshopsContent = ({ isOffline }: { isOffline?: boolean }) => {
           description="Başka bir tür filtresi deneyin."
           actionLabel="Tümünü Göster"
           icon="filter-remove-outline"
-          onAction={() => { setSelectedSort('Tümü'); setSelectedType('tumu'); }}
+          onAction={() => {
+            setSelectedSort(sortOptions[0] ?? 'Tumu');
+            setSelectedType(typeOptions[0]?.key ?? 'tumu');
+          }}
         />
       ) : (
         filtered.map(item => {
@@ -196,14 +181,14 @@ const DiscoverWorkshopsContent = ({ isOffline }: { isOffline?: boolean }) => {
 
                 {/* Chip row */}
                 <View style={styles.chipTagRow}>
-                  <View style={[styles.typeChip, { backgroundColor: TYPE_BG[wType] ?? '#F3F4F6' }]}>
-                    <PText style={[styles.typeChipText, { color: TYPE_FG[wType] ?? '#111' }]}>
-                      {TYPE_LABELS[wType] ?? wType}
+                  <View style={[styles.typeChip, { backgroundColor: typeBg[wType] ?? '#F3F4F6' }]}>
+                    <PText style={[styles.typeChipText, { color: typeFg[wType] ?? '#111' }]}>
+                      {typeLabels[wType] ?? wType}
                     </PText>
                   </View>
                   <View style={[styles.diffChip, { backgroundColor: '#F3F4F6' }]}>
-                    <PText style={[styles.typeChipText, { color: DIFFICULTY_COLOR[difficulty] ?? '#555' }]}>
-                      {DIFFICULTY_LABELS[difficulty] ?? difficulty}
+                    <PText style={[styles.typeChipText, { color: difficultyColors[difficulty] ?? '#555' }]}>
+                      {difficultyLabels[difficulty] ?? difficulty}
                     </PText>
                   </View>
                   {hasCamp && (

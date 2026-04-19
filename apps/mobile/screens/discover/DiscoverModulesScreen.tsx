@@ -3,7 +3,15 @@ import React, { useMemo } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 
 import { PActivityIndicator, PButton, PCard, PText } from '../../components';
-import { getModules, getPackagesForModule } from '../../data/mockSelectors';
+import {
+  getDiscoverModuleCardColors,
+  getDiscoverModuleCardEmojis,
+  getDiscoverModuleSortOptions,
+  getDiscoverModuleTopicOptions,
+  getDiscoverModuleTopics,
+  getModules,
+  getPackagesForModule,
+} from '../../data/mockSelectors';
 import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
@@ -11,27 +19,22 @@ import { ScreenState, resolveScreenState } from '../components/ScreenState';
 import { SkeletonBlock } from '../components/SkeletonBlock';
 import { StateMessage } from '../components/StateMessage';
 
-const SORT_OPTIONS = ['Tumu', 'Onerilen', 'Populer', 'Yeni'];
-const TOPIC_OPTIONS = [
-  { key: 'tumu', label: 'Tumu' },
-  { key: 'gelisim', label: 'Gelisim' },
-  { key: 'maneviyat', label: 'Maneviyat' },
-  { key: 'denge', label: 'Denge' }
-];
-const CARD_EMOJIS = ['📦', '🧩', '📘', '🧠'];
-const CARD_COLORS = ['#E0F7FA', '#D1FAE5', '#E9D5FF', '#FDE68A'];
-const TOPICS = ['gelisim', 'maneviyat', 'denge', 'gelisim'];
-
 const DiscoverModulesContent = ({ isOffline }: { isOffline?: boolean }) => {
   const { colors: c } = useAppTheme();
   const styles = useMemo(() => makeStyles(c), [c]);
 
   const navigation = useNavigation<any>();
   const modules = getModules();
-  const [selectedSort, setSelectedSort] = React.useState('Tumu');
-  const [selectedTopic, setSelectedTopic] = React.useState('tumu');
+  const sortOptions = getDiscoverModuleSortOptions();
+  const topicOptions = getDiscoverModuleTopicOptions();
+  const cardEmojis = getDiscoverModuleCardEmojis();
+  const cardColors = getDiscoverModuleCardColors();
+  const topics = getDiscoverModuleTopics();
+  const [selectedSort, setSelectedSort] = React.useState(sortOptions[0] ?? 'Tumu');
+  const [selectedTopic, setSelectedTopic] = React.useState(topicOptions[0]?.key ?? 'tumu');
 
-  const moduleTopic = (index: number) => TOPICS[index % TOPICS.length];
+  const moduleTopic = (index: number) =>
+    topics.length > 0 ? topics[index % topics.length] : 'gelisim';
 
   const filtered = modules.filter((_m, i) => (selectedTopic === 'tumu' ? true : moduleTopic(i) === selectedTopic));
 
@@ -45,7 +48,7 @@ const DiscoverModulesContent = ({ isOffline }: { isOffline?: boolean }) => {
     <View>
       {/* Sort chips */}
       <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.chipsRow}>
-        {SORT_OPTIONS.map(label => (
+        {sortOptions.map(label => (
           <PButton
             key={label}
             mode="contained"
@@ -65,7 +68,7 @@ const DiscoverModulesContent = ({ isOffline }: { isOffline?: boolean }) => {
 
       {/* Topic filter */}
       <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.chipsRow}>
-        {TOPIC_OPTIONS.map(topic => (
+        {topicOptions.map(topic => (
           <PButton
             key={topic.key}
             mode={selectedTopic === topic.key ? 'contained' : 'outlined'}
@@ -95,8 +98,9 @@ const DiscoverModulesContent = ({ isOffline }: { isOffline?: boolean }) => {
           const origIndex = modules.findIndex(m => m.id === item.id);
           const packages = getPackagesForModule(item.id);
           const pkgCount = packages.length || 3 + (origIndex % 2);
-          const color = CARD_COLORS[origIndex % CARD_COLORS.length];
-          const emoji = CARD_EMOJIS[origIndex % CARD_EMOJIS.length];
+          const color =
+            cardColors.length > 0 ? cardColors[origIndex % cardColors.length] : c.surfaceVariant;
+          const emoji = cardEmojis.length > 0 ? cardEmojis[origIndex % cardEmojis.length] : '📦';
           const previewPkgs = packages.slice(0, 2);
 
           return (

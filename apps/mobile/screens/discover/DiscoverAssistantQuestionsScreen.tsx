@@ -3,6 +3,11 @@ import React, { useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { PActivityIndicator, PButton, PCard, PRadioButtonGroup, PRadioButtonItem, PText } from '../../components';
+import {
+  getDiscoverAssistantDurationOptions,
+  getDiscoverAssistantGoalOptions,
+  getDiscoverAssistantPreferenceOptions,
+} from '../../data/mockSelectors';
 import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
@@ -10,29 +15,14 @@ import { ScreenState, resolveScreenState } from '../components/ScreenState';
 import { SkeletonBlock } from '../components/SkeletonBlock';
 import { StateMessage } from '../components/StateMessage';
 
-const GOAL_OPTIONS = [
-  { label: 'Kisisel gelisim', value: 'personal' },
-  { label: 'Maneviyat', value: 'spiritual' },
-  { label: 'Duygusal denge', value: 'balance' }
-];
-
-const DURATION_OPTIONS = [
-  { label: '10 dk', value: '10' },
-  { label: '20 dk', value: '20' },
-  { label: '30+ dk', value: '30' }
-];
-
-const PREFERENCE_OPTIONS = [
-  { label: 'Okuma', value: 'reading', emoji: '📖' },
-  { label: 'Uygulama / Egzersiz', value: 'exercise', emoji: '🧘' },
-  { label: 'Video / Ses', value: 'media', emoji: '🎧' }
-];
-
 const DiscoverAssistantQuestionsContent = ({ isOffline }: { isOffline?: boolean }) => {
   const { colors: c } = useAppTheme();
   const styles = useMemo(() => makeStyles(c), [c]);
 
   const navigation = useNavigation<any>();
+  const goalOptions = getDiscoverAssistantGoalOptions();
+  const durationOptions = getDiscoverAssistantDurationOptions();
+  const preferenceOptions = getDiscoverAssistantPreferenceOptions();
   const [goal, setGoal] = React.useState('personal');
   const [duration, setDuration] = React.useState('20');
   const [preference, setPreference] = React.useState('reading');
@@ -56,7 +46,7 @@ const DiscoverAssistantQuestionsContent = ({ isOffline }: { isOffline?: boolean 
       <PCard style={styles.card}>
         <PText style={styles.cardLabel}>1️⃣ Ana hedefiniz nedir?</PText>
         <PRadioButtonGroup value={goal} onValueChange={setGoal}>
-          {GOAL_OPTIONS.map(option => (
+          {goalOptions.map(option => (
             <PRadioButtonItem
               key={option.value}
               label={option.label}
@@ -72,7 +62,7 @@ const DiscoverAssistantQuestionsContent = ({ isOffline }: { isOffline?: boolean 
       <PCard style={styles.card}>
         <PText style={styles.cardLabel}>2️⃣ Ne kadar zaman ayirabilirsiniz?</PText>
         <View style={styles.durationGrid}>
-          {DURATION_OPTIONS.map(option => (
+          {durationOptions.map(option => (
             <PButton
               key={option.value}
               mode={duration === option.value ? 'contained' : 'outlined'}
@@ -91,7 +81,7 @@ const DiscoverAssistantQuestionsContent = ({ isOffline }: { isOffline?: boolean 
       <PCard style={styles.card}>
         <PText style={styles.cardLabel}>3️⃣ Hangi tur icerigi tercih edersiniz?</PText>
         <View style={styles.prefGrid}>
-          {PREFERENCE_OPTIONS.map(option => {
+          {preferenceOptions.map(option => {
             const isActive = preference === option.value;
             return (
               <PButton

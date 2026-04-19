@@ -12,6 +12,7 @@ import {
   getAchievements,
   getComments,
   getContentProgressForUser,
+  getDiscoverAssistantInsightPatterns,
   getJourneys,
   getPrimaryUser,
   getWorkshops,
@@ -122,12 +123,7 @@ function buildSentiment(userId?: string): SentimentResult {
 }
 
 function buildPatterns(): Pattern[] {
-  return [
-    { id: 'p1', label: 'Sabah seansları', count: 7, icon: '🌅' },
-    { id: 'p2', label: 'Duygusal denge odagi', count: 5, icon: '🧘' },
-    { id: 'p3', label: 'Okuma tercihi', count: 4, icon: '📖' },
-    { id: 'p4', label: 'Kisa seans (20 dk)', count: 8, icon: '⏱' },
-  ];
+  return getDiscoverAssistantInsightPatterns();
 }
 
 function buildRecommendations(): Recommendation[] {

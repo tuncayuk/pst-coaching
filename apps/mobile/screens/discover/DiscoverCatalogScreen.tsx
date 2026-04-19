@@ -13,6 +13,7 @@ import {
   PText
 } from '../../components';
 import {
+  getDiscoverCatalogTabs,
   getEbooks,
   getJourneys,
   getModules,
@@ -27,26 +28,17 @@ import { ScreenState, resolveScreenState } from '../components/ScreenState';
 import { SkeletonBlock } from '../components/SkeletonBlock';
 import { StateMessage } from '../components/StateMessage';
 
-const CONTENT_TABS: readonly MosaicTab[] = [
-  { key: 'journeys', label: 'Yolculuklar', emoji: '🎯' },
-  { key: 'workshops', label: 'Atolyeler', emoji: '🎨' },
-  { key: 'modules', label: 'Moduller', emoji: '📦' },
-  { key: 'ebooks', label: 'e-Kitaplar', emoji: '📖' }
-];
-
-const TAB_ROUTES: Record<string, string> = {
-  journeys: 'DiscoverJourneys',
-  workshops: 'DiscoverWorkshops',
-  modules: 'DiscoverModules',
-  ebooks: 'DiscoverEbooks'
-};
-
 const DiscoverReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
   const { colors: c } = useAppTheme();
   const styles = useMemo(() => makeStyles(c), [c]);
 
   const navigation = useNavigation<any>();
-  const [activeTab, setActiveTab] = React.useState<string>('journeys');
+  const catalogTabs = getDiscoverCatalogTabs();
+  const contentTabs: MosaicTab[] = catalogTabs.map(({ key, label, emoji }) => ({ key, label, emoji }));
+  const tabRoutes: Record<string, string> = Object.fromEntries(
+    catalogTabs.map(tab => [tab.key, tab.route]),
+  );
+  const [activeTab, setActiveTab] = React.useState<string>(contentTabs[0]?.key ?? 'journeys');
 
   const user = getPrimaryUser();
   const subscription = getSubscriptionForUser(user?.id);
@@ -61,7 +53,13 @@ const DiscoverReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
   const featuredJourneys = journeys.filter(j => j.featured).slice(0, 3);
   const featuredEbooks = ebooks.filter(e => e.featured).slice(0, 4);
 
-  const tabCounts = [journeys.length, workshops.length, modules.length, ebooks.length];
+  const tabCountsByKey: Record<string, number> = {
+    journeys: journeys.length,
+    workshops: workshops.length,
+    modules: modules.length,
+    ebooks: ebooks.length,
+  };
+  const tabCounts = contentTabs.map(tab => tabCountsByKey[tab.key] ?? 0);
 
   const handlePaywall = () => {
     trackCtaTap('discover.catalog', 'paywall_trigger');
@@ -75,7 +73,7 @@ const DiscoverReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
     }
     setActiveTab(tab.key);
     trackCtaTap('discover.catalog', 'tab_tapped', { tab: tab.key });
-    navigation.navigate(TAB_ROUTES[tab.key]);
+    navigation.navigate(tabRoutes[tab.key] ?? 'DiscoverJourneys');
   };
 
   const handleJourneyPress = (id: string) => {
@@ -140,7 +138,7 @@ const DiscoverReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
       {/* Content type mosaic */}
       <PText style={styles.sectionTitle}>Icerik Turleri</PText>
       <DiscoverContentMosaicGrid
-        tabs={CONTENT_TABS}
+        tabs={contentTabs}
         counts={tabCounts}
         activeTab={activeTab}
         onTabPress={handleTabPress}

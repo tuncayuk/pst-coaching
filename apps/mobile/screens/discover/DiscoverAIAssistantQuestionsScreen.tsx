@@ -16,7 +16,13 @@ import {
   PProgressBar,
   PText,
 } from '../../components';
-import { getEbooks, getJourneys, getWorkshops } from '../../data/mockSelectors';
+import {
+  getDiscoverAIAssistantFollowUpSuggestions,
+  getDiscoverAIAssistantSourceTypes,
+  getEbooks,
+  getJourneys,
+  getWorkshops,
+} from '../../data/mockSelectors';
 import { ColorTokens, fontSizes, fontWeights, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
@@ -27,13 +33,6 @@ import { StateMessage } from '../components/StateMessage';
 // ---------------------------------------------------------------------------
 // Mock RAG response  (AC-FR-E16-02-01/02/03)
 // ---------------------------------------------------------------------------
-const FOLLOW_UP_SUGGESTIONS = [
-  'Bu konuyu daha derinlemesine acikla',
-  'Baska kaynak var mi?',
-  'Gunluk pratik onerisi ne olur?',
-  'Baslangic seviyesi icin neyi onerirsin?',
-];
-
 type RagResponse = {
   summary: string;
   bullets: string[];
@@ -41,10 +40,18 @@ type RagResponse = {
   totalSources: number;
 };
 
-function buildMockRagResponse(question: string): RagResponse {
+function buildMockRagResponse(
+  question: string,
+  sourceTypesConfig: Array<{ type: string; label: string }>,
+): RagResponse {
   const journeys = getJourneys().slice(0, 2);
   const workshops = getWorkshops().slice(0, 1);
   const ebooks = getEbooks().slice(0, 1);
+  const countsByType: Record<string, number> = {
+    Yolculuk: journeys.length,
+    Atolye: workshops.length,
+    'e-Kitap': ebooks.length,
+  };
 
   return {
     summary: `"${question}" sorunuza gore icerik kutuphanemizden derlenen yanit: ${
@@ -62,11 +69,9 @@ function buildMockRagResponse(question: string): RagResponse {
         ? `${ebooks[0].title} kitabi teorik altyapi saglar`
         : 'Teorik altyapi icin e-Kitap kaynaklari mevcuttur',
     ],
-    sourceTypes: [
-      { type: 'Yolculuk', count: journeys.length },
-      { type: 'Atolye', count: workshops.length },
-      { type: 'e-Kitap', count: ebooks.length },
-    ].filter(s => s.count > 0),
+    sourceTypes: sourceTypesConfig
+      .map(s => ({ type: s.type, count: countsByType[s.type] ?? 0 }))
+      .filter(s => s.count > 0),
     totalSources: journeys.length + workshops.length + ebooks.length,
   };
 }
@@ -86,10 +91,17 @@ const DiscoverAIAssistantQuestionsContent = ({
   const { colors: c } = useAppTheme();
   const styles = useMemo(() => makeStyles(c), [c]);
   const navigation = useNavigation<any>();
+  const sourceTypes = getDiscoverAIAssistantSourceTypes();
+  const followUpSuggestions = getDiscoverAIAssistantFollowUpSuggestions();
 
   const [phase, setPhase] = useState<Phase>('thinking');
   const [progress, setProgress] = useState(0);
-  const [rag] = useState(() => buildMockRagResponse(question));
+  const [rag] = useState(() =>
+    buildMockRagResponse(
+      question,
+      sourceTypes.map(s => ({ type: s.type, label: s.label })),
+    ),
+  );
 
   // Simulate AI RAG loading (AC-FR-E16-02-01)
   useEffect(() => {
@@ -137,11 +149,7 @@ const DiscoverAIAssistantQuestionsContent = ({
         />
         {/* AC-FR-E16-02-01: source types being searched */}
         <View style={styles.sourceTypePills}>
-          {[
-            { icon: '🗺', label: 'Yolculuklar' },
-            { icon: '🎓', label: 'Atolyeler' },
-            { icon: '📖', label: 'e-Kitaplar' },
-          ].map(item => (
+          {sourceTypes.map(item => (
             <View key={item.label} style={styles.sourceTypePill}>
               <PText style={styles.sourceTypePillText}>
                 {item.icon} {item.label}
@@ -210,7 +218,7 @@ const DiscoverAIAssistantQuestionsContent = ({
       <View style={styles.followUpSection}>
         <PText style={styles.followUpLabel}>Takip sorulari</PText>
         <View style={styles.followUpGrid}>
-          {FOLLOW_UP_SUGGESTIONS.map(s => (
+          {followUpSuggestions.map(s => (
             <PChip
               key={s}
               onPress={() =>

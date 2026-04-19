@@ -3,7 +3,12 @@ import React, { useMemo } from 'react';
 import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 
 import { PActivityIndicator, PButton, PIconButton, PText } from '../../components';
-import { getEbooks } from '../../data/mockSelectors';
+import {
+  getDiscoverEbookCoverColors,
+  getDiscoverEbookCoverEmojis,
+  getDiscoverEbookSortOptions,
+  getEbooks,
+} from '../../data/mockSelectors';
 import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
@@ -11,17 +16,16 @@ import { ScreenState, resolveScreenState } from '../components/ScreenState';
 import { SkeletonBlock } from '../components/SkeletonBlock';
 import { StateMessage } from '../components/StateMessage';
 
-const SORT_OPTIONS = ['Tumu', 'Onerilen', 'Populer', 'Yeni'];
-const COVER_COLORS = ['#B2EBF2', '#D1FAE5', '#E9D5FF', '#FDE68A'];
-const COVER_EMOJIS = ['📖', '📘', '📕', '📗'];
-
 const DiscoverEbooksContent = ({ isOffline }: { isOffline?: boolean }) => {
   const { colors: c } = useAppTheme();
   const styles = useMemo(() => makeStyles(c), [c]);
 
   const navigation = useNavigation<any>();
   const ebooks = getEbooks();
-  const [selectedSort, setSelectedSort] = React.useState('Tumu');
+  const sortOptions = getDiscoverEbookSortOptions();
+  const coverColors = getDiscoverEbookCoverColors();
+  const coverEmojis = getDiscoverEbookCoverEmojis();
+  const [selectedSort, setSelectedSort] = React.useState(sortOptions[0] ?? 'Tumu');
   const [selectedCategory, setSelectedCategory] = React.useState('Tumu');
 
   const categories = ['Tumu', ...Array.from(new Set(ebooks.map(e => e.category ?? 'Diger')))];
@@ -41,7 +45,7 @@ const DiscoverEbooksContent = ({ isOffline }: { isOffline?: boolean }) => {
     <View>
       {/* Sort chips */}
       <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.chipsRow}>
-        {SORT_OPTIONS.map(label => (
+        {sortOptions.map(label => (
           <PButton
             key={label}
             mode="contained"
@@ -106,8 +110,20 @@ const DiscoverEbooksContent = ({ isOffline }: { isOffline?: boolean }) => {
                   })
                 }
               >
-                <View style={[styles.cover, { backgroundColor: COVER_COLORS[origIndex % COVER_COLORS.length] }]}>
-                  <PText style={styles.coverEmoji}>{COVER_EMOJIS[origIndex % COVER_EMOJIS.length]}</PText>
+                <View
+                  style={[
+                    styles.cover,
+                    {
+                      backgroundColor:
+                        coverColors.length > 0
+                          ? coverColors[origIndex % coverColors.length]
+                          : c.surfaceVariant,
+                    },
+                  ]}
+                >
+                  <PText style={styles.coverEmoji}>
+                    {coverEmojis.length > 0 ? coverEmojis[origIndex % coverEmojis.length] : '📖'}
+                  </PText>
                   {item.featured && (
                     <View style={styles.featuredBadge}>
                       <PText style={styles.featuredBadgeText}>One Cikan</PText>

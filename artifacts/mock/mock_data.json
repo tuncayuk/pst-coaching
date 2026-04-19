@@ -2837,6 +2837,133 @@
           }
         ]
       }
-    ]
+    ],
+    "discover_mock": {
+      "catalog_tabs": [
+        { "key": "journeys", "label": "Yolculuklar", "emoji": "🎯", "route": "DiscoverJourneys" },
+        { "key": "workshops", "label": "Atolyeler", "emoji": "🎨", "route": "DiscoverWorkshops" },
+        { "key": "modules", "label": "Moduller", "emoji": "📦", "route": "DiscoverModules" },
+        { "key": "ebooks", "label": "e-Kitaplar", "emoji": "📖", "route": "DiscoverEbooks" }
+      ],
+      "assistant_intro_benefits": [
+        "Hedefine uygun icerik onerileri",
+        "Sure ve yogunluga gore plan",
+        "Kutuphanenden devam onerileri"
+      ],
+      "assistant_intro_steps": [
+        { "title": "Hedefini sec", "subtitle": "Orn: sinir koyma" },
+        { "title": "Sureni belirle", "subtitle": "10-20 dk, 30-45 dk" },
+        { "title": "Onerilerini al", "subtitle": "1 ana + 2 alternatif" }
+      ],
+      "assistant_question_goal_options": [
+        { "label": "Kisisel gelisim", "value": "personal" },
+        { "label": "Maneviyat", "value": "spiritual" },
+        { "label": "Duygusal denge", "value": "balance" }
+      ],
+      "assistant_question_duration_options": [
+        { "label": "10 dk", "value": "10" },
+        { "label": "20 dk", "value": "20" },
+        { "label": "30+ dk", "value": "30" }
+      ],
+      "assistant_question_preference_options": [
+        { "label": "Okuma", "value": "reading", "emoji": "📖" },
+        { "label": "Uygulama / Egzersiz", "value": "exercise", "emoji": "🧘" },
+        { "label": "Video / Ses", "value": "media", "emoji": "🎧" }
+      ],
+      "ai_assistant_intro_history": [
+        {
+          "id": "1",
+          "question": "Duygusal denge icin hangi yolculugu onerirsin?",
+          "preview": "3 kaynaktan derlenen oneri: Hedef Belirleme yolculugu...",
+          "time": "2 gun once",
+          "sourceCount": 3
+        },
+        {
+          "id": "2",
+          "question": "Sabah rutini olusturmak icin ne yapmaliyim?",
+          "preview": "Workshop + e-Kitap kombinasyonu onerildi.",
+          "time": "5 gun once",
+          "sourceCount": 4
+        }
+      ],
+      "ai_assistant_intro_quick_suggestions": [
+        "Duygusal denge",
+        "Sabah rutini",
+        "Sinir koymak",
+        "Verimlilik",
+        "Stres yonetimi"
+      ],
+      "ai_assistant_follow_up_suggestions": [
+        "Bu konuyu daha derinlemesine acikla",
+        "Baska kaynak var mi?",
+        "Gunluk pratik onerisi ne olur?",
+        "Baslangic seviyesi icin neyi onerirsin?"
+      ],
+      "ai_assistant_source_types": [
+        { "icon": "🗺", "label": "Yolculuklar", "type": "Yolculuk" },
+        { "icon": "🎓", "label": "Atolyeler", "type": "Atolye" },
+        { "icon": "📖", "label": "e-Kitaplar", "type": "e-Kitap" }
+      ],
+      "assistant_insight_patterns": [
+        { "id": "p1", "label": "Sabah seanslari", "count": 7, "icon": "🌅" },
+        { "id": "p2", "label": "Duygusal denge odagi", "count": 5, "icon": "🧘" },
+        { "id": "p3", "label": "Okuma tercihi", "count": 4, "icon": "📖" },
+        { "id": "p4", "label": "Kisa seans (20 dk)", "count": 8, "icon": "⏱" }
+      ],
+      "journeys_sort_options": ["Tumu", "Onerilen", "Populer", "Yeni"],
+      "journeys_level_options": [
+        { "key": "tumu", "label": "Tumu" },
+        { "key": "baslangic", "label": "Baslangic" },
+        { "key": "orta", "label": "Orta" },
+        { "key": "ileri", "label": "Ileri" }
+      ],
+      "journeys_card_emojis": ["🎯", "🙏", "🌿", "🧘"],
+      "journeys_card_colors": ["#FFDDC1", "#D1FAE5", "#E9D5FF", "#FDE68A"],
+      "ebooks_sort_options": ["Tumu", "Onerilen", "Populer", "Yeni"],
+      "ebooks_cover_colors": ["#B2EBF2", "#D1FAE5", "#E9D5FF", "#FDE68A"],
+      "ebooks_cover_emojis": ["📖", "📘", "📕", "📗"],
+      "workshops_sort_options": ["Tumu", "Onerilen", "Populer", "Yeni"],
+      "workshops_type_options": [
+        { "key": "tumu", "label": "Tumu" },
+        { "key": "kamp", "label": "Kamp" },
+        { "key": "rehber", "label": "Rehber" },
+        { "key": "calisma_kitabi", "label": "Calisma Kitabi" }
+      ],
+      "workshops_type_labels": {
+        "kamp": "Kamp",
+        "rehber": "Rehber",
+        "calisma_kitabi": "Calisma Kitabi"
+      },
+      "workshops_type_bg": {
+        "kamp": "#FEE2E2",
+        "rehber": "#D1FAE5",
+        "calisma_kitabi": "#EDE7F6"
+      },
+      "workshops_type_fg": {
+        "kamp": "#B91C1C",
+        "rehber": "#065F46",
+        "calisma_kitabi": "#4C1D95"
+      },
+      "workshops_difficulty_labels": {
+        "baslangic": "Baslangic",
+        "orta": "Orta",
+        "ileri": "Ileri"
+      },
+      "workshops_difficulty_colors": {
+        "baslangic": "#065F46",
+        "orta": "#92400E",
+        "ileri": "#7C2D12"
+      },
+      "modules_sort_options": ["Tumu", "Onerilen", "Populer", "Yeni"],
+      "modules_topic_options": [
+        { "key": "tumu", "label": "Tumu" },
+        { "key": "gelisim", "label": "Gelisim" },
+        { "key": "maneviyat", "label": "Maneviyat" },
+        { "key": "denge", "label": "Denge" }
+      ],
+      "modules_card_emojis": ["📦", "🧩", "📘", "🧠"],
+      "modules_card_colors": ["#E0F7FA", "#D1FAE5", "#E9D5FF", "#FDE68A"],
+      "modules_topics": ["gelisim", "maneviyat", "denge", "gelisim"]
+    }
   }
 }

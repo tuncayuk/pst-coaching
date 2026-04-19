@@ -17,41 +17,16 @@ import {
   PTextInput,
   PTextInputIcon,
 } from '../../components';
+import {
+  getDiscoverAIAssistantHistory,
+  getDiscoverAIAssistantQuickSuggestions,
+} from '../../data/mockSelectors';
 import { ColorTokens, fontSizes, fontWeights, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../components/ScreenState';
 import { SkeletonBlock } from '../components/SkeletonBlock';
 import { StateMessage } from '../components/StateMessage';
-
-// ---------------------------------------------------------------------------
-// Mock conversation history  (AC-FR-E16-01-01)
-// ---------------------------------------------------------------------------
-const MOCK_HISTORY = [
-  {
-    id: '1',
-    question: 'Duygusal denge icin hangi yolculugu onerirsin?',
-    preview: '3 kaynaktan derlenen oneri: Hedef Belirleme yolculugu...',
-    time: '2 gun once',
-    sourceCount: 3,
-  },
-  {
-    id: '2',
-    question: 'Sabah rutini olusturmak icin ne yapmaliyim?',
-    preview: 'Workshop + e-Kitap kombinasyonu onerildi.',
-    time: '5 gun once',
-    sourceCount: 4,
-  },
-];
-
-// AC-FR-E16-01-03: quick suggestion chips
-const QUICK_SUGGESTIONS = [
-  'Duygusal denge',
-  'Sabah rutini',
-  'Sinir koymak',
-  'Verimlilik',
-  'Stres yonetimi',
-];
 
 // ---------------------------------------------------------------------------
 // Content — shared by ready / empty / offline states
@@ -67,6 +42,8 @@ const DiscoverAIAssistantIntroContent = ({
   const styles = useMemo(() => makeStyles(c), [c]);
   const navigation = useNavigation<any>();
   const [question, setQuestion] = useState(''); // AC-FR-E16-01-02
+  const history = getDiscoverAIAssistantHistory();
+  const quickSuggestions = getDiscoverAIAssistantQuickSuggestions();
 
   const handleAsk = () => {
     if (isOffline || question.trim().length === 0) return;
@@ -78,7 +55,7 @@ const DiscoverAIAssistantIntroContent = ({
     setQuestion(text); // AC-FR-E16-01-03
   };
 
-  const handleHistoryTap = (item: (typeof MOCK_HISTORY)[0]) => {
+  const handleHistoryTap = (item: (typeof history)[number]) => {
     if (isOffline) return;
     navigation.navigate('DiscoverAIAssistantQuestions', { question: item.question });
   };
@@ -142,7 +119,7 @@ const DiscoverAIAssistantIntroContent = ({
         style={styles.chipsScroll}
         accessibilityLabel="Hizli konu onerileri"
       >
-        {QUICK_SUGGESTIONS.map(s => (
+        {quickSuggestions.map(s => (
           <PChip
             key={s}
             onPress={() => handleSuggestion(s)}
@@ -169,12 +146,12 @@ const DiscoverAIAssistantIntroContent = ({
       </PButton>
 
       {/* AC-FR-E16-01-01: conversation history */}
-      {!isEmptyHistory && MOCK_HISTORY.length > 0 ? (
+      {!isEmptyHistory && history.length > 0 ? (
         <View style={styles.historySection}>
           <View style={styles.historyHeader}>
             <PText style={styles.historyTitle}>Son Konusmalar</PText>
           </View>
-          {MOCK_HISTORY.map((item, idx) => (
+          {history.map((item, idx) => (
             <React.Fragment key={item.id}>
               <TouchableOpacity
                 style={styles.historyItem}
@@ -211,7 +188,7 @@ const DiscoverAIAssistantIntroContent = ({
                   accessibilityElementsHidden
                 />
               </TouchableOpacity>
-              {idx < MOCK_HISTORY.length - 1 && <PDivider />}
+              {idx < history.length - 1 && <PDivider />}
             </React.Fragment>
           ))}
         </View>
