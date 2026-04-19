@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useMemo, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import React, { useEffect, useMemo, useState } from 'react';
+import { ScrollView, StyleSheet, View } from 'react-native';
 
 import { FilterChipBar, PActivityIndicator, PButton, PText } from '../../components';
 import { OfflineNotice } from '../../components/OfflineNotice';
@@ -10,12 +10,24 @@ import { SectionCard } from '../../components/SectionCard';
 import { SkeletonBlock } from '../../components/SkeletonBlock';
 import { StateMessage } from '../../components/StateMessage';
 import { WORKSHOP_MODE_LABELS, WORKSHOP_TYPE_BG, WORKSHOP_TYPE_FG } from '../../data/constants/workshop';
-import { getContentProgressForUser, getPrimaryUser, getWorkshops } from '../../data/mockSelectors';
+import {
+  getContentProgressForUser,
+  getPrimaryUser,
+  getWorkshopGroups,
+  getWorkshops,
+  getWorkshopsForGroup
+} from '../../data/mockSelectors';
 import { ColorTokens, fontSizes, fontWeights, radii, spacing, useAppTheme } from '../../theme';
 
 type Workshop = ReturnType<typeof getWorkshops>[number];
+type WorkshopGroup = ReturnType<typeof getWorkshopGroups>[number];
 
 const getField = <T,>(w: Workshop, key: string, fallback: T): T => ((w as any)[key] ?? fallback) as T;
+
+const getDurationLabel = (workshop: Workshop) => {
+  const minutes = getField(workshop, 'total_duration_minutes', 0);
+  return minutes >= 60 ? `${Math.round(minutes / 60)} saat` : `${minutes} dk`;
+};
 
 const WorkshopListCard = ({
   workshop,
@@ -34,8 +46,7 @@ const WorkshopListCard = ({
   const emoji: string = getField(workshop, 'emoji', '🎓');
   const color: string = getField(workshop, 'color', '#F3F4F6');
   const wType: string = getField(workshop, 'delivery_mode', 'kamp');
-  const durationMins: number = getField(workshop, 'total_duration_minutes', 0);
-  const durationLabel: string = durationMins >= 60 ? `${Math.round(durationMins / 60)} saat` : `${durationMins} dk`;
+  const durationLabel = getDurationLabel(workshop);
   const ageTarget: string = getField(workshop, 'target_audience', '18+');
   const scheduledDate: string | null = getField(workshop, 'scheduled_date', null);
   const attendeeCount: number = getField(workshop, 'attendee_count', 0);
@@ -53,7 +64,7 @@ const WorkshopListCard = ({
           {workshop.title}
         </PText>
         <PText style={styles.workshopDesc} numberOfLines={2}>
-          {(workshop as any).description ?? ''}
+          {getField(workshop, 'description', getField(workshop, 'theme', ''))}
         </PText>
         <View style={styles.metaRow}>
           <View style={[styles.typeChip, { backgroundColor: WORKSHOP_TYPE_BG[wType] ?? '#F3F4F6' }]}>
@@ -97,25 +108,75 @@ const LibraryWorkshopsContent = ({ isOffline }: { isOffline?: boolean }) => {
 
   const navigation = useNavigation<any>();
   const user = getPrimaryUser();
-  const allWorkshops = getWorkshops();
-  const modes = useMemo(
-    () => Array.from(new Set(allWorkshops.map(w => (w as any).delivery_mode).filter(Boolean))),
-    [allWorkshops]
+  const groups = getWorkshopGroups();
+  const allCatalogCount = groups.reduce((sum, group) => sum + Number(group.catalog_count ?? 0), 0);
+  const groupOptions = useMemo(
+    () => [
+      {
+        id: 'all',
+        title: 'Tum Gruplar',
+        description: 'Tum atolyeler tek listede',
+        catalog_count: allCatalogCount
+      },
+      ...groups
+    ],
+    [groups, allCatalogCount]
   );
-  const categories = useMemo(() => modes.map(mode => WORKSHOP_MODE_LABELS[mode] ?? mode), [modes]);
-  const [activeCategory, setActiveCategory] = useState<string>(categories[0] ?? '');
+
+  const [activeGroupId, setActiveGroupId] = useState<string>(groupOptions[0]?.id ?? 'all');
+  const activeGroup: WorkshopGroup | (typeof groupOptions)[number] | null =
+    groupOptions.find(group => group.id === activeGroupId) ?? groupOptions[0] ?? null;
+
+  const groupWorkshops = activeGroupId === 'all' ? getWorkshops() : getWorkshopsForGroup(activeGroupId);
+  const modes = useMemo(
+    () => ['tumu', ...Array.from(new Set(groupWorkshops.map(w => getField(w, 'delivery_mode', '')).filter(Boolean)))],
+    [groupWorkshops]
+  );
+  const categories = useMemo(
+    () => modes.map(mode => (mode === 'tumu' ? 'Tumu' : WORKSHOP_MODE_LABELS[mode] ?? mode)),
+    [modes]
+  );
+  const [activeCategory, setActiveCategory] = useState<string>(categories[0] ?? 'Tumu');
+
+  useEffect(() => {
+    setActiveCategory(categories[0] ?? 'Tumu');
+  }, [activeGroupId, categories]);
+
   const progressRows = getContentProgressForUser(user?.id).filter(row => row.target_type === 'workshop');
   const progressMap = new Map(progressRows.map(row => [row.content_item_id, row]));
 
-  const activeModeKey = modes[categories.indexOf(activeCategory)] ?? modes[0];
-  const filtered = activeModeKey
-    ? allWorkshops.filter(w => getField(w, 'delivery_mode', '') === activeModeKey)
-    : allWorkshops;
+  const activeModeKey = modes[categories.indexOf(activeCategory)] ?? modes[0] ?? 'tumu';
+  const filtered =
+    activeModeKey === 'tumu'
+      ? groupWorkshops
+      : groupWorkshops.filter(w => getField(w, 'delivery_mode', '') === activeModeKey);
   const upcomingCount = filtered.filter(w => progressMap.get(w.id)?.status === 'available').length;
 
   return (
     <>
-      <SectionCard title="Kategoriler">
+      <SectionCard title="Atölye Grupları">
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.groupChipRow}>
+          {groupOptions.map(group => (
+            <PButton
+              key={group.id}
+              mode={activeGroupId === group.id ? 'contained' : 'outlined'}
+              compact
+              disabled={isOffline}
+              style={styles.groupChip}
+              contentStyle={styles.groupChipContent}
+              onPress={() => setActiveGroupId(group.id)}
+            >
+              {group.title}
+            </PButton>
+          ))}
+        </ScrollView>
+        <PText style={styles.categoryDesc}>{activeGroup?.description}</PText>
+        <PText style={styles.catalogCountText}>
+          {Math.max(filtered.length, Number(activeGroup?.catalog_count ?? 0)).toLocaleString('en-US')} katalog atolyesi
+        </PText>
+      </SectionCard>
+
+      <SectionCard title="Tür Filtreleri">
         <FilterChipBar
           options={categories}
           activeOption={activeCategory}
@@ -126,20 +187,18 @@ const LibraryWorkshopsContent = ({ isOffline }: { isOffline?: boolean }) => {
           {activeModeKey === 'kamp' && 'Uzun soluklu kamp formatli atolyeler.'}
           {activeModeKey === 'rehber' && 'Rehber odakli atolyeler.'}
           {activeModeKey === 'calisma_kitabi' && 'Calisma kitabi destekli atolyeler.'}
+          {activeModeKey === 'tumu' && 'Secili gruptaki tum atolye tipleri listelenir.'}
         </PText>
       </SectionCard>
 
-      <SectionCard
-        title={`${activeCategory} Atölyeler`}
-        actionLabel={upcomingCount > 0 ? `${upcomingCount} Yaklaşan` : undefined}
-      >
+      <SectionCard title={`${activeCategory} Atölyeler`} actionLabel={upcomingCount > 0 ? `${upcomingCount} Yaklaşan` : undefined}>
         {filtered.length === 0 ? (
           <StateMessage
             title="Bu kategoride atölye yok"
             description="Diğer kategorilere göz atabilirsiniz."
             actionLabel="Tümünü Gör"
             icon="calendar-blank"
-            onAction={() => setActiveCategory(categories[0] ?? '')}
+            onAction={() => setActiveCategory(categories[0] ?? 'Tumu')}
           />
         ) : (
           filtered.map(workshop => (
@@ -227,11 +286,20 @@ export const LibraryWorkshopsScreen = ({ route }: { route?: { params?: { state?:
 
 function makeStyles(c: ColorTokens) {
   return StyleSheet.create({
+    groupChipRow: { gap: spacing[1], paddingBottom: spacing[0.5] },
+    groupChip: { borderRadius: radii['2xl'] },
+    groupChipContent: { height: 34 },
     categoryDesc: {
       fontSize: fontSizes.sm,
       color: c.textSecondary,
       marginTop: 6,
       lineHeight: 18
+    },
+    catalogCountText: {
+      marginTop: spacing[0.5],
+      fontSize: fontSizes.sm,
+      color: c.textBrand,
+      fontWeight: fontWeights.semiBold
     },
     workshopCard: {
       flexDirection: 'row',
@@ -264,29 +332,52 @@ function makeStyles(c: ColorTokens) {
     },
     metaRow: {
       flexDirection: 'row',
-      flexWrap: 'wrap',
-      gap: 6,
       alignItems: 'center',
-      marginBottom: 6
+      flexWrap: 'wrap',
+      gap: spacing[1],
+      marginBottom: spacing[1]
     },
-    typeChip: { paddingHorizontal: 6, paddingVertical: 2, borderRadius: radii.sm },
-    typeChipText: { fontSize: fontSizes.xs, fontWeight: fontWeights.bold },
-    metaText: { fontSize: fontSizes.xs, color: c.textTertiary },
+    typeChip: {
+      paddingHorizontal: 8,
+      paddingVertical: 3,
+      borderRadius: radii.sm
+    },
+    typeChipText: {
+      fontSize: fontSizes.sm,
+      fontWeight: fontWeights.bold
+    },
+    metaText: {
+      fontSize: fontSizes.sm,
+      color: c.textTertiary
+    },
     facilitatorRow: {
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'space-between',
-      marginBottom: 8
+      marginBottom: spacing[1]
     },
-    facilitatorText: { fontSize: fontSizes.xs, color: c.textTertiary, flex: 1 },
+    facilitatorText: {
+      fontSize: fontSizes.sm,
+      color: c.textSecondary,
+      flex: 1,
+      marginRight: spacing[1]
+    },
     dateBadge: {
       backgroundColor: c.surfaceVariant,
-      paddingHorizontal: 6,
-      paddingVertical: 2,
+      paddingHorizontal: 8,
+      paddingVertical: 4,
       borderRadius: radii.sm
     },
-    dateBadgeUpcoming: { backgroundColor: '#D1FAE5' },
-    dateText: { fontSize: fontSizes.xs, color: c.textSecondary },
-    actionBtn: { alignSelf: 'flex-start' }
+    dateBadgeUpcoming: {
+      backgroundColor: '#D1FAE5'
+    },
+    dateText: {
+      fontSize: fontSizes.xs,
+      color: c.textSecondary
+    },
+    actionBtn: {
+      alignSelf: 'flex-start',
+      borderRadius: radii.md
+    }
   });
 }

@@ -16,20 +16,71 @@ import {
   getDiscoverWorkshopTypeForegroundColors,
   getDiscoverWorkshopTypeLabels,
   getDiscoverWorkshopTypeOptions,
-  getWorkshops
+  getWorkshopGroups,
+  getWorkshops,
+  getWorkshopsForGroup
 } from '../../data/mockSelectors';
 import { ColorTokens, fontSizes, fontWeights, radii, spacing, useAppTheme } from '../../theme';
 
 type Workshop = ReturnType<typeof getWorkshops>[number];
+type WorkshopGroup = ReturnType<typeof getWorkshopGroups>[number];
 
 const getField = <T,>(w: Workshop, key: string, fallback: T): T => ((w as any)[key] ?? fallback) as T;
+
+const getMode = (w: Workshop) => getField(w, 'delivery_mode', getField(w, 'type', 'kamp'));
+
+const getDurationLabel = (w: Workshop) => {
+  const preset = getField(w, 'duration_label', '');
+  if (preset) {
+    return preset;
+  }
+  const mins = getField(w, 'total_duration_minutes', 0);
+  if (mins >= 60) {
+    return `${Math.round(mins / 60)} saat`;
+  }
+  return mins > 0 ? `${mins} dk` : '—';
+};
+
+const getSessionCount = (w: Workshop) => {
+  const explicit = getField(w, 'session_count', 0);
+  if (explicit > 0) {
+    return explicit;
+  }
+  const mins = getField(w, 'total_duration_minutes', 0);
+  if (mins <= 0) {
+    return 0;
+  }
+  return Math.max(1, Math.round(mins / 90));
+};
+
+const getGroupChipCount = (group: WorkshopGroup | null | { catalog_count?: number }, fallbackCount: number) => {
+  if (!group) {
+    return fallbackCount;
+  }
+  return Math.max(fallbackCount, Number(group.catalog_count ?? 0));
+};
 
 const DiscoverWorkshopsContent = ({ isOffline }: { isOffline?: boolean }) => {
   const { colors: c } = useAppTheme();
   const styles = useMemo(() => makeStyles(c), [c]);
 
   const navigation = useNavigation<any>();
-  const workshops = getWorkshops();
+  const groups = getWorkshopGroups();
+  const allCatalogCount = groups.reduce((sum, group) => sum + Number(group.catalog_count ?? 0), 0);
+  const groupOptions = useMemo(
+    () => [
+      {
+        id: 'all',
+        title: 'Tum Gruplar',
+        description: 'Tum atolyeler tek listede',
+        catalog_count: allCatalogCount,
+        featured_workshop_ids: []
+      },
+      ...groups
+    ],
+    [groups, allCatalogCount]
+  );
+
   const sortOptions = getDiscoverWorkshopSortOptions();
   const typeOptions = getDiscoverWorkshopTypeOptions();
   const typeLabels = getDiscoverWorkshopTypeLabels();
@@ -37,21 +88,58 @@ const DiscoverWorkshopsContent = ({ isOffline }: { isOffline?: boolean }) => {
   const typeFg = getDiscoverWorkshopTypeForegroundColors();
   const difficultyLabels = getDiscoverWorkshopDifficultyLabels();
   const difficultyColors = getDiscoverWorkshopDifficultyColors();
+
+  const [selectedGroupId, setSelectedGroupId] = React.useState<string>(groupOptions[0]?.id ?? 'all');
   const [selectedSort, setSelectedSort] = React.useState<string>(sortOptions[0] ?? 'Tumu');
   const [selectedType, setSelectedType] = React.useState<string>(typeOptions[0]?.key ?? 'tumu');
 
+  const activeGroup = groupOptions.find(group => group.id === selectedGroupId) ?? groupOptions[0] ?? null;
+  const workshops = selectedGroupId === 'all' ? getWorkshops() : getWorkshopsForGroup(selectedGroupId);
+
   const filtered = useMemo(() => {
-    let list = workshops.filter(w => (selectedType === 'tumu' ? true : getField(w, 'type', '') === selectedType));
-    if (selectedSort === 'Onerilen') list = list.filter(w => getField(w, 'is_recommended', false));
-    if (selectedSort === 'Populer')
+    const featuredIds = new Set(activeGroup?.featured_workshop_ids ?? []);
+    let list = workshops.filter(workshop => (selectedType === 'tumu' ? true : getMode(workshop) === selectedType));
+    if (selectedSort === 'Onerilen') {
+      list = list.filter(workshop => getField(workshop, 'is_recommended', false) || featuredIds.has(workshop.id));
+    }
+    if (selectedSort === 'Populer') {
       list = [...list].sort((a, b) => getField(b, 'attendee_count', 0) - getField(a, 'attendee_count', 0));
-    if (selectedSort === 'Yeni') list = [...list].filter(w => getField(w, 'is_upcoming', false));
+    }
+    if (selectedSort === 'Yeni') {
+      list = [...list].filter(workshop => getField(workshop, 'is_upcoming', false));
+    }
     return list;
-  }, [workshops, selectedSort, selectedType]);
+  }, [activeGroup, workshops, selectedSort, selectedType]);
 
   return (
     <View>
-      {/* Sort chips */}
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.chipsRow}>
+        {groupOptions.map(group => (
+          <PButton
+            key={group.id}
+            mode={selectedGroupId === group.id ? 'contained' : 'outlined'}
+            compact
+            disabled={isOffline}
+            style={styles.chip}
+            contentStyle={styles.chipContent}
+            labelStyle={styles.chipLabel}
+            buttonColor={selectedGroupId === group.id ? c.primary : 'transparent'}
+            textColor={selectedGroupId === group.id ? c.onPrimary : c.textBrand}
+            onPress={() => setSelectedGroupId(group.id)}
+          >
+            {group.title}
+          </PButton>
+        ))}
+      </ScrollView>
+
+      <View style={styles.groupSummary}>
+        <PText style={styles.groupTitle}>{activeGroup?.title ?? 'Tum Gruplar'}</PText>
+        <PText style={styles.groupDesc}>{activeGroup?.description ?? 'Tum atolye gruplari'}</PText>
+        <PText style={styles.groupCount}>
+          {getGroupChipCount(activeGroup, workshops.length).toLocaleString('en-US')} katalog atolyesi
+        </PText>
+      </View>
+
       <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.chipsRow}>
         {sortOptions.map(label => (
           <PButton
@@ -71,7 +159,6 @@ const DiscoverWorkshopsContent = ({ isOffline }: { isOffline?: boolean }) => {
         ))}
       </ScrollView>
 
-      {/* Type filter */}
       <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.chipsRow}>
         {typeOptions.map(opt => (
           <PButton
@@ -94,29 +181,31 @@ const DiscoverWorkshopsContent = ({ isOffline }: { isOffline?: boolean }) => {
       {filtered.length === 0 ? (
         <StateMessage
           title="Sonuç bulunamadı"
-          description="Başka bir tür filtresi deneyin."
+          description="Başka bir grup veya tür filtresi deneyin."
           actionLabel="Tümünü Göster"
           icon="filter-remove-outline"
           onAction={() => {
+            setSelectedGroupId(groupOptions[0]?.id ?? 'all');
             setSelectedSort(sortOptions[0] ?? 'Tumu');
             setSelectedType(typeOptions[0]?.key ?? 'tumu');
           }}
         />
       ) : (
         filtered.map(item => {
-          const wType: string = getField(item, 'type', 'kamp');
+          const wType = getMode(item);
           const emoji: string = getField(item, 'emoji', '🎓');
           const color: string = getField(item, 'color', '#F3F4F6');
-          const durationLabel: string = getField(item, 'duration_label', '—');
-          const sessionCount: number = getField(item, 'session_count', 0);
-          const ageTarget: string = getField(item, 'age_target', '18+');
+          const durationLabel = getDurationLabel(item);
+          const sessionCount = getSessionCount(item);
+          const ageTarget: string = getField(item, 'target_audience', getField(item, 'age_target', '18+'));
           const isRecommended: boolean = getField(item, 'is_recommended', false);
           const isPopular: boolean = getField(item, 'is_popular', false);
           const attendeeCount: number = getField(item, 'attendee_count', 0);
           const difficulty: string = getField(item, 'difficulty', 'orta');
           const scheduledDate: string | null = getField(item, 'scheduled_date', null);
-          const hasWorkbook: boolean = getField(item, 'has_workbook', false);
-          const hasCamp: boolean = getField(item, 'has_camp', false);
+          const hasWorkbook: boolean =
+            getField(item, 'has_workbook', false) || getField(item, 'participant_workbook_asset_id', null) != null;
+          const hasCamp: boolean = getField(item, 'has_camp', false) || wType === 'kamp';
 
           return (
             <PCard
@@ -133,7 +222,6 @@ const DiscoverWorkshopsContent = ({ isOffline }: { isOffline?: boolean }) => {
               accessibilityRole="button"
             >
               <View style={styles.cardInner}>
-                {/* Badge row */}
                 {(isRecommended || isPopular) && (
                   <View style={styles.badgeRow}>
                     {isRecommended && (
@@ -149,7 +237,6 @@ const DiscoverWorkshopsContent = ({ isOffline }: { isOffline?: boolean }) => {
                   </View>
                 )}
 
-                {/* Card top */}
                 <View style={styles.cardTop}>
                   <View style={[styles.cardIcon, { backgroundColor: color }]}>
                     <PText style={styles.cardEmoji}>{emoji}</PText>
@@ -157,12 +244,11 @@ const DiscoverWorkshopsContent = ({ isOffline }: { isOffline?: boolean }) => {
                   <View style={styles.cardInfo}>
                     <PText style={styles.cardTitle}>{item.title}</PText>
                     <PText style={styles.cardDesc} numberOfLines={2}>
-                      {(item as any).description ?? ''}
+                      {getField(item, 'description', getField(item, 'theme', ''))}
                     </PText>
                   </View>
                 </View>
 
-                {/* Meta row */}
                 <View style={styles.metaRow}>
                   <PText style={styles.metaItem}>⏱ {durationLabel}</PText>
                   <PText style={styles.metaSep}>·</PText>
@@ -177,7 +263,6 @@ const DiscoverWorkshopsContent = ({ isOffline }: { isOffline?: boolean }) => {
                   )}
                 </View>
 
-                {/* Chip row */}
                 <View style={styles.chipTagRow}>
                   <View style={[styles.typeChip, { backgroundColor: typeBg[wType] ?? '#F3F4F6' }]}>
                     <PText style={[styles.typeChipText, { color: typeFg[wType] ?? '#111' }]}>
@@ -201,7 +286,6 @@ const DiscoverWorkshopsContent = ({ isOffline }: { isOffline?: boolean }) => {
                   )}
                 </View>
 
-                {/* Footer */}
                 <View style={styles.cardFooter}>
                   {scheduledDate ? (
                     <PText style={styles.dateText}>📅 {scheduledDate}</PText>
@@ -280,7 +364,7 @@ export const DiscoverWorkshopsScreen = ({ route }: { route?: { params?: { state?
 
   if (state === 'offline') {
     return (
-      <ScreenLayout title="Atölyeler">
+      <ScreenLayout title="Atölyeler" subtitle="Canlı ve kayıtlı atölyeler">
         <OfflineNotice />
         <DiscoverWorkshopsContent isOffline />
       </ScreenLayout>
@@ -288,7 +372,7 @@ export const DiscoverWorkshopsScreen = ({ route }: { route?: { params?: { state?
   }
 
   return (
-    <ScreenLayout title="Atölyeler" subtitle={`${getWorkshops().length} atölye`}>
+    <ScreenLayout title="Atölyeler" subtitle="Canlı ve kayıtlı atölyeler">
       <DiscoverWorkshopsContent />
     </ScreenLayout>
   );
@@ -300,6 +384,16 @@ function makeStyles(c: ColorTokens) {
     chip: { borderRadius: radii['2xl'], elevation: 0 },
     chipContent: { height: 34, paddingHorizontal: 4 },
     chipLabel: { fontSize: fontSizes.base, fontWeight: fontWeights.semiBold },
+    groupSummary: {
+      backgroundColor: c.surfaceVariant,
+      borderRadius: radii.lg,
+      paddingHorizontal: spacing[2],
+      paddingVertical: spacing[1.5],
+      marginBottom: spacing[1.5]
+    },
+    groupTitle: { fontSize: fontSizes.lg, fontWeight: fontWeights.bold, color: c.textPrimary },
+    groupDesc: { fontSize: fontSizes.sm, color: c.textSecondary, marginTop: 2 },
+    groupCount: { fontSize: fontSizes.sm, color: c.textBrand, marginTop: spacing[0.5], fontWeight: fontWeights.semiBold },
     card: { borderRadius: radii.xl, marginBottom: spacing[2] },
     cardInner: { borderRadius: radii.xl, overflow: 'hidden' },
     badgeRow: {

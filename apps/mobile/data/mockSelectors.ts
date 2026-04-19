@@ -14,6 +14,7 @@ const getList = <T>(list?: T[]): T[] => list ?? [];
 const getRawJourneys = () => getList(getData()?.journeys);
 const getRawModules = () => getList(getData()?.modules);
 const getRawWorkshops = () => getList(getData()?.workshops);
+const getRawWorkshopGroups = () => getList((getData() as any)?.workshop_groups as any[]);
 const getRawEbooks = () => getList(getData()?.ebooks);
 
 // ---------------------------------------------------------------------------
@@ -156,6 +157,18 @@ export const getPackages = () =>
     description: p.description ?? null,
   }));
 export const getWorkshops = () => getRawWorkshops().map(normalizeWorkshop);
+export const getWorkshopGroups = () =>
+  getRawWorkshopGroups()
+    .map((group: any) => ({
+      ...group,
+      title: group.title ?? group.name ?? 'Atolye Grubu',
+      description: group.description ?? '',
+      catalog_count: Number.isFinite(group.catalog_count) ? group.catalog_count : 0,
+      featured_workshop_ids: getList(group.featured_workshop_ids as string[]),
+      delivery_modes: getList(group.delivery_modes as string[]),
+      target_audiences: getList(group.target_audiences as string[]),
+    }))
+    .sort((a: any, b: any) => (a.order_index ?? 0) - (b.order_index ?? 0));
 export const getEbooks = () => getRawEbooks().map(normalizeEbook);
 export const getEbookChapters = () =>
   getList(getData()?.ebook_chapters).map((ch: any) => ({
@@ -337,6 +350,35 @@ export const getPackagesForModule = (moduleId?: string) =>
   getPackages().filter((pkg: any) => pkg.module_content_item_id === moduleId);
 
 export const getWorkshopById = (id?: string) => getWorkshops().find(w => w.id === id);
+export const getWorkshopGroupById = (id?: string) => getWorkshopGroups().find((group: any) => group.id === id);
+
+const workshopMatchesGroup = (workshop: ReturnType<typeof getWorkshops>[number], group: any) => {
+  const workshopId = (workshop as any).id;
+  const featuredIds = new Set(getList(group.featured_workshop_ids as string[]));
+  if (featuredIds.has(workshopId)) {
+    return true;
+  }
+
+  const modeRules = new Set(getList(group.delivery_modes as string[]));
+  const audienceRules = new Set(getList(group.target_audiences as string[]));
+  const workshopMode = (workshop as any).delivery_mode;
+  const workshopAudience = (workshop as any).target_audience;
+
+  const modeMatch = modeRules.size === 0 || modeRules.has(workshopMode);
+  const audienceMatch = audienceRules.size === 0 || audienceRules.has(workshopAudience);
+  return modeMatch && audienceMatch;
+};
+
+export const getWorkshopsForGroup = (groupId?: string) => {
+  if (!groupId) {
+    return getWorkshops();
+  }
+  const group = getWorkshopGroupById(groupId);
+  if (!group) {
+    return getWorkshops();
+  }
+  return getWorkshops().filter(workshop => workshopMatchesGroup(workshop, group));
+};
 
 export const getEbookById = (id?: string) => getEbooks().find(e => e.id === id);
 

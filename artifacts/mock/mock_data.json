@@ -1062,6 +1062,92 @@
       "title": "Nefis Terbiyesi: İçsel Disiplin"
     }
   ],
+  "workshop_groups": [
+    {
+      "id": "wg-manevi-derinlesme",
+      "title": "Manevi Derinlesme",
+      "description": "Dua, teslimiyet ve icsel farkindalik odakli uzun sureli atolyeler.",
+      "order_index": 1,
+      "catalog_count": 320,
+      "delivery_modes": ["kamp", "rehber"],
+      "target_audiences": ["18+", "25+"],
+      "featured_workshop_ids": [
+        "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee",
+        "eeeeeeee-0000-0000-0000-000000000003",
+        "eeeeeeee-0000-0000-0000-000000000024"
+      ]
+    },
+    {
+      "id": "wg-duygusal-denge",
+      "title": "Duygusal Denge",
+      "description": "Ofke, korku, yas ve oz-sefkat temali donusum atolyeleri.",
+      "order_index": 2,
+      "catalog_count": 280,
+      "delivery_modes": ["kamp", "calisma_kitabi", "rehber"],
+      "target_audiences": ["18+"],
+      "featured_workshop_ids": [
+        "eeeeeeee-0000-0000-0000-000000000006",
+        "eeeeeeee-0000-0000-0000-000000000011",
+        "eeeeeeee-0000-0000-0000-000000000020"
+      ]
+    },
+    {
+      "id": "wg-iliskiler-aile",
+      "title": "Iliskiler ve Aile",
+      "description": "Aile ici iletisim, es iliskisi ve bag kurma odakli atolyeler.",
+      "order_index": 3,
+      "catalog_count": 260,
+      "delivery_modes": ["kamp", "rehber"],
+      "target_audiences": ["Aile", "Cift", "18+"],
+      "featured_workshop_ids": [
+        "eeeeeeee-0000-0000-0000-000000000010",
+        "eeeeeeee-0000-0000-0000-000000000015",
+        "eeeeeeee-0000-0000-0000-000000000014"
+      ]
+    },
+    {
+      "id": "wg-genc-ve-egitim",
+      "title": "Genc ve Egitim",
+      "description": "Ergenlik, kimlik gelisimi ve aidiyet sureclerine odakli atolyeler.",
+      "order_index": 4,
+      "catalog_count": 210,
+      "delivery_modes": ["rehber", "kamp"],
+      "target_audiences": ["14-18", "18+"],
+      "featured_workshop_ids": [
+        "eeeeeeee-0000-0000-0000-000000000016",
+        "eeeeeeee-0000-0000-0000-000000000009",
+        "eeeeeeee-0000-0000-0000-000000000001"
+      ]
+    },
+    {
+      "id": "wg-yasam-becerileri",
+      "title": "Yasam Becerileri",
+      "description": "Sinir koyma, odaklanma, zaman ve rutin yonetimi atolyeleri.",
+      "order_index": 5,
+      "catalog_count": 230,
+      "delivery_modes": ["calisma_kitabi", "rehber", "kamp"],
+      "target_audiences": ["18+"],
+      "featured_workshop_ids": [
+        "eeeeeeee-0000-0000-0000-000000000007",
+        "eeeeeeee-0000-0000-0000-000000000013",
+        "eeeeeeee-0000-0000-0000-000000000023"
+      ]
+    },
+    {
+      "id": "wg-profesyonel-hayat",
+      "title": "Profesyonel Hayat",
+      "description": "Liderlik, motivasyon ve sorumluluk gelistiren atolyeler.",
+      "order_index": 6,
+      "catalog_count": 200,
+      "delivery_modes": ["rehber", "kamp"],
+      "target_audiences": ["25+", "18+"],
+      "featured_workshop_ids": [
+        "eeeeeeee-0000-0000-0000-000000000017",
+        "eeeeeeee-0000-0000-0000-000000000012",
+        "eeeeeeee-0000-0000-0000-000000000021"
+      ]
+    }
+  ],
   "ebooks": [
     {
       "content_item_id": "eeeeeeee-1111-2222-3333-444444444444",
