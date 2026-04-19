@@ -3,7 +3,7 @@ import React, { useMemo, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { FilterChipBar, PActivityIndicator, PButton, PText } from '../../components';
-import { getWorkshops } from '../../data/mockSelectors';
+import { getContentProgressForUser, getPrimaryUser, getWorkshops } from '../../data/mockSelectors';
 import { ColorTokens, fontSizes, fontWeights, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
@@ -14,12 +14,10 @@ import { StateMessage } from '../components/StateMessage';
 
 type Workshop = ReturnType<typeof getWorkshops>[number];
 
-const CATEGORIES = ['Canlı', 'Kayıt', 'Mini', 'Toplu'] as const;
-const CATEGORY_MAP: Record<string, string> = {
-  'Canlı': 'canli',
-  'Kayıt': 'kayit',
-  'Mini': 'mini',
-  'Toplu': 'toplu'
+const MODE_LABELS: Record<string, string> = {
+  kamp: 'Kamp',
+  rehber: 'Rehber',
+  calisma_kitabi: 'Calisma Kitabi'
 };
 
 const TYPE_BG: Record<string, string> = {
@@ -35,7 +33,7 @@ const TYPE_FG: Record<string, string> = {
 const TYPE_LABELS: Record<string, string> = {
   kamp: 'Kamp',
   rehber: 'Rehber',
-  calisma_kitabi: 'Çalışma Kitabı'
+  calisma_kitabi: 'Calisma Kitabi'
 };
 
 const getField = <T,>(w: Workshop, key: string, fallback: T): T =>
@@ -43,10 +41,12 @@ const getField = <T,>(w: Workshop, key: string, fallback: T): T =>
 
 const WorkshopListCard = ({
   workshop,
+  isUpcoming,
   isOffline,
   onPress
 }: {
   workshop: Workshop;
+  isUpcoming: boolean;
   isOffline: boolean;
   onPress: () => void;
 }) => {
@@ -55,13 +55,13 @@ const WorkshopListCard = ({
 
   const emoji: string = getField(workshop, 'emoji', '🎓');
   const color: string = getField(workshop, 'color', '#F3F4F6');
-  const wType: string = getField(workshop, 'type', 'kamp');
-  const durationLabel: string = getField(workshop, 'duration_label', '—');
-  const ageTarget: string = getField(workshop, 'age_target', '18+');
+  const wType: string = getField(workshop, 'delivery_mode', 'kamp');
+  const durationMins: number = getField(workshop, 'total_duration_minutes', 0);
+  const durationLabel: string = durationMins >= 60 ? `${Math.round(durationMins / 60)} saat` : `${durationMins} dk`;
+  const ageTarget: string = getField(workshop, 'target_audience', '18+');
   const scheduledDate: string | null = getField(workshop, 'scheduled_date', null);
   const attendeeCount: number = getField(workshop, 'attendee_count', 0);
   const facilitator: string = getField(workshop, 'facilitator', 'PST Coaching');
-  const isUpcoming: boolean = getField(workshop, 'is_upcoming', false);
 
   return (
     <View style={styles.workshopCard}>
@@ -118,27 +118,36 @@ const LibraryWorkshopsContent = ({ isOffline }: { isOffline?: boolean }) => {
   const styles = useMemo(() => makeStyles(c), [c]);
 
   const navigation = useNavigation<any>();
-  const [activeCategory, setActiveCategory] = useState<string>(CATEGORIES[0]);
+  const user = getPrimaryUser();
   const allWorkshops = getWorkshops();
+  const modes = useMemo(
+    () => Array.from(new Set(allWorkshops.map(w => (w as any).delivery_mode).filter(Boolean))),
+    [allWorkshops]
+  );
+  const categories = useMemo(() => modes.map(mode => MODE_LABELS[mode] ?? mode), [modes]);
+  const [activeCategory, setActiveCategory] = useState<string>(categories[0] ?? '');
+  const progressRows = getContentProgressForUser(user?.id).filter(row => row.target_type === 'workshop');
+  const progressMap = new Map(progressRows.map(row => [row.content_item_id, row]));
 
-  const categoryKey = CATEGORY_MAP[activeCategory];
-  const filtered = allWorkshops.filter(w => getField(w, 'category', 'canli') === categoryKey);
-  const upcomingCount = filtered.filter(w => getField(w, 'is_upcoming', false)).length;
+  const activeModeKey = modes[categories.indexOf(activeCategory)] ?? modes[0];
+  const filtered = activeModeKey
+    ? allWorkshops.filter(w => getField(w, 'delivery_mode', '') === activeModeKey)
+    : allWorkshops;
+  const upcomingCount = filtered.filter(w => progressMap.get(w.id)?.status === 'available').length;
 
   return (
     <>
       <SectionCard title="Kategoriler">
         <FilterChipBar
-          options={CATEGORIES}
+          options={categories}
           activeOption={activeCategory}
           onOptionPress={setActiveCategory}
           disabled={isOffline}
         />
         <PText style={styles.categoryDesc}>
-          {activeCategory === 'Canlı' && 'Gerçek zamanlı kolaylaştırıcı eşliğinde canlı atölyeler.'}
-          {activeCategory === 'Kayıt' && 'Kendi hızında izleyebileceğin kayıtlı içerikler.'}
-          {activeCategory === 'Mini' && 'Odaklı konularda 60–90 dakikalık mini atölyeler.'}
-          {activeCategory === 'Toplu' && 'Kurumsal ve grup bazlı özel atölye programları.'}
+          {activeModeKey === 'kamp' && 'Uzun soluklu kamp formatli atolyeler.'}
+          {activeModeKey === 'rehber' && 'Rehber odakli atolyeler.'}
+          {activeModeKey === 'calisma_kitabi' && 'Calisma kitabi destekli atolyeler.'}
         </PText>
       </SectionCard>
 
@@ -152,13 +161,14 @@ const LibraryWorkshopsContent = ({ isOffline }: { isOffline?: boolean }) => {
             description="Diğer kategorilere göz atabilirsiniz."
             actionLabel="Tümünü Gör"
             icon="calendar-blank"
-            onAction={() => setActiveCategory(CATEGORIES[0])}
+            onAction={() => setActiveCategory(categories[0] ?? '')}
           />
         ) : (
           filtered.map(workshop => (
             <WorkshopListCard
               key={workshop.id}
               workshop={workshop}
+              isUpcoming={progressMap.get(workshop.id)?.status === 'available'}
               isOffline={!!isOffline}
               onPress={() =>
                 navigation.navigate('Content', {

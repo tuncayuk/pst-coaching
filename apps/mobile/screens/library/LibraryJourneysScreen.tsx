@@ -8,7 +8,7 @@ import {
   PButton,
   PCard
 } from '../../components';
-import { getJourneys } from '../../data/mockSelectors';
+import { getContentProgressForUser, getJourneys, getPrimaryUser } from '../../data/mockSelectors';
 import { ColorTokens, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
@@ -22,18 +22,32 @@ const LibraryJourneysContent = ({ isOffline }: { isOffline?: boolean }) => {
   const styles = useMemo(() => makeStyles(c), [c]);
 
   const navigation = useNavigation<any>();
+  const user = getPrimaryUser();
   const journeys = getJourneys();
-  const activeJourneys = journeys.slice(0, 2).map((journey, index) => ({
-    id: journey.id,
-    title: journey.title,
-    progress: 0.2 + index * 0.2,
-    subtitle: `Gün ${index + 1} · ${journey.daily_target ?? '10 dk'}`
-  }));
-  const suggestedJourneys = journeys.slice(2, 4).map(journey => ({
-    id: journey.id,
-    title: journey.title,
-    subtitle: `${journey.duration_days ?? 0} gün · ${journey.daily_target ?? '10 dk'}`
-  }));
+  const journeyProgress = getContentProgressForUser(user?.id).filter(row => row.target_type === 'journey');
+  const journeyProgressMap = new Map(journeyProgress.map(row => [row.content_item_id, row]));
+
+  const activeJourneys = journeys
+    .filter(journey => journeyProgressMap.has(journey.id))
+    .slice(0, 2)
+    .map((journey, index) => ({
+      id: journey.id,
+      title: journey.title,
+      progress: Math.min(
+        1,
+        Math.max(0, (journeyProgressMap.get(journey.id)?.progress_percent ?? 0) / 100)
+      ),
+      subtitle: `Gün ${index + 1} · ${journey.duration_days ?? 7} gün program`
+    }));
+
+  const suggestedJourneys = journeys
+    .filter(journey => !journeyProgressMap.has(journey.id))
+    .slice(0, 2)
+    .map(journey => ({
+      id: journey.id,
+      title: journey.title,
+      subtitle: `${journey.duration_days ?? 0} gün · ${journey.daily_target ?? '10 dk'}`
+    }));
 
   return (
     <>
@@ -48,7 +62,7 @@ const LibraryJourneysContent = ({ isOffline }: { isOffline?: boolean }) => {
         ))}
         <PButton
           mode="contained"
-          disabled={isOffline}
+          disabled={isOffline || activeJourneys.length === 0}
           style={styles.primaryButton}
           onPress={() =>
             navigation.navigate('Content', {
