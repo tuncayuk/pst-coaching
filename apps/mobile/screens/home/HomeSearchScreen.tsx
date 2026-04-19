@@ -3,6 +3,7 @@ import React, { useMemo, useRef, useState } from 'react';
 import { StyleSheet, TextInput, View } from 'react-native';
 
 import { PActivityIndicator, PButton, PCard, PChip, PTextInput } from '../../components';
+import { getPrimaryUser, getPopularTopics, getRecentSearchesForUser } from '../../data/mockSelectors';
 import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
@@ -14,17 +15,14 @@ import { StateMessage } from '../components/StateMessage';
 const QUICK_FILTERS = ['Yolculuk', 'Atolye', 'Modul', 'e-Kitap'] as const;
 type QuickFilter = (typeof QUICK_FILTERS)[number] | null;
 
-const recentSearches = ['Oz sefkat', 'Sinir koyma', 'Nefes egzersizi'];
-const popularTopics = [
-  { title: 'Duygusal Dayaniklilik', subtitle: '6 gun -- 4 icerik' },
-  { title: 'Zor Konusmalar', subtitle: '2 bolum -- 35 dk' }
-];
-
 const HomeSearchContent = ({ isOffline }: { isOffline?: boolean }) => {
   const { colors: c } = useAppTheme();
   const styles = useMemo(() => makeStyles(c), [c]);
 
   const navigation = useNavigation<any>();
+  const user = getPrimaryUser();
+  const recentSearches = getRecentSearchesForUser(user?.id);
+  const popularTopics = getPopularTopics();
   const [query, setQuery] = useState('');
   const [activeFilter, setActiveFilter] = useState<QuickFilter>(null);
   const inputRef = useRef<TextInput>(null);

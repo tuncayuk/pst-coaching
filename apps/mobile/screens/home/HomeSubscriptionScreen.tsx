@@ -3,6 +3,12 @@ import React, { useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { PActivityIndicator, PButton, PCard, PChip, PDivider, PText } from '../../components';
+import {
+  getAddOnCatalogWithStatusForSubscription,
+  getPlanForSubscription,
+  getPrimaryUser,
+  getSubscriptionForUser
+} from '../../data/mockSelectors';
 import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
@@ -20,23 +26,27 @@ const STATUS_CONFIG: Record<SubscriptionStatus, { label: string; bg: string; tex
   cancelled: { label: 'Iptal', bg: '#FEE2E2', text: '#991B1B', borderColor: '#FCA5A5' }
 };
 
-/** Mock add-ons - will come from subscription entity in real integration */
-const MOCK_ADDONS = [
-  { id: '1', name: 'Kocluk Okulu Erisimi', active: true },
-  { id: '2', name: 'Sonsuz e-Kitap Erisimi', active: true },
-  { id: '3', name: 'Grup Atolyesi', active: false }
-];
+const TR_MONTHS = ['Ocak','Subat','Mart','Nisan','Mayis','Haziran','Temmuz','Agustos','Eylul','Ekim','Kasim','Aralik'];
+function formatRenewalDate(iso?: string | null): string {
+  if (!iso) return '';
+  const d = new Date(iso);
+  return `${d.getDate()} ${TR_MONTHS[d.getMonth()]} ${d.getFullYear()}`;
+}
 
 const HomeSubscriptionContent = ({ isOffline }: { isOffline?: boolean }) => {
   const { colors: c } = useAppTheme();
   const styles = useMemo(() => makeStyles(c), [c]);
 
   const navigation = useNavigation<any>();
-  // Mock: in real app this comes from auth/subscription state
-  const status: SubscriptionStatus = 'active';
-  const config = STATUS_CONFIG[status];
-  const renewalDate = '15 Mayis 2026';
-  const planName = 'PST Premium';
+  const user = getPrimaryUser();
+  const subscription = getSubscriptionForUser(user?.id);
+  const plan = getPlanForSubscription(subscription?.plan_id);
+  const rawStatus = subscription?.status ?? 'active';
+  const status: SubscriptionStatus = (rawStatus === 'canceled' ? 'cancelled' : rawStatus) as SubscriptionStatus;
+  const config = STATUS_CONFIG[status] ?? STATUS_CONFIG.active;
+  const renewalDate = formatRenewalDate(subscription?.renewal_at);
+  const planName = (plan as any)?.name ?? (plan as any)?.plan_type ?? 'PST Premium';
+  const addons = getAddOnCatalogWithStatusForSubscription(subscription?.id);
 
   return (
     <>
@@ -70,7 +80,7 @@ const HomeSubscriptionContent = ({ isOffline }: { isOffline?: boolean }) => {
 
       {/* AC-FR-E2-02-02: Active add-ons list */}
       <SectionCard title="Aktif Ek Paketler">
-        {MOCK_ADDONS.map(addon => (
+        {addons.map(addon => (
           <PCard key={addon.id} style={styles.addonCard}>
             <View style={styles.addonRow}>
               <PText style={styles.addonName}>{addon.name}</PText>

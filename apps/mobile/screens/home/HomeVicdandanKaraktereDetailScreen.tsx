@@ -3,6 +3,11 @@ import React, { useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { PActivityIndicator, PButton, PCard, PDivider, PProgressBar, PText } from '../../components';
+import {
+  getContentProgressForUser,
+  getJourneyById,
+  getPrimaryUser
+} from '../../data/mockSelectors';
 import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
@@ -11,35 +16,38 @@ import { SectionCard } from '../components/SectionCard';
 import { SkeletonBlock } from '../components/SkeletonBlock';
 import { StateMessage } from '../components/StateMessage';
 
-const outlineSteps = [
-  { title: 'Vicdani Tanimak', duration: '12 dk' },
-  { title: 'Sefkatli Sinirlar', duration: '18 dk' },
-  { title: 'Gunluk Uygulama', duration: '10 dk' }
-];
+const JOURNEY_ID = 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa';
 
 const HomeVicdandanKaraktereContent = ({ isOffline }: { isOffline?: boolean }) => {
   const { colors: c } = useAppTheme();
   const styles = useMemo(() => makeStyles(c), [c]);
 
   const navigation = useNavigation<any>();
+  const journey = getJourneyById(JOURNEY_ID) as any;
+  const user = getPrimaryUser();
+  const progressItem = getContentProgressForUser(user?.id).find(p => p.content_item_id === JOURNEY_ID);
+  const progressPct = progressItem ? ((progressItem as any).progress_percent ?? 0) : 0;
+  const outlineSteps: Array<{ title: string; duration: string }> = journey?.outline_steps ?? [];
+  const benefits: string[] = journey?.benefits ?? [];
 
   return (
     <>
       {/* AC-FR-E2-04-01: summary text card */}
       <SectionCard title="Program Ozeti">
-        <PText variant="bodyMedium" style={styles.paragraph}>
-          Vicdandan Karaktere programi, ic sesini guclendirek degerlerinle uyumlu kararlar almani destekler.
-        </PText>
-        {/* AC-FR-E2-04-03: offline -- served from cache */}
+        {journey?.description ? (
+          <PText variant="bodyMedium" style={styles.paragraph}>
+            {journey.description}
+          </PText>
+        ) : null}
         {isOffline && <PText style={styles.offlineCacheNote}>Onbellekteki icerik gosteriliyor.</PText>}
         <PCard style={styles.card}>
           <PCard.Title
             title="Ilerleme"
-            subtitle="3/8 bolum tamamlandi"
-            accessibilityLabel="Ilerleme: 3 bolumden 8 i tamamlandi"
+            subtitle={`${progressPct}% tamamlandi`}
+            accessibilityLabel={`Ilerleme: %${progressPct} tamamlandi`}
           />
           <PCard.Content>
-            <PProgressBar progress={0.38} style={styles.progress} accessibilityLabel="Ilerleme: %38" />
+            <PProgressBar progress={progressPct / 100} style={styles.progress} accessibilityLabel={`Ilerleme: %${progressPct}`} />
           </PCard.Content>
           <PCard.Actions>
             <PButton
@@ -50,7 +58,7 @@ const HomeVicdandanKaraktereContent = ({ isOffline }: { isOffline?: boolean }) =
               onPress={() =>
                 navigation.navigate('Content', {
                   screen: 'ContentJourneyHome',
-                  params: { id: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa' }
+                  params: { id: JOURNEY_ID }
                 })
               }
             >
@@ -61,42 +69,42 @@ const HomeVicdandanKaraktereContent = ({ isOffline }: { isOffline?: boolean }) =
       </SectionCard>
 
       {/* AC-FR-E2-04-02: program outline steps */}
-      <SectionCard title="Program Akisi" actionLabel="Tumumunu Gor">
-        {outlineSteps.map((step, index) => (
-          <View key={step.title} style={styles.rowItem}>
-            <View style={styles.rowHeader} accessibilityLabel={`Adim ${index + 1}: ${step.title}, ${step.duration}`}>
-              <PText variant="titleSmall">{step.title}</PText>
-              <PText variant="labelMedium" style={styles.stepDuration}>
-                {step.duration}
-              </PText>
+      {outlineSteps.length > 0 && (
+        <SectionCard title="Program Akisi" actionLabel="Tumumunu Gor">
+          {outlineSteps.map((step, index) => (
+            <View key={step.title} style={styles.rowItem}>
+              <View style={styles.rowHeader} accessibilityLabel={`Adim ${index + 1}: ${step.title}, ${step.duration}`}>
+                <PText variant="titleSmall">{step.title}</PText>
+                <PText variant="labelMedium" style={styles.stepDuration}>
+                  {step.duration}
+                </PText>
+              </View>
+              {index < outlineSteps.length - 1 ? <PDivider style={styles.divider} /> : null}
             </View>
-            {index < outlineSteps.length - 1 ? <PDivider style={styles.divider} /> : null}
-          </View>
-        ))}
-      </SectionCard>
+          ))}
+        </SectionCard>
+      )}
 
       {/* Benefits + save */}
-      <SectionCard title="Kazandirdiklari" actionLabel="Paylas">
-        <PText variant="bodySmall" style={styles.benefitItem}>
-          -- Gunluk kararlarda tutarlilik
-        </PText>
-        <PText variant="bodySmall" style={styles.benefitItem}>
-          -- Oz sefkatle sinir koyma
-        </PText>
-        <PText variant="bodySmall" style={styles.benefitItem}>
-          -- Deger odakli eylem plani
-        </PText>
-        <PButton
-          mode="outlined"
-          style={styles.secondaryButton}
-          disabled={isOffline}
-          accessibilityLabel="Programi okunacaklara ekle"
-          accessibilityHint="Programi kutuphane listenize ekler"
-          onPress={() => navigation.navigate('Library')}
-        >
-          Programi Kaydet
-        </PButton>
-      </SectionCard>
+      {benefits.length > 0 && (
+        <SectionCard title="Kazandirdiklari" actionLabel="Paylas">
+          {benefits.map(b => (
+            <PText key={b} variant="bodySmall" style={styles.benefitItem}>
+              -- {b}
+            </PText>
+          ))}
+          <PButton
+            mode="outlined"
+            style={styles.secondaryButton}
+            disabled={isOffline}
+            accessibilityLabel="Programi okunacaklara ekle"
+            accessibilityHint="Programi kutuphane listenize ekler"
+            onPress={() => navigation.navigate('Library')}
+          >
+            Programi Kaydet
+          </PButton>
+        </SectionCard>
+      )}
     </>
   );
 };

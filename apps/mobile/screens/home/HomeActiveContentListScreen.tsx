@@ -3,7 +3,13 @@ import React, { useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { PActivityIndicator, PButton, PCard, PChip, PProgressBar, PText } from '../../components';
-import { getEbooks, getJourneys, getWorkshops } from '../../data/mockSelectors';
+import {
+  getContentProgressForUser,
+  getEbookById,
+  getJourneyById,
+  getPrimaryUser,
+  getWorkshopById
+} from '../../data/mockSelectors';
 import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
@@ -19,45 +25,46 @@ const TYPE_CHIP_STYLES: Record<string, { bg: string; text: string }> = {
   'e-Kitap': { bg: '#FEF3C7', text: '#92400E' }
 };
 
+const TARGET_MAP: Record<string, string> = {
+  journey: 'ContentJourneyHome',
+  workshop: 'ContentWorkshopHome',
+  ebook: 'ContentEbookReader',
+  module: 'ContentModuleHome'
+};
+
+const TYPE_LABEL_MAP: Record<string, string> = {
+  journey: 'Yolculuk',
+  workshop: 'Atolye',
+  ebook: 'e-Kitap',
+  module: 'Modul'
+};
+
 const HomeActiveContentListContent = ({ isOffline }: { isOffline?: boolean }) => {
   const { colors: c } = useAppTheme();
   const styles = useMemo(() => makeStyles(c), [c]);
 
   const navigation = useNavigation<any>();
-  const journeys = getJourneys();
-  const workshops = getWorkshops();
-  const ebooks = getEbooks();
+  const user = getPrimaryUser();
+  const progressItems = getContentProgressForUser(user?.id);
 
-  /** AC-FR-E2-06-01: max 3 active content cards, each with type label + progress % */
-  const activeItems = [
-    {
-      id: journeys[0]?.id,
-      title: journeys[0]?.title ?? 'Yolculuk',
-      subtitle: 'Gun 1 -- 12 dk kaldi',
-      type: 'Yolculuk',
-      progress: 0.42,
-      locked: false,
-      target: 'ContentJourneyHome'
-    },
-    {
-      id: ebooks[0]?.id,
-      title: ebooks[0]?.title ?? 'e-Kitap',
-      subtitle: 'Bolum 1 -- 8 dk kaldi',
-      type: 'e-Kitap',
-      progress: 0.18,
-      locked: true, // AC-FR-E2-06-03: explicitly locked by business rules
-      target: 'ContentEbookReader'
-    },
-    {
-      id: workshops[0]?.id,
-      title: workshops[0]?.title ?? 'Atolye',
-      subtitle: 'Bolum 2 -- 14 dk kaldi',
-      type: 'Atolye',
-      progress: 0.6,
-      locked: false,
-      target: 'ContentWorkshopHome'
-    }
-  ];
+  const activeItems = progressItems
+    .filter(p => p.status === 'in_progress' || p.status === 'available')
+    .slice(0, 3)
+    .map(p => {
+      const type = (p as any).target_type ?? p.content_type ?? 'journey';
+      const content =
+        type === 'journey' ? getJourneyById(p.content_item_id) :
+        type === 'workshop' ? getWorkshopById(p.content_item_id) :
+        type === 'ebook' ? getEbookById(p.content_item_id) : null;
+      return {
+        id: p.content_item_id,
+        title: (content as any)?.title ?? p.content_item_id,
+        type: TYPE_LABEL_MAP[type] ?? type,
+        progress: ((p as any).progress_percent ?? 0) / 100,
+        locked: p.status === 'available',
+        target: TARGET_MAP[type] ?? 'ContentJourneyHome'
+      };
+    });
 
   return (
     <>
@@ -81,7 +88,7 @@ const HomeActiveContentListContent = ({ isOffline }: { isOffline?: boolean }) =>
                   )}
                 </View>
                 <PText style={styles.cardTitle}>{item.title}</PText>
-                <PText style={styles.cardSubtitle}>{item.subtitle}</PText>
+
                 <View style={styles.progressRow}>
                   <PProgressBar
                     progress={item.progress}

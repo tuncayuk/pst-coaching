@@ -116,6 +116,7 @@
     {
       "id": "33333333-3333-3333-3333-333333333333",
       "plan_type": "individual",
+      "name": "PST Premium",
       "seat_limit": 1,
       "student_discount_eligible": true,
       "created_by": null,
@@ -176,7 +177,17 @@
     {
       "id": "66666666-6666-6666-6666-666666666666",
       "subscription_id": "44444444-4444-4444-4444-444444444444",
-      "addon_type": "ai_package",
+      "addon_type": "coaching_school",
+      "status": "active",
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2025-12-20T10:00:00Z",
+      "updated_at": "2025-12-20T10:00:00Z"
+    },
+    {
+      "id": "77777777-7777-7777-7777-777777777777",
+      "subscription_id": "44444444-4444-4444-4444-444444444444",
+      "addon_type": "ebook_unlimited",
       "status": "active",
       "created_by": null,
       "updated_by": null,
@@ -245,7 +256,17 @@
       "created_at": "2025-12-01T10:00:00Z",
       "updated_at": "2025-12-01T10:00:00Z",
       "title": "Farkindalik Yolculugu",
-      "description": "Ic sesini guclendir ve degerlerinle uyumlu kararlar al."
+      "description": "Ic sesini guclendir ve degerlerinle uyumlu kararlar al.",
+      "outline_steps": [
+        { "title": "Vicdani Tanimak", "duration": "12 dk" },
+        { "title": "Sefkatli Sinirlar", "duration": "18 dk" },
+        { "title": "Gunluk Uygulama", "duration": "10 dk" }
+      ],
+      "benefits": [
+        "Gunluk kararlarda tutarlilik",
+        "Oz sefkatle sinir koyma",
+        "Deger odakli eylem plani"
+      ]
     },
     {
       "content_item_id": "abababab-0000-0000-0000-000000000001",
@@ -2285,15 +2306,37 @@
     }
   ],
   "content_areas": [
-    { "label": "Yolculuklar", "icon": "map-marker-path", "route": "DiscoverJourneys", "suffix": "program" },
-    { "label": "Atolyeler", "icon": "school-outline", "route": "DiscoverWorkshops", "suffix": "atolye" },
-    { "label": "e-Kitaplar", "icon": "book-open-variant", "route": "DiscoverEbooks", "suffix": "kitap" },
-    { "label": "Moduller", "icon": "human-male-board", "route": "DiscoverModules", "suffix": "modul" }
+    { "label": "Yolculuklar", "icon": "map-marker-path", "route": "DiscoverJourneys", "suffix": "program", "description": "Gunluk adimlarla buyume", "accentColor": "#00B4D8", "bg": "#E0F7FA" },
+    { "label": "Atolyeler", "icon": "school-outline", "route": "DiscoverWorkshops", "suffix": "atolye", "description": "Odakli pratik seanslar", "accentColor": "#7C3AED", "bg": "#EDE9FE" },
+    { "label": "e-Kitaplar", "icon": "book-open-variant", "route": "DiscoverEbooks", "suffix": "kitap", "description": "Derinlemesine okuma", "accentColor": "#F59E0B", "bg": "#FEF3C7" },
+    { "label": "Moduller", "icon": "human-male-board", "route": "DiscoverModules", "suffix": "modul", "description": "Kisisel gelisim modulleri", "accentColor": "#10B981", "bg": "#D1FAE5" }
+  ],
+  "content_nav_areas": [
+    { "label": "Yolculuklar", "description": "Gunluk adimlarla buyume", "accentColor": "#00B4D8", "bg": "#E0F7FA", "route": "DiscoverJourneys", "requiresSubscription": false },
+    { "label": "Atolyeler", "description": "Odakli pratik seanslar", "accentColor": "#7C3AED", "bg": "#EDE9FE", "route": "DiscoverWorkshops", "requiresSubscription": false },
+    { "label": "e-Kitaplar", "description": "Derinlemesine okuma", "accentColor": "#F59E0B", "bg": "#FEF3C7", "route": "DiscoverEbooks", "requiresSubscription": false },
+    { "label": "Kocluk Okulu", "description": "Sertifika programlari", "accentColor": "#10B981", "bg": "#D1FAE5", "route": "DiscoverCatalog", "requiresSubscription": true }
   ],
   "home_stats": [
     {
       "user_id": "11111111-1111-1111-1111-111111111111",
       "day_streak": 12
     }
+  ],
+  "reminder_time_slots": [
+    { "label": "07:00", "h": 7, "m": 0 },
+    { "label": "12:00", "h": 12, "m": 0 },
+    { "label": "18:00", "h": 18, "m": 0 },
+    { "label": "20:00", "h": 20, "m": 0 },
+    { "label": "21:30", "h": 21, "m": 30 }
+  ],
+  "recent_searches": [
+    { "user_id": "11111111-1111-1111-1111-111111111111", "term": "Oz sefkat" },
+    { "user_id": "11111111-1111-1111-1111-111111111111", "term": "Sinir koyma" },
+    { "user_id": "11111111-1111-1111-1111-111111111111", "term": "Nefes egzersizi" }
+  ],
+  "popular_topics": [
+    { "id": "pt-001", "title": "Duygusal Dayaniklilik", "subtitle": "6 gun -- 4 icerik" },
+    { "id": "pt-002", "title": "Zor Konusmalar", "subtitle": "2 bolum -- 35 dk" }
   ]
 }

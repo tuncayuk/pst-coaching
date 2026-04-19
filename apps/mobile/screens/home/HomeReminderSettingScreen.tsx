@@ -2,6 +2,12 @@ import React, { useMemo, useState } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import { PActivityIndicator, PButton, PCard, PChip, PDivider, PText } from '../../components';
+import {
+  getContentProgressForUser,
+  getPrimaryUser,
+  getReminderSettingsForUser,
+  getReminderTimeSlots
+} from '../../data/mockSelectors';
 import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
@@ -14,15 +20,6 @@ import { StateMessage } from '../components/StateMessage';
 const DEFAULT_REMINDER_HOUR = 20;
 const DEFAULT_REMINDER_MINUTE = 0;
 
-/** AC-FR-E2-08-04: Phase 1 -- single daily reminder only */
-const AVAILABLE_TIMES = [
-  { label: '07:00', h: 7, m: 0 },
-  { label: '12:00', h: 12, m: 0 },
-  { label: '18:00', h: 18, m: 0 },
-  { label: '20:00', h: 20, m: 0 },
-  { label: '21:30', h: 21, m: 30 }
-];
-
 function formatTime(h: number, m: number): string {
   return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
 }
@@ -31,12 +28,23 @@ const HomeReminderContent = ({ isOffline }: { isOffline?: boolean }) => {
   const { colors: c } = useAppTheme();
   const styles = useMemo(() => makeStyles(c), [c]);
 
-  const [selectedHour, setSelectedHour] = useState(DEFAULT_REMINDER_HOUR);
-  const [selectedMinute, setSelectedMinute] = useState(DEFAULT_REMINDER_MINUTE);
+  const user = getPrimaryUser();
+  const reminderSettings = getReminderSettingsForUser(user?.id);
+  const availableTimes = getReminderTimeSlots();
+  const [timeParts, setTimeParts] = useState(() => {
+    const saved = reminderSettings?.time_local ?? `${DEFAULT_REMINDER_HOUR}:${String(DEFAULT_REMINDER_MINUTE).padStart(2,'0')}`;
+    const [h, m] = saved.split(':').map(Number);
+    return { h: isNaN(h) ? DEFAULT_REMINDER_HOUR : h, m: isNaN(m) ? DEFAULT_REMINDER_MINUTE : m };
+  });
+  const selectedHour = timeParts.h;
+  const selectedMinute = timeParts.m;
   const [permissionRequested, setPermissionRequested] = useState(false);
   const [saved, setSaved] = useState(false);
-  // AC-FR-E2-08-03: mock -- if today's comment already submitted, show completion chip
-  const todayCompleted = false;
+
+  const today = new Date().toISOString().slice(0, 10);
+  const todayCompleted = getContentProgressForUser(user?.id).some(
+    p => p.status === 'completed' && ((p as any).completed_at ?? '').startsWith(today)
+  );
 
   const handleRequestPermission = () => {
     if (isOffline) return;
@@ -97,7 +105,7 @@ const HomeReminderContent = ({ isOffline }: { isOffline?: boolean }) => {
       {/* AC-FR-E2-08-02: Time selector -- default 20:00, user-editable */}
       <SectionCard title="Hatirlatici Saati">
         <View style={styles.timeGrid}>
-          {AVAILABLE_TIMES.map(t => {
+          {availableTimes.map((t: any) => {
             const isSelected = t.h === selectedHour && t.m === selectedMinute;
             return (
               <TouchableOpacity
@@ -105,8 +113,7 @@ const HomeReminderContent = ({ isOffline }: { isOffline?: boolean }) => {
                 style={[styles.timeChip, isSelected && styles.timeChipSelected]}
                 onPress={() => {
                   if (isOffline) return;
-                  setSelectedHour(t.h);
-                  setSelectedMinute(t.m);
+                  setTimeParts({ h: t.h, m: t.m });
                 }}
                 accessibilityLabel={`Saat ${t.label}${isSelected ? ', secili' : ''}`}
                 accessibilityRole="radio"

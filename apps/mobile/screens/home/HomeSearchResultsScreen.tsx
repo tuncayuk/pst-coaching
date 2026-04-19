@@ -35,7 +35,7 @@ const HomeSearchResultsContent = ({ isOffline, query }: { isOffline?: boolean; q
         id: item.id,
         title: item.title,
         route: 'ContentJourneyDetail',
-        meta: '30-45 dk -- 4 gun'
+        meta: `${(item as any).duration_days ?? '?'} gun`
       }))
     },
     {
@@ -44,7 +44,7 @@ const HomeSearchResultsContent = ({ isOffline, query }: { isOffline?: boolean; q
         id: item.id,
         title: item.title,
         route: 'ContentWorkshopDetail',
-        meta: '60 dk -- 3 bolum'
+        meta: `${Math.round(((item as any).total_duration_minutes ?? 0) / 60)} saat`
       }))
     },
     {
@@ -53,7 +53,7 @@ const HomeSearchResultsContent = ({ isOffline, query }: { isOffline?: boolean; q
         id: item.id,
         title: item.title,
         route: 'ContentModuleHome',
-        meta: '15 dk -- 1 modul'
+        meta: (item as any).description ?? ''
       }))
     },
     {
@@ -62,7 +62,7 @@ const HomeSearchResultsContent = ({ isOffline, query }: { isOffline?: boolean; q
         id: item.id,
         title: item.title,
         route: 'ContentEbookDetail',
-        meta: '120 sayfa'
+        meta: `${(item as any).total_pages ?? '?'} sayfa`
       }))
     }
   ];

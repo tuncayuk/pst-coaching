@@ -3,6 +3,7 @@ import React, { useMemo } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import { PActivityIndicator, PText } from '../../components';
+import { getContentNavAreas } from '../../data/mockSelectors';
 import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
@@ -11,60 +12,15 @@ import { SectionCard } from '../components/SectionCard';
 import { SkeletonBlock } from '../components/SkeletonBlock';
 import { StateMessage } from '../components/StateMessage';
 
-type ContentAreaConfig = {
-  label: string;
-  description: string;
-  count: string;
-  accentColor: string;
-  bg: string;
-  route: string;
-  requiresSubscription?: boolean;
-};
-
-/** AC-FR-E2-03-01: 4 content type entry cards */
-const CONTENT_AREAS: ContentAreaConfig[] = [
-  {
-    label: 'Yolculuklar',
-    description: 'Gunluk adimlarla buyume',
-    count: '12 program',
-    accentColor: '#00B4D8',
-    bg: '#E0F7FA',
-    route: 'DiscoverJourneys'
-  },
-  {
-    label: 'Atolyeler',
-    description: 'Odakli pratik seanslar',
-    count: '8 atolye',
-    accentColor: '#7C3AED',
-    bg: '#EDE9FE',
-    route: 'DiscoverWorkshops'
-  },
-  {
-    label: 'e-Kitaplar',
-    description: 'Derinlemesine okuma',
-    count: '24 kitap',
-    accentColor: '#F59E0B',
-    bg: '#FEF3C7',
-    route: 'DiscoverEbooks'
-  },
-  {
-    label: 'Kocluk Okulu',
-    description: 'Sertifika programlari',
-    count: '5 kurs',
-    accentColor: '#10B981',
-    bg: '#D1FAE5',
-    route: 'DiscoverCatalog',
-    requiresSubscription: true
-  }
-];
 
 const HomeContentNavGrid = ({ isOffline }: { isOffline?: boolean }) => {
   const { colors: c } = useAppTheme();
   const styles = useMemo(() => makeStyles(c), [c]);
 
   const navigation = useNavigation<any>();
+  const contentNavAreas = getContentNavAreas();
 
-  const handleAreaTap = (area: ContentAreaConfig) => {
+  const handleAreaTap = (area: any) => {
     if (isOffline) return;
     // AC-FR-E2-03-03: if restricted, show paywall - in real app check entitlement
     // For mock: navigate directly
@@ -74,7 +30,7 @@ const HomeContentNavGrid = ({ isOffline }: { isOffline?: boolean }) => {
   return (
     <SectionCard title="Icerik Alanlari">
       <View style={styles.grid}>
-        {CONTENT_AREAS.map(area => (
+        {contentNavAreas.map((area: any) => (
           <TouchableOpacity
             key={area.label}
             style={[styles.card, { backgroundColor: area.bg, borderColor: area.accentColor }]}

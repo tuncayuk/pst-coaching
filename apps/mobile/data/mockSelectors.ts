@@ -116,8 +116,9 @@ export const getInvitations = (): any[] => [];
  * Replaces the old `add_ons` table which no longer exists in mock_data.json.
  */
 const ADDON_CATALOG = [
-  { id: 'addon-ai-package', code: 'ai_package', addon_type: 'ai_package', name: 'AI Paketi' },
-  { id: 'addon-extra-seat', code: 'extra_seat', addon_type: 'extra_seat', name: 'Ek Kisi' },
+  { id: 'addon-coaching-school', code: 'coaching_school', addon_type: 'coaching_school', name: 'Kocluk Okulu Erisimi' },
+  { id: 'addon-ebook-unlimited', code: 'ebook_unlimited', addon_type: 'ebook_unlimited', name: 'Sonsuz e-Kitap Erisimi' },
+  { id: 'addon-group-workshop', code: 'group_workshop', addon_type: 'group_workshop', name: 'Grup Atolyesi' },
 ];
 export const getAddOns = () => ADDON_CATALOG;
 
@@ -472,6 +473,28 @@ export const getReminderSettingsForUser = (userId?: string) => {
 // ---------------------------------------------------------------------------
 
 export const getContentAreas = () => getList(getData()?.content_areas as any[]);
+
+export const getContentNavAreas = () => getList(getData()?.content_nav_areas as any[]);
+
+export const getReminderTimeSlots = () => getList(getData()?.reminder_time_slots as any[]);
+
+export const getRecentSearchesForUser = (userId?: string) => {
+  const uid = userId ?? getPrimaryUser()?.id;
+  return getList(getData()?.recent_searches as any[])
+    .filter((s: any) => s.user_id === uid)
+    .map((s: any) => s.term as string);
+};
+
+export const getPopularTopics = () => getList(getData()?.popular_topics as any[]);
+
+export const getAddOnCatalogWithStatusForSubscription = (subscriptionId?: string) => {
+  const activeTypes = new Set(
+    getSubscriptionAddOns()
+      .filter((item: any) => item.subscription_id === subscriptionId)
+      .map((item: any) => item.addon_type),
+  );
+  return ADDON_CATALOG.map(addon => ({ ...addon, active: activeTypes.has(addon.addon_type) }));
+};
 
 export const getHomeStatsForUser = (userId?: string) => {
   const uid = userId ?? getPrimaryUser()?.id;
