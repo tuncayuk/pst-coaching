@@ -3,6 +3,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { StyleSheet, View } from 'react-native';
 
 import { PActivityIndicator, PButton, PChip, PText, PTextInput } from '../../components';
+import { getCommentEmotionTags } from '../../data/mockSelectors';
 import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
@@ -10,8 +11,6 @@ import { ScreenState, resolveScreenState } from '../components/ScreenState';
 import { SectionCard } from '../components/SectionCard';
 import { SkeletonBlock } from '../components/SkeletonBlock';
 import { StateMessage } from '../components/StateMessage';
-
-const emotionTags = ['Sakin', 'Merakli', 'Huzurlu', 'Zorlanmis'];
 
 type RouteParams = {
   state?: ScreenState;
@@ -21,6 +20,7 @@ type RouteParams = {
 const ContentCommentContent = ({ isOffline, contentItemId }: { isOffline?: boolean; contentItemId?: string }) => {
   const { colors: c } = useAppTheme();
   const styles = useMemo(() => makeStyles(c), [c]);
+  const emotionTags = getCommentEmotionTags();
 
   const navigation = useNavigation<any>();
   const [answer1, setAnswer1] = useState('');

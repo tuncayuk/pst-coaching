@@ -546,3 +546,107 @@ export const getActivitiesForUser = (
     .sort((a, b) => b.sortKey - a.sortKey)
     .map(({ sortKey: _s, ...item }) => item);
 };
+
+// ---------------------------------------------------------------------------
+// Content screen mock payloads
+// ---------------------------------------------------------------------------
+
+const getContentScreenMock = () => (getData() as any)?.content_screen_mock ?? {};
+
+export const getCommentEmotionTags = (): string[] =>
+  getList(getContentScreenMock().comment_emotion_tags as string[]);
+
+export const getReviewRatingLabels = (): string[] =>
+  getList(getContentScreenMock().review_rating_labels as string[]);
+
+export const getPaywallPlanBenefits = (): string[] =>
+  getList(getContentScreenMock().paywall_plan_benefits as string[]);
+
+export const getReaderAudioSpeeds = (): string[] =>
+  getList(getContentScreenMock().reader_audio_speeds as string[]);
+
+export const getReaderHighlightColors = () =>
+  getList(
+    getContentScreenMock().reader_highlight_colors as Array<{
+      key: string;
+      color: string;
+      label: string;
+    }>,
+  );
+
+export const getReadingParagraphs = (): string[] =>
+  getList(getContentScreenMock().reading_paragraphs as string[]);
+
+export const getExerciseFallbackSteps = () =>
+  getList(
+    getContentScreenMock().exercise_fallback_steps as Array<{
+      id: string;
+      title: string;
+      description: string;
+    }>,
+  );
+
+export const getWorkshopSectionBlocks = () =>
+  getList(
+    getContentScreenMock().workshop_section_blocks as Array<{
+      type: string;
+      label: string;
+      text: string;
+      arabic?: string;
+      transliteration?: string;
+    }>,
+  );
+
+export const getWorkshopGuideSections = () =>
+  getList(
+    getContentScreenMock().workshop_guide_sections as Array<{
+      stage: string;
+      time: string;
+      title: string;
+      script: string;
+      responses: string[];
+      alt: string;
+      microSkill: string;
+    }>,
+  );
+
+export const getWorkshopGuideHardScenarios = () =>
+  getList(
+    getContentScreenMock().workshop_guide_hard_scenarios as Array<{
+      label: string;
+      action: string;
+    }>,
+  );
+
+export const getWorkshopFollowUpPhases = () =>
+  getList(
+    getContentScreenMock().workshop_follow_up_phases as Array<{
+      id: string;
+      label: string;
+      desc: string;
+      steps: string[];
+    }>,
+  );
+
+export const getWorkshopFollowUpReminderTimes = (): string[] =>
+  getList(getContentScreenMock().workshop_follow_up_reminder_times as string[]);
+
+export const getWorkshopCampDays = () =>
+  getList(
+    getContentScreenMock().workshop_camp_days as Array<{
+      day: number;
+      label: string;
+      theme: string;
+      sessions: Array<{
+        id: string;
+        slot: string;
+        title: string;
+        purpose: string;
+        duration: string;
+        flow: string;
+        output: string;
+        worksheets: string[];
+        completed?: boolean;
+      }>;
+    }>,
+  );

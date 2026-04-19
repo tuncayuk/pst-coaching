@@ -3,7 +3,7 @@ import React, { useMemo, useState } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import { PActivityIndicator, PButton, PChip, PDivider, PText } from '../../components';
-import { getPrimaryUser, getWorkshopById, getWorkshops } from '../../data/mockSelectors';
+import { getWorkshopById, getWorkshopCampDays, getWorkshops } from '../../data/mockSelectors';
 import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
@@ -18,128 +18,7 @@ type RouteParams = { state?: ScreenState; id?: string };
 // Day 1: TESPİT (Discovery) — "Ben gerçekten neye güveniyorum?"
 // Day 2: ÇÖZÜM (Solution) — Verse/hadith transformation + prayer practice
 // Day 3: İNŞA (Building) — Daily life plan + 30-day character system
-const CAMP_DAYS = [
-  {
-    day: 1,
-    label: '1. Gun — Tespit',
-    theme: 'Kontrol illüzyonu ve ic kibir haritasi',
-    sessions: [
-      {
-        id: 'd1-sabah',
-        slot: 'Sabah',
-        title: 'Acilis: Ben Gercekten Neye Guveniyorum?',
-        purpose: 'Katilimcilari hazirlamak; gizli guven kaynaklarini yuzey altinda tespit etmek',
-        duration: '60 dk',
-        flow: 'Karsilama + kural belirleme → niyet yazimi → "Hayatimda kontrolu birakmakta zorlandigim 3 alan" egzersizi → ikili paylasim',
-        output: 'Kisisel niyet karti + ilk tespit notu',
-        worksheets: ['Niyet Formu', 'Benim Dayanaklarim Haritasi'],
-        completed: false
-      },
-      {
-        id: 'd1-ogle',
-        slot: 'Ogle',
-        title: 'Kontrol Illüzyonu Calismalari',
-        purpose: 'Sahte buyukluk ve kontrol baskisinin kaynagini gorunur kilmak',
-        duration: '90 dk',
-        flow: 'Fatir 15 uzerinde derin okuma → "Kontrolumde oldugunu sandim ama olmayan" tablosu → Beck bilissel carpitma analizi → grup tartismasi',
-        output: 'Kontrol illüzyonu tablosu (doldurulmus)',
-        worksheets: ['Kontrol Illuzyonum Tablosu'],
-        completed: false
-      },
-      {
-        id: 'd1-aksam',
-        slot: 'Aksam',
-        title: 'Ic Kibir Haritasi ve Gunun Ozeti',
-        purpose: 'Kibrin farkinda olunmayan bicimlerini haritalandirmak; gunu butunlestirmek',
-        duration: '60 dk',
-        flow: 'Ic kibir haritasi calismas → sessizlik aninda yansima → gunluk yazimi → kapalis duasi (Fatir 15 ile)',
-        output: 'Ic kibir haritasi + gun ozeti',
-        worksheets: ['Ic Kibir Haritasi'],
-        completed: false
-      }
-    ]
-  },
-  {
-    day: 2,
-    label: '2. Gun — Cozum',
-    theme: 'Ayet ve hadislerle donusum + dua pratigi',
-    sessions: [
-      {
-        id: 'd2-sabah',
-        slot: 'Sabah',
-        title: 'Ayet ve Hadislerle Donusum',
-        purpose: 'Birinci gunun tespitlerini Kurani hakikatlerle donusturmek',
-        duration: '90 dk',
-        flow: 'Bakara 255 (Kayyumiyet) derinlemesine → Rahman 29 (sen) → "Dun tespit ettigim yukler artik kimin elinde?" sorusu → Ic cumle donusum calismas',
-        output: 'Donusturulmus ic cumleler (calisma kagidinda)',
-        worksheets: ['Ic Cumle Donusum Tablosu'],
-        completed: false
-      },
-      {
-        id: 'd2-ogle',
-        slot: 'Ogle',
-        title: 'Derin Dua Pratigi',
-        purpose: 'Duayi bilgi olmaktan cikarmak, kalbin temel istikameti haline getirmek',
-        duration: '90 dk',
-        flow: 'Mu\'min 60 analizi (dua = ibadet) → sesli dua egzersizi (bireysel) → Esma bilinci: Allah\'a hangi isimle yoneliyorum? → partner check-in',
-        output: 'Kisisel dua karti (kalp sesi ile yazilmis)',
-        worksheets: ['Dua Gunlugu', 'Kriz Ani Dua Karti'],
-        completed: false
-      },
-      {
-        id: 'd2-aksam',
-        slot: 'Aksam',
-        title: 'Teslimiyet Egzersizleri',
-        purpose: 'Tevekkulu kelime olmaktan cikarmak, bedensel ve duygusal pratiğe donusturmek',
-        duration: '60 dk',
-        flow: 'Tevekkul dengesi calismas → "Birakabilirim / Birakamam" ayrimi → Fatir 41 (imsak) uzerine sessizlik → duygusal isleme paylasimi → gun kapanisi',
-        output: 'Tevekkul dengesi calisma kagidi',
-        worksheets: ['Tevekkul Dengesi'],
-        completed: false
-      }
-    ]
-  },
-  {
-    day: 3,
-    label: '3. Gun — Insa',
-    theme: '21 gunluk donusum plani + karakter insasi',
-    sessions: [
-      {
-        id: 'd3-sabah',
-        slot: 'Sabah',
-        title: 'Gunluk Hayat Plani',
-        purpose: 'Kamp kazanimlarini gundelik rutinlere entegre etmek',
-        duration: '90 dk',
-        flow: 'Kisisel ozet: "2 gunde ne degisti?" → aile/arkadaslik/yalnizlik/kriz icin birer aksiyon → entegrasyon haritasi → paylasim',
-        output: 'Kisisel entegrasyon haritasi',
-        worksheets: ['Entegrasyon Haritasi'],
-        completed: false
-      },
-      {
-        id: 'd3-ogle',
-        slot: 'Ogle',
-        title: '21 Gunluk ve 30 Gunluk Sistem',
-        purpose: 'Surdurulebilir karakter insasi icin somut eylem plani olusturmak',
-        duration: '90 dk',
-        flow: '21 gunluk donusum plani doldurmak → 30 gunluk karakter insa cizelgesi → partner taahhut seremonisi → imza ritueli',
-        output: '21 gunluk plan + 30 gunluk cizelge (imzalanmis)',
-        worksheets: ['21 Gunluk Donusum Plani', '30 Gunluk Karakter Insa Cizelgesi'],
-        completed: false
-      },
-      {
-        id: 'd3-aksam',
-        slot: 'Aksam',
-        title: 'Kapanis Seremonisi ve Katilim Belgesi',
-        purpose: 'Kutlama, anlam pekistirme ve yeni baslangic',
-        duration: '60 dk',
-        flow: '"Bu kamptan tasiyacagim tek cumle" paylasimi → toplu dua → sertifika seremonisi → vedalar',
-        output: 'Katilim belgesi + kisisel kapalis cumlesi',
-        worksheets: [],
-        completed: false
-      }
-    ]
-  }
-];
+const CAMP_DAYS = getWorkshopCampDays();
 
 type SessionCardProps = {
   session: (typeof CAMP_DAYS)[0]['sessions'][0];

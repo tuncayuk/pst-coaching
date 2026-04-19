@@ -3,6 +3,7 @@ import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { StyleSheet, TextInput, View } from 'react-native';
 
 import { PButton, PCard, PText } from '../../components';
+import { getReaderAudioSpeeds, getReaderHighlightColors } from '../../data/mockSelectors';
 import { ColorTokens, fontSizes, fontWeights, radii, spacing, useAppTheme } from '../../theme';
 import { PremiumReaderLayout } from '../components/PremiumReaderLayout';
 import { ScreenLayout } from '../components/ScreenLayout';
@@ -18,13 +19,8 @@ type RouteParams = { state?: ScreenState; id?: string };
 type FontKey = 'small' | 'medium' | 'large';
 const FONT_SIZES: Record<FontKey, number> = { small: 14, medium: 16, large: 19 };
 const FONT_ORDER: FontKey[] = ['small', 'medium', 'large'];
-const AUDIO_SPEEDS = ['0.75x', '1x', '1.25x'] as const;
-const HIGHLIGHT_COLORS = [
-  { key: 'yellow', color: '#FDE68A', label: 'Sarı' },
-  { key: 'green',  color: '#BBF7D0', label: 'Yeşil' },
-  { key: 'blue',   color: '#BAE6FD', label: 'Mavi' },
-  { key: 'pink',   color: '#FBCFE8', label: 'Pembe' }
-] as const;
+const AUDIO_SPEEDS = getReaderAudioSpeeds();
+const HIGHLIGHT_COLORS = getReaderHighlightColors();
 
 // ─────────────────────────────────────────────
 // Audio bar

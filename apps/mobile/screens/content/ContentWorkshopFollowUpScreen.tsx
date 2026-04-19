@@ -3,7 +3,7 @@ import React, { useMemo, useState } from 'react';
 import { StyleSheet, TextInput, View } from 'react-native';
 
 import { PActivityIndicator, PButton, PChip, PDivider, PSwitch, PText } from '../../components';
-import { getWorkshopById, getWorkshops } from '../../data/mockSelectors';
+import { getWorkshopById, getWorkshopFollowUpPhases, getWorkshopFollowUpReminderTimes, getWorkshops } from '../../data/mockSelectors';
 import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
@@ -14,43 +14,14 @@ import { StateMessage } from '../components/StateMessage';
 
 type RouteParams = { state?: ScreenState; id?: string };
 
-// AC-FR-E8-07-01: 3-phase follow-up plan
-const FOLLOW_UP_PHASES = [
-  {
-    id: 'phase-72h',
-    label: '72 Saat Toparlanma',
-    desc: 'Ilk uc gunde enerji yonetimi ve duygusal yerlesme.',
-    steps: ['Ekran suresini azalt', 'Once icin hafif beslenme', 'Gunluk yaz / ses kaydi al', 'Paylasim listeni belirle']
-  },
-  {
-    id: 'phase-3w',
-    label: '3 Haftalik Takip',
-    desc: 'Her hafta kucuk bir adim ve pekistirme egzersizi.',
-    steps: [
-      'Hafta 1: Niyet cumleni gunluk tekrarla',
-      'Hafta 2: Bir kisi ile paylasim yap',
-      'Hafta 3: Ortam duzenlemesi yap'
-    ]
-  },
-  {
-    id: 'phase-30d',
-    label: '30 Gunluk Plan',
-    desc: 'Atolyeden 30 gun sonra hedeflerin ile geri bakilacak yer.',
-    steps: [
-      '30. gunde calisma kitabini yeniden ac',
-      'Hangi cumlelerin degistigini gozlemle',
-      'Hangi adimi attigini belgele',
-      'Yeni bir niyet belirle'
-    ]
-  }
-];
-
 const ContentWorkshopFollowUpContent = ({ workshopId, isOffline }: { workshopId?: string; isOffline?: boolean }) => {
   const { colors: c } = useAppTheme();
   const styles = useMemo(() => makeStyles(c), [c]);
 
   const navigation = useNavigation<any>();
   const workshop = getWorkshopById(workshopId) ?? getWorkshops()[0];
+  const followUpPhases = getWorkshopFollowUpPhases();
+  const reminderTimes = getWorkshopFollowUpReminderTimes();
 
   // AC-FR-E8-07-02: user records intention, daily sentence, small steps
   const [intention, setIntention] = useState('');
@@ -80,7 +51,7 @@ const ContentWorkshopFollowUpContent = ({ workshopId, isOffline }: { workshopId?
       </SectionCard>
 
       {/* AC-FR-E8-07-01: 3 phases */}
-      {FOLLOW_UP_PHASES.map(phase => (
+      {followUpPhases.map(phase => (
         <SectionCard key={phase.id} title={phase.label}>
           <PText variant="bodySmall" style={styles.phaseDesc}>
             {phase.desc}
@@ -181,7 +152,7 @@ const ContentWorkshopFollowUpContent = ({ workshopId, isOffline }: { workshopId?
         )}
         {reminderEnabled && (
           <View style={styles.chipRow}>
-            {['Sabah 08:00', 'Ogle 12:00', 'Aksam 21:00'].map(t => (
+            {reminderTimes.map(t => (
               <PChip key={t} compact style={styles.timeChip}>
                 {t}
               </PChip>

@@ -5,11 +5,13 @@ import { StyleSheet, TextInput, View } from 'react-native';
 import { PButton, PDivider, PText } from '../../components';
 import {
   getContentItems,
+  getContentItemsForParent,
   getFavoritesForUser,
   getHighlightsForUser,
   getNotesForUser,
   getPrimaryUser,
-  getWorkshopById
+  getWorkshopById,
+  getWorkshopSectionBlocks
 } from '../../data/mockSelectors';
 import { ColorTokens, fontSizes, fontWeights, radii, spacing, useAppTheme } from '../../theme';
 import { PremiumReaderLayout } from '../components/PremiumReaderLayout';
@@ -27,47 +29,17 @@ type FontKey = 'small' | 'medium' | 'large';
 const FONT_SIZES: Record<FontKey, number> = { small: 14, medium: 16, large: 19 };
 const FONT_ORDER: FontKey[] = ['small', 'medium', 'large'];
 
-// Aligned with Mutlak.docx stage structure
-const MOCK_BLOCKS = [
-  {
-    type: 'intro',
-    label: 'Giriş',
-    text: 'İnsan çoğu zaman en çok yorulduğu şeyi yanlış isimlendiriyor. Yorgunluğunu iş çokluğuna bağlıyor, iç baskısını şartların ağırlığıyla açıklıyor. Oysa bazen insanı asıl yoran şey, yaşadıklarının çokluğu değil; kendisini taşıyamayacağı kadar büyük bir merkeze yerleştirmesidir.'
-  },
-  {
-    type: 'verse',
-    label: 'Ayet',
-    arabic: 'يَا أَيُّهَا النَّاسُ أَنتُمُ الْفُقَرَاءُ إِلَى اللَّهِ',
-    transliteration: 'Yâ eyyuhân nâsu entumul fukarâu ilâllâh',
-    text: '"Ey insanlar! Siz hepiniz Allah\'a muhtaçsınız." — Fâtır 15'
-  },
-  {
-    type: 'word-analysis',
-    label: 'Kelime Analizi',
-    text: 'Fakr (فَقْر): Lugat anlamı "yoksulluk" değil, "kendi kendine yetememe" hâlidir. Bu kelime insanı küçültmez; yanlış büyüklükten kurtarır. İnsan sadece maddî değil, varlık olarak muhtaçtır — kendi kalbini yönetemez, kendi geleceğini garanti edemez.'
-  },
-  {
-    type: 'bridge',
-    label: 'Psikoloji Köprüsü',
-    text: 'Beck\'in bilişsel çarpıtma modeline göre "kontrol etmesi gerekiyor" inancı kaygının temel kaynağından biridir. Seligman\'ın öğrenilmiş çaresizlik araştırmaları gösteriyor ki: gerçek güç, her şeyi kontrol etmekte değil; kontrol edemediğinde nereye yönelmek gerektiğini bilmektedir.'
-  },
-  {
-    type: 'practice',
-    label: 'Uygulama',
-    text: 'Şimdi bir kâğıt al veya dua günlüğünü aç. Cevapla:\n1. Şu anda en çok hangi alanda kontrol etmeye çalışıyorsun?\n2. Bu alanda Allah\'a muhtaç olduğun bir an oldu mu?\n3. O anda ne hissettin?'
-  },
-  {
-    type: 'output',
-    label: 'Çıktı / Kazanım',
-    text: 'Bu aşama sonunda şu cümleyi tamamlayabilmelisin: "Hayatımın [___] alanında, kendimi asıl yoranın kontrol illüzyonum olduğunu gördüm. Şu an Fâtır 15 bana şunu söylüyor: [___]."'
-  }
-] as const;
-
 // ─────────────────────────────────────────────
 // Block type helpers
 // ─────────────────────────────────────────────
 
-type Block = (typeof MOCK_BLOCKS)[number];
+type Block = {
+  type: string;
+  label: string;
+  text: string;
+  arabic?: string;
+  transliteration?: string;
+};
 const BLOCK_ACCENT: Record<string, string> = {
   intro:          '#F3F4F6',
   verse:          '#EEF2FF',
@@ -108,10 +80,10 @@ const ContentWorkshopSectionContent = ({
   const highlights = getHighlightsForUser(user?.id).filter((h: any) => h.source_id === sectionId);
   const notes = getNotesForUser(user?.id).filter((n: any) => n.source_id === sectionId);
   const isFav = getFavoritesForUser(user?.id).some((f: any) => f.content_id === sectionId);
+  const contentBlocks = getWorkshopSectionBlocks();
 
   // All sections for prev/next
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const allSections = require('../../data/mockSelectors').getContentItemsForParent('workshop', workshopId);
+  const allSections = getContentItemsForParent('workshop', workshopId);
   const currentIdx = allSections.findIndex((s: any) => s.id === sectionId);
   const prevSection = allSections[currentIdx - 1] ?? null;
   const nextSection = allSections[currentIdx + 1] ?? null;
@@ -210,7 +182,7 @@ const ContentWorkshopSectionContent = ({
       )}
 
       {/* ── Content blocks ── */}
-      {(MOCK_BLOCKS as readonly Block[]).map((block, idx) => {
+      {contentBlocks.map((block: Block, idx: number) => {
         const accentBg = BLOCK_ACCENT[block.type] ?? '#F9FAFB';
         const leftColor = BLOCK_LEFT[block.type] ?? '#6B7280';
         return (
@@ -262,7 +234,7 @@ const ContentWorkshopSectionContent = ({
             )}
 
             {/* Divider between blocks */}
-            {idx < MOCK_BLOCKS.length - 1 && (
+            {idx < contentBlocks.length - 1 && (
               <PDivider style={styles.blockDivider} />
             )}
           </View>

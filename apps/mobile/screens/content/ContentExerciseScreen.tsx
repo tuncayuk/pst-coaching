@@ -12,7 +12,12 @@ import {
   PProgressBar,
   PText
 } from '../../components';
-import { getContentItemsForParent, getExerciseSteps, getPrimaryUser } from '../../data/mockSelectors';
+import {
+  getContentItemsForParent,
+  getExerciseFallbackSteps,
+  getExerciseSteps,
+  getPrimaryUser
+} from '../../data/mockSelectors';
 import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
@@ -21,30 +26,6 @@ import { SkeletonBlock } from '../components/SkeletonBlock';
 import { StateMessage } from '../components/StateMessage';
 
 type RouteParams = { state?: ScreenState; id?: string };
-
-// Fallback exercise steps when no real data
-const FALLBACK_STEPS = [
-  {
-    id: 's1',
-    title: 'Adim 1: Durumu Tanimlayin',
-    description: 'Hangi durum sizi etkiledi? Ne oldu? Kisa ve net sekilde yazin.'
-  },
-  {
-    id: 's2',
-    title: 'Adim 2: Duygu ve Dusunceler',
-    description: 'O anda ne hissettiniz? Akliniza gelen ilk dusunce neydi?'
-  },
-  {
-    id: 's3',
-    title: 'Adim 3: Kanitlari Degerlendirin',
-    description: 'Bu dusunceyi destekleyen ve curutenler neler? Her ikisini de listeleyin.'
-  },
-  {
-    id: 's4',
-    title: 'Adim 4: Denge Kurumun',
-    description: 'Daha dengeli, gercekci bir bakis acisi nasil olabilir?'
-  }
-];
 
 type StepStatus = 'done' | 'active' | 'locked';
 
@@ -56,6 +37,7 @@ const ContentExerciseContent = ({ contentItemId, isOffline }: { contentItemId?: 
 
   // Load steps: prefer ExerciseStep records; fallback to static list
   const rawSteps = getExerciseSteps().filter((s: any) => s.content_item_id === contentItemId);
+  const fallbackSteps = getExerciseFallbackSteps();
   const steps =
     rawSteps.length > 0
       ? rawSteps.map((s: any) => ({
@@ -63,7 +45,7 @@ const ContentExerciseContent = ({ contentItemId, isOffline }: { contentItemId?: 
           title: s.title ?? 'Adim',
           description: s.instruction ?? s.description ?? ''
         }))
-      : FALLBACK_STEPS;
+      : fallbackSteps;
 
   // AC-FR-E11-03-02: step completion state
   const [completedCount, setCompletedCount] = useState(0);

@@ -7,7 +7,10 @@ import {
   getEbookById,
   getEbookChaptersForEbook,
   getHighlightsForUser,
-  getPrimaryUser
+  getPrimaryUser,
+  getReaderAudioSpeeds,
+  getReaderHighlightColors,
+  getReadingParagraphs
 } from '../../data/mockSelectors';
 import { ColorTokens, fontSizes, fontWeights, radii, spacing, useAppTheme } from '../../theme';
 import { PremiumReaderLayout } from '../components/PremiumReaderLayout';
@@ -24,20 +27,9 @@ type RouteParams = { state?: ScreenState; id?: string; chapterId?: string };
 type FontKey = 'small' | 'medium' | 'large';
 const FONT_SIZES: Record<FontKey, number> = { small: 14, medium: 16, large: 19 };
 const FONT_ORDER: FontKey[] = ['small', 'medium', 'large'];
-const AUDIO_SPEEDS = ['0.75x', '1x', '1.25x'] as const;
-const HIGHLIGHT_COLORS = [
-  { key: 'yellow', color: '#FDE68A', label: 'Sarı' },
-  { key: 'green',  color: '#BBF7D0', label: 'Yeşil' },
-  { key: 'blue',   color: '#BAE6FD', label: 'Mavi' },
-  { key: 'pink',   color: '#FBCFE8', label: 'Pembe' }
-] as const;
-
-const READING_PARAGRAPHS = [
-  'Kendine karşı nazik olmak, zorlu anlarda iç sesini yumuşatmanın ilk adımıdır. Bunu pratiğe dökmek bazen uzun soluklu bir yolculuk gerektirir; ama her gün birkaç dakika yeterlidir.',
-  'Nefesini sayarken omuzlarının gevşediğini fark et. Zihin başka yerlere gittiğinde yargılamadan geri getir — bu küçük jest, öz-şefkatin somut bir ifadesidir.',
-  'Okuma sonrası düşüncelerini not etmek için birkaç dakika ayır. Bu kısa refleksiyon, öğrenmeyi kalıcı hale getirir ve yeni alışkanlıkların sindirilmesini kolaylaştırır.',
-  'Her sayfada kendi hikayeni gör. Şükür hem bir eylem hem de bir bakış açısıdır — günlük hayatın küçük ayrıntılarında büyük anlamlar saklıdır.'
-];
+const AUDIO_SPEEDS = getReaderAudioSpeeds();
+const HIGHLIGHT_COLORS = getReaderHighlightColors();
+const READING_PARAGRAPHS = getReadingParagraphs();
 
 // ─────────────────────────────────────────────
 // Audio bar (conditional on has_audio)

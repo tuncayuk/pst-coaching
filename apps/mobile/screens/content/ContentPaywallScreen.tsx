@@ -1,9 +1,9 @@
-import { useNavigation } from '@react-navigation/native';
 import React, { useMemo } from 'react';
 import { StyleSheet } from 'react-native';
 
 import { trackCtaTap } from '../../analytics';
 import { PActivityIndicator, PButton, PCard, PDivider, PText } from '../../components';
+import { getPaywallPlanBenefits } from '../../data/mockSelectors';
 import { navigationRef } from '../../navigation/analytics';
 import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
@@ -13,13 +13,11 @@ import { SectionCard } from '../components/SectionCard';
 import { SkeletonBlock } from '../components/SkeletonBlock';
 import { StateMessage } from '../components/StateMessage';
 
-const planBenefits = ['Sınırsız içerik erişimi', 'Yeni içerik bildirimleri', 'Çevrimdışı indirme'];
-
 const ContentPaywallContent = ({ isOffline }: { isOffline?: boolean }) => {
   const { colors: c } = useAppTheme();
   const styles = useMemo(() => makeStyles(c), [c]);
+  const planBenefits = getPaywallPlanBenefits();
 
-  const navigation = useNavigation<any>();
   return (
     <>
       <SectionCard title="Abonelik Gerekli">

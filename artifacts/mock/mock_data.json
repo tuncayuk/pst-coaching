@@ -258,9 +258,18 @@
       "title": "Farkindalik Yolculugu",
       "description": "Ic sesini guclendir ve degerlerinle uyumlu kararlar al.",
       "outline_steps": [
-        { "title": "Vicdani Tanimak", "duration": "12 dk" },
-        { "title": "Sefkatli Sinirlar", "duration": "18 dk" },
-        { "title": "Gunluk Uygulama", "duration": "10 dk" }
+        {
+          "title": "Vicdani Tanimak",
+          "duration": "12 dk"
+        },
+        {
+          "title": "Sefkatli Sinirlar",
+          "duration": "18 dk"
+        },
+        {
+          "title": "Gunluk Uygulama",
+          "duration": "10 dk"
+        }
       ],
       "benefits": [
         "Gunluk kararlarda tutarlilik",
@@ -2306,16 +2315,76 @@
     }
   ],
   "content_areas": [
-    { "label": "Yolculuklar", "icon": "map-marker-path", "route": "DiscoverJourneys", "suffix": "program", "description": "Gunluk adimlarla buyume", "accentColor": "#00B4D8", "bg": "#E0F7FA" },
-    { "label": "Atolyeler", "icon": "school-outline", "route": "DiscoverWorkshops", "suffix": "atolye", "description": "Odakli pratik seanslar", "accentColor": "#7C3AED", "bg": "#EDE9FE" },
-    { "label": "e-Kitaplar", "icon": "book-open-variant", "route": "DiscoverEbooks", "suffix": "kitap", "description": "Derinlemesine okuma", "accentColor": "#F59E0B", "bg": "#FEF3C7" },
-    { "label": "Moduller", "icon": "human-male-board", "route": "DiscoverModules", "suffix": "modul", "description": "Kisisel gelisim modulleri", "accentColor": "#10B981", "bg": "#D1FAE5" }
+    {
+      "label": "Yolculuklar",
+      "icon": "map-marker-path",
+      "route": "DiscoverJourneys",
+      "suffix": "program",
+      "description": "Gunluk adimlarla buyume",
+      "accentColor": "#00B4D8",
+      "bg": "#E0F7FA"
+    },
+    {
+      "label": "Atolyeler",
+      "icon": "school-outline",
+      "route": "DiscoverWorkshops",
+      "suffix": "atolye",
+      "description": "Odakli pratik seanslar",
+      "accentColor": "#7C3AED",
+      "bg": "#EDE9FE"
+    },
+    {
+      "label": "e-Kitaplar",
+      "icon": "book-open-variant",
+      "route": "DiscoverEbooks",
+      "suffix": "kitap",
+      "description": "Derinlemesine okuma",
+      "accentColor": "#F59E0B",
+      "bg": "#FEF3C7"
+    },
+    {
+      "label": "Moduller",
+      "icon": "human-male-board",
+      "route": "DiscoverModules",
+      "suffix": "modul",
+      "description": "Kisisel gelisim modulleri",
+      "accentColor": "#10B981",
+      "bg": "#D1FAE5"
+    }
   ],
   "content_nav_areas": [
-    { "label": "Yolculuklar", "description": "Gunluk adimlarla buyume", "accentColor": "#00B4D8", "bg": "#E0F7FA", "route": "DiscoverJourneys", "requiresSubscription": false },
-    { "label": "Atolyeler", "description": "Odakli pratik seanslar", "accentColor": "#7C3AED", "bg": "#EDE9FE", "route": "DiscoverWorkshops", "requiresSubscription": false },
-    { "label": "e-Kitaplar", "description": "Derinlemesine okuma", "accentColor": "#F59E0B", "bg": "#FEF3C7", "route": "DiscoverEbooks", "requiresSubscription": false },
-    { "label": "Kocluk Okulu", "description": "Sertifika programlari", "accentColor": "#10B981", "bg": "#D1FAE5", "route": "DiscoverCatalog", "requiresSubscription": true }
+    {
+      "label": "Yolculuklar",
+      "description": "Gunluk adimlarla buyume",
+      "accentColor": "#00B4D8",
+      "bg": "#E0F7FA",
+      "route": "DiscoverJourneys",
+      "requiresSubscription": false
+    },
+    {
+      "label": "Atolyeler",
+      "description": "Odakli pratik seanslar",
+      "accentColor": "#7C3AED",
+      "bg": "#EDE9FE",
+      "route": "DiscoverWorkshops",
+      "requiresSubscription": false
+    },
+    {
+      "label": "e-Kitaplar",
+      "description": "Derinlemesine okuma",
+      "accentColor": "#F59E0B",
+      "bg": "#FEF3C7",
+      "route": "DiscoverEbooks",
+      "requiresSubscription": false
+    },
+    {
+      "label": "Kocluk Okulu",
+      "description": "Sertifika programlari",
+      "accentColor": "#10B981",
+      "bg": "#D1FAE5",
+      "route": "DiscoverCatalog",
+      "requiresSubscription": true
+    }
   ],
   "home_stats": [
     {
@@ -2324,19 +2393,450 @@
     }
   ],
   "reminder_time_slots": [
-    { "label": "07:00", "h": 7, "m": 0 },
-    { "label": "12:00", "h": 12, "m": 0 },
-    { "label": "18:00", "h": 18, "m": 0 },
-    { "label": "20:00", "h": 20, "m": 0 },
-    { "label": "21:30", "h": 21, "m": 30 }
+    {
+      "label": "07:00",
+      "h": 7,
+      "m": 0
+    },
+    {
+      "label": "12:00",
+      "h": 12,
+      "m": 0
+    },
+    {
+      "label": "18:00",
+      "h": 18,
+      "m": 0
+    },
+    {
+      "label": "20:00",
+      "h": 20,
+      "m": 0
+    },
+    {
+      "label": "21:30",
+      "h": 21,
+      "m": 30
+    }
   ],
   "recent_searches": [
-    { "user_id": "11111111-1111-1111-1111-111111111111", "term": "Oz sefkat" },
-    { "user_id": "11111111-1111-1111-1111-111111111111", "term": "Sinir koyma" },
-    { "user_id": "11111111-1111-1111-1111-111111111111", "term": "Nefes egzersizi" }
+    {
+      "user_id": "11111111-1111-1111-1111-111111111111",
+      "term": "Oz sefkat"
+    },
+    {
+      "user_id": "11111111-1111-1111-1111-111111111111",
+      "term": "Sinir koyma"
+    },
+    {
+      "user_id": "11111111-1111-1111-1111-111111111111",
+      "term": "Nefes egzersizi"
+    }
   ],
   "popular_topics": [
-    { "id": "pt-001", "title": "Duygusal Dayaniklilik", "subtitle": "6 gun -- 4 icerik" },
-    { "id": "pt-002", "title": "Zor Konusmalar", "subtitle": "2 bolum -- 35 dk" }
-  ]
+    {
+      "id": "pt-001",
+      "title": "Duygusal Dayaniklilik",
+      "subtitle": "6 gun -- 4 icerik"
+    },
+    {
+      "id": "pt-002",
+      "title": "Zor Konusmalar",
+      "subtitle": "2 bolum -- 35 dk"
+    }
+  ],
+  "content_screen_mock": {
+    "comment_emotion_tags": [
+      "Sakin",
+      "Merakli",
+      "Huzurlu",
+      "Zorlanmis"
+    ],
+    "review_rating_labels": [
+      "Harika",
+      "Faydali",
+      "Gelistirilebilir",
+      "Zorlayici"
+    ],
+    "paywall_plan_benefits": [
+      "Sinirsiz icerik erisimi",
+      "Yeni icerik bildirimleri",
+      "Cevrimdisi indirme"
+    ],
+    "reader_audio_speeds": [
+      "0.75x",
+      "1x",
+      "1.25x"
+    ],
+    "reader_highlight_colors": [
+      {
+        "key": "yellow",
+        "color": "#FDE68A",
+        "label": "Sari"
+      },
+      {
+        "key": "green",
+        "color": "#BBF7D0",
+        "label": "Yesil"
+      },
+      {
+        "key": "blue",
+        "color": "#BAE6FD",
+        "label": "Mavi"
+      },
+      {
+        "key": "pink",
+        "color": "#FBCFE8",
+        "label": "Pembe"
+      }
+    ],
+    "reading_paragraphs": [
+      "Kendine karsi nazik olmak, zorlu anlarda ic sesini yumusatmanin ilk adimidir. Bunu pratige dokmek bazen uzun soluklu bir yolculuk gerektirir; ama her gun birkac dakika yeterlidir.",
+      "Nefesini sayarken omuzlarinin gevsedigini fark et. Zihin baska yerlere gittiginde yargilamadan geri getir - bu kucuk jest, oz-sefkatin somut bir ifadesidir.",
+      "Okuma sonrasi dusuncelerini not etmek icin birkac dakika ayir. Bu kisa refleksiyon, ogrenmeyi kalici hale getirir ve yeni aliskanliklarin sindirilmesini kolaylastirir.",
+      "Her sayfada kendi hikayeni gor. Sukur hem bir eylem hem de bir bakis acisidir - gunluk hayatin kucuk ayrintilarinda buyuk anlamlar saklidir."
+    ],
+    "exercise_fallback_steps": [
+      {
+        "id": "s1",
+        "title": "Adim 1: Durumu Tanimlayin",
+        "description": "Hangi durum sizi etkiledi? Ne oldu? Kisa ve net sekilde yazin."
+      },
+      {
+        "id": "s2",
+        "title": "Adim 2: Duygu ve Dusunceler",
+        "description": "O anda ne hissettiniz? Akliniza gelen ilk dusunce neydi?"
+      },
+      {
+        "id": "s3",
+        "title": "Adim 3: Kanitlari Degerlendirin",
+        "description": "Bu dusunceyi destekleyen ve curutenler neler? Her ikisini de listeleyin."
+      },
+      {
+        "id": "s4",
+        "title": "Adim 4: Denge Kurumun",
+        "description": "Daha dengeli, gercekci bir bakis acisi nasil olabilir?"
+      }
+    ],
+    "workshop_section_blocks": [
+      {
+        "type": "intro",
+        "label": "Giris",
+        "text": "Insan cogu zaman en cok yoruldugu seyi yanlis isimlendiriyor. Yorgunlugunu is cokluguna bagliyor, ic baskisini sartlarin agirligiyla acikliyor. Oysa bazen insani asil yoran sey, yasadiklarinin coklugu degil; kendisini tasiyamayacagi kadar buyuk bir merkeze yerlestirmesidir."
+      },
+      {
+        "type": "verse",
+        "label": "Ayet",
+        "arabic": "يَا أَيُّهَا النَّاسُ أَنتُمُ الْفُقَرَاءُ إِلَى اللَّهِ",
+        "transliteration": "Ya eyyuhan nasu entumul fukarau ilallah",
+        "text": "\"Ey insanlar! Siz hepiniz Allah'a muhtacsiniz.\" - Fatir 15"
+      },
+      {
+        "type": "word-analysis",
+        "label": "Kelime Analizi",
+        "text": "Fakr (فَقْر): Lugat anlami \"yoksulluk\" degil, \"kendi kendine yetememe\" halidir. Bu kelime insani kucultmez; yanlis buyuklukten kurtarir. Insan sadece maddi degil, varlik olarak muhtactir - kendi kalbini yonetemez, kendi gelecegini garanti edemez."
+      },
+      {
+        "type": "bridge",
+        "label": "Psikoloji Koprusu",
+        "text": "Beck'in bilissel carpitma modeline gore \"kontrol etmesi gerekiyor\" inanci kayginin temel kaynagindan biridir. Seligman'in ogrenilmis caresizlik arastirmalari gosteriyor ki: gercek guc, her seyi kontrol etmekte degil; kontrol edemediginde nereye yonelmek gerektigini bilmektir."
+      },
+      {
+        "type": "practice",
+        "label": "Uygulama",
+        "text": "Simdi bir kagit al veya dua gunlugunu ac. Cevapla:\n1. Su anda en cok hangi alanda kontrol etmeye calisiyorsun?\n2. Bu alanda Allah'a muhtac oldugun bir an oldu mu?\n3. O anda ne hissettin?"
+      },
+      {
+        "type": "output",
+        "label": "Cikti / Kazanim",
+        "text": "Bu asama sonunda su cumleyi tamamlayabilmelisin: \"Hayatimin [___] alaninda, kendimi asil yoranin kontrol iluzyonum oldugunu gordum. Su an Fatir 15 bana sunu soyluyor: [___].\""
+      }
+    ],
+    "workshop_guide_sections": [
+      {
+        "stage": "Asama 1-4",
+        "time": "0-15 dk",
+        "title": "Kavramsal Zemin Kurulumu",
+        "script": "Herkese hosgeldiniz. Bugun birlikte bir zemin kuracagiz. \"Muhtacim\" kelimesi bir eksiklik degil, bir hakikat. Fatir 15'i birlikte okuyalim... Ardindan susmani bekliyorum. Bu cumle size ne hissettirdi?",
+        "responses": [
+          "Gergin gorunen katilimci: \"Bu alan guvenli. Burada dogru ya da yanlis cevap yok.\"",
+          "\"Benim icin gecerli degil\" diyen: \"Bu hissi tarif etmeni istiyorum - hangi alanda en guclu hissediyorsun?\""
+        ],
+        "alt": "Kucuk grup ise: Cember formatinda her biri bir kelimeyle baslasin",
+        "microSkill": "Yansitma: Katilimcinin soylediklerini geri verin, yorum katmadan."
+      },
+      {
+        "stage": "Asama 2-3",
+        "time": "15-45 dk",
+        "title": "Ayet Analizi ve Aynalama",
+        "script": "Simdi Bakara 255 ve Rahman 29'u yan yana okuyacagiz. Kayyumiyet ne anlama geliyor? Her an tutuluyor olmak... Siz hic tutuldugunuzu hissettiniz mi? Ya da tam tersine, her seyin sizin omuzlarinizda oldugunu?",
+        "responses": [
+          "Goz dolmasi / aglamak: \"Bu sizi dokunan bir yer demek. Oraya bir sure oturabilirsiniz.\"",
+          "Entelektuel mesafe kuran: \"Bu benim icin teorik kaliyor\" -> \"Hangi cumle size en yakin geldi? Sadece biri bile olsa.\""
+        ],
+        "alt": "Cok kognitif gruplarda: once bireysel okuma, sonra grup tartismasi",
+        "microSkill": "Derinlestirme: \"Bunu biraz daha acabilir misin?\" sorusunu kriz anlarinda kullanin."
+      },
+      {
+        "stage": "Asama 4",
+        "time": "45-65 dk",
+        "title": "Alim Perspektifleri - Mufessirler",
+        "script": "Simdi Nursi'nin fakr-acz eksenine bakacagiz. O diyor ki: \"Insan zayifligi oraninda Allah'a siginir.\" Bu cumle kisisel alinabilir. Size zayif hissettiren sey, bir giris kapisi olabilir.",
+        "responses": [
+          "\"Bediuzzaman'i bilmiyorum\": \"Bilmene gerek yok. Sadece bu cumle size bir sey ifade ediyor mu?\"",
+          "Dini bilgiye sahip katilimci domine ederse: \"Tesekkurler - su an herkesin kendi deneyimine donmesini istiyorum.\""
+        ],
+        "alt": "Laik katilimci agirlikli gruplarda: psikolojik terminolojiyi one cikar",
+        "microSkill": "Kirilma ani yonetimi: Sessizligi bozma. 10 saniye bekle, sonra nazikce sor."
+      },
+      {
+        "stage": "Asama 5-7",
+        "time": "65-90 dk",
+        "title": "Vicdan-Karakter + Psikoloji + Felsefe Entegrasyonu",
+        "script": "Simdi Jung'un \"self\" kavramina geciyoruz. Kontrolu birakamayan insan, aslinda ne kaybetmekten korkuyor? Adler der ki: asagilik duygusu telafi arayan insan, guc olarak kontrol iluzyonu kurar. Bu sizin icin nasil gorunuyor?",
+        "responses": [
+          "\"Bu cok teorik\" diyen: \"Haklisin. Somutlastiralim - gecen ay en cok ne kontrolunuzu elinize almaya calistiniz?\"",
+          "Aglamak ya da kapanmak: Oturumu bireysel alana tasi, grup onunde zorlamayin."
+        ],
+        "alt": "Zaman kisiyse: Asama 6 veya 7'yi ozet slide ile gec",
+        "microSkill": "Yansitma + derinlestirme: \"Simdi ne hissediyorsunuz?\" sorusu her geciste calisir."
+      },
+      {
+        "stage": "Asama 8 - Kamp",
+        "time": "Gun 1-3 (Tam Senaryo)",
+        "title": "Kamp Facilitasyonu",
+        "script": "Gun 1 (Tespit): \"Bu sabah tek bir soru: Ben gercekten neye guveniyorum?\" -> Sessizlik ver -> \"Kontrol iluzyonum tablosu\"nu doldurtalim. Gun 2 (Cozum): Mu'min 60 -> Sesli dua egzersizi -> \"Hangi esmayla yoneliyorsun?\". Gun 3 (Insa): 21 gunluk plan imzalansin, partner ile taahhut ritueli yapilsin.",
+        "responses": [
+          "Kamp 1. gunde kapanan katilimci: \"Calisma kagidini orada birakabilirsin. Sonra bakabiliriz.\"",
+          "2. gunde duygusal yogunluk: \"Bu normal - bu kamp bu yukleri tasimak icin alan aciyor.\"",
+          "3. gunde \"yapabilir miyim\" kaygisi: \"21 gun mikro adimlar icin. Biri bile olsa yeter.\""
+        ],
+        "alt": "Kamp online yapiliyorsa: Her gun kucuk breakout odalara bol",
+        "microSkill": "Kirilma ani: Katilimci agladiysa -> cember durur -> egitmen sessizce yanina gider -> grup bekler."
+      },
+      {
+        "stage": "Asama 11",
+        "time": "Son 30 dk",
+        "title": "Kapanis Konusmasi",
+        "script": "\"Bu deneyimden tasiyacaginiz tek cumle nedir?\" -> Herkes bir cumle paylasiyor -> Toplu dua -> Sertifika seremonisi. Kapanis: \"Buraya gelen insanlar daha guclu ayrilmaz. Daha dogru bir yere yerlesir. O yer, kulluktur.\"",
+        "responses": [
+          "\"Yeterli degilim\" hisseden: \"Bu deneyim bitmedi. Simdi basliyor.\"",
+          "Gozyaslari: Izin ver. Duayla kapatalim.",
+          "\"Buradakiler degisecek mi?\" sorusu: \"Sen karar veriyorsun. Bu araclari aldin.\""
+        ],
+        "alt": "Buyuk grupta sertifikalar bireysel verilemezse: toplu kutlama seremonisi",
+        "microSkill": "Anlam pekistirme: Her katilimcinin soyledigi cumleyi bir kelimeyle tekrar et ve tesekkur et."
+      }
+    ],
+    "workshop_guide_hard_scenarios": [
+      {
+        "label": "Aglamak / Duygusal kriz",
+        "action": "Grup durur. Egitmen sessizce yanina gider. \"Bu alan guvenli\" der. Devam etmeye zorlamayin. Bireysel alan acin."
+      },
+      {
+        "label": "Katilimci kapaniyor / konusmak istemiyor",
+        "action": "\"Sessizlik de bir cevaptir\" deyin. Zorlama. Calisma kagidini bireysel doldurmaya yonlendirin."
+      },
+      {
+        "label": "Alay etmek / entelektuel savunma",
+        "action": "\"Buradaki sorgulama bence degerli\" deyin. Dogrudan kisiyle tartismayin. Grubu kendi deneyimine dondurun."
+      },
+      {
+        "label": "Tartisma / grup polarizasyonu",
+        "action": "Kural hatirlatmasi: \"Burada yanlis cevap yok.\" Taraflar yerine deneyime donun: \"Siz bu konuyu nasil yasadiniz?\""
+      },
+      {
+        "label": "Katilimci cikip gitmek istiyor",
+        "action": "Sessizce izin verin. Kapali grup tutumunu koruyun. Grupla devam edin."
+      },
+      {
+        "label": "Dini bilgisi cok yuksek katilimci domine ediyor",
+        "action": "\"Tesekkurler - simdi herkesin kendi deneyimine donmesini istiyorum\" deyin. Egitmen konuyu yonlendirir."
+      },
+      {
+        "label": "Teknik sorun / internet kesintisi",
+        "action": "5 dk mola. Alternatif cihaza gec veya bireysel calismaya gecis yap."
+      }
+    ],
+    "workshop_follow_up_phases": [
+      {
+        "id": "phase-72h",
+        "label": "72 Saat Toparlanma",
+        "desc": "Ilk uc gunde enerji yonetimi ve duygusal yerlesme.",
+        "steps": [
+          "Ekran suresini azalt",
+          "Once icin hafif beslenme",
+          "Gunluk yaz / ses kaydi al",
+          "Paylasim listeni belirle"
+        ]
+      },
+      {
+        "id": "phase-3w",
+        "label": "3 Haftalik Takip",
+        "desc": "Her hafta kucuk bir adim ve pekistirme egzersizi.",
+        "steps": [
+          "Hafta 1: Niyet cumleni gunluk tekrarla",
+          "Hafta 2: Bir kisi ile paylasim yap",
+          "Hafta 3: Ortam duzenlemesi yap"
+        ]
+      },
+      {
+        "id": "phase-30d",
+        "label": "30 Gunluk Plan",
+        "desc": "Atolyeden 30 gun sonra hedeflerin ile geri bakilacak yer.",
+        "steps": [
+          "30. gunde calisma kitabini yeniden ac",
+          "Hangi cumlelerin degistigini gozlemle",
+          "Hangi adimi attigini belgele",
+          "Yeni bir niyet belirle"
+        ]
+      }
+    ],
+    "workshop_follow_up_reminder_times": [
+      "Sabah 08:00",
+      "Ogle 12:00",
+      "Aksam 21:00"
+    ],
+    "workshop_camp_days": [
+      {
+        "day": 1,
+        "label": "1. Gun - Tespit",
+        "theme": "Kontrol iluzyonu ve ic kibir haritasi",
+        "sessions": [
+          {
+            "id": "d1-sabah",
+            "slot": "Sabah",
+            "title": "Acilis: Ben Gercekten Neye Guveniyorum?",
+            "purpose": "Katilimcilari hazirlamak; gizli guven kaynaklarini yuzey altinda tespit etmek",
+            "duration": "60 dk",
+            "flow": "Karsilama + kural belirleme -> niyet yazimi -> \"Hayatimda kontrolu birakmakta zorlandigim 3 alan\" egzersizi -> ikili paylasim",
+            "output": "Kisisel niyet karti + ilk tespit notu",
+            "worksheets": [
+              "Niyet Formu",
+              "Benim Dayanaklarim Haritasi"
+            ],
+            "completed": false
+          },
+          {
+            "id": "d1-ogle",
+            "slot": "Ogle",
+            "title": "Kontrol Iluzyonu Calismalari",
+            "purpose": "Sahte buyukluk ve kontrol baskisinin kaynagini gorunur kilmak",
+            "duration": "90 dk",
+            "flow": "Fatir 15 uzerinde derin okuma -> \"Kontrolumde oldugunu sandim ama olmayan\" tablosu -> Beck bilissel carpitma analizi -> grup tartismasi",
+            "output": "Kontrol iluzyonu tablosu (doldurulmus)",
+            "worksheets": [
+              "Kontrol Iluzyonum Tablosu"
+            ],
+            "completed": false
+          },
+          {
+            "id": "d1-aksam",
+            "slot": "Aksam",
+            "title": "Ic Kibir Haritasi ve Gunun Ozeti",
+            "purpose": "Kibrin farkinda olunmayan bicimlerini haritalandirmak; gunu butunlestirmek",
+            "duration": "60 dk",
+            "flow": "Ic kibir haritasi calismasi -> sessizlik aninda yansima -> gunluk yazimi -> kapalis duasi (Fatir 15 ile)",
+            "output": "Ic kibir haritasi + gun ozeti",
+            "worksheets": [
+              "Ic Kibir Haritasi"
+            ],
+            "completed": false
+          }
+        ]
+      },
+      {
+        "day": 2,
+        "label": "2. Gun - Cozum",
+        "theme": "Ayet ve hadislerle donusum + dua pratigi",
+        "sessions": [
+          {
+            "id": "d2-sabah",
+            "slot": "Sabah",
+            "title": "Ayet ve Hadislerle Donusum",
+            "purpose": "Birinci gunun tespitlerini Kurani hakikatlerle donusturmek",
+            "duration": "90 dk",
+            "flow": "Bakara 255 (Kayyumiyet) derinlemesine -> Rahman 29 (sen) -> \"Dun tespit ettigim yukler artik kimin elinde?\" sorusu -> Ic cumle donusum calismasi",
+            "output": "Donusturulmus ic cumleler (calisma kagidinda)",
+            "worksheets": [
+              "Ic Cumle Donusum Tablosu"
+            ],
+            "completed": false
+          },
+          {
+            "id": "d2-ogle",
+            "slot": "Ogle",
+            "title": "Derin Dua Pratigi",
+            "purpose": "Duayi bilgi olmaktan cikarmak, kalbin temel istikameti haline getirmek",
+            "duration": "90 dk",
+            "flow": "Mu'min 60 analizi (dua = ibadet) -> sesli dua egzersizi (bireysel) -> Esma bilinci: Allah'a hangi isimle yoneliyorum? -> partner check-in",
+            "output": "Kisisel dua karti (kalp sesi ile yazilmis)",
+            "worksheets": [
+              "Dua Gunlugu",
+              "Kriz Ani Dua Karti"
+            ],
+            "completed": false
+          },
+          {
+            "id": "d2-aksam",
+            "slot": "Aksam",
+            "title": "Teslimiyet Egzersizleri",
+            "purpose": "Tevekkulu kelime olmaktan cikarmak, bedensel ve duygusal pratige donusturmek",
+            "duration": "60 dk",
+            "flow": "Tevekkul dengesi calismasi -> \"Birakabilirim / Birakamam\" ayrimi -> Fatir 41 (imsak) uzerine sessizlik -> duygusal isleme paylasimi -> gun kapanisi",
+            "output": "Tevekkul dengesi calisma kagidi",
+            "worksheets": [
+              "Tevekkul Dengesi"
+            ],
+            "completed": false
+          }
+        ]
+      },
+      {
+        "day": 3,
+        "label": "3. Gun - Insa",
+        "theme": "21 gunluk donusum plani + karakter insasi",
+        "sessions": [
+          {
+            "id": "d3-sabah",
+            "slot": "Sabah",
+            "title": "Gunluk Hayat Plani",
+            "purpose": "Kamp kazanimlarini gundelik rutinlere entegre etmek",
+            "duration": "90 dk",
+            "flow": "Kisisel ozet: \"2 gunde ne degisti?\" -> aile/arkadaslik/yalnizlik/kriz icin birer aksiyon -> entegrasyon haritasi -> paylasim",
+            "output": "Kisisel entegrasyon haritasi",
+            "worksheets": [
+              "Entegrasyon Haritasi"
+            ],
+            "completed": false
+          },
+          {
+            "id": "d3-ogle",
+            "slot": "Ogle",
+            "title": "21 Gunluk ve 30 Gunluk Sistem",
+            "purpose": "Surdurulebilir karakter insasi icin somut eylem plani olusturmak",
+            "duration": "90 dk",
+            "flow": "21 gunluk donusum plani doldurmak -> 30 gunluk karakter insa cizelgesi -> partner taahhut seremonisi -> imza ritueli",
+            "output": "21 gunluk plan + 30 gunluk cizelge (imzalanmis)",
+            "worksheets": [
+              "21 Gunluk Donusum Plani",
+              "30 Gunluk Karakter Insa Cizelgesi"
+            ],
+            "completed": false
+          },
+          {
+            "id": "d3-aksam",
+            "slot": "Aksam",
+            "title": "Kapanis Seremonisi ve Katilim Belgesi",
+            "purpose": "Kutlama, anlam pekistirme ve yeni baslangic",
+            "duration": "60 dk",
+            "flow": "\"Bu kamptan tasiyacagim tek cumle\" paylasimi -> toplu dua -> sertifika seremonisi -> vedalar",
+            "output": "Katilim belgesi + kisisel kapalis cumlesi",
+            "worksheets": [],
+            "completed": false
+          }
+        ]
+      }
+    ]
+  }
 }
