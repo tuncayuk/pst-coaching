@@ -3,6 +3,7 @@ import React, { useMemo, useState } from 'react';
 import { Modal, StyleSheet, View } from 'react-native';
 
 import { PActivityIndicator, PButton, PCard, PChip, PProgressBar, PText } from '../../components';
+import { LOW_STORAGE_WARNING_MB } from '../../data/constants/mockData';
 import {
   getDownloadsForUser,
   getEbookById,
@@ -18,7 +19,6 @@ import { SectionCard } from '../components/SectionCard';
 import { SkeletonBlock } from '../components/SkeletonBlock';
 import { StateMessage } from '../components/StateMessage';
 
-const LOW_STORAGE_MB = 200;
 const AVG_MIN_PER_PAGE = 2.5;
 
 const ContentEbookDetailContent = ({ ebookId, isOffline }: { ebookId?: string; isOffline?: boolean }) => {
@@ -54,7 +54,7 @@ const ContentEbookDetailContent = ({ ebookId, isOffline }: { ebookId?: string; i
   const handleDownload = () => {
     // AC-FR-E7-08-03: low storage warning
     const simulatedFreeMB = 150;
-    if (simulatedFreeMB < LOW_STORAGE_MB) {
+    if (simulatedFreeMB < LOW_STORAGE_WARNING_MB) {
       setShowStorageWarn(true);
       return;
     }

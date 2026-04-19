@@ -3,7 +3,13 @@ import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { StyleSheet, TextInput, View } from 'react-native';
 
 import { PButton, PCard, PText } from '../../components';
-import { getReaderAudioSpeeds, getReaderHighlightColors } from '../../data/mockSelectors';
+import {
+  READER_AUDIO_SPEEDS,
+  READER_FONT_ORDER,
+  READER_FONT_SIZES,
+  READER_HIGHLIGHT_COLORS,
+  type ReaderFontKey
+} from '../../data/constants/reader';
 import { ColorTokens, fontSizes, fontWeights, radii, spacing, useAppTheme } from '../../theme';
 import { PremiumReaderLayout } from '../components/PremiumReaderLayout';
 import { ScreenLayout } from '../components/ScreenLayout';
@@ -16,11 +22,6 @@ import { StateMessage } from '../components/StateMessage';
 // ─────────────────────────────────────────────
 
 type RouteParams = { state?: ScreenState; id?: string };
-type FontKey = 'small' | 'medium' | 'large';
-const FONT_SIZES: Record<FontKey, number> = { small: 14, medium: 16, large: 19 };
-const FONT_ORDER: FontKey[] = ['small', 'medium', 'large'];
-const AUDIO_SPEEDS = getReaderAudioSpeeds();
-const HIGHLIGHT_COLORS = getReaderHighlightColors();
 
 // ─────────────────────────────────────────────
 // Audio bar
@@ -53,7 +54,7 @@ const AudioBar = ({
         {isPlaying ? 'Duraklat' : 'Dinle'}
       </PButton>
       <View style={audioStyles.speeds}>
-        {AUDIO_SPEEDS.map((s, i) => (
+        {READER_AUDIO_SPEEDS.map((s, i) => (
           <PButton
             key={s}
             mode={speedIndex === i ? 'contained' : 'text'}
@@ -100,11 +101,11 @@ const ContentReadingContent = ({ isOffline, id }: { isOffline?: boolean; id?: st
   const navigation = useNavigation<any>();
 
   // Font size
-  const [fontKey, setFontKey] = useState<FontKey>('medium');
+  const [fontKey, setFontKey] = useState<ReaderFontKey>('medium');
   const cycleFontSize = useCallback(() => {
-    setFontKey(prev => FONT_ORDER[(FONT_ORDER.indexOf(prev) + 1) % FONT_ORDER.length]);
+    setFontKey(prev => READER_FONT_ORDER[(READER_FONT_ORDER.indexOf(prev) + 1) % READER_FONT_ORDER.length]);
   }, []);
-  const fontSize = FONT_SIZES[fontKey];
+  const fontSize = READER_FONT_SIZES[fontKey];
 
   // Audio
   const [isPlaying, setIsPlaying] = useState(false);
@@ -130,7 +131,7 @@ const ContentReadingContent = ({ isOffline, id }: { isOffline?: boolean; id?: st
   const [scrollProgress, setScrollProgress] = useState(0);
 
   const hlBg = highlightColor
-    ? HIGHLIGHT_COLORS.find(h => h.key === highlightColor)?.color
+    ? READER_HIGHLIGHT_COLORS.find(h => h.key === highlightColor)?.color
     : undefined;
 
   return (
@@ -179,7 +180,7 @@ const ContentReadingContent = ({ isOffline, id }: { isOffline?: boolean; id?: st
       {showHighlightPicker && (
         <View style={styles.highlightPicker}>
           <PText style={[styles.pickerLabel, { color: c.textTertiary }]}>Renk seç:</PText>
-          {HIGHLIGHT_COLORS.map(h => (
+          {READER_HIGHLIGHT_COLORS.map(h => (
             <PButton
               key={h.key}
               mode={highlightColor === h.key ? 'contained' : 'outlined'}

@@ -3,6 +3,7 @@ import React, { useMemo, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { FilterChipBar, PActivityIndicator, PButton, PText } from '../../components';
+import { WORKSHOP_MODE_LABELS, WORKSHOP_TYPE_BG, WORKSHOP_TYPE_FG } from '../../data/constants/workshop';
 import { getContentProgressForUser, getPrimaryUser, getWorkshops } from '../../data/mockSelectors';
 import { ColorTokens, fontSizes, fontWeights, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
@@ -13,28 +14,6 @@ import { SkeletonBlock } from '../components/SkeletonBlock';
 import { StateMessage } from '../components/StateMessage';
 
 type Workshop = ReturnType<typeof getWorkshops>[number];
-
-const MODE_LABELS: Record<string, string> = {
-  kamp: 'Kamp',
-  rehber: 'Rehber',
-  calisma_kitabi: 'Calisma Kitabi'
-};
-
-const TYPE_BG: Record<string, string> = {
-  kamp: '#FEE2E2',
-  rehber: '#D1FAE5',
-  calisma_kitabi: '#EDE7F6'
-};
-const TYPE_FG: Record<string, string> = {
-  kamp: '#B91C1C',
-  rehber: '#065F46',
-  calisma_kitabi: '#4C1D95'
-};
-const TYPE_LABELS: Record<string, string> = {
-  kamp: 'Kamp',
-  rehber: 'Rehber',
-  calisma_kitabi: 'Calisma Kitabi'
-};
 
 const getField = <T,>(w: Workshop, key: string, fallback: T): T =>
   ((w as any)[key] ?? fallback) as T;
@@ -78,9 +57,9 @@ const WorkshopListCard = ({
           {(workshop as any).description ?? ''}
         </PText>
         <View style={styles.metaRow}>
-          <View style={[styles.typeChip, { backgroundColor: TYPE_BG[wType] ?? '#F3F4F6' }]}>
-            <PText style={[styles.typeChipText, { color: TYPE_FG[wType] ?? '#111' }]}>
-              {TYPE_LABELS[wType] ?? wType}
+          <View style={[styles.typeChip, { backgroundColor: WORKSHOP_TYPE_BG[wType] ?? '#F3F4F6' }]}>
+            <PText style={[styles.typeChipText, { color: WORKSHOP_TYPE_FG[wType] ?? '#111' }]}>
+              {WORKSHOP_MODE_LABELS[wType] ?? wType}
             </PText>
           </View>
           <PText style={styles.metaText}>⏱ {durationLabel}</PText>
@@ -124,7 +103,7 @@ const LibraryWorkshopsContent = ({ isOffline }: { isOffline?: boolean }) => {
     () => Array.from(new Set(allWorkshops.map(w => (w as any).delivery_mode).filter(Boolean))),
     [allWorkshops]
   );
-  const categories = useMemo(() => modes.map(mode => MODE_LABELS[mode] ?? mode), [modes]);
+  const categories = useMemo(() => modes.map(mode => WORKSHOP_MODE_LABELS[mode] ?? mode), [modes]);
   const [activeCategory, setActiveCategory] = useState<string>(categories[0] ?? '');
   const progressRows = getContentProgressForUser(user?.id).filter(row => row.target_type === 'workshop');
   const progressMap = new Map(progressRows.map(row => [row.content_item_id, row]));

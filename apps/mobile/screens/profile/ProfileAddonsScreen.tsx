@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import { Alert, StyleSheet, View } from 'react-native';
 
 import { PButton, PCard, PChip, PText } from '../../components';
+import { EXTRA_SEAT_PLAN_TYPES, MOCK_USER_ROLE } from '../../data/constants/mockData';
 import {
   getAddOns,
   getAddOnsForSubscription,
@@ -29,12 +30,6 @@ const ADDON_DESCRIPTIONS: Record<string, string> = {
   extra_seat: 'Aile veya grup planina ek kisi ekle'
 };
 
-/** AC-FR-E3-03-03: Ek Kisi only for family/group */
-const EXTRA_SEAT_PLANS = ['family', 'group'];
-
-/** Mock user role - owner vs member */
-const MOCK_USER_ROLE: 'owner' | 'member' = 'owner';
-
 const ProfileAddonsContent = ({ isOffline }: { isOffline?: boolean }) => {
   const { colors: c } = useAppTheme();
   const styles = useMemo(() => makeStyles(c), [c]);
@@ -46,7 +41,7 @@ const ProfileAddonsContent = ({ isOffline }: { isOffline?: boolean }) => {
 
   // AC-FR-E3-03-03: filter extra_seat for non-Aile/Grup plans
   const visibleAddons = getAddOns().filter(addon => {
-    if (addon.code === 'extra_seat' && !EXTRA_SEAT_PLANS.includes(plan?.plan_type ?? '')) {
+    if (addon.code === 'extra_seat' && !EXTRA_SEAT_PLAN_TYPES.includes(plan?.plan_type ?? '')) {
       return false;
     }
     return true;

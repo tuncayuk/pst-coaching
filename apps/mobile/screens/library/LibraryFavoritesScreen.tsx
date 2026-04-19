@@ -19,6 +19,11 @@ import {
   getPrimaryUser,
   getWorkshops
 } from '../../data/mockSelectors';
+import {
+  CONTENT_TYPE_LABELS,
+  LIBRARY_CONTENT_FILTER_ALL,
+  LIBRARY_CONTENT_FILTER_OPTIONS
+} from '../../data/constants/contentTypes';
 import { ColorTokens, fontSizes, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
@@ -26,15 +31,6 @@ import { ScreenState, resolveScreenState } from '../components/ScreenState';
 import { SectionCard } from '../components/SectionCard';
 import { SkeletonBlock } from '../components/SkeletonBlock';
 import { StateMessage } from '../components/StateMessage';
-
-const FILTER_OPTIONS = ['Tumü', 'Yolculuk', 'Atolye', 'Modul', 'e-Kitap'] as const;
-
-const TYPE_LABEL: Record<string, string> = {
-  journey: 'Yolculuk',
-  workshop: 'Atolye',
-  module: 'Modul',
-  ebook: 'e-Kitap'
-};
 
 const LibraryFavoritesContent = ({ isOffline }: { isOffline?: boolean }) => {
   const { colors: c } = useAppTheme();
@@ -66,16 +62,16 @@ const LibraryFavoritesContent = ({ isOffline }: { isOffline?: boolean }) => {
   });
 
   const [query, setQuery] = useState('');
-  const [activeFilter, setActiveFilter] = useState<string>(FILTER_OPTIONS[0]);
+  const [activeFilter, setActiveFilter] = useState<string>(LIBRARY_CONTENT_FILTER_ALL);
 
   const filtered = enriched.filter(item => {
     const matchesQuery = !query || item.title.toLowerCase().includes(query.toLowerCase());
-    const matchesFilter = activeFilter === 'Tumü' || TYPE_LABEL[item.type] === activeFilter;
+    const matchesFilter = activeFilter === LIBRARY_CONTENT_FILTER_ALL || CONTENT_TYPE_LABELS[item.type] === activeFilter;
     return matchesQuery && matchesFilter;
   });
 
-  const hasActiveFilters = query || activeFilter !== 'Tumü';
-  const clearFilters = () => { setQuery(''); setActiveFilter('Tumü'); };
+  const hasActiveFilters = query || activeFilter !== LIBRARY_CONTENT_FILTER_ALL;
+  const clearFilters = () => { setQuery(''); setActiveFilter(LIBRARY_CONTENT_FILTER_ALL); };
 
   return (
     <>
@@ -103,7 +99,7 @@ const LibraryFavoritesContent = ({ isOffline }: { isOffline?: boolean }) => {
           )}
         </View>
         <FilterChipBar
-          options={FILTER_OPTIONS}
+          options={LIBRARY_CONTENT_FILTER_OPTIONS}
           activeOption={activeFilter}
           onOptionPress={setActiveFilter}
           disabled={isOffline}

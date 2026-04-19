@@ -4,12 +4,17 @@ import { StyleSheet, TextInput, View } from 'react-native';
 
 import { PButton, PText } from '../../components';
 import {
+  READER_AUDIO_SPEEDS,
+  READER_FONT_ORDER,
+  READER_FONT_SIZES,
+  READER_HIGHLIGHT_COLORS,
+  type ReaderFontKey
+} from '../../data/constants/reader';
+import {
   getEbookById,
   getEbookChaptersForEbook,
   getHighlightsForUser,
   getPrimaryUser,
-  getReaderAudioSpeeds,
-  getReaderHighlightColors,
   getReadingParagraphs
 } from '../../data/mockSelectors';
 import { ColorTokens, fontSizes, fontWeights, radii, spacing, useAppTheme } from '../../theme';
@@ -24,11 +29,6 @@ import { StateMessage } from '../components/StateMessage';
 // ─────────────────────────────────────────────
 
 type RouteParams = { state?: ScreenState; id?: string; chapterId?: string };
-type FontKey = 'small' | 'medium' | 'large';
-const FONT_SIZES: Record<FontKey, number> = { small: 14, medium: 16, large: 19 };
-const FONT_ORDER: FontKey[] = ['small', 'medium', 'large'];
-const AUDIO_SPEEDS = getReaderAudioSpeeds();
-const HIGHLIGHT_COLORS = getReaderHighlightColors();
 const READING_PARAGRAPHS = getReadingParagraphs();
 
 // ─────────────────────────────────────────────
@@ -61,7 +61,7 @@ const EbookAudioBar = ({
         {isPlaying ? 'Duraklat' : 'Sesli Kitap'}
       </PButton>
       <View style={abStyles.speeds}>
-        {AUDIO_SPEEDS.map((s, i) => (
+        {READER_AUDIO_SPEEDS.map((s, i) => (
           <PButton
             key={s}
             mode={speedIndex === i ? 'contained' : 'text'}
@@ -128,10 +128,10 @@ const ContentEbookReaderContent = ({
   const progress = chapters.length > 0 ? (safeIndex + 1) / chapters.length : 0;
 
   // Font size
-  const [fontKey, setFontKey] = useState<FontKey>('medium');
+  const [fontKey, setFontKey] = useState<ReaderFontKey>('medium');
   const cycleFontSize = () =>
-    setFontKey(prev => FONT_ORDER[(FONT_ORDER.indexOf(prev) + 1) % FONT_ORDER.length]);
-  const fontSize = FONT_SIZES[fontKey];
+    setFontKey(prev => READER_FONT_ORDER[(READER_FONT_ORDER.indexOf(prev) + 1) % READER_FONT_ORDER.length]);
+  const fontSize = READER_FONT_SIZES[fontKey];
 
   // Audio
   const hasAudio = ebook?.has_audio ?? false;
@@ -160,7 +160,7 @@ const ContentEbookReaderContent = ({
     : `Bölüm ${safeIndex + 1}`;
 
   const hlBg = highlightColor
-    ? HIGHLIGHT_COLORS.find(h => h.key === highlightColor)?.color
+    ? READER_HIGHLIGHT_COLORS.find(h => h.key === highlightColor)?.color
     : undefined;
 
   return (
@@ -211,7 +211,7 @@ const ContentEbookReaderContent = ({
       {showHighlightPicker && (
         <View style={[styles.highlightPicker, { backgroundColor: c.surfaceVariant }]}>
           <PText style={[styles.pickerLabel, { color: c.textTertiary }]}>Renk seç:</PText>
-          {HIGHLIGHT_COLORS.map(h => (
+          {READER_HIGHLIGHT_COLORS.map(h => (
             <PButton
               key={h.key}
               mode={highlightColor === h.key ? 'contained' : 'outlined'}

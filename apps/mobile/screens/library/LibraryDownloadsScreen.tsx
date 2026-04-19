@@ -10,6 +10,7 @@ import {
   PDivider,
   PText
 } from '../../components';
+import { LOW_STORAGE_WARNING_MB } from '../../data/constants/mockData';
 import { getDownloadsForUser, getEbookById, getPrimaryUser, getWorkshopById } from '../../data/mockSelectors';
 import { ColorTokens, fontSizes, fontWeights, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
@@ -19,7 +20,6 @@ import { SectionCard } from '../components/SectionCard';
 import { SkeletonBlock } from '../components/SkeletonBlock';
 import { StateMessage } from '../components/StateMessage';
 
-const LOW_STORAGE_MB = 200;
 const TOTAL_STORAGE_MB = 512;
 
 const LibraryDownloadsContent = ({ isOffline }: { isOffline?: boolean }) => {
@@ -42,7 +42,7 @@ const LibraryDownloadsContent = ({ isOffline }: { isOffline?: boolean }) => {
 
   const usedMb = downloads.reduce((acc: number, d: any) => acc + parseFloat(d.sizeMb || '0'), 0);
   const freeMb = TOTAL_STORAGE_MB - usedMb;
-  const showStorageWarning = freeMb < LOW_STORAGE_MB;
+  const showStorageWarning = freeMb < LOW_STORAGE_WARNING_MB;
 
   const [syncing, setSyncing] = useState(false);
   const [syncDone, setSyncDone] = useState(false);

@@ -11,6 +11,7 @@ import { StyleSheet, View } from 'react-native';
 
 import { PActivityIndicator, PButton, PCard, PChip, PDivider, PText } from '../../components';
 import { MockNotification, getNotificationsForUser, getPrimaryUser } from '../../data/mockSelectors';
+import { NOTIFICATION_CTA_LABELS, NOTIFICATION_TYPE_LABELS } from '../../data/constants/notifications';
 import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
@@ -18,22 +19,6 @@ import { ScreenState, resolveScreenState } from '../components/ScreenState';
 import { SectionCard } from '../components/SectionCard';
 import { SkeletonBlock } from '../components/SkeletonBlock';
 import { StateMessage } from '../components/StateMessage';
-
-const TYPE_LABELS: Record<MockNotification['type'], string> = {
-  journey: 'Yolculuk',
-  workshop: 'Atolye',
-  reading: 'Okuma',
-  social: 'Sosyal',
-  achievement: 'Basari'
-};
-
-const CTA_LABELS: Record<MockNotification['type'], string> = {
-  journey: 'Yolculuga Git',
-  workshop: 'Atolyeye Git',
-  reading: 'Okumaya Devam Et',
-  social: 'Yorumu Goruntule',
-  achievement: 'Rozetleri Goruntule'
-};
 
 const formatTimestamp = (iso?: string | null): string => {
   if (!iso) return '';
@@ -72,11 +57,11 @@ const NotificationDetailContent = ({
   return (
     <>
       {/* AC-FR-E17-02-01: Title + description + type chip */}
-      <SectionCard title={TYPE_LABELS[notification.type] ?? notification.type}>
+      <SectionCard title={NOTIFICATION_TYPE_LABELS[notification.type] ?? notification.type}>
         <View style={styles.titleRow}>
           <PText style={styles.title}>{notification.title}</PText>
           <PChip compact style={styles.typeChip}>
-            {TYPE_LABELS[notification.type]}
+            {NOTIFICATION_TYPE_LABELS[notification.type]}
           </PChip>
         </View>
         <PText style={styles.description}>{notification.description}</PText>
@@ -105,9 +90,9 @@ const NotificationDetailContent = ({
           onPress={handleCTA}
           disabled={isOffline}
           style={styles.ctaButton}
-          accessibilityLabel={CTA_LABELS[notification.type]}
+          accessibilityLabel={NOTIFICATION_CTA_LABELS[notification.type]}
         >
-          {CTA_LABELS[notification.type]}
+          {NOTIFICATION_CTA_LABELS[notification.type]}
         </PButton>
       </SectionCard>
 

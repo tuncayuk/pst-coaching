@@ -2,6 +2,7 @@ import React, { useMemo, useState } from 'react';
 import { Alert, StyleSheet, View } from 'react-native';
 
 import { PButton, PCard, PChip, PDivider, PProgressBar, PText, PTextInput } from '../../components';
+import { MOCK_USER_ROLE } from '../../data/constants/mockData';
 import {
   getInvitesForSubscription,
   getPlanForSubscription,
@@ -17,9 +18,6 @@ import { ScreenState, resolveScreenState } from '../components/ScreenState';
 import { SectionCard } from '../components/SectionCard';
 import { SkeletonBlock } from '../components/SkeletonBlock';
 import { StateMessage } from '../components/StateMessage';
-
-/** Mock user role */
-const MOCK_USER_ROLE: 'owner' | 'member' = 'owner';
 
 const ProfileSeatManagementContent = ({ isOffline }: { isOffline?: boolean }) => {
   const { colors: c } = useAppTheme();

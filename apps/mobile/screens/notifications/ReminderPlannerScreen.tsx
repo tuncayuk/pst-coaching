@@ -9,6 +9,7 @@ import React, { useMemo, useState } from 'react';
 import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import { PActivityIndicator, PButton, PDivider, PIconButton, PListItem, PSwitch, PText } from '../../components';
+import { REMINDER_PRESET_TIMES, REMINDER_TYPE_LABELS, type ReminderType } from '../../data/constants/notifications';
 import { getPrimaryUser, getReminderSettingsForUser } from '../../data/mockSelectors';
 import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
@@ -17,16 +18,6 @@ import { ScreenState, resolveScreenState } from '../components/ScreenState';
 import { SectionCard } from '../components/SectionCard';
 import { SkeletonBlock } from '../components/SkeletonBlock';
 import { StateMessage } from '../components/StateMessage';
-
-type ReminderType = 'journey' | 'workshop' | 'reading';
-
-const TYPE_LABELS: Record<ReminderType, string> = {
-  journey: 'Yolculuk',
-  workshop: 'Atolye',
-  reading: 'Okuma'
-};
-
-const PRESET_TIMES = ['07:00', '09:00', '12:00', '18:00', '20:00', '21:30'];
 
 type ReminderTypeConfig = {
   enabled: boolean;
@@ -98,7 +89,7 @@ const ReminderPlannerContent = ({ isOffline }: { isOffline?: boolean }) => {
       <SectionCard title="Gunluk Hatirlatici Saatleri">
         <PText style={styles.sectionHint}>Secili saatlerde hatirlatici alirsiniz.</PText>
         <View style={styles.timeGrid}>
-          {PRESET_TIMES.map(t => {
+          {REMINDER_PRESET_TIMES.map(t => {
             const isSelected = globalTimes.includes(t);
             return (
               <TouchableOpacity
@@ -142,19 +133,19 @@ const ReminderPlannerContent = ({ isOffline }: { isOffline?: boolean }) => {
       </SectionCard>
 
       {/* AC-FR-E17-04-02 + AC-FR-E17-04-03: Per-type scheduling */}
-      {(Object.keys(TYPE_LABELS) as ReminderType[]).map(type => {
+      {(Object.keys(REMINDER_TYPE_LABELS) as ReminderType[]).map(type => {
         const cfg = typeConfigs[type];
         return (
-          <SectionCard key={type} title={TYPE_LABELS[type] + ' Hatirlaticisi'}>
+          <SectionCard key={type} title={REMINDER_TYPE_LABELS[type] + ' Hatirlaticisi'}>
             {/* AC-FR-E17-04-03: Active/passive toggle */}
             <PListItem
-              title={TYPE_LABELS[type] + ' hatirlat'}
+              title={REMINDER_TYPE_LABELS[type] + ' hatirlat'}
               right={() => (
                 <PSwitch
                   value={cfg.enabled}
                   onValueChange={v => toggleTypeEnabled(type, v)}
                   disabled={isOffline}
-                  accessibilityLabel={`${TYPE_LABELS[type]} hatirlatici acik/kapali`}
+                  accessibilityLabel={`${REMINDER_TYPE_LABELS[type]} hatirlatici acik/kapali`}
                 />
               )}
             />
@@ -165,7 +156,7 @@ const ReminderPlannerContent = ({ isOffline }: { isOffline?: boolean }) => {
                 {/* AC-FR-E17-04-02: Time slots for this type */}
                 <PText style={styles.sectionHint}>Saat sec:</PText>
                 <View style={styles.timeGrid}>
-                  {PRESET_TIMES.map(t => {
+                  {REMINDER_PRESET_TIMES.map(t => {
                     const sel = cfg.times.includes(t);
                     return (
                       <TouchableOpacity
@@ -173,7 +164,7 @@ const ReminderPlannerContent = ({ isOffline }: { isOffline?: boolean }) => {
                         style={[styles.timeChip, sel && styles.timeChipSelected]}
                         onPress={() => (sel ? removeTypeTime(type, t) : addTypeTime(type, t))}
                         disabled={isOffline}
-                        accessibilityLabel={`${TYPE_LABELS[type]} saat ${t}${sel ? ', secili' : ''}`}
+                        accessibilityLabel={`${REMINDER_TYPE_LABELS[type]} saat ${t}${sel ? ', secili' : ''}`}
                         accessibilityRole="checkbox"
                         accessibilityState={{ checked: sel }}
                         activeOpacity={0.75}

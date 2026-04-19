@@ -4,6 +4,11 @@ import { StyleSheet, TextInput, View } from 'react-native';
 
 import { PActivityIndicator, PButton, PChip, PDivider, PText } from '../../components';
 import {
+  CONTENT_TYPE_SCREEN_MAP,
+  getContentTypeLabel,
+  getLibraryContentTypeColor
+} from '../../data/constants/contentTypes';
+import {
   getEbooks,
   getFavoritesForUser,
   getHighlightsForUser,
@@ -20,27 +25,6 @@ import { ScreenState, resolveScreenState } from '../components/ScreenState';
 import { SectionCard } from '../components/SectionCard';
 import { SkeletonBlock } from '../components/SkeletonBlock';
 import { StateMessage } from '../components/StateMessage';
-
-const TYPE_LABEL: Record<string, string> = {
-  journey: 'Yolculuk',
-  workshop: 'Atolye',
-  module: 'Modul',
-  ebook: 'e-Kitap'
-};
-const TYPE_COLOR: Record<string, string> = {
-  journey: '#7C4DFF',
-  workshop: '#C62828',
-  module: '#2E7D32',
-  ebook: '#00897B'
-};
-
-// Maps item type to the navigation screen name for "Go to Source"
-const TYPE_SCREEN: Record<string, string> = {
-  journey: 'ContentJourneyDetail',
-  workshop: 'ContentWorkshopDetail',
-  module: 'ContentModuleHome',
-  ebook: 'ContentEbookDetail'
-};
 
 const LibraryFavoriteDetailContent = ({ favoriteId, isOffline }: { favoriteId?: string; isOffline?: boolean }) => {
   const { colors: c } = useAppTheme();
@@ -84,13 +68,13 @@ const LibraryFavoriteDetailContent = ({ favoriteId, isOffline }: { favoriteId?: 
       {/* AC-FR-E9-02-01: source info */}
       <SectionCard title="Favori Detay">
         <View style={styles.titleRow}>
-          <View style={[styles.typeBar, { backgroundColor: TYPE_COLOR[type] ?? '#9E9E9E' }]} />
+          <View style={[styles.typeBar, { backgroundColor: getLibraryContentTypeColor(type) }]} />
           <View style={styles.titleBody}>
             <PText variant="headlineSmall" style={styles.title}>
               {item?.title ?? 'Favori Icerik'}
             </PText>
-            <PChip compact style={[styles.typeChip, { borderColor: TYPE_COLOR[type] ?? '#9E9E9E' }]}>
-              {TYPE_LABEL[type] ?? 'Icerik'}
+            <PChip compact style={[styles.typeChip, { borderColor: getLibraryContentTypeColor(type) }]}>
+              {getContentTypeLabel(type)}
             </PChip>
           </View>
         </View>
@@ -106,9 +90,9 @@ const LibraryFavoriteDetailContent = ({ favoriteId, isOffline }: { favoriteId?: 
           disabled={isOffline}
           style={styles.sourceBtn}
           onPress={() => {
-            if (TYPE_SCREEN[type] && favorite?.item_id) {
+            if (CONTENT_TYPE_SCREEN_MAP[type as keyof typeof CONTENT_TYPE_SCREEN_MAP] && favorite?.item_id) {
               navigation.navigate('Content', {
-                screen: TYPE_SCREEN[type],
+                screen: CONTENT_TYPE_SCREEN_MAP[type as keyof typeof CONTENT_TYPE_SCREEN_MAP],
                 params: { id: favorite.item_id }
               });
             }

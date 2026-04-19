@@ -4,6 +4,12 @@ import { StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
 
 import { PActivityIndicator, PButton, PChip, PDivider, PText } from '../../components';
 import {
+  CONTENT_TYPE_LABELS,
+  LIBRARY_CONTENT_FILTER_ALL,
+  LIBRARY_CONTENT_FILTER_OPTIONS,
+  getLibraryContentTypeColor
+} from '../../data/constants/contentTypes';
+import {
   getCollectionItems,
   getCollectionsForUser,
   getEbooks,
@@ -22,20 +28,6 @@ import { SkeletonBlock } from '../components/SkeletonBlock';
 import { StateMessage } from '../components/StateMessage';
 
 // AC-FR-E9-04-02: type filter for collection items
-const FILTER_OPTIONS = ['Tumu', 'Yolculuk', 'Atolye', 'Modul', 'e-Kitap'];
-const TYPE_LABEL: Record<string, string> = {
-  journey: 'Yolculuk',
-  workshop: 'Atolye',
-  module: 'Modul',
-  ebook: 'e-Kitap'
-};
-const TYPE_COLOR: Record<string, string> = {
-  journey: '#7C4DFF',
-  workshop: '#C62828',
-  module: '#2E7D32',
-  ebook: '#00897B'
-};
-
 const LibraryCollectionDetailContent = ({
   collectionId,
   isOffline
@@ -80,19 +72,21 @@ const LibraryCollectionDetailContent = ({
 
   // AC-FR-E9-04-01/02/03: search + filter + clear
   const [query, setQuery] = useState('');
-  const [activeFilter, setActiveFilter] = useState('Tumu');
+  const [activeFilter, setActiveFilter] = useState(LIBRARY_CONTENT_FILTER_ALL);
   const clearFilters = () => {
     setQuery('');
-    setActiveFilter('Tumu');
+    setActiveFilter(LIBRARY_CONTENT_FILTER_ALL);
   };
-  const hasFilters = query || activeFilter !== 'Tumu';
+  const hasFilters = query || activeFilter !== LIBRARY_CONTENT_FILTER_ALL;
 
   const filtered = enriched.filter(item => {
     const matchQ =
       !query ||
       item.title.toLowerCase().includes(query.toLowerCase()) ||
       item.description.toLowerCase().includes(query.toLowerCase());
-    const matchF = activeFilter === 'Tumu' || TYPE_LABEL[item.type] === activeFilter;
+    const matchF =
+      activeFilter === LIBRARY_CONTENT_FILTER_ALL ||
+      CONTENT_TYPE_LABELS[item.type as keyof typeof CONTENT_TYPE_LABELS] === activeFilter;
     return matchQ && matchF;
   });
 
@@ -128,7 +122,7 @@ const LibraryCollectionDetailContent = ({
         </View>
         {/* AC-FR-E9-04-02: filter by type */}
         <View style={styles.chipRow}>
-          {FILTER_OPTIONS.map(label => (
+          {LIBRARY_CONTENT_FILTER_OPTIONS.map(label => (
             <TouchableOpacity
               key={label}
               onPress={() => setActiveFilter(label)}
@@ -152,14 +146,14 @@ const LibraryCollectionDetailContent = ({
           filtered.map((item, idx) => (
             <View key={item.favoriteId}>
               <View style={styles.itemRow}>
-                <View style={[styles.typeBar, { backgroundColor: TYPE_COLOR[item.type] ?? '#9E9E9E' }]} />
+                <View style={[styles.typeBar, { backgroundColor: getLibraryContentTypeColor(item.type) }]} />
                 <View style={styles.itemBody}>
                   <View style={styles.itemTitleRow}>
                     <PText variant="titleSmall" style={styles.itemTitle}>
                       {item.title}
                     </PText>
-                    <PChip compact style={[styles.typeChip, { borderColor: TYPE_COLOR[item.type] ?? '#9E9E9E' }]}>
-                      {TYPE_LABEL[item.type] ?? 'Icerik'}
+                    <PChip compact style={[styles.typeChip, { borderColor: getLibraryContentTypeColor(item.type) }]}>
+                      {CONTENT_TYPE_LABELS[item.type as keyof typeof CONTENT_TYPE_LABELS] ?? CONTENT_TYPE_LABELS.content}
                     </PChip>
                   </View>
                   {item.description ? (

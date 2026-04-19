@@ -10,6 +10,7 @@ import {
   getWorkshopById,
   getWorkshops
 } from '../../data/mockSelectors';
+import { WORKSHOP_MODE_LABELS, WORKSHOP_TYPE_BG, WORKSHOP_TYPE_FG } from '../../data/constants/workshop';
 import { ColorTokens, fontSizes, fontWeights, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
@@ -34,9 +35,6 @@ const STAGE_LABELS: Record<number, string> = {
   10: 'Çalışma Kitabı',
   11: 'Kapanış & Hayata Uygulama'
 };
-const TYPE_LABELS: Record<string, string> = { kamp: 'Kamp', rehber: 'Rehber', calisma_kitabi: 'Çalışma Kitabı' };
-const TYPE_BG: Record<string, string> = { kamp: '#FEE2E2', rehber: '#D1FAE5', calisma_kitabi: '#EDE7F6' };
-const TYPE_FG: Record<string, string> = { kamp: '#B91C1C', rehber: '#065F46', calisma_kitabi: '#4C1D95' };
 const DIFF_LABELS: Record<string, string> = { baslangic: 'Başlangıç', orta: 'Orta', ileri: 'İleri' };
 const getWField = <T,>(w: any, key: string, fallback: T): T => (w?.[key] ?? fallback) as T;
 
@@ -100,9 +98,9 @@ const ContentWorkshopDetailContent = ({ workshopId, isOffline }: { workshopId?: 
         </PText>
         {/* type + difficulty badges */}
         <View style={styles.heroBadgeRow}>
-          <View style={[styles.typeBadge, { backgroundColor: TYPE_BG[wType] ?? '#F3F4F6' }]}>
-            <PText style={[styles.typeBadgeText, { color: TYPE_FG[wType] ?? '#111' }]}>
-              {TYPE_LABELS[wType] ?? wType}
+          <View style={[styles.typeBadge, { backgroundColor: WORKSHOP_TYPE_BG[wType] ?? '#F3F4F6' }]}>
+            <PText style={[styles.typeBadgeText, { color: WORKSHOP_TYPE_FG[wType] ?? '#111' }]}>
+              {WORKSHOP_MODE_LABELS[wType] ?? wType}
             </PText>
           </View>
           <View style={styles.diffBadge}>

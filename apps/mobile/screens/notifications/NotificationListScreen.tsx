@@ -11,6 +11,7 @@ import { ScrollView, StyleSheet, View } from 'react-native';
 
 import { PActivityIndicator, PButton, PCard, PChip, PDivider, PIconButton, PText } from '../../components';
 import { MockNotification, getNotificationsForUser, getPrimaryUser } from '../../data/mockSelectors';
+import { NOTIFICATION_TYPE_LABELS } from '../../data/constants/notifications';
 import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
 import { OfflineNotice } from '../components/OfflineNotice';
 import { ScreenLayout } from '../components/ScreenLayout';
@@ -18,14 +19,6 @@ import { ScreenState, resolveScreenState } from '../components/ScreenState';
 import { SectionCard } from '../components/SectionCard';
 import { SkeletonBlock } from '../components/SkeletonBlock';
 import { StateMessage } from '../components/StateMessage';
-
-const TYPE_LABELS: Record<MockNotification['type'], string> = {
-  journey: 'Yolculuk',
-  workshop: 'Atolye',
-  reading: 'Okuma',
-  social: 'Sosyal',
-  achievement: 'Basari'
-};
 
 const NotificationCard = ({
   notification,
@@ -143,7 +136,7 @@ const NotificationListContent = ({ isOffline }: { isOffline?: boolean }) => {
 
       {/* AC-FR-E17-01-01: Grouped by type */}
       {Object.entries(grouped).map(([type, notifs]) => (
-        <SectionCard key={type} title={TYPE_LABELS[type as MockNotification['type']] ?? type}>
+        <SectionCard key={type} title={NOTIFICATION_TYPE_LABELS[type as MockNotification['type']] ?? type}>
           {notifs.map((n, idx) => (
             <View key={n.id}>
               {/* AC-FR-E17-01-03: Per-item mark-read */}

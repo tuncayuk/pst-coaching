@@ -9,6 +9,14 @@ import React, { useMemo, useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 
 import {
+  NOTIFICATION_FREQUENCY_OPTIONS,
+  NOTIFICATION_QUIET_HOURS_END,
+  NOTIFICATION_QUIET_HOURS_START,
+  NOTIFICATION_SETTINGS_TYPE_LABELS,
+  type NotificationFrequency,
+  type NotificationSettingsType
+} from '../../data/constants/notifications';
+import {
   PActivityIndicator,
   PDivider,
   PListItem,
@@ -25,30 +33,12 @@ import { SectionCard } from '../components/SectionCard';
 import { SkeletonBlock } from '../components/SkeletonBlock';
 import { StateMessage } from '../components/StateMessage';
 
-type NotifType = 'journey' | 'workshop' | 'reading' | 'social';
-type Frequency = 'instant' | 'daily_summary' | 'weekly';
-
-const TYPE_LABELS: Record<NotifType, string> = {
-  journey: 'Yolculuk Bildirimleri',
-  workshop: 'Atolye Bildirimleri',
-  reading: 'Okuma Bildirimleri',
-  social: 'Sosyal Bildirimler'
-};
-
-const QUIET_HOURS = ['20:00', '21:00', '22:00', '23:00', '00:00'];
-
-const FREQUENCY_OPTIONS: { label: string; value: Frequency }[] = [
-  { label: 'Aninda', value: 'instant' },
-  { label: 'Gunluk Ozet', value: 'daily_summary' },
-  { label: 'Haftalik Ozet', value: 'weekly' }
-];
-
 const NotificationSettingsContent = ({ isOffline }: { isOffline?: boolean }) => {
   const { colors: c } = useAppTheme();
   const styles = useMemo(() => makeStyles(c), [c]);
 
   // AC-FR-E17-03-01: Type toggles
-  const [typeToggles, setTypeToggles] = useState<Record<NotifType, boolean>>({
+  const [typeToggles, setTypeToggles] = useState<Record<NotificationSettingsType, boolean>>({
     journey: true,
     workshop: true,
     reading: true,
@@ -61,13 +51,13 @@ const NotificationSettingsContent = ({ isOffline }: { isOffline?: boolean }) => 
   const [quietEnabled, setQuietEnabled] = useState(true);
 
   // AC-FR-E17-03-03: Frequency
-  const [frequency, setFrequency] = useState<Frequency>('instant');
+  const [frequency, setFrequency] = useState<NotificationFrequency>('instant');
 
   // AC-FR-E17-03-04: Sound + vibration
   const [soundEnabled, setSoundEnabled] = useState(true);
   const [vibrationEnabled, setVibrationEnabled] = useState(true);
 
-  const handleTypeToggle = (type: NotifType, value: boolean) => {
+  const handleTypeToggle = (type: NotificationSettingsType, value: boolean) => {
     if (isOffline) return;
     setTypeToggles(prev => ({ ...prev, [type]: value }));
   };
@@ -76,16 +66,16 @@ const NotificationSettingsContent = ({ isOffline }: { isOffline?: boolean }) => 
     <ScrollView style={styles.scroll} contentContainerStyle={styles.scrollContent}>
       {/* AC-FR-E17-03-01: Per-type toggles */}
       <SectionCard title="Bildirim Turleri">
-        {(Object.keys(TYPE_LABELS) as NotifType[]).map((type, idx, arr) => (
+        {(Object.keys(NOTIFICATION_SETTINGS_TYPE_LABELS) as NotificationSettingsType[]).map((type, idx, arr) => (
           <View key={type}>
             <PListItem
-              title={TYPE_LABELS[type]}
+              title={NOTIFICATION_SETTINGS_TYPE_LABELS[type]}
               right={() => (
                 <PSwitch
                   value={typeToggles[type]}
                   onValueChange={v => handleTypeToggle(type, v)}
                   disabled={isOffline}
-                  accessibilityLabel={`${TYPE_LABELS[type]} acik/kapali`}
+                  accessibilityLabel={`${NOTIFICATION_SETTINGS_TYPE_LABELS[type]} acik/kapali`}
                 />
               )}
             />
@@ -117,7 +107,7 @@ const NotificationSettingsContent = ({ isOffline }: { isOffline?: boolean }) => 
               <View style={styles.quietHalf}>
                 <PText style={styles.quietLabel}>Baslangic</PText>
                 <View style={styles.timeChipRow}>
-                  {QUIET_HOURS.map(t => (
+                  {NOTIFICATION_QUIET_HOURS_START.map(t => (
                     <View
                       key={'start-' + t}
                       style={[styles.timeChip, quietStart === t && styles.timeChipSelected]}
@@ -138,7 +128,7 @@ const NotificationSettingsContent = ({ isOffline }: { isOffline?: boolean }) => 
               <View style={styles.quietHalf}>
                 <PText style={styles.quietLabel}>Bitis</PText>
                 <View style={styles.timeChipRow}>
-                  {['06:00', '07:00', '08:00', '09:00', '10:00'].map(t => (
+                  {NOTIFICATION_QUIET_HOURS_END.map(t => (
                     <View
                       key={'end-' + t}
                       style={[styles.timeChip, quietEnd === t && styles.timeChipSelected]}
@@ -166,10 +156,10 @@ const NotificationSettingsContent = ({ isOffline }: { isOffline?: boolean }) => 
         <PRadioButtonGroup
           value={frequency}
           onValueChange={v => {
-            if (!isOffline) setFrequency(v as Frequency);
+            if (!isOffline) setFrequency(v as NotificationFrequency);
           }}
         >
-          {FREQUENCY_OPTIONS.map(opt => (
+          {NOTIFICATION_FREQUENCY_OPTIONS.map(opt => (
             <PRadioButtonItem key={opt.value} label={opt.label} value={opt.value} disabled={isOffline} />
           ))}
         </PRadioButtonGroup>

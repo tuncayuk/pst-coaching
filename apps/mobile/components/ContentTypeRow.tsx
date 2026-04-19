@@ -1,19 +1,13 @@
 import React, { useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 
+import { CONTENT_TYPE_LABELS, type ContentItemType } from '../data/constants/contentTypes';
 import { ColorTokens, fontSizes, fontWeights, radii, spacing, useAppTheme } from '../theme';
 import { PChip } from './PChip';
 import { PText } from './PText';
 
-export type ContentItemType = 'journey' | 'workshop' | 'module' | 'ebook' | 'content';
-
-export const CONTENT_TYPE_LABELS: Record<ContentItemType, string> = {
-  journey: 'Yolculuk',
-  workshop: 'Atolye',
-  module: 'Modul',
-  ebook: 'e-Kitap',
-  content: 'Icerik'
-};
+export type { ContentItemType };
+export { CONTENT_TYPE_LABELS };
 
 export type ContentTypeRowProps = {
   title: string;

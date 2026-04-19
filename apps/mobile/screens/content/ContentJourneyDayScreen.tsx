@@ -3,6 +3,7 @@ import React, { useMemo, useRef, useState } from 'react';
 import { StyleSheet, TextInput, View } from 'react-native';
 
 import { PButton, PText } from '../../components';
+import { READER_FONT_ORDER, READER_FONT_SIZES, type ReaderFontKey } from '../../data/constants/reader';
 import {
   getContentItemsForParent,
   getJourneyById,
@@ -21,9 +22,6 @@ import { StateMessage } from '../components/StateMessage';
 // ─────────────────────────────────────────────
 
 type RouteParams = { state?: ScreenState; id?: string; day?: string };
-type FontKey = 'small' | 'medium' | 'large';
-const FONT_SIZES: Record<FontKey, number> = { small: 14, medium: 16, large: 19 };
-const FONT_ORDER: FontKey[] = ['small', 'medium', 'large'];
 
 const CONTENT_TYPE_CONFIG: Record<string, { emoji: string; label: string; accent: string; bg: string }> = {
   reading:  { emoji: '📖', label: 'Okuma',    accent: '#1D4ED8', bg: '#DBEAFE' },
@@ -65,10 +63,10 @@ const ContentJourneyDayContent = ({
   const countdownM = isLocked ? 60 - now.getMinutes() : 0;
 
   // Font
-  const [fontKey, setFontKey] = useState<FontKey>('medium');
+  const [fontKey, setFontKey] = useState<ReaderFontKey>('medium');
   const cycleFontSize = () =>
-    setFontKey(prev => FONT_ORDER[(FONT_ORDER.indexOf(prev) + 1) % FONT_ORDER.length]);
-  const fontSize = FONT_SIZES[fontKey];
+    setFontKey(prev => READER_FONT_ORDER[(READER_FONT_ORDER.indexOf(prev) + 1) % READER_FONT_ORDER.length]);
+  const fontSize = READER_FONT_SIZES[fontKey];
 
   // Completion
   const [isTodayCompleted, setIsTodayCompleted] = useState(false);
