@@ -1,7 +1,7 @@
 import { NativeStackNavigationOptions, createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 
-import { ScreenState } from '../screens/components/ScreenState';
+import { ScreenState } from '../components/ScreenState';
 import { ContentAchievementScreen } from '../screens/content/ContentAchievementScreen';
 import { ContentCommentPreviewScreen } from '../screens/content/ContentCommentPreviewScreen';
 import { ContentCommentScreen } from '../screens/content/ContentCommentScreen';

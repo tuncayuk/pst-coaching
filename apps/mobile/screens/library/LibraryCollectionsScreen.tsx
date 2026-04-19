@@ -2,25 +2,15 @@ import { useNavigation } from '@react-navigation/native';
 import React, { useMemo, useState } from 'react';
 import { Modal, StyleSheet, TextInput, View } from 'react-native';
 
-import {
-  InlineSnackbar,
-  PActivityIndicator,
-  PButton,
-  PDivider,
-  PText
-} from '../../components';
-import {
-  getCollectionItems,
-  getCollectionsForUser,
-  getPrimaryUser
-} from '../../data/mockSelectors';
+import { InlineSnackbar, PActivityIndicator, PButton, PDivider, PText } from '../../components';
+import { OfflineNotice } from '../../components/OfflineNotice';
+import { ScreenLayout } from '../../components/ScreenLayout';
+import { ScreenState, resolveScreenState } from '../../components/ScreenState';
+import { SectionCard } from '../../components/SectionCard';
+import { SkeletonBlock } from '../../components/SkeletonBlock';
+import { StateMessage } from '../../components/StateMessage';
+import { getCollectionItems, getCollectionsForUser, getPrimaryUser } from '../../data/mockSelectors';
 import { ColorTokens, fontSizes, fontWeights, radii, spacing, useAppTheme } from '../../theme';
-import { OfflineNotice } from '../components/OfflineNotice';
-import { ScreenLayout } from '../components/ScreenLayout';
-import { ScreenState, resolveScreenState } from '../components/ScreenState';
-import { SectionCard } from '../components/SectionCard';
-import { SkeletonBlock } from '../components/SkeletonBlock';
-import { StateMessage } from '../components/StateMessage';
 
 type CollectionEntry = { id: string; name: string; itemCount: number };
 
@@ -64,7 +54,10 @@ const LibraryCollectionsContent = ({ isOffline }: { isOffline?: boolean }) => {
     setDeletedCollection(target);
     setUndoVisible(true);
     // AC-FR-E9-03-03: 4-6 sec snackbar window
-    setTimeout(() => { setUndoVisible(false); setDeletedCollection(null); }, 5000);
+    setTimeout(() => {
+      setUndoVisible(false);
+      setDeletedCollection(null);
+    }, 5000);
   };
 
   const handleUndo = () => {

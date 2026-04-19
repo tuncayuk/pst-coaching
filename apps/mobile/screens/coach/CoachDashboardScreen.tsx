@@ -3,6 +3,12 @@ import React, { useMemo, useState } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import { PActivityIndicator, PAvatar, PButton, PChip, PDivider, PProgressBar, PText } from '../../components';
+import { OfflineNotice } from '../../components/OfflineNotice';
+import { ScreenLayout } from '../../components/ScreenLayout';
+import { ScreenState, resolveScreenState } from '../../components/ScreenState';
+import { SectionCard } from '../../components/SectionCard';
+import { SkeletonBlock } from '../../components/SkeletonBlock';
+import { StateMessage } from '../../components/StateMessage';
 import {
   getClientsForCoach,
   getContentProgressForUser,
@@ -10,12 +16,6 @@ import {
   getSessionsForUser
 } from '../../data/mockSelectors';
 import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
-import { OfflineNotice } from '../components/OfflineNotice';
-import { ScreenLayout } from '../components/ScreenLayout';
-import { ScreenState, resolveScreenState } from '../components/ScreenState';
-import { SectionCard } from '../components/SectionCard';
-import { SkeletonBlock } from '../components/SkeletonBlock';
-import { StateMessage } from '../components/StateMessage';
 
 type RouteParams = { state?: ScreenState };
 

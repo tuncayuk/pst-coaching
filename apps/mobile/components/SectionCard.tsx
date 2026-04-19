@@ -1,7 +1,7 @@
 import React from 'react';
 import { ViewStyle } from 'react-native';
 
-import { PCard } from '../../components';
+import { PCard } from '.';
 
 export type SectionCardProps = {
   title: string;

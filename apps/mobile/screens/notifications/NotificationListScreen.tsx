@@ -10,15 +10,15 @@ import React, { useMemo, useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 
 import { PActivityIndicator, PButton, PCard, PChip, PDivider, PIconButton, PText } from '../../components';
-import { MockNotification, getNotificationsForUser, getPrimaryUser } from '../../data/mockSelectors';
+import { OfflineNotice } from '../../components/OfflineNotice';
+import { ScreenLayout } from '../../components/ScreenLayout';
+import { ScreenState, resolveScreenState } from '../../components/ScreenState';
+import { SectionCard } from '../../components/SectionCard';
+import { SkeletonBlock } from '../../components/SkeletonBlock';
+import { StateMessage } from '../../components/StateMessage';
 import { NOTIFICATION_TYPE_LABELS } from '../../data/constants/notifications';
+import { MockNotification, getNotificationsForUser, getPrimaryUser } from '../../data/mockSelectors';
 import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
-import { OfflineNotice } from '../components/OfflineNotice';
-import { ScreenLayout } from '../components/ScreenLayout';
-import { ScreenState, resolveScreenState } from '../components/ScreenState';
-import { SectionCard } from '../components/SectionCard';
-import { SkeletonBlock } from '../components/SkeletonBlock';
-import { StateMessage } from '../components/StateMessage';
 
 const NotificationCard = ({
   notification,

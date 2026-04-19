@@ -1,16 +1,9 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useCallback } from 'react';
-import {
-  NativeScrollEvent,
-  NativeSyntheticEvent,
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  View
-} from 'react-native';
+import { NativeScrollEvent, NativeSyntheticEvent, SafeAreaView, ScrollView, StyleSheet, View } from 'react-native';
 
-import { PButton, PIconButton, PText } from '../../components';
-import { fontSizes, fontWeights, spacing, useAppTheme } from '../../theme';
+import { PButton, PIconButton, PText } from '.';
+import { fontSizes, fontWeights, spacing, useAppTheme } from '../theme';
 
 // ─────────────────────────────────────────────
 // Types
@@ -102,7 +95,6 @@ export const PremiumReaderLayout = ({
 
   return (
     <SafeAreaView style={[styles.root, { backgroundColor: c.surface }]}>
-
       {/* ── Progress bar ── */}
       <View style={[styles.progressTrack, { backgroundColor: c.outlineVariant }]}>
         <View style={[styles.progressFill, { width: `${pct}%` as any, backgroundColor: accent }]} />
@@ -181,7 +173,6 @@ export const PremiumReaderLayout = ({
 
       {/* ── Floating bottom toolbar ── */}
       <View style={[styles.toolbar, { backgroundColor: c.surface, borderTopColor: c.outlineVariant }]}>
-
         {/* Left — annotation actions */}
         <View style={styles.toolbarGroup}>
           <PIconButton
@@ -229,7 +220,6 @@ export const PremiumReaderLayout = ({
             accessibilityLabel="Sonraki"
           />
         </View>
-
       </View>
     </SafeAreaView>
   );

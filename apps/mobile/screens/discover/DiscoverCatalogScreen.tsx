@@ -12,6 +12,11 @@ import {
   PActivityIndicator,
   PText
 } from '../../components';
+import { OfflineNotice } from '../../components/OfflineNotice';
+import { ScreenLayout } from '../../components/ScreenLayout';
+import { ScreenState, resolveScreenState } from '../../components/ScreenState';
+import { SkeletonBlock } from '../../components/SkeletonBlock';
+import { StateMessage } from '../../components/StateMessage';
 import {
   getDiscoverCatalogTabs,
   getEbooks,
@@ -22,11 +27,6 @@ import {
   getWorkshops
 } from '../../data/mockSelectors';
 import { ColorTokens, fontSizes, fontWeights, radii, spacing, useAppTheme } from '../../theme';
-import { OfflineNotice } from '../components/OfflineNotice';
-import { ScreenLayout } from '../components/ScreenLayout';
-import { ScreenState, resolveScreenState } from '../components/ScreenState';
-import { SkeletonBlock } from '../components/SkeletonBlock';
-import { StateMessage } from '../components/StateMessage';
 
 const DiscoverReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
   const { colors: c } = useAppTheme();
@@ -35,9 +35,7 @@ const DiscoverReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
   const navigation = useNavigation<any>();
   const catalogTabs = getDiscoverCatalogTabs();
   const contentTabs: MosaicTab[] = catalogTabs.map(({ key, label, emoji }) => ({ key, label, emoji }));
-  const tabRoutes: Record<string, string> = Object.fromEntries(
-    catalogTabs.map(tab => [tab.key, tab.route]),
-  );
+  const tabRoutes: Record<string, string> = Object.fromEntries(catalogTabs.map(tab => [tab.key, tab.route]));
   const [activeTab, setActiveTab] = React.useState<string>(contentTabs[0]?.key ?? 'journeys');
 
   const user = getPrimaryUser();
@@ -57,7 +55,7 @@ const DiscoverReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
     journeys: journeys.length,
     workshops: workshops.length,
     modules: modules.length,
-    ebooks: ebooks.length,
+    ebooks: ebooks.length
   };
   const tabCounts = contentTabs.map(tab => tabCountsByKey[tab.key] ?? 0);
 

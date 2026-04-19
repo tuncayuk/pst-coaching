@@ -1,6 +1,7 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 
+import { ScreenState } from '../components/ScreenState';
 import { AuthDemographicsScreen } from '../screens/auth/AuthDemographicsScreen';
 import { AuthFaceIdSetupScreen } from '../screens/auth/AuthFaceIdSetupScreen';
 import { AuthForgotPasswordScreen } from '../screens/auth/AuthForgotPasswordScreen';
@@ -12,7 +13,6 @@ import { AuthPasswordResetScreen } from '../screens/auth/AuthPasswordResetScreen
 import { AuthReauthScreen } from '../screens/auth/AuthReauthScreen';
 import { AuthRegisterScreen } from '../screens/auth/AuthRegisterScreen';
 import { AuthSessionTimeoutScreen } from '../screens/auth/AuthSessionTimeoutScreen';
-import { ScreenState } from '../screens/components/ScreenState';
 
 type ScreenStateParam = { state?: ScreenState } | undefined;
 

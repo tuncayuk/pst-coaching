@@ -1,7 +1,7 @@
 import { NativeStackNavigationOptions, createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 
-import { ScreenState } from '../screens/components/ScreenState';
+import { ScreenState } from '../components/ScreenState';
 import { ContentPaywallScreen } from '../screens/content/ContentPaywallScreen';
 import { LibraryCollectionDetailScreen } from '../screens/library/LibraryCollectionDetailScreen';
 import { LibraryCollectionsScreen } from '../screens/library/LibraryCollectionsScreen';

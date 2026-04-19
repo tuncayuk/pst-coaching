@@ -3,6 +3,12 @@ import React, { useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { PActivityIndicator, PButton, PCard, PChip, PProgressBar, PText } from '../../components';
+import { OfflineNotice } from '../../components/OfflineNotice';
+import { ScreenLayout } from '../../components/ScreenLayout';
+import { ScreenState, resolveScreenState } from '../../components/ScreenState';
+import { SectionCard } from '../../components/SectionCard';
+import { SkeletonBlock } from '../../components/SkeletonBlock';
+import { StateMessage } from '../../components/StateMessage';
 import {
   getContentProgressForUser,
   getEbookById,
@@ -11,12 +17,6 @@ import {
   getWorkshopById
 } from '../../data/mockSelectors';
 import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
-import { OfflineNotice } from '../components/OfflineNotice';
-import { ScreenLayout } from '../components/ScreenLayout';
-import { ScreenState, resolveScreenState } from '../components/ScreenState';
-import { SectionCard } from '../components/SectionCard';
-import { SkeletonBlock } from '../components/SkeletonBlock';
-import { StateMessage } from '../components/StateMessage';
 
 /** AC-FR-E2-06-01: Type chip colors */
 const TYPE_CHIP_STYLES: Record<string, { bg: string; text: string }> = {
@@ -53,9 +53,13 @@ const HomeActiveContentListContent = ({ isOffline }: { isOffline?: boolean }) =>
     .map(p => {
       const type = (p as any).target_type ?? p.content_type ?? 'journey';
       const content =
-        type === 'journey' ? getJourneyById(p.content_item_id) :
-        type === 'workshop' ? getWorkshopById(p.content_item_id) :
-        type === 'ebook' ? getEbookById(p.content_item_id) : null;
+        type === 'journey'
+          ? getJourneyById(p.content_item_id)
+          : type === 'workshop'
+            ? getWorkshopById(p.content_item_id)
+            : type === 'ebook'
+              ? getEbookById(p.content_item_id)
+              : null;
       return {
         id: p.content_item_id,
         title: (content as any)?.title ?? p.content_item_id,

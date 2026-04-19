@@ -3,6 +3,13 @@ import React, { useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { PActivityIndicator, PButton, PChip, PDivider, PText } from '../../components';
+import { OfflineNotice } from '../../components/OfflineNotice';
+import { ScreenLayout } from '../../components/ScreenLayout';
+import { ScreenState, resolveScreenState } from '../../components/ScreenState';
+import { SectionCard } from '../../components/SectionCard';
+import { SkeletonBlock } from '../../components/SkeletonBlock';
+import { StateMessage } from '../../components/StateMessage';
+import { WORKSHOP_MODE_LABELS, WORKSHOP_TYPE_BG, WORKSHOP_TYPE_FG } from '../../data/constants/workshop';
 import {
   getContentItemsForParent,
   getContentProgressForUser,
@@ -10,20 +17,13 @@ import {
   getWorkshopById,
   getWorkshops
 } from '../../data/mockSelectors';
-import { WORKSHOP_MODE_LABELS, WORKSHOP_TYPE_BG, WORKSHOP_TYPE_FG } from '../../data/constants/workshop';
 import { ColorTokens, fontSizes, fontWeights, radii, spacing, useAppTheme } from '../../theme';
-import { OfflineNotice } from '../components/OfflineNotice';
-import { ScreenLayout } from '../components/ScreenLayout';
-import { ScreenState, resolveScreenState } from '../components/ScreenState';
-import { SectionCard } from '../components/SectionCard';
-import { SkeletonBlock } from '../components/SkeletonBlock';
-import { StateMessage } from '../components/StateMessage';
 
 type RouteParams = { state?: ScreenState; id?: string };
 
 // Mutlak.docx aligned 11-stage labels
 const STAGE_LABELS: Record<number, string> = {
-  1: "Kavram İnşası",
+  1: 'Kavram İnşası',
   2: "Kur'ân Analizi",
   3: 'Ayet Aynalama',
   4: 'Müfessirler',
@@ -94,7 +94,8 @@ const ContentWorkshopDetailContent = ({ workshopId, isOffline }: { workshopId?: 
           {workshop?.title ?? 'Atölye'}
         </PText>
         <PText variant="bodyMedium" style={styles.heroDesc}>
-          {(workshop as any)?.description ?? 'Canlı uygulamalar, paylaşım ve destekleyici egzersizlerle ilerleyen bir atölye.'}
+          {(workshop as any)?.description ??
+            'Canlı uygulamalar, paylaşım ve destekleyici egzersizlerle ilerleyen bir atölye.'}
         </PText>
         {/* type + difficulty badges */}
         <View style={styles.heroBadgeRow}>
@@ -124,30 +125,42 @@ const ContentWorkshopDetailContent = ({ workshopId, isOffline }: { workshopId?: 
         </View>
         <PDivider style={styles.divider} />
         <View style={styles.metaRow}>
-          <PText variant="labelMedium" style={styles.metaLabel}>Hedef kitle</PText>
+          <PText variant="labelMedium" style={styles.metaLabel}>
+            Hedef kitle
+          </PText>
           <PText variant="bodySmall">{ageTarget}</PText>
         </View>
         <View style={styles.metaRow}>
-          <PText variant="labelMedium" style={styles.metaLabel}>Süre</PText>
+          <PText variant="labelMedium" style={styles.metaLabel}>
+            Süre
+          </PText>
           <PText variant="bodySmall">{durationLabel}</PText>
         </View>
         <View style={styles.metaRow}>
-          <PText variant="labelMedium" style={styles.metaLabel}>Oturum sayısı</PText>
+          <PText variant="labelMedium" style={styles.metaLabel}>
+            Oturum sayısı
+          </PText>
           <PText variant="bodySmall">{sessionCount} oturum</PText>
         </View>
         <View style={styles.metaRow}>
-          <PText variant="labelMedium" style={styles.metaLabel}>Kolaylaştırıcı</PText>
+          <PText variant="labelMedium" style={styles.metaLabel}>
+            Kolaylaştırıcı
+          </PText>
           <PText variant="bodySmall">{facilitator}</PText>
         </View>
         {attendeeCount > 0 && (
           <View style={styles.metaRow}>
-            <PText variant="labelMedium" style={styles.metaLabel}>Katılımcı</PText>
+            <PText variant="labelMedium" style={styles.metaLabel}>
+              Katılımcı
+            </PText>
             <PText variant="bodySmall">{attendeeCount} kişi</PText>
           </View>
         )}
         {scheduledDate && (
           <View style={styles.metaRow}>
-            <PText variant="labelMedium" style={styles.metaLabel}>Tarih</PText>
+            <PText variant="labelMedium" style={styles.metaLabel}>
+              Tarih
+            </PText>
             <View style={[styles.datePill, isUpcoming && styles.datePillUpcoming]}>
               <PText variant="bodySmall">📅 {scheduledDate}</PText>
             </View>
@@ -191,7 +204,13 @@ const ContentWorkshopDetailContent = ({ workshopId, isOffline }: { workshopId?: 
           const isDone = n <= completedCount;
           return (
             <View key={num} style={styles.stageRow}>
-              <View style={[styles.stageNumBadge, isDone && styles.stageNumBadgeDone, n === 8 && !isDone && styles.stageNumBadgeCamp]}>
+              <View
+                style={[
+                  styles.stageNumBadge,
+                  isDone && styles.stageNumBadgeDone,
+                  n === 8 && !isDone && styles.stageNumBadgeCamp
+                ]}
+              >
                 <PText style={styles.stageNumText}>{isDone ? '✓' : String(n)}</PText>
               </View>
               <PText variant="bodySmall" style={[styles.stageLabel, isDone && styles.stageLabelDone]}>

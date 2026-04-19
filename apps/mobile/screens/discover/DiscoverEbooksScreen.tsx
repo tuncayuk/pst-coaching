@@ -3,18 +3,18 @@ import React, { useMemo } from 'react';
 import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 
 import { PActivityIndicator, PButton, PIconButton, PText } from '../../components';
+import { OfflineNotice } from '../../components/OfflineNotice';
+import { ScreenLayout } from '../../components/ScreenLayout';
+import { ScreenState, resolveScreenState } from '../../components/ScreenState';
+import { SkeletonBlock } from '../../components/SkeletonBlock';
+import { StateMessage } from '../../components/StateMessage';
 import {
   getDiscoverEbookCoverColors,
   getDiscoverEbookCoverEmojis,
   getDiscoverEbookSortOptions,
-  getEbooks,
+  getEbooks
 } from '../../data/mockSelectors';
 import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
-import { OfflineNotice } from '../components/OfflineNotice';
-import { ScreenLayout } from '../components/ScreenLayout';
-import { ScreenState, resolveScreenState } from '../components/ScreenState';
-import { SkeletonBlock } from '../components/SkeletonBlock';
-import { StateMessage } from '../components/StateMessage';
 
 const DiscoverEbooksContent = ({ isOffline }: { isOffline?: boolean }) => {
   const { colors: c } = useAppTheme();
@@ -115,10 +115,8 @@ const DiscoverEbooksContent = ({ isOffline }: { isOffline?: boolean }) => {
                     styles.cover,
                     {
                       backgroundColor:
-                        coverColors.length > 0
-                          ? coverColors[origIndex % coverColors.length]
-                          : c.surfaceVariant,
-                    },
+                        coverColors.length > 0 ? coverColors[origIndex % coverColors.length] : c.surfaceVariant
+                    }
                   ]}
                 >
                   <PText style={styles.coverEmoji}>

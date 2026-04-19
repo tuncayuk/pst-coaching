@@ -3,6 +3,12 @@ import React, { useMemo, useState } from 'react';
 import { StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
 
 import { PActivityIndicator, PButton, PChip, PDivider, PText } from '../../components';
+import { OfflineNotice } from '../../components/OfflineNotice';
+import { ScreenLayout } from '../../components/ScreenLayout';
+import { ScreenState, resolveScreenState } from '../../components/ScreenState';
+import { SectionCard } from '../../components/SectionCard';
+import { SkeletonBlock } from '../../components/SkeletonBlock';
+import { StateMessage } from '../../components/StateMessage';
 import {
   CONTENT_TYPE_LABELS,
   LIBRARY_CONTENT_FILTER_ALL,
@@ -20,12 +26,6 @@ import {
   getWorkshops
 } from '../../data/mockSelectors';
 import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
-import { OfflineNotice } from '../components/OfflineNotice';
-import { ScreenLayout } from '../components/ScreenLayout';
-import { ScreenState, resolveScreenState } from '../components/ScreenState';
-import { SectionCard } from '../components/SectionCard';
-import { SkeletonBlock } from '../components/SkeletonBlock';
-import { StateMessage } from '../components/StateMessage';
 
 // AC-FR-E9-04-02: type filter for collection items
 const LibraryCollectionDetailContent = ({
@@ -153,7 +153,8 @@ const LibraryCollectionDetailContent = ({
                       {item.title}
                     </PText>
                     <PChip compact style={[styles.typeChip, { borderColor: getLibraryContentTypeColor(item.type) }]}>
-                      {CONTENT_TYPE_LABELS[item.type as keyof typeof CONTENT_TYPE_LABELS] ?? CONTENT_TYPE_LABELS.content}
+                      {CONTENT_TYPE_LABELS[item.type as keyof typeof CONTENT_TYPE_LABELS] ??
+                        CONTENT_TYPE_LABELS.content}
                     </PChip>
                   </View>
                   {item.description ? (

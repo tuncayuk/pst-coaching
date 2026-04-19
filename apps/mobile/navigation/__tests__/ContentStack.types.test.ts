@@ -1,4 +1,4 @@
-import { ScreenState } from '../../screens/components/ScreenState';
+import { ScreenState } from '../../components/ScreenState';
 import { ContentStackParamList } from '../ContentStack';
 
 const validState: ScreenState = 'ready';

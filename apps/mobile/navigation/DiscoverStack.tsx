@@ -1,7 +1,7 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 
-import { ScreenState } from '../screens/components/ScreenState';
+import { ScreenState } from '../components/ScreenState';
 // FR-E16: AI free-text assistant (new)
 import { DiscoverAIAssistantIntroScreen } from '../screens/discover/DiscoverAIAssistantIntroScreen';
 import { DiscoverAIAssistantQuestionsScreen } from '../screens/discover/DiscoverAIAssistantQuestionsScreen';

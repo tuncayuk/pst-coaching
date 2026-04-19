@@ -3,20 +3,19 @@ import React, { useMemo, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { FilterChipBar, PActivityIndicator, PButton, PText } from '../../components';
+import { OfflineNotice } from '../../components/OfflineNotice';
+import { ScreenLayout } from '../../components/ScreenLayout';
+import { ScreenState, resolveScreenState } from '../../components/ScreenState';
+import { SectionCard } from '../../components/SectionCard';
+import { SkeletonBlock } from '../../components/SkeletonBlock';
+import { StateMessage } from '../../components/StateMessage';
 import { WORKSHOP_MODE_LABELS, WORKSHOP_TYPE_BG, WORKSHOP_TYPE_FG } from '../../data/constants/workshop';
 import { getContentProgressForUser, getPrimaryUser, getWorkshops } from '../../data/mockSelectors';
 import { ColorTokens, fontSizes, fontWeights, radii, spacing, useAppTheme } from '../../theme';
-import { OfflineNotice } from '../components/OfflineNotice';
-import { ScreenLayout } from '../components/ScreenLayout';
-import { ScreenState, resolveScreenState } from '../components/ScreenState';
-import { SectionCard } from '../components/SectionCard';
-import { SkeletonBlock } from '../components/SkeletonBlock';
-import { StateMessage } from '../components/StateMessage';
 
 type Workshop = ReturnType<typeof getWorkshops>[number];
 
-const getField = <T,>(w: Workshop, key: string, fallback: T): T =>
-  ((w as any)[key] ?? fallback) as T;
+const getField = <T,>(w: Workshop, key: string, fallback: T): T => ((w as any)[key] ?? fallback) as T;
 
 const WorkshopListCard = ({
   workshop,

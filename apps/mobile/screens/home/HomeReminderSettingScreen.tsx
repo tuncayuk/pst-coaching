@@ -2,6 +2,12 @@ import React, { useMemo, useState } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import { PActivityIndicator, PButton, PCard, PChip, PDivider, PText } from '../../components';
+import { OfflineNotice } from '../../components/OfflineNotice';
+import { ScreenLayout } from '../../components/ScreenLayout';
+import { ScreenState, resolveScreenState } from '../../components/ScreenState';
+import { SectionCard } from '../../components/SectionCard';
+import { SkeletonBlock } from '../../components/SkeletonBlock';
+import { StateMessage } from '../../components/StateMessage';
 import {
   getContentProgressForUser,
   getPrimaryUser,
@@ -9,12 +15,6 @@ import {
   getReminderTimeSlots
 } from '../../data/mockSelectors';
 import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
-import { OfflineNotice } from '../components/OfflineNotice';
-import { ScreenLayout } from '../components/ScreenLayout';
-import { ScreenState, resolveScreenState } from '../components/ScreenState';
-import { SectionCard } from '../components/SectionCard';
-import { SkeletonBlock } from '../components/SkeletonBlock';
-import { StateMessage } from '../components/StateMessage';
 
 /** AC-FR-E2-08-02: Default reminder time is 20:00 */
 const DEFAULT_REMINDER_HOUR = 20;
@@ -32,7 +32,8 @@ const HomeReminderContent = ({ isOffline }: { isOffline?: boolean }) => {
   const reminderSettings = getReminderSettingsForUser(user?.id);
   const availableTimes = getReminderTimeSlots();
   const [timeParts, setTimeParts] = useState(() => {
-    const saved = reminderSettings?.time_local ?? `${DEFAULT_REMINDER_HOUR}:${String(DEFAULT_REMINDER_MINUTE).padStart(2,'0')}`;
+    const saved =
+      reminderSettings?.time_local ?? `${DEFAULT_REMINDER_HOUR}:${String(DEFAULT_REMINDER_MINUTE).padStart(2, '0')}`;
     const [h, m] = saved.split(':').map(Number);
     return { h: isNaN(h) ? DEFAULT_REMINDER_HOUR : h, m: isNaN(m) ? DEFAULT_REMINDER_MINUTE : m };
   });

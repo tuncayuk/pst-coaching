@@ -2,33 +2,24 @@
 // AC-FR-E16-02-02: source type + count visible in response header
 // AC-FR-E16-02-03: structured response — main summary + supporting bullets
 // AC-FR-E16-02-04: follow-up question chips (horizontal wrap)
-
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useMemo, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import {
-  PActivityIndicator,
-  PButton,
-  PCard,
-  PChip,
-  PDivider,
-  PProgressBar,
-  PText,
-} from '../../components';
+import { PActivityIndicator, PButton, PCard, PChip, PDivider, PProgressBar, PText } from '../../components';
+import { OfflineNotice } from '../../components/OfflineNotice';
+import { ScreenLayout } from '../../components/ScreenLayout';
+import { ScreenState, resolveScreenState } from '../../components/ScreenState';
+import { SkeletonBlock } from '../../components/SkeletonBlock';
+import { StateMessage } from '../../components/StateMessage';
 import {
   getDiscoverAIAssistantFollowUpSuggestions,
   getDiscoverAIAssistantSourceTypes,
   getEbooks,
   getJourneys,
-  getWorkshops,
+  getWorkshops
 } from '../../data/mockSelectors';
 import { ColorTokens, fontSizes, fontWeights, radii, spacing, useAppTheme } from '../../theme';
-import { OfflineNotice } from '../components/OfflineNotice';
-import { ScreenLayout } from '../components/ScreenLayout';
-import { ScreenState, resolveScreenState } from '../components/ScreenState';
-import { SkeletonBlock } from '../components/SkeletonBlock';
-import { StateMessage } from '../components/StateMessage';
 
 // ---------------------------------------------------------------------------
 // Mock RAG response  (AC-FR-E16-02-01/02/03)
@@ -42,7 +33,7 @@ type RagResponse = {
 
 function buildMockRagResponse(
   question: string,
-  sourceTypesConfig: Array<{ type: string; label: string }>,
+  sourceTypesConfig: Array<{ type: string; label: string }>
 ): RagResponse {
   const journeys = getJourneys().slice(0, 2);
   const workshops = getWorkshops().slice(0, 1);
@@ -50,7 +41,7 @@ function buildMockRagResponse(
   const countsByType: Record<string, number> = {
     Yolculuk: journeys.length,
     Atolye: workshops.length,
-    'e-Kitap': ebooks.length,
+    'e-Kitap': ebooks.length
   };
 
   return {
@@ -65,14 +56,12 @@ function buildMockRagResponse(
       workshops[0]
         ? `${workshops[0].title} atolyesi pratik egzersizler icerir`
         : 'Duygusal farkindalik egzersizleri hizlandirici etki gosterir',
-      ebooks[0]
-        ? `${ebooks[0].title} kitabi teorik altyapi saglar`
-        : 'Teorik altyapi icin e-Kitap kaynaklari mevcuttur',
+      ebooks[0] ? `${ebooks[0].title} kitabi teorik altyapi saglar` : 'Teorik altyapi icin e-Kitap kaynaklari mevcuttur'
     ],
     sourceTypes: sourceTypesConfig
       .map(s => ({ type: s.type, count: countsByType[s.type] ?? 0 }))
       .filter(s => s.count > 0),
-    totalSources: journeys.length + workshops.length + ebooks.length,
+    totalSources: journeys.length + workshops.length + ebooks.length
   };
 }
 
@@ -81,13 +70,7 @@ function buildMockRagResponse(
 // ---------------------------------------------------------------------------
 type Phase = 'thinking' | 'ready';
 
-const DiscoverAIAssistantQuestionsContent = ({
-  isOffline,
-  question,
-}: {
-  isOffline?: boolean;
-  question: string;
-}) => {
+const DiscoverAIAssistantQuestionsContent = ({ isOffline, question }: { isOffline?: boolean; question: string }) => {
   const { colors: c } = useAppTheme();
   const styles = useMemo(() => makeStyles(c), [c]);
   const navigation = useNavigation<any>();
@@ -99,8 +82,8 @@ const DiscoverAIAssistantQuestionsContent = ({
   const [rag] = useState(() =>
     buildMockRagResponse(
       question,
-      sourceTypes.map(s => ({ type: s.type, label: s.label })),
-    ),
+      sourceTypes.map(s => ({ type: s.type, label: s.label }))
+    )
   );
 
   // Simulate AI RAG loading (AC-FR-E16-02-01)
@@ -132,11 +115,7 @@ const DiscoverAIAssistantQuestionsContent = ({
         <View style={styles.thinkingIconWrap}>
           <PActivityIndicator animating size="large" />
         </View>
-        <PText
-          style={styles.thinkingTitle}
-          accessibilityRole="alert"
-          accessibilityLiveRegion="polite"
-        >
+        <PText style={styles.thinkingTitle} accessibilityRole="alert" accessibilityLiveRegion="polite">
           Kaynaklar taranıyor...
         </PText>
         <PText style={styles.thinkingSubtitle}>
@@ -172,10 +151,7 @@ const DiscoverAIAssistantQuestionsContent = ({
 
       {/* AC-FR-E16-02-02: source count + type badges */}
       <View style={styles.sourceCountRow}>
-        <PText
-          style={styles.sourceCountText}
-          accessibilityLabel={`${rag.totalSources} kaynaktan derlenen yanit`}
-        >
+        <PText style={styles.sourceCountText} accessibilityLabel={`${rag.totalSources} kaynaktan derlenen yanit`}>
           {rag.totalSources} kaynaktan derlendi
         </PText>
         <View style={styles.sourceTypeBadges}>
@@ -221,9 +197,7 @@ const DiscoverAIAssistantQuestionsContent = ({
           {followUpSuggestions.map(s => (
             <PChip
               key={s}
-              onPress={() =>
-                !isOffline && navigation.navigate('DiscoverAIAssistantQuestions', { question: s })
-              }
+              onPress={() => !isOffline && navigation.navigate('DiscoverAIAssistantQuestions', { question: s })}
               disabled={isOffline}
               compact
               accessibilityRole="button"
@@ -244,11 +218,7 @@ const DiscoverAIAssistantQuestionsContent = ({
 // ---------------------------------------------------------------------------
 type RouteParams = { state?: ScreenState; question?: string };
 
-export const DiscoverAIAssistantQuestionsScreen = ({
-  route,
-}: {
-  route?: { params?: RouteParams };
-}) => {
+export const DiscoverAIAssistantQuestionsScreen = ({ route }: { route?: { params?: RouteParams } }) => {
   const state = resolveScreenState(route);
   const question = route?.params?.question ?? 'Kisisel gelisim icin ne onerirsin?';
   const navigation = useNavigation<any>();
@@ -318,51 +288,51 @@ function makeStyles(c: ColorTokens) {
     // Thinking state
     thinkingContainer: {
       alignItems: 'center',
-      paddingVertical: spacing[4],
+      paddingVertical: spacing[4]
     },
     thinkingIconWrap: {
-      marginBottom: spacing[2],
+      marginBottom: spacing[2]
     },
     thinkingTitle: {
       fontSize: fontSizes['3xl'],
       fontWeight: fontWeights.bold,
       color: c.textPrimary,
       marginBottom: spacing[1],
-      textAlign: 'center',
+      textAlign: 'center'
     },
     thinkingSubtitle: {
       fontSize: fontSizes.lg,
       color: c.textSecondary,
       textAlign: 'center',
       marginBottom: spacing[2],
-      maxWidth: 260,
+      maxWidth: 260
     },
     thinkingBar: {
       width: '80%',
       height: 6,
       borderRadius: radii.full,
-      marginBottom: spacing[2.5],
+      marginBottom: spacing[2.5]
     },
     sourceTypePills: {
       flexDirection: 'row',
-      gap: spacing[1],
+      gap: spacing[1]
     },
     sourceTypePill: {
       backgroundColor: c.surfaceVariant,
       borderRadius: radii.full,
       paddingHorizontal: spacing[1.5],
-      paddingVertical: 4,
+      paddingVertical: 4
     },
     sourceTypePillText: {
       fontSize: fontSizes.sm,
-      color: c.textSecondary,
+      color: c.textSecondary
     },
     // Ready state
     questionBubble: {
       backgroundColor: c.secondaryContainer,
       borderRadius: radii.xl,
       padding: spacing[2],
-      marginBottom: spacing[2],
+      marginBottom: spacing[2]
     },
     questionLabel: {
       fontSize: fontSizes.sm,
@@ -370,12 +340,12 @@ function makeStyles(c: ColorTokens) {
       color: c.onSecondaryContainer,
       marginBottom: 4,
       textTransform: 'uppercase',
-      letterSpacing: 0.5,
+      letterSpacing: 0.5
     },
     questionText: {
       fontSize: fontSizes.xl,
       color: c.onSecondaryContainer,
-      fontWeight: fontWeights.semiBold,
+      fontWeight: fontWeights.semiBold
     },
     sourceCountRow: {
       flexDirection: 'row',
@@ -383,40 +353,40 @@ function makeStyles(c: ColorTokens) {
       justifyContent: 'space-between',
       marginBottom: spacing[1.5],
       flexWrap: 'wrap',
-      gap: spacing[1],
+      gap: spacing[1]
     },
     sourceCountText: {
       fontSize: fontSizes.md,
       color: c.textTertiary,
-      fontWeight: fontWeights.semiBold,
+      fontWeight: fontWeights.semiBold
     },
     sourceTypeBadges: {
       flexDirection: 'row',
-      gap: 6,
+      gap: 6
     },
     sourceTypeBadge: {
       backgroundColor: c.primaryContainer,
       borderRadius: radii.full,
       paddingHorizontal: 8,
-      paddingVertical: 2,
+      paddingVertical: 2
     },
     sourceTypeBadgeText: {
       fontSize: fontSizes.sm,
       color: c.onPrimaryContainer,
-      fontWeight: fontWeights.semiBold,
+      fontWeight: fontWeights.semiBold
     },
     responseCard: {
       padding: spacing[2],
-      marginBottom: spacing[2],
+      marginBottom: spacing[2]
     },
     responseSummary: {
       fontSize: fontSizes.xl,
       color: c.textPrimary,
       lineHeight: 24,
-      marginBottom: spacing[1.5],
+      marginBottom: spacing[1.5]
     },
     divider: {
-      marginBottom: spacing[1.5],
+      marginBottom: spacing[1.5]
     },
     bulletHeading: {
       fontSize: fontSizes.md,
@@ -424,13 +394,13 @@ function makeStyles(c: ColorTokens) {
       color: c.textTertiary,
       marginBottom: spacing[1],
       textTransform: 'uppercase',
-      letterSpacing: 0.5,
+      letterSpacing: 0.5
     },
     bulletRow: {
       flexDirection: 'row',
       alignItems: 'flex-start',
       gap: 8,
-      marginBottom: 8,
+      marginBottom: 8
     },
     bulletDot: {
       width: 6,
@@ -438,34 +408,34 @@ function makeStyles(c: ColorTokens) {
       borderRadius: 3,
       backgroundColor: c.primary,
       marginTop: 7,
-      flexShrink: 0,
+      flexShrink: 0
     },
     bulletText: {
       flex: 1,
       fontSize: fontSizes.lg,
       color: c.textSecondary,
-      lineHeight: 22,
+      lineHeight: 22
     },
     sourcesButton: {
-      marginBottom: spacing[3],
+      marginBottom: spacing[3]
     },
     // Follow-up chips — horizontal wrap (AC-FR-E16-02-04)
     followUpSection: {
-      marginBottom: spacing[2],
+      marginBottom: spacing[2]
     },
     followUpLabel: {
       fontSize: fontSizes.md,
       fontWeight: fontWeights.semiBold,
       color: c.textTertiary,
-      marginBottom: spacing[1],
+      marginBottom: spacing[1]
     },
     followUpGrid: {
       flexDirection: 'row',
       flexWrap: 'wrap',
-      gap: spacing[1],
+      gap: spacing[1]
     },
     followUpChip: {
-      backgroundColor: c.surfaceVariant,
-    },
+      backgroundColor: c.surfaceVariant
+    }
   });
 }

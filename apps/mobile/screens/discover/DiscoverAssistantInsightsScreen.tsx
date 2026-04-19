@@ -2,12 +2,16 @@
 // AC-FR-E16-04-02: sentiment analysis bars from comments/journals
 // AC-FR-E16-04-03: repeated behaviour patterns — pill list
 // AC-FR-E16-04-04: personalised next-step recommendation list
-
 import { useNavigation } from '@react-navigation/native';
 import React, { useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { PActivityIndicator, PButton, PCard, PDivider, PText } from '../../components';
+import { OfflineNotice } from '../../components/OfflineNotice';
+import { ScreenLayout } from '../../components/ScreenLayout';
+import { ScreenState, resolveScreenState } from '../../components/ScreenState';
+import { SkeletonBlock } from '../../components/SkeletonBlock';
+import { StateMessage } from '../../components/StateMessage';
 import {
   getAchievements,
   getComments,
@@ -15,14 +19,9 @@ import {
   getDiscoverAssistantInsightPatterns,
   getJourneys,
   getPrimaryUser,
-  getWorkshops,
+  getWorkshops
 } from '../../data/mockSelectors';
 import { ColorTokens, fontSizes, fontWeights, radii, spacing, useAppTheme } from '../../theme';
-import { OfflineNotice } from '../components/OfflineNotice';
-import { ScreenLayout } from '../components/ScreenLayout';
-import { ScreenState, resolveScreenState } from '../components/ScreenState';
-import { SkeletonBlock } from '../components/SkeletonBlock';
-import { StateMessage } from '../components/StateMessage';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -73,7 +72,7 @@ function buildInsights(userId?: string): Insight[] {
       icon: '📈',
       title: 'Ilerleme Hizin Artiyor',
       body: `Son 7 gunde ${completed > 0 ? completed : 3} icerik tamamlandi — bu haftalik ortalamanin uzerinde.`,
-      tone: 'positive',
+      tone: 'positive'
     },
     {
       id: 'ins-2',
@@ -83,7 +82,7 @@ function buildInsights(userId?: string): Insight[] {
         inProgress > 0
           ? `Su an ${inProgress} icerik uzerinde aktif calisiyorsun. Surekillik en guclu degisim motorudur.`
           : 'Henuz aktif icerik yok. Duruma uygun bir yolculuk baslatmani oneririz.',
-      tone: inProgress > 0 ? 'neutral' : 'action',
+      tone: inProgress > 0 ? 'neutral' : 'action'
     },
     {
       id: 'ins-3',
@@ -93,8 +92,8 @@ function buildInsights(userId?: string): Insight[] {
         achievements.length > 0
           ? `${achievements.length} rozet kazandin. Yolculuk tamamlamalari rozet sayini arttirir.`
           : 'Henuz rozet kazanilmadi. Ilk yolculugunu tamamladiginda ilk rozetini alacaksin.',
-      tone: achievements.length > 0 ? 'positive' : 'action',
-    },
+      tone: achievements.length > 0 ? 'positive' : 'action'
+    }
   ];
 }
 
@@ -105,12 +104,10 @@ function buildSentiment(userId?: string): SentimentResult {
       positive: 58,
       neutral: 32,
       developing: 10,
-      summary:
-        'Gunluk girislerindeki ton genel olarak olumlu. Oz-farkindalik gozlemlenebilir duzyde artti.',
+      summary: 'Gunluk girislerindeki ton genel olarak olumlu. Oz-farkindalik gozlemlenebilir duzyde artti.'
     };
   }
-  const avgWords =
-    comments.reduce((s: number, c: any) => s + (c.word_count ?? 0), 0) / comments.length;
+  const avgWords = comments.reduce((s: number, c: any) => s + (c.word_count ?? 0), 0) / comments.length;
   const positive = Math.min(90, Math.round(40 + avgWords * 5));
   const neutral = Math.round((100 - positive) * 0.7);
   const developing = 100 - positive - neutral;
@@ -118,7 +115,7 @@ function buildSentiment(userId?: string): SentimentResult {
     positive,
     neutral,
     developing,
-    summary: `${comments.length} gunluk girisi analiz edildi. Ortalama kelime sayisi ${Math.round(avgWords)} — derinlemesine yansitma gozlemleniyor.`,
+    summary: `${comments.length} gunluk girisi analiz edildi. Ortalama kelime sayisi ${Math.round(avgWords)} — derinlemesine yansitma gozlemleniyor.`
   };
 }
 
@@ -138,7 +135,7 @@ function buildRecommendations(): Recommendation[] {
       reason: 'Ilerleme verilerin bu yolculukla yuksek uyum gosteriyor.',
       cta: 'Yolculuga Basla',
       navKey: 'Content',
-      navParams: { screen: 'ContentJourneyDetail', id: journeys[0].id },
+      navParams: { screen: 'ContentJourneyDetail', id: journeys[0].id }
     });
   }
 
@@ -149,7 +146,7 @@ function buildRecommendations(): Recommendation[] {
       reason: 'Sabah rutini desenin bu atolye icerigiyle ortusuyor.',
       cta: 'Atolyeyi Incele',
       navKey: 'Content',
-      navParams: { screen: 'ContentWorkshopDetail', id: workshops[0].id },
+      navParams: { screen: 'ContentWorkshopDetail', id: workshops[0].id }
     });
   }
 
@@ -159,7 +156,7 @@ function buildRecommendations(): Recommendation[] {
     reason: 'Tamamlama istatistiklerini ve egilimlerini gormek icin raporu incele.',
     cta: 'Raporu Gor',
     navKey: 'Progress',
-    navParams: { screen: 'ProgressWeeklySummary' },
+    navParams: { screen: 'ProgressWeeklySummary' }
   });
 
   return recs;
@@ -178,11 +175,7 @@ const SentimentBar = ({ label, value, color }: { label: string; value: number; c
         <PText style={styles.label}>{label}</PText>
         <PText style={styles.value}>%{value}</PText>
       </View>
-      <View
-        style={styles.track}
-        accessibilityLabel={`${label}: yuzde ${value}`}
-        accessibilityRole="progressbar"
-      >
+      <View style={styles.track} accessibilityLabel={`${label}: yuzde ${value}`} accessibilityRole="progressbar">
         <View style={[styles.fill, { width: `${value}%`, backgroundColor: color }]} />
       </View>
     </View>
@@ -199,9 +192,9 @@ function makeSentimentBarStyles(c: ColorTokens) {
       height: 8,
       borderRadius: radii.full,
       backgroundColor: c.outlineVariant,
-      overflow: 'hidden',
+      overflow: 'hidden'
     },
-    fill: { height: '100%', borderRadius: radii.full },
+    fill: { height: '100%', borderRadius: radii.full }
   });
 }
 
@@ -222,12 +215,12 @@ const DiscoverAssistantInsightsContent = ({ isOffline }: { isOffline?: boolean }
   const toneColors: Record<Insight['tone'], string> = {
     positive: c.tertiaryContainer,
     neutral: c.primaryContainer,
-    action: c.secondaryContainer,
+    action: c.secondaryContainer
   };
   const toneOnColors: Record<Insight['tone'], string> = {
     positive: c.onTertiaryContainer,
     neutral: c.onPrimaryContainer,
-    action: c.onSecondaryContainer,
+    action: c.onSecondaryContainer
   };
 
   return (
@@ -255,12 +248,8 @@ const DiscoverAssistantInsightsContent = ({ isOffline }: { isOffline?: boolean }
               {ins.icon}
             </PText>
             <View style={styles.insightBody}>
-              <PText style={[styles.insightTitle, { color: toneOnColors[ins.tone] }]}>
-                {ins.title}
-              </PText>
-              <PText style={[styles.insightText, { color: toneOnColors[ins.tone] }]}>
-                {ins.body}
-              </PText>
+              <PText style={[styles.insightTitle, { color: toneOnColors[ins.tone] }]}>{ins.title}</PText>
+              <PText style={[styles.insightText, { color: toneOnColors[ins.tone] }]}>{ins.body}</PText>
             </View>
           </View>
         </View>
@@ -346,11 +335,7 @@ const DiscoverAssistantInsightsContent = ({ isOffline }: { isOffline?: boolean }
 // ---------------------------------------------------------------------------
 // Screen shell — all states
 // ---------------------------------------------------------------------------
-export const DiscoverAssistantInsightsScreen = ({
-  route,
-}: {
-  route?: { params?: { state?: ScreenState } };
-}) => {
+export const DiscoverAssistantInsightsScreen = ({ route }: { route?: { params?: { state?: ScreenState } } }) => {
   const state = resolveScreenState(route);
   const navigation = useNavigation<any>();
 
@@ -422,11 +407,11 @@ function makeStyles(c: ColorTokens) {
       fontSize: fontSizes['5xl'],
       fontWeight: fontWeights.bold,
       color: c.textPrimary,
-      marginBottom: 4,
+      marginBottom: 4
     },
     pageSubtitle: {
       fontSize: fontSizes.xl,
-      color: c.textSecondary,
+      color: c.textSecondary
     },
     sectionLabel: {
       fontSize: fontSizes.md,
@@ -434,48 +419,48 @@ function makeStyles(c: ColorTokens) {
       color: c.textTertiary,
       textTransform: 'uppercase',
       letterSpacing: 0.5,
-      marginBottom: spacing[1.5],
+      marginBottom: spacing[1.5]
     },
     sectionDivider: { marginVertical: spacing[2] },
     insightCard: {
       borderRadius: radii.xl,
       padding: spacing[2],
-      marginBottom: spacing[1.5],
+      marginBottom: spacing[1.5]
     },
     insightRow: {
       flexDirection: 'row',
       gap: spacing[1.5],
-      alignItems: 'flex-start',
+      alignItems: 'flex-start'
     },
     insightIcon: {
       fontSize: fontSizes['4xl'],
       lineHeight: 28,
-      marginTop: 2,
+      marginTop: 2
     },
     insightBody: { flex: 1 },
     insightTitle: {
       fontSize: fontSizes.xl,
       fontWeight: fontWeights.bold,
-      marginBottom: 4,
+      marginBottom: 4
     },
     insightText: {
       fontSize: fontSizes.lg,
-      lineHeight: 22,
+      lineHeight: 22
     },
     card: {
       padding: spacing[2],
-      marginBottom: spacing[2.5],
+      marginBottom: spacing[2.5]
     },
     cardTitle: {
       fontSize: fontSizes['3xl'],
       fontWeight: fontWeights.bold,
       color: c.textPrimary,
-      marginBottom: 6,
+      marginBottom: 6
     },
     cardSubtitle: {
       fontSize: fontSizes.lg,
       color: c.textSecondary,
-      marginBottom: spacing[1],
+      marginBottom: spacing[1]
     },
     divider: { marginBottom: spacing[1.5] },
     patternsGrid: { gap: spacing[1] },
@@ -487,46 +472,46 @@ function makeStyles(c: ColorTokens) {
       paddingHorizontal: spacing[1.5],
       paddingVertical: 10,
       gap: spacing[1],
-      minHeight: 44,
+      minHeight: 44
     },
     patternIcon: { fontSize: fontSizes.xl },
     patternLabel: {
       flex: 1,
       fontSize: fontSizes.lg,
       color: c.textPrimary,
-      fontWeight: fontWeights.medium,
+      fontWeight: fontWeights.medium
     },
     patternCountBadge: {
       backgroundColor: c.primaryContainer,
       borderRadius: radii.full,
       paddingHorizontal: 8,
-      paddingVertical: 2,
+      paddingVertical: 2
     },
     patternCount: {
       fontSize: fontSizes.sm,
       fontWeight: fontWeights.bold,
-      color: c.onPrimaryContainer,
+      color: c.onPrimaryContainer
     },
     recRow: {
       flexDirection: 'row',
       alignItems: 'center',
       paddingVertical: spacing[1.5],
       gap: spacing[1.5],
-      minHeight: 56,
+      minHeight: 56
     },
     recInfo: { flex: 1 },
     recTitle: {
       fontSize: fontSizes.lg,
       fontWeight: fontWeights.semiBold,
       color: c.textPrimary,
-      marginBottom: 2,
+      marginBottom: 2
     },
     recReason: {
       fontSize: fontSizes.md,
       color: c.textSecondary,
-      lineHeight: 18,
+      lineHeight: 18
     },
     // Enough clearance for bottom tab bar
-    bottomSpacer: { height: spacing[4] },
+    bottomSpacer: { height: spacing[4] }
   });
 }

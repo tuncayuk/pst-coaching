@@ -3,6 +3,11 @@ import React, { useMemo, useRef, useState } from 'react';
 import { StyleSheet, TextInput, View } from 'react-native';
 
 import { PButton, PText } from '../../components';
+import { PremiumReaderLayout } from '../../components/PremiumReaderLayout';
+import { ScreenLayout } from '../../components/ScreenLayout';
+import { ScreenState, resolveScreenState } from '../../components/ScreenState';
+import { SkeletonBlock } from '../../components/SkeletonBlock';
+import { StateMessage } from '../../components/StateMessage';
 import {
   READER_AUDIO_SPEEDS,
   READER_FONT_ORDER,
@@ -18,11 +23,6 @@ import {
   getReadingParagraphs
 } from '../../data/mockSelectors';
 import { ColorTokens, fontSizes, fontWeights, radii, spacing, useAppTheme } from '../../theme';
-import { PremiumReaderLayout } from '../components/PremiumReaderLayout';
-import { ScreenLayout } from '../components/ScreenLayout';
-import { ScreenState, resolveScreenState } from '../components/ScreenState';
-import { SkeletonBlock } from '../components/SkeletonBlock';
-import { StateMessage } from '../components/StateMessage';
 
 // ─────────────────────────────────────────────
 // Types & constants
@@ -75,9 +75,7 @@ const EbookAudioBar = ({
           </PButton>
         ))}
       </View>
-      {isPlaying && (
-        <PText style={[abStyles.hint, { color: '#6B46C1' }]}>Arka planda devam eder</PText>
-      )}
+      {isPlaying && <PText style={[abStyles.hint, { color: '#6B46C1' }]}>Arka planda devam eder</PText>}
     </View>
   );
 };
@@ -159,9 +157,7 @@ const ContentEbookReaderContent = ({
     ? `Bölüm ${current.order_index ?? safeIndex + 1}: ${current.title}`
     : `Bölüm ${safeIndex + 1}`;
 
-  const hlBg = highlightColor
-    ? READER_HIGHLIGHT_COLORS.find(h => h.key === highlightColor)?.color
-    : undefined;
+  const hlBg = highlightColor ? READER_HIGHLIGHT_COLORS.find(h => h.key === highlightColor)?.color : undefined;
 
   return (
     <PremiumReaderLayout
@@ -172,8 +168,20 @@ const ContentEbookReaderContent = ({
       accentColor="#1D4ED8"
       canGoPrev={!!prev}
       canGoNext={!!next}
-      onPrev={() => prev && navigation.navigate('Content', { screen: 'ContentEbookReader', params: { id: ebookId ?? '', chapterId: prev.id } })}
-      onNext={() => next && navigation.navigate('Content', { screen: 'ContentEbookReader', params: { id: ebookId ?? '', chapterId: next.id } })}
+      onPrev={() =>
+        prev &&
+        navigation.navigate('Content', {
+          screen: 'ContentEbookReader',
+          params: { id: ebookId ?? '', chapterId: prev.id }
+        })
+      }
+      onNext={() =>
+        next &&
+        navigation.navigate('Content', {
+          screen: 'ContentEbookReader',
+          params: { id: ebookId ?? '', chapterId: next.id }
+        })
+      }
       isBookmarked={bookmarked}
       onBookmark={() => setBookmarked(v => !v)}
       onHighlight={() => setShowHighlightPicker(v => !v)}
@@ -201,9 +209,7 @@ const ContentEbookReaderContent = ({
           </PText>
         )}
         {highlightCount > 0 && (
-          <PText style={[styles.highlightCount, { color: c.textTertiary }]}>
-            {highlightCount} vurgu
-          </PText>
+          <PText style={[styles.highlightCount, { color: c.textTertiary }]}>{highlightCount} vurgu</PText>
         )}
       </View>
 
@@ -219,7 +225,10 @@ const ContentEbookReaderContent = ({
               buttonColor={h.color}
               textColor="#111"
               style={[styles.swatchBtn, { borderColor: h.color }]}
-              onPress={() => { setHighlightColor(h.key); setShowHighlightPicker(false); }}
+              onPress={() => {
+                setHighlightColor(h.key);
+                setShowHighlightPicker(false);
+              }}
             >
               {h.label}
             </PButton>
@@ -229,16 +238,8 @@ const ContentEbookReaderContent = ({
 
       {/* ── Reading paragraphs ── */}
       {READING_PARAGRAPHS.map((para, i) => (
-        <View
-          key={i}
-          style={[
-            styles.paraWrap,
-            hlBg ? { backgroundColor: hlBg, borderRadius: radii.sm } : undefined
-          ]}
-        >
-          <PText style={[styles.para, { fontSize, lineHeight: fontSize * 1.75, color: c.textPrimary }]}>
-            {para}
-          </PText>
+        <View key={i} style={[styles.paraWrap, hlBg ? { backgroundColor: hlBg, borderRadius: radii.sm } : undefined]}>
+          <PText style={[styles.para, { fontSize, lineHeight: fontSize * 1.75, color: c.textPrimary }]}>{para}</PText>
         </View>
       ))}
 
@@ -278,7 +279,9 @@ const ContentEbookReaderContent = ({
           mode="text"
           compact
           icon="marker"
-          onPress={() => navigation.navigate('Content', { screen: 'ContentEbookHighlights', params: { id: ebookId ?? '' } })}
+          onPress={() =>
+            navigation.navigate('Content', { screen: 'ContentEbookHighlights', params: { id: ebookId ?? '' } })
+          }
         >
           Vurgularım
         </PButton>
@@ -286,7 +289,9 @@ const ContentEbookReaderContent = ({
           mode="text"
           compact
           icon="cog-outline"
-          onPress={() => navigation.navigate('Content', { screen: 'ContentEbookSettings', params: { id: ebookId ?? '' } })}
+          onPress={() =>
+            navigation.navigate('Content', { screen: 'ContentEbookSettings', params: { id: ebookId ?? '' } })
+          }
         >
           Ayarlar
         </PButton>
@@ -299,11 +304,7 @@ const ContentEbookReaderContent = ({
 // Screen
 // ─────────────────────────────────────────────
 
-export const ContentEbookReaderScreen = ({
-  route
-}: {
-  route?: { params?: RouteParams };
-}) => {
+export const ContentEbookReaderScreen = ({ route }: { route?: { params?: RouteParams } }) => {
   const state = resolveScreenState(route);
   const ebookId = route?.params?.id;
   const chapterId = route?.params?.chapterId;
@@ -343,13 +344,7 @@ export const ContentEbookReaderScreen = ({
     );
   }
 
-  return (
-    <ContentEbookReaderContent
-      ebookId={ebookId}
-      chapterId={chapterId}
-      isOffline={state === 'offline'}
-    />
-  );
+  return <ContentEbookReaderContent ebookId={ebookId} chapterId={chapterId} isOffline={state === 'offline'} />;
 };
 
 // ─────────────────────────────────────────────

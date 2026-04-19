@@ -2,14 +2,14 @@ import React, { useMemo, useState } from 'react';
 import { Modal, StyleSheet, TextInput, View } from 'react-native';
 
 import { PActivityIndicator, PButton, PChip, PDivider, PText } from '../../components';
+import { OfflineNotice } from '../../components/OfflineNotice';
+import { ScreenLayout } from '../../components/ScreenLayout';
+import { ScreenState, resolveScreenState } from '../../components/ScreenState';
+import { SectionCard } from '../../components/SectionCard';
+import { SkeletonBlock } from '../../components/SkeletonBlock';
+import { StateMessage } from '../../components/StateMessage';
 import { getWorkshopById, getWorkshops } from '../../data/mockSelectors';
 import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
-import { OfflineNotice } from '../components/OfflineNotice';
-import { ScreenLayout } from '../components/ScreenLayout';
-import { ScreenState, resolveScreenState } from '../components/ScreenState';
-import { SectionCard } from '../components/SectionCard';
-import { SkeletonBlock } from '../components/SkeletonBlock';
-import { StateMessage } from '../components/StateMessage';
 
 type RouteParams = { state?: ScreenState; id?: string };
 
@@ -25,7 +25,8 @@ const WORKSHEETS: WorksheetEntry[] = [
   {
     id: 'my-foundations',
     title: 'Benim Dayanaklarim Haritasi',
-    description: 'Hayatinda gercekten dayandiklarin neler? Hangi kaynaklara guveniyorsun? (Mutlak.docx — Asama 1 Giris)',
+    description:
+      'Hayatinda gercekten dayandiklarin neler? Hangi kaynaklara guveniyorsun? (Mutlak.docx — Asama 1 Giris)',
     fields: [
       {
         key: 'foundations_material',
@@ -41,8 +42,8 @@ const WORKSHEETS: WorksheetEntry[] = [
       },
       {
         key: 'foundations_divine',
-        label: 'Allah\'a dayandigi anlarin',
-        placeholder: 'Ne zaman gercekten O\'na yoneldim?',
+        label: "Allah'a dayandigi anlarin",
+        placeholder: "Ne zaman gercekten O'na yoneldim?",
         multiline: true
       }
     ]
@@ -50,7 +51,8 @@ const WORKSHEETS: WorksheetEntry[] = [
   {
     id: 'control-illusion',
     title: 'Kontrol Illuzyonum Tablosu',
-    description: 'Kontrolunde oldugunu sandim ama aslinda olmayan alanlari goz onune ser. (Mutlak.docx — Asama 8/Kamp 1. Gun)',
+    description:
+      'Kontrolunde oldugunu sandim ama aslinda olmayan alanlari goz onune ser. (Mutlak.docx — Asama 8/Kamp 1. Gun)',
     fields: [
       {
         key: 'illusion_area',
@@ -131,7 +133,7 @@ const WORKSHEETS: WorksheetEntry[] = [
   {
     id: 'prayer-journal',
     title: 'Dua Gunlugu',
-    description: 'Gunluk dua pratigi icin kayit alani. Her gun doldur. (Mutlak.docx — Mu\'min 60: Dua = ibadet)',
+    description: "Gunluk dua pratigi icin kayit alani. Her gun doldur. (Mutlak.docx — Mu'min 60: Dua = ibadet)",
     fields: [
       {
         key: 'esma',
@@ -156,7 +158,8 @@ const WORKSHEETS: WorksheetEntry[] = [
   {
     id: 'crisis-prayer',
     title: 'Kriz Ani Dua Karti',
-    description: 'Bir kriz aninda hemen devreye giren hatirlatma karti. Onceden doldur, ihtiyacinda ac. (Mutlak.docx — Asama 10)',
+    description:
+      'Bir kriz aninda hemen devreye giren hatirlatma karti. Onceden doldur, ihtiyacinda ac. (Mutlak.docx — Asama 10)',
     fields: [
       {
         key: 'crisis_trigger',
@@ -223,7 +226,7 @@ const WORKSHEETS: WorksheetEntry[] = [
       {
         key: 'daily_sentence',
         label: '21 gun boyunca tekrar edecegim cumle',
-        placeholder: 'Rabbim, ben muhtacim; sen Gani\'sin...',
+        placeholder: "Rabbim, ben muhtacim; sen Gani'sin...",
         multiline: false
       }
     ]

@@ -1,8 +1,8 @@
 import React, { useMemo } from 'react';
 import { StyleSheet } from 'react-native';
 
-import { PSurface, PText } from '../../components';
-import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
+import { PSurface, PText } from '.';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../theme';
 
 export const OfflineNotice = () => {
   const { colors: c } = useAppTheme();

@@ -2,23 +2,16 @@ import { useNavigation } from '@react-navigation/native';
 import React, { useMemo, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import {
-  InlineWarningBanner,
-  PActivityIndicator,
-  PButton,
-  PChip,
-  PDivider,
-  PText
-} from '../../components';
+import { InlineWarningBanner, PActivityIndicator, PButton, PChip, PDivider, PText } from '../../components';
+import { OfflineNotice } from '../../components/OfflineNotice';
+import { ScreenLayout } from '../../components/ScreenLayout';
+import { ScreenState, resolveScreenState } from '../../components/ScreenState';
+import { SectionCard } from '../../components/SectionCard';
+import { SkeletonBlock } from '../../components/SkeletonBlock';
+import { StateMessage } from '../../components/StateMessage';
 import { LOW_STORAGE_WARNING_MB } from '../../data/constants/mockData';
 import { getDownloadsForUser, getEbookById, getPrimaryUser, getWorkshopById } from '../../data/mockSelectors';
 import { ColorTokens, fontSizes, fontWeights, spacing, useAppTheme } from '../../theme';
-import { OfflineNotice } from '../components/OfflineNotice';
-import { ScreenLayout } from '../components/ScreenLayout';
-import { ScreenState, resolveScreenState } from '../components/ScreenState';
-import { SectionCard } from '../components/SectionCard';
-import { SkeletonBlock } from '../components/SkeletonBlock';
-import { StateMessage } from '../components/StateMessage';
 
 const TOTAL_STORAGE_MB = 512;
 
@@ -49,7 +42,10 @@ const LibraryDownloadsContent = ({ isOffline }: { isOffline?: boolean }) => {
 
   const handleSync = () => {
     setSyncing(true);
-    setTimeout(() => { setSyncing(false); setSyncDone(true); }, 1500);
+    setTimeout(() => {
+      setSyncing(false);
+      setSyncDone(true);
+    }, 1500);
   };
 
   const handleDelete = (id: string) => {
@@ -67,8 +63,12 @@ const LibraryDownloadsContent = ({ isOffline }: { isOffline?: boolean }) => {
       {/* AC-FR-E9-06-03: Storage summary + warning */}
       <SectionCard title="Depolama Durumu">
         <View style={styles.storageRow}>
-          <PText variant="labelMedium" style={styles.storageLabel}>Kullanilanlar</PText>
-          <PText variant="bodySmall">{usedMb.toFixed(1)} MB / {TOTAL_STORAGE_MB} MB</PText>
+          <PText variant="labelMedium" style={styles.storageLabel}>
+            Kullanilanlar
+          </PText>
+          <PText variant="bodySmall">
+            {usedMb.toFixed(1)} MB / {TOTAL_STORAGE_MB} MB
+          </PText>
         </View>
         {showStorageWarning && (
           <InlineWarningBanner
@@ -114,14 +114,11 @@ const LibraryDownloadsContent = ({ isOffline }: { isOffline?: boolean }) => {
                   <View style={styles.downloadInfo}>
                     <PText style={styles.downloadTitle}>{title}</PText>
                     <View style={styles.downloadMeta}>
-                      <PChip compact>
-                        {item.contentType === 'ebook' ? 'e-Kitap' : 'Atolye'}
-                      </PChip>
-                      <PText variant="labelSmall" style={styles.sizeText}>{item.sizeMb} MB</PText>
-                      <PChip
-                        compact
-                        style={isDone ? styles.doneChip : styles.pendingChip}
-                      >
+                      <PChip compact>{item.contentType === 'ebook' ? 'e-Kitap' : 'Atolye'}</PChip>
+                      <PText variant="labelSmall" style={styles.sizeText}>
+                        {item.sizeMb} MB
+                      </PText>
+                      <PChip compact style={isDone ? styles.doneChip : styles.pendingChip}>
                         {isDone ? 'Tamamlandi' : 'Bekliyor'}
                       </PChip>
                     </View>
@@ -133,9 +130,15 @@ const LibraryDownloadsContent = ({ isOffline }: { isOffline?: boolean }) => {
                       disabled={isOffline && !isDone}
                       onPress={() => {
                         if (item.contentType === 'ebook') {
-                          navigation.navigate('Content', { screen: 'ContentEbookDetail', params: { id: item.contentId } });
+                          navigation.navigate('Content', {
+                            screen: 'ContentEbookDetail',
+                            params: { id: item.contentId }
+                          });
                         } else {
-                          navigation.navigate('Content', { screen: 'ContentWorkshopDetail', params: { id: item.contentId } });
+                          navigation.navigate('Content', {
+                            screen: 'ContentWorkshopDetail',
+                            params: { id: item.contentId }
+                          });
                         }
                       }}
                       accessibilityLabel={`Ac: ${title}`}

@@ -1,8 +1,8 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 
+import { ScreenState } from '../components/ScreenState';
 import { AuthSplashScreen } from '../screens/auth/AuthSplashScreen';
-import { ScreenState } from '../screens/components/ScreenState';
 import { OnboardingCarouselScreen } from '../screens/onboarding/OnboardingCarouselScreen';
 import { OnboardingLanguageSelectScreen } from '../screens/onboarding/OnboardingLanguageSelectScreen';
 import { OnboardingWelcomeScreen } from '../screens/onboarding/OnboardingWelcomeScreen';

@@ -3,6 +3,11 @@ import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { StyleSheet, TextInput, View } from 'react-native';
 
 import { PButton, PCard, PText } from '../../components';
+import { PremiumReaderLayout } from '../../components/PremiumReaderLayout';
+import { ScreenLayout } from '../../components/ScreenLayout';
+import { ScreenState, resolveScreenState } from '../../components/ScreenState';
+import { SkeletonBlock } from '../../components/SkeletonBlock';
+import { StateMessage } from '../../components/StateMessage';
 import {
   READER_AUDIO_SPEEDS,
   READER_FONT_ORDER,
@@ -11,11 +16,6 @@ import {
   type ReaderFontKey
 } from '../../data/constants/reader';
 import { ColorTokens, fontSizes, fontWeights, radii, spacing, useAppTheme } from '../../theme';
-import { PremiumReaderLayout } from '../components/PremiumReaderLayout';
-import { ScreenLayout } from '../components/ScreenLayout';
-import { ScreenState, resolveScreenState } from '../components/ScreenState';
-import { SkeletonBlock } from '../components/SkeletonBlock';
-import { StateMessage } from '../components/StateMessage';
 
 // ─────────────────────────────────────────────
 // Types & constants
@@ -68,9 +68,7 @@ const AudioBar = ({
           </PButton>
         ))}
       </View>
-      {isPlaying && (
-        <PText style={[audioStyles.hint, { color: '#6B46C1' }]}>Arka planda devam eder</PText>
-      )}
+      {isPlaying && <PText style={[audioStyles.hint, { color: '#6B46C1' }]}>Arka planda devam eder</PText>}
     </View>
   );
 };
@@ -130,9 +128,7 @@ const ContentReadingContent = ({ isOffline, id }: { isOffline?: boolean; id?: st
   // Scroll progress
   const [scrollProgress, setScrollProgress] = useState(0);
 
-  const hlBg = highlightColor
-    ? READER_HIGHLIGHT_COLORS.find(h => h.key === highlightColor)?.color
-    : undefined;
+  const hlBg = highlightColor ? READER_HIGHLIGHT_COLORS.find(h => h.key === highlightColor)?.color : undefined;
 
   return (
     <PremiumReaderLayout
@@ -185,7 +181,10 @@ const ContentReadingContent = ({ isOffline, id }: { isOffline?: boolean; id?: st
               key={h.key}
               mode={highlightColor === h.key ? 'contained' : 'outlined'}
               compact
-              onPress={() => { setHighlightColor(h.key); setShowHighlightPicker(false); }}
+              onPress={() => {
+                setHighlightColor(h.key);
+                setShowHighlightPicker(false);
+              }}
               style={[styles.swatchBtn, { borderColor: h.color }]}
               buttonColor={h.color}
               textColor={highlightColor === h.key ? '#111' : c.textSecondary}
@@ -197,16 +196,13 @@ const ContentReadingContent = ({ isOffline, id }: { isOffline?: boolean; id?: st
       )}
 
       {/* ── Body text ── */}
-      <PText style={[styles.bodyTitle, { fontSize: fontSize + 7, color: c.textBrand }]}>
-        Otomatik Düşünceler
-      </PText>
+      <PText style={[styles.bodyTitle, { fontSize: fontSize + 7, color: c.textBrand }]}>Otomatik Düşünceler</PText>
 
       <View style={hlBg ? [styles.highlightBlock, { backgroundColor: hlBg }] : undefined}>
         <PText style={[styles.para, { fontSize, lineHeight: fontSize * 1.75, color: c.textPrimary }]}>
           Zihnimiz her gün binlerce düşünce üretir. Bunların çoğu otomatiktir ve farkında bile olmadığımız hızda akar
-          gider. Bu{' '}
-          <PText style={[styles.paraHighlight, { fontSize }]}>otomatik düşünceler</PText>, yaşadığımız deneyimleri
-          yorumlamamızı sağlar.
+          gider. Bu <PText style={[styles.paraHighlight, { fontSize }]}>otomatik düşünceler</PText>, yaşadığımız
+          deneyimleri yorumlamamızı sağlar.
         </PText>
         <PText style={[styles.para, { fontSize, lineHeight: fontSize * 1.75, color: c.textPrimary }]}>
           Ancak bu düşüncelerin hepsi gerçeği yansıtmaz. Bazen geçmiş deneyimlerimize, korkularımıza ya da çevremizden
@@ -217,7 +213,9 @@ const ContentReadingContent = ({ isOffline, id }: { isOffline?: boolean; id?: st
       <PCard style={styles.callout}>
         <PText style={styles.calloutTitle}>Örnek Otomatik Düşünceler</PText>
         {['Başaramayacağım.', 'Herkes beni yargılıyor.', 'Ben yeterince iyi değilim.'].map(t => (
-          <PText key={t} style={[styles.calloutItem, { fontSize }]}>· {t}</PText>
+          <PText key={t} style={[styles.calloutItem, { fontSize }]}>
+            · {t}
+          </PText>
         ))}
       </PCard>
 

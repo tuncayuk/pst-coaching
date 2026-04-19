@@ -1,7 +1,7 @@
 import { NativeStackNavigationOptions, createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 
-import { ScreenState } from '../screens/components/ScreenState';
+import { ScreenState } from '../components/ScreenState';
 import { ProfileAccessibilityScreen } from '../screens/profile/ProfileAccessibilityScreen';
 import { ProfileAccountScreen } from '../screens/profile/ProfileAccountScreen';
 import { ProfileAddonsScreen } from '../screens/profile/ProfileAddonsScreen';

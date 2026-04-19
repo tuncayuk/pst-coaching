@@ -3,6 +3,11 @@ import React, { useMemo } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 
 import { PActivityIndicator, PButton, PCard, PText } from '../../components';
+import { OfflineNotice } from '../../components/OfflineNotice';
+import { ScreenLayout } from '../../components/ScreenLayout';
+import { ScreenState, resolveScreenState } from '../../components/ScreenState';
+import { SkeletonBlock } from '../../components/SkeletonBlock';
+import { StateMessage } from '../../components/StateMessage';
 import {
   getDiscoverModuleCardColors,
   getDiscoverModuleCardEmojis,
@@ -10,14 +15,9 @@ import {
   getDiscoverModuleTopicOptions,
   getDiscoverModuleTopics,
   getModules,
-  getPackagesForModule,
+  getPackagesForModule
 } from '../../data/mockSelectors';
 import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
-import { OfflineNotice } from '../components/OfflineNotice';
-import { ScreenLayout } from '../components/ScreenLayout';
-import { ScreenState, resolveScreenState } from '../components/ScreenState';
-import { SkeletonBlock } from '../components/SkeletonBlock';
-import { StateMessage } from '../components/StateMessage';
 
 const DiscoverModulesContent = ({ isOffline }: { isOffline?: boolean }) => {
   const { colors: c } = useAppTheme();
@@ -33,8 +33,7 @@ const DiscoverModulesContent = ({ isOffline }: { isOffline?: boolean }) => {
   const [selectedSort, setSelectedSort] = React.useState(sortOptions[0] ?? 'Tumu');
   const [selectedTopic, setSelectedTopic] = React.useState(topicOptions[0]?.key ?? 'tumu');
 
-  const moduleTopic = (index: number) =>
-    topics.length > 0 ? topics[index % topics.length] : 'gelisim';
+  const moduleTopic = (index: number) => (topics.length > 0 ? topics[index % topics.length] : 'gelisim');
 
   const filtered = modules.filter((_m, i) => (selectedTopic === 'tumu' ? true : moduleTopic(i) === selectedTopic));
 
@@ -98,8 +97,7 @@ const DiscoverModulesContent = ({ isOffline }: { isOffline?: boolean }) => {
           const origIndex = modules.findIndex(m => m.id === item.id);
           const packages = getPackagesForModule(item.id);
           const pkgCount = packages.length || 3 + (origIndex % 2);
-          const color =
-            cardColors.length > 0 ? cardColors[origIndex % cardColors.length] : c.surfaceVariant;
+          const color = cardColors.length > 0 ? cardColors[origIndex % cardColors.length] : c.surfaceVariant;
           const emoji = cardEmojis.length > 0 ? cardEmojis[origIndex % cardEmojis.length] : '📦';
           const previewPkgs = packages.slice(0, 2);
 

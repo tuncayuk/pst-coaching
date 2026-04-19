@@ -3,6 +3,12 @@ import React, { useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { PActivityIndicator, PAvatar, PDivider, PProgressBar, PText } from '../../components';
+import { OfflineNotice } from '../../components/OfflineNotice';
+import { ScreenLayout } from '../../components/ScreenLayout';
+import { ScreenState, resolveScreenState } from '../../components/ScreenState';
+import { SectionCard } from '../../components/SectionCard';
+import { SkeletonBlock } from '../../components/SkeletonBlock';
+import { StateMessage } from '../../components/StateMessage';
 import {
   getContentProgressForUser,
   getEbookProgressForUser,
@@ -12,12 +18,6 @@ import {
   getWorkshops
 } from '../../data/mockSelectors';
 import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
-import { OfflineNotice } from '../components/OfflineNotice';
-import { ScreenLayout } from '../components/ScreenLayout';
-import { ScreenState, resolveScreenState } from '../components/ScreenState';
-import { SectionCard } from '../components/SectionCard';
-import { SkeletonBlock } from '../components/SkeletonBlock';
-import { StateMessage } from '../components/StateMessage';
 
 type RouteParams = { clientId?: string; state?: ScreenState };
 
@@ -63,8 +63,7 @@ const CoachContentTrackingContent = ({ clientId, isOffline }: { clientId?: strin
     const done = days.filter(p => p.status === 'completed').length;
     const total = Math.max(days.length, 1);
     const pct = total > 0 ? done / total : 0;
-    const lastP = days
-      .sort((a, b) => new Date(b.started_at ?? 0).getTime() - new Date(a.started_at ?? 0).getTime())[0];
+    const lastP = days.sort((a, b) => new Date(b.started_at ?? 0).getTime() - new Date(a.started_at ?? 0).getTime())[0];
     // AC-FR-E12-03-04: time spent estimate
     const estMins = done * EST_MINS_PER_ITEM;
     return {

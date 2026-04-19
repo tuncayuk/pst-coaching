@@ -3,6 +3,11 @@ import React, { useMemo, useRef, useState } from 'react';
 import { StyleSheet, TextInput, View } from 'react-native';
 
 import { PButton, PText } from '../../components';
+import { PremiumReaderLayout } from '../../components/PremiumReaderLayout';
+import { ScreenLayout } from '../../components/ScreenLayout';
+import { ScreenState, resolveScreenState } from '../../components/ScreenState';
+import { SkeletonBlock } from '../../components/SkeletonBlock';
+import { StateMessage } from '../../components/StateMessage';
 import { READER_FONT_ORDER, READER_FONT_SIZES, type ReaderFontKey } from '../../data/constants/reader';
 import {
   getContentItemsForParent,
@@ -11,11 +16,6 @@ import {
   getJourneys
 } from '../../data/mockSelectors';
 import { ColorTokens, fontSizes, fontWeights, radii, spacing, useAppTheme } from '../../theme';
-import { PremiumReaderLayout } from '../components/PremiumReaderLayout';
-import { ScreenLayout } from '../components/ScreenLayout';
-import { ScreenState, resolveScreenState } from '../components/ScreenState';
-import { SkeletonBlock } from '../components/SkeletonBlock';
-import { StateMessage } from '../components/StateMessage';
 
 // ─────────────────────────────────────────────
 // Types & constants
@@ -24,9 +24,9 @@ import { StateMessage } from '../components/StateMessage';
 type RouteParams = { state?: ScreenState; id?: string; day?: string };
 
 const CONTENT_TYPE_CONFIG: Record<string, { emoji: string; label: string; accent: string; bg: string }> = {
-  reading:  { emoji: '📖', label: 'Okuma',    accent: '#1D4ED8', bg: '#DBEAFE' },
+  reading: { emoji: '📖', label: 'Okuma', accent: '#1D4ED8', bg: '#DBEAFE' },
   exercise: { emoji: '✏️', label: 'Alıştırma', accent: '#059669', bg: '#D1FAE5' },
-  comment:  { emoji: '💬', label: 'Paylaşım', accent: '#7C3AED', bg: '#EDE9FE' }
+  comment: { emoji: '💬', label: 'Paylaşım', accent: '#7C3AED', bg: '#EDE9FE' }
 };
 const DEFAULT_TYPE = { emoji: '📄', label: 'İçerik', accent: '#6B7280', bg: '#F3F4F6' };
 
@@ -153,9 +153,7 @@ const ContentJourneyDayContent = ({
       {/* ── Locked state ── */}
       {isLocked ? (
         <View style={[styles.lockedCard, { backgroundColor: '#F5F3FF', borderColor: '#8B5CF6' }]}>
-          <PText style={[styles.lockedTitle, { color: '#5B21B6' }]}>
-            Yeni içerik 08:00'de açılacak
-          </PText>
+          <PText style={[styles.lockedTitle, { color: '#5B21B6' }]}>Yeni içerik 08:00'de açılacak</PText>
           <PText style={[styles.lockedCountdown, { color: '#7C3AED' }]}>
             {countdownH}s {countdownM}d
           </PText>
@@ -291,13 +289,7 @@ export const ContentJourneyDayScreen = ({ route }: { route?: { params?: RoutePar
     );
   }
 
-  return (
-    <ContentJourneyDayContent
-      journeyId={journeyId}
-      dayNumber={dayNumber}
-      isOffline={state === 'offline'}
-    />
-  );
+  return <ContentJourneyDayContent journeyId={journeyId} dayNumber={dayNumber} isOffline={state === 'offline'} />;
 };
 
 // ─────────────────────────────────────────────
@@ -368,7 +360,12 @@ function makeStyles(c: ColorTokens) {
     itemEmoji: { fontSize: fontSizes['3xl'] },
     itemHeaderText: { flex: 1 },
     itemTitle: { fontWeight: fontWeights.bold, marginBottom: 2 },
-    itemType: { fontSize: fontSizes.xs, fontWeight: fontWeights.semiBold, textTransform: 'uppercase', letterSpacing: 0.5 },
+    itemType: {
+      fontSize: fontSizes.xs,
+      fontWeight: fontWeights.semiBold,
+      textTransform: 'uppercase',
+      letterSpacing: 0.5
+    },
     itemIdx: { fontSize: fontSizes.xs },
     itemBody: { marginBottom: spacing[1.5] },
     itemBtn: {},

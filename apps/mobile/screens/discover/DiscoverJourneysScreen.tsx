@@ -3,20 +3,20 @@ import React, { useMemo } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 
 import { PActivityIndicator, PButton, PCard, PIconButton, PText } from '../../components';
+import { OfflineNotice } from '../../components/OfflineNotice';
+import { ScreenLayout } from '../../components/ScreenLayout';
+import { ScreenState, resolveScreenState } from '../../components/ScreenState';
+import { SkeletonBlock } from '../../components/SkeletonBlock';
+import { StateMessage } from '../../components/StateMessage';
 import {
   getDiscoverJourneyCardColors,
   getDiscoverJourneyCardEmojis,
   getDiscoverJourneyLevelOptions,
   getDiscoverJourneySortOptions,
   getJourneys,
-  getPackages,
+  getPackages
 } from '../../data/mockSelectors';
 import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
-import { OfflineNotice } from '../components/OfflineNotice';
-import { ScreenLayout } from '../components/ScreenLayout';
-import { ScreenState, resolveScreenState } from '../components/ScreenState';
-import { SkeletonBlock } from '../components/SkeletonBlock';
-import { StateMessage } from '../components/StateMessage';
 
 const LEVEL_LABELS: Record<string, string> = {
   baslangic: 'Baslangic',
@@ -129,13 +129,12 @@ const DiscoverJourneysContent = ({ isOffline }: { isOffline?: boolean }) => {
           const duration = item.duration_days ?? 40;
           const level = LEVEL_LABELS[item.level] ?? item.level;
           const pkgCount =
-            packages.filter(p => item.featured_modules?.some((mid: string) => p.module_content_item_id === mid)).length ||
-            3 + (origIndex % 2);
+            packages.filter(p => item.featured_modules?.some((mid: string) => p.module_content_item_id === mid))
+              .length || 3 + (origIndex % 2);
           const workshopCount = item.featured_workshops?.length || 2 + (origIndex % 2);
           const ebookCount = item.featured_ebooks?.length || 1;
           const isFav = favorites.has(item.id);
-          const color =
-            cardColors.length > 0 ? cardColors[origIndex % cardColors.length] : c.surfaceVariant;
+          const color = cardColors.length > 0 ? cardColors[origIndex % cardColors.length] : c.surfaceVariant;
           const emoji = cardEmojis.length > 0 ? cardEmojis[origIndex % cardEmojis.length] : '🎯';
 
           return (

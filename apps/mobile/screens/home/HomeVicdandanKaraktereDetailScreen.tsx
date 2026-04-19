@@ -3,18 +3,14 @@ import React, { useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { PActivityIndicator, PButton, PCard, PDivider, PProgressBar, PText } from '../../components';
-import {
-  getContentProgressForUser,
-  getJourneyById,
-  getPrimaryUser
-} from '../../data/mockSelectors';
+import { OfflineNotice } from '../../components/OfflineNotice';
+import { ScreenLayout } from '../../components/ScreenLayout';
+import { ScreenState, resolveScreenState } from '../../components/ScreenState';
+import { SectionCard } from '../../components/SectionCard';
+import { SkeletonBlock } from '../../components/SkeletonBlock';
+import { StateMessage } from '../../components/StateMessage';
+import { getContentProgressForUser, getJourneyById, getPrimaryUser } from '../../data/mockSelectors';
 import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
-import { OfflineNotice } from '../components/OfflineNotice';
-import { ScreenLayout } from '../components/ScreenLayout';
-import { ScreenState, resolveScreenState } from '../components/ScreenState';
-import { SectionCard } from '../components/SectionCard';
-import { SkeletonBlock } from '../components/SkeletonBlock';
-import { StateMessage } from '../components/StateMessage';
 
 const JOURNEY_ID = 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa';
 
@@ -47,7 +43,11 @@ const HomeVicdandanKaraktereContent = ({ isOffline }: { isOffline?: boolean }) =
             accessibilityLabel={`Ilerleme: %${progressPct} tamamlandi`}
           />
           <PCard.Content>
-            <PProgressBar progress={progressPct / 100} style={styles.progress} accessibilityLabel={`Ilerleme: %${progressPct}`} />
+            <PProgressBar
+              progress={progressPct / 100}
+              style={styles.progress}
+              accessibilityLabel={`Ilerleme: %${progressPct}`}
+            />
           </PCard.Content>
           <PCard.Actions>
             <PButton

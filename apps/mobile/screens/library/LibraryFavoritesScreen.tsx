@@ -11,6 +11,17 @@ import {
   PDivider,
   PText
 } from '../../components';
+import { OfflineNotice } from '../../components/OfflineNotice';
+import { ScreenLayout } from '../../components/ScreenLayout';
+import { ScreenState, resolveScreenState } from '../../components/ScreenState';
+import { SectionCard } from '../../components/SectionCard';
+import { SkeletonBlock } from '../../components/SkeletonBlock';
+import { StateMessage } from '../../components/StateMessage';
+import {
+  CONTENT_TYPE_LABELS,
+  LIBRARY_CONTENT_FILTER_ALL,
+  LIBRARY_CONTENT_FILTER_OPTIONS
+} from '../../data/constants/contentTypes';
 import {
   getEbooks,
   getFavoritesForUser,
@@ -19,18 +30,7 @@ import {
   getPrimaryUser,
   getWorkshops
 } from '../../data/mockSelectors';
-import {
-  CONTENT_TYPE_LABELS,
-  LIBRARY_CONTENT_FILTER_ALL,
-  LIBRARY_CONTENT_FILTER_OPTIONS
-} from '../../data/constants/contentTypes';
 import { ColorTokens, fontSizes, radii, spacing, useAppTheme } from '../../theme';
-import { OfflineNotice } from '../components/OfflineNotice';
-import { ScreenLayout } from '../components/ScreenLayout';
-import { ScreenState, resolveScreenState } from '../components/ScreenState';
-import { SectionCard } from '../components/SectionCard';
-import { SkeletonBlock } from '../components/SkeletonBlock';
-import { StateMessage } from '../components/StateMessage';
 
 const LibraryFavoritesContent = ({ isOffline }: { isOffline?: boolean }) => {
   const { colors: c } = useAppTheme();
@@ -66,12 +66,16 @@ const LibraryFavoritesContent = ({ isOffline }: { isOffline?: boolean }) => {
 
   const filtered = enriched.filter(item => {
     const matchesQuery = !query || item.title.toLowerCase().includes(query.toLowerCase());
-    const matchesFilter = activeFilter === LIBRARY_CONTENT_FILTER_ALL || CONTENT_TYPE_LABELS[item.type] === activeFilter;
+    const matchesFilter =
+      activeFilter === LIBRARY_CONTENT_FILTER_ALL || CONTENT_TYPE_LABELS[item.type] === activeFilter;
     return matchesQuery && matchesFilter;
   });
 
   const hasActiveFilters = query || activeFilter !== LIBRARY_CONTENT_FILTER_ALL;
-  const clearFilters = () => { setQuery(''); setActiveFilter(LIBRARY_CONTENT_FILTER_ALL); };
+  const clearFilters = () => {
+    setQuery('');
+    setActiveFilter(LIBRARY_CONTENT_FILTER_ALL);
+  };
 
   return (
     <>

@@ -3,6 +3,11 @@ import React, { useMemo } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 
 import { PActivityIndicator, PButton, PCard, PText } from '../../components';
+import { OfflineNotice } from '../../components/OfflineNotice';
+import { ScreenLayout } from '../../components/ScreenLayout';
+import { ScreenState, resolveScreenState } from '../../components/ScreenState';
+import { SkeletonBlock } from '../../components/SkeletonBlock';
+import { StateMessage } from '../../components/StateMessage';
 import {
   getDiscoverWorkshopDifficultyColors,
   getDiscoverWorkshopDifficultyLabels,
@@ -11,19 +16,13 @@ import {
   getDiscoverWorkshopTypeForegroundColors,
   getDiscoverWorkshopTypeLabels,
   getDiscoverWorkshopTypeOptions,
-  getWorkshops,
+  getWorkshops
 } from '../../data/mockSelectors';
 import { ColorTokens, fontSizes, fontWeights, radii, spacing, useAppTheme } from '../../theme';
-import { OfflineNotice } from '../components/OfflineNotice';
-import { ScreenLayout } from '../components/ScreenLayout';
-import { ScreenState, resolveScreenState } from '../components/ScreenState';
-import { SkeletonBlock } from '../components/SkeletonBlock';
-import { StateMessage } from '../components/StateMessage';
 
 type Workshop = ReturnType<typeof getWorkshops>[number];
 
-const getField = <T,>(w: Workshop, key: string, fallback: T): T =>
-  ((w as any)[key] ?? fallback) as T;
+const getField = <T,>(w: Workshop, key: string, fallback: T): T => ((w as any)[key] ?? fallback) as T;
 
 const DiscoverWorkshopsContent = ({ isOffline }: { isOffline?: boolean }) => {
   const { colors: c } = useAppTheme();
@@ -42,11 +41,10 @@ const DiscoverWorkshopsContent = ({ isOffline }: { isOffline?: boolean }) => {
   const [selectedType, setSelectedType] = React.useState<string>(typeOptions[0]?.key ?? 'tumu');
 
   const filtered = useMemo(() => {
-    let list = workshops.filter(w =>
-      selectedType === 'tumu' ? true : getField(w, 'type', '') === selectedType
-    );
+    let list = workshops.filter(w => (selectedType === 'tumu' ? true : getField(w, 'type', '') === selectedType));
     if (selectedSort === 'Onerilen') list = list.filter(w => getField(w, 'is_recommended', false));
-    if (selectedSort === 'Populer') list = [...list].sort((a, b) => getField(b, 'attendee_count', 0) - getField(a, 'attendee_count', 0));
+    if (selectedSort === 'Populer')
+      list = [...list].sort((a, b) => getField(b, 'attendee_count', 0) - getField(a, 'attendee_count', 0));
     if (selectedSort === 'Yeni') list = [...list].filter(w => getField(w, 'is_upcoming', false));
     return list;
   }, [workshops, selectedSort, selectedType]);

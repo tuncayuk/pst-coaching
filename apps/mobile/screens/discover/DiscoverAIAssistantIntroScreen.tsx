@@ -2,7 +2,6 @@
 // AC-FR-E16-01-02: free-text question entry
 // AC-FR-E16-01-03: quick-suggestion chips → single tap to chat box
 // AC-FR-E16-01-04: "approved sources only" notice always visible
-
 import { useNavigation } from '@react-navigation/native';
 import React, { useMemo, useState } from 'react';
 import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
@@ -15,25 +14,22 @@ import {
   PIconButton,
   PText,
   PTextInput,
-  PTextInputIcon,
+  PTextInputIcon
 } from '../../components';
-import {
-  getDiscoverAIAssistantHistory,
-  getDiscoverAIAssistantQuickSuggestions,
-} from '../../data/mockSelectors';
+import { OfflineNotice } from '../../components/OfflineNotice';
+import { ScreenLayout } from '../../components/ScreenLayout';
+import { ScreenState, resolveScreenState } from '../../components/ScreenState';
+import { SkeletonBlock } from '../../components/SkeletonBlock';
+import { StateMessage } from '../../components/StateMessage';
+import { getDiscoverAIAssistantHistory, getDiscoverAIAssistantQuickSuggestions } from '../../data/mockSelectors';
 import { ColorTokens, fontSizes, fontWeights, radii, spacing, useAppTheme } from '../../theme';
-import { OfflineNotice } from '../components/OfflineNotice';
-import { ScreenLayout } from '../components/ScreenLayout';
-import { ScreenState, resolveScreenState } from '../components/ScreenState';
-import { SkeletonBlock } from '../components/SkeletonBlock';
-import { StateMessage } from '../components/StateMessage';
 
 // ---------------------------------------------------------------------------
 // Content — shared by ready / empty / offline states
 // ---------------------------------------------------------------------------
 const DiscoverAIAssistantIntroContent = ({
   isOffline,
-  isEmptyHistory,
+  isEmptyHistory
 }: {
   isOffline?: boolean;
   isEmptyHistory?: boolean;
@@ -70,9 +66,7 @@ const DiscoverAIAssistantIntroContent = ({
         <PText style={styles.heroTitle} accessibilityRole="header">
           AI Asistani
         </PText>
-        <PText style={styles.heroSubtitle}>
-          Hedeflerine gore kaynaklardan derlenen kisisel cevaplar al.
-        </PText>
+        <PText style={styles.heroSubtitle}>Hedeflerine gore kaynaklardan derlenen kisisel cevaplar al.</PText>
       </View>
 
       {/* AC-FR-E16-01-04: approved-source trust badge — always visible */}
@@ -84,9 +78,7 @@ const DiscoverAIAssistantIntroContent = ({
         <PText style={styles.trustBadgeCheck} accessibilityElementsHidden>
           ✓
         </PText>
-        <PText style={styles.trustBadgeText}>
-          Yanitlar yalnizca onaylanmis kaynaklardan olusturulur
-        </PText>
+        <PText style={styles.trustBadgeText}>Yanitlar yalnizca onaylanmis kaynaklardan olusturulur</PText>
       </View>
 
       {/* AC-FR-E16-01-02: free-text input */}
@@ -96,11 +88,7 @@ const DiscoverAIAssistantIntroContent = ({
         value={question}
         onChangeText={setQuestion}
         left={<PTextInputIcon icon="magnify" />}
-        right={
-          question.length > 0 ? (
-            <PTextInputIcon icon="close-circle" onPress={() => setQuestion('')} />
-          ) : undefined
-        }
+        right={question.length > 0 ? <PTextInputIcon icon="close-circle" onPress={() => setQuestion('')} /> : undefined}
         style={styles.searchInput}
         outlineStyle={styles.searchOutline}
         editable={!isOffline}
@@ -181,12 +169,7 @@ const DiscoverAIAssistantIntroContent = ({
                     {item.time} · {item.sourceCount} kaynak
                   </PText>
                 </View>
-                <PIconButton
-                  icon="chevron-right"
-                  size={18}
-                  accessibilityLabel=""
-                  accessibilityElementsHidden
-                />
+                <PIconButton icon="chevron-right" size={18} accessibilityLabel="" accessibilityElementsHidden />
               </TouchableOpacity>
               {idx < history.length - 1 && <PDivider />}
             </React.Fragment>
@@ -201,8 +184,7 @@ const DiscoverAIAssistantIntroContent = ({
         >
           <PText style={styles.emptyHistoryTitle}>Ilk sorunuzu sorun</PText>
           <PText style={styles.emptyHistoryText}>
-            Konusma gecmisiniz burada gorunecek. Yukaridan bir soru yazin ya da oneri chiplerinden
-            birini secin.
+            Konusma gecmisiniz burada gorunecek. Yukaridan bir soru yazin ya da oneri chiplerinden birini secin.
           </PText>
         </View>
       )}
@@ -213,11 +195,7 @@ const DiscoverAIAssistantIntroContent = ({
 // ---------------------------------------------------------------------------
 // Screen shell — all states
 // ---------------------------------------------------------------------------
-export const DiscoverAIAssistantIntroScreen = ({
-  route,
-}: {
-  route?: { params?: { state?: ScreenState } };
-}) => {
+export const DiscoverAIAssistantIntroScreen = ({ route }: { route?: { params?: { state?: ScreenState } } }) => {
   const state = resolveScreenState(route);
   const navigation = useNavigation<any>();
 
@@ -289,7 +267,7 @@ function makeStyles(c: ColorTokens) {
     hero: {
       alignItems: 'center',
       paddingVertical: spacing[3],
-      marginBottom: spacing[2],
+      marginBottom: spacing[2]
     },
     heroIconWrap: {
       width: 64,
@@ -298,25 +276,25 @@ function makeStyles(c: ColorTokens) {
       backgroundColor: c.primaryContainer,
       alignItems: 'center',
       justifyContent: 'center',
-      marginBottom: spacing[1.5],
+      marginBottom: spacing[1.5]
     },
     heroIcon: {
       fontSize: fontSizes['5xl'],
       color: c.primary,
-      lineHeight: 48,
+      lineHeight: 48
     },
     heroTitle: {
       fontSize: fontSizes['5xl'],
       fontWeight: fontWeights.bold,
       color: c.textPrimary,
       textAlign: 'center',
-      marginBottom: 6,
+      marginBottom: 6
     },
     heroSubtitle: {
       fontSize: fontSizes.xl,
       color: c.textSecondary,
       textAlign: 'center',
-      maxWidth: 280,
+      maxWidth: 280
     },
     // AC-FR-E16-01-04: trust badge
     trustBadge: {
@@ -328,45 +306,45 @@ function makeStyles(c: ColorTokens) {
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'center',
-      gap: 6,
+      gap: 6
     },
     trustBadgeCheck: {
       fontSize: fontSizes.md,
       color: c.onTertiaryContainer,
-      fontWeight: fontWeights.bold,
+      fontWeight: fontWeights.bold
     },
     trustBadgeText: {
       fontSize: fontSizes.md,
       color: c.onTertiaryContainer,
       fontWeight: fontWeights.semiBold,
       textAlign: 'center',
-      flexShrink: 1,
+      flexShrink: 1
     },
     searchInput: {
       backgroundColor: c.surface,
-      marginBottom: spacing[1.5],
+      marginBottom: spacing[1.5]
     },
     searchOutline: {
       borderRadius: radii.xl,
       borderWidth: 2,
-      borderColor: c.outline,
+      borderColor: c.outline
     },
     chipsScroll: {
-      marginBottom: spacing[2],
+      marginBottom: spacing[2]
     },
     chipsRow: {
       gap: spacing[1],
       paddingHorizontal: 2,
-      paddingBottom: 4,
+      paddingBottom: 4
     },
     chip: {
-      backgroundColor: c.surfaceVariant,
+      backgroundColor: c.surfaceVariant
     },
     chipActive: {
-      backgroundColor: c.primaryContainer,
+      backgroundColor: c.primaryContainer
     },
     askButton: {
-      marginBottom: spacing[3],
+      marginBottom: spacing[3]
     },
     // History
     historySection: {
@@ -374,17 +352,17 @@ function makeStyles(c: ColorTokens) {
       borderRadius: radii.xl,
       borderWidth: 1,
       borderColor: c.outlineVariant,
-      overflow: 'hidden',
+      overflow: 'hidden'
     },
     historyHeader: {
       paddingHorizontal: spacing[2],
       paddingTop: spacing[1.5],
-      paddingBottom: spacing[1],
+      paddingBottom: spacing[1]
     },
     historyTitle: {
       fontSize: fontSizes['2xl'],
       fontWeight: fontWeights.bold,
-      color: c.textPrimary,
+      color: c.textPrimary
     },
     historyItem: {
       flexDirection: 'row',
@@ -392,7 +370,7 @@ function makeStyles(c: ColorTokens) {
       paddingHorizontal: spacing[2],
       paddingVertical: spacing[1.5],
       gap: spacing[1.5],
-      minHeight: 56,
+      minHeight: 56
     },
     historyIconWrap: {
       width: 40,
@@ -401,29 +379,29 @@ function makeStyles(c: ColorTokens) {
       backgroundColor: c.surfaceVariant,
       alignItems: 'center',
       justifyContent: 'center',
-      flexShrink: 0,
+      flexShrink: 0
     },
     historyIconBtn: {
-      margin: 0,
+      margin: 0
     },
     historyInfo: {
-      flex: 1,
+      flex: 1
     },
     historyQuestion: {
       fontSize: fontSizes.lg,
       fontWeight: fontWeights.semiBold,
       color: c.textPrimary,
-      marginBottom: 2,
+      marginBottom: 2
     },
     historyPreview: {
       fontSize: fontSizes.base,
       color: c.textSecondary,
       marginBottom: 2,
-      lineHeight: 16,
+      lineHeight: 16
     },
     historyMeta: {
       fontSize: fontSizes.sm,
-      color: c.textTertiary,
+      color: c.textTertiary
     },
     // Empty history inline banner
     emptyHistoryBanner: {
@@ -433,20 +411,20 @@ function makeStyles(c: ColorTokens) {
       paddingVertical: spacing[2.5],
       alignItems: 'center',
       borderWidth: 1,
-      borderColor: c.outlineVariant,
+      borderColor: c.outlineVariant
     },
     emptyHistoryTitle: {
       fontSize: fontSizes['2xl'],
       fontWeight: fontWeights.bold,
       color: c.textPrimary,
       marginBottom: 6,
-      textAlign: 'center',
+      textAlign: 'center'
     },
     emptyHistoryText: {
       fontSize: fontSizes.lg,
       color: c.textSecondary,
       textAlign: 'center',
-      lineHeight: 22,
-    },
+      lineHeight: 22
+    }
   });
 }

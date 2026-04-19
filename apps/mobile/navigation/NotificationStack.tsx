@@ -5,7 +5,7 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 
-import { ScreenState } from '../screens/components/ScreenState';
+import { ScreenState } from '../components/ScreenState';
 import { NotificationDetailScreen } from '../screens/notifications/NotificationDetailScreen';
 import { NotificationListScreen } from '../screens/notifications/NotificationListScreen';
 import { NotificationSettingsScreen } from '../screens/notifications/NotificationSettingsScreen';

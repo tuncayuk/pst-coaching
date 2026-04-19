@@ -3,17 +3,13 @@ import React, { useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { PActivityIndicator, PAvatar, PButton, PCard, PDivider, PText } from '../../components';
-import {
-  getContentItemsForParent,
-  getModules,
-  getPackagesForModule
-} from '../../data/mockSelectors';
+import { OfflineNotice } from '../../components/OfflineNotice';
+import { ScreenLayout } from '../../components/ScreenLayout';
+import { ScreenState, resolveScreenState } from '../../components/ScreenState';
+import { SkeletonBlock } from '../../components/SkeletonBlock';
+import { StateMessage } from '../../components/StateMessage';
+import { getContentItemsForParent, getModules, getPackagesForModule } from '../../data/mockSelectors';
 import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
-import { OfflineNotice } from '../components/OfflineNotice';
-import { ScreenLayout } from '../components/ScreenLayout';
-import { ScreenState, resolveScreenState } from '../components/ScreenState';
-import { SkeletonBlock } from '../components/SkeletonBlock';
-import { StateMessage } from '../components/StateMessage';
 
 type RouteParams = { state?: ScreenState; id?: string };
 
@@ -26,8 +22,7 @@ const ContentAchievementContent = ({ achievementId, isOffline }: { achievementId
   // Resolve completed module: user_badges no longer store a module ref directly;
   // use achievementId hint if available, otherwise fall back to the first module.
   const allModulesList = getModules();
-  const completedModule =
-    allModulesList.find(m => m.id === achievementId) ?? allModulesList[0];
+  const completedModule = allModulesList.find(m => m.id === achievementId) ?? allModulesList[0];
 
   // Derive stats from real data
   const modulePackages = completedModule ? getPackagesForModule(completedModule.id) : [];

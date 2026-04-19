@@ -2,19 +2,18 @@
 // AC-FR-E16-03-02: deep-link to original content (44 pt minimum touch target)
 // AC-FR-E16-03-03: context excerpt / italic quote with left accent border
 // AC-FR-E16-03-04: relevance score as percentage + 8 px progress bar
-
 import { useNavigation } from '@react-navigation/native';
 import React, { useMemo } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import { PActivityIndicator, PButton, PDivider, PText } from '../../components';
+import { OfflineNotice } from '../../components/OfflineNotice';
+import { ScreenLayout } from '../../components/ScreenLayout';
+import { ScreenState, resolveScreenState } from '../../components/ScreenState';
+import { SkeletonBlock } from '../../components/SkeletonBlock';
+import { StateMessage } from '../../components/StateMessage';
 import { getEbooks, getJourneys, getModules, getWorkshops } from '../../data/mockSelectors';
 import { ColorTokens, fontSizes, fontWeights, radii, spacing, useAppTheme } from '../../theme';
-import { OfflineNotice } from '../components/OfflineNotice';
-import { ScreenLayout } from '../components/ScreenLayout';
-import { ScreenState, resolveScreenState } from '../components/ScreenState';
-import { SkeletonBlock } from '../components/SkeletonBlock';
-import { StateMessage } from '../components/StateMessage';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -32,14 +31,12 @@ type SourceCard = {
 };
 
 // Theme-aware type colors — no hardcoded hex (safe in dark mode)
-function getTypeColors(
-  c: ColorTokens
-): Record<SourceCard['contentType'], { bg: string; on: string }> {
+function getTypeColors(c: ColorTokens): Record<SourceCard['contentType'], { bg: string; on: string }> {
   return {
     journey: { bg: c.tertiaryContainer, on: c.onTertiaryContainer },
     workshop: { bg: c.primaryContainer, on: c.onPrimaryContainer },
     ebook: { bg: c.secondaryContainer, on: c.onSecondaryContainer },
-    module: { bg: c.surfaceVariant, on: c.onSurfaceVariant },
+    module: { bg: c.surfaceVariant, on: c.onSurfaceVariant }
   };
 }
 
@@ -63,7 +60,7 @@ function buildSourceCards(): SourceCard[] {
         j.description ??
         'Bu yolculuk, gunluk adimlarla kisisel donusumu destekleyen yapilandirilmis bir program sunar.',
       relevanceScore: 94 - i * 8,
-      navParams: { stack: 'Content', screen: 'ContentJourneyDetail', id: j.id },
+      navParams: { stack: 'Content', screen: 'ContentJourneyDetail', id: j.id }
     });
   });
 
@@ -76,10 +73,9 @@ function buildSourceCards(): SourceCard[] {
       title: w.title,
       contentPath: `Atolyeler › ${w.title}`,
       excerpt:
-        w.description ??
-        'Bu atolye, odaklanmis pratik egzersizlerle konuya derinlemesine yaklasim imkani sunar.',
+        w.description ?? 'Bu atolye, odaklanmis pratik egzersizlerle konuya derinlemesine yaklasim imkani sunar.',
       relevanceScore: 81,
-      navParams: { stack: 'Content', screen: 'ContentWorkshopDetail', id: w.id },
+      navParams: { stack: 'Content', screen: 'ContentWorkshopDetail', id: w.id }
     });
   });
 
@@ -92,10 +88,9 @@ function buildSourceCards(): SourceCard[] {
       title: e.title,
       contentPath: `e-Kitaplar › ${e.title}`,
       excerpt:
-        e.description ??
-        'Bu kitap, teorik altyapiyi guclenrdirmek icin kapsamli kaynaklar ve referanslar icerir.',
+        e.description ?? 'Bu kitap, teorik altyapiyi guclenrdirmek icin kapsamli kaynaklar ve referanslar icerir.',
       relevanceScore: 73,
-      navParams: { stack: 'Content', screen: 'ContentEbookDetail', id: e.id },
+      navParams: { stack: 'Content', screen: 'ContentEbookDetail', id: e.id }
     });
   });
 
@@ -109,7 +104,7 @@ function buildSourceCards(): SourceCard[] {
       contentPath: `Moduller › ${m.title}`,
       excerpt: m.description ?? 'Bu modul, konuyu adim adim ele alan paket icerikler sunar.',
       relevanceScore: 68,
-      navParams: { stack: 'Content', screen: 'ContentModuleHome', id: m.id },
+      navParams: { stack: 'Content', screen: 'ContentModuleHome', id: m.id }
     });
   });
 
@@ -137,7 +132,7 @@ const RelevanceBar = ({ score, c }: { score: number; c: ColorTokens }) => {
 const SourceCardItem = ({
   source,
   isOffline,
-  isLast,
+  isLast
 }: {
   source: SourceCard;
   isOffline?: boolean;
@@ -153,7 +148,7 @@ const SourceCardItem = ({
     if (isOffline) return;
     navigation.navigate(source.navParams.stack, {
       screen: source.navParams.screen,
-      params: { id: source.navParams.id },
+      params: { id: source.navParams.id }
     });
   };
 
@@ -175,10 +170,7 @@ const SourceCardItem = ({
           {/* AC-FR-E16-03-04: relevance score bar */}
           <View style={styles.scoreRow}>
             <RelevanceBar score={source.relevanceScore} c={c} />
-            <PText
-              style={styles.scoreText}
-              accessibilityLabel={`Ilgililik: yuzde ${source.relevanceScore}`}
-            >
+            <PText style={styles.scoreText} accessibilityLabel={`Ilgililik: yuzde ${source.relevanceScore}`}>
               %{source.relevanceScore}
             </PText>
           </View>
@@ -220,13 +212,7 @@ const SourceCardItem = ({
 // ---------------------------------------------------------------------------
 // Ready content
 // ---------------------------------------------------------------------------
-const DiscoverAIAssistantResultsContent = ({
-  isOffline,
-  question,
-}: {
-  isOffline?: boolean;
-  question: string;
-}) => {
+const DiscoverAIAssistantResultsContent = ({ isOffline, question }: { isOffline?: boolean; question: string }) => {
   const { colors: c } = useAppTheme();
   const styles = useMemo(() => makeStyles(c), [c]);
   const navigation = useNavigation<any>();
@@ -247,12 +233,7 @@ const DiscoverAIAssistantResultsContent = ({
       {/* Source card list */}
       <View style={styles.cardContainer}>
         {sources.map((source, idx) => (
-          <SourceCardItem
-            key={source.id}
-            source={source}
-            isOffline={isOffline}
-            isLast={idx === sources.length - 1}
-          />
+          <SourceCardItem key={source.id} source={source} isOffline={isOffline} isLast={idx === sources.length - 1} />
         ))}
       </View>
 
@@ -284,11 +265,7 @@ const DiscoverAIAssistantResultsContent = ({
 // ---------------------------------------------------------------------------
 type RouteParams = { state?: ScreenState; question?: string };
 
-export const DiscoverAIAssistantResultsScreen = ({
-  route,
-}: {
-  route?: { params?: RouteParams };
-}) => {
+export const DiscoverAIAssistantResultsScreen = ({ route }: { route?: { params?: RouteParams } }) => {
   const state = resolveScreenState(route);
   const question = route?.params?.question ?? 'Sorunuz';
   const navigation = useNavigation<any>();
@@ -356,17 +333,17 @@ export const DiscoverAIAssistantResultsScreen = ({
 function makeStyles(c: ColorTokens) {
   return StyleSheet.create({
     pageHeader: {
-      marginBottom: spacing[2.5],
+      marginBottom: spacing[2.5]
     },
     pageTitle: {
       fontSize: fontSizes['5xl'],
       fontWeight: fontWeights.bold,
       color: c.textPrimary,
-      marginBottom: 4,
+      marginBottom: 4
     },
     pageSubtitle: {
       fontSize: fontSizes.lg,
-      color: c.textSecondary,
+      color: c.textSecondary
     },
     cardContainer: {
       backgroundColor: c.surface,
@@ -374,52 +351,52 @@ function makeStyles(c: ColorTokens) {
       borderWidth: 1,
       borderColor: c.outlineVariant,
       overflow: 'hidden',
-      marginBottom: spacing[2],
+      marginBottom: spacing[2]
     },
     sourceCard: {
-      padding: spacing[2],
+      padding: spacing[2]
     },
     sourceHeader: {
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'space-between',
       marginBottom: spacing[1],
-      gap: spacing[1],
+      gap: spacing[1]
     },
     typeBadge: {
       borderRadius: radii.full,
       paddingHorizontal: spacing[1.5],
       paddingVertical: 4,
-      flexShrink: 0,
+      flexShrink: 0
     },
     typeBadgeText: {
       fontSize: fontSizes.sm,
-      fontWeight: fontWeights.bold,
+      fontWeight: fontWeights.bold
     },
     scoreRow: {
       flexDirection: 'row',
       alignItems: 'center',
       gap: 8,
       flex: 1,
-      justifyContent: 'flex-end',
+      justifyContent: 'flex-end'
     },
     scoreText: {
       fontSize: fontSizes.sm,
       fontWeight: fontWeights.bold,
       color: c.primary,
       minWidth: 36,
-      textAlign: 'right',
+      textAlign: 'right'
     },
     sourceTitle: {
       fontSize: fontSizes['2xl'],
       fontWeight: fontWeights.bold,
       color: c.textPrimary,
-      marginBottom: 4,
+      marginBottom: 4
     },
     sourcePath: {
       fontSize: fontSizes.md,
       color: c.textTertiary,
-      marginBottom: spacing[1],
+      marginBottom: spacing[1]
     },
     excerptBox: {
       backgroundColor: c.surfaceVariant,
@@ -427,13 +404,13 @@ function makeStyles(c: ColorTokens) {
       padding: spacing[1.5],
       marginBottom: spacing[1.5],
       borderLeftWidth: 3,
-      borderLeftColor: c.primary,
+      borderLeftColor: c.primary
     },
     excerptText: {
       fontSize: fontSizes.lg,
       color: c.textSecondary,
       lineHeight: 22,
-      fontStyle: 'italic',
+      fontStyle: 'italic'
     },
     // 44 pt minimum touch target (AC-FR-E16-03-02)
     deepLinkButton: {
@@ -443,21 +420,21 @@ function makeStyles(c: ColorTokens) {
       gap: 4,
       paddingVertical: 10,
       paddingHorizontal: 2,
-      minHeight: 44,
+      minHeight: 44
     },
     deepLinkText: {
       fontSize: fontSizes.lg,
       color: c.textAccent,
-      fontWeight: fontWeights.semiBold,
+      fontWeight: fontWeights.semiBold
     },
     deepLinkArrow: {
       fontSize: fontSizes['2xl'],
       color: c.textAccent,
       fontWeight: fontWeights.bold,
-      lineHeight: 22,
+      lineHeight: 22
     },
     insightsButton: {
-      marginBottom: spacing[1],
-    },
+      marginBottom: spacing[1]
+    }
   });
 }

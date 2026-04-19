@@ -3,13 +3,13 @@ import { Alert, Platform, StyleSheet, View } from 'react-native';
 
 import { trackCtaTap } from '../../analytics';
 import { PButton, PCard, PDivider, PListIcon, PListItem, PText, PTextInput } from '../../components';
+import { OfflineNotice } from '../../components/OfflineNotice';
+import { ScreenLayout } from '../../components/ScreenLayout';
+import { ScreenState, resolveScreenState } from '../../components/ScreenState';
+import { SectionCard } from '../../components/SectionCard';
+import { SkeletonBlock } from '../../components/SkeletonBlock';
+import { StateMessage } from '../../components/StateMessage';
 import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
-import { OfflineNotice } from '../components/OfflineNotice';
-import { ScreenLayout } from '../components/ScreenLayout';
-import { ScreenState, resolveScreenState } from '../components/ScreenState';
-import { SectionCard } from '../components/SectionCard';
-import { SkeletonBlock } from '../components/SkeletonBlock';
-import { StateMessage } from '../components/StateMessage';
 
 const PLATFORM_LABEL = Platform.OS === 'ios' ? 'Apple Uygulama Magazasi' : 'Google Play Magazasi';
 const PLATFORM_ICON = Platform.OS === 'ios' ? 'apple' : 'google-play';

@@ -3,14 +3,14 @@ import React, { useMemo, useState } from 'react';
 import { StyleSheet } from 'react-native';
 
 import { FilterChipBar, PActivityIndicator, PButton, PCard, PProgressBar } from '../../components';
+import { OfflineNotice } from '../../components/OfflineNotice';
+import { ScreenLayout } from '../../components/ScreenLayout';
+import { ScreenState, resolveScreenState } from '../../components/ScreenState';
+import { SectionCard } from '../../components/SectionCard';
+import { SkeletonBlock } from '../../components/SkeletonBlock';
+import { StateMessage } from '../../components/StateMessage';
 import { getContentProgressForUser, getModules, getPrimaryUser } from '../../data/mockSelectors';
 import { ColorTokens, spacing, useAppTheme } from '../../theme';
-import { OfflineNotice } from '../components/OfflineNotice';
-import { ScreenLayout } from '../components/ScreenLayout';
-import { ScreenState, resolveScreenState } from '../components/ScreenState';
-import { SectionCard } from '../components/SectionCard';
-import { SkeletonBlock } from '../components/SkeletonBlock';
-import { StateMessage } from '../components/StateMessage';
 
 const LibraryModulesContent = ({ isOffline }: { isOffline?: boolean }) => {
   const { colors: c } = useAppTheme();
@@ -29,17 +29,12 @@ const LibraryModulesContent = ({ isOffline }: { isOffline?: boolean }) => {
   const [activeArea, setActiveArea] = useState<string>(focusAreas[0] ?? 'Tum Moduller');
 
   const visibleModules =
-    activeArea === 'Tum Moduller'
-      ? modules
-      : modules.filter(module => module.title === activeArea);
+    activeArea === 'Tum Moduller' ? modules : modules.filter(module => module.title === activeArea);
 
   const moduleProgress = modules.map(module => ({
     id: module.id,
     title: module.title,
-    progress: Math.min(
-      1,
-      Math.max(0, (moduleProgressMap.get(module.id)?.progress_percent ?? 0) / 100)
-    ),
+    progress: Math.min(1, Math.max(0, (moduleProgressMap.get(module.id)?.progress_percent ?? 0) / 100)),
     subtitle: `${Math.round(
       (Math.min(100, Math.max(0, moduleProgressMap.get(module.id)?.progress_percent ?? 0)) / 100) * 4
     )}/4 bölüm tamamlandı`

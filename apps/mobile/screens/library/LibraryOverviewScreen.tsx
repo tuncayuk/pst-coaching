@@ -2,15 +2,13 @@ import { useNavigation } from '@react-navigation/native';
 import React, { useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import {
-  ContentProgressRow,
-  PActivityIndicator,
-  PButton,
-  PCard,
-  PListIcon,
-  PListItem,
-  PText
-} from '../../components';
+import { ContentProgressRow, PActivityIndicator, PButton, PCard, PListIcon, PListItem, PText } from '../../components';
+import { OfflineNotice } from '../../components/OfflineNotice';
+import { ScreenLayout } from '../../components/ScreenLayout';
+import { ScreenState, resolveScreenState } from '../../components/ScreenState';
+import { SectionCard } from '../../components/SectionCard';
+import { SkeletonBlock } from '../../components/SkeletonBlock';
+import { StateMessage } from '../../components/StateMessage';
 import {
   getCollectionsForUser,
   getDownloadsForUser,
@@ -21,12 +19,6 @@ import {
   getPrimaryUser
 } from '../../data/mockSelectors';
 import { ColorTokens, radii, spacing, useAppTheme } from '../../theme';
-import { OfflineNotice } from '../components/OfflineNotice';
-import { ScreenLayout } from '../components/ScreenLayout';
-import { ScreenState, resolveScreenState } from '../components/ScreenState';
-import { SectionCard } from '../components/SectionCard';
-import { SkeletonBlock } from '../components/SkeletonBlock';
-import { StateMessage } from '../components/StateMessage';
 
 const LibraryReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
   const { colors: c } = useAppTheme();

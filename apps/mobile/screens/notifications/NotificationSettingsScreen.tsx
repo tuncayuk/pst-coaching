@@ -9,14 +9,6 @@ import React, { useMemo, useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 
 import {
-  NOTIFICATION_FREQUENCY_OPTIONS,
-  NOTIFICATION_QUIET_HOURS_END,
-  NOTIFICATION_QUIET_HOURS_START,
-  NOTIFICATION_SETTINGS_TYPE_LABELS,
-  type NotificationFrequency,
-  type NotificationSettingsType
-} from '../../data/constants/notifications';
-import {
   PActivityIndicator,
   PDivider,
   PListItem,
@@ -25,13 +17,21 @@ import {
   PSwitch,
   PText
 } from '../../components';
+import { OfflineNotice } from '../../components/OfflineNotice';
+import { ScreenLayout } from '../../components/ScreenLayout';
+import { ScreenState, resolveScreenState } from '../../components/ScreenState';
+import { SectionCard } from '../../components/SectionCard';
+import { SkeletonBlock } from '../../components/SkeletonBlock';
+import { StateMessage } from '../../components/StateMessage';
+import {
+  NOTIFICATION_FREQUENCY_OPTIONS,
+  NOTIFICATION_QUIET_HOURS_END,
+  NOTIFICATION_QUIET_HOURS_START,
+  NOTIFICATION_SETTINGS_TYPE_LABELS,
+  type NotificationFrequency,
+  type NotificationSettingsType
+} from '../../data/constants/notifications';
 import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
-import { OfflineNotice } from '../components/OfflineNotice';
-import { ScreenLayout } from '../components/ScreenLayout';
-import { ScreenState, resolveScreenState } from '../components/ScreenState';
-import { SectionCard } from '../components/SectionCard';
-import { SkeletonBlock } from '../components/SkeletonBlock';
-import { StateMessage } from '../components/StateMessage';
 
 const NotificationSettingsContent = ({ isOffline }: { isOffline?: boolean }) => {
   const { colors: c } = useAppTheme();

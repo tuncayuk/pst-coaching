@@ -3,6 +3,12 @@ import React, { useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { PActivityIndicator, PButton, PCard, PChip, PDivider, PText } from '../../components';
+import { OfflineNotice } from '../../components/OfflineNotice';
+import { ScreenLayout } from '../../components/ScreenLayout';
+import { ScreenState, resolveScreenState } from '../../components/ScreenState';
+import { SectionCard } from '../../components/SectionCard';
+import { SkeletonBlock } from '../../components/SkeletonBlock';
+import { StateMessage } from '../../components/StateMessage';
 import {
   getAddOnCatalogWithStatusForSubscription,
   getPlanForSubscription,
@@ -10,12 +16,6 @@ import {
   getSubscriptionForUser
 } from '../../data/mockSelectors';
 import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
-import { OfflineNotice } from '../components/OfflineNotice';
-import { ScreenLayout } from '../components/ScreenLayout';
-import { ScreenState, resolveScreenState } from '../components/ScreenState';
-import { SectionCard } from '../components/SectionCard';
-import { SkeletonBlock } from '../components/SkeletonBlock';
-import { StateMessage } from '../components/StateMessage';
 
 /** AC-FR-E2-02-01: Subscription status types */
 type SubscriptionStatus = 'active' | 'trial' | 'cancelled';
@@ -26,7 +26,20 @@ const STATUS_CONFIG: Record<SubscriptionStatus, { label: string; bg: string; tex
   cancelled: { label: 'Iptal', bg: '#FEE2E2', text: '#991B1B', borderColor: '#FCA5A5' }
 };
 
-const TR_MONTHS = ['Ocak','Subat','Mart','Nisan','Mayis','Haziran','Temmuz','Agustos','Eylul','Ekim','Kasim','Aralik'];
+const TR_MONTHS = [
+  'Ocak',
+  'Subat',
+  'Mart',
+  'Nisan',
+  'Mayis',
+  'Haziran',
+  'Temmuz',
+  'Agustos',
+  'Eylul',
+  'Ekim',
+  'Kasim',
+  'Aralik'
+];
 function formatRenewalDate(iso?: string | null): string {
   if (!iso) return '';
   const d = new Date(iso);

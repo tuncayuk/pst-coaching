@@ -1,11 +1,11 @@
 import { NativeStackNavigationOptions, createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 
+import { ScreenState } from '../components/ScreenState';
 import { CoachClientProfileScreen } from '../screens/coach/CoachClientProfileScreen';
 import { CoachContentTrackingScreen } from '../screens/coach/CoachContentTrackingScreen';
 import { CoachDashboardScreen } from '../screens/coach/CoachDashboardScreen';
 import { CoachFeedbackScreen } from '../screens/coach/CoachFeedbackScreen';
-import { ScreenState } from '../screens/components/ScreenState';
 
 type ScreenStateParam = { state?: ScreenState } | undefined;
 

@@ -1,7 +1,7 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 
-import { ScreenState } from '../screens/components/ScreenState';
+import { ScreenState } from '../components/ScreenState';
 import { HomeActiveContentListScreen } from '../screens/home/HomeActiveContentListScreen';
 import { HomeContentNavScreen } from '../screens/home/HomeContentNavScreen';
 import { HomeDashboardScreen } from '../screens/home/HomeDashboardScreen';

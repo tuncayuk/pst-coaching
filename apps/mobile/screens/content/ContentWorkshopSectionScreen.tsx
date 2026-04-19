@@ -3,6 +3,11 @@ import React, { useMemo, useRef, useState } from 'react';
 import { StyleSheet, TextInput, View } from 'react-native';
 
 import { PButton, PDivider, PText } from '../../components';
+import { PremiumReaderLayout } from '../../components/PremiumReaderLayout';
+import { ScreenLayout } from '../../components/ScreenLayout';
+import { ScreenState, resolveScreenState } from '../../components/ScreenState';
+import { SkeletonBlock } from '../../components/SkeletonBlock';
+import { StateMessage } from '../../components/StateMessage';
 import { READER_FONT_ORDER, READER_FONT_SIZES, type ReaderFontKey } from '../../data/constants/reader';
 import {
   getContentItems,
@@ -15,11 +20,6 @@ import {
   getWorkshopSectionBlocks
 } from '../../data/mockSelectors';
 import { ColorTokens, fontSizes, fontWeights, radii, spacing, useAppTheme } from '../../theme';
-import { PremiumReaderLayout } from '../components/PremiumReaderLayout';
-import { ScreenLayout } from '../components/ScreenLayout';
-import { ScreenState, resolveScreenState } from '../components/ScreenState';
-import { SkeletonBlock } from '../components/SkeletonBlock';
-import { StateMessage } from '../components/StateMessage';
 
 // ─────────────────────────────────────────────
 // Types & constants
@@ -39,20 +39,20 @@ type Block = {
   transliteration?: string;
 };
 const BLOCK_ACCENT: Record<string, string> = {
-  intro:          '#F3F4F6',
-  verse:          '#EEF2FF',
-  'word-analysis':'#FFFBEB',
-  bridge:         '#F0FDF4',
-  practice:       '#FEF3C7',
-  output:         '#F0FDFB'
+  intro: '#F3F4F6',
+  verse: '#EEF2FF',
+  'word-analysis': '#FFFBEB',
+  bridge: '#F0FDF4',
+  practice: '#FEF3C7',
+  output: '#F0FDFB'
 };
 const BLOCK_LEFT: Record<string, string> = {
-  intro:          '#6B7280',
-  verse:          '#4338CA',
-  'word-analysis':'#B45309',
-  bridge:         '#059669',
-  practice:       '#D97706',
-  output:         '#0891B2'
+  intro: '#6B7280',
+  verse: '#4338CA',
+  'word-analysis': '#B45309',
+  bridge: '#059669',
+  practice: '#D97706',
+  output: '#0891B2'
 };
 
 // ─────────────────────────────────────────────
@@ -105,10 +105,7 @@ const ContentWorkshopSectionContent = ({
     setTimeout(() => setNoteSaved(false), 2000);
   };
 
-  const stageLabel =
-    allSections.length > 0
-      ? `Aşama ${currentIdx + 1} / ${allSections.length}`
-      : 'Aşama';
+  const stageLabel = allSections.length > 0 ? `Aşama ${currentIdx + 1} / ${allSections.length}` : 'Aşama';
 
   return (
     <PremiumReaderLayout
@@ -189,9 +186,7 @@ const ContentWorkshopSectionContent = ({
             <PText style={[styles.blockLabel, { color: leftColor }]}>{block.label}</PText>
 
             {/* Arabic verse */}
-            {'arabic' in block && (
-              <PText style={styles.arabicText}>{block.arabic}</PText>
-            )}
+            {'arabic' in block && <PText style={styles.arabicText}>{block.arabic}</PText>}
 
             {/* Body text */}
             <PText
@@ -208,9 +203,7 @@ const ContentWorkshopSectionContent = ({
 
             {/* Transliteration */}
             {'transliteration' in block && (
-              <PText style={[styles.translitText, { color: c.textDisabled }]}>
-                {block.transliteration}
-              </PText>
+              <PText style={[styles.translitText, { color: c.textDisabled }]}>{block.transliteration}</PText>
             )}
 
             {/* Practice — open workbook link */}
@@ -232,9 +225,7 @@ const ContentWorkshopSectionContent = ({
             )}
 
             {/* Divider between blocks */}
-            {idx < contentBlocks.length - 1 && (
-              <PDivider style={styles.blockDivider} />
-            )}
+            {idx < contentBlocks.length - 1 && <PDivider style={styles.blockDivider} />}
           </View>
         );
       })}
@@ -284,7 +275,9 @@ export const ContentWorkshopSectionScreen = ({ route }: { route?: { params?: Rou
     return (
       <ScreenLayout title="Aşama İçeriği" headerVariant="none">
         <SkeletonBlock height={20} />
-        {[1, 2, 3].map(i => <SkeletonBlock key={i} height={80} />)}
+        {[1, 2, 3].map(i => (
+          <SkeletonBlock key={i} height={80} />
+        ))}
       </ScreenLayout>
     );
   }
@@ -315,11 +308,7 @@ export const ContentWorkshopSectionScreen = ({ route }: { route?: { params?: Rou
   }
 
   return (
-    <ContentWorkshopSectionContent
-      workshopId={workshopId}
-      sectionId={sectionId}
-      isOffline={state === 'offline'}
-    />
+    <ContentWorkshopSectionContent workshopId={workshopId} sectionId={sectionId} isOffline={state === 'offline'} />
   );
 };
 

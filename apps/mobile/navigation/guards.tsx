@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ScreenState } from '../screens/components/ScreenState';
+import { ScreenState } from '../components/ScreenState';
 
 export type SubscriptionStatus = 'trial' | 'active' | 'none' | 'expired';
 export type SubscriptionGate = 'subscription:trial_or_active';
