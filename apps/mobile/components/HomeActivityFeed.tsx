@@ -43,7 +43,7 @@ export const HomeActivityFeed = ({ activities }: HomeActivityFeedProps) => {
   return (
     <PCard style={styles.card}>
       {activities.map((activity, idx) => (
-        <React.Fragment key={activity.title}>
+        <React.Fragment key={`${activity.title}-${idx}`}>
           <View style={styles.row}>
             <View
               style={[styles.iconWrap, { backgroundColor: iconBg[activity.tone] }]}

@@ -466,3 +466,60 @@ export const getReminderSettingsForUser = (userId?: string) => {
   const uid = userId ?? getPrimaryUser()?.id;
   return getReminderSettings().find((r: any) => r.user_id === uid) ?? null;
 };
+
+// ---------------------------------------------------------------------------
+// Home dashboard helpers
+// ---------------------------------------------------------------------------
+
+export const getContentAreas = () => getList(getData()?.content_areas as any[]);
+
+export const getHomeStatsForUser = (userId?: string) => {
+  const uid = userId ?? getPrimaryUser()?.id;
+  return getList(getData()?.home_stats as any[]).find((s: any) => s.user_id === uid) ?? null;
+};
+
+function relativeTime(dateStr?: string | null): string {
+  if (!dateStr) return '';
+  const diffMs = Date.now() - new Date(dateStr).getTime();
+  const hours = Math.floor(diffMs / 3_600_000);
+  if (hours < 24) return `${hours} saat once`;
+  return `${Math.floor(hours / 24)} gun once`;
+}
+
+export const getActivitiesForUser = (
+  userId?: string,
+): Array<{ title: string; time: string; icon: string; tone: 'success' | 'warning' | 'error' | 'primary' }> => {
+  const uid = userId ?? getPrimaryUser()?.id;
+
+  const raw: Array<{ sortKey: number; title: string; time: string; icon: string; tone: 'success' | 'warning' | 'error' | 'primary' }> = [];
+
+  getAchievements()
+    .filter((a: any) => a.user_id === uid)
+    .forEach((a: any) => {
+      raw.push({
+        sortKey: new Date(a.awarded_at ?? a.created_at).getTime(),
+        title: 'Yeni rozet kazandiniz!',
+        time: relativeTime(a.awarded_at ?? a.created_at),
+        icon: 'trophy-outline',
+        tone: 'warning',
+      });
+    });
+
+  getContentProgress()
+    .filter(p => p.user_id === uid && p.status === 'completed')
+    .forEach(p => {
+      const typeLabel = (p as any).target_type === 'module' ? 'Modul' : 'Icerik';
+      const date = (p as any).completed_at ?? (p as any).started_at;
+      raw.push({
+        sortKey: new Date(date).getTime(),
+        title: `${typeLabel} tamamlandi`,
+        time: relativeTime(date),
+        icon: 'check-circle-outline',
+        tone: 'success',
+      });
+    });
+
+  return raw
+    .sort((a, b) => b.sortKey - a.sortKey)
+    .map(({ sortKey: _s, ...item }) => item);
+};

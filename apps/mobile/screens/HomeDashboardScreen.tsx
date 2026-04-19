@@ -5,7 +5,6 @@ import { Icon } from 'react-native-paper';
 
 import { trackCtaTap } from '../analytics';
 import {
-  ActivityItem,
   HomeActivityFeed,
   HomeContentNavCard,
   HomeReminderNudge,
@@ -20,13 +19,18 @@ import {
   PTextInputIcon
 } from '../components';
 import {
+  getActivitiesForUser,
+  getAchievements,
+  getContentAreas,
   getContentProgressForUser,
   getEbooks,
+  getHomeStatsForUser,
   getJourneyById,
   getJourneys,
   getModules,
   getNotificationsForUser,
   getPrimaryUser,
+  getSubscriptionForUser,
   getWorkshops
 } from '../data/mockSelectors';
 import { ColorTokens, fontSizes, fontWeights, radii, spacing, useAppTheme } from '../theme';
@@ -59,12 +63,6 @@ function getGreetingText(): string {
   return 'Iyi aksamlar,';
 }
 
-const CONTENT_AREAS = [
-  { label: 'Yolculuklar', icon: 'map-marker-path', route: 'DiscoverJourneys', suffix: 'program' },
-  { label: 'Atolyeler', icon: 'school-outline', route: 'DiscoverWorkshops', suffix: 'atolye' },
-  { label: 'e-Kitaplar', icon: 'book-open-variant', route: 'DiscoverEbooks', suffix: 'kitap' },
-  { label: 'Moduller', icon: 'human-male-board', route: 'DiscoverModules', suffix: 'modul' }
-] as const;
 
 /** Returns subscription badge colors from semantic tokens — dark-mode safe. */
 function getSubscriptionBadgeConfig(c: ColorTokens) {
@@ -75,11 +73,6 @@ function getSubscriptionBadgeConfig(c: ColorTokens) {
   } as const;
 }
 
-const ACTIVITIES: ActivityItem[] = [
-  { title: 'Modul 3 tamamlandi', time: '2 saat once', icon: 'check-circle-outline', tone: 'success' },
-  { title: 'Yeni rozet kazandiniz!', time: '1 gun once', icon: 'trophy-outline', tone: 'warning' }
-];
-
 const HomeReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
   const { colors: c } = useAppTheme();
   const styles = useMemo(() => makeStyles(c), [c]);
@@ -87,6 +80,7 @@ const HomeReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
   const navigation = useNavigation<any>();
   const user = getPrimaryUser();
   const displayName = user?.email ? user.email.split('@')[0] : 'Ahmet';
+  const contentAreas = getContentAreas();
   const contentAreaCounts = [
     getJourneys().length,
     getWorkshops().length,
@@ -96,11 +90,18 @@ const HomeReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
   const progressItems = getContentProgressForUser(user?.id);
   const unreadCount = getNotificationsForUser(user?.id).filter(n => !n.is_read).length;
   const nextStep = progressItems.find(item => item.status === 'in_progress') ?? progressItems[0];
-  // Derive next journey directly from content_progress (journey_days removed from schema)
   const nextJourney =
     nextStep?.content_type === 'journey'
       ? getJourneyById(nextStep.content_item_id)
       : getJourneyById(progressItems.find(p => p.content_type === 'journey')?.content_item_id);
+  const homeStats = getHomeStatsForUser(user?.id);
+  const badgesCount = getAchievements().filter((a: any) => a.user_id === user?.id).length;
+  const activities = getActivitiesForUser(user?.id);
+  const activeItem = progressItems.find(p => p.status === 'in_progress') ?? null;
+  const activeJourney = activeItem?.content_type === 'journey' ? getJourneyById(activeItem.content_item_id) : null;
+  const subscription = getSubscriptionForUser(user?.id);
+  const rawStatus = subscription?.status ?? 'active';
+  const subscriptionStatus = (rawStatus === 'canceled' ? 'cancelled' : rawStatus) as keyof ReturnType<typeof getSubscriptionBadgeConfig>;
 
   // AC-FR-E2-01-01: countdown timer to 23:59
   const [countdown, setCountdown] = useState(secondsUntilMidnight);
@@ -117,7 +118,6 @@ const HomeReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
   // AC-FR-E2-08-01: dismissible reminder nudge
   const [reminderDismissed, setReminderDismissed] = useState(false);
 
-  const subscriptionStatus: keyof ReturnType<typeof getSubscriptionBadgeConfig> = 'active';
   const badge = getSubscriptionBadgeConfig(c)[subscriptionStatus];
 
   // Dynamic progress from real data.
@@ -218,7 +218,7 @@ const HomeReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
       <View style={styles.statsRow}>
         <HomeStatCard
           label="Gun Serisi"
-          value={12}
+          value={homeStats?.day_streak ?? 0}
           icon="fire"
           tone="primary"
           onPress={() => trackCtaTap('home.dashboard', 'stat_tapped', { stat: 'Gun Serisi' })}
@@ -232,7 +232,7 @@ const HomeReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
         />
         <HomeStatCard
           label="Rozetler"
-          value={8}
+          value={badgesCount}
           icon="trophy"
           tone="warning"
           onPress={() => trackCtaTap('home.dashboard', 'stat_tapped', { stat: 'Rozetler' })}
@@ -310,9 +310,9 @@ const HomeReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
       <View style={styles.section}>
         <PText style={[styles.sectionTitle, styles.sectionTitleBlock]}>Icerik Alanlari</PText>
         <View style={styles.contentNavGrid}>
-          {[CONTENT_AREAS.slice(0, 2), CONTENT_AREAS.slice(2, 4)].map((row, rowIdx) => (
+          {[contentAreas.slice(0, 2), contentAreas.slice(2, 4)].map((row: any[], rowIdx: number) => (
             <View key={rowIdx} style={styles.contentNavRow}>
-              {row.map((area, colIdx) => {
+              {row.map((area: any, colIdx: number) => {
                 const idx = rowIdx * 2 + colIdx;
                 return (
                   <HomeContentNavCard
@@ -334,30 +334,34 @@ const HomeReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
       </View>
 
       {/* AC-FR-E2-04-01: Program summary card */}
-      <View style={styles.section}>
-        <View style={styles.sectionHeaderRow}>
-          <PText style={styles.sectionTitle}>Vicdandan Karaktere</PText>
-          <PButton
-            mode="text"
-            onPress={() => navigation.navigate('HomeVicdandanKaraktereDetail')}
-            accessibilityLabel="Vicdandan Karaktere programi detaylari"
-          >
-            Detaylar
-          </PButton>
-        </View>
-        <PCard accentColor={c.tertiary} style={styles.programCard}>
-          <PText style={styles.programDescription} numberOfLines={2}>
-            Ic sesini guclendir ve degerlerinle uyumlu kararlar al.
-          </PText>
-          <View style={styles.progressRow}>
-            <View style={styles.progressHeader}>
-              <PText style={styles.progressLabel}>3/8 bolum</PText>
-              <PText style={styles.progressValue}>38%</PText>
-            </View>
-            <PProgressBar progress={0.38} style={styles.progressBar} />
+      {nextJourney && (
+        <View style={styles.section}>
+          <View style={styles.sectionHeaderRow}>
+            <PText style={styles.sectionTitle}>{nextJourney.title}</PText>
+            <PButton
+              mode="text"
+              onPress={() => navigation.navigate('HomeVicdandanKaraktereDetail')}
+              accessibilityLabel={`${nextJourney.title} programi detaylari`}
+            >
+              Detaylar
+            </PButton>
           </View>
-        </PCard>
-      </View>
+          <PCard accentColor={c.tertiary} style={styles.programCard}>
+            {(nextJourney as any).description ? (
+              <PText style={styles.programDescription} numberOfLines={2}>
+                {(nextJourney as any).description}
+              </PText>
+            ) : null}
+            <View style={styles.progressRow}>
+              <View style={styles.progressHeader}>
+                <PText style={styles.progressLabel}>Ilerleme</PText>
+                <PText style={styles.progressValue}>{progressPct}%</PText>
+              </View>
+              <PProgressBar progress={progressFraction} style={styles.progressBar} />
+            </View>
+          </PCard>
+        </View>
+      )}
 
       {/* AC-FR-E2-06-01: Active content list */}
       <View style={styles.section}>
@@ -371,27 +375,28 @@ const HomeReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
             Tumunu Gor
           </PButton>
         </View>
-        <PCard style={styles.activeContentCard}>
-          <View style={styles.activeContentRow}>
-            <PChip compact accessibilityLabel="Icerik turu: Yolculuk">
-              Yolculuk
-            </PChip>
-            <View style={styles.activeContentInfo}>
-              <PText style={styles.activeContentTitle} numberOfLines={1}>
-                Hedef Belirleme
-              </PText>
-              <PText style={styles.activeContentMeta}>Gun 3 · 12 dk</PText>
+        {activeItem ? (
+          <PCard style={styles.activeContentCard}>
+            <View style={styles.activeContentRow}>
+              <PChip compact accessibilityLabel={`Icerik turu: ${activeJourney ? 'Yolculuk' : 'Icerik'}`}>
+                {activeJourney ? 'Yolculuk' : 'Icerik'}
+              </PChip>
+              <View style={styles.activeContentInfo}>
+                <PText style={styles.activeContentTitle} numberOfLines={1}>
+                  {activeJourney?.title ?? activeItem.content_item_id}
+                </PText>
+              </View>
+              <PText style={styles.activeContentPct}>{(activeItem as any).progress_percent ?? 0}%</PText>
             </View>
-            <PText style={styles.activeContentPct}>42%</PText>
-          </View>
-          <PProgressBar progress={0.42} style={styles.progressBar} />
-        </PCard>
+            <PProgressBar progress={((activeItem as any).progress_percent ?? 0) / 100} style={styles.progressBar} />
+          </PCard>
+        ) : null}
       </View>
 
       {/* Son Aktiviteler */}
       <View style={styles.section}>
         <PText style={[styles.sectionTitle, styles.sectionTitleBlock]}>Son Aktiviteler</PText>
-        <HomeActivityFeed activities={ACTIVITIES} />
+        <HomeActivityFeed activities={activities} />
       </View>
 
       {/* AC-FR-E2-08-01: Dismissible reminder nudge */}

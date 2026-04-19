@@ -29,7 +29,7 @@ export interface AppTheme {
 export function useAppTheme(): AppTheme {
   const scheme = useColorScheme();
   const isDark = scheme === 'dark';
-  console.log(`Current color scheme: ${scheme} (isDark: ${isDark})`); // Debug log to verify color scheme detection
+  // console.log(`Current color scheme: ${scheme} (isDark: ${isDark})`); // Debug log to verify color scheme detection
 
   return useMemo(
     () => ({
