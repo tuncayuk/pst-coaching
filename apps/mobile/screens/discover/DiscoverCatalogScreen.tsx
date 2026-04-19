@@ -2,7 +2,7 @@ import { useNavigation } from '@react-navigation/native';
 import React, { useMemo } from 'react';
 import { Linking, ScrollView, StyleSheet, View } from 'react-native';
 
-import { trackCtaTap } from '../analytics';
+import { trackCtaTap } from '../../analytics';
 import {
   DiscoverAssistantPair,
   DiscoverContentMosaicGrid,
@@ -11,7 +11,7 @@ import {
   MosaicTab,
   PActivityIndicator,
   PText
-} from '../components';
+} from '../../components';
 import {
   getEbooks,
   getJourneys,
@@ -19,13 +19,13 @@ import {
   getPrimaryUser,
   getSubscriptionForUser,
   getWorkshops
-} from '../data/mockSelectors';
-import { ColorTokens, fontSizes, fontWeights, radii, spacing, useAppTheme } from '../theme';
-import { OfflineNotice } from './components/OfflineNotice';
-import { ScreenLayout } from './components/ScreenLayout';
-import { ScreenState, resolveScreenState } from './components/ScreenState';
-import { SkeletonBlock } from './components/SkeletonBlock';
-import { StateMessage } from './components/StateMessage';
+} from '../../data/mockSelectors';
+import { ColorTokens, fontSizes, fontWeights, radii, spacing, useAppTheme } from '../../theme';
+import { OfflineNotice } from '../components/OfflineNotice';
+import { ScreenLayout } from '../components/ScreenLayout';
+import { ScreenState, resolveScreenState } from '../components/ScreenState';
+import { SkeletonBlock } from '../components/SkeletonBlock';
+import { StateMessage } from '../components/StateMessage';
 
 const CONTENT_TABS: readonly MosaicTab[] = [
   { key: 'journeys', label: 'Yolculuklar', emoji: '🎯' },
@@ -51,8 +51,7 @@ const DiscoverReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
   const user = getPrimaryUser();
   const subscription = getSubscriptionForUser(user?.id);
   const isGuest = !user;
-  const requiresSubscription =
-    !isGuest && subscription?.status !== 'active' && subscription?.status !== 'trial';
+  const requiresSubscription = !isGuest && subscription?.status !== 'active' && subscription?.status !== 'trial';
 
   const journeys = getJourneys();
   const ebooks = getEbooks();
@@ -70,32 +69,47 @@ const DiscoverReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
   };
 
   const handleTabPress = (tab: MosaicTab) => {
-    if (requiresSubscription) { handlePaywall(); return; }
+    if (requiresSubscription) {
+      handlePaywall();
+      return;
+    }
     setActiveTab(tab.key);
     trackCtaTap('discover.catalog', 'tab_tapped', { tab: tab.key });
     navigation.navigate(TAB_ROUTES[tab.key]);
   };
 
   const handleJourneyPress = (id: string) => {
-    if (requiresSubscription) { handlePaywall(); return; }
+    if (requiresSubscription) {
+      handlePaywall();
+      return;
+    }
     trackCtaTap('discover.catalog', 'journey_card_tapped', { id });
     navigation.navigate('Content', { screen: 'ContentJourneyDetail', params: { id } });
   };
 
   const handleEbookPress = (id: string) => {
-    if (requiresSubscription) { handlePaywall(); return; }
+    if (requiresSubscription) {
+      handlePaywall();
+      return;
+    }
     trackCtaTap('discover.catalog', 'ebook_card_tapped', { id });
     navigation.navigate('Content', { screen: 'ContentEbookDetail', params: { id } });
   };
 
   const handleAssistantPress = () => {
-    if (requiresSubscription) { handlePaywall(); return; }
+    if (requiresSubscription) {
+      handlePaywall();
+      return;
+    }
     trackCtaTap('discover.catalog', 'assistant_tapped');
     navigation.navigate('DiscoverAssistantIntro');
   };
 
   const handleAIAssistantPress = () => {
-    if (requiresSubscription) { handlePaywall(); return; }
+    if (requiresSubscription) {
+      handlePaywall();
+      return;
+    }
     trackCtaTap('discover.catalog', 'ai_assistant_tapped');
     navigation.navigate('DiscoverAIAssistantIntro');
   };
@@ -153,11 +167,7 @@ const DiscoverReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
       {featuredEbooks.length > 0 && (
         <View style={styles.section}>
           <PText style={styles.sectionTitle}>Populer e-Kitaplar</PText>
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={styles.ebookRow}
-          >
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.ebookRow}>
             {featuredEbooks.map((ebook, index) => (
               <DiscoverEbookCard
                 key={ebook.id}

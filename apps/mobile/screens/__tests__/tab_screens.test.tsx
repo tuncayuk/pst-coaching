@@ -1,10 +1,10 @@
 import { render } from '@testing-library/react-native';
 import React from 'react';
 
-import { DiscoverCatalogScreen } from '../DiscoverCatalogScreen';
-import { HomeDashboardScreen } from '../HomeDashboardScreen';
-import { ProfileOverviewScreen } from '../ProfileOverviewScreen';
+import { DiscoverCatalogScreen } from '../discover/DiscoverCatalogScreen';
+import { HomeDashboardScreen } from '../home/HomeDashboardScreen';
 import { LibraryOverviewScreen } from '../library/LibraryOverviewScreen';
+import { ProfileOverviewScreen } from '../profile/ProfileOverviewScreen';
 import { ProgressDashboardScreen } from '../progress/ProgressDashboardScreen';
 
 const cases = [

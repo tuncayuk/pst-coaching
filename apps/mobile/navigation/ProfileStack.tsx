@@ -1,7 +1,6 @@
 import { NativeStackNavigationOptions, createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 
-import { ProfileOverviewScreen } from '../screens/ProfileOverviewScreen';
 import { ScreenState } from '../screens/components/ScreenState';
 import { ProfileAccessibilityScreen } from '../screens/profile/ProfileAccessibilityScreen';
 import { ProfileAccountScreen } from '../screens/profile/ProfileAccountScreen';
@@ -10,6 +9,7 @@ import { ProfileChangePasswordScreen } from '../screens/profile/ProfileChangePas
 import { ProfileCheckoutScreen } from '../screens/profile/ProfileCheckoutScreen';
 import { ProfileLanguageScreen } from '../screens/profile/ProfileLanguageScreen';
 import { ProfileLogoutConfirmScreen } from '../screens/profile/ProfileLogoutConfirmScreen';
+import { ProfileOverviewScreen } from '../screens/profile/ProfileOverviewScreen';
 import { ProfilePaymentHistoryScreen } from '../screens/profile/ProfilePaymentHistoryScreen';
 import { ProfilePlanComparisonScreen } from '../screens/profile/ProfilePlanComparisonScreen';
 import { ProfilePlanManagementScreen } from '../screens/profile/ProfilePlanManagementScreen';

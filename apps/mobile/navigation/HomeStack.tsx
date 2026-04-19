@@ -1,10 +1,10 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 
-import { HomeDashboardScreen } from '../screens/HomeDashboardScreen';
 import { ScreenState } from '../screens/components/ScreenState';
 import { HomeActiveContentListScreen } from '../screens/home/HomeActiveContentListScreen';
 import { HomeContentNavScreen } from '../screens/home/HomeContentNavScreen';
+import { HomeDashboardScreen } from '../screens/home/HomeDashboardScreen';
 import { HomeReminderSettingScreen } from '../screens/home/HomeReminderSettingScreen';
 import { HomeSearchResultsScreen } from '../screens/home/HomeSearchResultsScreen';
 import { HomeSearchScreen } from '../screens/home/HomeSearchScreen';

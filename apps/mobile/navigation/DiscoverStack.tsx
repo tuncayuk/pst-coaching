@@ -1,17 +1,17 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 
-import { DiscoverCatalogScreen } from '../screens/DiscoverCatalogScreen';
 import { ScreenState } from '../screens/components/ScreenState';
-// FR-E4: quiz-based content assistant (preserved)
-import { DiscoverAssistantIntroScreen } from '../screens/discover/DiscoverAssistantIntroScreen';
-import { DiscoverAssistantQuestionsScreen } from '../screens/discover/DiscoverAssistantQuestionsScreen';
-import { DiscoverAssistantResultsScreen } from '../screens/discover/DiscoverAssistantResultsScreen';
 // FR-E16: AI free-text assistant (new)
 import { DiscoverAIAssistantIntroScreen } from '../screens/discover/DiscoverAIAssistantIntroScreen';
 import { DiscoverAIAssistantQuestionsScreen } from '../screens/discover/DiscoverAIAssistantQuestionsScreen';
 import { DiscoverAIAssistantResultsScreen } from '../screens/discover/DiscoverAIAssistantResultsScreen';
 import { DiscoverAssistantInsightsScreen } from '../screens/discover/DiscoverAssistantInsightsScreen';
+// FR-E4: quiz-based content assistant (preserved)
+import { DiscoverAssistantIntroScreen } from '../screens/discover/DiscoverAssistantIntroScreen';
+import { DiscoverAssistantQuestionsScreen } from '../screens/discover/DiscoverAssistantQuestionsScreen';
+import { DiscoverAssistantResultsScreen } from '../screens/discover/DiscoverAssistantResultsScreen';
+import { DiscoverCatalogScreen } from '../screens/discover/DiscoverCatalogScreen';
 // Content browsing
 import { DiscoverEbooksScreen } from '../screens/discover/DiscoverEbooksScreen';
 import { DiscoverJourneysScreen } from '../screens/discover/DiscoverJourneysScreen';

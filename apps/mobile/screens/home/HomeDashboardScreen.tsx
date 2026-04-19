@@ -3,7 +3,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Icon } from 'react-native-paper';
 
-import { trackCtaTap } from '../analytics';
+import { trackCtaTap } from '../../analytics';
 import {
   HomeActivityFeed,
   HomeContentNavCard,
@@ -17,10 +17,10 @@ import {
   PText,
   PTextInput,
   PTextInputIcon
-} from '../components';
+} from '../../components';
 import {
-  getActivitiesForUser,
   getAchievements,
+  getActivitiesForUser,
   getContentAreas,
   getContentProgressForUser,
   getEbooks,
@@ -32,13 +32,13 @@ import {
   getPrimaryUser,
   getSubscriptionForUser,
   getWorkshops
-} from '../data/mockSelectors';
-import { ColorTokens, fontSizes, fontWeights, radii, spacing, useAppTheme } from '../theme';
-import { OfflineNotice } from './components/OfflineNotice';
-import { ScreenLayout } from './components/ScreenLayout';
-import { ScreenState, resolveScreenState } from './components/ScreenState';
-import { SkeletonBlock } from './components/SkeletonBlock';
-import { StateMessage } from './components/StateMessage';
+} from '../../data/mockSelectors';
+import { ColorTokens, fontSizes, fontWeights, radii, spacing, useAppTheme } from '../../theme';
+import { OfflineNotice } from '../components/OfflineNotice';
+import { ScreenLayout } from '../components/ScreenLayout';
+import { ScreenState, resolveScreenState } from '../components/ScreenState';
+import { SkeletonBlock } from '../components/SkeletonBlock';
+import { StateMessage } from '../components/StateMessage';
 
 /** Returns seconds remaining until 23:59:59 of today (local time). */
 function secondsUntilMidnight(): number {
@@ -63,7 +63,6 @@ function getGreetingText(): string {
   return 'Iyi aksamlar,';
 }
 
-
 /** Returns subscription badge colors from semantic tokens — dark-mode safe. */
 function getSubscriptionBadgeConfig(c: ColorTokens) {
   return {
@@ -81,12 +80,7 @@ const HomeReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
   const user = getPrimaryUser();
   const displayName = user?.email ? user.email.split('@')[0] : 'Ahmet';
   const contentAreas = getContentAreas();
-  const contentAreaCounts = [
-    getJourneys().length,
-    getWorkshops().length,
-    getEbooks().length,
-    getModules().length
-  ];
+  const contentAreaCounts = [getJourneys().length, getWorkshops().length, getEbooks().length, getModules().length];
   const progressItems = getContentProgressForUser(user?.id);
   const unreadCount = getNotificationsForUser(user?.id).filter(n => !n.is_read).length;
   const nextStep = progressItems.find(item => item.status === 'in_progress') ?? progressItems[0];
@@ -101,7 +95,9 @@ const HomeReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
   const activeJourney = activeItem?.content_type === 'journey' ? getJourneyById(activeItem.content_item_id) : null;
   const subscription = getSubscriptionForUser(user?.id);
   const rawStatus = subscription?.status ?? 'active';
-  const subscriptionStatus = (rawStatus === 'canceled' ? 'cancelled' : rawStatus) as keyof ReturnType<typeof getSubscriptionBadgeConfig>;
+  const subscriptionStatus = (rawStatus === 'canceled' ? 'cancelled' : rawStatus) as keyof ReturnType<
+    typeof getSubscriptionBadgeConfig
+  >;
 
   // AC-FR-E2-01-01: countdown timer to 23:59
   const [countdown, setCountdown] = useState(secondsUntilMidnight);
@@ -258,9 +254,7 @@ const HomeReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
           <PCard accentColor={c.primary} style={styles.continueCard}>
             <View style={styles.continueRow}>
               <View style={styles.continueIcon} accessibilityElementsHidden>
-                <PText style={styles.continueIconText}>
-                  {(nextJourney?.title ?? 'H')[0].toUpperCase()}
-                </PText>
+                <PText style={styles.continueIconText}>{(nextJourney?.title ?? 'H')[0].toUpperCase()}</PText>
               </View>
               <View style={styles.continueInfo}>
                 <PText style={styles.continueTitle} numberOfLines={1}>
@@ -292,9 +286,7 @@ const HomeReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
               <Icon source="compass-outline" size={40} color={c.textTertiary} />
             </View>
             <PText style={styles.continueEmptyTitle}>Bugunku hedefini henuz secmedin</PText>
-            <PText style={styles.continueEmptyDesc}>
-              Icerikleri kesfedin ve baslamak istediginizi secin.
-            </PText>
+            <PText style={styles.continueEmptyDesc}>Icerikleri kesfedin ve baslamak istediginizi secin.</PText>
             <PButton
               mode="contained"
               onPress={() => navigation.navigate('Discover')}
@@ -436,9 +428,15 @@ export const HomeDashboardScreen = ({ route }: { route?: { params?: { state?: Sc
         </View>
         <SkeletonBlock height={48} />
         <View style={styles.statsRow}>
-          <View style={{ flex: 1 }}><SkeletonBlock height={88} /></View>
-          <View style={{ flex: 1 }}><SkeletonBlock height={88} /></View>
-          <View style={{ flex: 1 }}><SkeletonBlock height={88} /></View>
+          <View style={{ flex: 1 }}>
+            <SkeletonBlock height={88} />
+          </View>
+          <View style={{ flex: 1 }}>
+            <SkeletonBlock height={88} />
+          </View>
+          <View style={{ flex: 1 }}>
+            <SkeletonBlock height={88} />
+          </View>
         </View>
         <View style={styles.section}>
           <SkeletonBlock height={24} />
@@ -447,12 +445,20 @@ export const HomeDashboardScreen = ({ route }: { route?: { params?: { state?: Sc
         <View style={styles.section}>
           <SkeletonBlock height={24} />
           <View style={styles.contentNavRow}>
-            <View style={{ flex: 1 }}><SkeletonBlock height={88} /></View>
-            <View style={{ flex: 1 }}><SkeletonBlock height={88} /></View>
+            <View style={{ flex: 1 }}>
+              <SkeletonBlock height={88} />
+            </View>
+            <View style={{ flex: 1 }}>
+              <SkeletonBlock height={88} />
+            </View>
           </View>
           <View style={styles.contentNavRow}>
-            <View style={{ flex: 1 }}><SkeletonBlock height={88} /></View>
-            <View style={{ flex: 1 }}><SkeletonBlock height={88} /></View>
+            <View style={{ flex: 1 }}>
+              <SkeletonBlock height={88} />
+            </View>
+            <View style={{ flex: 1 }}>
+              <SkeletonBlock height={88} />
+            </View>
           </View>
         </View>
       </ScreenLayout>

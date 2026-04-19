@@ -2,7 +2,7 @@ import { useNavigation } from '@react-navigation/native';
 import React, { useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import { trackCtaTap } from '../analytics';
+import { trackCtaTap } from '../../analytics';
 import {
   PActivityIndicator,
   PAvatar,
@@ -13,20 +13,20 @@ import {
   PListIcon,
   PListItem,
   PText
-} from '../components';
+} from '../../components';
 import {
   getPaymentTransactions,
   getPlanForSubscription,
   getPrimaryUser,
   getSubscriptionForUser
-} from '../data/mockSelectors';
-import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../theme';
-import { OfflineNotice } from './components/OfflineNotice';
-import { ScreenLayout } from './components/ScreenLayout';
-import { ScreenState, resolveScreenState } from './components/ScreenState';
-import { SectionCard } from './components/SectionCard';
-import { SkeletonBlock } from './components/SkeletonBlock';
-import { StateMessage } from './components/StateMessage';
+} from '../../data/mockSelectors';
+import { ColorTokens, fontSizes, fontWeights, palette, radii, spacing, useAppTheme } from '../../theme';
+import { OfflineNotice } from '../components/OfflineNotice';
+import { ScreenLayout } from '../components/ScreenLayout';
+import { ScreenState, resolveScreenState } from '../components/ScreenState';
+import { SectionCard } from '../components/SectionCard';
+import { SkeletonBlock } from '../components/SkeletonBlock';
+import { StateMessage } from '../components/StateMessage';
 
 const ProfileReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
   const { colors: c } = useAppTheme();
