@@ -32,25 +32,27 @@ const HomeContentNavGrid = ({ isOffline }: { isOffline?: boolean }) => {
         {contentNavAreas.map((area: any) => (
           <TouchableOpacity
             key={area.label}
-            style={[styles.card, { backgroundColor: area.bg, borderColor: area.accentColor }]}
+            style={[styles.card, { backgroundColor: area.bg, borderColor: area.accentColor + '30' }]}
             onPress={() => handleAreaTap(area)}
             disabled={isOffline}
-            accessibilityLabel={`${area.label}, ${area.count}. ${area.description}`}
+            accessibilityLabel={`${area.label}. ${area.description}${area.requiresSubscription ? '. Premium icerik.' : ''}`}
             accessibilityRole="button"
             accessibilityHint={`${area.label} katalna gider`}
             activeOpacity={0.75}
           >
-            <View style={[styles.accentBar, { backgroundColor: area.accentColor }]} />
-            <View style={styles.cardBody}>
-              <PText style={[styles.cardLabel, { color: area.accentColor }]}>{area.label}</PText>
-              <PText style={styles.cardDescription}>{area.description}</PText>
-              <PText style={styles.cardCount}>{area.count}</PText>
-            </View>
-            {area.requiresSubscription && (
-              <View style={styles.lockBadge} accessibilityLabel="Abonelik gerektirir">
-                <PText style={styles.lockBadgeText}>Premium</PText>
+            {/* Letter avatar */}
+            <View style={styles.cardHeader}>
+              <View style={[styles.letterAvatar, { backgroundColor: area.accentColor }]}>
+                <PText style={styles.letterAvatarText}>{area.label[0]}</PText>
               </View>
-            )}
+              {area.requiresSubscription && (
+                <View style={[styles.premiumPill, { backgroundColor: area.accentColor }]} accessibilityElementsHidden>
+                  <PText style={styles.premiumPillText}>Premium</PText>
+                </View>
+              )}
+            </View>
+            <PText style={[styles.cardLabel, { color: area.accentColor }]}>{area.label}</PText>
+            <PText style={styles.cardDescription}>{area.description}</PText>
           </TouchableOpacity>
         ))}
       </View>
@@ -139,47 +141,49 @@ function makeStyles(c: ColorTokens) {
     },
     card: {
       width: '47%',
-      borderRadius: radii.xl,
+      borderRadius: radii['2xl'],
       borderWidth: 1.5,
-      overflow: 'hidden',
-      minHeight: 100,
+      padding: spacing[1.5],
+      minHeight: 120,
       position: 'relative'
     },
-    accentBar: {
-      height: 4,
-      width: '100%'
+    cardHeader: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'flex-start',
+      marginBottom: spacing[1.5]
     },
-    cardBody: {
-      padding: spacing[1.5]
+    letterAvatar: {
+      width: 44,
+      height: 44,
+      borderRadius: radii.lg,
+      alignItems: 'center',
+      justifyContent: 'center'
+    },
+    letterAvatarText: {
+      fontSize: fontSizes['5xl'],
+      fontWeight: fontWeights.black,
+      color: palette.white
+    },
+    premiumPill: {
+      paddingHorizontal: 6,
+      paddingVertical: 2,
+      borderRadius: radii.full
+    },
+    premiumPillText: {
+      fontSize: fontSizes.xs,
+      fontWeight: fontWeights.bold,
+      color: palette.white
     },
     cardLabel: {
-      fontSize: fontSizes.xl,
+      fontSize: fontSizes['2xl'],
       fontWeight: fontWeights.extraBold,
       marginBottom: 4
     },
     cardDescription: {
       fontSize: fontSizes.base,
       color: c.textSecondary,
-      marginBottom: 6
-    },
-    cardCount: {
-      fontSize: fontSizes.base,
-      fontWeight: fontWeights.bold,
-      color: c.textTertiary
-    },
-    lockBadge: {
-      position: 'absolute',
-      top: 10,
-      right: 8,
-      backgroundColor: c.textBrand,
-      paddingHorizontal: 6,
-      paddingVertical: 2,
-      borderRadius: radii.full
-    },
-    lockBadgeText: {
-      fontSize: 10,
-      fontWeight: fontWeights.bold,
-      color: palette.white
+      lineHeight: 18
     }
   });
 }

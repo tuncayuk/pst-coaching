@@ -291,6 +291,9 @@ const HomeReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
                     label={area.label}
                     icon={area.icon}
                     count={`${contentAreaCounts[idx]} ${area.suffix}`}
+                    description={area.description}
+                    accentColor={area.accentColor}
+                    bg={area.bg}
                     disabled={isOffline}
                     onPress={() => {
                       trackCtaTap('home.dashboard', 'content_area_tapped', { route: area.route });
