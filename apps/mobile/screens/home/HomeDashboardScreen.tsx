@@ -237,6 +237,73 @@ const HomeReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
         />
       </View>
 
+      {/* Content sources mosaic */}
+      <View style={styles.section}>
+        <PText style={[styles.sectionTitle, styles.sectionTitleBlock]}>Icerik Kaynaklari</PText>
+        <View style={styles.contentNavGrid}>
+          {[contentSources.slice(0, 2), contentSources.slice(2, 4)].map((row: any[], rowIdx: number) => (
+            <View key={rowIdx} style={styles.contentNavRow}>
+              {row.map((source: any) => (
+                <TouchableOpacity
+                  key={source.id}
+                  style={[
+                    styles.sourceMosaicCard,
+                    { borderColor: source.accent_color, backgroundColor: source.accent_color + '12' }
+                  ]}
+                  disabled={isOffline}
+                  activeOpacity={0.75}
+                  onPress={() => {
+                    trackCtaTap('home.dashboard', 'content_source_tapped', { sourceId: source.id });
+                    navigation.navigate('HomeContentSourceDetail', { sourceId: source.id });
+                  }}
+                  accessibilityLabel={`${source.title}: ${source.subtitle}`}
+                  accessibilityRole="button"
+                  accessibilityHint="Kaynak detay sayfasini acar"
+                >
+                  <View style={[styles.sourceMosaicBar, { backgroundColor: source.accent_color }]} />
+                  <View style={styles.sourceMosaicBody}>
+                    <Icon source={source.icon} size={24} color={source.accent_color} />
+                    <PText style={[styles.sourceMosaicTitle, { color: source.accent_color }]} numberOfLines={1}>
+                      {source.title}
+                    </PText>
+                    <PText style={styles.sourceMosaicSubtitle} numberOfLines={2}>
+                      {source.subtitle}
+                    </PText>
+                  </View>
+                </TouchableOpacity>
+              ))}
+            </View>
+          ))}
+        </View>
+      </View>
+
+      {/* AC-FR-E2-03-01/02: Content area navigation grid */}
+      <View style={styles.section}>
+        <PText style={[styles.sectionTitle, styles.sectionTitleBlock]}>Icerik Alanlari</PText>
+        <View style={styles.contentNavGrid}>
+          {[contentAreas.slice(0, 2), contentAreas.slice(2, 4)].map((row: any[], rowIdx: number) => (
+            <View key={rowIdx} style={styles.contentNavRow}>
+              {row.map((area: any, colIdx: number) => {
+                const idx = rowIdx * 2 + colIdx;
+                return (
+                  <HomeContentNavCard
+                    key={area.label}
+                    label={area.label}
+                    icon={area.icon}
+                    count={`${contentAreaCounts[idx]} ${area.suffix}`}
+                    disabled={isOffline}
+                    onPress={() => {
+                      trackCtaTap('home.dashboard', 'content_area_tapped', { route: area.route });
+                      navigation.navigate('Discover', { screen: area.route });
+                    }}
+                  />
+                );
+              })}
+            </View>
+          ))}
+        </View>
+      </View>
+
       {/* AC-FR-E2-01-01/02: Today's CTA with countdown */}
       <View style={styles.section}>
         <View style={styles.sectionHeaderRow}>
@@ -298,70 +365,6 @@ const HomeReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
             </PButton>
           </PCard>
         )}
-      </View>
-
-      {/* AC-FR-E2-03-01/02: Content area navigation grid */}
-      <View style={styles.section}>
-        <PText style={[styles.sectionTitle, styles.sectionTitleBlock]}>Icerik Alanlari</PText>
-        <View style={styles.contentNavGrid}>
-          {[contentAreas.slice(0, 2), contentAreas.slice(2, 4)].map((row: any[], rowIdx: number) => (
-            <View key={rowIdx} style={styles.contentNavRow}>
-              {row.map((area: any, colIdx: number) => {
-                const idx = rowIdx * 2 + colIdx;
-                return (
-                  <HomeContentNavCard
-                    key={area.label}
-                    label={area.label}
-                    icon={area.icon}
-                    count={`${contentAreaCounts[idx]} ${area.suffix}`}
-                    disabled={isOffline}
-                    onPress={() => {
-                      trackCtaTap('home.dashboard', 'content_area_tapped', { route: area.route });
-                      navigation.navigate('Discover', { screen: area.route });
-                    }}
-                  />
-                );
-              })}
-            </View>
-          ))}
-        </View>
-      </View>
-
-      {/* Content sources mosaic */}
-      <View style={styles.section}>
-        <PText style={[styles.sectionTitle, styles.sectionTitleBlock]}>Icerik Kaynaklari</PText>
-        <View style={styles.contentNavGrid}>
-          {[contentSources.slice(0, 2), contentSources.slice(2, 4)].map((row: any[], rowIdx: number) => (
-            <View key={rowIdx} style={styles.contentNavRow}>
-              {row.map((source: any) => (
-                <TouchableOpacity
-                  key={source.id}
-                  style={[styles.sourceMosaicCard, { borderColor: source.accent_color, backgroundColor: source.accent_color + '12' }]}
-                  disabled={isOffline}
-                  activeOpacity={0.75}
-                  onPress={() => {
-                    trackCtaTap('home.dashboard', 'content_source_tapped', { sourceId: source.id });
-                    navigation.navigate('HomeContentSourceDetail', { sourceId: source.id });
-                  }}
-                  accessibilityLabel={`${source.title}: ${source.subtitle}`}
-                  accessibilityRole="button"
-                  accessibilityHint="Kaynak detay sayfasini acar"
-                >
-                  <View style={[styles.sourceMosaicBar, { backgroundColor: source.accent_color }]} />
-                  <View style={styles.sourceMosaicBody}>
-                    <Icon source={source.icon} size={24} color={source.accent_color} />
-                    <PText style={[styles.sourceMosaicTitle, { color: source.accent_color }]} numberOfLines={1}>
-                      {source.title}
-                    </PText>
-                    <PText style={styles.sourceMosaicSubtitle} numberOfLines={2}>
-                      {source.subtitle}
-                    </PText>
-                  </View>
-                </TouchableOpacity>
-              ))}
-            </View>
-          ))}
-        </View>
       </View>
 
       {/* AC-FR-E2-04-01: Program summary card */}
