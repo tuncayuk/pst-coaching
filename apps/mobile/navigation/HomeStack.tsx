@@ -4,6 +4,7 @@ import React from 'react';
 import { ScreenState } from '../components/ScreenState';
 import { HomeActiveContentListScreen } from '../screens/home/HomeActiveContentListScreen';
 import { HomeContentNavScreen } from '../screens/home/HomeContentNavScreen';
+import { HomeContentSourceDetailScreen } from '../screens/home/HomeContentSourceDetailScreen';
 import { HomeDashboardScreen } from '../screens/home/HomeDashboardScreen';
 import { HomeReminderSettingScreen } from '../screens/home/HomeReminderSettingScreen';
 import { HomeSearchResultsScreen } from '../screens/home/HomeSearchResultsScreen';
@@ -26,6 +27,8 @@ export type HomeStackParamList = {
   HomeContentNav: ScreenStateParam;
   /** FR-E2-08: daily reminder configuration */
   HomeReminderSetting: ScreenStateParam;
+  /** Content source detail — sourceId identifies one of the 4 content sources */
+  HomeContentSourceDetail: { sourceId: string };
 };
 
 type HomeStackProps = {
@@ -45,6 +48,7 @@ export const HomeStack = ({ initialRouteName = 'HomeDashboard' }: HomeStackProps
       <Stack.Screen name="HomeSubscription" component={HomeSubscriptionScreen} />
       <Stack.Screen name="HomeContentNav" component={HomeContentNavScreen} />
       <Stack.Screen name="HomeReminderSetting" component={HomeReminderSettingScreen} />
+      <Stack.Screen name="HomeContentSourceDetail" component={HomeContentSourceDetailScreen} />
     </Stack.Navigator>
   );
 };

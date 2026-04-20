@@ -28,6 +28,7 @@ import {
   getActivitiesForUser,
   getContentAreas,
   getContentProgressForUser,
+  getContentSources,
   getEbooks,
   getHomeStatsForUser,
   getJourneyById,
@@ -88,6 +89,7 @@ const HomeReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
     nextStep?.content_type === 'journey'
       ? getJourneyById(nextStep.content_item_id)
       : getJourneyById(progressItems.find(p => p.content_type === 'journey')?.content_item_id);
+  const contentSources = getContentSources();
   const homeStats = getHomeStatsForUser(user?.id);
   const badgesCount = getAchievements().filter((a: any) => a.user_id === user?.id).length;
   const activities = getActivitiesForUser(user?.id);
@@ -320,6 +322,43 @@ const HomeReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
                   />
                 );
               })}
+            </View>
+          ))}
+        </View>
+      </View>
+
+      {/* Content sources mosaic */}
+      <View style={styles.section}>
+        <PText style={[styles.sectionTitle, styles.sectionTitleBlock]}>Icerik Kaynaklari</PText>
+        <View style={styles.contentNavGrid}>
+          {[contentSources.slice(0, 2), contentSources.slice(2, 4)].map((row: any[], rowIdx: number) => (
+            <View key={rowIdx} style={styles.contentNavRow}>
+              {row.map((source: any) => (
+                <TouchableOpacity
+                  key={source.id}
+                  style={[styles.sourceMosaicCard, { borderColor: source.accent_color, backgroundColor: source.accent_color + '12' }]}
+                  disabled={isOffline}
+                  activeOpacity={0.75}
+                  onPress={() => {
+                    trackCtaTap('home.dashboard', 'content_source_tapped', { sourceId: source.id });
+                    navigation.navigate('HomeContentSourceDetail', { sourceId: source.id });
+                  }}
+                  accessibilityLabel={`${source.title}: ${source.subtitle}`}
+                  accessibilityRole="button"
+                  accessibilityHint="Kaynak detay sayfasini acar"
+                >
+                  <View style={[styles.sourceMosaicBar, { backgroundColor: source.accent_color }]} />
+                  <View style={styles.sourceMosaicBody}>
+                    <Icon source={source.icon} size={24} color={source.accent_color} />
+                    <PText style={[styles.sourceMosaicTitle, { color: source.accent_color }]} numberOfLines={1}>
+                      {source.title}
+                    </PText>
+                    <PText style={styles.sourceMosaicSubtitle} numberOfLines={2}>
+                      {source.subtitle}
+                    </PText>
+                  </View>
+                </TouchableOpacity>
+              ))}
             </View>
           ))}
         </View>
@@ -749,6 +788,31 @@ function makeStyles(c: ColorTokens) {
       fontSize: fontSizes.md,
       fontWeight: fontWeights.bold,
       color: c.primary
+    },
+    sourceMosaicCard: {
+      flex: 1,
+      borderRadius: radii.xl,
+      borderWidth: 1.5,
+      overflow: 'hidden',
+      minHeight: 108
+    },
+    sourceMosaicBar: {
+      height: 4,
+      width: '100%'
+    },
+    sourceMosaicBody: {
+      padding: spacing[1.5],
+      gap: spacing[0.5]
+    },
+    sourceMosaicTitle: {
+      fontSize: fontSizes.lg,
+      fontWeight: fontWeights.extraBold,
+      marginTop: spacing[0.5]
+    },
+    sourceMosaicSubtitle: {
+      fontSize: fontSizes.sm,
+      color: c.textSecondary,
+      lineHeight: 18
     },
     bottomSpacer: {
       height: spacing[3]

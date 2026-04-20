@@ -187,6 +187,26 @@ export const getEbookChapters = () =>
 export const getContentAssets = () => getList(getData()?.content_assets as any[]);
 
 /**
+ * Content items registry — abstract parent record for every top-level piece of
+ * content (journeys, modules, workshops, ebooks). Each row maps an `id` (=
+ * content_item_id on child tables) to its `entity_type` and `source_id`.
+ */
+export const getContentItemsRegistry = () => getList((getData() as any)?.content_items as any[]);
+export const getContentItemRegistryById = (id: string) =>
+  getContentItemsRegistry().find((ci: any) => ci.id === id);
+
+/**
+ * Content sources — the 4 top-level catalogs (Kesifler Yolculugu, Duygular
+ * Evreni, Kitaplar, Atolyeler). Sorted by order_index.
+ */
+export const getContentSources = () =>
+  getList((getData() as any)?.content_sources as any[]).sort(
+    (a: any, b: any) => (a.order_index ?? 0) - (b.order_index ?? 0)
+  );
+export const getContentSourceById = (id: string) =>
+  getContentSources().find((s: any) => s.id === id);
+
+/**
  * Content blocks (_content_blocks) – sub-items within journeys, packages,
  * workshops. Replaces the old `content_items` table.
  */
