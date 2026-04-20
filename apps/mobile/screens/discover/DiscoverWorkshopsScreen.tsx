@@ -20,7 +20,7 @@ const PALETTE = [
   { bg: '#FEF3C7', fg: '#92400E' },
   { bg: '#E0F7FA', fg: '#006064' },
   { bg: '#FCE7F3', fg: '#831843' },
-  { bg: '#DBEAFE', fg: '#1E3A5F' },
+  { bg: '#DBEAFE', fg: '#1E3A5F' }
 ];
 
 const pickColor = (id: string) => {

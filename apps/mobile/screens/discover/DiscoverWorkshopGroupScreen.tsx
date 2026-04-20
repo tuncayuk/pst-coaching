@@ -81,6 +81,7 @@ type CardSignal = {
 type WorkshopCardProps = {
   item: Workshop;
   signal: CardSignal | undefined;
+  groupName?: string;
   typeBg: Record<string, string>;
   typeFg: Record<string, string>;
   typeLabels: Record<string, string>;
@@ -96,6 +97,7 @@ type WorkshopCardProps = {
 function WorkshopCardInner({
   item,
   signal,
+  groupName,
   typeBg,
   typeFg,
   typeLabels,
@@ -128,9 +130,11 @@ function WorkshopCardInner({
         ? { label: '🔥 Popüler', bg: c.errorContainer, fg: c.onErrorContainer }
         : null;
 
+  const attendeeCount = signal?.attendeeCount ?? getField(item, 'attendee_count', 0);
+
   return (
     <TouchableOpacity
-      activeOpacity={0.75}
+      activeOpacity={0.72}
       disabled={isOffline}
       onPress={onPress}
       style={[styles.card, themeShadow(shadows.sm, isDark)]}
@@ -138,30 +142,40 @@ function WorkshopCardInner({
       accessibilityHint="Atölye detaylarını açmak için dokun"
       accessibilityRole="button"
     >
+      {/* Left color accent stripe */}
+      <View style={[styles.cardAccent, { backgroundColor: color }]} />
+
       <View style={styles.cardHeader}>
         <View style={[styles.cardIcon, { backgroundColor: color }]}>
           <PText style={styles.cardEmoji}>{emoji}</PText>
         </View>
         <View style={styles.cardHeaderText}>
-          <PText style={styles.cardTitle} numberOfLines={1}>
+          {!!groupName && (
+            <PText style={[styles.cardGroup]} numberOfLines={1}>
+              {groupName}
+            </PText>
+          )}
+          {badge && (
+            <View style={[styles.badge, { backgroundColor: badge.bg }]}>
+              <PText style={[styles.badgeText, { color: badge.fg }]}>{badge.label}</PText>
+            </View>
+          )}
+          <PText style={styles.cardTitle} numberOfLines={2}>
             {item.title}
           </PText>
-          {!!desc && (
+          {!!desc && desc !== item.title && (
             <PText style={styles.cardDesc} numberOfLines={2}>
               {desc}
             </PText>
           )}
         </View>
-        {badge && (
-          <View style={[styles.badge, { backgroundColor: badge.bg }]}>
-            <PText style={[styles.badgeText, { color: badge.fg }]}>{badge.label}</PText>
-          </View>
-        )}
       </View>
 
       <View style={styles.cardFooter}>
         <View style={[styles.tag, { backgroundColor: typeBg[wType] ?? c.surfaceVariant }]}>
-          <PText style={[styles.tagText, { color: typeFg[wType] ?? c.textPrimary }]}>{typeLabels[wType] ?? wType}</PText>
+          <PText style={[styles.tagText, { color: typeFg[wType] ?? c.textPrimary }]}>
+            {typeLabels[wType] ?? wType}
+          </PText>
         </View>
         <View style={[styles.tag, { backgroundColor: c.surfaceVariant }]}>
           <PText style={[styles.tagText, { color: difficultyColors[difficulty] ?? c.textSecondary }]}>
@@ -171,6 +185,7 @@ function WorkshopCardInner({
         {!!durationLabel && <PText style={styles.footerMeta}>⏱ {durationLabel}</PText>}
         {sessionCount > 0 && <PText style={styles.footerMeta}>{sessionCount} oturum</PText>}
         <View style={styles.footerSpacer} />
+        {attendeeCount > 0 && <PText style={styles.footerMeta}>👥 {attendeeCount}</PText>}
         {scheduledDate ? (
           <PText style={styles.footerDate}>📅 {scheduledDate}</PText>
         ) : (
@@ -227,7 +242,7 @@ const DiscoverWorkshopGroupContent = ({ groupId, isOffline }: ContentProps) => {
   const [selectedSort, setSelectedSort] = React.useState<string>(sortOptions[0] ?? 'Tümü');
   const [selectedType, setSelectedType] = React.useState<string>(typeOptions[0]?.key ?? 'tumu');
 
-  const activeGroup = groupId ? getWorkshopGroups().find(g => g.id === groupId) ?? null : null;
+  const activeGroup = groupId ? (getWorkshopGroups().find(g => g.id === groupId) ?? null) : null;
   const workshops = groupId ? getWorkshopsForGroup(groupId) : getWorkshops();
 
   const availableTypeOptions = useMemo(() => {
@@ -250,9 +265,7 @@ const DiscoverWorkshopGroupContent = ({ groupId, isOffline }: ContentProps) => {
       const aDate = new Date(getField(a, 'updated_at', getField(a, 'created_at', '1970-01-01'))).getTime();
       return bDate - aDate;
     });
-    const newIdSet = new Set(
-      sortedByRecency.slice(0, Math.max(4, Math.ceil(workshops.length * 0.25))).map(w => w.id)
-    );
+    const newIdSet = new Set(sortedByRecency.slice(0, Math.max(4, Math.ceil(workshops.length * 0.25))).map(w => w.id));
     const popularityScores = new Map(
       workshops.map((w, index) => {
         const cnt = getField(w, 'attendee_count', 0);
@@ -373,6 +386,7 @@ const DiscoverWorkshopGroupContent = ({ groupId, isOffline }: ContentProps) => {
             key={item.id}
             item={item}
             signal={workshopSignals.get(item.id)}
+            groupName={activeGroup?.title}
             typeBg={typeBg}
             typeFg={typeFg}
             typeLabels={typeLabels}
@@ -382,9 +396,7 @@ const DiscoverWorkshopGroupContent = ({ groupId, isOffline }: ContentProps) => {
             isDark={isDark}
             styles={styles}
             colors={c}
-            onPress={() =>
-              navigation.navigate('Content', { screen: 'ContentWorkshopDetail', params: { id: item.id } })
-            }
+            onPress={() => navigation.navigate('Content', { screen: 'ContentWorkshopDetail', params: { id: item.id } })}
           />
         ))
       )}
@@ -443,6 +455,8 @@ export const DiscoverWorkshopGroupScreen = () => {
     );
   }
 
+  // console.log('DiscoverWorkshopGroupScreen is using mock data and should be replaced with real API integration.');
+
   return (
     <ScreenLayout title={groupTitle}>
       <DiscoverWorkshopGroupContent groupId={groupId} />
@@ -477,6 +491,15 @@ function makeStyles(c: ColorTokens) {
       marginBottom: spacing[1.5],
       overflow: 'hidden'
     },
+    cardAccent: {
+      position: 'absolute',
+      left: 0,
+      top: 0,
+      bottom: 0,
+      width: 4,
+      borderTopLeftRadius: radii.xl,
+      borderBottomLeftRadius: radii.xl
+    },
     cardHeader: {
       flexDirection: 'row',
       alignItems: 'flex-start',
@@ -500,6 +523,7 @@ function makeStyles(c: ColorTokens) {
       letterSpacing: -0.2,
       marginBottom: 3
     },
+    cardGroup: { fontSize: fontSizes.sm, color: c.textAccent, fontWeight: fontWeights.semiBold, marginBottom: 2 },
     cardDesc: { fontSize: fontSizes.base, color: c.textSecondary, lineHeight: 18 },
     badge: { paddingHorizontal: 7, paddingVertical: 3, borderRadius: radii.sm, alignSelf: 'flex-start', flexShrink: 0 },
     badgeText: { fontSize: fontSizes.xs, fontWeight: fontWeights.bold },
