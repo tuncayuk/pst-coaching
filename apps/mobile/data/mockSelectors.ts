@@ -157,18 +157,25 @@ export const getPackages = () =>
     description: p.description ?? null,
   }));
 export const getWorkshops = () => getRawWorkshops().map(normalizeWorkshop);
-export const getWorkshopGroups = () =>
-  getRawWorkshopGroups()
+export const getWorkshopGroups = () => {
+  // Build a live count map from actual workshop_group_id FK — no hardcoded numbers.
+  const countByGroup = new Map<string, number>();
+  for (const w of getRawWorkshops()) {
+    const gid = (w as any).workshop_group_id;
+    if (gid) countByGroup.set(gid, (countByGroup.get(gid) ?? 0) + 1);
+  }
+  return getRawWorkshopGroups()
     .map((group: any) => ({
       ...group,
       title: group.title ?? group.name ?? 'Atolye Grubu',
       description: group.description ?? '',
-      catalog_count: Number.isFinite(group.catalog_count) ? group.catalog_count : 0,
+      catalog_count: countByGroup.get(group.id) ?? 0,
       featured_workshop_ids: getList(group.featured_workshop_ids as string[]),
       delivery_modes: getList(group.delivery_modes as string[]),
       target_audiences: getList(group.target_audiences as string[]),
     }))
     .sort((a: any, b: any) => (a.order_index ?? 0) - (b.order_index ?? 0));
+};
 export const getEbooks = () => getRawEbooks().map(normalizeEbook);
 export const getEbookChapters = () =>
   getList(getData()?.ebook_chapters).map((ch: any) => ({
@@ -352,32 +359,9 @@ export const getPackagesForModule = (moduleId?: string) =>
 export const getWorkshopById = (id?: string) => getWorkshops().find(w => w.id === id);
 export const getWorkshopGroupById = (id?: string) => getWorkshopGroups().find((group: any) => group.id === id);
 
-const workshopMatchesGroup = (workshop: ReturnType<typeof getWorkshops>[number], group: any) => {
-  const workshopId = (workshop as any).id;
-  const featuredIds = new Set(getList(group.featured_workshop_ids as string[]));
-  if (featuredIds.has(workshopId)) {
-    return true;
-  }
-
-  const modeRules = new Set(getList(group.delivery_modes as string[]));
-  const audienceRules = new Set(getList(group.target_audiences as string[]));
-  const workshopMode = (workshop as any).delivery_mode;
-  const workshopAudience = (workshop as any).target_audience;
-
-  const modeMatch = modeRules.size === 0 || modeRules.has(workshopMode);
-  const audienceMatch = audienceRules.size === 0 || audienceRules.has(workshopAudience);
-  return modeMatch && audienceMatch;
-};
-
 export const getWorkshopsForGroup = (groupId?: string) => {
-  if (!groupId) {
-    return getWorkshops();
-  }
-  const group = getWorkshopGroupById(groupId);
-  if (!group) {
-    return getWorkshops();
-  }
-  return getWorkshops().filter(workshop => workshopMatchesGroup(workshop, group));
+  if (!groupId) return getWorkshops();
+  return getWorkshops().filter(w => (w as any).workshop_group_id === groupId);
 };
 
 export const getEbookById = (id?: string) => getEbooks().find(e => e.id === id);
