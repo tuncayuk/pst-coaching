@@ -1,419 +1,175 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useEffect, useMemo } from 'react';
-import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
+import React, { useMemo, useState } from 'react';
+import { StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
 
-import { PActivityIndicator, PButton, PText } from '../../components';
+import { PActivityIndicator, PText } from '../../components';
 import { OfflineNotice } from '../../components/OfflineNotice';
 import { ScreenLayout } from '../../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../../components/ScreenState';
 import { SkeletonBlock } from '../../components/SkeletonBlock';
 import { StateMessage } from '../../components/StateMessage';
-import {
-  getDiscoverWorkshopDifficultyColors,
-  getDiscoverWorkshopDifficultyLabels,
-  getDiscoverWorkshopSortOptions,
-  getDiscoverWorkshopTypeBackgroundColors,
-  getDiscoverWorkshopTypeForegroundColors,
-  getDiscoverWorkshopTypeLabels,
-  getDiscoverWorkshopTypeOptions,
-  getWorkshopGroups,
-  getWorkshops,
-  getWorkshopsForGroup
-} from '../../data/mockSelectors';
+import { getWorkshopGroups, getWorkshops } from '../../data/mockSelectors';
 import { ColorTokens, fontSizes, fontWeights, radii, shadows, spacing, themeShadow, useAppTheme } from '../../theme';
 
-type Workshop = ReturnType<typeof getWorkshops>[number];
+// ---------------------------------------------------------------------------
+// Group colour palette — deterministic per group id
+// ---------------------------------------------------------------------------
+const PALETTE = [
+  { bg: '#EDE9FE', fg: '#5B21B6' },
+  { bg: '#D1FAE5', fg: '#065F46' },
+  { bg: '#FEF3C7', fg: '#92400E' },
+  { bg: '#E0F7FA', fg: '#006064' },
+  { bg: '#FCE7F3', fg: '#831843' },
+  { bg: '#DBEAFE', fg: '#1E3A5F' },
+];
 
-const getField = <T,>(w: Workshop, key: string, fallback: T): T => ((w as any)[key] ?? fallback) as T;
-const normalizeToken = (value: string) =>
-  value
-    .toLowerCase()
-    .replace(/[ıİ]/g, 'i')
-    .replace(/[öÖ]/g, 'o')
-    .replace(/[üÜ]/g, 'u')
-    .replace(/[şŞ]/g, 's')
-    .replace(/[çÇ]/g, 'c')
-    .replace(/[ğĞ]/g, 'g')
-    .trim();
-
-const getMode = (w: Workshop) => getField(w, 'delivery_mode', getField(w, 'type', 'kamp'));
-
-const getDurationLabel = (w: Workshop) => {
-  const preset = getField(w, 'duration_label', '');
-  if (preset) return preset;
-  const mins = getField(w, 'total_duration_minutes', 0);
-  if (mins >= 60) return `${Math.round(mins / 60)} saat`;
-  return mins > 0 ? `${mins} dk` : '';
+const pickColor = (id: string) => {
+  let h = 0;
+  for (let i = 0; i < id.length; i++) h = (h * 31 + id.charCodeAt(i)) | 0;
+  return PALETTE[Math.abs(h) % PALETTE.length];
 };
 
-const getDifficulty = (w: Workshop) => {
-  const explicit = normalizeToken(getField(w, 'difficulty', ''));
-  if (explicit) return explicit;
-  const mins = getField(w, 'total_duration_minutes', 0);
-  if (mins >= 1200) return 'ileri';
-  if (mins >= 300) return 'orta';
-  return 'baslangic';
-};
-
-const getSessionCount = (w: Workshop) => {
-  const explicit = getField(w, 'session_count', 0);
-  if (explicit > 0) return explicit;
-  const mins = getField(w, 'total_duration_minutes', 0);
-  if (mins <= 0) return 0;
-  return Math.max(1, Math.round(mins / 90));
-};
+const toInitials = (title: string) =>
+  title
+    .split(' ')
+    .slice(0, 2)
+    .map(w => w[0] ?? '')
+    .join('')
+    .toUpperCase();
 
 // ---------------------------------------------------------------------------
-// WorkshopCard — self-contained for performance and readability
+// GroupTile
 // ---------------------------------------------------------------------------
-type CardSignal = {
-  isRecommended: boolean;
-  isNew: boolean;
-  isPopular: boolean;
-  popularityScore: number;
-  attendeeCount: number;
-};
+type Group = ReturnType<typeof getWorkshopGroups>[number];
 
-type WorkshopCardProps = {
-  item: Workshop;
-  signal: CardSignal | undefined;
-  typeBg: Record<string, string>;
-  typeFg: Record<string, string>;
-  typeLabels: Record<string, string>;
-  difficultyColors: Record<string, string>;
-  difficultyLabels: Record<string, string>;
-  isOffline: boolean;
-  isDark: boolean;
+type GroupTileProps = {
+  group: Group;
   styles: ReturnType<typeof makeStyles>;
-  colors: ColorTokens;
+  isDark: boolean;
   onPress: () => void;
 };
 
-function WorkshopCardInner({
-  item,
-  signal,
-  typeBg,
-  typeFg,
-  typeLabels,
-  difficultyColors,
-  difficultyLabels,
-  isOffline,
-  isDark,
-  styles,
-  colors: c,
-  onPress
-}: WorkshopCardProps) {
-    const wType = getMode(item);
-    const emoji: string = getField(item, 'emoji', '🎓');
-    const color: string = getField(item, 'color', c.surfaceVariant);
-    const durationLabel = getDurationLabel(item);
-    const sessionCount = getSessionCount(item);
-    const isRecommended = signal?.isRecommended ?? getField(item, 'is_recommended', false);
-    const isNew = signal?.isNew ?? getField(item, 'is_upcoming', false);
-    const isPopular = signal?.isPopular ?? getField(item, 'is_popular', false);
-    const difficulty = getDifficulty(item);
-    const scheduledDate: string | null = getField(item, 'scheduled_date', null);
-
-    // Show only the single highest-priority badge
-    const badge = isRecommended
-      ? { label: '★ Önerilen', bg: c.warningContainer, fg: c.onWarningContainer }
-      : isNew
-        ? { label: '✨ Yeni', bg: c.primaryContainer, fg: c.onPrimaryContainer }
-        : isPopular
-          ? { label: '🔥 Popüler', bg: c.errorContainer, fg: c.onErrorContainer }
-          : null;
-
-    const desc: string = getField(item, 'description', getField(item, 'theme', ''));
-    const diffColor = difficultyColors[difficulty] ?? c.textSecondary;
-    const diffLabel = difficultyLabels[difficulty] ?? difficulty;
-
-    return (
-      <TouchableOpacity
-        activeOpacity={0.75}
-        disabled={isOffline}
-        onPress={onPress}
-        style={[styles.card, themeShadow(shadows.sm, isDark)]}
-        accessibilityLabel={item.title}
-        accessibilityHint="Atölye detaylarını açmak için dokun"
-        accessibilityRole="button"
-      >
-        {/* Header row: icon + text + badge */}
-        <View style={styles.cardHeader}>
-          <View style={[styles.cardIcon, { backgroundColor: color }]}>
-            <PText style={styles.cardEmoji}>{emoji}</PText>
-          </View>
-          <View style={styles.cardHeaderText}>
-            <PText style={styles.cardTitle} numberOfLines={1}>
-              {item.title}
-            </PText>
-            {!!desc && (
-              <PText style={styles.cardDesc} numberOfLines={2}>
-                {desc}
-              </PText>
-            )}
-          </View>
-          {badge && (
-            <View style={[styles.badge, { backgroundColor: badge.bg }]}>
-              <PText style={[styles.badgeText, { color: badge.fg }]}>{badge.label}</PText>
-            </View>
-          )}
+function GroupTile({ group, styles, isDark, onPress }: GroupTileProps) {
+  const { bg, fg } = pickColor(group.id);
+  return (
+    <TouchableOpacity
+      style={[styles.tile, { backgroundColor: bg }, themeShadow(shadows.xs, isDark)]}
+      onPress={onPress}
+      activeOpacity={0.8}
+      accessibilityRole="button"
+      accessibilityLabel={`${group.title}, ${group.catalog_count} atölye`}
+    >
+      <View style={styles.tileTop}>
+        <View style={[styles.initials, { backgroundColor: `${fg}22` }]}>
+          <PText style={[styles.initialsText, { color: fg }]}>{toInitials(group.title)}</PText>
         </View>
-
-        {/* Footer row: type + difficulty + duration + pace */}
-        <View style={styles.cardFooter}>
-          <View style={[styles.tag, { backgroundColor: typeBg[wType] ?? c.surfaceVariant }]}>
-            <PText style={[styles.tagText, { color: typeFg[wType] ?? c.textPrimary }]}>{typeLabels[wType] ?? wType}</PText>
-          </View>
-          <View style={[styles.tag, { backgroundColor: c.surfaceVariant }]}>
-            <PText style={[styles.tagText, { color: diffColor }]}>{diffLabel}</PText>
-          </View>
-          {!!durationLabel && <PText style={styles.footerMeta}>⏱ {durationLabel}</PText>}
-          {sessionCount > 0 && <PText style={styles.footerMeta}>{sessionCount} oturum</PText>}
-          <View style={styles.footerSpacer} />
-          {scheduledDate ? (
-            <PText style={styles.footerDate}>📅 {scheduledDate}</PText>
-          ) : (
-            <PText style={[styles.footerDate, { color: c.textAccent }]}>Kendi hızında</PText>
-          )}
+        <View style={[styles.countBadge, { backgroundColor: `${fg}18` }]}>
+          <PText style={[styles.countText, { color: fg }]}>{group.catalog_count}</PText>
         </View>
-      </TouchableOpacity>
-    );
+      </View>
+      <PText style={[styles.tileTitle, { color: fg }]} numberOfLines={2}>
+        {group.title}
+      </PText>
+      {!!group.description && (
+        <PText style={styles.tileDesc} numberOfLines={2}>
+          {group.description}
+        </PText>
+      )}
+    </TouchableOpacity>
+  );
 }
 
-const WorkshopCard = React.memo(WorkshopCardInner);
-
 // ---------------------------------------------------------------------------
-// Main content
+// Catalogue content
 // ---------------------------------------------------------------------------
-const DiscoverWorkshopsContent = ({ isOffline }: { isOffline?: boolean }) => {
+const DiscoverWorkshopsCatalogContent = ({ isOffline }: { isOffline?: boolean }) => {
   const { colors: c, isDark } = useAppTheme();
   const styles = useMemo(() => makeStyles(c), [c]);
   const navigation = useNavigation<any>();
 
+  const [query, setQuery] = useState('');
+
   const groups = getWorkshopGroups();
-  const allCatalogCount = groups.reduce((sum, g) => sum + Number(g.catalog_count ?? 0), 0);
-  const groupOptions = useMemo(
-    () => [
-      { id: 'all', title: 'Tümü', description: '', catalog_count: allCatalogCount, featured_workshop_ids: [] },
-      ...groups
-    ],
-    [groups, allCatalogCount]
-  );
-
-  const sortOptionsRaw = getDiscoverWorkshopSortOptions();
-  const sortOptions = useMemo(
-    () => (sortOptionsRaw.length > 0 ? sortOptionsRaw : ['Tümü', 'Önerilen', 'Popüler', 'Yeni']),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
-  );
-
-  const typeOptionsRaw = getDiscoverWorkshopTypeOptions();
-  const typeOptions = useMemo(
-    () =>
-      typeOptionsRaw.length > 0
-        ? typeOptionsRaw
-        : [
-            { key: 'tumu', label: 'Tümü' },
-            { key: 'kamp', label: 'Kamp' },
-            { key: 'rehber', label: 'Rehber' },
-            { key: 'calisma_kitabi', label: 'Çalışma Kitabı' }
-          ],
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
-  );
-
-  const typeLabels = useMemo(() => getDiscoverWorkshopTypeLabels(), []);
-  const typeBg = useMemo(() => getDiscoverWorkshopTypeBackgroundColors(), []);
-  const typeFg = useMemo(() => getDiscoverWorkshopTypeForegroundColors(), []);
-  const difficultyLabels = useMemo(() => getDiscoverWorkshopDifficultyLabels(), []);
-  const difficultyColors = useMemo(() => getDiscoverWorkshopDifficultyColors(), []);
-
-  const [selectedGroupId, setSelectedGroupId] = React.useState<string>(groupOptions[0]?.id ?? 'all');
-  const [selectedSort, setSelectedSort] = React.useState<string>(sortOptions[0] ?? 'Tümü');
-  const [selectedType, setSelectedType] = React.useState<string>(typeOptions[0]?.key ?? 'tumu');
-
-  const activeGroup = groupOptions.find(g => g.id === selectedGroupId) ?? groupOptions[0] ?? null;
-  const workshops = selectedGroupId === 'all' ? getWorkshops() : getWorkshopsForGroup(selectedGroupId);
-
-  const availableTypeOptions = useMemo(() => {
-    if (selectedGroupId === 'all') return typeOptions;
-    const groupModes = new Set(activeGroup?.delivery_modes ?? []);
-    return typeOptions.filter(opt => opt.key === 'tumu' || groupModes.has(opt.key));
-  }, [activeGroup, selectedGroupId, typeOptions]);
-
-  // Only show the type filter when there are 2+ real types (more than "Tümü" alone)
-  const showTypeFilter = availableTypeOptions.length > 2;
-
-  useEffect(() => {
-    const valid = availableTypeOptions.some(o => o.key === selectedType);
-    if (!valid) setSelectedType(availableTypeOptions[0]?.key ?? 'tumu');
-  }, [availableTypeOptions, selectedType]);
-
-  const workshopSignals = useMemo(() => {
-    const featuredIds = new Set(activeGroup?.featured_workshop_ids ?? []);
-    const sortedByRecency = [...workshops].sort((a, b) => {
-      const bDate = new Date(getField(b, 'updated_at', getField(b, 'created_at', '1970-01-01'))).getTime();
-      const aDate = new Date(getField(a, 'updated_at', getField(a, 'created_at', '1970-01-01'))).getTime();
-      return bDate - aDate;
-    });
-    const newIdSet = new Set(
-      sortedByRecency.slice(0, Math.max(4, Math.ceil(workshops.length * 0.25))).map(w => w.id)
-    );
-    const popularityScores = new Map(
-      workshops.map((w, index) => {
-        const cnt = getField(w, 'attendee_count', 0);
-        const featuredBoost = featuredIds.has(w.id) ? 40 : 0;
-        const durationBoost = Math.round(getField(w, 'total_duration_minutes', 0) / 30);
-        const score = cnt > 0 ? cnt : featuredBoost + durationBoost + (workshops.length - index);
-        return [w.id, score];
-      })
-    );
-    const threshold = Math.max(1, Math.ceil(workshops.length * 0.3));
-    const popularIds = new Set(
-      [...workshops]
-        .sort((a, b) => (popularityScores.get(b.id) ?? 0) - (popularityScores.get(a.id) ?? 0))
-        .slice(0, threshold)
-        .map(w => w.id)
-    );
-    return new Map(
-      workshops.map(w => {
-        const cnt = getField(w, 'attendee_count', 0);
-        const isRecommended = getField(w, 'is_recommended', false) || featuredIds.has(w.id);
-        const isNew = getField(w, 'is_upcoming', false) || newIdSet.has(w.id);
-        const isPopular = getField(w, 'is_popular', false) || cnt > 0 || popularIds.has(w.id);
-        const score = popularityScores.get(w.id) ?? 0;
-        return [
-          w.id,
-          {
-            isRecommended,
-            isNew,
-            isPopular,
-            popularityScore: score,
-            attendeeCount: cnt > 0 ? cnt : Math.max(12, Math.round(score * 1.4))
-          }
-        ];
-      })
-    );
-  }, [activeGroup, workshops]);
+  const totalCount = getWorkshops().length;
 
   const filtered = useMemo(() => {
-    const sortKey = normalizeToken(selectedSort);
-    let list = workshops.filter(w => selectedType === 'tumu' || getMode(w) === selectedType);
-    if (sortKey === 'onerilen') list = list.filter(w => workshopSignals.get(w.id)?.isRecommended);
-    if (sortKey === 'yeni') list = list.filter(w => workshopSignals.get(w.id)?.isNew);
-    if (sortKey === 'populer') {
-      list = [...list].sort((a, b) => (workshopSignals.get(b.id)?.popularityScore ?? 0) - (workshopSignals.get(a.id)?.popularityScore ?? 0));
-    } else if (sortKey === 'yeni') {
-      list = [...list].sort((a, b) => {
-        const bDate = new Date(getField(b, 'updated_at', getField(b, 'created_at', '1970-01-01'))).getTime();
-        const aDate = new Date(getField(a, 'updated_at', getField(a, 'created_at', '1970-01-01'))).getTime();
-        return bDate - aDate;
-      });
+    if (!query.trim()) return groups;
+    const q = query.toLowerCase();
+    return groups.filter(g => g.title.toLowerCase().includes(q) || (g.description ?? '').toLowerCase().includes(q));
+  }, [groups, query]);
+
+  const navigateToGroup = (groupId: string | null, groupTitle: string) =>
+    navigation.navigate('DiscoverWorkshopGroup', { groupId, groupTitle });
+
+  // Pair groups into rows of 2 for the grid
+  const rows = useMemo(() => {
+    const pairs: Group[][] = [];
+    for (let i = 0; i < filtered.length; i += 2) {
+      pairs.push(filtered.slice(i, i + 2));
     }
-    return list;
-  }, [selectedSort, selectedType, workshopSignals, workshops]);
-
-  const resetFilters = () => {
-    setSelectedGroupId(groupOptions[0]?.id ?? 'all');
-    setSelectedSort(sortOptions[0] ?? 'Tümü');
-    setSelectedType(typeOptions[0]?.key ?? 'tumu');
-  };
-
-  const chipProps = (active: boolean, isSecondary = false) => ({
-    mode: (active ? 'contained' : 'outlined') as 'contained' | 'outlined',
-    buttonColor: active ? (isSecondary ? c.secondary : c.primary) : 'transparent',
-    textColor: active ? (isSecondary ? c.onSecondary : c.onPrimary) : c.textBrand
-  });
+    return pairs;
+  }, [filtered]);
 
   return (
     <View>
-      {/* Group filter */}
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.chipsRow}>
-        {groupOptions.map(group => (
-          <PButton
-            key={group.id}
-            compact
-            disabled={isOffline}
-            style={styles.chip}
-            contentStyle={styles.chipContent}
-            labelStyle={styles.chipLabel}
-            onPress={() => setSelectedGroupId(group.id)}
-            {...chipProps(selectedGroupId === group.id)}
-          >
-            {group.title}
-          </PButton>
-        ))}
-      </ScrollView>
+      {/* Search bar */}
+      <View style={[styles.searchBar, { borderColor: c.outline, backgroundColor: c.surface }]}>
+        <PText style={styles.searchIcon}>🔍</PText>
+        <TextInput
+          style={[styles.searchInput, { color: c.textPrimary }]}
+          placeholder="Grup ara..."
+          placeholderTextColor={c.textTertiary}
+          value={query}
+          onChangeText={setQuery}
+          returnKeyType="search"
+          clearButtonMode="while-editing"
+          editable={!isOffline}
+          accessibilityLabel="Grup ara"
+        />
+      </View>
 
-      {/* Sort filter */}
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.chipsRow}>
-        {sortOptions.map(label => (
-          <PButton
-            key={label}
-            compact
-            disabled={isOffline}
-            style={styles.chip}
-            contentStyle={styles.chipContent}
-            labelStyle={styles.chipLabel}
-            onPress={() => setSelectedSort(label)}
-            {...chipProps(selectedSort === label, true)}
-          >
-            {label}
-          </PButton>
-        ))}
-      </ScrollView>
-
-      {/* Type filter — only shown when multiple delivery types exist */}
-      {showTypeFilter && (
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.chipsRow}>
-          {availableTypeOptions.map(opt => (
-            <PButton
-              key={opt.key}
-              compact
-              disabled={isOffline}
-              style={styles.chip}
-              contentStyle={styles.chipContent}
-              labelStyle={styles.chipLabel}
-              onPress={() => setSelectedType(opt.key)}
-              {...chipProps(selectedType === opt.key)}
-            >
-              {opt.label}
-            </PButton>
-          ))}
-        </ScrollView>
+      {/* All workshops — full-width hero tile */}
+      {!query.trim() && (
+        <TouchableOpacity
+          style={[styles.heroTile, { backgroundColor: c.secondaryContainer }, themeShadow(shadows.sm, isDark)]}
+          onPress={() => navigateToGroup(null, 'Tüm Atölyeler')}
+          activeOpacity={0.8}
+          disabled={isOffline}
+          accessibilityRole="button"
+          accessibilityLabel={`Tüm Atölyeler, ${totalCount} atölye`}
+        >
+          <View style={styles.heroTileLeft}>
+            <PText style={styles.heroTileTitle}>Tüm Atölyeler</PText>
+            <PText style={styles.heroTileDesc}>Tüm gruplardan {totalCount} atölye</PText>
+          </View>
+          <PText style={styles.heroTileArrow}>→</PText>
+        </TouchableOpacity>
       )}
 
-      {/* Result count */}
-      <PText style={styles.resultCount}>
-        {filtered.length} atölye
-      </PText>
-
-      {/* Workshop list */}
+      {/* Group grid */}
       {filtered.length === 0 ? (
         <StateMessage
-          title="Sonuç bulunamadı"
-          description="Başka bir grup veya filtre deneyin."
-          actionLabel="Filtreleri Sıfırla"
-          icon="filter-remove-outline"
-          onAction={resetFilters}
+          title="Grup bulunamadı"
+          description="Farklı bir arama deneyin."
+          icon="magnify"
+          actionLabel="Temizle"
+          onAction={() => setQuery('')}
         />
       ) : (
-        filtered.map(item => (
-          <WorkshopCard
-            key={item.id}
-            item={item}
-            signal={workshopSignals.get(item.id)}
-            typeBg={typeBg}
-            typeFg={typeFg}
-            typeLabels={typeLabels}
-            difficultyColors={difficultyColors}
-            difficultyLabels={difficultyLabels}
-            isOffline={isOffline ?? false}
-            isDark={isDark}
-            styles={styles}
-            colors={c}
-            onPress={() => navigation.navigate('Content', { screen: 'ContentWorkshopDetail', params: { id: item.id } })}
-          />
+        rows.map((pair, rowIdx) => (
+          <View key={rowIdx} style={styles.gridRow}>
+            {pair.map(group => (
+              <GroupTile
+                key={group.id}
+                group={group}
+                styles={styles}
+                isDark={isDark}
+                onPress={() => navigateToGroup(group.id, group.title)}
+              />
+            ))}
+            {/* Fill empty cell when odd number of groups */}
+            {pair.length === 1 && <View style={styles.tilePlaceholder} />}
+          </View>
         ))
       )}
 
@@ -432,8 +188,7 @@ export const DiscoverWorkshopsScreen = ({ route }: { route?: { params?: { state?
     return (
       <ScreenLayout title="Atölyeler">
         <PActivityIndicator animating />
-        <SkeletonBlock height={36} />
-        <SkeletonBlock height={36} />
+        <SkeletonBlock height={48} />
         <SkeletonBlock height={120} />
         <SkeletonBlock height={120} />
         <SkeletonBlock height={120} />
@@ -472,14 +227,14 @@ export const DiscoverWorkshopsScreen = ({ route }: { route?: { params?: { state?
     return (
       <ScreenLayout title="Atölyeler" subtitle="Canlı ve kayıtlı atölyeler">
         <OfflineNotice />
-        <DiscoverWorkshopsContent isOffline />
+        <DiscoverWorkshopsCatalogContent isOffline />
       </ScreenLayout>
     );
   }
 
   return (
     <ScreenLayout title="Atölyeler" subtitle="Canlı ve kayıtlı atölyeler">
-      <DiscoverWorkshopsContent />
+      <DiscoverWorkshopsCatalogContent />
     </ScreenLayout>
   );
 };
@@ -489,83 +244,93 @@ export const DiscoverWorkshopsScreen = ({ route }: { route?: { params?: { state?
 // ---------------------------------------------------------------------------
 function makeStyles(c: ColorTokens) {
   return StyleSheet.create({
-    // Filter chips
-    chipsRow: { gap: spacing[1], paddingBottom: spacing[1], paddingHorizontal: 2 },
-    chip: { borderRadius: radii.full, elevation: 0 },
-    chipContent: { height: 34, paddingHorizontal: 4 },
-    chipLabel: { fontSize: fontSizes.md, fontWeight: fontWeights.semiBold },
-
-    // Result count
-    resultCount: {
-      fontSize: fontSizes.sm,
-      color: c.textTertiary,
-      fontWeight: fontWeights.semiBold,
-      marginBottom: spacing[1.5],
-      paddingHorizontal: 2
-    },
-
-    // Workshop card
-    card: {
-      backgroundColor: c.surface,
-      borderRadius: radii.xl,
-      marginBottom: spacing[1.5],
-      overflow: 'hidden'
-    },
-    cardHeader: {
+    // Search
+    searchBar: {
       flexDirection: 'row',
-      alignItems: 'flex-start',
-      gap: spacing[1.5],
-      padding: spacing[2]
-    },
-    cardIcon: {
-      width: 48,
-      height: 48,
-      borderRadius: radii.lg,
       alignItems: 'center',
-      justifyContent: 'center',
-      flexShrink: 0
+      borderWidth: 1,
+      borderRadius: radii.xl,
+      paddingHorizontal: spacing[1.5],
+      paddingVertical: spacing[1],
+      marginBottom: spacing[2],
+      gap: spacing[1]
     },
-    cardEmoji: { fontSize: fontSizes['5xl'] },
-    cardHeaderText: { flex: 1 },
-    cardTitle: {
-      fontSize: fontSizes['2xl'],
+    searchIcon: { fontSize: fontSizes.lg },
+    searchInput: {
+      flex: 1,
+      fontSize: fontSizes.lg,
+      paddingVertical: 0
+    },
+
+    // Hero tile (Tüm Atölyeler)
+    heroTile: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      borderRadius: radii.xl,
+      paddingHorizontal: spacing[2],
+      paddingVertical: spacing[2],
+      marginBottom: spacing[1.5]
+    },
+    heroTileLeft: { flex: 1 },
+    heroTileTitle: {
+      fontSize: fontSizes['3xl'],
       fontWeight: fontWeights.bold,
       color: c.textPrimary,
-      letterSpacing: -0.2,
-      marginBottom: 3
+      marginBottom: 2
     },
-    cardDesc: {
-      fontSize: fontSizes.base,
-      color: c.textSecondary,
-      lineHeight: 18
-    },
+    heroTileDesc: { fontSize: fontSizes.md, color: c.textSecondary },
+    heroTileArrow: { fontSize: fontSizes['4xl'], color: c.textBrand },
 
-    // Single priority badge (top-right of header)
-    badge: {
-      paddingHorizontal: 7,
-      paddingVertical: 3,
-      borderRadius: radii.sm,
-      alignSelf: 'flex-start',
-      flexShrink: 0
-    },
-    badgeText: { fontSize: fontSizes.xs, fontWeight: fontWeights.bold },
-
-    // Card footer row: tags + duration + pace
-    cardFooter: {
+    // Group grid
+    gridRow: {
       flexDirection: 'row',
-      alignItems: 'center',
-      flexWrap: 'wrap',
-      gap: 6,
-      paddingHorizontal: spacing[2],
-      paddingBottom: spacing[1.5],
-      borderTopWidth: StyleSheet.hairlineWidth,
-      borderTopColor: c.outlineVariant
+      gap: spacing[1.5],
+      marginBottom: spacing[1.5]
     },
-    tag: { paddingHorizontal: 7, paddingVertical: 3, borderRadius: radii.sm },
-    tagText: { fontSize: fontSizes.sm, fontWeight: fontWeights.bold },
-    footerMeta: { fontSize: fontSizes.sm, color: c.textTertiary },
-    footerSpacer: { flex: 1 },
-    footerDate: { fontSize: fontSizes.sm, color: c.textTertiary },
+    tile: {
+      flex: 1,
+      borderRadius: radii.xl,
+      padding: spacing[2],
+      minHeight: 140,
+      justifyContent: 'space-between'
+    },
+    tilePlaceholder: { flex: 1 },
+    tileTop: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'flex-start',
+      marginBottom: spacing[1.5]
+    },
+    initials: {
+      width: 44,
+      height: 44,
+      borderRadius: radii.lg,
+      alignItems: 'center',
+      justifyContent: 'center'
+    },
+    initialsText: {
+      fontSize: fontSizes['2xl'],
+      fontWeight: fontWeights.black
+    },
+    countBadge: {
+      borderRadius: radii.md,
+      paddingHorizontal: spacing[1],
+      paddingVertical: 3
+    },
+    countText: {
+      fontSize: fontSizes.md,
+      fontWeight: fontWeights.extraBold
+    },
+    tileTitle: {
+      fontSize: fontSizes.lg,
+      fontWeight: fontWeights.bold,
+      marginBottom: 4
+    },
+    tileDesc: {
+      fontSize: fontSizes.sm,
+      color: c.textSecondary,
+      lineHeight: 16
+    },
 
     bottomSpacer: { height: spacing[4] }
   });

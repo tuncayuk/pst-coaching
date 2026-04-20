@@ -34,6 +34,10 @@ const cases: { name: keyof DiscoverStackParamList; text: string }[] = [
     text: 'Canlı ve kayıtlı atölyeler'
   },
   {
+    name: 'DiscoverWorkshopGroup',
+    text: 'Atölyeler'
+  },
+  {
     name: 'DiscoverModules',
     text: 'Kısa modüllerle ilerle'
   },

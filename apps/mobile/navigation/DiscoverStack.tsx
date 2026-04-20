@@ -16,6 +16,7 @@ import { DiscoverCatalogScreen } from '../screens/discover/DiscoverCatalogScreen
 import { DiscoverEbooksScreen } from '../screens/discover/DiscoverEbooksScreen';
 import { DiscoverJourneysScreen } from '../screens/discover/DiscoverJourneysScreen';
 import { DiscoverModulesScreen } from '../screens/discover/DiscoverModulesScreen';
+import { DiscoverWorkshopGroupScreen } from '../screens/discover/DiscoverWorkshopGroupScreen';
 import { DiscoverWorkshopsScreen } from '../screens/discover/DiscoverWorkshopsScreen';
 
 type ScreenStateParam = { state?: ScreenState } | undefined;
@@ -38,6 +39,7 @@ export type DiscoverStackParamList = {
   // Content browsing
   DiscoverJourneys: ScreenStateParam;
   DiscoverWorkshops: ScreenStateParam;
+  DiscoverWorkshopGroup: { groupId: string | null; groupTitle: string; state?: ScreenState };
   DiscoverModules: ScreenStateParam;
   DiscoverEbooks: ScreenStateParam;
 };
@@ -68,6 +70,7 @@ export const DiscoverStack = ({ initialRouteName = 'DiscoverCatalog' }: Discover
       {/* Content browsing */}
       <Stack.Screen name="DiscoverJourneys" component={DiscoverJourneysScreen} />
       <Stack.Screen name="DiscoverWorkshops" component={DiscoverWorkshopsScreen} />
+      <Stack.Screen name="DiscoverWorkshopGroup" component={DiscoverWorkshopGroupScreen} />
       <Stack.Screen name="DiscoverModules" component={DiscoverModulesScreen} />
       <Stack.Screen name="DiscoverEbooks" component={DiscoverEbooksScreen} />
     </Stack.Navigator>
