@@ -82,7 +82,7 @@ function GroupTile({ group, styles, isDark, onPress }: GroupTileProps) {
 // ---------------------------------------------------------------------------
 // Catalogue content
 // ---------------------------------------------------------------------------
-const DiscoverWorkshopsCatalogContent = ({ isOffline }: { isOffline?: boolean }) => {
+const WorkshopGroupsContent = ({ isOffline }: { isOffline?: boolean }) => {
   const { colors: c, isDark } = useAppTheme();
   const styles = useMemo(() => makeStyles(c), [c]);
   const navigation = useNavigation<any>();
@@ -227,14 +227,14 @@ export const DiscoverWorkshopsScreen = ({ route }: { route?: { params?: { state?
     return (
       <ScreenLayout title="Atölyeler" subtitle="Canlı ve kayıtlı atölyeler">
         <OfflineNotice />
-        <DiscoverWorkshopsCatalogContent isOffline />
+        <WorkshopGroupsContent isOffline />
       </ScreenLayout>
     );
   }
 
   return (
     <ScreenLayout title="Atölyeler" subtitle="Canlı ve kayıtlı atölyeler">
-      <DiscoverWorkshopsCatalogContent />
+      <WorkshopGroupsContent />
     </ScreenLayout>
   );
 };
