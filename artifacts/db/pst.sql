@@ -35,6 +35,9 @@ CREATE TYPE verification_status AS ENUM ('pending', 'verified', 'failed');
 CREATE TYPE receipt_status AS ENUM ('verified', 'expired', 'refunded');
 
 CREATE TYPE content_entity_type AS ENUM ('journey', 'module', 'package', 'workshop', 'ebook');
+CREATE TYPE content_source_type AS ENUM (
+    'journey-of-discoveries', 'universe-of-emotions', 'books', 'workshops'
+);
 CREATE TYPE journey_level AS ENUM ('baslangic', 'beginner', 'basico', 'orta', 'ileri');
 CREATE TYPE delivery_mode AS ENUM ('kamp', 'rehber', 'calisma_kitabi');
 CREATE TYPE workshop_stage_type AS ENUM (
@@ -270,13 +273,13 @@ CREATE INDEX idx_purchase_receipts_store_ext        ON purchase_receipts (store_
 -- =============================================================================
 
 CREATE TABLE content_sources (
-    id              TEXT        PRIMARY KEY,
+    id              UUID        PRIMARY KEY,
     title           TEXT        NOT NULL,
     subtitle        TEXT,
     description     TEXT        NOT NULL DEFAULT '',
     icon            TEXT,
     accent_color    TEXT,
-    content_type    content_entity_type NOT NULL,
+    content_source_type content_source_type NOT NULL,
     catalog_screen  TEXT,
     order_index     SMALLINT    NOT NULL DEFAULT 0,
     created_at      TIMESTAMPTZ NOT NULL DEFAULT now(),
@@ -287,7 +290,7 @@ CREATE TABLE content_sources (
 CREATE TABLE content_items (
     id              UUID                NOT NULL DEFAULT gen_random_uuid(),
     entity_type     content_entity_type NOT NULL,
-    source_id       TEXT                REFERENCES content_sources (id) ON DELETE SET NULL,
+    source_id       UUID                REFERENCES content_sources (id) ON DELETE SET NULL,
     language_code   language_code       NOT NULL DEFAULT 'tr',
     is_published    BOOLEAN             NOT NULL DEFAULT false,
     created_at      TIMESTAMPTZ         NOT NULL DEFAULT now(),
@@ -1097,13 +1100,13 @@ COMMENT ON COLUMN purchase_receipts.updated_at          IS 'Record last-update t
 
 -- ---------------- content_sources ----------------
 COMMENT ON TABLE  content_sources              IS 'Catalogue metadata for top-level content collections shown on the Discover screen.';
-COMMENT ON COLUMN content_sources.id           IS 'Slug-style primary key (e.g. src-atolyeler).';
+COMMENT ON COLUMN content_sources.id           IS 'UUID primary key for a content source row.';
 COMMENT ON COLUMN content_sources.title        IS 'Display name of the content source.';
 COMMENT ON COLUMN content_sources.subtitle     IS 'Short tagline shown below the title on catalogue cards.';
 COMMENT ON COLUMN content_sources.description  IS 'Full-length descriptive text shown on the source detail screen.';
 COMMENT ON COLUMN content_sources.icon         IS 'Material Community Icons name used as the source icon.';
 COMMENT ON COLUMN content_sources.accent_color IS 'Hex accent colour for branding this source in the UI.';
-COMMENT ON COLUMN content_sources.content_type IS 'Entity type all items under this source belong to.';
+COMMENT ON COLUMN content_sources.content_source_type IS 'Source category (journey-of-discoveries | universe-of-emotions | books | workshops).';
 COMMENT ON COLUMN content_sources.catalog_screen IS 'Navigation route name of the catalogue screen for this source.';
 COMMENT ON COLUMN content_sources.order_index  IS 'Display order on the Discover screen (ascending).';
 COMMENT ON COLUMN content_sources.created_at   IS 'Record creation timestamp (UTC).';

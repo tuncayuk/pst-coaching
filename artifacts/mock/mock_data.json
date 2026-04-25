@@ -252,7 +252,7 @@
     {
       "id": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
       "entity_type": "journey",
-      "source_id": "src-kesifler-yolculugu",
+      "source_id": "0a000000-0000-0000-0000-000000000001",
       "language_code": "tr",
       "is_published": true,
       "created_at": "2025-12-01T10:00:00Z",
@@ -261,7 +261,7 @@
     {
       "id": "abababab-0000-0000-0000-000000000001",
       "entity_type": "journey",
-      "source_id": "src-kesifler-yolculugu",
+      "source_id": "0a000000-0000-0000-0000-000000000001",
       "language_code": "tr",
       "is_published": true,
       "created_at": "2025-12-01T10:00:00Z",
@@ -270,7 +270,7 @@
     {
       "id": "abababab-0000-0000-0000-000000000002",
       "entity_type": "journey",
-      "source_id": "src-kesifler-yolculugu",
+      "source_id": "0a000000-0000-0000-0000-000000000001",
       "language_code": "tr",
       "is_published": true,
       "created_at": "2025-12-01T10:00:00Z",
@@ -279,7 +279,7 @@
     {
       "id": "abababab-0000-0000-0000-000000000003",
       "entity_type": "journey",
-      "source_id": "src-kesifler-yolculugu",
+      "source_id": "0a000000-0000-0000-0000-000000000001",
       "language_code": "en",
       "is_published": true,
       "created_at": "2025-12-01T10:00:00Z",
@@ -288,7 +288,7 @@
     {
       "id": "abababab-0000-0000-0000-000000000004",
       "entity_type": "journey",
-      "source_id": "src-kesifler-yolculugu",
+      "source_id": "0a000000-0000-0000-0000-000000000001",
       "language_code": "es",
       "is_published": true,
       "created_at": "2025-12-01T10:00:00Z",
@@ -297,7 +297,7 @@
     {
       "id": "cccccccc-cccc-cccc-cccc-cccccccccccc",
       "entity_type": "module",
-      "source_id": "src-duygular-evreni",
+      "source_id": "0a000000-0000-0000-0000-000000000002",
       "language_code": "tr",
       "is_published": true,
       "created_at": "2025-12-01T10:00:00Z",
@@ -306,7 +306,7 @@
     {
       "id": "cccccccc-0000-0000-0000-000000000001",
       "entity_type": "module",
-      "source_id": "src-duygular-evreni",
+      "source_id": "0a000000-0000-0000-0000-000000000002",
       "language_code": "tr",
       "is_published": true,
       "created_at": "2025-12-01T10:00:00Z",
@@ -315,7 +315,7 @@
     {
       "id": "cccccccc-0000-0000-0000-000000000002",
       "entity_type": "module",
-      "source_id": "src-duygular-evreni",
+      "source_id": "0a000000-0000-0000-0000-000000000002",
       "language_code": "tr",
       "is_published": true,
       "created_at": "2025-12-01T10:00:00Z",
@@ -324,7 +324,7 @@
     {
       "id": "cccccccc-0000-0000-0000-000000000003",
       "entity_type": "module",
-      "source_id": "src-duygular-evreni",
+      "source_id": "0a000000-0000-0000-0000-000000000002",
       "language_code": "tr",
       "is_published": true,
       "created_at": "2025-12-01T10:00:00Z",
@@ -333,7 +333,7 @@
     {
       "id": "cccccccc-0000-0000-0000-000000000004",
       "entity_type": "module",
-      "source_id": "src-duygular-evreni",
+      "source_id": "0a000000-0000-0000-0000-000000000002",
       "language_code": "tr",
       "is_published": true,
       "created_at": "2025-12-01T10:00:00Z",
@@ -342,7 +342,7 @@
     {
       "id": "cccccccc-0000-0000-0000-000000000005",
       "entity_type": "module",
-      "source_id": "src-duygular-evreni",
+      "source_id": "0a000000-0000-0000-0000-000000000002",
       "language_code": "tr",
       "is_published": true,
       "created_at": "2025-12-01T10:00:00Z",
@@ -351,7 +351,7 @@
     {
       "id": "cccccccc-0000-0000-0000-000000000006",
       "entity_type": "module",
-      "source_id": "src-duygular-evreni",
+      "source_id": "0a000000-0000-0000-0000-000000000002",
       "language_code": "tr",
       "is_published": true,
       "created_at": "2025-12-01T10:00:00Z",
@@ -360,7 +360,7 @@
     {
       "id": "cccccccc-0000-0000-0000-000000000007",
       "entity_type": "module",
-      "source_id": "src-duygular-evreni",
+      "source_id": "0a000000-0000-0000-0000-000000000002",
       "language_code": "tr",
       "is_published": true,
       "created_at": "2025-12-01T10:00:00Z",
@@ -369,7 +369,7 @@
     {
       "id": "cccccccc-0000-0000-0000-000000000008",
       "entity_type": "module",
-      "source_id": "src-duygular-evreni",
+      "source_id": "0a000000-0000-0000-0000-000000000002",
       "language_code": "tr",
       "is_published": true,
       "created_at": "2025-12-01T10:00:00Z",
@@ -378,7 +378,7 @@
     {
       "id": "cccccccc-0000-0000-0000-000000000009",
       "entity_type": "module",
-      "source_id": "src-duygular-evreni",
+      "source_id": "0a000000-0000-0000-0000-000000000002",
       "language_code": "tr",
       "is_published": true,
       "created_at": "2025-12-01T10:00:00Z",
@@ -387,7 +387,7 @@
     {
       "id": "cccccccc-0000-0000-0000-000000000010",
       "entity_type": "module",
-      "source_id": "src-duygular-evreni",
+      "source_id": "0a000000-0000-0000-0000-000000000002",
       "language_code": "tr",
       "is_published": true,
       "created_at": "2025-12-01T10:00:00Z",
@@ -396,7 +396,7 @@
     {
       "id": "eeeeeeee-0000-0000-0000-000000000000",
       "entity_type": "workshop",
-      "source_id": "src-atolyeler",
+      "source_id": "0a000000-0000-0000-0000-000000000004",
       "language_code": "tr",
       "is_published": true,
       "created_at": "2026-01-01T00:00:00Z",
@@ -405,7 +405,7 @@
     {
       "id": "eeeeeeee-0000-0000-0000-000000000001",
       "entity_type": "workshop",
-      "source_id": "src-atolyeler",
+      "source_id": "0a000000-0000-0000-0000-000000000004",
       "language_code": "tr",
       "is_published": true,
       "created_at": "2026-01-01T00:00:00Z",
@@ -414,7 +414,7 @@
     {
       "id": "eeeeeeee-0000-0000-0000-000000000002",
       "entity_type": "workshop",
-      "source_id": "src-atolyeler",
+      "source_id": "0a000000-0000-0000-0000-000000000004",
       "language_code": "tr",
       "is_published": true,
       "created_at": "2026-01-01T00:00:00Z",
@@ -423,7 +423,7 @@
     {
       "id": "eeeeeeee-0000-0000-0000-000000000003",
       "entity_type": "workshop",
-      "source_id": "src-atolyeler",
+      "source_id": "0a000000-0000-0000-0000-000000000004",
       "language_code": "tr",
       "is_published": true,
       "created_at": "2026-01-01T00:00:00Z",
@@ -432,7 +432,7 @@
     {
       "id": "eeeeeeee-0000-0000-0000-000000000004",
       "entity_type": "workshop",
-      "source_id": "src-atolyeler",
+      "source_id": "0a000000-0000-0000-0000-000000000004",
       "language_code": "tr",
       "is_published": true,
       "created_at": "2026-01-01T00:00:00Z",
@@ -441,7 +441,7 @@
     {
       "id": "eeeeeeee-0000-0000-0000-000000000005",
       "entity_type": "workshop",
-      "source_id": "src-atolyeler",
+      "source_id": "0a000000-0000-0000-0000-000000000004",
       "language_code": "tr",
       "is_published": true,
       "created_at": "2026-01-01T00:00:00Z",
@@ -450,7 +450,7 @@
     {
       "id": "eeeeeeee-0000-0000-0000-000000000006",
       "entity_type": "workshop",
-      "source_id": "src-atolyeler",
+      "source_id": "0a000000-0000-0000-0000-000000000004",
       "language_code": "tr",
       "is_published": true,
       "created_at": "2026-01-01T00:00:00Z",
@@ -459,7 +459,7 @@
     {
       "id": "eeeeeeee-0000-0000-0000-000000000007",
       "entity_type": "workshop",
-      "source_id": "src-atolyeler",
+      "source_id": "0a000000-0000-0000-0000-000000000004",
       "language_code": "tr",
       "is_published": true,
       "created_at": "2026-01-01T00:00:00Z",
@@ -468,7 +468,7 @@
     {
       "id": "eeeeeeee-0000-0000-0000-000000000008",
       "entity_type": "workshop",
-      "source_id": "src-atolyeler",
+      "source_id": "0a000000-0000-0000-0000-000000000004",
       "language_code": "tr",
       "is_published": true,
       "created_at": "2026-01-01T00:00:00Z",
@@ -477,7 +477,7 @@
     {
       "id": "eeeeeeee-0000-0000-0000-000000000009",
       "entity_type": "workshop",
-      "source_id": "src-atolyeler",
+      "source_id": "0a000000-0000-0000-0000-000000000004",
       "language_code": "tr",
       "is_published": true,
       "created_at": "2026-01-01T00:00:00Z",
@@ -486,7 +486,7 @@
     {
       "id": "eeeeeeee-0000-0000-0000-000000000010",
       "entity_type": "workshop",
-      "source_id": "src-atolyeler",
+      "source_id": "0a000000-0000-0000-0000-000000000004",
       "language_code": "tr",
       "is_published": true,
       "created_at": "2026-01-01T00:00:00Z",
@@ -495,7 +495,7 @@
     {
       "id": "eeeeeeee-0000-0000-0000-000000000011",
       "entity_type": "workshop",
-      "source_id": "src-atolyeler",
+      "source_id": "0a000000-0000-0000-0000-000000000004",
       "language_code": "tr",
       "is_published": true,
       "created_at": "2026-01-01T00:00:00Z",
@@ -504,7 +504,7 @@
     {
       "id": "eeeeeeee-0000-0000-0000-000000000012",
       "entity_type": "workshop",
-      "source_id": "src-atolyeler",
+      "source_id": "0a000000-0000-0000-0000-000000000004",
       "language_code": "tr",
       "is_published": true,
       "created_at": "2026-01-01T00:00:00Z",
@@ -513,7 +513,7 @@
     {
       "id": "eeeeeeee-0000-0000-0000-000000000013",
       "entity_type": "workshop",
-      "source_id": "src-atolyeler",
+      "source_id": "0a000000-0000-0000-0000-000000000004",
       "language_code": "tr",
       "is_published": true,
       "created_at": "2026-01-01T00:00:00Z",
@@ -522,7 +522,7 @@
     {
       "id": "eeeeeeee-0000-0000-0000-000000000014",
       "entity_type": "workshop",
-      "source_id": "src-atolyeler",
+      "source_id": "0a000000-0000-0000-0000-000000000004",
       "language_code": "tr",
       "is_published": true,
       "created_at": "2026-01-01T00:00:00Z",
@@ -531,7 +531,7 @@
     {
       "id": "eeeeeeee-0000-0000-0000-000000000015",
       "entity_type": "workshop",
-      "source_id": "src-atolyeler",
+      "source_id": "0a000000-0000-0000-0000-000000000004",
       "language_code": "tr",
       "is_published": true,
       "created_at": "2026-01-01T00:00:00Z",
@@ -540,7 +540,7 @@
     {
       "id": "eeeeeeee-0000-0000-0000-000000000016",
       "entity_type": "workshop",
-      "source_id": "src-atolyeler",
+      "source_id": "0a000000-0000-0000-0000-000000000004",
       "language_code": "tr",
       "is_published": true,
       "created_at": "2026-01-01T00:00:00Z",
@@ -549,7 +549,7 @@
     {
       "id": "eeeeeeee-0000-0000-0000-000000000017",
       "entity_type": "workshop",
-      "source_id": "src-atolyeler",
+      "source_id": "0a000000-0000-0000-0000-000000000004",
       "language_code": "tr",
       "is_published": true,
       "created_at": "2026-01-01T00:00:00Z",
@@ -558,7 +558,7 @@
     {
       "id": "eeeeeeee-0000-0000-0000-000000000018",
       "entity_type": "workshop",
-      "source_id": "src-atolyeler",
+      "source_id": "0a000000-0000-0000-0000-000000000004",
       "language_code": "tr",
       "is_published": true,
       "created_at": "2026-01-01T00:00:00Z",
@@ -567,7 +567,7 @@
     {
       "id": "eeeeeeee-0000-0000-0000-000000000019",
       "entity_type": "workshop",
-      "source_id": "src-atolyeler",
+      "source_id": "0a000000-0000-0000-0000-000000000004",
       "language_code": "tr",
       "is_published": true,
       "created_at": "2026-01-01T00:00:00Z",
@@ -576,7 +576,7 @@
     {
       "id": "eeeeeeee-0000-0000-0000-000000000020",
       "entity_type": "workshop",
-      "source_id": "src-atolyeler",
+      "source_id": "0a000000-0000-0000-0000-000000000004",
       "language_code": "tr",
       "is_published": true,
       "created_at": "2026-01-01T00:00:00Z",
@@ -585,7 +585,7 @@
     {
       "id": "eeeeeeee-0000-0000-0000-000000000021",
       "entity_type": "workshop",
-      "source_id": "src-atolyeler",
+      "source_id": "0a000000-0000-0000-0000-000000000004",
       "language_code": "tr",
       "is_published": true,
       "created_at": "2026-01-01T00:00:00Z",
@@ -594,7 +594,7 @@
     {
       "id": "eeeeeeee-0000-0000-0000-000000000022",
       "entity_type": "workshop",
-      "source_id": "src-atolyeler",
+      "source_id": "0a000000-0000-0000-0000-000000000004",
       "language_code": "tr",
       "is_published": true,
       "created_at": "2026-01-01T00:00:00Z",
@@ -603,7 +603,7 @@
     {
       "id": "eeeeeeee-0000-0000-0000-000000000023",
       "entity_type": "workshop",
-      "source_id": "src-atolyeler",
+      "source_id": "0a000000-0000-0000-0000-000000000004",
       "language_code": "tr",
       "is_published": true,
       "created_at": "2026-01-01T00:00:00Z",
@@ -612,7 +612,7 @@
     {
       "id": "eeeeeeee-0000-0000-0000-000000000024",
       "entity_type": "workshop",
-      "source_id": "src-atolyeler",
+      "source_id": "0a000000-0000-0000-0000-000000000004",
       "language_code": "tr",
       "is_published": true,
       "created_at": "2026-01-01T00:00:00Z",
@@ -621,7 +621,7 @@
     {
       "id": "eeeeeeee-1111-2222-3333-444444444444",
       "entity_type": "ebook",
-      "source_id": "src-kitaplar",
+      "source_id": "0a000000-0000-0000-0000-000000000003",
       "language_code": "tr",
       "is_published": true,
       "created_at": "2025-12-01T10:00:00Z",
@@ -630,7 +630,7 @@
     {
       "id": "eeeeeeee-5555-6666-7777-888888888888",
       "entity_type": "ebook",
-      "source_id": "src-kitaplar",
+      "source_id": "0a000000-0000-0000-0000-000000000003",
       "language_code": "tr",
       "is_published": true,
       "created_at": "2025-12-01T10:00:00Z",
@@ -639,7 +639,7 @@
     {
       "id": "eeeeeeee-9999-aaaa-bbbb-cccccccccccc",
       "entity_type": "ebook",
-      "source_id": "src-kitaplar",
+      "source_id": "0a000000-0000-0000-0000-000000000003",
       "language_code": "tr",
       "is_published": true,
       "created_at": "2025-12-01T10:00:00Z",
@@ -648,7 +648,7 @@
     {
       "id": "eeeeeeee-dddd-eeee-ffff-000000000000",
       "entity_type": "ebook",
-      "source_id": "src-kitaplar",
+      "source_id": "0a000000-0000-0000-0000-000000000003",
       "language_code": "tr",
       "is_published": true,
       "created_at": "2025-12-01T10:00:00Z",
@@ -657,7 +657,7 @@
     {
       "id": "ffffffff-ffff-ffff-ffff-ffffffffffff",
       "entity_type": "ebook",
-      "source_id": "src-kitaplar",
+      "source_id": "0a000000-0000-0000-0000-000000000003",
       "language_code": "tr",
       "is_published": true,
       "created_at": "2025-12-01T10:00:00Z",
@@ -666,7 +666,7 @@
     {
       "id": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee",
       "entity_type": "workshop",
-      "source_id": "src-atolyeler",
+      "source_id": "0a000000-0000-0000-0000-000000000004",
       "language_code": "tr",
       "is_published": true,
       "created_at": "2026-01-01T00:00:00Z",
@@ -1673,52 +1673,52 @@
   ],
   "content_sources": [
     {
-      "id": "src-kesifler-yolculugu",
+      "id": "0a000000-0000-0000-0000-000000000001",
       "title": "Kesifler Yolculugu",
       "subtitle": "Ic dünyanizi kesfedecegiz bir adim",
       "description": "Kesifler Yolculugu, ruhi ve manevi uyanis yolculuklarinin kapsamli bir koleksiyonudur. Bu kaynak, bireyin ic dünyasini kesfetmesine, kendi degerlerini anlamasina ve hayatina anlam katmasina yardimci olmak amaciyla uzman psikologlar ve manevi rehberler tarafindan ozenle hazirlanmis programlari barindirmaktadir. Her yolculuk, adim adim ilerleyen, bilimsel temelli ve manevi derinligi olan bir tasarim sunar. Baslangic seviyesinden ileri seviyeye kadar uzanan genis bir yelpazede sunulan bu programlar, kullanicinin kendi hizinda büyümesini ve gelismesini destekler. Yolculuklar boyunca meditasyon, nefes teknikleri, yansima egzersizleri ve gunluk pratikler esliginde kendinle derin bir baglanma deneyimi yasayacaksiniz. Farkindalik Yolculugu ile gunluk kararlarda tutarlilik kazanacak, Huzur ve Oz-Kabul programi ile ic barsinizi bulacak, Derin Donusum yolculugu ile hayatinizin derinliklerine ineceksiniz. Oz-Kesfetme ve Baslangic Yolculugu programlari ise yeni baslayanlar icin ideal bir cikis noktasi sunmaktadir. Kesifler Yolculugu kaynagi, PST Coaching platformunun kalbi ve temel misyonunu yansitan en guclu icerik koleksiyonudur. Buraya adim atmak, kendinizi yeniden kesfetmek ve hayatinizda kalici bir donusum yaratmak anlamina gelir. Her gun biraz daha ilerleyerek, kendinizin en iyi versiyonuna dogru yol alan bir yolculuga cikiyor olacaksiniz. Bilimsel temelli yaklasimi ve manevi derinligiyle Kesifler Yolculugu, size esiz bir ic yolculuk deneyimi sunmaktadir.",
       "icon": "compass-outline",
       "accent_color": "#6366F1",
-      "content_type": "journey",
+      "content_source_type": "journey-of-discoveries",
       "catalog_screen": "DiscoverJourneys",
       "order_index": 1,
       "created_at": "2025-12-01T10:00:00Z",
       "updated_at": "2025-12-01T10:00:00Z"
     },
     {
-      "id": "src-duygular-evreni",
+      "id": "0a000000-0000-0000-0000-000000000002",
       "title": "Duygular Evreni",
       "subtitle": "Duygusal dünyanizi anlayip dönüsturun",
       "description": "Duygular Evreni, insanin ic dünyasinin en derin ve en guclu boyutunu olusturan duygusal hayati kesfetmek icin tasarlanmis kapsamli bir icerik koleksiyonudur. Bu kaynak, duygu farkindaligi, duygusal zeka ve duygusal denge gibi temel yetkinlikler uzerine kurulu paketler sunmaktadir. Modern yasamin karmasi ve stres yukuyle basa cikabilmek icin duygularinizi anlamak, isimlemek ve saglikli bir sekilde ifade etmek hayati onem tasimaktadir. Duygular Evreni, bu yolculukta size rehberlik eden en kapsamli araclardan biridir. Paketler; oz-farkindalik gelistirme, duygusal ifade becerilerini guclendinme, saglikli sinirlar koyma, mindfulness ve bilinçli farkindalik pratikleri, motivasyon kaynaklari kesfetme, duygusal dayaniklilik kazanma ve oz-sefkat gelistirme gibi bir cok konuyu kapsamaktadir. Her paket, teorik bilgiyi pratik uygulamalarla birlestirerek somut ve olcumlenebilir gelisim saglamanizi hedefler. Duygusal Zeka arastirmalarina dayanan bu icerikler, günlük hayatinizda daha sagliklı iliskiler kurmaniza, is yasaminda daha etkili olmaniza ve genel yasam kalitenizi artirmaniza katki saglar. Duygusal Farkindalik, Oz-Farkindalik, Duygusal Dayaniklilik ve Mindfulness gibi modüller, hayatinizin her alanini kapsayan bütünlesik bir gelisim deneyimi sunar. Duygular Evreni, sadece bir icerik kaynagi degil; hayatinizdaki her alana yayilan derin ve kalici bir donusum aracidir.",
       "icon": "heart-outline",
       "accent_color": "#EC4899",
-      "content_type": "module",
+      "content_source_type": "universe-of-emotions",
       "catalog_screen": "DiscoverModules",
       "order_index": 2,
       "created_at": "2025-12-01T10:00:00Z",
       "updated_at": "2025-12-01T10:00:00Z"
     },
     {
-      "id": "src-kitaplar",
+      "id": "0a000000-0000-0000-0000-000000000003",
       "title": "Kitaplar",
       "subtitle": "Uzman yazarlardan seckin e-kitaplar",
       "description": "Kitaplar, PST Coaching platformunun zengin dijital kutuphanesidir. Bu kaynak, kisisel gelisim, manevi uyanis, duygusal zeka, farkindalik ve yasam koçlugu alanlarinda uzman yazarlar tarafindan kaleme alinmis seckin e-kitaplari barindirmaktadir. Her e-kitap, okuyucuyu derin bir düsunce yolculuguna cikarmak ve hayatina somut degisimler katmak amaciyla titizlikle secilmis ve kurgulanmistir. Sukur: Kalbin Anahtari ile minnettarligin hayatinizda yaratacagi mucizeleri kesfedecek, Kendini Kesfet ile oz-farkindalik yolculugunuza yon verecek, Derinlemesine Buyume ile kisisel gelisiminizi bir üst seviyeye tasiyacaksiniz. Anin Farkindaligi kitabi, sizi anlık yasama davet ederek gecmis ve gelecek kaygilarindan ozgür kilacak; Icsel Huzur Rehberi ise ic barisi bulmaniz icin adim adim pratik teknikler sunmaktadir. Her kitap, yalnizca bir metin degil; yasaminizda uygulamak uzere tasarlanmis etkilesimli bir rehberdir. Satir aralarinda gizlenmiş bilgelik, derinlemesine dusunce sorulari ve gunluk pratik egzersizlerle okuma deneyiminizi interaktif ve donusturucu bir sürece donusturur. Toplam 184 ile 312 sayfa arasinda degisen bu eserler, her birinde farkli bir derinlik sunarak okuyucuya zengin bir bilgelik hazinemsi sunmaktadir. PST Coaching Kitaplar kaynagi, kendinize yapabileceginiz en degerli yatirımlardan biri olan bilgi ve oz-farkindalik yolculugunuzu desteklemek icin burada olmaya devam edecektir.",
       "icon": "book-outline",
       "accent_color": "#F59E0B",
-      "content_type": "ebook",
+      "content_source_type": "books",
       "catalog_screen": "DiscoverEbooks",
       "order_index": 3,
       "created_at": "2025-12-01T10:00:00Z",
       "updated_at": "2025-12-01T10:00:00Z"
     },
     {
-      "id": "src-atolyeler",
+      "id": "0a000000-0000-0000-0000-000000000004",
       "title": "Atolyeler",
       "subtitle": "Pratik ve etkilesimli atolye deneyimleri",
       "description": "Atolyeler, PST Coaching'in en guclu ve etkilesimli icerik deneyimlerini bir araya getiren kapsamli bir platform kaynagindir. Bu kaynak, bireysel ve grup calismalari, yoğun kamp programlari ve rehber esliginde yapilan pratik atolye seanslarini icermektedir. Her atolye, teorik bilgiyi gercek hayat pratikleriyle birlestirerek somut ve kalici donusumler yaratmak uzere tasarlanmistir. Manevi Derinlesme, Oz-Farkindalik, Kisisel Donusum ve Topluluk ile Buyume gibi tematik gruplar altinda sunulan atolyeler; tesettür ve zikir pratikleri, sukur calismalari, nefes teknikleri, ic ses rehberligi ve grup dinamikleri gibi bir cok boyutu kapsamaktadir. Atolyeler kaynaginda uc ana teslimat formati mevcuttur: Kamp atolyeleri yogun ve surekli bir deneyim sunarken, Rehber atolyeleri bireysel ilerlemeye odaklanir ve Calisma Kitabi atolyeleri evinizin konforu icinde uygulama yapmaniza olanak tanir. Her format, farkli ogrenme stillerine ve yasam kosullarina hitap edecek sekilde ozenle tasarlanmistir. Hedef kitleleri de genis bir yelpazede, genclerden yetiskinlere, baslangic seviyesinden uzmanliga kadar uzanan zengin bir cesitlilik sunmaktadir. Toplam suresi 1620 dakikaya kadar ulasan bu yogun programlar, hayatinizda kalici bir fark yaratmak icin gerekli derinligi ve genisligi sunmaktadir. Atolyeler, PST Coaching deneyimini butunlesik ve derinlikli bir sekilde yasamak isteyenler icin vazgecilmez bir kaynaktir.",
       "icon": "account-group-outline",
       "accent_color": "#10B981",
-      "content_type": "workshop",
+      "content_source_type": "workshops",
       "catalog_screen": "DiscoverWorkshops",
       "order_index": 4,
       "created_at": "2025-12-01T10:00:00Z",
