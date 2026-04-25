@@ -60,6 +60,10 @@ CREATE TYPE asset_type AS ENUM ('ebook_package', 'worksheet_pdf', 'audio', 'vide
 CREATE TYPE download_policy AS ENUM ('downloadable', 'streaming', 'premium');
 CREATE TYPE download_status AS ENUM ('pending', 'in_progress', 'completed', 'failed', 'paused');
 
+CREATE TYPE product_type AS ENUM ('journey', 'module', 'package', 'workshop', 'ebook');
+
+CREATE TYPE asset_status AS ENUM ('pending', 'processing', 'ready', 'failed');
+
 CREATE TYPE progress_target_type AS ENUM (
     'journey', 'module', 'package', 'workshop', 'workshop_stage', 'workshop_session', 'ebook'
 );
@@ -272,23 +276,23 @@ CREATE INDEX idx_purchase_receipts_store_ext        ON purchase_receipts (store_
 -- =============================================================================
 
 CREATE TABLE content_sources (
-    id              UUID        PRIMARY KEY,
-    title           TEXT        NOT NULL,
+    id              UUID                NOT NULL DEFAULT gen_random_uuid(),
+    title           TEXT                NOT NULL,
     subtitle        TEXT,
-    description     TEXT        NOT NULL DEFAULT '',
+    description     TEXT                NOT NULL DEFAULT '',
     icon            TEXT,
     accent_color    TEXT,
     content_source_type content_source_type NOT NULL,
-    catalog_screen  TEXT,
-    order_index     SMALLINT    NOT NULL DEFAULT 0,
-    created_at      TIMESTAMPTZ NOT NULL DEFAULT now(),
-    updated_at      TIMESTAMPTZ NOT NULL DEFAULT now()
+    order_index     SMALLINT            NOT NULL DEFAULT 0,
+    created_at      TIMESTAMPTZ         NOT NULL DEFAULT now(),
+    updated_at      TIMESTAMPTZ         NOT NULL DEFAULT now(),
+    PRIMARY KEY (id)
 );
 
 
 CREATE TABLE content_series (
     id              UUID        PRIMARY KEY,
-    source_id       UUID        REFERENCES content_sources (id) ON DELETE SET NULL,
+    source_id       UUID        REFERENCES content_sources (id) ON DELETE RESTRICT,
     title           TEXT        NOT NULL,
     description     TEXT        NOT NULL DEFAULT '',
     order_index     SMALLINT    NOT NULL DEFAULT 0,
@@ -304,7 +308,7 @@ CREATE TABLE content_items (
     id              UUID                NOT NULL DEFAULT gen_random_uuid(),
     source_id       UUID                REFERENCES content_sources (id) ON DELETE SET NULL,
     series_id       UUID                REFERENCES content_series (id) ON DELETE SET NULL,
-    title           TEXT                NOT NULL DEFAULT '',
+    title           TEXT                NOT NULL,
     description     TEXT                NOT NULL DEFAULT '',
     order_index     SMALLINT            NOT NULL DEFAULT 0,
     release_date    DATE,
@@ -328,9 +332,12 @@ CREATE TABLE content_assets (
     id                  UUID            PRIMARY KEY DEFAULT gen_random_uuid(),
     content_item_id     UUID            NOT NULL REFERENCES content_items (id) ON DELETE CASCADE,
     asset_type          asset_type      NOT NULL,
+    status              asset_status    NOT NULL DEFAULT 'pending',
+    language_code       language_code,
     storage_uri         TEXT            NOT NULL,
     mime_type           TEXT            NOT NULL,
     byte_size           BIGINT          NOT NULL DEFAULT 0,
+    duration_seconds    INTEGER,
     checksum            TEXT,
     download_policy     download_policy NOT NULL DEFAULT 'streaming',
     created_by          UUID,
@@ -344,11 +351,32 @@ CREATE INDEX idx_content_assets_asset_type      ON content_assets (asset_type);
 
 
 -- =============================================================================
--- SECTION 4 — JOURNEYS
+-- SECTION 4 — CONTENT PRODUCTS (Phase 2 super table)
+-- =============================================================================
+
+CREATE TABLE content_products (
+    id              UUID         PRIMARY KEY DEFAULT gen_random_uuid(),
+    product_type    product_type NOT NULL,
+    area_id         UUID         REFERENCES content_areas (id) ON DELETE SET NULL,
+    is_published    BOOLEAN      NOT NULL DEFAULT false,
+    order_index     SMALLINT     NOT NULL DEFAULT 0,
+    created_by      UUID,
+    updated_by      UUID,
+    created_at      TIMESTAMPTZ  NOT NULL DEFAULT now(),
+    updated_at      TIMESTAMPTZ  NOT NULL DEFAULT now()
+);
+
+CREATE INDEX idx_content_products_area ON content_products (area_id);
+CREATE INDEX idx_content_products_type ON content_products (product_type);
+
+
+-- =============================================================================
+-- SECTION 5 — JOURNEYS
 -- =============================================================================
 
 CREATE TABLE journeys (
-    content_item_id UUID          PRIMARY KEY REFERENCES content_items (id) ON DELETE CASCADE,
+    id              UUID          PRIMARY KEY DEFAULT gen_random_uuid(),
+    product_id      UUID          NOT NULL REFERENCES content_products (id) ON DELETE CASCADE,
     title           TEXT          NOT NULL,
     description     TEXT,
     duration_days   SMALLINT      CHECK (duration_days > 0),
@@ -365,53 +393,81 @@ CREATE INDEX idx_journeys_level ON journeys (level);
 
 
 CREATE TABLE journey_days (
-    id                      UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
-    journey_content_item_id UUID        NOT NULL REFERENCES journeys (content_item_id) ON DELETE CASCADE,
-    day_number              SMALLINT    NOT NULL CHECK (day_number >= 1),
-    title                   TEXT,
-    unlock_time_local       TIME,
-    created_at              TIMESTAMPTZ NOT NULL DEFAULT now(),
-    updated_at              TIMESTAMPTZ NOT NULL DEFAULT now(),
-    UNIQUE (journey_content_item_id, day_number)
+    id              UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
+    journey_id      UUID        NOT NULL REFERENCES journeys (id) ON DELETE CASCADE,
+    day_number      SMALLINT    NOT NULL CHECK (day_number >= 1),
+    title           TEXT,
+    unlock_time_local TIME,
+    created_at      TIMESTAMPTZ NOT NULL DEFAULT now(),
+    updated_at      TIMESTAMPTZ NOT NULL DEFAULT now(),
+    UNIQUE (journey_id, day_number)
 );
 
-CREATE INDEX idx_journey_days_journey ON journey_days (journey_content_item_id);
+CREATE INDEX idx_journey_days_journey ON journey_days (journey_id);
+
+
+CREATE TABLE journey_items (
+    id              UUID         PRIMARY KEY DEFAULT gen_random_uuid(),
+    journey_id      UUID         NOT NULL REFERENCES journeys (id) ON DELETE CASCADE,
+    product_id      UUID         NOT NULL REFERENCES content_products (id) ON DELETE RESTRICT,
+    order_index     SMALLINT     NOT NULL DEFAULT 0,
+    created_at      TIMESTAMPTZ  NOT NULL DEFAULT now(),
+    updated_at      TIMESTAMPTZ  NOT NULL DEFAULT now(),
+    UNIQUE (journey_id, product_id)
+);
+
+CREATE INDEX idx_journey_items_journey ON journey_items (journey_id);
+CREATE INDEX idx_journey_items_order   ON journey_items (journey_id, order_index);
 
 
 -- =============================================================================
--- SECTION 5 — MODULES & PACKAGES
+-- SECTION 6 — MODULES & PACKAGES
 -- =============================================================================
 
 CREATE TABLE modules (
-    content_item_id UUID        PRIMARY KEY REFERENCES content_items (id) ON DELETE CASCADE,
-    title           TEXT        NOT NULL,
-    description     TEXT,
-    created_by      UUID,
-    updated_by      UUID,
-    created_at      TIMESTAMPTZ NOT NULL DEFAULT now(),
-    updated_at      TIMESTAMPTZ NOT NULL DEFAULT now()
+    id          UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
+    product_id  UUID        NOT NULL REFERENCES content_products (id) ON DELETE CASCADE,
+    title       TEXT        NOT NULL,
+    description TEXT,
+    created_by  UUID,
+    updated_by  UUID,
+    created_at  TIMESTAMPTZ NOT NULL DEFAULT now(),
+    updated_at  TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
 
 CREATE TABLE packages (
-    id                      TEXT        PRIMARY KEY,
-    module_content_item_id  UUID        NOT NULL REFERENCES modules (content_item_id) ON DELETE CASCADE,
-    title                   TEXT        NOT NULL,
-    order_index             SMALLINT    NOT NULL DEFAULT 0,
-    source_content_item_id  UUID        REFERENCES content_items (id) ON DELETE SET NULL,
-    source_domain_type      TEXT,
-    created_by              UUID,
-    updated_by              UUID,
-    created_at              TIMESTAMPTZ NOT NULL DEFAULT now(),
-    updated_at              TIMESTAMPTZ NOT NULL DEFAULT now()
+    id          UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
+    product_id  UUID        NOT NULL REFERENCES content_products (id) ON DELETE CASCADE,
+    module_id   UUID        NOT NULL REFERENCES modules (id) ON DELETE CASCADE,
+    title       TEXT        NOT NULL,
+    order_index SMALLINT    NOT NULL DEFAULT 0,
+    created_by  UUID,
+    updated_by  UUID,
+    created_at  TIMESTAMPTZ NOT NULL DEFAULT now(),
+    updated_at  TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
-CREATE INDEX idx_packages_module_content_item_id ON packages (module_content_item_id);
-CREATE INDEX idx_packages_order                  ON packages (module_content_item_id, order_index);
+CREATE INDEX idx_packages_module ON packages (module_id);
+CREATE INDEX idx_packages_order  ON packages (module_id, order_index);
+
+
+CREATE TABLE package_items (
+    id              UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
+    package_id      UUID        NOT NULL REFERENCES packages (id) ON DELETE CASCADE,
+    content_item_id UUID        NOT NULL REFERENCES content_items (id) ON DELETE RESTRICT,
+    order_index     SMALLINT    NOT NULL DEFAULT 0,
+    created_at      TIMESTAMPTZ NOT NULL DEFAULT now(),
+    updated_at      TIMESTAMPTZ NOT NULL DEFAULT now(),
+    UNIQUE (package_id, content_item_id)
+);
+
+CREATE INDEX idx_package_items_package ON package_items (package_id);
+CREATE INDEX idx_package_items_order   ON package_items (package_id, order_index);
 
 
 -- =============================================================================
--- SECTION 6 — WORKSHOPS
+-- SECTION 7 — WORKSHOPS
 -- =============================================================================
 
 CREATE TABLE workshop_groups (
@@ -427,19 +483,21 @@ CREATE TABLE workshop_groups (
 
 
 CREATE TABLE workshops (
-    content_item_id             UUID          PRIMARY KEY REFERENCES content_items (id) ON DELETE CASCADE,
-    title                       TEXT          NOT NULL,
-    theme                       TEXT          NOT NULL,
-    target_audience             TEXT          NOT NULL DEFAULT '18+',
-    total_duration_minutes      INTEGER       CHECK (total_duration_minutes > 0),
-    delivery_mode               delivery_mode NOT NULL,
-    workshop_group_id           TEXT          REFERENCES workshop_groups (id) ON DELETE SET NULL,
-    facilitator_guide_asset_id  UUID          REFERENCES content_assets (id) ON DELETE SET NULL,
-    participant_workbook_asset_id UUID        REFERENCES content_assets (id) ON DELETE SET NULL,
-    created_by                  UUID,
-    updated_by                  UUID,
-    created_at                  TIMESTAMPTZ   NOT NULL DEFAULT now(),
-    updated_at                  TIMESTAMPTZ   NOT NULL DEFAULT now()
+    id                            UUID          PRIMARY KEY DEFAULT gen_random_uuid(),
+    product_id                    UUID          NOT NULL REFERENCES content_products (id) ON DELETE CASCADE,
+    content_item_id               UUID          REFERENCES content_items (id) ON DELETE SET NULL,
+    title                         TEXT          NOT NULL,
+    theme                         TEXT          NOT NULL,
+    target_audience               TEXT          NOT NULL DEFAULT '18+',
+    total_duration_minutes        INTEGER       CHECK (total_duration_minutes > 0),
+    delivery_mode                 delivery_mode NOT NULL,
+    workshop_group_id             TEXT          REFERENCES workshop_groups (id) ON DELETE SET NULL,
+    facilitator_guide_asset_id    UUID          REFERENCES content_assets (id) ON DELETE SET NULL,
+    participant_workbook_asset_id UUID          REFERENCES content_assets (id) ON DELETE SET NULL,
+    created_by                    UUID,
+    updated_by                    UUID,
+    created_at                    TIMESTAMPTZ   NOT NULL DEFAULT now(),
+    updated_at                    TIMESTAMPTZ   NOT NULL DEFAULT now()
 );
 
 CREATE INDEX idx_workshops_group_id      ON workshops (workshop_group_id);
@@ -447,19 +505,19 @@ CREATE INDEX idx_workshops_delivery_mode ON workshops (delivery_mode);
 
 
 CREATE TABLE workshop_stages (
-    id                          UUID                 PRIMARY KEY DEFAULT gen_random_uuid(),
-    workshop_content_item_id    UUID                 NOT NULL REFERENCES workshops (content_item_id) ON DELETE CASCADE,
-    stage_number                SMALLINT             NOT NULL CHECK (stage_number >= 1),
-    stage_type                  workshop_stage_type  NOT NULL,
-    title                       TEXT                 NOT NULL,
-    created_by                  UUID,
-    updated_by                  UUID,
-    created_at                  TIMESTAMPTZ          NOT NULL DEFAULT now(),
-    updated_at                  TIMESTAMPTZ          NOT NULL DEFAULT now(),
-    UNIQUE (workshop_content_item_id, stage_number)
+    id              UUID                 PRIMARY KEY DEFAULT gen_random_uuid(),
+    workshop_id     UUID                 NOT NULL REFERENCES workshops (id) ON DELETE CASCADE,
+    stage_number    SMALLINT             NOT NULL CHECK (stage_number >= 1),
+    stage_type      workshop_stage_type  NOT NULL,
+    title           TEXT                 NOT NULL,
+    created_by      UUID,
+    updated_by      UUID,
+    created_at      TIMESTAMPTZ          NOT NULL DEFAULT now(),
+    updated_at      TIMESTAMPTZ          NOT NULL DEFAULT now(),
+    UNIQUE (workshop_id, stage_number)
 );
 
-CREATE INDEX idx_workshop_stages_workshop ON workshop_stages (workshop_content_item_id);
+CREATE INDEX idx_workshop_stages_workshop ON workshop_stages (workshop_id);
 
 
 CREATE TABLE workshop_sessions (
@@ -514,66 +572,68 @@ CREATE INDEX idx__content_blocks_order  ON _content_blocks (parent_type, parent_
 
 
 CREATE TABLE workshop_artifacts (
-    id                          UUID                    PRIMARY KEY DEFAULT gen_random_uuid(),
-    workshop_content_item_id    UUID                    NOT NULL REFERENCES workshops (content_item_id) ON DELETE CASCADE,
-    artifact_type               workshop_artifact_type  NOT NULL,
-    version                     SMALLINT                NOT NULL DEFAULT 1,
-    created_by                  UUID,
-    updated_by                  UUID,
-    created_at                  TIMESTAMPTZ             NOT NULL DEFAULT now(),
-    updated_at                  TIMESTAMPTZ             NOT NULL DEFAULT now()
+    id              UUID                    PRIMARY KEY DEFAULT gen_random_uuid(),
+    workshop_id     UUID                    NOT NULL REFERENCES workshops (id) ON DELETE CASCADE,
+    artifact_type   workshop_artifact_type  NOT NULL,
+    version         SMALLINT                NOT NULL DEFAULT 1,
+    created_by      UUID,
+    updated_by      UUID,
+    created_at      TIMESTAMPTZ             NOT NULL DEFAULT now(),
+    updated_at      TIMESTAMPTZ             NOT NULL DEFAULT now()
 );
 
-CREATE INDEX idx_workshop_artifacts_workshop ON workshop_artifacts (workshop_content_item_id);
+CREATE INDEX idx_workshop_artifacts_workshop ON workshop_artifacts (workshop_id);
 
 
 CREATE TABLE workbook_entries (
-    id                          UUID                   PRIMARY KEY DEFAULT gen_random_uuid(),
-    user_id                     UUID                   NOT NULL REFERENCES users (id) ON DELETE CASCADE,
-    workshop_content_item_id    UUID                   NOT NULL REFERENCES workshops (content_item_id) ON DELETE CASCADE,
-    stage_id                    UUID                   NOT NULL REFERENCES workshop_stages (id),
-    session_id                  UUID                   REFERENCES workshop_sessions (id) ON DELETE SET NULL,
-    worksheet_type              worksheet_type         NOT NULL,
-    payload                     JSONB                  NOT NULL DEFAULT '{}',
-    status                      workbook_entry_status  NOT NULL DEFAULT 'draft',
-    version                     SMALLINT               NOT NULL DEFAULT 1,
-    created_by                  UUID,
-    updated_by                  UUID,
-    created_at                  TIMESTAMPTZ            NOT NULL DEFAULT now(),
-    updated_at                  TIMESTAMPTZ            NOT NULL DEFAULT now()
+    id              UUID                   PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id         UUID                   NOT NULL REFERENCES users (id) ON DELETE CASCADE,
+    workshop_id     UUID                   NOT NULL REFERENCES workshops (id) ON DELETE CASCADE,
+    stage_id        UUID                   NOT NULL REFERENCES workshop_stages (id),
+    session_id      UUID                   REFERENCES workshop_sessions (id) ON DELETE SET NULL,
+    worksheet_type  worksheet_type         NOT NULL,
+    payload         JSONB                  NOT NULL DEFAULT '{}',
+    status          workbook_entry_status  NOT NULL DEFAULT 'draft',
+    version         SMALLINT               NOT NULL DEFAULT 1,
+    created_by      UUID,
+    updated_by      UUID,
+    created_at      TIMESTAMPTZ            NOT NULL DEFAULT now(),
+    updated_at      TIMESTAMPTZ            NOT NULL DEFAULT now()
 );
 
-CREATE INDEX idx_workbook_entries_user_id     ON workbook_entries (user_id);
-CREATE INDEX idx_workbook_entries_workshop    ON workbook_entries (workshop_content_item_id);
-CREATE INDEX idx_workbook_entries_stage       ON workbook_entries (stage_id);
+CREATE INDEX idx_workbook_entries_user_id  ON workbook_entries (user_id);
+CREATE INDEX idx_workbook_entries_workshop ON workbook_entries (workshop_id);
+CREATE INDEX idx_workbook_entries_stage    ON workbook_entries (stage_id);
 
 
 CREATE TABLE workshop_followup_plans (
-    id                          UUID              PRIMARY KEY DEFAULT gen_random_uuid(),
-    user_id                     UUID              NOT NULL REFERENCES users (id) ON DELETE CASCADE,
-    workshop_content_item_id    UUID              NOT NULL REFERENCES workshops (content_item_id) ON DELETE CASCADE,
-    window_type                 followup_window_type NOT NULL,
-    intent_text                 TEXT,
-    daily_phrase                TEXT,
-    small_step                  TEXT,
-    status                      followup_status   NOT NULL DEFAULT 'planned',
-    created_by                  UUID,
-    updated_by                  UUID,
-    created_at                  TIMESTAMPTZ       NOT NULL DEFAULT now(),
-    updated_at                  TIMESTAMPTZ       NOT NULL DEFAULT now(),
-    UNIQUE (user_id, workshop_content_item_id, window_type)
+    id              UUID                 PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id         UUID                 NOT NULL REFERENCES users (id) ON DELETE CASCADE,
+    workshop_id     UUID                 NOT NULL REFERENCES workshops (id) ON DELETE CASCADE,
+    window_type     followup_window_type NOT NULL,
+    intent_text     TEXT,
+    daily_phrase    TEXT,
+    small_step      TEXT,
+    status          followup_status      NOT NULL DEFAULT 'planned',
+    created_by      UUID,
+    updated_by      UUID,
+    created_at      TIMESTAMPTZ          NOT NULL DEFAULT now(),
+    updated_at      TIMESTAMPTZ          NOT NULL DEFAULT now(),
+    UNIQUE (user_id, workshop_id, window_type)
 );
 
 CREATE INDEX idx_workshop_followup_user_id  ON workshop_followup_plans (user_id);
-CREATE INDEX idx_workshop_followup_workshop ON workshop_followup_plans (workshop_content_item_id);
+CREATE INDEX idx_workshop_followup_workshop ON workshop_followup_plans (workshop_id);
 
 
 -- =============================================================================
--- SECTION 7 — EBOOKS
+-- SECTION 8 — EBOOKS
 -- =============================================================================
 
 CREATE TABLE ebooks (
-    content_item_id             UUID        PRIMARY KEY REFERENCES content_items (id) ON DELETE CASCADE,
+    id                          UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
+    product_id                  UUID        NOT NULL REFERENCES content_products (id) ON DELETE CASCADE,
+    content_item_id             UUID        REFERENCES content_items (id) ON DELETE SET NULL,
     title                       TEXT        NOT NULL,
     category                    TEXT        NOT NULL,
     total_pages                 INTEGER     NOT NULL DEFAULT 0,
@@ -590,48 +650,48 @@ CREATE INDEX idx_ebooks_category ON ebooks (category);
 
 
 CREATE TABLE ebook_chapters (
-    id                      UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
-    ebook_content_item_id   UUID        NOT NULL REFERENCES ebooks (content_item_id) ON DELETE CASCADE,
-    title                   TEXT        NOT NULL,
-    order_index             SMALLINT    NOT NULL DEFAULT 0,
-    parent_chapter_id       UUID        REFERENCES ebook_chapters (id) ON DELETE SET NULL,
-    start_locator           TEXT,
-    end_locator             TEXT,
-    created_by              UUID,
-    updated_by              UUID,
-    created_at              TIMESTAMPTZ NOT NULL DEFAULT now(),
-    updated_at              TIMESTAMPTZ NOT NULL DEFAULT now()
+    id                UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
+    ebook_id          UUID        NOT NULL REFERENCES ebooks (id) ON DELETE CASCADE,
+    title             TEXT        NOT NULL,
+    order_index       SMALLINT    NOT NULL DEFAULT 0,
+    parent_chapter_id UUID        REFERENCES ebook_chapters (id) ON DELETE SET NULL,
+    start_locator     TEXT,
+    end_locator       TEXT,
+    created_by        UUID,
+    updated_by        UUID,
+    created_at        TIMESTAMPTZ NOT NULL DEFAULT now(),
+    updated_at        TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
-CREATE INDEX idx_ebook_chapters_ebook         ON ebook_chapters (ebook_content_item_id);
-CREATE INDEX idx_ebook_chapters_parent        ON ebook_chapters (parent_chapter_id);
-CREATE INDEX idx_ebook_chapters_order         ON ebook_chapters (ebook_content_item_id, order_index);
+CREATE INDEX idx_ebook_chapters_ebook  ON ebook_chapters (ebook_id);
+CREATE INDEX idx_ebook_chapters_parent ON ebook_chapters (parent_chapter_id);
+CREATE INDEX idx_ebook_chapters_order  ON ebook_chapters (ebook_id, order_index);
 
 
 -- =============================================================================
--- SECTION 8 — USER PROGRESS & ENGAGEMENT
+-- SECTION 9 — USER PROGRESS & ENGAGEMENT
 -- =============================================================================
 
 CREATE TABLE content_progress (
-    id                  UUID                  PRIMARY KEY DEFAULT gen_random_uuid(),
-    user_id             UUID                  NOT NULL REFERENCES users (id) ON DELETE CASCADE,
-    target_type         progress_target_type  NOT NULL,
-    content_item_id     UUID                  NOT NULL REFERENCES content_items (id) ON DELETE CASCADE,
-    status              progress_status       NOT NULL DEFAULT 'locked',
-    progress_percent    SMALLINT              NOT NULL DEFAULT 0 CHECK (progress_percent BETWEEN 0 AND 100),
-    started_at          TIMESTAMPTZ,
-    completed_at        TIMESTAMPTZ,
-    created_by          UUID,
-    updated_by          UUID,
-    created_at          TIMESTAMPTZ           NOT NULL DEFAULT now(),
-    updated_at          TIMESTAMPTZ           NOT NULL DEFAULT now(),
-    UNIQUE (user_id, content_item_id, target_type)
+    id               UUID                  PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id          UUID                  NOT NULL REFERENCES users (id) ON DELETE CASCADE,
+    target_type      progress_target_type  NOT NULL,
+    product_id       UUID                  NOT NULL REFERENCES content_products (id) ON DELETE CASCADE,
+    status           progress_status       NOT NULL DEFAULT 'locked',
+    progress_percent SMALLINT              NOT NULL DEFAULT 0 CHECK (progress_percent BETWEEN 0 AND 100),
+    started_at       TIMESTAMPTZ,
+    completed_at     TIMESTAMPTZ,
+    created_by       UUID,
+    updated_by       UUID,
+    created_at       TIMESTAMPTZ           NOT NULL DEFAULT now(),
+    updated_at       TIMESTAMPTZ           NOT NULL DEFAULT now(),
+    UNIQUE (user_id, product_id, target_type)
 );
 
-CREATE INDEX idx_content_progress_user_id        ON content_progress (user_id);
-CREATE INDEX idx_content_progress_content_item   ON content_progress (content_item_id);
-CREATE INDEX idx_content_progress_status         ON content_progress (status);
-CREATE INDEX idx_content_progress_user_status    ON content_progress (user_id, status);
+CREATE INDEX idx_content_progress_user_id    ON content_progress (user_id);
+CREATE INDEX idx_content_progress_product    ON content_progress (product_id);
+CREATE INDEX idx_content_progress_status     ON content_progress (status);
+CREATE INDEX idx_content_progress_user_status ON content_progress (user_id, status);
 
 
 CREATE TABLE comment_submissions (
@@ -743,13 +803,13 @@ CREATE INDEX idx_collection_items_favorite ON collection_items (favorite_item_id
 
 
 -- =============================================================================
--- SECTION 9 — READING & DOWNLOADS
+-- SECTION 10 — READING & DOWNLOADS
 -- =============================================================================
 
 CREATE TABLE reading_positions (
     id               UUID          PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id          UUID          NOT NULL REFERENCES users (id) ON DELETE CASCADE,
-    content_item_id  UUID          NOT NULL REFERENCES ebooks (content_item_id) ON DELETE CASCADE,
+    ebook_id         UUID          NOT NULL REFERENCES ebooks (id) ON DELETE CASCADE,
     progress_percent SMALLINT      NOT NULL DEFAULT 0 CHECK (progress_percent BETWEEN 0 AND 100),
     locator_type     locator_type  NOT NULL DEFAULT 'page',
     locator_value    TEXT          NOT NULL,
@@ -758,7 +818,7 @@ CREATE TABLE reading_positions (
     updated_by       UUID,
     created_at       TIMESTAMPTZ   NOT NULL DEFAULT now(),
     updated_at       TIMESTAMPTZ   NOT NULL DEFAULT now(),
-    UNIQUE (user_id, content_item_id)
+    UNIQUE (user_id, ebook_id)
 );
 
 CREATE INDEX idx_reading_positions_user_id ON reading_positions (user_id);
@@ -874,7 +934,8 @@ CREATE INDEX idx_notifications_created_at       ON notifications (created_at DES
 -- =============================================================================
 
 CREATE TABLE content_areas (
-    route           TEXT        PRIMARY KEY,
+    id              UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
+    route           TEXT        NOT NULL UNIQUE,
     label           TEXT        NOT NULL,
     description     TEXT        NOT NULL DEFAULT '',
     icon            TEXT        NOT NULL,
@@ -1118,14 +1179,13 @@ COMMENT ON COLUMN purchase_receipts.updated_at          IS 'Record last-update t
 
 -- ---------------- content_sources ----------------
 COMMENT ON TABLE  content_sources              IS 'Catalogue metadata for top-level content collections shown on the Discover screen.';
-COMMENT ON COLUMN content_sources.id           IS 'UUID primary key for a content source row.';
+COMMENT ON COLUMN content_sources.id           IS 'UUID primary key — auto-generated.';
 COMMENT ON COLUMN content_sources.title        IS 'Display name of the content source.';
 COMMENT ON COLUMN content_sources.subtitle     IS 'Short tagline shown below the title on catalogue cards.';
 COMMENT ON COLUMN content_sources.description  IS 'Full-length descriptive text shown on the source detail screen.';
 COMMENT ON COLUMN content_sources.icon         IS 'Material Community Icons name used as the source icon.';
 COMMENT ON COLUMN content_sources.accent_color IS 'Hex accent colour for branding this source in the UI.';
 COMMENT ON COLUMN content_sources.content_source_type IS 'Source category (journey-of-discoveries | universe-of-emotions | books | workshops).';
-COMMENT ON COLUMN content_sources.catalog_screen IS 'Navigation route name of the catalogue screen for this source.';
 COMMENT ON COLUMN content_sources.order_index  IS 'Display order on the Discover screen (ascending).';
 COMMENT ON COLUMN content_sources.created_at   IS 'Record creation timestamp (UTC).';
 COMMENT ON COLUMN content_sources.updated_at   IS 'Record last-update timestamp (UTC).';
@@ -1133,7 +1193,7 @@ COMMENT ON COLUMN content_sources.updated_at   IS 'Record last-update timestamp 
 -- ---------------- content_series ----------------
 COMMENT ON TABLE  content_series               IS 'Series/group metadata for related content items within a content source.';
 COMMENT ON COLUMN content_series.id            IS 'UUID primary key for a content series row.';
-COMMENT ON COLUMN content_series.source_id     IS 'Owning content source (FK → content_sources).';
+COMMENT ON COLUMN content_series.source_id     IS 'Owning content source (FK → content_sources); deletion restricted while series exist.';
 COMMENT ON COLUMN content_series.title         IS 'Display title of the content series.';
 COMMENT ON COLUMN content_series.description   IS 'Series summary shown in list/detail contexts.';
 COMMENT ON COLUMN content_series.order_index   IS 'Display order within the source (ascending).';
@@ -1141,8 +1201,8 @@ COMMENT ON COLUMN content_series.created_at    IS 'Record creation timestamp (UT
 COMMENT ON COLUMN content_series.updated_at    IS 'Record last-update timestamp (UTC).';
 
 -- ---------------- content_items ----------------
-COMMENT ON TABLE  content_items               IS 'Core content entity tied to a source; stores shared metadata used across all content domains.';
-COMMENT ON COLUMN content_items.id            IS 'Primary key — shared with the domain detail table when a one-to-one detail row exists.';
+COMMENT ON TABLE  content_items               IS 'Phase 1 raw content atoms — the canonical source of truth for text, audio, video and ebook file metadata.';
+COMMENT ON COLUMN content_items.id            IS 'Primary key — auto-generated UUID.';
 COMMENT ON COLUMN content_items.source_id     IS 'Catalogue source this item belongs to (FK → content_sources).';
 COMMENT ON COLUMN content_items.series_id     IS 'Optional series this content item belongs to (FK → content_series).';
 COMMENT ON COLUMN content_items.title         IS 'Display title of the content item.';
@@ -1155,13 +1215,16 @@ COMMENT ON COLUMN content_items.created_at    IS 'Record creation timestamp (UTC
 COMMENT ON COLUMN content_items.updated_at    IS 'Record last-update timestamp (UTC).';
 
 -- ---------------- content_assets ----------------
-COMMENT ON TABLE  content_assets                 IS 'Binary assets (EPUB, PDF, audio, video, image) associated with a content item.';
+COMMENT ON TABLE  content_assets                 IS 'Binary assets (EPUB, PDF, audio, video, image) associated with a Phase 1 content item.';
 COMMENT ON COLUMN content_assets.id              IS 'Primary key.';
 COMMENT ON COLUMN content_assets.content_item_id IS 'Content item this asset belongs to (FK → content_items).';
 COMMENT ON COLUMN content_assets.asset_type      IS 'Asset category: ebook_package | worksheet_pdf | audio | video | image.';
+COMMENT ON COLUMN content_assets.status          IS 'Upload pipeline state: pending | processing | ready | failed.';
+COMMENT ON COLUMN content_assets.language_code   IS 'Language of this asset variant (tr | en | es); null if language-neutral.';
 COMMENT ON COLUMN content_assets.storage_uri     IS 'S3 (or equivalent) URI pointing to the stored file.';
 COMMENT ON COLUMN content_assets.mime_type       IS 'MIME type of the file (e.g. application/epub+zip, application/pdf).';
 COMMENT ON COLUMN content_assets.byte_size       IS 'File size in bytes; used to display download progress.';
+COMMENT ON COLUMN content_assets.duration_seconds IS 'Duration in seconds for audio and video assets; null for non-timed types.';
 COMMENT ON COLUMN content_assets.checksum        IS 'SHA-256 hex digest for integrity verification after download.';
 COMMENT ON COLUMN content_assets.download_policy IS 'Access policy: downloadable (offline allowed) | streaming (online only) | premium (requires specific add-on).';
 COMMENT ON COLUMN content_assets.created_by      IS 'Actor that uploaded this asset.';
@@ -1170,51 +1233,70 @@ COMMENT ON COLUMN content_assets.created_at      IS 'Record creation timestamp (
 COMMENT ON COLUMN content_assets.updated_at      IS 'Record last-update timestamp (UTC).';
 
 -- ---------------- journeys ----------------
-COMMENT ON TABLE  journeys                  IS 'Structured multi-day personal growth programmes.';
-COMMENT ON COLUMN journeys.content_item_id  IS 'Primary key and FK to content_items (one-to-one).';
-COMMENT ON COLUMN journeys.title            IS 'Display title of the journey.';
-COMMENT ON COLUMN journeys.description      IS 'Short motivational description shown on the journey card.';
-COMMENT ON COLUMN journeys.duration_days    IS 'Intended completion duration in calendar days.';
-COMMENT ON COLUMN journeys.level            IS 'Difficulty / experience level (baslangic | beginner | basico | orta | ileri).';
-COMMENT ON COLUMN journeys.outline_steps    IS 'JSON array of step objects {title, duration} previewed on the detail screen.';
-COMMENT ON COLUMN journeys.benefits         IS 'JSON array of benefit strings shown as bullet points on the detail screen.';
-COMMENT ON COLUMN journeys.created_by       IS 'Actor that created this journey.';
-COMMENT ON COLUMN journeys.updated_by       IS 'Actor that last modified this journey.';
-COMMENT ON COLUMN journeys.created_at       IS 'Record creation timestamp (UTC).';
-COMMENT ON COLUMN journeys.updated_at       IS 'Record last-update timestamp (UTC).';
+COMMENT ON TABLE  journeys             IS 'Phase 2 product — structured multi-day personal growth programmes composed from content atoms.';
+COMMENT ON COLUMN journeys.id          IS 'Primary key — auto-generated UUID.';
+COMMENT ON COLUMN journeys.product_id  IS 'FK to content_products super table (product_type = journey).';
+COMMENT ON COLUMN journeys.title       IS 'Display title of the journey.';
+COMMENT ON COLUMN journeys.description IS 'Short motivational description shown on the journey card.';
+COMMENT ON COLUMN journeys.duration_days IS 'Intended completion duration in calendar days.';
+COMMENT ON COLUMN journeys.level       IS 'Difficulty / experience level (baslangic | beginner | basico | orta | ileri).';
+COMMENT ON COLUMN journeys.outline_steps IS 'JSON array of step objects {title, duration} previewed on the detail screen.';
+COMMENT ON COLUMN journeys.benefits    IS 'JSON array of benefit strings shown as bullet points on the detail screen.';
+COMMENT ON COLUMN journeys.created_by  IS 'Actor that created this journey.';
+COMMENT ON COLUMN journeys.updated_by  IS 'Actor that last modified this journey.';
+COMMENT ON COLUMN journeys.created_at  IS 'Record creation timestamp (UTC).';
+COMMENT ON COLUMN journeys.updated_at  IS 'Record last-update timestamp (UTC).';
 
 -- ---------------- journey_days ----------------
-COMMENT ON TABLE  journey_days                        IS 'Individual day slots within a journey, each containing content blocks.';
-COMMENT ON COLUMN journey_days.id                     IS 'Primary key.';
-COMMENT ON COLUMN journey_days.journey_content_item_id IS 'Parent journey (FK → journeys).';
-COMMENT ON COLUMN journey_days.day_number             IS 'Sequential day position within the journey (1-based).';
-COMMENT ON COLUMN journey_days.title                  IS 'Optional display title for this day (e.g. "Gün 1: Farkındalık").';
-COMMENT ON COLUMN journey_days.unlock_time_local      IS 'Optional local unlock time used by day-level journey screens (e.g. 08:00).';
-COMMENT ON COLUMN journey_days.created_at             IS 'Record creation timestamp (UTC).';
-COMMENT ON COLUMN journey_days.updated_at             IS 'Record last-update timestamp (UTC).';
+COMMENT ON TABLE  journey_days               IS 'Individual day slots within a journey, each containing content blocks.';
+COMMENT ON COLUMN journey_days.id            IS 'Primary key.';
+COMMENT ON COLUMN journey_days.journey_id    IS 'Parent journey (FK → journeys).';
+COMMENT ON COLUMN journey_days.day_number    IS 'Sequential day position within the journey (1-based).';
+COMMENT ON COLUMN journey_days.title         IS 'Optional display title for this day (e.g. "Gün 1: Farkındalık").';
+COMMENT ON COLUMN journey_days.unlock_time_local IS 'Optional local unlock time used by day-level journey screens (e.g. 08:00).';
+COMMENT ON COLUMN journey_days.created_at    IS 'Record creation timestamp (UTC).';
+COMMENT ON COLUMN journey_days.updated_at    IS 'Record last-update timestamp (UTC).';
+
+-- ---------------- journey_items ----------------
+COMMENT ON TABLE  journey_items             IS 'Ordered child products (modules, packages, workshops, ebooks) within a journey.';
+COMMENT ON COLUMN journey_items.id          IS 'Primary key.';
+COMMENT ON COLUMN journey_items.journey_id  IS 'Parent journey (FK → journeys).';
+COMMENT ON COLUMN journey_items.product_id  IS 'Child product registered in content_products (FK → content_products).';
+COMMENT ON COLUMN journey_items.order_index IS 'Display order within the journey (ascending).';
+COMMENT ON COLUMN journey_items.created_at  IS 'Record creation timestamp (UTC).';
+COMMENT ON COLUMN journey_items.updated_at  IS 'Record last-update timestamp (UTC).';
 
 -- ---------------- modules ----------------
-COMMENT ON TABLE  modules                  IS 'Themed learning modules grouping several packages.';
-COMMENT ON COLUMN modules.content_item_id  IS 'Primary key and FK to content_items (one-to-one).';
-COMMENT ON COLUMN modules.title            IS 'Display title of the module.';
-COMMENT ON COLUMN modules.description      IS 'Description summarising the learning outcomes of the module.';
-COMMENT ON COLUMN modules.created_by       IS 'Actor that created this module.';
-COMMENT ON COLUMN modules.updated_by       IS 'Actor that last modified this module.';
-COMMENT ON COLUMN modules.created_at       IS 'Record creation timestamp (UTC).';
-COMMENT ON COLUMN modules.updated_at       IS 'Record last-update timestamp (UTC).';
+COMMENT ON TABLE  modules             IS 'Phase 2 product — themed learning modules grouping several packages.';
+COMMENT ON COLUMN modules.id          IS 'Primary key — auto-generated UUID.';
+COMMENT ON COLUMN modules.product_id  IS 'FK to content_products super table (product_type = module).';
+COMMENT ON COLUMN modules.title       IS 'Display title of the module.';
+COMMENT ON COLUMN modules.description IS 'Description summarising the learning outcomes of the module.';
+COMMENT ON COLUMN modules.created_by  IS 'Actor that created this module.';
+COMMENT ON COLUMN modules.updated_by  IS 'Actor that last modified this module.';
+COMMENT ON COLUMN modules.created_at  IS 'Record creation timestamp (UTC).';
+COMMENT ON COLUMN modules.updated_at  IS 'Record last-update timestamp (UTC).';
 
 -- ---------------- packages ----------------
-COMMENT ON TABLE  packages                         IS 'Ordered sub-units within a module, each wrapping a set of content blocks.';
-COMMENT ON COLUMN packages.id                      IS 'Slug-style or UUID primary key (matches source IDs such as pkg-0001-01).';
-COMMENT ON COLUMN packages.module_content_item_id  IS 'Parent module (FK → modules).';
-COMMENT ON COLUMN packages.title                   IS 'Display title of the package.';
-COMMENT ON COLUMN packages.order_index             IS 'Display order within the parent module (ascending).';
-COMMENT ON COLUMN packages.source_content_item_id  IS 'Optional FK to a source content item that provides base material.';
-COMMENT ON COLUMN packages.source_domain_type      IS 'Domain type of the source content (e.g. spiritual_lesson).';
-COMMENT ON COLUMN packages.created_by              IS 'Actor that created this package.';
-COMMENT ON COLUMN packages.updated_by              IS 'Actor that last modified this package.';
-COMMENT ON COLUMN packages.created_at              IS 'Record creation timestamp (UTC).';
-COMMENT ON COLUMN packages.updated_at              IS 'Record last-update timestamp (UTC).';
+COMMENT ON TABLE  packages             IS 'Phase 2 product — ordered sub-units within a module, each composed from multiple content items.';
+COMMENT ON COLUMN packages.id          IS 'Primary key — auto-generated UUID.';
+COMMENT ON COLUMN packages.product_id  IS 'FK to content_products super table (product_type = package).';
+COMMENT ON COLUMN packages.module_id   IS 'Parent module (FK → modules).';
+COMMENT ON COLUMN packages.title       IS 'Display title of the package.';
+COMMENT ON COLUMN packages.order_index IS 'Display order within the parent module (ascending).';
+COMMENT ON COLUMN packages.created_by  IS 'Actor that created this package.';
+COMMENT ON COLUMN packages.updated_by  IS 'Actor that last modified this package.';
+COMMENT ON COLUMN packages.created_at  IS 'Record creation timestamp (UTC).';
+COMMENT ON COLUMN packages.updated_at  IS 'Record last-update timestamp (UTC).';
+
+-- ---------------- package_items ----------------
+COMMENT ON TABLE  package_items                IS 'Ordered Phase 1 content atoms (content_items) within a package.';
+COMMENT ON COLUMN package_items.id             IS 'Primary key.';
+COMMENT ON COLUMN package_items.package_id     IS 'Parent package (FK → packages).';
+COMMENT ON COLUMN package_items.content_item_id IS 'Phase 1 content atom (FK → content_items).';
+COMMENT ON COLUMN package_items.order_index    IS 'Display order within the package (ascending).';
+COMMENT ON COLUMN package_items.created_at     IS 'Record creation timestamp (UTC).';
+COMMENT ON COLUMN package_items.updated_at     IS 'Record last-update timestamp (UTC).';
 
 -- ---------------- workshop_groups ----------------
 COMMENT ON TABLE  workshop_groups                      IS 'Thematic groupings that organise workshops in the catalogue (e.g. Manevi Derinleşme).';
@@ -1228,8 +1310,10 @@ COMMENT ON COLUMN workshop_groups.created_at           IS 'Record creation times
 COMMENT ON COLUMN workshop_groups.updated_at           IS 'Record last-update timestamp (UTC).';
 
 -- ---------------- workshops ----------------
-COMMENT ON TABLE  workshops                               IS 'Interactive workshop content items with structured multi-stage delivery.';
-COMMENT ON COLUMN workshops.content_item_id               IS 'Primary key and FK to content_items (one-to-one).';
+COMMENT ON TABLE  workshops                               IS 'Phase 2 product — interactive workshops with structured multi-stage delivery.';
+COMMENT ON COLUMN workshops.id                            IS 'Primary key — auto-generated UUID.';
+COMMENT ON COLUMN workshops.product_id                    IS 'FK to content_products super table (product_type = workshop).';
+COMMENT ON COLUMN workshops.content_item_id               IS 'Optional Phase 1 atom holding raw workshop content (FK → content_items).';
 COMMENT ON COLUMN workshops.title                         IS 'Display title of the workshop.';
 COMMENT ON COLUMN workshops.theme                         IS 'Central psychological / spiritual theme of the workshop.';
 COMMENT ON COLUMN workshops.target_audience               IS 'Intended participant audience label (e.g. "18+", "Aile", "Çift", "14-18").';
@@ -1244,16 +1328,16 @@ COMMENT ON COLUMN workshops.created_at                    IS 'Record creation ti
 COMMENT ON COLUMN workshops.updated_at                    IS 'Record last-update timestamp (UTC).';
 
 -- ---------------- workshop_stages ----------------
-COMMENT ON TABLE  workshop_stages                          IS 'Sequential phases within a workshop (e.g. insight → analysis → camp → closure).';
-COMMENT ON COLUMN workshop_stages.id                       IS 'Primary key.';
-COMMENT ON COLUMN workshop_stages.workshop_content_item_id IS 'Parent workshop (FK → workshops).';
-COMMENT ON COLUMN workshop_stages.stage_number             IS 'Ordinal position of this stage within the workshop (1-based).';
-COMMENT ON COLUMN workshop_stages.stage_type               IS 'Stage category: insight | analysis | camp | facilitator_guide | workbook | closure.';
-COMMENT ON COLUMN workshop_stages.title                    IS 'Display title of the stage.';
-COMMENT ON COLUMN workshop_stages.created_by               IS 'Actor that created this stage.';
-COMMENT ON COLUMN workshop_stages.updated_by               IS 'Actor that last modified this stage.';
-COMMENT ON COLUMN workshop_stages.created_at               IS 'Record creation timestamp (UTC).';
-COMMENT ON COLUMN workshop_stages.updated_at               IS 'Record last-update timestamp (UTC).';
+COMMENT ON TABLE  workshop_stages              IS 'Sequential phases within a workshop (e.g. insight → analysis → camp → closure).';
+COMMENT ON COLUMN workshop_stages.id           IS 'Primary key.';
+COMMENT ON COLUMN workshop_stages.workshop_id  IS 'Parent workshop (FK → workshops).';
+COMMENT ON COLUMN workshop_stages.stage_number IS 'Ordinal position of this stage within the workshop (1-based).';
+COMMENT ON COLUMN workshop_stages.stage_type   IS 'Stage category: insight | analysis | camp | facilitator_guide | workbook | closure.';
+COMMENT ON COLUMN workshop_stages.title        IS 'Display title of the stage.';
+COMMENT ON COLUMN workshop_stages.created_by   IS 'Actor that created this stage.';
+COMMENT ON COLUMN workshop_stages.updated_by   IS 'Actor that last modified this stage.';
+COMMENT ON COLUMN workshop_stages.created_at   IS 'Record creation timestamp (UTC).';
+COMMENT ON COLUMN workshop_stages.updated_at   IS 'Record last-update timestamp (UTC).';
 
 -- ---------------- workshop_sessions ----------------
 COMMENT ON TABLE  workshop_sessions                  IS 'Time-boxed sessions within a workshop stage (used in multi-day camp formats).';
@@ -1297,10 +1381,10 @@ COMMENT ON COLUMN _content_blocks.created_at    IS 'Record creation timestamp (U
 COMMENT ON COLUMN _content_blocks.updated_at    IS 'Record last-update timestamp (UTC).';
 
 -- ---------------- workshop_artifacts ----------------
-COMMENT ON TABLE  workshop_artifacts                          IS 'Versioned downloadable artefacts produced or used in a workshop (worksheets, guides, etc.).';
-COMMENT ON COLUMN workshop_artifacts.id                       IS 'Primary key.';
-COMMENT ON COLUMN workshop_artifacts.workshop_content_item_id IS 'Parent workshop (FK → workshops).';
-COMMENT ON COLUMN workshop_artifacts.artifact_type            IS 'Type: worksheet | guide | output_card | plan_template | reflection_map.';
+COMMENT ON TABLE  workshop_artifacts              IS 'Versioned downloadable artefacts produced or used in a workshop (worksheets, guides, etc.).';
+COMMENT ON COLUMN workshop_artifacts.id           IS 'Primary key.';
+COMMENT ON COLUMN workshop_artifacts.workshop_id  IS 'Parent workshop (FK → workshops).';
+COMMENT ON COLUMN workshop_artifacts.artifact_type IS 'Type: worksheet | guide | output_card | plan_template | reflection_map.';
 COMMENT ON COLUMN workshop_artifacts.version                  IS 'Monotonically increasing version number for this artefact type.';
 COMMENT ON COLUMN workshop_artifacts.created_by               IS 'Actor that created this artefact record.';
 COMMENT ON COLUMN workshop_artifacts.updated_by               IS 'Actor that last modified this artefact record.';
@@ -1308,10 +1392,10 @@ COMMENT ON COLUMN workshop_artifacts.created_at               IS 'Record creatio
 COMMENT ON COLUMN workshop_artifacts.updated_at               IS 'Record last-update timestamp (UTC).';
 
 -- ---------------- workbook_entries ----------------
-COMMENT ON TABLE  workbook_entries                          IS 'User-submitted worksheet responses captured during a workshop.';
-COMMENT ON COLUMN workbook_entries.id                       IS 'Primary key.';
-COMMENT ON COLUMN workbook_entries.user_id                  IS 'Participant who submitted this entry (FK → users).';
-COMMENT ON COLUMN workbook_entries.workshop_content_item_id IS 'Workshop this entry belongs to (FK → workshops).';
+COMMENT ON TABLE  workbook_entries             IS 'User-submitted worksheet responses captured during a workshop.';
+COMMENT ON COLUMN workbook_entries.id          IS 'Primary key.';
+COMMENT ON COLUMN workbook_entries.user_id     IS 'Participant who submitted this entry (FK → users).';
+COMMENT ON COLUMN workbook_entries.workshop_id IS 'Workshop this entry belongs to (FK → workshops).';
 COMMENT ON COLUMN workbook_entries.stage_id                 IS 'Stage during which this entry was made (FK → workshop_stages).';
 COMMENT ON COLUMN workbook_entries.session_id               IS 'Optional session within the stage (FK → workshop_sessions).';
 COMMENT ON COLUMN workbook_entries.worksheet_type           IS 'Worksheet template used: load_map | inner_sentence_shift | dua_card | trust_balance | transformation_plan.';
@@ -1324,10 +1408,10 @@ COMMENT ON COLUMN workbook_entries.created_at               IS 'Record creation 
 COMMENT ON COLUMN workbook_entries.updated_at               IS 'Record last-update timestamp (UTC).';
 
 -- ---------------- workshop_followup_plans ----------------
-COMMENT ON TABLE  workshop_followup_plans                          IS 'User-defined follow-up commitments after a workshop (72 h, 3-week, 30-day windows).';
-COMMENT ON COLUMN workshop_followup_plans.id                       IS 'Primary key.';
-COMMENT ON COLUMN workshop_followup_plans.user_id                  IS 'Participant who created this plan (FK → users).';
-COMMENT ON COLUMN workshop_followup_plans.workshop_content_item_id IS 'Workshop this plan follows up on (FK → workshops).';
+COMMENT ON TABLE  workshop_followup_plans              IS 'User-defined follow-up commitments after a workshop (72 h, 3-week, 30-day windows).';
+COMMENT ON COLUMN workshop_followup_plans.id           IS 'Primary key.';
+COMMENT ON COLUMN workshop_followup_plans.user_id      IS 'Participant who created this plan (FK → users).';
+COMMENT ON COLUMN workshop_followup_plans.workshop_id  IS 'Workshop this plan follows up on (FK → workshops).';
 COMMENT ON COLUMN workshop_followup_plans.window_type              IS 'Follow-up window: h72 (72 hours) | w3 (3 weeks) | d30 (30 days).';
 COMMENT ON COLUMN workshop_followup_plans.intent_text              IS 'User''s free-text intention statement for this window.';
 COMMENT ON COLUMN workshop_followup_plans.daily_phrase             IS 'Short affirmation or mantra the user commits to repeat daily.';
@@ -1339,8 +1423,10 @@ COMMENT ON COLUMN workshop_followup_plans.created_at               IS 'Record cr
 COMMENT ON COLUMN workshop_followup_plans.updated_at               IS 'Record last-update timestamp (UTC).';
 
 -- ---------------- ebooks ----------------
-COMMENT ON TABLE  ebooks                          IS 'Digital books available in the PST library.';
-COMMENT ON COLUMN ebooks.content_item_id          IS 'Primary key and FK to content_items (one-to-one).';
+COMMENT ON TABLE  ebooks                          IS 'Phase 2 product — digital books available in the PST library.';
+COMMENT ON COLUMN ebooks.id                       IS 'Primary key — auto-generated UUID.';
+COMMENT ON COLUMN ebooks.product_id               IS 'FK to content_products super table (product_type = ebook).';
+COMMENT ON COLUMN ebooks.content_item_id          IS 'Optional Phase 1 atom holding the EPUB/audio content (FK → content_items).';
 COMMENT ON COLUMN ebooks.title                    IS 'Display title of the e-book.';
 COMMENT ON COLUMN ebooks.category                 IS 'Genre or subject category used for filtering (e.g. şükür, kişisel gelişim).';
 COMMENT ON COLUMN ebooks.total_pages              IS 'Total page count used to calculate reading progress percentage.';
@@ -1353,10 +1439,10 @@ COMMENT ON COLUMN ebooks.created_at               IS 'Record creation timestamp 
 COMMENT ON COLUMN ebooks.updated_at               IS 'Record last-update timestamp (UTC).';
 
 -- ---------------- ebook_chapters ----------------
-COMMENT ON TABLE  ebook_chapters                       IS 'Table-of-contents entries for an e-book, supporting nested chapters.';
-COMMENT ON COLUMN ebook_chapters.id                    IS 'Primary key.';
-COMMENT ON COLUMN ebook_chapters.ebook_content_item_id IS 'Parent e-book (FK → ebooks).';
-COMMENT ON COLUMN ebook_chapters.title                 IS 'Display title of the chapter.';
+COMMENT ON TABLE  ebook_chapters                IS 'Table-of-contents entries for an e-book, supporting nested chapters.';
+COMMENT ON COLUMN ebook_chapters.id             IS 'Primary key.';
+COMMENT ON COLUMN ebook_chapters.ebook_id       IS 'Parent e-book (FK → ebooks).';
+COMMENT ON COLUMN ebook_chapters.title          IS 'Display title of the chapter.';
 COMMENT ON COLUMN ebook_chapters.order_index           IS 'Display order within the parent scope (ascending).';
 COMMENT ON COLUMN ebook_chapters.parent_chapter_id     IS 'FK to the parent chapter for nested sub-chapters; null for top-level.';
 COMMENT ON COLUMN ebook_chapters.start_locator         IS 'EPUB CFI or page-based locator marking the start of this chapter.';
@@ -1367,14 +1453,14 @@ COMMENT ON COLUMN ebook_chapters.created_at            IS 'Record creation times
 COMMENT ON COLUMN ebook_chapters.updated_at            IS 'Record last-update timestamp (UTC).';
 
 -- ---------------- content_progress ----------------
-COMMENT ON TABLE  content_progress                  IS 'Per-user progress records for any content item type (journey, module, workshop, ebook, etc.).';
+COMMENT ON TABLE  content_progress                  IS 'Per-user progress records for any Phase 2 product (journey, module, package, workshop, ebook).';
 COMMENT ON COLUMN content_progress.id               IS 'Primary key.';
 COMMENT ON COLUMN content_progress.user_id          IS 'User whose progress is tracked (FK → users).';
-COMMENT ON COLUMN content_progress.target_type      IS 'Discriminator indicating which entity type is being tracked.';
-COMMENT ON COLUMN content_progress.content_item_id  IS 'Content item being tracked (FK → content_items).';
+COMMENT ON COLUMN content_progress.target_type      IS 'Discriminator indicating which product type is being tracked.';
+COMMENT ON COLUMN content_progress.product_id       IS 'Phase 2 product being tracked (FK → content_products).';
 COMMENT ON COLUMN content_progress.status           IS 'Progress state: locked | available | in_progress | completed.';
 COMMENT ON COLUMN content_progress.progress_percent IS 'Completion percentage (0–100).';
-COMMENT ON COLUMN content_progress.started_at       IS 'Timestamp of first engagement with this content item.';
+COMMENT ON COLUMN content_progress.started_at       IS 'Timestamp of first engagement with this product.';
 COMMENT ON COLUMN content_progress.completed_at     IS 'Timestamp when progress reached 100%; null if not yet completed.';
 COMMENT ON COLUMN content_progress.created_by       IS 'Actor that created this progress record.';
 COMMENT ON COLUMN content_progress.updated_by       IS 'Actor that last modified this progress record.';
@@ -1458,10 +1544,10 @@ COMMENT ON COLUMN collection_items.created_at       IS 'Record creation timestam
 COMMENT ON COLUMN collection_items.updated_at       IS 'Record last-update timestamp (UTC).';
 
 -- ---------------- reading_positions ----------------
-COMMENT ON TABLE  reading_positions                   IS 'Last-read position and progress for each user–ebook pair.';
-COMMENT ON COLUMN reading_positions.id                IS 'Primary key.';
-COMMENT ON COLUMN reading_positions.user_id           IS 'Reader (FK → users).';
-COMMENT ON COLUMN reading_positions.content_item_id   IS 'E-book being read (FK → ebooks).';
+COMMENT ON TABLE  reading_positions              IS 'Last-read position and progress for each user–ebook pair.';
+COMMENT ON COLUMN reading_positions.id           IS 'Primary key.';
+COMMENT ON COLUMN reading_positions.user_id      IS 'Reader (FK → users).';
+COMMENT ON COLUMN reading_positions.ebook_id     IS 'E-book product being read (FK → ebooks).';
 COMMENT ON COLUMN reading_positions.progress_percent  IS 'Reading completion percentage (0–100) derived from the locator.';
 COMMENT ON COLUMN reading_positions.locator_type      IS 'Position format: page (integer page number) | cfi (EPUB Canonical Fragment Identifier).';
 COMMENT ON COLUMN reading_positions.locator_value     IS 'Serialised position value (page number string or CFI string).';
@@ -1539,9 +1625,22 @@ COMMENT ON COLUMN notifications.sent_at    IS 'Timestamp when the notification w
 COMMENT ON COLUMN notifications.created_at IS 'Record creation timestamp (UTC).';
 COMMENT ON COLUMN notifications.updated_at IS 'Record last-update timestamp (UTC).';
 
+-- ---------------- content_products ----------------
+COMMENT ON TABLE  content_products              IS 'Phase 2 super table — registry for all publishable products (journey, module, package, workshop, ebook).';
+COMMENT ON COLUMN content_products.id           IS 'Primary key — auto-generated UUID; referenced by all product domain tables.';
+COMMENT ON COLUMN content_products.product_type IS 'Discriminator: journey | module | package | workshop | ebook.';
+COMMENT ON COLUMN content_products.area_id      IS 'Content area this product belongs to (FK → content_areas); null if not yet assigned.';
+COMMENT ON COLUMN content_products.is_published IS 'Whether this product is visible to end users.';
+COMMENT ON COLUMN content_products.order_index  IS 'Display order within the content area (ascending).';
+COMMENT ON COLUMN content_products.created_by   IS 'Actor that created this product record.';
+COMMENT ON COLUMN content_products.updated_by   IS 'Actor that last modified this product record.';
+COMMENT ON COLUMN content_products.created_at   IS 'Record creation timestamp (UTC).';
+COMMENT ON COLUMN content_products.updated_at   IS 'Record last-update timestamp (UTC).';
+
 -- ---------------- content_areas ----------------
-COMMENT ON TABLE  content_areas              IS 'Home dashboard content-area cards from mock fixtures.';
-COMMENT ON COLUMN content_areas.route        IS 'Navigation target route (primary key).';
+COMMENT ON TABLE  content_areas              IS 'Home dashboard content-area cards; each area groups one or more products.';
+COMMENT ON COLUMN content_areas.id           IS 'Primary key — auto-generated UUID.';
+COMMENT ON COLUMN content_areas.route        IS 'Unique navigation target route.';
 COMMENT ON COLUMN content_areas.label        IS 'Card label.';
 COMMENT ON COLUMN content_areas.description  IS 'Card helper text.';
 COMMENT ON COLUMN content_areas.icon         IS 'Icon token for the card.';
