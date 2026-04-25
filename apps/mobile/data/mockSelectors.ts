@@ -21,10 +21,10 @@ const getRawContentSeries = () => getList((getData() as any)?.content_series as 
 
 const inferEntityTypeByContentItemId = (contentItemId?: string) => {
   if (!contentItemId) return 'content';
-  if (getRawJourneys().some((j: any) => j.content_item_id === contentItemId)) return 'journey';
-  if (getRawModules().some((m: any) => m.content_item_id === contentItemId)) return 'module';
+  if (getRawJourneys().some((j: any) => (j.content_item_id ?? j.id) === contentItemId)) return 'journey';
+  if (getRawModules().some((m: any) => (m.content_item_id ?? m.id) === contentItemId)) return 'module';
   if (getRawWorkshops().some((w: any) => w.id === contentItemId)) return 'workshop';
-  if (getRawEbooks().some((e: any) => e.content_item_id === contentItemId)) return 'ebook';
+  if (getRawEbooks().some((e: any) => (e.content_item_id ?? e.id) === contentItemId)) return 'ebook';
   return 'content';
 };
 
@@ -38,13 +38,15 @@ type Normalized<T extends object> = T & { id: string; title: string };
 
 const normalizeJourney = (j: any): Normalized<typeof j> => ({
   ...j,
-  id: j.content_item_id,
+  id: j.id ?? j.content_item_id,
+  content_item_id: j.content_item_id ?? j.id,
   title: j.title ?? `Yolculuk (${j.duration_days} gun, ${j.level})`
 });
 
 const normalizeModule = (m: any): Normalized<typeof m> => ({
   ...m,
-  id: m.content_item_id,
+  id: m.id ?? m.content_item_id,
+  content_item_id: m.content_item_id ?? m.id,
   title: m.title ?? m.description ?? 'Modul'
 });
 
@@ -57,7 +59,8 @@ const normalizeWorkshop = (w: any): Normalized<typeof w> => ({
 
 const normalizeEbook = (e: any): Normalized<typeof e> => ({
   ...e,
-  id: e.content_item_id,
+  id: e.id ?? e.content_item_id,
+  content_item_id: e.content_item_id ?? e.id,
   title: e.title ?? e.category ?? 'e-Kitap'
 });
 
@@ -325,14 +328,14 @@ export const getCollectionItems = () => getList(getData()?.collection_items);
 export const getEbookProgress = () =>
   getList(getData()?.reading_positions as any[]).map((p: any) => ({
     ...p,
-    ebook_id: p.content_item_id,
+    ebook_id: p.ebook_id ?? p.content_item_id,
     percent_complete: p.progress_percent
   }));
 
 export const getDownloads = () => {
-  const ebookIds = new Set(getRawEbooks().map((e: any) => e.content_item_id));
+  const ebookIds = new Set(getRawEbooks().map((e: any) => e.content_item_id ?? e.id));
   const workshopIds = new Set(getRawWorkshops().map((w: any) => w.id));
-  const journeyIds = new Set(getRawJourneys().map((j: any) => j.content_item_id));
+  const journeyIds = new Set(getRawJourneys().map((j: any) => j.content_item_id ?? j.id));
   return getList(getData()?.downloads as any[]).map((d: any) => {
     let content_type = d.content_type ?? 'content';
     if (!d.content_type) {

@@ -978,6 +978,316 @@
       "created_at": "2025-12-01T10:00:00Z",
       "updated_at": "2025-12-01T10:00:00Z",
       "title": "Baslangiç Yolculugu"
+    },
+    {
+      "id": "abababab-1000-0000-0000-000000000001",
+      "product_id": "abababab-1000-0000-0000-000000000001",
+      "duration_days": 10,
+      "level": "baslangic",
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z",
+      "title": "Sabah Sakinligi Yolculugu",
+      "description": "Gune sakin bir baslangic yapmak icin nefes, niyet ve sadelik pratikleri.",
+      "outline_steps": [
+        {
+          "title": "Niyet",
+          "duration": "8 dk"
+        },
+        {
+          "title": "Uygulama",
+          "duration": "12 dk"
+        },
+        {
+          "title": "Kapanis Notu",
+          "duration": "6 dk"
+        }
+      ],
+      "benefits": [
+        "Gunluk ritim",
+        "Daha net odak",
+        "Daha sakin tepki"
+      ]
+    },
+    {
+      "id": "abababab-1000-0000-0000-000000000002",
+      "product_id": "abababab-1000-0000-0000-000000000002",
+      "duration_days": 14,
+      "level": "baslangic",
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z",
+      "title": "Oz-Duzen Yolculugu",
+      "description": "Gundelik hayatini daha istikrarli ve takip edilebilir hale getiren kucuk adimlar.",
+      "outline_steps": [
+        {
+          "title": "Niyet",
+          "duration": "8 dk"
+        },
+        {
+          "title": "Uygulama",
+          "duration": "12 dk"
+        },
+        {
+          "title": "Kapanis Notu",
+          "duration": "6 dk"
+        }
+      ],
+      "benefits": [
+        "Gunluk ritim",
+        "Daha net odak",
+        "Daha sakin tepki"
+      ]
+    },
+    {
+      "id": "abababab-1000-0000-0000-000000000003",
+      "product_id": "abababab-1000-0000-0000-000000000003",
+      "duration_days": 12,
+      "level": "orta",
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z",
+      "title": "Duygusal Netlik Rotasi",
+      "description": "Duygulari fark etme, adlandirma ve duruma uygun cevap verme becerisi.",
+      "outline_steps": [
+        {
+          "title": "Niyet",
+          "duration": "8 dk"
+        },
+        {
+          "title": "Uygulama",
+          "duration": "12 dk"
+        },
+        {
+          "title": "Kapanis Notu",
+          "duration": "6 dk"
+        }
+      ],
+      "benefits": [
+        "Gunluk ritim",
+        "Daha net odak",
+        "Daha sakin tepki"
+      ]
+    },
+    {
+      "id": "abababab-1000-0000-0000-000000000004",
+      "product_id": "abababab-1000-0000-0000-000000000004",
+      "duration_days": 9,
+      "level": "baslangic",
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z",
+      "title": "Sukur ve Bolluk Rotasi",
+      "description": "Minnet duygusunu canlandiran ve gunluk farkindaligi genisleten bir akis.",
+      "outline_steps": [
+        {
+          "title": "Niyet",
+          "duration": "8 dk"
+        },
+        {
+          "title": "Uygulama",
+          "duration": "12 dk"
+        },
+        {
+          "title": "Kapanis Notu",
+          "duration": "6 dk"
+        }
+      ],
+      "benefits": [
+        "Gunluk ritim",
+        "Daha net odak",
+        "Daha sakin tepki"
+      ]
+    },
+    {
+      "id": "abababab-1000-0000-0000-000000000005",
+      "product_id": "abababab-1000-0000-0000-000000000005",
+      "duration_days": 7,
+      "level": "orta",
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z",
+      "title": "Sessizlik ve Tefekkur Yolculugu",
+      "description": "Dikkati iceriye ceviren daha yavas ve derin bir ic ritim.",
+      "outline_steps": [
+        {
+          "title": "Niyet",
+          "duration": "8 dk"
+        },
+        {
+          "title": "Uygulama",
+          "duration": "12 dk"
+        },
+        {
+          "title": "Kapanis Notu",
+          "duration": "6 dk"
+        }
+      ],
+      "benefits": [
+        "Gunluk ritim",
+        "Daha net odak",
+        "Daha sakin tepki"
+      ]
+    },
+    {
+      "id": "abababab-1000-0000-0000-000000000006",
+      "product_id": "abababab-1000-0000-0000-000000000006",
+      "duration_days": 15,
+      "level": "orta",
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z",
+      "title": "Iliski Onarimi Yolculugu",
+      "description": "Yakın iliskilerde guven, dinleme ve yumusak iletisim pratikleri.",
+      "outline_steps": [
+        {
+          "title": "Niyet",
+          "duration": "8 dk"
+        },
+        {
+          "title": "Uygulama",
+          "duration": "12 dk"
+        },
+        {
+          "title": "Kapanis Notu",
+          "duration": "6 dk"
+        }
+      ],
+      "benefits": [
+        "Gunluk ritim",
+        "Daha net odak",
+        "Daha sakin tepki"
+      ]
+    },
+    {
+      "id": "abababab-1000-0000-0000-000000000007",
+      "product_id": "abababab-1000-0000-0000-000000000007",
+      "duration_days": 11,
+      "level": "orta",
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z",
+      "title": "Cesaret ve Eylem Yolculugu",
+      "description": "Erteleme yerine hareketi secmek icin netlik ve ivme kazandiran bir dizi.",
+      "outline_steps": [
+        {
+          "title": "Niyet",
+          "duration": "8 dk"
+        },
+        {
+          "title": "Uygulama",
+          "duration": "12 dk"
+        },
+        {
+          "title": "Kapanis Notu",
+          "duration": "6 dk"
+        }
+      ],
+      "benefits": [
+        "Gunluk ritim",
+        "Daha net odak",
+        "Daha sakin tepki"
+      ]
+    },
+    {
+      "id": "abababab-1000-0000-0000-000000000008",
+      "product_id": "abababab-1000-0000-0000-000000000008",
+      "duration_days": 8,
+      "level": "orta",
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z",
+      "title": "Odak ve Derin Calisma Yolculugu",
+      "description": "Parcali dikkati toparlayan ve tek ise derinlesmeyi destekleyen rota.",
+      "outline_steps": [
+        {
+          "title": "Niyet",
+          "duration": "8 dk"
+        },
+        {
+          "title": "Uygulama",
+          "duration": "12 dk"
+        },
+        {
+          "title": "Kapanis Notu",
+          "duration": "6 dk"
+        }
+      ],
+      "benefits": [
+        "Gunluk ritim",
+        "Daha net odak",
+        "Daha sakin tepki"
+      ]
+    },
+    {
+      "id": "abababab-1000-0000-0000-000000000009",
+      "product_id": "abababab-1000-0000-0000-000000000009",
+      "duration_days": 13,
+      "level": "baslangic",
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z",
+      "title": "Kalpten Ibadet Yolculugu",
+      "description": "Niyet, huzur ve manevi derinlik uzerine kurulu gunluk bir akis.",
+      "outline_steps": [
+        {
+          "title": "Niyet",
+          "duration": "8 dk"
+        },
+        {
+          "title": "Uygulama",
+          "duration": "12 dk"
+        },
+        {
+          "title": "Kapanis Notu",
+          "duration": "6 dk"
+        }
+      ],
+      "benefits": [
+        "Gunluk ritim",
+        "Daha net odak",
+        "Daha sakin tepki"
+      ]
+    },
+    {
+      "id": "abababab-1000-0000-0000-000000000010",
+      "product_id": "abababab-1000-0000-0000-000000000010",
+      "duration_days": 6,
+      "level": "baslangic",
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z",
+      "title": "Yeniden Baslama Yolculugu",
+      "description": "Yorgunluk sonrasi toparlanma ve yeniden hiz kazanma adimlari.",
+      "outline_steps": [
+        {
+          "title": "Niyet",
+          "duration": "8 dk"
+        },
+        {
+          "title": "Uygulama",
+          "duration": "12 dk"
+        },
+        {
+          "title": "Kapanis Notu",
+          "duration": "6 dk"
+        }
+      ],
+      "benefits": [
+        "Gunluk ritim",
+        "Daha net odak",
+        "Daha sakin tepki"
+      ]
     }
   ],
   "journey_items": [
@@ -1076,6 +1386,166 @@
       "order_index": 2,
       "created_at": "2025-12-01T10:00:00Z",
       "updated_at": "2025-12-01T10:00:00Z"
+    },
+    {
+      "id": "e1000000-0000-0000-0000-000000000013",
+      "journey_content_item_id": "abababab-1000-0000-0000-000000000001",
+      "content_item_id": "cccccccc-1000-0000-0000-000000000001",
+      "order_index": 1,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z"
+    },
+    {
+      "id": "e1000000-0000-0000-0000-000000000014",
+      "journey_content_item_id": "abababab-1000-0000-0000-000000000001",
+      "content_item_id": "cccccccc-1000-0000-0000-000000000004",
+      "order_index": 2,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z"
+    },
+    {
+      "id": "e1000000-0000-0000-0000-000000000015",
+      "journey_content_item_id": "abababab-1000-0000-0000-000000000002",
+      "content_item_id": "cccccccc-1000-0000-0000-000000000002",
+      "order_index": 1,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z"
+    },
+    {
+      "id": "e1000000-0000-0000-0000-000000000016",
+      "journey_content_item_id": "abababab-1000-0000-0000-000000000002",
+      "content_item_id": "cccccccc-1000-0000-0000-000000000005",
+      "order_index": 2,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z"
+    },
+    {
+      "id": "e1000000-0000-0000-0000-000000000017",
+      "journey_content_item_id": "abababab-1000-0000-0000-000000000003",
+      "content_item_id": "cccccccc-1000-0000-0000-000000000003",
+      "order_index": 1,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z"
+    },
+    {
+      "id": "e1000000-0000-0000-0000-000000000018",
+      "journey_content_item_id": "abababab-1000-0000-0000-000000000003",
+      "content_item_id": "cccccccc-1000-0000-0000-000000000006",
+      "order_index": 2,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z"
+    },
+    {
+      "id": "e1000000-0000-0000-0000-000000000019",
+      "journey_content_item_id": "abababab-1000-0000-0000-000000000004",
+      "content_item_id": "cccccccc-1000-0000-0000-000000000004",
+      "order_index": 1,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z"
+    },
+    {
+      "id": "e1000000-0000-0000-0000-000000000020",
+      "journey_content_item_id": "abababab-1000-0000-0000-000000000004",
+      "content_item_id": "cccccccc-1000-0000-0000-000000000007",
+      "order_index": 2,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z"
+    },
+    {
+      "id": "e1000000-0000-0000-0000-000000000021",
+      "journey_content_item_id": "abababab-1000-0000-0000-000000000005",
+      "content_item_id": "cccccccc-1000-0000-0000-000000000005",
+      "order_index": 1,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z"
+    },
+    {
+      "id": "e1000000-0000-0000-0000-000000000022",
+      "journey_content_item_id": "abababab-1000-0000-0000-000000000005",
+      "content_item_id": "cccccccc-1000-0000-0000-000000000008",
+      "order_index": 2,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z"
+    },
+    {
+      "id": "e1000000-0000-0000-0000-000000000023",
+      "journey_content_item_id": "abababab-1000-0000-0000-000000000006",
+      "content_item_id": "cccccccc-1000-0000-0000-000000000006",
+      "order_index": 1,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z"
+    },
+    {
+      "id": "e1000000-0000-0000-0000-000000000024",
+      "journey_content_item_id": "abababab-1000-0000-0000-000000000006",
+      "content_item_id": "cccccccc-1000-0000-0000-000000000009",
+      "order_index": 2,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z"
+    },
+    {
+      "id": "e1000000-0000-0000-0000-000000000025",
+      "journey_content_item_id": "abababab-1000-0000-0000-000000000007",
+      "content_item_id": "cccccccc-1000-0000-0000-000000000007",
+      "order_index": 1,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z"
+    },
+    {
+      "id": "e1000000-0000-0000-0000-000000000026",
+      "journey_content_item_id": "abababab-1000-0000-0000-000000000007",
+      "content_item_id": "cccccccc-1000-0000-0000-000000000010",
+      "order_index": 2,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z"
+    },
+    {
+      "id": "e1000000-0000-0000-0000-000000000027",
+      "journey_content_item_id": "abababab-1000-0000-0000-000000000008",
+      "content_item_id": "cccccccc-1000-0000-0000-000000000008",
+      "order_index": 1,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z"
+    },
+    {
+      "id": "e1000000-0000-0000-0000-000000000028",
+      "journey_content_item_id": "abababab-1000-0000-0000-000000000008",
+      "content_item_id": "cccccccc-1000-0000-0000-000000000001",
+      "order_index": 2,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z"
+    },
+    {
+      "id": "e1000000-0000-0000-0000-000000000029",
+      "journey_content_item_id": "abababab-1000-0000-0000-000000000009",
+      "content_item_id": "cccccccc-1000-0000-0000-000000000009",
+      "order_index": 1,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z"
+    },
+    {
+      "id": "e1000000-0000-0000-0000-000000000030",
+      "journey_content_item_id": "abababab-1000-0000-0000-000000000009",
+      "content_item_id": "cccccccc-1000-0000-0000-000000000002",
+      "order_index": 2,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z"
+    },
+    {
+      "id": "e1000000-0000-0000-0000-000000000031",
+      "journey_content_item_id": "abababab-1000-0000-0000-000000000010",
+      "content_item_id": "cccccccc-1000-0000-0000-000000000010",
+      "order_index": 1,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z"
+    },
+    {
+      "id": "e1000000-0000-0000-0000-000000000032",
+      "journey_content_item_id": "abababab-1000-0000-0000-000000000010",
+      "content_item_id": "cccccccc-1000-0000-0000-000000000003",
+      "order_index": 2,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z"
     }
   ],
   "modules": [
@@ -1177,6 +1647,106 @@
       "created_at": "2025-12-01T10:00:00Z",
       "updated_at": "2025-12-01T10:00:00Z",
       "title": "Oz-Sefkat ve Kabul"
+    },
+    {
+      "id": "cccccccc-1000-0000-0000-000000000001",
+      "product_id": "cccccccc-1000-0000-0000-000000000001",
+      "description": "Gune ritim kazandiran, beden-zihin uyumunu guclendiren mikro aliskanliklar.",
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z",
+      "title": "Sabah Rutini ve Toparlanma"
+    },
+    {
+      "id": "cccccccc-1000-0000-0000-000000000002",
+      "product_id": "cccccccc-1000-0000-0000-000000000002",
+      "description": "Bildirim ve daginiklik icinde dikkati sabit tutmaya yardimci calismalar.",
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z",
+      "title": "Dikkat Koruma Becerileri"
+    },
+    {
+      "id": "cccccccc-1000-0000-0000-000000000003",
+      "product_id": "cccccccc-1000-0000-0000-000000000003",
+      "description": "Dis baskidan bagimsiz olarak eyleme gecmeyi kolaylastiran farkindalik calismalari.",
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z",
+      "title": "Icsel Motivasyon"
+    },
+    {
+      "id": "cccccccc-1000-0000-0000-000000000004",
+      "product_id": "cccccccc-1000-0000-0000-000000000004",
+      "description": "Savunmaya girmeden konusma, dinleme ve ortak zemin bulma becerileri.",
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z",
+      "title": "Guvenli Iletisim"
+    },
+    {
+      "id": "cccccccc-1000-0000-0000-000000000005",
+      "product_id": "cccccccc-1000-0000-0000-000000000005",
+      "description": "Sukru fark etme, ifade etme ve hayat ritmine yayma pratikleri.",
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z",
+      "title": "Gundelik Sukur"
+    },
+    {
+      "id": "cccccccc-1000-0000-0000-000000000006",
+      "product_id": "cccccccc-1000-0000-0000-000000000006",
+      "description": "Zor temaslardan sonra dengeyi bulmak ve iliskiyi onarmak icin araclar.",
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z",
+      "title": "Sinir Sonrasi Onarim"
+    },
+    {
+      "id": "cccccccc-1000-0000-0000-000000000007",
+      "product_id": "cccccccc-1000-0000-0000-000000000007",
+      "description": "Bedensel gerginligi azaltan nefes, esneme ve yavaslama uygulamalari.",
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z",
+      "title": "Derin Nefes ve Gevseme"
+    },
+    {
+      "id": "cccccccc-1000-0000-0000-000000000008",
+      "product_id": "cccccccc-1000-0000-0000-000000000008",
+      "description": "Net ama saygili sinir koymayi guclendiren cumleler ve senaryolar.",
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z",
+      "title": "Hayir Diyebilme Pratigi"
+    },
+    {
+      "id": "cccccccc-1000-0000-0000-000000000009",
+      "product_id": "cccccccc-1000-0000-0000-000000000009",
+      "description": "Kararlari degerlerle hizalayan ve oncelik berrakligi saglayan cerceve.",
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z",
+      "title": "Anlam ve Yon Duygusu"
+    },
+    {
+      "id": "cccccccc-1000-0000-0000-000000000010",
+      "product_id": "cccccccc-1000-0000-0000-000000000010",
+      "description": "Yuksek duygusal yogunluk anlarinda toparlanma ve esneklik becerileri.",
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z",
+      "title": "Zor Duygu Regülasyonu"
     }
   ],
   "packages": [
@@ -1467,6 +2037,246 @@
       "updated_by": null,
       "created_at": "2025-12-01T10:00:00Z",
       "updated_at": "2025-12-01T10:00:00Z"
+    },
+    {
+      "id": "pkg-1011-01",
+      "module_content_item_id": "cccccccc-1000-0000-0000-000000000001",
+      "title": "Paket 1: Sabah Rutini ve Toparlanma Temel 1",
+      "order_index": 1,
+      "source_content_item_id": "11111111-1111-1111-1111-111111111006",
+      "source_domain_type": "spiritual_lesson",
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z"
+    },
+    {
+      "id": "pkg-1011-02",
+      "module_content_item_id": "cccccccc-1000-0000-0000-000000000001",
+      "title": "Paket 2: Sabah Rutini ve Toparlanma Temel 2",
+      "order_index": 2,
+      "source_content_item_id": "11111111-1111-1111-1111-111111111006",
+      "source_domain_type": "spiritual_lesson",
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z"
+    },
+    {
+      "id": "pkg-1012-01",
+      "module_content_item_id": "cccccccc-1000-0000-0000-000000000002",
+      "title": "Paket 1: Dikkat Koruma Becerileri Temel 1",
+      "order_index": 1,
+      "source_content_item_id": "11111111-1111-1111-1111-111111111006",
+      "source_domain_type": "spiritual_lesson",
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z"
+    },
+    {
+      "id": "pkg-1012-02",
+      "module_content_item_id": "cccccccc-1000-0000-0000-000000000002",
+      "title": "Paket 2: Dikkat Koruma Becerileri Temel 2",
+      "order_index": 2,
+      "source_content_item_id": "11111111-1111-1111-1111-111111111006",
+      "source_domain_type": "spiritual_lesson",
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z"
+    },
+    {
+      "id": "pkg-1013-01",
+      "module_content_item_id": "cccccccc-1000-0000-0000-000000000003",
+      "title": "Paket 1: Icsel Motivasyon Temel 1",
+      "order_index": 1,
+      "source_content_item_id": "11111111-1111-1111-1111-111111111006",
+      "source_domain_type": "spiritual_lesson",
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z"
+    },
+    {
+      "id": "pkg-1013-02",
+      "module_content_item_id": "cccccccc-1000-0000-0000-000000000003",
+      "title": "Paket 2: Icsel Motivasyon Temel 2",
+      "order_index": 2,
+      "source_content_item_id": "11111111-1111-1111-1111-111111111006",
+      "source_domain_type": "spiritual_lesson",
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z"
+    },
+    {
+      "id": "pkg-1014-01",
+      "module_content_item_id": "cccccccc-1000-0000-0000-000000000004",
+      "title": "Paket 1: Guvenli Iletisim Temel 1",
+      "order_index": 1,
+      "source_content_item_id": "11111111-1111-1111-1111-111111111006",
+      "source_domain_type": "spiritual_lesson",
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z"
+    },
+    {
+      "id": "pkg-1014-02",
+      "module_content_item_id": "cccccccc-1000-0000-0000-000000000004",
+      "title": "Paket 2: Guvenli Iletisim Temel 2",
+      "order_index": 2,
+      "source_content_item_id": "11111111-1111-1111-1111-111111111006",
+      "source_domain_type": "spiritual_lesson",
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z"
+    },
+    {
+      "id": "pkg-1015-01",
+      "module_content_item_id": "cccccccc-1000-0000-0000-000000000005",
+      "title": "Paket 1: Gundelik Sukur Temel 1",
+      "order_index": 1,
+      "source_content_item_id": "11111111-1111-1111-1111-111111111006",
+      "source_domain_type": "spiritual_lesson",
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z"
+    },
+    {
+      "id": "pkg-1015-02",
+      "module_content_item_id": "cccccccc-1000-0000-0000-000000000005",
+      "title": "Paket 2: Gundelik Sukur Temel 2",
+      "order_index": 2,
+      "source_content_item_id": "11111111-1111-1111-1111-111111111006",
+      "source_domain_type": "spiritual_lesson",
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z"
+    },
+    {
+      "id": "pkg-1016-01",
+      "module_content_item_id": "cccccccc-1000-0000-0000-000000000006",
+      "title": "Paket 1: Sinir Sonrasi Onarim Temel 1",
+      "order_index": 1,
+      "source_content_item_id": "11111111-1111-1111-1111-111111111006",
+      "source_domain_type": "spiritual_lesson",
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z"
+    },
+    {
+      "id": "pkg-1016-02",
+      "module_content_item_id": "cccccccc-1000-0000-0000-000000000006",
+      "title": "Paket 2: Sinir Sonrasi Onarim Temel 2",
+      "order_index": 2,
+      "source_content_item_id": "11111111-1111-1111-1111-111111111006",
+      "source_domain_type": "spiritual_lesson",
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z"
+    },
+    {
+      "id": "pkg-1017-01",
+      "module_content_item_id": "cccccccc-1000-0000-0000-000000000007",
+      "title": "Paket 1: Derin Nefes ve Gevseme Temel 1",
+      "order_index": 1,
+      "source_content_item_id": "11111111-1111-1111-1111-111111111006",
+      "source_domain_type": "spiritual_lesson",
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z"
+    },
+    {
+      "id": "pkg-1017-02",
+      "module_content_item_id": "cccccccc-1000-0000-0000-000000000007",
+      "title": "Paket 2: Derin Nefes ve Gevseme Temel 2",
+      "order_index": 2,
+      "source_content_item_id": "11111111-1111-1111-1111-111111111006",
+      "source_domain_type": "spiritual_lesson",
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z"
+    },
+    {
+      "id": "pkg-1018-01",
+      "module_content_item_id": "cccccccc-1000-0000-0000-000000000008",
+      "title": "Paket 1: Hayir Diyebilme Pratigi Temel 1",
+      "order_index": 1,
+      "source_content_item_id": "11111111-1111-1111-1111-111111111006",
+      "source_domain_type": "spiritual_lesson",
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z"
+    },
+    {
+      "id": "pkg-1018-02",
+      "module_content_item_id": "cccccccc-1000-0000-0000-000000000008",
+      "title": "Paket 2: Hayir Diyebilme Pratigi Temel 2",
+      "order_index": 2,
+      "source_content_item_id": "11111111-1111-1111-1111-111111111006",
+      "source_domain_type": "spiritual_lesson",
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z"
+    },
+    {
+      "id": "pkg-1019-01",
+      "module_content_item_id": "cccccccc-1000-0000-0000-000000000009",
+      "title": "Paket 1: Anlam ve Yon Duygusu Temel 1",
+      "order_index": 1,
+      "source_content_item_id": "11111111-1111-1111-1111-111111111006",
+      "source_domain_type": "spiritual_lesson",
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z"
+    },
+    {
+      "id": "pkg-1019-02",
+      "module_content_item_id": "cccccccc-1000-0000-0000-000000000009",
+      "title": "Paket 2: Anlam ve Yon Duygusu Temel 2",
+      "order_index": 2,
+      "source_content_item_id": "11111111-1111-1111-1111-111111111006",
+      "source_domain_type": "spiritual_lesson",
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z"
+    },
+    {
+      "id": "pkg-1020-01",
+      "module_content_item_id": "cccccccc-1000-0000-0000-000000000010",
+      "title": "Paket 1: Zor Duygu Regülasyonu Temel 1",
+      "order_index": 1,
+      "source_content_item_id": "11111111-1111-1111-1111-111111111006",
+      "source_domain_type": "spiritual_lesson",
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z"
+    },
+    {
+      "id": "pkg-1020-02",
+      "module_content_item_id": "cccccccc-1000-0000-0000-000000000010",
+      "title": "Paket 2: Zor Duygu Regülasyonu Temel 2",
+      "order_index": 2,
+      "source_content_item_id": "11111111-1111-1111-1111-111111111006",
+      "source_domain_type": "spiritual_lesson",
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z"
     }
   ],
   "workshops": [
@@ -1937,6 +2747,276 @@
       "updated_by": null,
       "created_at": "2026-01-01T00:00:00Z",
       "updated_at": "2026-01-01T00:00:00Z"
+    },
+    {
+      "theme": "Kalpte Sakinlik ve Tevekkul",
+      "target_audience": "18+",
+      "total_duration_minutes": 1440,
+      "delivery_mode": "kamp",
+      "facilitator_guide_asset_id": null,
+      "participant_workbook_asset_id": null,
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z",
+      "title": "Kalpte Sakinlik ve Tevekkul",
+      "workshop_group_id": "70000000-0000-0000-0000-000000000001",
+      "id": "eeeeeeee-1000-0000-0000-000000000001",
+      "product_id": "eeeeeeee-1000-0000-0000-000000000001",
+      "description": "Kalpte Sakinlik ve Tevekkul",
+      "source_document_asset_id": null
+    },
+    {
+      "theme": "Gunluk Hayatta Niyet Tazelemek",
+      "target_audience": "18+",
+      "total_duration_minutes": 210,
+      "delivery_mode": "rehber",
+      "facilitator_guide_asset_id": null,
+      "participant_workbook_asset_id": null,
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z",
+      "title": "Gunluk Hayatta Niyet Tazelemek",
+      "workshop_group_id": "70000000-0000-0000-0000-000000000002",
+      "id": "eeeeeeee-1000-0000-0000-000000000002",
+      "product_id": "eeeeeeee-1000-0000-0000-000000000002",
+      "description": "Gunluk Hayatta Niyet Tazelemek",
+      "source_document_asset_id": null
+    },
+    {
+      "theme": "Merhametli Sinirlar Atolyesi",
+      "target_audience": "18+",
+      "total_duration_minutes": 240,
+      "delivery_mode": "calisma_kitabi",
+      "facilitator_guide_asset_id": null,
+      "participant_workbook_asset_id": null,
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z",
+      "title": "Merhametli Sinirlar Atolyesi",
+      "workshop_group_id": "70000000-0000-0000-0000-000000000003",
+      "id": "eeeeeeee-1000-0000-0000-000000000003",
+      "product_id": "eeeeeeee-1000-0000-0000-000000000003",
+      "description": "Merhametli Sinirlar Atolyesi",
+      "source_document_asset_id": null
+    },
+    {
+      "theme": "Tukenmislikten Toparlanmaya",
+      "target_audience": "25+",
+      "total_duration_minutes": 1620,
+      "delivery_mode": "kamp",
+      "facilitator_guide_asset_id": null,
+      "participant_workbook_asset_id": null,
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z",
+      "title": "Tukenmislikten Toparlanmaya",
+      "workshop_group_id": "70000000-0000-0000-0000-000000000004",
+      "id": "eeeeeeee-1000-0000-0000-000000000004",
+      "product_id": "eeeeeeee-1000-0000-0000-000000000004",
+      "description": "Tukenmislikten Toparlanmaya",
+      "source_document_asset_id": null
+    },
+    {
+      "theme": "Aile Ici Iletisim ve Denge",
+      "target_audience": "Aile",
+      "total_duration_minutes": 270,
+      "delivery_mode": "rehber",
+      "facilitator_guide_asset_id": null,
+      "participant_workbook_asset_id": null,
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z",
+      "title": "Aile Ici Iletisim ve Denge",
+      "workshop_group_id": "70000000-0000-0000-0000-000000000005",
+      "id": "eeeeeeee-1000-0000-0000-000000000005",
+      "product_id": "eeeeeeee-1000-0000-0000-000000000005",
+      "description": "Aile Ici Iletisim ve Denge",
+      "source_document_asset_id": null
+    },
+    {
+      "theme": "Yavaslamak ve Derin Dinlemek",
+      "target_audience": "18+",
+      "total_duration_minutes": 180,
+      "delivery_mode": "rehber",
+      "facilitator_guide_asset_id": null,
+      "participant_workbook_asset_id": null,
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z",
+      "title": "Yavaslamak ve Derin Dinlemek",
+      "workshop_group_id": "70000000-0000-0000-0000-000000000006",
+      "id": "eeeeeeee-1000-0000-0000-000000000006",
+      "product_id": "eeeeeeee-1000-0000-0000-000000000006",
+      "description": "Yavaslamak ve Derin Dinlemek",
+      "source_document_asset_id": null
+    },
+    {
+      "theme": "Kimlik, Aidiyet ve Istikamet",
+      "target_audience": "18+",
+      "total_duration_minutes": 1500,
+      "delivery_mode": "kamp",
+      "facilitator_guide_asset_id": null,
+      "participant_workbook_asset_id": null,
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z",
+      "title": "Kimlik, Aidiyet ve Istikamet",
+      "workshop_group_id": "70000000-0000-0000-0000-000000000001",
+      "id": "eeeeeeee-1000-0000-0000-000000000007",
+      "product_id": "eeeeeeee-1000-0000-0000-000000000007",
+      "description": "Kimlik, Aidiyet ve Istikamet",
+      "source_document_asset_id": null
+    },
+    {
+      "theme": "Erteleme ile Nazikce Calismak",
+      "target_audience": "18+",
+      "total_duration_minutes": 240,
+      "delivery_mode": "calisma_kitabi",
+      "facilitator_guide_asset_id": null,
+      "participant_workbook_asset_id": null,
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z",
+      "title": "Erteleme ile Nazikce Calismak",
+      "workshop_group_id": "70000000-0000-0000-0000-000000000002",
+      "id": "eeeeeeee-1000-0000-0000-000000000008",
+      "product_id": "eeeeeeee-1000-0000-0000-000000000008",
+      "description": "Erteleme ile Nazikce Calismak",
+      "source_document_asset_id": null
+    },
+    {
+      "theme": "Dua ile Yaklasmak",
+      "target_audience": "18+",
+      "total_duration_minutes": 1620,
+      "delivery_mode": "kamp",
+      "facilitator_guide_asset_id": null,
+      "participant_workbook_asset_id": null,
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z",
+      "title": "Dua ile Yaklasmak",
+      "workshop_group_id": "70000000-0000-0000-0000-000000000003",
+      "id": "eeeeeeee-1000-0000-0000-000000000009",
+      "product_id": "eeeeeeee-1000-0000-0000-000000000009",
+      "description": "Dua ile Yaklasmak",
+      "source_document_asset_id": null
+    },
+    {
+      "theme": "Kaygi Anlarinda Regülasyon",
+      "target_audience": "18+",
+      "total_duration_minutes": 210,
+      "delivery_mode": "rehber",
+      "facilitator_guide_asset_id": null,
+      "participant_workbook_asset_id": null,
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z",
+      "title": "Kaygi Anlarinda Regülasyon",
+      "workshop_group_id": "70000000-0000-0000-0000-000000000004",
+      "id": "eeeeeeee-1000-0000-0000-000000000010",
+      "product_id": "eeeeeeee-1000-0000-0000-000000000010",
+      "description": "Kaygi Anlarinda Regülasyon",
+      "source_document_asset_id": null
+    },
+    {
+      "theme": "Guvende Kalp Acmak",
+      "target_audience": "Cift",
+      "total_duration_minutes": 240,
+      "delivery_mode": "rehber",
+      "facilitator_guide_asset_id": null,
+      "participant_workbook_asset_id": null,
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z",
+      "title": "Guvende Kalp Acmak",
+      "workshop_group_id": "70000000-0000-0000-0000-000000000005",
+      "id": "eeeeeeee-1000-0000-0000-000000000011",
+      "product_id": "eeeeeeee-1000-0000-0000-000000000011",
+      "description": "Guvende Kalp Acmak",
+      "source_document_asset_id": null
+    },
+    {
+      "theme": "Genc Yetiskinler Icin Yön Bulma",
+      "target_audience": "18-25",
+      "total_duration_minutes": 1260,
+      "delivery_mode": "kamp",
+      "facilitator_guide_asset_id": null,
+      "participant_workbook_asset_id": null,
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z",
+      "title": "Genc Yetiskinler Icin Yön Bulma",
+      "workshop_group_id": "70000000-0000-0000-0000-000000000006",
+      "id": "eeeeeeee-1000-0000-0000-000000000012",
+      "product_id": "eeeeeeee-1000-0000-0000-000000000012",
+      "description": "Genc Yetiskinler Icin Yön Bulma",
+      "source_document_asset_id": null
+    },
+    {
+      "theme": "Dikkat, Telefon ve Zihin",
+      "target_audience": "18+",
+      "total_duration_minutes": 210,
+      "delivery_mode": "calisma_kitabi",
+      "facilitator_guide_asset_id": null,
+      "participant_workbook_asset_id": null,
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z",
+      "title": "Dikkat, Telefon ve Zihin",
+      "workshop_group_id": "70000000-0000-0000-0000-000000000001",
+      "id": "eeeeeeee-1000-0000-0000-000000000013",
+      "product_id": "eeeeeeee-1000-0000-0000-000000000013",
+      "description": "Dikkat, Telefon ve Zihin",
+      "source_document_asset_id": null
+    },
+    {
+      "theme": "Sefkatli Oz-Degerlendirme",
+      "target_audience": "18+",
+      "total_duration_minutes": 240,
+      "delivery_mode": "rehber",
+      "facilitator_guide_asset_id": null,
+      "participant_workbook_asset_id": null,
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z",
+      "title": "Sefkatli Oz-Degerlendirme",
+      "workshop_group_id": "70000000-0000-0000-0000-000000000002",
+      "id": "eeeeeeee-1000-0000-0000-000000000014",
+      "product_id": "eeeeeeee-1000-0000-0000-000000000014",
+      "description": "Sefkatli Oz-Degerlendirme",
+      "source_document_asset_id": null
+    },
+    {
+      "theme": "Yeni Bir Doneme Gecis Kampi",
+      "target_audience": "18+",
+      "total_duration_minutes": 1620,
+      "delivery_mode": "kamp",
+      "facilitator_guide_asset_id": null,
+      "participant_workbook_asset_id": null,
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z",
+      "title": "Yeni Bir Doneme Gecis Kampi",
+      "workshop_group_id": "70000000-0000-0000-0000-000000000003",
+      "id": "eeeeeeee-1000-0000-0000-000000000015",
+      "product_id": "eeeeeeee-1000-0000-0000-000000000015",
+      "description": "Yeni Bir Doneme Gecis Kampi",
+      "source_document_asset_id": null
     }
   ],
   "workshop_groups": [
@@ -2071,6 +3151,76 @@
       "created_at": "2025-12-01T10:00:00Z",
       "updated_at": "2025-12-01T10:00:00Z",
       "title": "Icsel Huzur Rehberi"
+    },
+    {
+      "id": "eeeeeeee-2000-0000-0000-000000000001",
+      "product_id": "eeeeeeee-2000-0000-0000-000000000001",
+      "title": "Kalbi Dinlemek",
+      "category": "manevi gelisim",
+      "total_pages": 168,
+      "has_audio": false,
+      "author_name": null,
+      "download_package_asset_id": null,
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z"
+    },
+    {
+      "id": "eeeeeeee-2000-0000-0000-000000000002",
+      "product_id": "eeeeeeee-2000-0000-0000-000000000002",
+      "title": "Gunluk Sukur Defteri",
+      "category": "kisisel gelisim",
+      "total_pages": 144,
+      "has_audio": false,
+      "author_name": null,
+      "download_package_asset_id": null,
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z"
+    },
+    {
+      "id": "eeeeeeee-2000-0000-0000-000000000003",
+      "product_id": "eeeeeeee-2000-0000-0000-000000000003",
+      "title": "Sessizlikte Derinlesmek",
+      "category": "farkindalik",
+      "total_pages": 196,
+      "has_audio": false,
+      "author_name": null,
+      "download_package_asset_id": null,
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z"
+    },
+    {
+      "id": "eeeeeeee-2000-0000-0000-000000000004",
+      "product_id": "eeeeeeee-2000-0000-0000-000000000004",
+      "title": "Nazik Disiplin",
+      "category": "uretkenlik",
+      "total_pages": 152,
+      "has_audio": false,
+      "author_name": null,
+      "download_package_asset_id": null,
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z"
+    },
+    {
+      "id": "eeeeeeee-2000-0000-0000-000000000005",
+      "product_id": "eeeeeeee-2000-0000-0000-000000000005",
+      "title": "Iliskilerde Merhamet",
+      "category": "iliski",
+      "total_pages": 184,
+      "has_audio": false,
+      "author_name": null,
+      "download_package_asset_id": null,
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z"
     }
   ],
   "content_sources": [
@@ -4922,6 +6072,446 @@
       "updated_by": null,
       "created_at": "2026-01-01T00:00:00Z",
       "updated_at": "2026-01-01T00:00:00Z"
+    },
+    {
+      "id": "abababab-1000-0000-0000-000000000001",
+      "product_type": "journey",
+      "area_id": null,
+      "is_published": true,
+      "order_index": 6,
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z"
+    },
+    {
+      "id": "abababab-1000-0000-0000-000000000002",
+      "product_type": "journey",
+      "area_id": null,
+      "is_published": true,
+      "order_index": 7,
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z"
+    },
+    {
+      "id": "abababab-1000-0000-0000-000000000003",
+      "product_type": "journey",
+      "area_id": null,
+      "is_published": true,
+      "order_index": 8,
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z"
+    },
+    {
+      "id": "abababab-1000-0000-0000-000000000004",
+      "product_type": "journey",
+      "area_id": null,
+      "is_published": true,
+      "order_index": 9,
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z"
+    },
+    {
+      "id": "abababab-1000-0000-0000-000000000005",
+      "product_type": "journey",
+      "area_id": null,
+      "is_published": true,
+      "order_index": 10,
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z"
+    },
+    {
+      "id": "abababab-1000-0000-0000-000000000006",
+      "product_type": "journey",
+      "area_id": null,
+      "is_published": true,
+      "order_index": 11,
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z"
+    },
+    {
+      "id": "abababab-1000-0000-0000-000000000007",
+      "product_type": "journey",
+      "area_id": null,
+      "is_published": true,
+      "order_index": 12,
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z"
+    },
+    {
+      "id": "abababab-1000-0000-0000-000000000008",
+      "product_type": "journey",
+      "area_id": null,
+      "is_published": true,
+      "order_index": 13,
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z"
+    },
+    {
+      "id": "abababab-1000-0000-0000-000000000009",
+      "product_type": "journey",
+      "area_id": null,
+      "is_published": true,
+      "order_index": 14,
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z"
+    },
+    {
+      "id": "abababab-1000-0000-0000-000000000010",
+      "product_type": "journey",
+      "area_id": null,
+      "is_published": true,
+      "order_index": 15,
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z"
+    },
+    {
+      "id": "cccccccc-1000-0000-0000-000000000001",
+      "product_type": "module",
+      "area_id": null,
+      "is_published": true,
+      "order_index": 12,
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z"
+    },
+    {
+      "id": "cccccccc-1000-0000-0000-000000000002",
+      "product_type": "module",
+      "area_id": null,
+      "is_published": true,
+      "order_index": 13,
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z"
+    },
+    {
+      "id": "cccccccc-1000-0000-0000-000000000003",
+      "product_type": "module",
+      "area_id": null,
+      "is_published": true,
+      "order_index": 14,
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z"
+    },
+    {
+      "id": "cccccccc-1000-0000-0000-000000000004",
+      "product_type": "module",
+      "area_id": null,
+      "is_published": true,
+      "order_index": 15,
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z"
+    },
+    {
+      "id": "cccccccc-1000-0000-0000-000000000005",
+      "product_type": "module",
+      "area_id": null,
+      "is_published": true,
+      "order_index": 16,
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z"
+    },
+    {
+      "id": "cccccccc-1000-0000-0000-000000000006",
+      "product_type": "module",
+      "area_id": null,
+      "is_published": true,
+      "order_index": 17,
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z"
+    },
+    {
+      "id": "cccccccc-1000-0000-0000-000000000007",
+      "product_type": "module",
+      "area_id": null,
+      "is_published": true,
+      "order_index": 18,
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z"
+    },
+    {
+      "id": "cccccccc-1000-0000-0000-000000000008",
+      "product_type": "module",
+      "area_id": null,
+      "is_published": true,
+      "order_index": 19,
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z"
+    },
+    {
+      "id": "cccccccc-1000-0000-0000-000000000009",
+      "product_type": "module",
+      "area_id": null,
+      "is_published": true,
+      "order_index": 20,
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z"
+    },
+    {
+      "id": "cccccccc-1000-0000-0000-000000000010",
+      "product_type": "module",
+      "area_id": null,
+      "is_published": true,
+      "order_index": 21,
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z"
+    },
+    {
+      "id": "eeeeeeee-1000-0000-0000-000000000001",
+      "product_type": "workshop",
+      "area_id": null,
+      "is_published": true,
+      "order_index": 27,
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z"
+    },
+    {
+      "id": "eeeeeeee-1000-0000-0000-000000000002",
+      "product_type": "workshop",
+      "area_id": null,
+      "is_published": true,
+      "order_index": 28,
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z"
+    },
+    {
+      "id": "eeeeeeee-1000-0000-0000-000000000003",
+      "product_type": "workshop",
+      "area_id": null,
+      "is_published": true,
+      "order_index": 29,
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z"
+    },
+    {
+      "id": "eeeeeeee-1000-0000-0000-000000000004",
+      "product_type": "workshop",
+      "area_id": null,
+      "is_published": true,
+      "order_index": 30,
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z"
+    },
+    {
+      "id": "eeeeeeee-1000-0000-0000-000000000005",
+      "product_type": "workshop",
+      "area_id": null,
+      "is_published": true,
+      "order_index": 31,
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z"
+    },
+    {
+      "id": "eeeeeeee-1000-0000-0000-000000000006",
+      "product_type": "workshop",
+      "area_id": null,
+      "is_published": true,
+      "order_index": 32,
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z"
+    },
+    {
+      "id": "eeeeeeee-1000-0000-0000-000000000007",
+      "product_type": "workshop",
+      "area_id": null,
+      "is_published": true,
+      "order_index": 33,
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z"
+    },
+    {
+      "id": "eeeeeeee-1000-0000-0000-000000000008",
+      "product_type": "workshop",
+      "area_id": null,
+      "is_published": true,
+      "order_index": 34,
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z"
+    },
+    {
+      "id": "eeeeeeee-1000-0000-0000-000000000009",
+      "product_type": "workshop",
+      "area_id": null,
+      "is_published": true,
+      "order_index": 35,
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z"
+    },
+    {
+      "id": "eeeeeeee-1000-0000-0000-000000000010",
+      "product_type": "workshop",
+      "area_id": null,
+      "is_published": true,
+      "order_index": 36,
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z"
+    },
+    {
+      "id": "eeeeeeee-1000-0000-0000-000000000011",
+      "product_type": "workshop",
+      "area_id": null,
+      "is_published": true,
+      "order_index": 37,
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z"
+    },
+    {
+      "id": "eeeeeeee-1000-0000-0000-000000000012",
+      "product_type": "workshop",
+      "area_id": null,
+      "is_published": true,
+      "order_index": 38,
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z"
+    },
+    {
+      "id": "eeeeeeee-1000-0000-0000-000000000013",
+      "product_type": "workshop",
+      "area_id": null,
+      "is_published": true,
+      "order_index": 39,
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z"
+    },
+    {
+      "id": "eeeeeeee-1000-0000-0000-000000000014",
+      "product_type": "workshop",
+      "area_id": null,
+      "is_published": true,
+      "order_index": 40,
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z"
+    },
+    {
+      "id": "eeeeeeee-1000-0000-0000-000000000015",
+      "product_type": "workshop",
+      "area_id": null,
+      "is_published": true,
+      "order_index": 41,
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z"
+    },
+    {
+      "id": "eeeeeeee-2000-0000-0000-000000000001",
+      "product_type": "ebook",
+      "area_id": null,
+      "is_published": true,
+      "order_index": 6,
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z"
+    },
+    {
+      "id": "eeeeeeee-2000-0000-0000-000000000002",
+      "product_type": "ebook",
+      "area_id": null,
+      "is_published": true,
+      "order_index": 7,
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z"
+    },
+    {
+      "id": "eeeeeeee-2000-0000-0000-000000000003",
+      "product_type": "ebook",
+      "area_id": null,
+      "is_published": true,
+      "order_index": 8,
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z"
+    },
+    {
+      "id": "eeeeeeee-2000-0000-0000-000000000004",
+      "product_type": "ebook",
+      "area_id": null,
+      "is_published": true,
+      "order_index": 9,
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z"
+    },
+    {
+      "id": "eeeeeeee-2000-0000-0000-000000000005",
+      "product_type": "ebook",
+      "area_id": null,
+      "is_published": true,
+      "order_index": 10,
+      "created_by": null,
+      "updated_by": null,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z"
     }
   ],
   "workshop_asset_links": [
