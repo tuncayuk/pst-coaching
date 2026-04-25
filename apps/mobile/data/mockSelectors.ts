@@ -15,6 +15,7 @@ const getRawJourneys = () => getList(getData()?.journeys);
 const getRawModules = () => getList(getData()?.modules);
 const getRawWorkshops = () => getList(getData()?.workshops);
 const getRawWorkshopGroups = () => getList((getData() as any)?.workshop_groups as any[]);
+const getRawWorkshopGroupFeatured = () => getList((getData() as any)?.workshop_group_featured as any[]);
 const getRawEbooks = () => getList(getData()?.ebooks);
 const getRawContentSeries = () => getList((getData() as any)?.content_series as any[]);
 
@@ -178,13 +179,19 @@ export const getWorkshopGroups = () => {
     const gid = (w as any).workshop_group_id;
     if (gid) countByGroup.set(gid, (countByGroup.get(gid) ?? 0) + 1);
   }
+  const featuredByGroup = new Map<string, string[]>();
+  for (const row of getRawWorkshopGroupFeatured().sort((a: any, b: any) => (a.order_index ?? 0) - (b.order_index ?? 0))) {
+    const gid = row.workshop_group_id;
+    if (!gid || !row.workshop_id) continue;
+    featuredByGroup.set(gid, [...(featuredByGroup.get(gid) ?? []), row.workshop_id]);
+  }
   return getRawWorkshopGroups()
     .map((group: any) => ({
       ...group,
       title: group.title ?? group.name ?? 'Atolye Grubu',
       description: group.description ?? '',
       catalog_count: countByGroup.get(group.id) ?? 0,
-      featured_workshop_ids: getList(group.featured_workshop_ids as string[]),
+      featured_workshop_ids: featuredByGroup.get(group.id) ?? getList(group.featured_workshop_ids as string[]),
       target_audiences: getList(group.target_audiences as string[])
     }))
     .sort((a: any, b: any) => (a.order_index ?? 0) - (b.order_index ?? 0));

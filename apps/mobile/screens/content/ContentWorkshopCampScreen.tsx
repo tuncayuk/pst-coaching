@@ -143,7 +143,7 @@ const ContentWorkshopCampContent = ({ workshopId, isOffline }: { workshopId?: st
           title="Kamp plani bulunamadi"
           description="Bu atolye icin kamp gunleri henuz tanimlanmamis."
           icon="campfire"
-          tone="warning"
+          tone="neutral"
         />
       </SectionCard>
     );

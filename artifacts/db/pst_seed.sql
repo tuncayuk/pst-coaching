@@ -176,7 +176,8 @@ INSERT INTO content_items (id, source_id, series_id, title, description, order_i
 
 INSERT INTO content_assets (id, content_item_id, asset_type, storage_uri, mime_type, byte_size, checksum, download_policy, created_by, updated_by, created_at, updated_at) VALUES
     ('a0000000-0000-0000-0000-000000000001', 'ffffffff-ffff-ffff-ffff-ffffffffffff',   'ebook_package',  's3://pst/mock/ebooks/icsel-huzur-rehberi-package.epub',   'application/epub+zip', 5242880,  'sha256:mock-ebook-package',     'downloadable', NULL, NULL, '2025-12-01T10:00:00Z', '2025-12-01T10:00:00Z'),
-    ('a0000000-0000-0000-0000-000000000002', 'eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee', 'worksheet_pdf',  's3://pst/mock/workshops/mutlak-muhtaclik-workbook.pdf',   'application/pdf',      10485760, 'sha256:mock-workshop-workbook',  'downloadable', NULL, NULL, '2025-12-01T10:00:00Z', '2025-12-01T10:00:00Z');
+    ('a0000000-0000-0000-0000-000000000002', 'eeeeeeee-0000-0000-0000-000000000000', 'worksheet_pdf',  's3://pst/mock/workshops/mutlak-muhtaclik-workbook.pdf',   'application/pdf',      10485760, 'sha256:mock-workshop-workbook',  'downloadable', NULL, NULL, '2025-12-01T10:00:00Z', '2025-12-01T10:00:00Z'),
+    ('a0000000-0000-0000-0000-000000000003', 'eeeeeeee-0000-0000-0000-000000000000', 'document',       's3://pst/mock/workshops/mutlak-muhtaclik-source.docx',    'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 524288, 'sha256:mock-workshop-source-doc', 'downloadable', NULL, NULL, '2025-12-01T10:00:00Z', '2025-12-01T10:00:00Z');
 
 
 -- =============================================================================
@@ -255,71 +256,105 @@ INSERT INTO packages (id, module_content_item_id, title, order_index, source_con
 
 
 -- =============================================================================
--- SECTION 17 — WORKSHOP GROUPS
+-- SECTION 17 — CONTENT PRODUCTS
 -- =============================================================================
 
-INSERT INTO workshop_groups (id, title, description, order_index, target_audiences, featured_workshop_ids, created_at, updated_at) VALUES
-    ('wg-manevi-derinlesme', 'Manevi Derinlesme',  'Dua, teslimiyet ve icsel farkindalik odakli uzun sureli atolyeler.', 1,
-        '["18+","25+"]',
-        '["eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee","eeeeeeee-0000-0000-0000-000000000003","eeeeeeee-0000-0000-0000-000000000024"]',
-        '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z'),
-    ('wg-duygusal-denge',    'Duygusal Denge',     'Ofke, korku, yas ve oz-sefkat temali donusum atolyeleri.',           2,
-        '["18+"]',
-        '["eeeeeeee-0000-0000-0000-000000000006","eeeeeeee-0000-0000-0000-000000000011","eeeeeeee-0000-0000-0000-000000000020"]',
-        '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z'),
-    ('wg-iliskiler-aile',    'Iliskiler ve Aile',  'Aile ici iletisim, es iliskisi ve bag kurma odakli atolyeler.',      3,
-        '["Aile","Cift","18+"]',
-        '["eeeeeeee-0000-0000-0000-000000000010","eeeeeeee-0000-0000-0000-000000000015","eeeeeeee-0000-0000-0000-000000000014"]',
-        '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z'),
-    ('wg-genc-ve-egitim',    'Genc ve Egitim',     'Ergenlik, kimlik gelisimi ve aidiyet sureclerine odakli atolyeler.', 4,
-        '["14-18","18+"]',
-        '["eeeeeeee-0000-0000-0000-000000000016","eeeeeeee-0000-0000-0000-000000000009","eeeeeeee-0000-0000-0000-000000000001"]',
-        '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z'),
-    ('wg-yasam-becerileri',  'Yasam Becerileri',   'Sinir koyma, odaklanma, zaman ve rutin yonetimi atolyeleri.',        5,
-        '["18+"]',
-        '["eeeeeeee-0000-0000-0000-000000000007","eeeeeeee-0000-0000-0000-000000000013","eeeeeeee-0000-0000-0000-000000000023"]',
-        '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z'),
-    ('wg-profesyonel-hayat', 'Profesyonel Hayat',  'Liderlik, motivasyon ve sorumluluk gelistiren atolyeler.',           6,
-        '["25+","18+"]',
-        '["eeeeeeee-0000-0000-0000-000000000017","eeeeeeee-0000-0000-0000-000000000012","eeeeeeee-0000-0000-0000-000000000021"]',
-        '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z');
+INSERT INTO content_products (id, product_type, is_published, order_index, created_at, updated_at)
+SELECT
+    id,
+    CASE source_id
+        WHEN '0a000000-0000-0000-0000-000000000001' THEN 'journey'::product_type
+        WHEN '0a000000-0000-0000-0000-000000000002' THEN 'module'::product_type
+        WHEN '0a000000-0000-0000-0000-000000000003' THEN 'ebook'::product_type
+        WHEN '0a000000-0000-0000-0000-000000000004' THEN 'workshop'::product_type
+    END,
+    is_published,
+    order_index,
+    created_at,
+    updated_at
+FROM content_items
+WHERE source_id IN (
+    '0a000000-0000-0000-0000-000000000001',
+    '0a000000-0000-0000-0000-000000000002',
+    '0a000000-0000-0000-0000-000000000003',
+    '0a000000-0000-0000-0000-000000000004'
+);
 
 
 -- =============================================================================
--- SECTION 18 — WORKSHOPS
+-- SECTION 18 — WORKSHOP GROUPS
 -- =============================================================================
 
-INSERT INTO workshops (content_item_id, title, theme, target_audience, total_duration_minutes, delivery_mode, workshop_group_id, facilitator_guide_asset_id, participant_workbook_asset_id, created_by, updated_by, created_at, updated_at) VALUES
-    ('eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee', 'Mutlak Muhtaçlık ve Dua Bilinci',             'Mutlak Muhtaçlık ve Dua Bilinci',         '18+',   1620, 'kamp',           'wg-manevi-derinlesme', NULL, NULL, NULL, NULL, '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z'),
-    ('eeeeeeee-0000-0000-0000-000000000000', 'Mutlak Muhtaçlık ve Dua Bilinci',             'Mutlak Muhtaçlık ve Dua Bilinci',         '18+',   1620, 'kamp',           'wg-manevi-derinlesme', NULL, NULL, NULL, NULL, '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z'),
-    ('eeeeeeee-0000-0000-0000-000000000001', 'Şükrün Gücü: Minnetin Sırrı',                 'Şükrün Gücü: Minnetin Sırrı',             '18+',   1620, 'kamp',           'wg-manevi-derinlesme', NULL, NULL, NULL, NULL, '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z'),
-    ('eeeeeeee-0000-0000-0000-000000000002', 'Empati ve Derin İletişim',                    'Empati ve Derin İletişim',                '18+',    240, 'rehber',         'wg-iliskiler-aile',    NULL, NULL, NULL, NULL, '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z'),
-    ('eeeeeeee-0000-0000-0000-000000000003', 'Sabır ve Teslimiyet: Beş Vaktin Bilgeliği',   'Sabır ve Teslimiyet: Beş Vaktin Bilgeliği','18+',   1620, 'kamp',           'wg-manevi-derinlesme', NULL, NULL, NULL, NULL, '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z'),
-    ('eeeeeeee-0000-0000-0000-000000000004', 'Tövbe ve Dönüşüm: Yeniden Başlamak',          'Tövbe ve Dönüşüm: Yeniden Başlamak',      '18+',   1620, 'kamp',           'wg-manevi-derinlesme', NULL, NULL, NULL, NULL, '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z'),
-    ('eeeeeeee-0000-0000-0000-000000000005', 'Öz-Şefkat: Kendine İyi Davranmak',            'Öz-Şefkat: Kendine İyi Davranmak',        '18+',    270, 'calisma_kitabi', 'wg-duygusal-denge',    NULL, NULL, NULL, NULL, '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z'),
-    ('eeeeeeee-0000-0000-0000-000000000006', 'Öfke ve Dönüşümü: Ateşi Söndürmek',          'Öfke ve Dönüşümü: Ateşi Söndürmek',       '18+',   1620, 'kamp',           'wg-duygusal-denge',    NULL, NULL, NULL, NULL, '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z'),
-    ('eeeeeeee-0000-0000-0000-000000000007', 'Sınır Koyma ve Hayır Diyebilmek',             'Sınır Koyma ve Hayır Diyebilmek',         '18+',    270, 'calisma_kitabi', 'wg-yasam-becerileri',  NULL, NULL, NULL, NULL, '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z'),
-    ('eeeeeeee-0000-0000-0000-000000000008', 'Korku ve Cesaret: Güven''e Yürümek',          'Korku ve Cesaret: Güven''e Yürümek',      '18+',   1620, 'kamp',           'wg-duygusal-denge',    NULL, NULL, NULL, NULL, '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z'),
-    ('eeeeeeee-0000-0000-0000-000000000009', 'Kimlik ve Varoluş: Ben Kimim?',               'Kimlik ve Varoluş: Ben Kimim?',            '18+',   1620, 'kamp',           'wg-genc-ve-egitim',    NULL, NULL, NULL, NULL, '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z'),
-    ('eeeeeeee-0000-0000-0000-000000000010', 'Aile ve Bağ: İlişkilerde Şifa',               'Aile ve Bağ: İlişkilerde Şifa',            'Aile',  1620, 'kamp',           'wg-iliskiler-aile',    NULL, NULL, NULL, NULL, '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z'),
-    ('eeeeeeee-0000-0000-0000-000000000011', 'Keder ve Kayıp: Yas Bilinci',                 'Keder ve Kayıp: Yas Bilinci',              '18+',   1620, 'kamp',           'wg-duygusal-denge',    NULL, NULL, NULL, NULL, '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z'),
-    ('eeeeeeee-0000-0000-0000-000000000012', 'Motivasyon ve Hedef İnşası',                  'Motivasyon ve Hedef İnşası',               '18+',   1620, 'kamp',           'wg-profesyonel-hayat', NULL, NULL, NULL, NULL, '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z'),
-    ('eeeeeeee-0000-0000-0000-000000000013', 'Zaman ve Dikkat Yönetimi',                    'Zaman ve Dikkat Yönetimi',                 '18+',    270, 'calisma_kitabi', 'wg-yasam-becerileri',  NULL, NULL, NULL, NULL, '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z'),
-    ('eeeeeeee-0000-0000-0000-000000000014', 'Güven ve Mahremiyet: Açılabilmek',            'Güven ve Mahremiyet: Açılabilmek',         '18+',    240, 'rehber',         'wg-iliskiler-aile',    NULL, NULL, NULL, NULL, '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z'),
-    ('eeeeeeee-0000-0000-0000-000000000015', 'Evlilik ve Derinleşme: Birlikte Büyümek',     'Evlilik ve Derinleşme: Birlikte Büyümek',  'Çift',  1620, 'kamp',           'wg-iliskiler-aile',    NULL, NULL, NULL, NULL, '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z'),
-    ('eeeeeeee-0000-0000-0000-000000000016', 'Ergenlik ve Özgürlük: Kendin Olmak',          'Ergenlik ve Özgürlük: Kendin Olmak',       '14-18',  300, 'rehber',         'wg-genc-ve-egitim',    NULL, NULL, NULL, NULL, '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z'),
-    ('eeeeeeee-0000-0000-0000-000000000017', 'Liderlik ve Sorumluluk: Öncü Olmak',          'Liderlik ve Sorumluluk: Öncü Olmak',       '25+',    300, 'rehber',         'wg-profesyonel-hayat', NULL, NULL, NULL, NULL, '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z'),
-    ('eeeeeeee-0000-0000-0000-000000000018', 'Yaratıcılık ve Anlam: Eser Vermek',           'Yaratıcılık ve Anlam: Eser Vermek',        '18+',    270, 'calisma_kitabi', 'wg-yasam-becerileri',  NULL, NULL, NULL, NULL, '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z'),
-    ('eeeeeeee-0000-0000-0000-000000000019', 'Dua ve Yakîn: Kalp ile Konuşmak',             'Dua ve Yakîn: Kalp ile Konuşmak',          '18+',   1620, 'kamp',           'wg-manevi-derinlesme', NULL, NULL, NULL, NULL, '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z'),
-    ('eeeeeeee-0000-0000-0000-000000000020', 'Özgüven: İç Ses ile Barışmak',                'Özgüven: İç Ses ile Barışmak',             '18+',    240, 'rehber',         'wg-duygusal-denge',    NULL, NULL, NULL, NULL, '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z'),
-    ('eeeeeeee-0000-0000-0000-000000000021', 'Şifa ve Yeniden Başlamak',                    'Şifa ve Yeniden Başlamak',                 '18+',   1620, 'kamp',           'wg-duygusal-denge',    NULL, NULL, NULL, NULL, '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z'),
-    ('eeeeeeee-0000-0000-0000-000000000022', 'Bağımlılık ve Özgürlük: Zincirleri Kırmak',  'Bağımlılık ve Özgürlük: Zincirleri Kırmak','18+',   1620, 'kamp',           'wg-yasam-becerileri',  NULL, NULL, NULL, NULL, '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z'),
-    ('eeeeeeee-0000-0000-0000-000000000023', 'Odak ve Derin Çalışma',                       'Odak ve Derin Çalışma',                    '18+',    270, 'calisma_kitabi', 'wg-yasam-becerileri',  NULL, NULL, NULL, NULL, '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z'),
-    ('eeeeeeee-0000-0000-0000-000000000024', 'Nefis Terbiyesi: İçsel Disiplin',             'Nefis Terbiyesi: İçsel Disiplin',          '18+',   1620, 'kamp',           'wg-yasam-becerileri',  NULL, NULL, NULL, NULL, '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z');
+INSERT INTO workshop_groups (id, title, description, order_index, target_audiences, created_at, updated_at) VALUES
+    ('wg-manevi-derinlesme', 'Manevi Derinlesme', 'Dua, teslimiyet ve icsel farkindalik odakli uzun sureli atolyeler.', 1, '["18+","25+"]', '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z'),
+    ('wg-duygusal-denge', 'Duygusal Denge', 'Ofke, korku, yas ve oz-sefkat temali donusum atolyeleri.', 2, '["18+"]', '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z'),
+    ('wg-iliskiler-aile', 'Iliskiler ve Aile', 'Aile ici iletisim, es iliskisi ve bag kurma odakli atolyeler.', 3, '["Aile","Cift","18+"]', '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z'),
+    ('wg-genc-ve-egitim', 'Genc ve Egitim', 'Ergenlik, kimlik gelisimi ve aidiyet sureclerine odakli atolyeler.', 4, '["14-18","18+"]', '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z'),
+    ('wg-yasam-becerileri', 'Yasam Becerileri', 'Sinir koyma, odaklanma, zaman ve rutin yonetimi atolyeleri.', 5, '["18+"]', '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z'),
+    ('wg-profesyonel-hayat', 'Profesyonel Hayat', 'Liderlik, motivasyon ve sorumluluk gelistiren atolyeler.', 6, '["25+","18+"]', '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z');
 
 
 -- =============================================================================
--- SECTION 19 — EBOOKS
+-- SECTION 19 — WORKSHOPS
+-- =============================================================================
+
+INSERT INTO workshops (id, product_id, content_item_id, title, description, theme, target_audience, total_duration_minutes, delivery_mode, workshop_group_id, source_document_asset_id, facilitator_guide_asset_id, participant_workbook_asset_id, created_by, updated_by, created_at, updated_at) VALUES
+    ('eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee', 'eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee', 'eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee', 'Mutlak Muhtaçlık ve Dua Bilinci', 'Mutlak Muhtaçlık ve Dua Bilinci', 'Mutlak Muhtaçlık ve Dua Bilinci', '18+', 1620, 'kamp', 'wg-manevi-derinlesme', NULL, NULL, NULL, NULL, NULL, '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z'),
+    ('eeeeeeee-0000-0000-0000-000000000000', 'eeeeeeee-0000-0000-0000-000000000000', 'eeeeeeee-0000-0000-0000-000000000000', 'Mutlak Muhtaçlık ve Dua Bilinci', 'Mutlak Muhtaçlık ve Dua Bilinci', 'Mutlak Muhtaçlık ve Dua Bilinci', '18+', 1620, 'kamp', 'wg-manevi-derinlesme', 'a0000000-0000-0000-0000-000000000003', NULL, 'a0000000-0000-0000-0000-000000000002', NULL, NULL, '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z'),
+    ('eeeeeeee-0000-0000-0000-000000000001', 'eeeeeeee-0000-0000-0000-000000000001', 'eeeeeeee-0000-0000-0000-000000000001', 'Şükrün Gücü: Minnetin Sırrı', 'Şükrün Gücü: Minnetin Sırrı', 'Şükrün Gücü: Minnetin Sırrı', '18+', 1620, 'kamp', 'wg-manevi-derinlesme', NULL, NULL, NULL, NULL, NULL, '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z'),
+    ('eeeeeeee-0000-0000-0000-000000000002', 'eeeeeeee-0000-0000-0000-000000000002', 'eeeeeeee-0000-0000-0000-000000000002', 'Empati ve Derin İletişim', 'Empati ve Derin İletişim', 'Empati ve Derin İletişim', '18+', 240, 'rehber', 'wg-iliskiler-aile', NULL, NULL, NULL, NULL, NULL, '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z'),
+    ('eeeeeeee-0000-0000-0000-000000000003', 'eeeeeeee-0000-0000-0000-000000000003', 'eeeeeeee-0000-0000-0000-000000000003', 'Sabır ve Teslimiyet: Beş Vaktin Bilgeliği', 'Sabır ve Teslimiyet: Beş Vaktin Bilgeliği', 'Sabır ve Teslimiyet: Beş Vaktin Bilgeliği', '18+', 1620, 'kamp', 'wg-manevi-derinlesme', NULL, NULL, NULL, NULL, NULL, '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z'),
+    ('eeeeeeee-0000-0000-0000-000000000004', 'eeeeeeee-0000-0000-0000-000000000004', 'eeeeeeee-0000-0000-0000-000000000004', 'Tövbe ve Dönüşüm: Yeniden Başlamak', 'Tövbe ve Dönüşüm: Yeniden Başlamak', 'Tövbe ve Dönüşüm: Yeniden Başlamak', '18+', 1620, 'kamp', 'wg-manevi-derinlesme', NULL, NULL, NULL, NULL, NULL, '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z'),
+    ('eeeeeeee-0000-0000-0000-000000000005', 'eeeeeeee-0000-0000-0000-000000000005', 'eeeeeeee-0000-0000-0000-000000000005', 'Öz-Şefkat: Kendine İyi Davranmak', 'Öz-Şefkat: Kendine İyi Davranmak', 'Öz-Şefkat: Kendine İyi Davranmak', '18+', 270, 'calisma_kitabi', 'wg-duygusal-denge', NULL, NULL, NULL, NULL, NULL, '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z'),
+    ('eeeeeeee-0000-0000-0000-000000000006', 'eeeeeeee-0000-0000-0000-000000000006', 'eeeeeeee-0000-0000-0000-000000000006', 'Öfke ve Dönüşümü: Ateşi Söndürmek', 'Öfke ve Dönüşümü: Ateşi Söndürmek', 'Öfke ve Dönüşümü: Ateşi Söndürmek', '18+', 1620, 'kamp', 'wg-duygusal-denge', NULL, NULL, NULL, NULL, NULL, '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z'),
+    ('eeeeeeee-0000-0000-0000-000000000007', 'eeeeeeee-0000-0000-0000-000000000007', 'eeeeeeee-0000-0000-0000-000000000007', 'Sınır Koyma ve Hayır Diyebilmek', 'Sınır Koyma ve Hayır Diyebilmek', 'Sınır Koyma ve Hayır Diyebilmek', '18+', 270, 'calisma_kitabi', 'wg-yasam-becerileri', NULL, NULL, NULL, NULL, NULL, '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z'),
+    ('eeeeeeee-0000-0000-0000-000000000008', 'eeeeeeee-0000-0000-0000-000000000008', 'eeeeeeee-0000-0000-0000-000000000008', 'Korku ve Cesaret: Güven''e Yürümek', 'Korku ve Cesaret: Güven''e Yürümek', 'Korku ve Cesaret: Güven''e Yürümek', '18+', 1620, 'kamp', 'wg-duygusal-denge', NULL, NULL, NULL, NULL, NULL, '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z'),
+    ('eeeeeeee-0000-0000-0000-000000000009', 'eeeeeeee-0000-0000-0000-000000000009', 'eeeeeeee-0000-0000-0000-000000000009', 'Kimlik ve Varoluş: Ben Kimim?', 'Kimlik ve Varoluş: Ben Kimim?', 'Kimlik ve Varoluş: Ben Kimim?', '18+', 1620, 'kamp', 'wg-genc-ve-egitim', NULL, NULL, NULL, NULL, NULL, '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z'),
+    ('eeeeeeee-0000-0000-0000-000000000010', 'eeeeeeee-0000-0000-0000-000000000010', 'eeeeeeee-0000-0000-0000-000000000010', 'Aile ve Bağ: İlişkilerde Şifa', 'Aile ve Bağ: İlişkilerde Şifa', 'Aile ve Bağ: İlişkilerde Şifa', 'Aile', 1620, 'kamp', 'wg-iliskiler-aile', NULL, NULL, NULL, NULL, NULL, '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z'),
+    ('eeeeeeee-0000-0000-0000-000000000011', 'eeeeeeee-0000-0000-0000-000000000011', 'eeeeeeee-0000-0000-0000-000000000011', 'Keder ve Kayıp: Yas Bilinci', 'Keder ve Kayıp: Yas Bilinci', 'Keder ve Kayıp: Yas Bilinci', '18+', 1620, 'kamp', 'wg-duygusal-denge', NULL, NULL, NULL, NULL, NULL, '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z'),
+    ('eeeeeeee-0000-0000-0000-000000000012', 'eeeeeeee-0000-0000-0000-000000000012', 'eeeeeeee-0000-0000-0000-000000000012', 'Motivasyon ve Hedef İnşası', 'Motivasyon ve Hedef İnşası', 'Motivasyon ve Hedef İnşası', '18+', 1620, 'kamp', 'wg-profesyonel-hayat', NULL, NULL, NULL, NULL, NULL, '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z'),
+    ('eeeeeeee-0000-0000-0000-000000000013', 'eeeeeeee-0000-0000-0000-000000000013', 'eeeeeeee-0000-0000-0000-000000000013', 'Zaman ve Dikkat Yönetimi', 'Zaman ve Dikkat Yönetimi', 'Zaman ve Dikkat Yönetimi', '18+', 270, 'calisma_kitabi', 'wg-yasam-becerileri', NULL, NULL, NULL, NULL, NULL, '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z'),
+    ('eeeeeeee-0000-0000-0000-000000000014', 'eeeeeeee-0000-0000-0000-000000000014', 'eeeeeeee-0000-0000-0000-000000000014', 'Güven ve Mahremiyet: Açılabilmek', 'Güven ve Mahremiyet: Açılabilmek', 'Güven ve Mahremiyet: Açılabilmek', '18+', 240, 'rehber', 'wg-iliskiler-aile', NULL, NULL, NULL, NULL, NULL, '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z'),
+    ('eeeeeeee-0000-0000-0000-000000000015', 'eeeeeeee-0000-0000-0000-000000000015', 'eeeeeeee-0000-0000-0000-000000000015', 'Evlilik ve Derinleşme: Birlikte Büyümek', 'Evlilik ve Derinleşme: Birlikte Büyümek', 'Evlilik ve Derinleşme: Birlikte Büyümek', 'Çift', 1620, 'kamp', 'wg-iliskiler-aile', NULL, NULL, NULL, NULL, NULL, '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z'),
+    ('eeeeeeee-0000-0000-0000-000000000016', 'eeeeeeee-0000-0000-0000-000000000016', 'eeeeeeee-0000-0000-0000-000000000016', 'Ergenlik ve Özgürlük: Kendin Olmak', 'Ergenlik ve Özgürlük: Kendin Olmak', 'Ergenlik ve Özgürlük: Kendin Olmak', '14-18', 300, 'rehber', 'wg-genc-ve-egitim', NULL, NULL, NULL, NULL, NULL, '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z'),
+    ('eeeeeeee-0000-0000-0000-000000000017', 'eeeeeeee-0000-0000-0000-000000000017', 'eeeeeeee-0000-0000-0000-000000000017', 'Liderlik ve Sorumluluk: Öncü Olmak', 'Liderlik ve Sorumluluk: Öncü Olmak', 'Liderlik ve Sorumluluk: Öncü Olmak', '25+', 300, 'rehber', 'wg-profesyonel-hayat', NULL, NULL, NULL, NULL, NULL, '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z'),
+    ('eeeeeeee-0000-0000-0000-000000000018', 'eeeeeeee-0000-0000-0000-000000000018', 'eeeeeeee-0000-0000-0000-000000000018', 'Yaratıcılık ve Anlam: Eser Vermek', 'Yaratıcılık ve Anlam: Eser Vermek', 'Yaratıcılık ve Anlam: Eser Vermek', '18+', 270, 'calisma_kitabi', 'wg-yasam-becerileri', NULL, NULL, NULL, NULL, NULL, '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z'),
+    ('eeeeeeee-0000-0000-0000-000000000019', 'eeeeeeee-0000-0000-0000-000000000019', 'eeeeeeee-0000-0000-0000-000000000019', 'Dua ve Yakîn: Kalp ile Konuşmak', 'Dua ve Yakîn: Kalp ile Konuşmak', 'Dua ve Yakîn: Kalp ile Konuşmak', '18+', 1620, 'kamp', 'wg-manevi-derinlesme', NULL, NULL, NULL, NULL, NULL, '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z'),
+    ('eeeeeeee-0000-0000-0000-000000000020', 'eeeeeeee-0000-0000-0000-000000000020', 'eeeeeeee-0000-0000-0000-000000000020', 'Özgüven: İç Ses ile Barışmak', 'Özgüven: İç Ses ile Barışmak', 'Özgüven: İç Ses ile Barışmak', '18+', 240, 'rehber', 'wg-duygusal-denge', NULL, NULL, NULL, NULL, NULL, '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z'),
+    ('eeeeeeee-0000-0000-0000-000000000021', 'eeeeeeee-0000-0000-0000-000000000021', 'eeeeeeee-0000-0000-0000-000000000021', 'Şifa ve Yeniden Başlamak', 'Şifa ve Yeniden Başlamak', 'Şifa ve Yeniden Başlamak', '18+', 1620, 'kamp', 'wg-duygusal-denge', NULL, NULL, NULL, NULL, NULL, '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z'),
+    ('eeeeeeee-0000-0000-0000-000000000022', 'eeeeeeee-0000-0000-0000-000000000022', 'eeeeeeee-0000-0000-0000-000000000022', 'Bağımlılık ve Özgürlük: Zincirleri Kırmak', 'Bağımlılık ve Özgürlük: Zincirleri Kırmak', 'Bağımlılık ve Özgürlük: Zincirleri Kırmak', '18+', 1620, 'kamp', 'wg-yasam-becerileri', NULL, NULL, NULL, NULL, NULL, '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z'),
+    ('eeeeeeee-0000-0000-0000-000000000023', 'eeeeeeee-0000-0000-0000-000000000023', 'eeeeeeee-0000-0000-0000-000000000023', 'Odak ve Derin Çalışma', 'Odak ve Derin Çalışma', 'Odak ve Derin Çalışma', '18+', 270, 'calisma_kitabi', 'wg-yasam-becerileri', NULL, NULL, NULL, NULL, NULL, '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z'),
+    ('eeeeeeee-0000-0000-0000-000000000024', 'eeeeeeee-0000-0000-0000-000000000024', 'eeeeeeee-0000-0000-0000-000000000024', 'Nefis Terbiyesi: İçsel Disiplin', 'Nefis Terbiyesi: İçsel Disiplin', 'Nefis Terbiyesi: İçsel Disiplin', '18+', 1620, 'kamp', 'wg-yasam-becerileri', NULL, NULL, NULL, NULL, NULL, '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z');
+
+
+INSERT INTO workshop_group_featured (workshop_group_id, workshop_id, order_index, created_at, updated_at) VALUES
+    ('wg-manevi-derinlesme', 'eeeeeeee-0000-0000-0000-000000000000', 1, '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z'),
+    ('wg-manevi-derinlesme', 'eeeeeeee-0000-0000-0000-000000000003', 2, '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z'),
+    ('wg-manevi-derinlesme', 'eeeeeeee-0000-0000-0000-000000000024', 3, '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z'),
+    ('wg-duygusal-denge', 'eeeeeeee-0000-0000-0000-000000000006', 1, '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z'),
+    ('wg-duygusal-denge', 'eeeeeeee-0000-0000-0000-000000000011', 2, '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z'),
+    ('wg-duygusal-denge', 'eeeeeeee-0000-0000-0000-000000000020', 3, '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z'),
+    ('wg-iliskiler-aile', 'eeeeeeee-0000-0000-0000-000000000010', 1, '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z'),
+    ('wg-iliskiler-aile', 'eeeeeeee-0000-0000-0000-000000000015', 2, '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z'),
+    ('wg-iliskiler-aile', 'eeeeeeee-0000-0000-0000-000000000014', 3, '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z'),
+    ('wg-genc-ve-egitim', 'eeeeeeee-0000-0000-0000-000000000016', 1, '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z'),
+    ('wg-genc-ve-egitim', 'eeeeeeee-0000-0000-0000-000000000009', 2, '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z'),
+    ('wg-genc-ve-egitim', 'eeeeeeee-0000-0000-0000-000000000001', 3, '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z'),
+    ('wg-yasam-becerileri', 'eeeeeeee-0000-0000-0000-000000000007', 1, '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z'),
+    ('wg-yasam-becerileri', 'eeeeeeee-0000-0000-0000-000000000013', 2, '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z'),
+    ('wg-yasam-becerileri', 'eeeeeeee-0000-0000-0000-000000000023', 3, '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z'),
+    ('wg-profesyonel-hayat', 'eeeeeeee-0000-0000-0000-000000000017', 1, '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z'),
+    ('wg-profesyonel-hayat', 'eeeeeeee-0000-0000-0000-000000000012', 2, '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z'),
+    ('wg-profesyonel-hayat', 'eeeeeeee-0000-0000-0000-000000000021', 3, '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z');
+
+
+INSERT INTO workshop_asset_links (workshop_id, content_item_id, asset_id, asset_role, label, order_index, created_at, updated_at) VALUES
+    ('eeeeeeee-0000-0000-0000-000000000000', 'eeeeeeee-0000-0000-0000-000000000000', 'a0000000-0000-0000-0000-000000000003', 'source_document', 'Mutlak.docx source document', 1, '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z'),
+    ('eeeeeeee-0000-0000-0000-000000000000', 'eeeeeeee-0000-0000-0000-000000000000', 'a0000000-0000-0000-0000-000000000002', 'participant_workbook', 'Participant workbook PDF', 2, '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z');
+
+
+-- =============================================================================
+-- SECTION 20 — EBOOKS
 -- =============================================================================
 
 INSERT INTO ebooks (content_item_id, title, category, total_pages, has_audio, author_name, download_package_asset_id, created_by, updated_by, created_at, updated_at) VALUES
@@ -339,7 +374,7 @@ FROM (
     UNION ALL
     SELECT content_item_id, title, COALESCE(description, '') AS description FROM modules
     UNION ALL
-    SELECT content_item_id, title, COALESCE(theme, '') AS description FROM workshops
+    SELECT content_item_id, title, COALESCE(description, theme, '') AS description FROM workshops
     UNION ALL
     SELECT content_item_id, title, COALESCE(category, '') AS description FROM ebooks
 ) AS src
@@ -347,7 +382,7 @@ WHERE ci.id = src.content_item_id;
 
 
 -- =============================================================================
--- SECTION 20 — EBOOK CHAPTERS
+-- SECTION 21 — EBOOK CHAPTERS
 -- Note: mock_data uses string IDs (e.g. "ch-ebook-1-1"). Replaced with valid UUIDs.
 -- =============================================================================
 
@@ -361,7 +396,7 @@ INSERT INTO ebook_chapters (id, ebook_content_item_id, title, order_index, paren
 
 
 -- =============================================================================
--- SECTION 21 — CONTENT PROGRESS
+-- SECTION 22 — CONTENT PROGRESS
 -- =============================================================================
 
 INSERT INTO content_progress (id, user_id, target_type, content_item_id, status, progress_percent, started_at, completed_at, created_by, updated_by, created_at, updated_at) VALUES
@@ -371,7 +406,7 @@ INSERT INTO content_progress (id, user_id, target_type, content_item_id, status,
 
 
 -- =============================================================================
--- SECTION 22 — COMMENT SUBMISSIONS
+-- SECTION 23 — COMMENT SUBMISSIONS
 -- =============================================================================
 
 INSERT INTO comment_submissions (id, user_id, target_content_item_id, target_type, content, status, submitted_at, parent_comment_id, deleted_at, created_by, updated_by, created_at, updated_at) VALUES

@@ -51,6 +51,17 @@ CREATE TYPE workshop_block_type AS ENUM (
 CREATE TYPE workshop_artifact_type AS ENUM (
     'worksheet', 'guide', 'output_card', 'plan_template', 'reflection_map'
 );
+CREATE TYPE workshop_asset_role AS ENUM (
+    'source_document',
+    'facilitator_guide',
+    'participant_workbook',
+    'worksheet',
+    'slide_deck',
+    'audio_practice',
+    'video_lesson',
+    'image',
+    'attachment'
+);
 CREATE TYPE worksheet_type AS ENUM (
     'load_map', 'inner_sentence_shift', 'dua_card', 'trust_balance', 'transformation_plan'
 );
@@ -58,7 +69,10 @@ CREATE TYPE workbook_entry_status AS ENUM ('draft', 'saved', 'submitted', 'archi
 CREATE TYPE followup_window_type AS ENUM ('h72', 'w3', 'd30');
 CREATE TYPE followup_status AS ENUM ('planned', 'active', 'completed', 'missed');
 
-CREATE TYPE asset_type AS ENUM ('ebook_package', 'worksheet_pdf', 'audio', 'video', 'image');
+CREATE TYPE asset_type AS ENUM (
+    'ebook_package', 'worksheet_pdf', 'audio', 'video', 'image', 'document',
+    'facilitator_guide', 'participant_workbook', 'slide_deck'
+);
 CREATE TYPE download_policy AS ENUM ('downloadable', 'streaming', 'premium');
 CREATE TYPE download_status AS ENUM ('pending', 'in_progress', 'completed', 'failed', 'paused');
 
@@ -518,7 +532,34 @@ CREATE TABLE workshop_groups (
     updated_at          TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
+CREATE TABLE workshops (
+    id                            UUID          PRIMARY KEY DEFAULT gen_random_uuid(),
+    product_id                    UUID          NOT NULL REFERENCES content_products (id) ON DELETE CASCADE,
+    content_item_id               UUID          REFERENCES content_items (id) ON DELETE SET NULL,
+    title                         TEXT          NOT NULL,
+    description                   TEXT,
+    theme                         TEXT          NOT NULL,
+    target_audience               TEXT          NOT NULL DEFAULT '18+',
+    total_duration_minutes        INTEGER       CHECK (total_duration_minutes > 0),
+    delivery_mode                 delivery_mode NOT NULL,
+    workshop_group_id             TEXT          REFERENCES workshop_groups (id) ON DELETE SET NULL,
+    source_document_asset_id      UUID          REFERENCES content_assets (id) ON DELETE SET NULL,
+    facilitator_guide_asset_id    UUID          REFERENCES content_assets (id) ON DELETE SET NULL,
+    participant_workbook_asset_id UUID          REFERENCES content_assets (id) ON DELETE SET NULL,
+    created_by                    UUID,
+    updated_by                    UUID,
+    created_at                    TIMESTAMPTZ   NOT NULL DEFAULT now(),
+    updated_at                    TIMESTAMPTZ   NOT NULL DEFAULT now()
+);
+
+CREATE INDEX idx_workshops_group_id      ON workshops (workshop_group_id);
+CREATE INDEX idx_workshops_delivery_mode ON workshops (delivery_mode);
+CREATE INDEX idx_workshops_content_item  ON workshops (content_item_id);
+CREATE INDEX idx_workshops_source_document_asset ON workshops (source_document_asset_id) WHERE source_document_asset_id IS NOT NULL;
+
+
 -- FIX-5: Junction table replacing featured_workshop_ids JSONB
+-- Kept after workshops so the FK can be created in a clean schema load.
 CREATE TABLE workshop_group_featured (
     workshop_group_id  TEXT        NOT NULL REFERENCES workshop_groups(id) ON DELETE CASCADE,
     workshop_id        UUID        NOT NULL REFERENCES workshops(id) ON DELETE CASCADE,
@@ -530,47 +571,33 @@ CREATE TABLE workshop_group_featured (
 CREATE INDEX idx_workshop_group_featured_group ON workshop_group_featured (workshop_group_id);
 
 
-CREATE TABLE workshops (
-    id                            UUID          PRIMARY KEY DEFAULT gen_random_uuid(),
-    product_id                    UUID          NOT NULL REFERENCES content_products (id) ON DELETE CASCADE,
-    content_item_id               UUID          REFERENCES content_items (id) ON DELETE SET NULL,
-    title                         TEXT          NOT NULL,
-    theme                         TEXT          NOT NULL,
-    target_audience               TEXT          NOT NULL DEFAULT '18+',
-    total_duration_minutes        INTEGER       CHECK (total_duration_minutes > 0),
-    delivery_mode                 delivery_mode NOT NULL,
-    workshop_group_id             TEXT          REFERENCES workshop_groups (id) ON DELETE SET NULL,
-    facilitator_guide_asset_id    UUID          REFERENCES content_assets (id) ON DELETE SET NULL,
-    participant_workbook_asset_id UUID          REFERENCES content_assets (id) ON DELETE SET NULL,
-    created_by                    UUID,
-    updated_by                    UUID,
-    created_at                    TIMESTAMPTZ   NOT NULL DEFAULT now(),
-    updated_at                    TIMESTAMPTZ   NOT NULL DEFAULT now()
-);
-
-CREATE INDEX idx_workshops_group_id      ON workshops (workshop_group_id);
-CREATE INDEX idx_workshops_delivery_mode ON workshops (delivery_mode);
-
-
 CREATE TABLE workshop_stages (
-    id              UUID                 PRIMARY KEY DEFAULT gen_random_uuid(),
-    workshop_id     UUID                 NOT NULL REFERENCES workshops (id) ON DELETE CASCADE,
-    stage_number    SMALLINT             NOT NULL CHECK (stage_number >= 1),
-    stage_type      workshop_stage_type  NOT NULL,
-    title           TEXT                 NOT NULL,
-    created_by      UUID,
-    updated_by      UUID,
-    created_at      TIMESTAMPTZ          NOT NULL DEFAULT now(),
-    updated_at      TIMESTAMPTZ          NOT NULL DEFAULT now(),
+    id               UUID                 PRIMARY KEY DEFAULT gen_random_uuid(),
+    workshop_id      UUID                 NOT NULL REFERENCES workshops (id) ON DELETE CASCADE,
+    content_item_id  UUID                 REFERENCES content_items (id) ON DELETE SET NULL,
+    primary_asset_id UUID                 REFERENCES content_assets (id) ON DELETE SET NULL,
+    stage_number     SMALLINT             NOT NULL CHECK (stage_number >= 1),
+    stage_type       workshop_stage_type  NOT NULL,
+    title            TEXT                 NOT NULL,
+    summary          TEXT,
+    created_by       UUID,
+    updated_by       UUID,
+    created_at       TIMESTAMPTZ          NOT NULL DEFAULT now(),
+    updated_at       TIMESTAMPTZ          NOT NULL DEFAULT now(),
     UNIQUE (workshop_id, stage_number)
 );
 
 CREATE INDEX idx_workshop_stages_workshop ON workshop_stages (workshop_id);
+CREATE INDEX idx_workshop_stages_content_item ON workshop_stages (content_item_id);
+CREATE INDEX idx_workshop_stages_primary_asset ON workshop_stages (primary_asset_id) WHERE primary_asset_id IS NOT NULL;
 
 
 CREATE TABLE workshop_sessions (
     id                  UUID         PRIMARY KEY DEFAULT gen_random_uuid(),
     workshop_stage_id   UUID         NOT NULL REFERENCES workshop_stages (id) ON DELETE CASCADE,
+    content_item_id     UUID         REFERENCES content_items (id) ON DELETE SET NULL,
+    primary_asset_id    UUID         REFERENCES content_assets (id) ON DELETE SET NULL,
+    title               TEXT,
     day_index           SMALLINT,
     slot                session_slot,
     duration_minutes    SMALLINT     CHECK (duration_minutes > 0),
@@ -581,12 +608,17 @@ CREATE TABLE workshop_sessions (
 );
 
 CREATE INDEX idx_workshop_sessions_stage ON workshop_sessions (workshop_stage_id);
+CREATE INDEX idx_workshop_sessions_content_item ON workshop_sessions (content_item_id);
+CREATE INDEX idx_workshop_sessions_primary_asset ON workshop_sessions (primary_asset_id) WHERE primary_asset_id IS NOT NULL;
 
 
 -- FIX-3: parent_id made nullable self-reference (removed NOT NULL)
 CREATE TABLE workshop_content_blocks (
     id                  UUID                 PRIMARY KEY DEFAULT gen_random_uuid(),
     workshop_stage_id   UUID                 NOT NULL REFERENCES workshop_stages (id) ON DELETE CASCADE,
+    workshop_session_id UUID                 REFERENCES workshop_sessions (id) ON DELETE CASCADE,
+    content_item_id     UUID                 REFERENCES content_items (id) ON DELETE SET NULL,
+    asset_id            UUID                 REFERENCES content_assets (id) ON DELETE SET NULL,
     parent_id           UUID                 REFERENCES workshop_content_blocks(id) ON DELETE CASCADE,
     block_type          workshop_block_type  NOT NULL,
     content_type        TEXT,
@@ -601,6 +633,9 @@ CREATE TABLE workshop_content_blocks (
 );
 
 CREATE INDEX idx_workshop_content_blocks_stage       ON workshop_content_blocks (workshop_stage_id);
+CREATE INDEX idx_workshop_content_blocks_session     ON workshop_content_blocks (workshop_session_id);
+CREATE INDEX idx_workshop_content_blocks_content_item ON workshop_content_blocks (content_item_id);
+CREATE INDEX idx_workshop_content_blocks_asset       ON workshop_content_blocks (asset_id);
 CREATE INDEX idx_workshop_content_blocks_order       ON workshop_content_blocks (workshop_stage_id, order_index);
 
 -- FIX-7: _content_blocks zombie table removed
@@ -609,7 +644,9 @@ CREATE INDEX idx_workshop_content_blocks_order       ON workshop_content_blocks 
 CREATE TABLE workshop_artifacts (
     id              UUID                    PRIMARY KEY DEFAULT gen_random_uuid(),
     workshop_id     UUID                    NOT NULL REFERENCES workshops (id) ON DELETE CASCADE,
+    content_item_id UUID                    REFERENCES content_items (id) ON DELETE SET NULL,
     artifact_type   workshop_artifact_type  NOT NULL,
+    title           TEXT,
     version         SMALLINT                NOT NULL DEFAULT 1,
     asset_id        UUID                    REFERENCES content_assets(id) ON DELETE SET NULL,
     created_by      UUID,
@@ -619,6 +656,38 @@ CREATE TABLE workshop_artifacts (
 );
 
 CREATE INDEX idx_workshop_artifacts_workshop ON workshop_artifacts (workshop_id);
+CREATE INDEX idx_workshop_artifacts_content_item ON workshop_artifacts (content_item_id);
+CREATE INDEX idx_workshop_artifacts_asset ON workshop_artifacts (asset_id);
+
+
+CREATE TABLE workshop_asset_links (
+    id                  UUID                PRIMARY KEY DEFAULT gen_random_uuid(),
+    workshop_id         UUID                NOT NULL REFERENCES workshops (id) ON DELETE CASCADE,
+    workshop_stage_id   UUID                REFERENCES workshop_stages (id) ON DELETE CASCADE,
+    workshop_session_id UUID                REFERENCES workshop_sessions (id) ON DELETE CASCADE,
+    content_block_id    UUID                REFERENCES workshop_content_blocks (id) ON DELETE CASCADE,
+    workshop_artifact_id UUID              REFERENCES workshop_artifacts (id) ON DELETE CASCADE,
+    content_item_id     UUID                REFERENCES content_items (id) ON DELETE SET NULL,
+    asset_id            UUID                NOT NULL REFERENCES content_assets (id) ON DELETE CASCADE,
+    asset_role          workshop_asset_role NOT NULL,
+    label               TEXT,
+    order_index         SMALLINT            NOT NULL DEFAULT 0,
+    created_by          UUID,
+    updated_by          UUID,
+    created_at          TIMESTAMPTZ         NOT NULL DEFAULT now(),
+    updated_at          TIMESTAMPTZ         NOT NULL DEFAULT now(),
+    CHECK (
+        num_nonnulls(workshop_stage_id, workshop_session_id, content_block_id, workshop_artifact_id) <= 1
+    )
+);
+
+CREATE INDEX idx_workshop_asset_links_workshop ON workshop_asset_links (workshop_id, asset_role, order_index);
+CREATE INDEX idx_workshop_asset_links_stage ON workshop_asset_links (workshop_stage_id) WHERE workshop_stage_id IS NOT NULL;
+CREATE INDEX idx_workshop_asset_links_session ON workshop_asset_links (workshop_session_id) WHERE workshop_session_id IS NOT NULL;
+CREATE INDEX idx_workshop_asset_links_block ON workshop_asset_links (content_block_id) WHERE content_block_id IS NOT NULL;
+CREATE INDEX idx_workshop_asset_links_artifact ON workshop_asset_links (workshop_artifact_id) WHERE workshop_artifact_id IS NOT NULL;
+CREATE INDEX idx_workshop_asset_links_content_item ON workshop_asset_links (content_item_id) WHERE content_item_id IS NOT NULL;
+CREATE INDEX idx_workshop_asset_links_asset ON workshop_asset_links (asset_id);
 
 
 -- FIX-11: Removed redundant workshop_id column from workbook_entries
@@ -1070,7 +1139,7 @@ END;
 $$;
 
 CREATE TRIGGER trg_workshops_sync_meta
-    AFTER INSERT OR UPDATE OF title ON workshops
+    AFTER INSERT OR UPDATE OF title, description ON workshops
     FOR EACH ROW EXECUTE FUNCTION sync_content_item_meta();
 
 CREATE TRIGGER trg_ebooks_sync_meta
