@@ -523,7 +523,8 @@ CREATE INDEX idx_package_items_order   ON package_items (package_id, order_index
 -- =============================================================================
 
 CREATE TABLE workshop_groups (
-    id                  TEXT        PRIMARY KEY,
+    id                  UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
+    code                TEXT        NOT NULL UNIQUE,
     title               TEXT        NOT NULL,
     description         TEXT        NOT NULL DEFAULT '',
     order_index         SMALLINT    NOT NULL DEFAULT 0,
@@ -542,7 +543,7 @@ CREATE TABLE workshops (
     target_audience               TEXT          NOT NULL DEFAULT '18+',
     total_duration_minutes        INTEGER       CHECK (total_duration_minutes > 0),
     delivery_mode                 delivery_mode NOT NULL,
-    workshop_group_id             TEXT          REFERENCES workshop_groups (id) ON DELETE SET NULL,
+    workshop_group_id             UUID          REFERENCES workshop_groups (id) ON DELETE SET NULL,
     source_document_asset_id      UUID          REFERENCES content_assets (id) ON DELETE SET NULL,
     facilitator_guide_asset_id    UUID          REFERENCES content_assets (id) ON DELETE SET NULL,
     participant_workbook_asset_id UUID          REFERENCES content_assets (id) ON DELETE SET NULL,
@@ -561,12 +562,13 @@ CREATE INDEX idx_workshops_source_document_asset ON workshops (source_document_a
 -- FIX-5: Junction table replacing featured_workshop_ids JSONB
 -- Kept after workshops so the FK can be created in a clean schema load.
 CREATE TABLE workshop_group_featured (
-    workshop_group_id  TEXT        NOT NULL REFERENCES workshop_groups(id) ON DELETE CASCADE,
+    id                 UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
+    workshop_group_id  UUID        NOT NULL REFERENCES workshop_groups(id) ON DELETE CASCADE,
     workshop_id        UUID        NOT NULL REFERENCES workshops(id) ON DELETE CASCADE,
     order_index        SMALLINT    NOT NULL DEFAULT 0,
     created_at         TIMESTAMPTZ NOT NULL DEFAULT now(),
     updated_at         TIMESTAMPTZ NOT NULL DEFAULT now(),
-    PRIMARY KEY (workshop_group_id, workshop_id)
+    UNIQUE (workshop_group_id, workshop_id)
 );
 CREATE INDEX idx_workshop_group_featured_group ON workshop_group_featured (workshop_group_id);
 
@@ -1047,7 +1049,8 @@ CREATE INDEX idx_notifications_created_at       ON notifications (created_at DES
 -- =============================================================================
 
 CREATE TABLE reminder_time_slots (
-    label       TEXT        PRIMARY KEY,
+    id          UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
+    label       TEXT        NOT NULL UNIQUE,
     h           SMALLINT    NOT NULL CHECK (h BETWEEN 0 AND 23),
     m           SMALLINT    NOT NULL CHECK (m BETWEEN 0 AND 59),
     order_index SMALLINT    NOT NULL DEFAULT 0,
@@ -1065,7 +1068,8 @@ CREATE TABLE recent_searches (
 );
 
 CREATE TABLE popular_topics (
-    id          TEXT        PRIMARY KEY,
+    id          UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
+    code        TEXT        NOT NULL UNIQUE,
     title       TEXT        NOT NULL,
     subtitle    TEXT,
     order_index SMALLINT    NOT NULL DEFAULT 0,
@@ -1074,7 +1078,7 @@ CREATE TABLE popular_topics (
 );
 
 CREATE TABLE content_screen_mock (
-    id          SMALLINT    PRIMARY KEY DEFAULT 1 CHECK (id = 1),
+    id          UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
     payload     JSONB       NOT NULL DEFAULT '{}',
     updated_at  TIMESTAMPTZ NOT NULL DEFAULT now()
 );

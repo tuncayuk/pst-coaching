@@ -1967,26 +1967,28 @@
   ],
   "workshop_groups": [
     {
-      "id": "wg-manevi-derinlesme",
+      "id": "70000000-0000-0000-0000-000000000001",
       "title": "Manevi Derinlesme",
       "description": "Dua, teslimiyet ve icsel farkindalik odakli uzun sureli atolyeler.",
       "order_index": 1,
       "target_audiences": [
         "18+",
         "25+"
-      ]
+      ],
+      "code": "wg-manevi-derinlesme"
     },
     {
-      "id": "wg-duygusal-denge",
+      "id": "70000000-0000-0000-0000-000000000002",
       "title": "Duygusal Denge",
       "description": "Ofke, korku, yas ve oz-sefkat temali donusum atolyeleri.",
       "order_index": 2,
       "target_audiences": [
         "18+"
-      ]
+      ],
+      "code": "wg-duygusal-denge"
     },
     {
-      "id": "wg-iliskiler-aile",
+      "id": "70000000-0000-0000-0000-000000000003",
       "title": "Iliskiler ve Aile",
       "description": "Aile ici iletisim, es iliskisi ve bag kurma odakli atolyeler.",
       "order_index": 3,
@@ -1994,36 +1996,40 @@
         "Aile",
         "Cift",
         "18+"
-      ]
+      ],
+      "code": "wg-iliskiler-aile"
     },
     {
-      "id": "wg-genc-ve-egitim",
+      "id": "70000000-0000-0000-0000-000000000004",
       "title": "Genc ve Egitim",
       "description": "Ergenlik, kimlik gelisimi ve aidiyet sureclerine odakli atolyeler.",
       "order_index": 4,
       "target_audiences": [
         "14-18",
         "18+"
-      ]
+      ],
+      "code": "wg-genc-ve-egitim"
     },
     {
-      "id": "wg-yasam-becerileri",
+      "id": "70000000-0000-0000-0000-000000000005",
       "title": "Yasam Becerileri",
       "description": "Sinir koyma, odaklanma, zaman ve rutin yonetimi atolyeleri.",
       "order_index": 5,
       "target_audiences": [
         "18+"
-      ]
+      ],
+      "code": "wg-yasam-becerileri"
     },
     {
-      "id": "wg-profesyonel-hayat",
+      "id": "70000000-0000-0000-0000-000000000006",
       "title": "Profesyonel Hayat",
       "description": "Liderlik, motivasyon ve sorumluluk gelistiren atolyeler.",
       "order_index": 6,
       "target_audiences": [
         "25+",
         "18+"
-      ]
+      ],
+      "code": "wg-profesyonel-hayat"
     }
   ],
   "ebooks": [
@@ -3428,27 +3434,32 @@
     {
       "label": "07:00",
       "h": 7,
-      "m": 0
+      "m": 0,
+      "id": "72000000-0000-0000-0000-000000000001"
     },
     {
       "label": "12:00",
       "h": 12,
-      "m": 0
+      "m": 0,
+      "id": "72000000-0000-0000-0000-000000000002"
     },
     {
       "label": "18:00",
       "h": 18,
-      "m": 0
+      "m": 0,
+      "id": "72000000-0000-0000-0000-000000000003"
     },
     {
       "label": "20:00",
       "h": 20,
-      "m": 0
+      "m": 0,
+      "id": "72000000-0000-0000-0000-000000000004"
     },
     {
       "label": "21:30",
       "h": 21,
-      "m": 30
+      "m": 30,
+      "id": "72000000-0000-0000-0000-000000000005"
     }
   ],
   "recent_searches": [
@@ -3467,14 +3478,16 @@
   ],
   "popular_topics": [
     {
-      "id": "pt-001",
+      "id": "73000000-0000-0000-0000-000000000001",
       "title": "Duygusal Dayaniklilik",
-      "subtitle": "6 gun -- 4 icerik"
+      "subtitle": "6 gun -- 4 icerik",
+      "code": "pt-001"
     },
     {
-      "id": "pt-002",
+      "id": "73000000-0000-0000-0000-000000000002",
       "title": "Zor Konusmalar",
-      "subtitle": "2 bolum -- 35 dk"
+      "subtitle": "2 bolum -- 35 dk",
+      "code": "pt-002"
     }
   ],
   "content_screen_mock": {
@@ -4178,7 +4191,8 @@
         "denge",
         "gelisim"
       ]
-    }
+    },
+    "id": "74000000-0000-0000-0000-000000000001"
   },
   "journey_days": [
     {
@@ -4282,126 +4296,144 @@
       "workshop_id": "eeeeeeee-0000-0000-0000-000000000000",
       "order_index": 1,
       "created_at": "2026-01-01T00:00:00Z",
-      "updated_at": "2026-01-01T00:00:00Z"
+      "updated_at": "2026-01-01T00:00:00Z",
+      "id": "71000000-0000-0000-0000-000000000001"
     },
     {
       "workshop_group_id": "wg-manevi-derinlesme",
       "workshop_id": "eeeeeeee-0000-0000-0000-000000000003",
       "order_index": 2,
       "created_at": "2026-01-01T00:00:00Z",
-      "updated_at": "2026-01-01T00:00:00Z"
+      "updated_at": "2026-01-01T00:00:00Z",
+      "id": "71000000-0000-0000-0000-000000000002"
     },
     {
       "workshop_group_id": "wg-manevi-derinlesme",
       "workshop_id": "eeeeeeee-0000-0000-0000-000000000024",
       "order_index": 3,
       "created_at": "2026-01-01T00:00:00Z",
-      "updated_at": "2026-01-01T00:00:00Z"
+      "updated_at": "2026-01-01T00:00:00Z",
+      "id": "71000000-0000-0000-0000-000000000003"
     },
     {
       "workshop_group_id": "wg-duygusal-denge",
       "workshop_id": "eeeeeeee-0000-0000-0000-000000000006",
       "order_index": 1,
       "created_at": "2026-01-01T00:00:00Z",
-      "updated_at": "2026-01-01T00:00:00Z"
+      "updated_at": "2026-01-01T00:00:00Z",
+      "id": "71000000-0000-0000-0000-000000000004"
     },
     {
       "workshop_group_id": "wg-duygusal-denge",
       "workshop_id": "eeeeeeee-0000-0000-0000-000000000011",
       "order_index": 2,
       "created_at": "2026-01-01T00:00:00Z",
-      "updated_at": "2026-01-01T00:00:00Z"
+      "updated_at": "2026-01-01T00:00:00Z",
+      "id": "71000000-0000-0000-0000-000000000005"
     },
     {
       "workshop_group_id": "wg-duygusal-denge",
       "workshop_id": "eeeeeeee-0000-0000-0000-000000000020",
       "order_index": 3,
       "created_at": "2026-01-01T00:00:00Z",
-      "updated_at": "2026-01-01T00:00:00Z"
+      "updated_at": "2026-01-01T00:00:00Z",
+      "id": "71000000-0000-0000-0000-000000000006"
     },
     {
       "workshop_group_id": "wg-iliskiler-aile",
       "workshop_id": "eeeeeeee-0000-0000-0000-000000000010",
       "order_index": 1,
       "created_at": "2026-01-01T00:00:00Z",
-      "updated_at": "2026-01-01T00:00:00Z"
+      "updated_at": "2026-01-01T00:00:00Z",
+      "id": "71000000-0000-0000-0000-000000000007"
     },
     {
       "workshop_group_id": "wg-iliskiler-aile",
       "workshop_id": "eeeeeeee-0000-0000-0000-000000000015",
       "order_index": 2,
       "created_at": "2026-01-01T00:00:00Z",
-      "updated_at": "2026-01-01T00:00:00Z"
+      "updated_at": "2026-01-01T00:00:00Z",
+      "id": "71000000-0000-0000-0000-000000000008"
     },
     {
       "workshop_group_id": "wg-iliskiler-aile",
       "workshop_id": "eeeeeeee-0000-0000-0000-000000000014",
       "order_index": 3,
       "created_at": "2026-01-01T00:00:00Z",
-      "updated_at": "2026-01-01T00:00:00Z"
+      "updated_at": "2026-01-01T00:00:00Z",
+      "id": "71000000-0000-0000-0000-000000000009"
     },
     {
       "workshop_group_id": "wg-genc-ve-egitim",
       "workshop_id": "eeeeeeee-0000-0000-0000-000000000016",
       "order_index": 1,
       "created_at": "2026-01-01T00:00:00Z",
-      "updated_at": "2026-01-01T00:00:00Z"
+      "updated_at": "2026-01-01T00:00:00Z",
+      "id": "71000000-0000-0000-0000-000000000010"
     },
     {
       "workshop_group_id": "wg-genc-ve-egitim",
       "workshop_id": "eeeeeeee-0000-0000-0000-000000000009",
       "order_index": 2,
       "created_at": "2026-01-01T00:00:00Z",
-      "updated_at": "2026-01-01T00:00:00Z"
+      "updated_at": "2026-01-01T00:00:00Z",
+      "id": "71000000-0000-0000-0000-000000000011"
     },
     {
       "workshop_group_id": "wg-genc-ve-egitim",
       "workshop_id": "eeeeeeee-0000-0000-0000-000000000001",
       "order_index": 3,
       "created_at": "2026-01-01T00:00:00Z",
-      "updated_at": "2026-01-01T00:00:00Z"
+      "updated_at": "2026-01-01T00:00:00Z",
+      "id": "71000000-0000-0000-0000-000000000012"
     },
     {
       "workshop_group_id": "wg-yasam-becerileri",
       "workshop_id": "eeeeeeee-0000-0000-0000-000000000007",
       "order_index": 1,
       "created_at": "2026-01-01T00:00:00Z",
-      "updated_at": "2026-01-01T00:00:00Z"
+      "updated_at": "2026-01-01T00:00:00Z",
+      "id": "71000000-0000-0000-0000-000000000013"
     },
     {
       "workshop_group_id": "wg-yasam-becerileri",
       "workshop_id": "eeeeeeee-0000-0000-0000-000000000013",
       "order_index": 2,
       "created_at": "2026-01-01T00:00:00Z",
-      "updated_at": "2026-01-01T00:00:00Z"
+      "updated_at": "2026-01-01T00:00:00Z",
+      "id": "71000000-0000-0000-0000-000000000014"
     },
     {
       "workshop_group_id": "wg-yasam-becerileri",
       "workshop_id": "eeeeeeee-0000-0000-0000-000000000023",
       "order_index": 3,
       "created_at": "2026-01-01T00:00:00Z",
-      "updated_at": "2026-01-01T00:00:00Z"
+      "updated_at": "2026-01-01T00:00:00Z",
+      "id": "71000000-0000-0000-0000-000000000015"
     },
     {
       "workshop_group_id": "wg-profesyonel-hayat",
       "workshop_id": "eeeeeeee-0000-0000-0000-000000000017",
       "order_index": 1,
       "created_at": "2026-01-01T00:00:00Z",
-      "updated_at": "2026-01-01T00:00:00Z"
+      "updated_at": "2026-01-01T00:00:00Z",
+      "id": "71000000-0000-0000-0000-000000000016"
     },
     {
       "workshop_group_id": "wg-profesyonel-hayat",
       "workshop_id": "eeeeeeee-0000-0000-0000-000000000012",
       "order_index": 2,
       "created_at": "2026-01-01T00:00:00Z",
-      "updated_at": "2026-01-01T00:00:00Z"
+      "updated_at": "2026-01-01T00:00:00Z",
+      "id": "71000000-0000-0000-0000-000000000017"
     },
     {
       "workshop_group_id": "wg-profesyonel-hayat",
       "workshop_id": "eeeeeeee-0000-0000-0000-000000000021",
       "order_index": 3,
       "created_at": "2026-01-01T00:00:00Z",
-      "updated_at": "2026-01-01T00:00:00Z"
+      "updated_at": "2026-01-01T00:00:00Z",
+      "id": "71000000-0000-0000-0000-000000000018"
     }
   ],
   "content_products": [

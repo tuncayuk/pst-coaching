@@ -285,7 +285,7 @@ WHERE source_id IN (
 -- SECTION 18 — WORKSHOP GROUPS
 -- =============================================================================
 
-INSERT INTO workshop_groups (id, title, description, order_index, target_audiences, created_at, updated_at) VALUES
+INSERT INTO workshop_groups (code, title, description, order_index, target_audiences, created_at, updated_at) VALUES
     ('wg-manevi-derinlesme', 'Manevi Derinlesme', 'Dua, teslimiyet ve icsel farkindalik odakli uzun sureli atolyeler.', 1, '["18+","25+"]', '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z'),
     ('wg-duygusal-denge', 'Duygusal Denge', 'Ofke, korku, yas ve oz-sefkat temali donusum atolyeleri.', 2, '["18+"]', '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z'),
     ('wg-iliskiler-aile', 'Iliskiler ve Aile', 'Aile ici iletisim, es iliskisi ve bag kurma odakli atolyeler.', 3, '["Aile","Cift","18+"]', '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z'),
@@ -614,13 +614,12 @@ INSERT INTO recent_searches (user_id, term, searched_at) VALUES
     ('11111111-1111-1111-1111-111111111111', 'Sinir koyma', now() - interval '2 day'),
     ('11111111-1111-1111-1111-111111111111', 'Nefes egzersizi', now() - interval '1 day');
 
-INSERT INTO popular_topics (id, title, subtitle, order_index) VALUES
+INSERT INTO popular_topics (code, title, subtitle, order_index) VALUES
     ('pt-001', 'Duygusal Dayaniklilik', '6 gun -- 4 icerik', 1),
     ('pt-002', 'Zor Konusmalar', '2 bolum -- 35 dk', 2);
 
-INSERT INTO content_screen_mock (id, payload, updated_at) VALUES
+INSERT INTO content_screen_mock (payload, updated_at) VALUES
     (
-        1,
         '{"review_rating_labels":["Cok kotu","Kotu","Orta","Iyi","Harika"],"reader_audio_speeds":["0.8x","1.0x","1.2x","1.5x"]}'::jsonb,
         now()
     );
