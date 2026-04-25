@@ -303,6 +303,7 @@ CREATE INDEX idx_content_series_order     ON content_series (source_id, order_in
 
 CREATE TABLE content_items (
     id              UUID                NOT NULL DEFAULT gen_random_uuid(),
+    entity_type     content_entity_type NOT NULL,
     source_id       UUID                REFERENCES content_sources (id) ON DELETE SET NULL,
     series_id       UUID                REFERENCES content_series (id) ON DELETE SET NULL,
     title           TEXT                NOT NULL DEFAULT '',
@@ -318,6 +319,7 @@ CREATE TABLE content_items (
 
 CREATE INDEX idx_content_items_source_id     ON content_items (source_id);
 CREATE INDEX idx_content_items_series_id     ON content_items (series_id);
+CREATE INDEX idx_content_items_entity_type   ON content_items (entity_type);
 CREATE INDEX idx_content_items_source_order  ON content_items (source_id, order_index);
 CREATE INDEX idx_content_items_series_order  ON content_items (series_id, order_index);
 CREATE INDEX idx_content_items_release_date  ON content_items (release_date);
@@ -1146,6 +1148,7 @@ COMMENT ON COLUMN content_series.updated_at    IS 'Record last-update timestamp 
 -- ---------------- content_items ----------------
 COMMENT ON TABLE  content_items               IS 'Core content entity tied to a source; stores shared metadata used across all content domains.';
 COMMENT ON COLUMN content_items.id            IS 'Primary key — shared with the domain detail table when a one-to-one detail row exists.';
+COMMENT ON COLUMN content_items.entity_type   IS 'Domain type of the content item (journey | module | package | workshop | ebook).';
 COMMENT ON COLUMN content_items.source_id     IS 'Catalogue source this item belongs to (FK → content_sources).';
 COMMENT ON COLUMN content_items.series_id     IS 'Optional series this content item belongs to (FK → content_series).';
 COMMENT ON COLUMN content_items.title         IS 'Display title of the content item.';
