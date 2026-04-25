@@ -32,12 +32,14 @@ CREATE TYPE addon_status AS ENUM ('active', 'inactive');
 CREATE TYPE seat_status AS ENUM ('open', 'available', 'invited', 'assigned', 'active', 'removed');
 CREATE TYPE store_type AS ENUM ('apple', 'google', 'stripe');
 CREATE TYPE verification_status AS ENUM ('pending', 'verified', 'failed');
-CREATE TYPE receipt_status AS ENUM ('verified', 'expired', 'refunded');
+-- FIX-4: Added 'pending' to receipt_status enum
+CREATE TYPE receipt_status AS ENUM ('pending', 'verified', 'expired', 'refunded');
 
 CREATE TYPE content_source_type AS ENUM (
     'journey-of-discoveries', 'universe-of-emotions', 'books', 'workshops'
 );
-CREATE TYPE journey_level AS ENUM ('baslangic', 'beginner', 'basico', 'orta', 'ileri');
+-- FIX-8: Language-agnostic journey level codes
+CREATE TYPE journey_level AS ENUM ('level_1', 'level_2', 'level_3', 'level_4', 'level_5');
 CREATE TYPE delivery_mode AS ENUM ('kamp', 'rehber', 'calisma_kitabi');
 CREATE TYPE workshop_stage_type AS ENUM (
     'insight', 'analysis', 'camp', 'facilitator_guide', 'workbook', 'closure'
@@ -169,9 +171,9 @@ CREATE TABLE reading_settings (
 );
 
 
+-- FIX-12: Use user_id as PK (drop separate id column and redundant index)
 CREATE TABLE reminder_settings (
-    id                          UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
-    user_id                     UUID        NOT NULL UNIQUE REFERENCES users (id) ON DELETE CASCADE,
+    user_id                     UUID        PRIMARY KEY REFERENCES users (id) ON DELETE CASCADE,
     daily_enabled               BOOLEAN     NOT NULL DEFAULT false,
     daily_time_local            TIME,
     workshop_followup_enabled   BOOLEAN     NOT NULL DEFAULT false,
@@ -180,8 +182,6 @@ CREATE TABLE reminder_settings (
     created_at                  TIMESTAMPTZ NOT NULL DEFAULT now(),
     updated_at                  TIMESTAMPTZ NOT NULL DEFAULT now()
 );
-
-CREATE INDEX idx_reminder_settings_user_id ON reminder_settings (user_id);
 
 
 -- =============================================================================
@@ -248,13 +248,14 @@ CREATE INDEX idx_seats_subscription_id  ON seats (subscription_id);
 CREATE INDEX idx_seats_assigned_user_id ON seats (assigned_user_id);
 
 
+-- FIX-4: Default status changed to 'pending'
 CREATE TABLE purchase_receipts (
     id                  UUID                 PRIMARY KEY DEFAULT gen_random_uuid(),
     subscription_id     UUID                 NOT NULL REFERENCES subscriptions (id),
     store_type          store_type           NOT NULL,
     external_receipt_id TEXT                 NOT NULL,
     verification_status verification_status  NOT NULL DEFAULT 'pending',
-    status              receipt_status       NOT NULL DEFAULT 'verified',
+    status              receipt_status       NOT NULL DEFAULT 'pending',
     payload             JSONB                NOT NULL DEFAULT '{}',
     amount              NUMERIC(12,2)        NOT NULL,
     currency            CHAR(3)              NOT NULL DEFAULT 'TRY',
@@ -290,8 +291,9 @@ CREATE TABLE content_sources (
 );
 
 
+-- FIX-6: Added DEFAULT gen_random_uuid() to content_series.id
 CREATE TABLE content_series (
-    id              UUID        PRIMARY KEY,
+    id              UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
     source_id       UUID        REFERENCES content_sources (id) ON DELETE RESTRICT,
     title           TEXT        NOT NULL,
     description     TEXT        NOT NULL DEFAULT '',
@@ -351,7 +353,41 @@ CREATE INDEX idx_content_assets_asset_type      ON content_assets (asset_type);
 
 
 -- =============================================================================
+-- SECTION 3A — MOBILE READ MODELS — CONTENT AREAS
+-- FIX-2: Moved content_areas and content_nav_areas before content_products
+-- FIX-14: Renamed camelCase columns (accentColor → accent_color, requiresSubscription → requires_subscription)
+-- =============================================================================
+
+CREATE TABLE content_areas (
+    id              UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
+    route           TEXT        NOT NULL UNIQUE,
+    label           TEXT        NOT NULL,
+    description     TEXT        NOT NULL DEFAULT '',
+    icon            TEXT        NOT NULL,
+    suffix          TEXT        NOT NULL DEFAULT '',
+    accent_color    TEXT        NOT NULL,
+    bg              TEXT        NOT NULL,
+    order_index     SMALLINT    NOT NULL DEFAULT 0,
+    created_at      TIMESTAMPTZ NOT NULL DEFAULT now(),
+    updated_at      TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE TABLE content_nav_areas (
+    route                   TEXT        PRIMARY KEY,
+    label                   TEXT        NOT NULL,
+    description             TEXT        NOT NULL DEFAULT '',
+    accent_color            TEXT        NOT NULL,
+    bg                      TEXT        NOT NULL,
+    requires_subscription   BOOLEAN     NOT NULL DEFAULT false,
+    order_index             SMALLINT    NOT NULL DEFAULT 0,
+    created_at              TIMESTAMPTZ NOT NULL DEFAULT now(),
+    updated_at              TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+
+-- =============================================================================
 -- SECTION 4 — CONTENT PRODUCTS (Phase 2 super table)
+-- FIX-2: content_areas now exists above so the FK reference is valid
 -- =============================================================================
 
 CREATE TABLE content_products (
@@ -372,6 +408,7 @@ CREATE INDEX idx_content_products_type ON content_products (product_type);
 
 -- =============================================================================
 -- SECTION 5 — JOURNEYS
+-- FIX-8: journey_level enum uses language-agnostic codes; default updated
 -- =============================================================================
 
 CREATE TABLE journeys (
@@ -380,7 +417,7 @@ CREATE TABLE journeys (
     title           TEXT          NOT NULL,
     description     TEXT,
     duration_days   SMALLINT      CHECK (duration_days > 0),
-    level           journey_level NOT NULL DEFAULT 'baslangic',
+    level           journey_level NOT NULL DEFAULT 'level_1',
     outline_steps   JSONB         NOT NULL DEFAULT '[]',
     benefits        JSONB         NOT NULL DEFAULT '[]',
     created_by      UUID,
@@ -468,6 +505,7 @@ CREATE INDEX idx_package_items_order   ON package_items (package_id, order_index
 
 -- =============================================================================
 -- SECTION 7 — WORKSHOPS
+-- FIX-5: Removed featured_workshop_ids JSONB from workshop_groups
 -- =============================================================================
 
 CREATE TABLE workshop_groups (
@@ -476,10 +514,20 @@ CREATE TABLE workshop_groups (
     description         TEXT        NOT NULL DEFAULT '',
     order_index         SMALLINT    NOT NULL DEFAULT 0,
     target_audiences    JSONB       NOT NULL DEFAULT '[]',
-    featured_workshop_ids JSONB     NOT NULL DEFAULT '[]',
     created_at          TIMESTAMPTZ NOT NULL DEFAULT now(),
     updated_at          TIMESTAMPTZ NOT NULL DEFAULT now()
 );
+
+-- FIX-5: Junction table replacing featured_workshop_ids JSONB
+CREATE TABLE workshop_group_featured (
+    workshop_group_id  TEXT        NOT NULL REFERENCES workshop_groups(id) ON DELETE CASCADE,
+    workshop_id        UUID        NOT NULL REFERENCES workshops(id) ON DELETE CASCADE,
+    order_index        SMALLINT    NOT NULL DEFAULT 0,
+    created_at         TIMESTAMPTZ NOT NULL DEFAULT now(),
+    updated_at         TIMESTAMPTZ NOT NULL DEFAULT now(),
+    PRIMARY KEY (workshop_group_id, workshop_id)
+);
+CREATE INDEX idx_workshop_group_featured_group ON workshop_group_featured (workshop_group_id);
 
 
 CREATE TABLE workshops (
@@ -535,10 +583,11 @@ CREATE TABLE workshop_sessions (
 CREATE INDEX idx_workshop_sessions_stage ON workshop_sessions (workshop_stage_id);
 
 
+-- FIX-3: parent_id made nullable self-reference (removed NOT NULL)
 CREATE TABLE workshop_content_blocks (
     id                  UUID                 PRIMARY KEY DEFAULT gen_random_uuid(),
     workshop_stage_id   UUID                 NOT NULL REFERENCES workshop_stages (id) ON DELETE CASCADE,
-    parent_id           UUID                 NOT NULL,
+    parent_id           UUID                 REFERENCES workshop_content_blocks(id) ON DELETE CASCADE,
     block_type          workshop_block_type  NOT NULL,
     content_type        TEXT,
     title               TEXT                 NOT NULL,
@@ -554,28 +603,15 @@ CREATE TABLE workshop_content_blocks (
 CREATE INDEX idx_workshop_content_blocks_stage       ON workshop_content_blocks (workshop_stage_id);
 CREATE INDEX idx_workshop_content_blocks_order       ON workshop_content_blocks (workshop_stage_id, order_index);
 
-CREATE TABLE _content_blocks (
-    id              TEXT        PRIMARY KEY,
-    parent_type     TEXT        NOT NULL,
-    parent_id       TEXT        NOT NULL,
-    content_type    TEXT        NOT NULL,
-    title           TEXT        NOT NULL,
-    body            TEXT,
-    order_index     SMALLINT    NOT NULL DEFAULT 0,
-    has_audio       BOOLEAN     NOT NULL DEFAULT false,
-    created_at      TIMESTAMPTZ NOT NULL DEFAULT now(),
-    updated_at      TIMESTAMPTZ NOT NULL DEFAULT now()
-);
+-- FIX-7: _content_blocks zombie table removed
 
-CREATE INDEX idx__content_blocks_parent ON _content_blocks (parent_type, parent_id);
-CREATE INDEX idx__content_blocks_order  ON _content_blocks (parent_type, parent_id, order_index);
-
-
+-- FIX-15: Added asset_id column to workshop_artifacts
 CREATE TABLE workshop_artifacts (
     id              UUID                    PRIMARY KEY DEFAULT gen_random_uuid(),
     workshop_id     UUID                    NOT NULL REFERENCES workshops (id) ON DELETE CASCADE,
     artifact_type   workshop_artifact_type  NOT NULL,
     version         SMALLINT                NOT NULL DEFAULT 1,
+    asset_id        UUID                    REFERENCES content_assets(id) ON DELETE SET NULL,
     created_by      UUID,
     updated_by      UUID,
     created_at      TIMESTAMPTZ             NOT NULL DEFAULT now(),
@@ -585,10 +621,10 @@ CREATE TABLE workshop_artifacts (
 CREATE INDEX idx_workshop_artifacts_workshop ON workshop_artifacts (workshop_id);
 
 
+-- FIX-11: Removed redundant workshop_id column from workbook_entries
 CREATE TABLE workbook_entries (
     id              UUID                   PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id         UUID                   NOT NULL REFERENCES users (id) ON DELETE CASCADE,
-    workshop_id     UUID                   NOT NULL REFERENCES workshops (id) ON DELETE CASCADE,
     stage_id        UUID                   NOT NULL REFERENCES workshop_stages (id),
     session_id      UUID                   REFERENCES workshop_sessions (id) ON DELETE SET NULL,
     worksheet_type  worksheet_type         NOT NULL,
@@ -602,7 +638,6 @@ CREATE TABLE workbook_entries (
 );
 
 CREATE INDEX idx_workbook_entries_user_id  ON workbook_entries (user_id);
-CREATE INDEX idx_workbook_entries_workshop ON workbook_entries (workshop_id);
 CREATE INDEX idx_workbook_entries_stage    ON workbook_entries (stage_id);
 
 
@@ -670,12 +705,14 @@ CREATE INDEX idx_ebook_chapters_order  ON ebook_chapters (ebook_id, order_index)
 
 -- =============================================================================
 -- SECTION 9 — USER PROGRESS & ENGAGEMENT
+-- FIX-9: Added target_id nullable column and updated UNIQUE constraint
 -- =============================================================================
 
 CREATE TABLE content_progress (
     id               UUID                  PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id          UUID                  NOT NULL REFERENCES users (id) ON DELETE CASCADE,
     target_type      progress_target_type  NOT NULL,
+    target_id        UUID,
     product_id       UUID                  NOT NULL REFERENCES content_products (id) ON DELETE CASCADE,
     status           progress_status       NOT NULL DEFAULT 'locked',
     progress_percent SMALLINT              NOT NULL DEFAULT 0 CHECK (progress_percent BETWEEN 0 AND 100),
@@ -685,7 +722,7 @@ CREATE TABLE content_progress (
     updated_by       UUID,
     created_at       TIMESTAMPTZ           NOT NULL DEFAULT now(),
     updated_at       TIMESTAMPTZ           NOT NULL DEFAULT now(),
-    UNIQUE (user_id, product_id, target_type)
+    UNIQUE (user_id, product_id, target_type, target_id)
 );
 
 CREATE INDEX idx_content_progress_user_id    ON content_progress (user_id);
@@ -754,6 +791,7 @@ CREATE INDEX idx_notes_content_item  ON notes (content_item_id);
 CREATE INDEX idx_notes_active        ON notes (user_id) WHERE deleted_at IS NULL;
 
 
+-- FIX-10: Replaced simple num_nonnulls check with source_type-aware CASE check
 CREATE TABLE favorite_items (
     id                  UUID                 PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id             UUID                 NOT NULL REFERENCES users (id) ON DELETE CASCADE,
@@ -767,7 +805,11 @@ CREATE TABLE favorite_items (
     created_at          TIMESTAMPTZ          NOT NULL DEFAULT now(),
     updated_at          TIMESTAMPTZ          NOT NULL DEFAULT now(),
     CONSTRAINT chk_favorite_ref CHECK (
-        num_nonnulls(content_item_ref_id, highlight_ref_id, note_ref_id) = 1
+        CASE source_type
+            WHEN 'highlight' THEN highlight_ref_id IS NOT NULL AND content_item_ref_id IS NULL AND note_ref_id IS NULL
+            WHEN 'note'      THEN note_ref_id IS NOT NULL AND content_item_ref_id IS NULL AND highlight_ref_id IS NULL
+            ELSE                  content_item_ref_id IS NOT NULL AND highlight_ref_id IS NULL AND note_ref_id IS NULL
+        END
     )
 );
 
@@ -845,7 +887,8 @@ CREATE INDEX idx_downloads_status         ON downloads (download_status);
 
 
 -- =============================================================================
--- SECTION 10 — GAMIFICATION
+-- SECTION 10B — GAMIFICATION
+-- (renamed from duplicate SECTION 10 header)
 -- =============================================================================
 
 CREATE TABLE badge_definitions (
@@ -931,33 +974,8 @@ CREATE INDEX idx_notifications_created_at       ON notifications (created_at DES
 
 -- =============================================================================
 -- SECTION 13 — MOBILE READ MODELS (MOCK-DATA SYNC)
+-- Note: content_areas and content_nav_areas moved to SECTION 3A (FIX-2)
 -- =============================================================================
-
-CREATE TABLE content_areas (
-    id              UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
-    route           TEXT        NOT NULL UNIQUE,
-    label           TEXT        NOT NULL,
-    description     TEXT        NOT NULL DEFAULT '',
-    icon            TEXT        NOT NULL,
-    suffix          TEXT        NOT NULL DEFAULT '',
-    "accentColor"   TEXT        NOT NULL,
-    bg              TEXT        NOT NULL,
-    order_index     SMALLINT    NOT NULL DEFAULT 0,
-    created_at      TIMESTAMPTZ NOT NULL DEFAULT now(),
-    updated_at      TIMESTAMPTZ NOT NULL DEFAULT now()
-);
-
-CREATE TABLE content_nav_areas (
-    route                   TEXT        PRIMARY KEY,
-    label                   TEXT        NOT NULL,
-    description             TEXT        NOT NULL DEFAULT '',
-    "accentColor"           TEXT        NOT NULL,
-    bg                      TEXT        NOT NULL,
-    "requiresSubscription"  BOOLEAN     NOT NULL DEFAULT false,
-    order_index             SMALLINT    NOT NULL DEFAULT 0,
-    created_at              TIMESTAMPTZ NOT NULL DEFAULT now(),
-    updated_at              TIMESTAMPTZ NOT NULL DEFAULT now()
-);
 
 CREATE TABLE reminder_time_slots (
     label       TEXT        PRIMARY KEY,
@@ -1037,6 +1055,28 @@ CREATE TRIGGER trg_home_stats_updated_at
     BEFORE UPDATE ON home_stats
     FOR EACH ROW EXECUTE FUNCTION set_updated_at();
 
+-- FIX-13: Sync title/description back to content_items when domain tables change
+CREATE OR REPLACE FUNCTION sync_content_item_meta()
+RETURNS TRIGGER LANGUAGE plpgsql AS $$
+BEGIN
+    UPDATE content_items
+    SET title       = NEW.title,
+        description = COALESCE(NEW.description, ''),
+        updated_at  = now()
+    WHERE id = NEW.content_item_id
+      AND NEW.content_item_id IS NOT NULL;
+    RETURN NEW;
+END;
+$$;
+
+CREATE TRIGGER trg_workshops_sync_meta
+    AFTER INSERT OR UPDATE OF title ON workshops
+    FOR EACH ROW EXECUTE FUNCTION sync_content_item_meta();
+
+CREATE TRIGGER trg_ebooks_sync_meta
+    AFTER INSERT OR UPDATE OF title ON ebooks
+    FOR EACH ROW EXECUTE FUNCTION sync_content_item_meta();
+
 
 -- =============================================================================
 -- COLUMN DESCRIPTIONS
@@ -1102,606 +1142,7 @@ COMMENT ON COLUMN reading_settings.updated_at         IS 'Record last-update tim
 
 -- ---------------- reminder_settings ----------------
 COMMENT ON TABLE  reminder_settings                           IS 'Push-notification reminder preferences per user.';
-COMMENT ON COLUMN reminder_settings.id                        IS 'Primary key.';
-COMMENT ON COLUMN reminder_settings.user_id                   IS 'One-to-one FK to users.';
-COMMENT ON COLUMN reminder_settings.daily_enabled             IS 'Whether a daily practice reminder is active.';
-COMMENT ON COLUMN reminder_settings.daily_time_local          IS 'Local time-of-day for the daily reminder (null = not set); mapped to `time_local` in mobile compatibility selectors.';
-COMMENT ON COLUMN reminder_settings.workshop_followup_enabled IS 'Whether post-workshop follow-up reminders are active.';
-COMMENT ON COLUMN reminder_settings.created_by                IS 'Actor that created this record.';
-COMMENT ON COLUMN reminder_settings.updated_by                IS 'Actor that last modified this record.';
-COMMENT ON COLUMN reminder_settings.created_at                IS 'Record creation timestamp (UTC).';
-COMMENT ON COLUMN reminder_settings.updated_at                IS 'Record last-update timestamp (UTC).';
-
--- ---------------- subscription_plans ----------------
-COMMENT ON TABLE  subscription_plans                              IS 'Commercial plan catalogue (individual, family, group).';
-COMMENT ON COLUMN subscription_plans.id                           IS 'Primary key.';
-COMMENT ON COLUMN subscription_plans.plan_type                    IS 'Plan tier: individual (1 seat), family (≤5 seats), group (custom).';
-COMMENT ON COLUMN subscription_plans.name                         IS 'Display name shown in the purchase UI.';
-COMMENT ON COLUMN subscription_plans.seat_limit                   IS 'Maximum number of users this plan covers.';
-COMMENT ON COLUMN subscription_plans.student_discount_eligible    IS 'Whether a student-discount coupon may be applied to this plan.';
-COMMENT ON COLUMN subscription_plans.created_by                   IS 'Actor that created this plan definition.';
-COMMENT ON COLUMN subscription_plans.updated_by                   IS 'Actor that last modified this plan definition.';
-COMMENT ON COLUMN subscription_plans.created_at                   IS 'Record creation timestamp (UTC).';
-COMMENT ON COLUMN subscription_plans.updated_at                   IS 'Record last-update timestamp (UTC).';
-
--- ---------------- subscriptions ----------------
-COMMENT ON TABLE  subscriptions               IS 'Active entitlement records linking a user to a plan.';
-COMMENT ON COLUMN subscriptions.id            IS 'Primary key.';
-COMMENT ON COLUMN subscriptions.owner_user_id IS 'User who purchased / owns this subscription (FK → users).';
-COMMENT ON COLUMN subscriptions.plan_id       IS 'Plan this subscription is based on (FK → subscription_plans).';
-COMMENT ON COLUMN subscriptions.status        IS 'Billing state: inactive | trial | active | canceled.';
-COMMENT ON COLUMN subscriptions.renewal_at    IS 'Next scheduled renewal date; null if canceled or not yet set.';
-COMMENT ON COLUMN subscriptions.period_end_at IS 'End of the current paid period; populated when status = canceled.';
-COMMENT ON COLUMN subscriptions.created_by    IS 'Actor that created this subscription.';
-COMMENT ON COLUMN subscriptions.updated_by    IS 'Actor that last modified this subscription.';
-COMMENT ON COLUMN subscriptions.created_at    IS 'Record creation timestamp (UTC).';
-COMMENT ON COLUMN subscriptions.updated_at    IS 'Record last-update timestamp (UTC).';
-
--- ---------------- subscription_addons ----------------
-COMMENT ON TABLE  subscription_addons               IS 'Optional add-on products attached to a subscription.';
-COMMENT ON COLUMN subscription_addons.id            IS 'Primary key.';
-COMMENT ON COLUMN subscription_addons.subscription_id IS 'Parent subscription (FK → subscriptions).';
-COMMENT ON COLUMN subscription_addons.addon_type    IS 'Add-on code: coaching_school | ebook_unlimited | ai_pack | coach_training | seat_plus_5 | seat_plus_10.';
-COMMENT ON COLUMN subscription_addons.status        IS 'Whether the add-on is currently active or inactive.';
-COMMENT ON COLUMN subscription_addons.created_by    IS 'Actor that activated this add-on.';
-COMMENT ON COLUMN subscription_addons.updated_by    IS 'Actor that last modified this add-on.';
-COMMENT ON COLUMN subscription_addons.created_at    IS 'Record creation timestamp (UTC).';
-COMMENT ON COLUMN subscription_addons.updated_at    IS 'Record last-update timestamp (UTC).';
-
--- ---------------- seats ----------------
-COMMENT ON TABLE  seats                  IS 'Individual access slots within a family or group subscription.';
-COMMENT ON COLUMN seats.id               IS 'Primary key.';
-COMMENT ON COLUMN seats.subscription_id  IS 'Parent subscription that owns this seat (FK → subscriptions).';
-COMMENT ON COLUMN seats.assigned_user_id IS 'User occupying this seat; null if the seat is open or invited.';
-COMMENT ON COLUMN seats.status           IS 'Seat lifecycle: open | available | invited | assigned | active | removed.';
-COMMENT ON COLUMN seats.created_by       IS 'Actor that created this seat record.';
-COMMENT ON COLUMN seats.updated_by       IS 'Actor that last modified this seat record.';
-COMMENT ON COLUMN seats.created_at       IS 'Record creation timestamp (UTC).';
-COMMENT ON COLUMN seats.updated_at       IS 'Record last-update timestamp (UTC).';
-
--- ---------------- purchase_receipts ----------------
-COMMENT ON TABLE  purchase_receipts                     IS 'Store receipts from Apple, Google, or Stripe used to verify purchases.';
-COMMENT ON COLUMN purchase_receipts.id                  IS 'Primary key.';
-COMMENT ON COLUMN purchase_receipts.subscription_id     IS 'Subscription activated or extended by this receipt (FK → subscriptions).';
-COMMENT ON COLUMN purchase_receipts.store_type          IS 'Payment platform: apple | google | stripe.';
-COMMENT ON COLUMN purchase_receipts.external_receipt_id IS 'Transaction or order identifier from the payment platform.';
-COMMENT ON COLUMN purchase_receipts.verification_status IS 'Server-side verification result: pending | verified | failed.';
-COMMENT ON COLUMN purchase_receipts.status              IS 'Receipt lifecycle state: verified | expired | refunded.';
-COMMENT ON COLUMN purchase_receipts.payload             IS 'Raw JSON payload returned by the store verification API.';
-COMMENT ON COLUMN purchase_receipts.amount              IS 'Charged amount in the local currency.';
-COMMENT ON COLUMN purchase_receipts.currency            IS 'ISO 4217 currency code (e.g. TRY, USD).';
-COMMENT ON COLUMN purchase_receipts.purchased_at        IS 'Timestamp when the purchase was made by the user.';
-COMMENT ON COLUMN purchase_receipts.verified_at         IS 'Timestamp when server-side verification succeeded; null if not yet verified.';
-COMMENT ON COLUMN purchase_receipts.created_by          IS 'Actor that created this record.';
-COMMENT ON COLUMN purchase_receipts.updated_by          IS 'Actor that last modified this record.';
-COMMENT ON COLUMN purchase_receipts.created_at          IS 'Record creation timestamp (UTC).';
-COMMENT ON COLUMN purchase_receipts.updated_at          IS 'Record last-update timestamp (UTC).';
-
--- ---------------- content_sources ----------------
-COMMENT ON TABLE  content_sources              IS 'Catalogue metadata for top-level content collections shown on the Discover screen.';
-COMMENT ON COLUMN content_sources.id           IS 'UUID primary key — auto-generated.';
-COMMENT ON COLUMN content_sources.title        IS 'Display name of the content source.';
-COMMENT ON COLUMN content_sources.subtitle     IS 'Short tagline shown below the title on catalogue cards.';
-COMMENT ON COLUMN content_sources.description  IS 'Full-length descriptive text shown on the source detail screen.';
-COMMENT ON COLUMN content_sources.icon         IS 'Material Community Icons name used as the source icon.';
-COMMENT ON COLUMN content_sources.accent_color IS 'Hex accent colour for branding this source in the UI.';
-COMMENT ON COLUMN content_sources.content_source_type IS 'Source category (journey-of-discoveries | universe-of-emotions | books | workshops).';
-COMMENT ON COLUMN content_sources.order_index  IS 'Display order on the Discover screen (ascending).';
-COMMENT ON COLUMN content_sources.created_at   IS 'Record creation timestamp (UTC).';
-COMMENT ON COLUMN content_sources.updated_at   IS 'Record last-update timestamp (UTC).';
-
--- ---------------- content_series ----------------
-COMMENT ON TABLE  content_series               IS 'Series/group metadata for related content items within a content source.';
-COMMENT ON COLUMN content_series.id            IS 'UUID primary key for a content series row.';
-COMMENT ON COLUMN content_series.source_id     IS 'Owning content source (FK → content_sources); deletion restricted while series exist.';
-COMMENT ON COLUMN content_series.title         IS 'Display title of the content series.';
-COMMENT ON COLUMN content_series.description   IS 'Series summary shown in list/detail contexts.';
-COMMENT ON COLUMN content_series.order_index   IS 'Display order within the source (ascending).';
-COMMENT ON COLUMN content_series.created_at    IS 'Record creation timestamp (UTC).';
-COMMENT ON COLUMN content_series.updated_at    IS 'Record last-update timestamp (UTC).';
-
--- ---------------- content_items ----------------
-COMMENT ON TABLE  content_items               IS 'Phase 1 raw content atoms — the canonical source of truth for text, audio, video and ebook file metadata.';
-COMMENT ON COLUMN content_items.id            IS 'Primary key — auto-generated UUID.';
-COMMENT ON COLUMN content_items.source_id     IS 'Catalogue source this item belongs to (FK → content_sources).';
-COMMENT ON COLUMN content_items.series_id     IS 'Optional series this content item belongs to (FK → content_series).';
-COMMENT ON COLUMN content_items.title         IS 'Display title of the content item.';
-COMMENT ON COLUMN content_items.description   IS 'Short summary/description shown in content lists and detail headers.';
-COMMENT ON COLUMN content_items.order_index   IS 'Display order within source/series lists (ascending).';
-COMMENT ON COLUMN content_items.release_date  IS 'Planned or actual release date of the content item.';
-COMMENT ON COLUMN content_items.language_code IS 'Language of this content variant (tr | en | es).';
-COMMENT ON COLUMN content_items.is_published  IS 'Whether this item is visible to end users.';
-COMMENT ON COLUMN content_items.created_at    IS 'Record creation timestamp (UTC).';
-COMMENT ON COLUMN content_items.updated_at    IS 'Record last-update timestamp (UTC).';
-
--- ---------------- content_assets ----------------
-COMMENT ON TABLE  content_assets                 IS 'Binary assets (EPUB, PDF, audio, video, image) associated with a Phase 1 content item.';
-COMMENT ON COLUMN content_assets.id              IS 'Primary key.';
-COMMENT ON COLUMN content_assets.content_item_id IS 'Content item this asset belongs to (FK → content_items).';
-COMMENT ON COLUMN content_assets.asset_type      IS 'Asset category: ebook_package | worksheet_pdf | audio | video | image.';
-COMMENT ON COLUMN content_assets.status          IS 'Upload pipeline state: pending | processing | ready | failed.';
-COMMENT ON COLUMN content_assets.language_code   IS 'Language of this asset variant (tr | en | es); null if language-neutral.';
-COMMENT ON COLUMN content_assets.storage_uri     IS 'S3 (or equivalent) URI pointing to the stored file.';
-COMMENT ON COLUMN content_assets.mime_type       IS 'MIME type of the file (e.g. application/epub+zip, application/pdf).';
-COMMENT ON COLUMN content_assets.byte_size       IS 'File size in bytes; used to display download progress.';
-COMMENT ON COLUMN content_assets.duration_seconds IS 'Duration in seconds for audio and video assets; null for non-timed types.';
-COMMENT ON COLUMN content_assets.checksum        IS 'SHA-256 hex digest for integrity verification after download.';
-COMMENT ON COLUMN content_assets.download_policy IS 'Access policy: downloadable (offline allowed) | streaming (online only) | premium (requires specific add-on).';
-COMMENT ON COLUMN content_assets.created_by      IS 'Actor that uploaded this asset.';
-COMMENT ON COLUMN content_assets.updated_by      IS 'Actor that last modified this asset record.';
-COMMENT ON COLUMN content_assets.created_at      IS 'Record creation timestamp (UTC).';
-COMMENT ON COLUMN content_assets.updated_at      IS 'Record last-update timestamp (UTC).';
-
--- ---------------- journeys ----------------
-COMMENT ON TABLE  journeys             IS 'Phase 2 product — structured multi-day personal growth programmes composed from content atoms.';
-COMMENT ON COLUMN journeys.id          IS 'Primary key — auto-generated UUID.';
-COMMENT ON COLUMN journeys.product_id  IS 'FK to content_products super table (product_type = journey).';
-COMMENT ON COLUMN journeys.title       IS 'Display title of the journey.';
-COMMENT ON COLUMN journeys.description IS 'Short motivational description shown on the journey card.';
-COMMENT ON COLUMN journeys.duration_days IS 'Intended completion duration in calendar days.';
-COMMENT ON COLUMN journeys.level       IS 'Difficulty / experience level (baslangic | beginner | basico | orta | ileri).';
-COMMENT ON COLUMN journeys.outline_steps IS 'JSON array of step objects {title, duration} previewed on the detail screen.';
-COMMENT ON COLUMN journeys.benefits    IS 'JSON array of benefit strings shown as bullet points on the detail screen.';
-COMMENT ON COLUMN journeys.created_by  IS 'Actor that created this journey.';
-COMMENT ON COLUMN journeys.updated_by  IS 'Actor that last modified this journey.';
-COMMENT ON COLUMN journeys.created_at  IS 'Record creation timestamp (UTC).';
-COMMENT ON COLUMN journeys.updated_at  IS 'Record last-update timestamp (UTC).';
-
--- ---------------- journey_days ----------------
-COMMENT ON TABLE  journey_days               IS 'Individual day slots within a journey, each containing content blocks.';
-COMMENT ON COLUMN journey_days.id            IS 'Primary key.';
-COMMENT ON COLUMN journey_days.journey_id    IS 'Parent journey (FK → journeys).';
-COMMENT ON COLUMN journey_days.day_number    IS 'Sequential day position within the journey (1-based).';
-COMMENT ON COLUMN journey_days.title         IS 'Optional display title for this day (e.g. "Gün 1: Farkındalık").';
-COMMENT ON COLUMN journey_days.unlock_time_local IS 'Optional local unlock time used by day-level journey screens (e.g. 08:00).';
-COMMENT ON COLUMN journey_days.created_at    IS 'Record creation timestamp (UTC).';
-COMMENT ON COLUMN journey_days.updated_at    IS 'Record last-update timestamp (UTC).';
-
--- ---------------- journey_items ----------------
-COMMENT ON TABLE  journey_items             IS 'Ordered child products (modules, packages, workshops, ebooks) within a journey.';
-COMMENT ON COLUMN journey_items.id          IS 'Primary key.';
-COMMENT ON COLUMN journey_items.journey_id  IS 'Parent journey (FK → journeys).';
-COMMENT ON COLUMN journey_items.product_id  IS 'Child product registered in content_products (FK → content_products).';
-COMMENT ON COLUMN journey_items.order_index IS 'Display order within the journey (ascending).';
-COMMENT ON COLUMN journey_items.created_at  IS 'Record creation timestamp (UTC).';
-COMMENT ON COLUMN journey_items.updated_at  IS 'Record last-update timestamp (UTC).';
-
--- ---------------- modules ----------------
-COMMENT ON TABLE  modules             IS 'Phase 2 product — themed learning modules grouping several packages.';
-COMMENT ON COLUMN modules.id          IS 'Primary key — auto-generated UUID.';
-COMMENT ON COLUMN modules.product_id  IS 'FK to content_products super table (product_type = module).';
-COMMENT ON COLUMN modules.title       IS 'Display title of the module.';
-COMMENT ON COLUMN modules.description IS 'Description summarising the learning outcomes of the module.';
-COMMENT ON COLUMN modules.created_by  IS 'Actor that created this module.';
-COMMENT ON COLUMN modules.updated_by  IS 'Actor that last modified this module.';
-COMMENT ON COLUMN modules.created_at  IS 'Record creation timestamp (UTC).';
-COMMENT ON COLUMN modules.updated_at  IS 'Record last-update timestamp (UTC).';
-
--- ---------------- packages ----------------
-COMMENT ON TABLE  packages             IS 'Phase 2 product — ordered sub-units within a module, each composed from multiple content items.';
-COMMENT ON COLUMN packages.id          IS 'Primary key — auto-generated UUID.';
-COMMENT ON COLUMN packages.product_id  IS 'FK to content_products super table (product_type = package).';
-COMMENT ON COLUMN packages.module_id   IS 'Parent module (FK → modules).';
-COMMENT ON COLUMN packages.title       IS 'Display title of the package.';
-COMMENT ON COLUMN packages.order_index IS 'Display order within the parent module (ascending).';
-COMMENT ON COLUMN packages.created_by  IS 'Actor that created this package.';
-COMMENT ON COLUMN packages.updated_by  IS 'Actor that last modified this package.';
-COMMENT ON COLUMN packages.created_at  IS 'Record creation timestamp (UTC).';
-COMMENT ON COLUMN packages.updated_at  IS 'Record last-update timestamp (UTC).';
-
--- ---------------- package_items ----------------
-COMMENT ON TABLE  package_items                IS 'Ordered Phase 1 content atoms (content_items) within a package.';
-COMMENT ON COLUMN package_items.id             IS 'Primary key.';
-COMMENT ON COLUMN package_items.package_id     IS 'Parent package (FK → packages).';
-COMMENT ON COLUMN package_items.content_item_id IS 'Phase 1 content atom (FK → content_items).';
-COMMENT ON COLUMN package_items.order_index    IS 'Display order within the package (ascending).';
-COMMENT ON COLUMN package_items.created_at     IS 'Record creation timestamp (UTC).';
-COMMENT ON COLUMN package_items.updated_at     IS 'Record last-update timestamp (UTC).';
-
--- ---------------- workshop_groups ----------------
-COMMENT ON TABLE  workshop_groups                      IS 'Thematic groupings that organise workshops in the catalogue (e.g. Manevi Derinleşme).';
-COMMENT ON COLUMN workshop_groups.id                   IS 'Slug-style primary key (e.g. wg-manevi-derinlesme).';
-COMMENT ON COLUMN workshop_groups.title                IS 'Display name of the group shown in the catalogue header.';
-COMMENT ON COLUMN workshop_groups.description          IS 'Descriptive copy explaining the group theme.';
-COMMENT ON COLUMN workshop_groups.order_index          IS 'Display order in the catalogue list (ascending).';
-COMMENT ON COLUMN workshop_groups.target_audiences     IS 'JSON array of target audience labels (e.g. ["18+","Aile"]).';
-COMMENT ON COLUMN workshop_groups.featured_workshop_ids IS 'JSON array of content_item UUIDs pinned as featured workshops.';
-COMMENT ON COLUMN workshop_groups.created_at           IS 'Record creation timestamp (UTC).';
-COMMENT ON COLUMN workshop_groups.updated_at           IS 'Record last-update timestamp (UTC).';
-
--- ---------------- workshops ----------------
-COMMENT ON TABLE  workshops                               IS 'Phase 2 product — interactive workshops with structured multi-stage delivery.';
-COMMENT ON COLUMN workshops.id                            IS 'Primary key — auto-generated UUID.';
-COMMENT ON COLUMN workshops.product_id                    IS 'FK to content_products super table (product_type = workshop).';
-COMMENT ON COLUMN workshops.content_item_id               IS 'Optional Phase 1 atom holding raw workshop content (FK → content_items).';
-COMMENT ON COLUMN workshops.title                         IS 'Display title of the workshop.';
-COMMENT ON COLUMN workshops.theme                         IS 'Central psychological / spiritual theme of the workshop.';
-COMMENT ON COLUMN workshops.target_audience               IS 'Intended participant audience label (e.g. "18+", "Aile", "Çift", "14-18").';
-COMMENT ON COLUMN workshops.total_duration_minutes        IS 'Total facilitated time across all stages in minutes.';
-COMMENT ON COLUMN workshops.delivery_mode                 IS 'Format: kamp (immersive camp) | rehber (guided) | calisma_kitabi (workbook).';
-COMMENT ON COLUMN workshops.workshop_group_id             IS 'Catalogue group this workshop belongs to (FK → workshop_groups).';
-COMMENT ON COLUMN workshops.facilitator_guide_asset_id    IS 'Optional PDF asset containing the facilitator guide (FK → content_assets).';
-COMMENT ON COLUMN workshops.participant_workbook_asset_id IS 'Optional PDF asset containing the participant workbook (FK → content_assets).';
-COMMENT ON COLUMN workshops.created_by                    IS 'Actor that created this workshop.';
-COMMENT ON COLUMN workshops.updated_by                    IS 'Actor that last modified this workshop.';
-COMMENT ON COLUMN workshops.created_at                    IS 'Record creation timestamp (UTC).';
-COMMENT ON COLUMN workshops.updated_at                    IS 'Record last-update timestamp (UTC).';
-
--- ---------------- workshop_stages ----------------
-COMMENT ON TABLE  workshop_stages              IS 'Sequential phases within a workshop (e.g. insight → analysis → camp → closure).';
-COMMENT ON COLUMN workshop_stages.id           IS 'Primary key.';
-COMMENT ON COLUMN workshop_stages.workshop_id  IS 'Parent workshop (FK → workshops).';
-COMMENT ON COLUMN workshop_stages.stage_number IS 'Ordinal position of this stage within the workshop (1-based).';
-COMMENT ON COLUMN workshop_stages.stage_type   IS 'Stage category: insight | analysis | camp | facilitator_guide | workbook | closure.';
-COMMENT ON COLUMN workshop_stages.title        IS 'Display title of the stage.';
-COMMENT ON COLUMN workshop_stages.created_by   IS 'Actor that created this stage.';
-COMMENT ON COLUMN workshop_stages.updated_by   IS 'Actor that last modified this stage.';
-COMMENT ON COLUMN workshop_stages.created_at   IS 'Record creation timestamp (UTC).';
-COMMENT ON COLUMN workshop_stages.updated_at   IS 'Record last-update timestamp (UTC).';
-
--- ---------------- workshop_sessions ----------------
-COMMENT ON TABLE  workshop_sessions                  IS 'Time-boxed sessions within a workshop stage (used in multi-day camp formats).';
-COMMENT ON COLUMN workshop_sessions.id               IS 'Primary key.';
-COMMENT ON COLUMN workshop_sessions.workshop_stage_id IS 'Parent stage (FK → workshop_stages).';
-COMMENT ON COLUMN workshop_sessions.day_index        IS 'Zero-based camp day on which this session takes place (null for non-camp formats).';
-COMMENT ON COLUMN workshop_sessions.slot             IS 'Time of day slot: morning | midday | evening (null if not scheduled).';
-COMMENT ON COLUMN workshop_sessions.duration_minutes IS 'Approximate facilitated duration of this session in minutes.';
-COMMENT ON COLUMN workshop_sessions.created_by       IS 'Actor that created this session.';
-COMMENT ON COLUMN workshop_sessions.updated_by       IS 'Actor that last modified this session.';
-COMMENT ON COLUMN workshop_sessions.created_at       IS 'Record creation timestamp (UTC).';
-COMMENT ON COLUMN workshop_sessions.updated_at       IS 'Record last-update timestamp (UTC).';
-
--- ---------------- workshop_content_blocks ----------------
-COMMENT ON TABLE  workshop_content_blocks                  IS 'Structured content atoms within a workshop stage (readings, exercises, verse references, etc.).';
-COMMENT ON COLUMN workshop_content_blocks.id               IS 'Primary key.';
-COMMENT ON COLUMN workshop_content_blocks.workshop_stage_id IS 'Stage this block belongs to (FK → workshop_stages).';
-COMMENT ON COLUMN workshop_content_blocks.parent_id        IS 'UUID of the logical parent entity.';
-COMMENT ON COLUMN workshop_content_blocks.block_type       IS 'Content role: intro | verse_reference | explanation | bridge | exercise | output | reading | question.';
-COMMENT ON COLUMN workshop_content_blocks.content_type     IS 'Free-text sub-type tag (e.g. reading, exercise, question) used for UI rendering.';
-COMMENT ON COLUMN workshop_content_blocks.title            IS 'Short heading displayed above the block.';
-COMMENT ON COLUMN workshop_content_blocks.body             IS 'Main markdown/plain-text content of the block.';
-COMMENT ON COLUMN workshop_content_blocks.order_index      IS 'Display order within the parent stage (ascending).';
-COMMENT ON COLUMN workshop_content_blocks.has_audio        IS 'Whether an audio recording accompanies this block.';
-COMMENT ON COLUMN workshop_content_blocks.created_by       IS 'Actor that created this block.';
-COMMENT ON COLUMN workshop_content_blocks.updated_by       IS 'Actor that last modified this block.';
-COMMENT ON COLUMN workshop_content_blocks.created_at       IS 'Record creation timestamp (UTC).';
-COMMENT ON COLUMN workshop_content_blocks.updated_at       IS 'Record last-update timestamp (UTC).';
-
--- ---------------- _content_blocks ----------------
-COMMENT ON TABLE  _content_blocks               IS 'Mobile-ready generic content blocks synced with artifacts/mock/mock_data.json (`_content_blocks`).';
-COMMENT ON COLUMN _content_blocks.id            IS 'Primary key from fixture data (UUID-like or slug).';
-COMMENT ON COLUMN _content_blocks.parent_type   IS 'Logical parent type (journey_day | package | workshop).';
-COMMENT ON COLUMN _content_blocks.parent_id     IS 'Logical parent identifier (UUID or slug).';
-COMMENT ON COLUMN _content_blocks.content_type  IS 'UI content type (reading | exercise | question | etc.).';
-COMMENT ON COLUMN _content_blocks.title         IS 'Display title.';
-COMMENT ON COLUMN _content_blocks.body          IS 'Body text shown in reader-style screens.';
-COMMENT ON COLUMN _content_blocks.order_index   IS 'Display order within the same parent.';
-COMMENT ON COLUMN _content_blocks.has_audio     IS 'Whether this block has an associated audio rendition.';
-COMMENT ON COLUMN _content_blocks.created_at    IS 'Record creation timestamp (UTC).';
-COMMENT ON COLUMN _content_blocks.updated_at    IS 'Record last-update timestamp (UTC).';
-
--- ---------------- workshop_artifacts ----------------
-COMMENT ON TABLE  workshop_artifacts              IS 'Versioned downloadable artefacts produced or used in a workshop (worksheets, guides, etc.).';
-COMMENT ON COLUMN workshop_artifacts.id           IS 'Primary key.';
-COMMENT ON COLUMN workshop_artifacts.workshop_id  IS 'Parent workshop (FK → workshops).';
-COMMENT ON COLUMN workshop_artifacts.artifact_type IS 'Type: worksheet | guide | output_card | plan_template | reflection_map.';
-COMMENT ON COLUMN workshop_artifacts.version                  IS 'Monotonically increasing version number for this artefact type.';
-COMMENT ON COLUMN workshop_artifacts.created_by               IS 'Actor that created this artefact record.';
-COMMENT ON COLUMN workshop_artifacts.updated_by               IS 'Actor that last modified this artefact record.';
-COMMENT ON COLUMN workshop_artifacts.created_at               IS 'Record creation timestamp (UTC).';
-COMMENT ON COLUMN workshop_artifacts.updated_at               IS 'Record last-update timestamp (UTC).';
-
--- ---------------- workbook_entries ----------------
-COMMENT ON TABLE  workbook_entries             IS 'User-submitted worksheet responses captured during a workshop.';
-COMMENT ON COLUMN workbook_entries.id          IS 'Primary key.';
-COMMENT ON COLUMN workbook_entries.user_id     IS 'Participant who submitted this entry (FK → users).';
-COMMENT ON COLUMN workbook_entries.workshop_id IS 'Workshop this entry belongs to (FK → workshops).';
-COMMENT ON COLUMN workbook_entries.stage_id                 IS 'Stage during which this entry was made (FK → workshop_stages).';
-COMMENT ON COLUMN workbook_entries.session_id               IS 'Optional session within the stage (FK → workshop_sessions).';
-COMMENT ON COLUMN workbook_entries.worksheet_type           IS 'Worksheet template used: load_map | inner_sentence_shift | dua_card | trust_balance | transformation_plan.';
-COMMENT ON COLUMN workbook_entries.payload                  IS 'Free-form JSON containing the user''s field responses.';
-COMMENT ON COLUMN workbook_entries.status                   IS 'Entry lifecycle: draft | saved | submitted | archived.';
-COMMENT ON COLUMN workbook_entries.version                  IS 'Edit version counter; incremented on each save.';
-COMMENT ON COLUMN workbook_entries.created_by               IS 'Actor that created this entry.';
-COMMENT ON COLUMN workbook_entries.updated_by               IS 'Actor that last modified this entry.';
-COMMENT ON COLUMN workbook_entries.created_at               IS 'Record creation timestamp (UTC).';
-COMMENT ON COLUMN workbook_entries.updated_at               IS 'Record last-update timestamp (UTC).';
-
--- ---------------- workshop_followup_plans ----------------
-COMMENT ON TABLE  workshop_followup_plans              IS 'User-defined follow-up commitments after a workshop (72 h, 3-week, 30-day windows).';
-COMMENT ON COLUMN workshop_followup_plans.id           IS 'Primary key.';
-COMMENT ON COLUMN workshop_followup_plans.user_id      IS 'Participant who created this plan (FK → users).';
-COMMENT ON COLUMN workshop_followup_plans.workshop_id  IS 'Workshop this plan follows up on (FK → workshops).';
-COMMENT ON COLUMN workshop_followup_plans.window_type              IS 'Follow-up window: h72 (72 hours) | w3 (3 weeks) | d30 (30 days).';
-COMMENT ON COLUMN workshop_followup_plans.intent_text              IS 'User''s free-text intention statement for this window.';
-COMMENT ON COLUMN workshop_followup_plans.daily_phrase             IS 'Short affirmation or mantra the user commits to repeat daily.';
-COMMENT ON COLUMN workshop_followup_plans.small_step               IS 'One concrete micro-action the user plans to take.';
-COMMENT ON COLUMN workshop_followup_plans.status                   IS 'Plan state: planned | active | completed | missed.';
-COMMENT ON COLUMN workshop_followup_plans.created_by               IS 'Actor that created this plan.';
-COMMENT ON COLUMN workshop_followup_plans.updated_by               IS 'Actor that last modified this plan.';
-COMMENT ON COLUMN workshop_followup_plans.created_at               IS 'Record creation timestamp (UTC).';
-COMMENT ON COLUMN workshop_followup_plans.updated_at               IS 'Record last-update timestamp (UTC).';
-
--- ---------------- ebooks ----------------
-COMMENT ON TABLE  ebooks                          IS 'Phase 2 product — digital books available in the PST library.';
-COMMENT ON COLUMN ebooks.id                       IS 'Primary key — auto-generated UUID.';
-COMMENT ON COLUMN ebooks.product_id               IS 'FK to content_products super table (product_type = ebook).';
-COMMENT ON COLUMN ebooks.content_item_id          IS 'Optional Phase 1 atom holding the EPUB/audio content (FK → content_items).';
-COMMENT ON COLUMN ebooks.title                    IS 'Display title of the e-book.';
-COMMENT ON COLUMN ebooks.category                 IS 'Genre or subject category used for filtering (e.g. şükür, kişisel gelişim).';
-COMMENT ON COLUMN ebooks.total_pages              IS 'Total page count used to calculate reading progress percentage.';
-COMMENT ON COLUMN ebooks.has_audio                IS 'Whether an audio narration accompanies this e-book.';
-COMMENT ON COLUMN ebooks.author_name              IS 'Display name of the author; null if anonymous or institution-published.';
-COMMENT ON COLUMN ebooks.download_package_asset_id IS 'FK to the EPUB package asset that can be downloaded for offline reading.';
-COMMENT ON COLUMN ebooks.created_by               IS 'Actor that created this e-book record.';
-COMMENT ON COLUMN ebooks.updated_by               IS 'Actor that last modified this e-book record.';
-COMMENT ON COLUMN ebooks.created_at               IS 'Record creation timestamp (UTC).';
-COMMENT ON COLUMN ebooks.updated_at               IS 'Record last-update timestamp (UTC).';
-
--- ---------------- ebook_chapters ----------------
-COMMENT ON TABLE  ebook_chapters                IS 'Table-of-contents entries for an e-book, supporting nested chapters.';
-COMMENT ON COLUMN ebook_chapters.id             IS 'Primary key.';
-COMMENT ON COLUMN ebook_chapters.ebook_id       IS 'Parent e-book (FK → ebooks).';
-COMMENT ON COLUMN ebook_chapters.title          IS 'Display title of the chapter.';
-COMMENT ON COLUMN ebook_chapters.order_index           IS 'Display order within the parent scope (ascending).';
-COMMENT ON COLUMN ebook_chapters.parent_chapter_id     IS 'FK to the parent chapter for nested sub-chapters; null for top-level.';
-COMMENT ON COLUMN ebook_chapters.start_locator         IS 'EPUB CFI or page-based locator marking the start of this chapter.';
-COMMENT ON COLUMN ebook_chapters.end_locator           IS 'EPUB CFI or page-based locator marking the end of this chapter.';
-COMMENT ON COLUMN ebook_chapters.created_by            IS 'Actor that created this chapter record.';
-COMMENT ON COLUMN ebook_chapters.updated_by            IS 'Actor that last modified this chapter record.';
-COMMENT ON COLUMN ebook_chapters.created_at            IS 'Record creation timestamp (UTC).';
-COMMENT ON COLUMN ebook_chapters.updated_at            IS 'Record last-update timestamp (UTC).';
-
--- ---------------- content_progress ----------------
-COMMENT ON TABLE  content_progress                  IS 'Per-user progress records for any Phase 2 product (journey, module, package, workshop, ebook).';
-COMMENT ON COLUMN content_progress.id               IS 'Primary key.';
-COMMENT ON COLUMN content_progress.user_id          IS 'User whose progress is tracked (FK → users).';
-COMMENT ON COLUMN content_progress.target_type      IS 'Discriminator indicating which product type is being tracked.';
-COMMENT ON COLUMN content_progress.product_id       IS 'Phase 2 product being tracked (FK → content_products).';
-COMMENT ON COLUMN content_progress.status           IS 'Progress state: locked | available | in_progress | completed.';
-COMMENT ON COLUMN content_progress.progress_percent IS 'Completion percentage (0–100).';
-COMMENT ON COLUMN content_progress.started_at       IS 'Timestamp of first engagement with this product.';
-COMMENT ON COLUMN content_progress.completed_at     IS 'Timestamp when progress reached 100%; null if not yet completed.';
-COMMENT ON COLUMN content_progress.created_by       IS 'Actor that created this progress record.';
-COMMENT ON COLUMN content_progress.updated_by       IS 'Actor that last modified this progress record.';
-COMMENT ON COLUMN content_progress.created_at       IS 'Record creation timestamp (UTC).';
-COMMENT ON COLUMN content_progress.updated_at       IS 'Record last-update timestamp (UTC).';
-
--- ---------------- comment_submissions ----------------
-COMMENT ON TABLE  comment_submissions                       IS 'User-authored guided reflection comments tied to specific content items.';
-COMMENT ON COLUMN comment_submissions.id                    IS 'Primary key.';
-COMMENT ON COLUMN comment_submissions.user_id               IS 'Author of the comment (FK → users).';
-COMMENT ON COLUMN comment_submissions.target_content_item_id IS 'Content item this comment responds to (FK → content_items).';
-COMMENT ON COLUMN comment_submissions.target_type           IS 'Sub-entity type being commented on (journey_day | module_package | workshop_stage | workshop_session | ebook_chapter).';
-COMMENT ON COLUMN comment_submissions.content               IS 'Plain-text body of the reflection comment.';
-COMMENT ON COLUMN comment_submissions.status                IS 'Lifecycle state: draft | submitted | locked | expired.';
-COMMENT ON COLUMN comment_submissions.submitted_at          IS 'Timestamp when the user finalised the comment; null while in draft.';
-COMMENT ON COLUMN comment_submissions.parent_comment_id     IS 'Self-referential FK for threaded replies; null for top-level comments.';
-COMMENT ON COLUMN comment_submissions.deleted_at            IS 'Soft-delete timestamp; null means the comment is active.';
-COMMENT ON COLUMN comment_submissions.created_by            IS 'Actor that created this comment.';
-COMMENT ON COLUMN comment_submissions.updated_by            IS 'Actor that last modified this comment.';
-COMMENT ON COLUMN comment_submissions.created_at            IS 'Record creation timestamp (UTC).';
-COMMENT ON COLUMN comment_submissions.updated_at            IS 'Record last-update timestamp (UTC).';
-
--- ---------------- highlights ----------------
-COMMENT ON TABLE  highlights                   IS 'Text highlight annotations made by a user inside an e-book or content block.';
-COMMENT ON COLUMN highlights.id                IS 'Primary key.';
-COMMENT ON COLUMN highlights.user_id           IS 'User who created this highlight (FK → users).';
-COMMENT ON COLUMN highlights.content_item_id   IS 'Content item containing the highlighted text (FK → content_items).';
-COMMENT ON COLUMN highlights.color             IS 'Visual colour of the highlight: yellow | green | blue | pink.';
-COMMENT ON COLUMN highlights.anchor_locator    IS 'Position identifier within the content (e.g. EPUB CFI or "p:1" page reference).';
-COMMENT ON COLUMN highlights.selected_text_hash IS 'SHA hash of the highlighted text used for collision detection across content versions.';
-COMMENT ON COLUMN highlights.deleted_at        IS 'Soft-delete timestamp; null means the highlight is active.';
-COMMENT ON COLUMN highlights.created_by        IS 'Actor that created this highlight.';
-COMMENT ON COLUMN highlights.updated_by        IS 'Actor that last modified this highlight.';
-COMMENT ON COLUMN highlights.created_at        IS 'Record creation timestamp (UTC).';
-COMMENT ON COLUMN highlights.updated_at        IS 'Record last-update timestamp (UTC).';
-
--- ---------------- notes ----------------
-COMMENT ON TABLE  notes                  IS 'Free-text annotations attached by a user to a content item or specific location within it.';
-COMMENT ON COLUMN notes.id               IS 'Primary key.';
-COMMENT ON COLUMN notes.user_id          IS 'User who wrote this note (FK → users).';
-COMMENT ON COLUMN notes.content_item_id  IS 'Content item the note is attached to (FK → content_items).';
-COMMENT ON COLUMN notes.body             IS 'Plain-text body of the note.';
-COMMENT ON COLUMN notes.anchor_locator   IS 'Optional position within the content where the note is anchored.';
-COMMENT ON COLUMN notes.deleted_at       IS 'Soft-delete timestamp; null means the note is active.';
-COMMENT ON COLUMN notes.created_by       IS 'Actor that created this note.';
-COMMENT ON COLUMN notes.updated_by       IS 'Actor that last modified this note.';
-COMMENT ON COLUMN notes.created_at       IS 'Record creation timestamp (UTC).';
-COMMENT ON COLUMN notes.updated_at       IS 'Record last-update timestamp (UTC).';
-
--- ---------------- favorite_items ----------------
-COMMENT ON TABLE  favorite_items                   IS 'User-bookmarked items; each row references exactly one of: content_item, highlight, or note.';
-COMMENT ON COLUMN favorite_items.id                IS 'Primary key.';
-COMMENT ON COLUMN favorite_items.user_id           IS 'User who saved this favourite (FK → users).';
-COMMENT ON COLUMN favorite_items.source_type       IS 'Discriminator indicating which reference column is populated.';
-COMMENT ON COLUMN favorite_items.content_item_ref_id IS 'FK to a content item when source_type = content_item (mutually exclusive with the other refs).';
-COMMENT ON COLUMN favorite_items.highlight_ref_id  IS 'FK to a highlight when source_type = highlight (mutually exclusive with the other refs).';
-COMMENT ON COLUMN favorite_items.note_ref_id       IS 'FK to a note when source_type = note (mutually exclusive with the other refs).';
-COMMENT ON COLUMN favorite_items.note              IS 'Optional personal annotation the user added when saving this favourite.';
-COMMENT ON COLUMN favorite_items.created_by        IS 'Actor that created this favourite.';
-COMMENT ON COLUMN favorite_items.updated_by        IS 'Actor that last modified this favourite.';
-COMMENT ON COLUMN favorite_items.created_at        IS 'Record creation timestamp (UTC).';
-COMMENT ON COLUMN favorite_items.updated_at        IS 'Record last-update timestamp (UTC).';
-
--- ---------------- collections ----------------
-COMMENT ON TABLE  collections          IS 'User-curated named collections that group favourite items.';
-COMMENT ON COLUMN collections.id       IS 'Primary key.';
-COMMENT ON COLUMN collections.user_id  IS 'Owner of this collection (FK → users).';
-COMMENT ON COLUMN collections.name     IS 'User-defined display name of the collection.';
-COMMENT ON COLUMN collections.created_by IS 'Actor that created this collection.';
-COMMENT ON COLUMN collections.updated_by IS 'Actor that last modified this collection.';
-COMMENT ON COLUMN collections.created_at IS 'Record creation timestamp (UTC).';
-COMMENT ON COLUMN collections.updated_at IS 'Record last-update timestamp (UTC).';
-
--- ---------------- collection_items ----------------
-COMMENT ON TABLE  collection_items                  IS 'Junction table placing favourite items into collections.';
-COMMENT ON COLUMN collection_items.collection_id    IS 'Parent collection (FK → collections).';
-COMMENT ON COLUMN collection_items.favorite_item_id IS 'Favourite item added to the collection (FK → favorite_items).';
-COMMENT ON COLUMN collection_items.created_by       IS 'Actor that added this item to the collection.';
-COMMENT ON COLUMN collection_items.updated_by       IS 'Actor that last modified this membership record.';
-COMMENT ON COLUMN collection_items.created_at       IS 'Record creation timestamp (UTC).';
-COMMENT ON COLUMN collection_items.updated_at       IS 'Record last-update timestamp (UTC).';
-
--- ---------------- reading_positions ----------------
-COMMENT ON TABLE  reading_positions              IS 'Last-read position and progress for each user–ebook pair.';
-COMMENT ON COLUMN reading_positions.id           IS 'Primary key.';
-COMMENT ON COLUMN reading_positions.user_id      IS 'Reader (FK → users).';
-COMMENT ON COLUMN reading_positions.ebook_id     IS 'E-book product being read (FK → ebooks).';
-COMMENT ON COLUMN reading_positions.progress_percent  IS 'Reading completion percentage (0–100) derived from the locator.';
-COMMENT ON COLUMN reading_positions.locator_type      IS 'Position format: page (integer page number) | cfi (EPUB Canonical Fragment Identifier).';
-COMMENT ON COLUMN reading_positions.locator_value     IS 'Serialised position value (page number string or CFI string).';
-COMMENT ON COLUMN reading_positions.last_read_at      IS 'Timestamp of the last reading session; used to sort the library by recency.';
-COMMENT ON COLUMN reading_positions.created_by        IS 'Actor that created this record.';
-COMMENT ON COLUMN reading_positions.updated_by        IS 'Actor that last modified this record.';
-COMMENT ON COLUMN reading_positions.created_at        IS 'Record creation timestamp (UTC).';
-COMMENT ON COLUMN reading_positions.updated_at        IS 'Record last-update timestamp (UTC).';
-
--- ---------------- downloads ----------------
-COMMENT ON TABLE  downloads                  IS 'Offline download state for content assets on a user''s device.';
-COMMENT ON COLUMN downloads.id               IS 'Primary key.';
-COMMENT ON COLUMN downloads.user_id          IS 'User who initiated the download (FK → users).';
-COMMENT ON COLUMN downloads.content_item_id  IS 'Content item the downloaded asset belongs to (FK → content_items).';
-COMMENT ON COLUMN downloads.asset_id         IS 'Specific binary asset being downloaded (FK → content_assets).';
-COMMENT ON COLUMN downloads.download_status  IS 'Transfer state: pending | in_progress | completed | failed | paused.';
-COMMENT ON COLUMN downloads.byte_size        IS 'Expected total file size in bytes; used for progress calculation.';
-COMMENT ON COLUMN downloads.local_path       IS 'Absolute path to the file on the device once the download completes.';
-COMMENT ON COLUMN downloads.created_by       IS 'Actor that initiated this download.';
-COMMENT ON COLUMN downloads.updated_by       IS 'Actor that last modified this download record.';
-COMMENT ON COLUMN downloads.created_at       IS 'Record creation timestamp (UTC).';
-COMMENT ON COLUMN downloads.updated_at       IS 'Record last-update timestamp (UTC).';
-
--- ---------------- badge_definitions ----------------
-COMMENT ON TABLE  badge_definitions           IS 'Master catalogue of achievement badges and their XP rewards.';
-COMMENT ON COLUMN badge_definitions.id        IS 'Primary key.';
-COMMENT ON COLUMN badge_definitions.category  IS 'Content area the badge relates to: journey | module | workshop | ebook | coach | streak | social.';
-COMMENT ON COLUMN badge_definitions.name      IS 'Display name of the badge shown in the achievement UI.';
-COMMENT ON COLUMN badge_definitions.xp_reward IS 'Experience points awarded when this badge is earned.';
-COMMENT ON COLUMN badge_definitions.created_by IS 'Actor that created this badge definition.';
-COMMENT ON COLUMN badge_definitions.updated_by IS 'Actor that last modified this badge definition.';
-COMMENT ON COLUMN badge_definitions.created_at IS 'Record creation timestamp (UTC).';
-COMMENT ON COLUMN badge_definitions.updated_at IS 'Record last-update timestamp (UTC).';
-
--- ---------------- user_badges ----------------
-COMMENT ON TABLE  user_badges                     IS 'Badges earned by users; each row represents a single award event.';
-COMMENT ON COLUMN user_badges.id                  IS 'Primary key.';
-COMMENT ON COLUMN user_badges.user_id             IS 'User who earned the badge (FK → users).';
-COMMENT ON COLUMN user_badges.badge_definition_id IS 'Badge that was earned (FK → badge_definitions).';
-COMMENT ON COLUMN user_badges.awarded_at          IS 'Timestamp when the badge was awarded.';
-COMMENT ON COLUMN user_badges.created_by          IS 'Actor that awarded this badge (system or admin).';
-COMMENT ON COLUMN user_badges.updated_by          IS 'Actor that last modified this award record.';
-COMMENT ON COLUMN user_badges.created_at          IS 'Record creation timestamp (UTC).';
-COMMENT ON COLUMN user_badges.updated_at          IS 'Record last-update timestamp (UTC).';
-
--- ---------------- home_stats ----------------
-COMMENT ON TABLE  home_stats            IS 'Aggregated engagement statistics displayed on the user''s home dashboard.';
-COMMENT ON COLUMN home_stats.user_id    IS 'Owner of these stats (FK → users); also the primary key.';
-COMMENT ON COLUMN home_stats.day_streak IS 'Number of consecutive days the user has engaged with the app.';
-COMMENT ON COLUMN home_stats.xp_total   IS 'Cumulative experience points earned across all activities.';
-COMMENT ON COLUMN home_stats.updated_at IS 'Last time these stats were recalculated (UTC).';
-
--- ---------------- coach_assignments ----------------
-COMMENT ON TABLE  coach_assignments               IS 'Active or pending coaching relationships between a coach and a client.';
-COMMENT ON COLUMN coach_assignments.id            IS 'Primary key.';
-COMMENT ON COLUMN coach_assignments.coach_user_id IS 'Coach user in the relationship (FK → users, role = coach).';
-COMMENT ON COLUMN coach_assignments.client_user_id IS 'Client user in the relationship (FK → users, role = member).';
-COMMENT ON COLUMN coach_assignments.status        IS 'Relationship state: pending | active | inactive.';
-COMMENT ON COLUMN coach_assignments.created_by    IS 'Actor that created this assignment.';
-COMMENT ON COLUMN coach_assignments.updated_by    IS 'Actor that last modified this assignment.';
-COMMENT ON COLUMN coach_assignments.created_at    IS 'Record creation timestamp (UTC).';
-COMMENT ON COLUMN coach_assignments.updated_at    IS 'Record last-update timestamp (UTC).';
-
--- ---------------- notifications ----------------
-COMMENT ON TABLE  notifications            IS 'In-app, push, and email notifications queued for or sent to users.';
-COMMENT ON COLUMN notifications.id         IS 'Primary key.';
-COMMENT ON COLUMN notifications.user_id    IS 'Recipient of the notification (FK → users).';
-COMMENT ON COLUMN notifications.channel    IS 'Delivery channel: push | email | in_app.';
-COMMENT ON COLUMN notifications.status     IS 'Delivery state: pending | sent | failed | read.';
-COMMENT ON COLUMN notifications.title      IS 'Short notification headline.';
-COMMENT ON COLUMN notifications.body       IS 'Full notification message body.';
-COMMENT ON COLUMN notifications.payload    IS 'JSON metadata for deep-linking or action handling (e.g. content_item_id, route).';
-COMMENT ON COLUMN notifications.read_at    IS 'Timestamp when the user acknowledged the notification; null if unread.';
-COMMENT ON COLUMN notifications.sent_at    IS 'Timestamp when the notification was successfully dispatched; null if pending or failed.';
-COMMENT ON COLUMN notifications.created_at IS 'Record creation timestamp (UTC).';
-COMMENT ON COLUMN notifications.updated_at IS 'Record last-update timestamp (UTC).';
-
--- ---------------- content_products ----------------
-COMMENT ON TABLE  content_products              IS 'Phase 2 super table — registry for all publishable products (journey, module, package, workshop, ebook).';
-COMMENT ON COLUMN content_products.id           IS 'Primary key — auto-generated UUID; referenced by all product domain tables.';
-COMMENT ON COLUMN content_products.product_type IS 'Discriminator: journey | module | package | workshop | ebook.';
-COMMENT ON COLUMN content_products.area_id      IS 'Content area this product belongs to (FK → content_areas); null if not yet assigned.';
-COMMENT ON COLUMN content_products.is_published IS 'Whether this product is visible to end users.';
-COMMENT ON COLUMN content_products.order_index  IS 'Display order within the content area (ascending).';
-COMMENT ON COLUMN content_products.created_by   IS 'Actor that created this product record.';
-COMMENT ON COLUMN content_products.updated_by   IS 'Actor that last modified this product record.';
-COMMENT ON COLUMN content_products.created_at   IS 'Record creation timestamp (UTC).';
-COMMENT ON COLUMN content_products.updated_at   IS 'Record last-update timestamp (UTC).';
-
--- ---------------- content_areas ----------------
-COMMENT ON TABLE  content_areas              IS 'Home dashboard content-area cards; each area groups one or more products.';
-COMMENT ON COLUMN content_areas.id           IS 'Primary key — auto-generated UUID.';
-COMMENT ON COLUMN content_areas.route        IS 'Unique navigation target route.';
-COMMENT ON COLUMN content_areas.label        IS 'Card label.';
-COMMENT ON COLUMN content_areas.description  IS 'Card helper text.';
-COMMENT ON COLUMN content_areas.icon         IS 'Icon token for the card.';
-COMMENT ON COLUMN content_areas.suffix       IS 'Pluralization/helper suffix used with counts.';
-COMMENT ON COLUMN content_areas."accentColor" IS 'Accent color hex for the card.';
-COMMENT ON COLUMN content_areas.bg           IS 'Background color hex for the card.';
-COMMENT ON COLUMN content_areas.order_index  IS 'Display order in the grid.';
-COMMENT ON COLUMN content_areas.created_at   IS 'Record creation timestamp (UTC).';
-COMMENT ON COLUMN content_areas.updated_at   IS 'Record last-update timestamp (UTC).';
-
--- ---------------- content_nav_areas ----------------
-COMMENT ON TABLE  content_nav_areas                    IS 'Home content-navigation cards from mock fixtures.';
-COMMENT ON COLUMN content_nav_areas.route              IS 'Navigation target route (primary key).';
-COMMENT ON COLUMN content_nav_areas.label              IS 'Card label.';
-COMMENT ON COLUMN content_nav_areas.description        IS 'Card helper text.';
-COMMENT ON COLUMN content_nav_areas."accentColor"      IS 'Accent color hex for the card.';
-COMMENT ON COLUMN content_nav_areas.bg                 IS 'Background color hex for the card.';
-COMMENT ON COLUMN content_nav_areas."requiresSubscription" IS 'Whether tapping this area requires a paid entitlement.';
-COMMENT ON COLUMN content_nav_areas.order_index        IS 'Display order in the grid.';
-COMMENT ON COLUMN content_nav_areas.created_at         IS 'Record creation timestamp (UTC).';
-COMMENT ON COLUMN content_nav_areas.updated_at         IS 'Record last-update timestamp (UTC).';
-
--- ---------------- reminder_time_slots ----------------
-COMMENT ON TABLE  reminder_time_slots            IS 'Preset reminder times shown in reminder settings.';
-COMMENT ON COLUMN reminder_time_slots.label      IS 'Formatted display label (HH:MM).';
-COMMENT ON COLUMN reminder_time_slots.h          IS 'Hour component (0-23).';
-COMMENT ON COLUMN reminder_time_slots.m          IS 'Minute component (0-59).';
-COMMENT ON COLUMN reminder_time_slots.order_index IS 'Display order in the selector.';
-COMMENT ON COLUMN reminder_time_slots.created_at IS 'Record creation timestamp (UTC).';
-COMMENT ON COLUMN reminder_time_slots.updated_at IS 'Record last-update timestamp (UTC).';
-
--- ---------------- recent_searches ----------------
-COMMENT ON TABLE  recent_searches            IS 'Recent search terms keyed by user.';
-COMMENT ON COLUMN recent_searches.user_id    IS 'Owner of the search term (FK → users).';
-COMMENT ON COLUMN recent_searches.term       IS 'Recent search query string.';
-COMMENT ON COLUMN recent_searches.searched_at IS 'Timestamp of the most recent search for this term.';
-COMMENT ON COLUMN recent_searches.created_at IS 'Record creation timestamp (UTC).';
-COMMENT ON COLUMN recent_searches.updated_at IS 'Record last-update timestamp (UTC).';
-
--- ---------------- popular_topics ----------------
-COMMENT ON TABLE  popular_topics            IS 'Popular topic chips shown in search/discovery surfaces.';
-COMMENT ON COLUMN popular_topics.id         IS 'Stable topic identifier.';
-COMMENT ON COLUMN popular_topics.title      IS 'Topic title.';
-COMMENT ON COLUMN popular_topics.subtitle   IS 'Optional helper description.';
-COMMENT ON COLUMN popular_topics.order_index IS 'Display order in topic lists.';
-COMMENT ON COLUMN popular_topics.created_at IS 'Record creation timestamp (UTC).';
-COMMENT ON COLUMN popular_topics.updated_at IS 'Record last-update timestamp (UTC).';
-
--- ---------------- content_screen_mock ----------------
-COMMENT ON TABLE  content_screen_mock           IS 'JSON payload backing mock-only content screen extras.';
-COMMENT ON COLUMN content_screen_mock.id        IS 'Singleton row key (always 1).';
-COMMENT ON COLUMN content_screen_mock.payload   IS 'JSON object mirroring `content_screen_mock` from mock_data.json.';
-COMMENT ON COLUMN content_screen_mock.updated_at IS 'Record last-update timestamp (UTC).';
-
--- ---------------- meta ----------------
-COMMENT ON TABLE  meta                 IS 'Generic JSON metadata (fixture dataset metadata, versions, generators).';
-COMMENT ON COLUMN meta.key             IS 'Metadata key.';
-COMMENT ON COLUMN meta.value           IS 'Metadata JSON payload.';
-COMMENT ON COLUMN meta.updated_at      IS 'Record last-update timestamp (UTC).';
-
-
--- =============================================================================
--- END OF SCHEMA
--- =============================================================================
+COMMENT ON COLUMN reminder_settings.user_id                   IS 'Primary key — one-to-one FK to users.';
+COMMENT ON COLUMN reminder_settings.daily_enabled             IS 'Whether the daily reminder push notification is active.';
+COMMENT ON COLUMN reminder_settings.daily_time_local          IS 'Local time-of-day for the daily reminder (device timezone).';
+COMMENT ON COLUMN reminder_settings.workshop_followup_enabled IS 'Whether workshop follow-up push notifications are active.';
