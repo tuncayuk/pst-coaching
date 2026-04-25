@@ -34,7 +34,6 @@ CREATE TYPE store_type AS ENUM ('apple', 'google', 'stripe');
 CREATE TYPE verification_status AS ENUM ('pending', 'verified', 'failed');
 CREATE TYPE receipt_status AS ENUM ('verified', 'expired', 'refunded');
 
-CREATE TYPE content_entity_type AS ENUM ('journey', 'module', 'package', 'workshop', 'ebook');
 CREATE TYPE content_source_type AS ENUM (
     'journey-of-discoveries', 'universe-of-emotions', 'books', 'workshops'
 );
@@ -303,7 +302,6 @@ CREATE INDEX idx_content_series_order     ON content_series (source_id, order_in
 
 CREATE TABLE content_items (
     id              UUID                NOT NULL DEFAULT gen_random_uuid(),
-    entity_type     content_entity_type NOT NULL,
     source_id       UUID                REFERENCES content_sources (id) ON DELETE SET NULL,
     series_id       UUID                REFERENCES content_series (id) ON DELETE SET NULL,
     title           TEXT                NOT NULL DEFAULT '',
@@ -319,7 +317,6 @@ CREATE TABLE content_items (
 
 CREATE INDEX idx_content_items_source_id     ON content_items (source_id);
 CREATE INDEX idx_content_items_series_id     ON content_items (series_id);
-CREATE INDEX idx_content_items_entity_type   ON content_items (entity_type);
 CREATE INDEX idx_content_items_source_order  ON content_items (source_id, order_index);
 CREATE INDEX idx_content_items_series_order  ON content_items (series_id, order_index);
 CREATE INDEX idx_content_items_release_date  ON content_items (release_date);
@@ -483,7 +480,6 @@ CREATE INDEX idx_workshop_sessions_stage ON workshop_sessions (workshop_stage_id
 CREATE TABLE workshop_content_blocks (
     id                  UUID                 PRIMARY KEY DEFAULT gen_random_uuid(),
     workshop_stage_id   UUID                 NOT NULL REFERENCES workshop_stages (id) ON DELETE CASCADE,
-    parent_type         content_entity_type  NOT NULL,
     parent_id           UUID                 NOT NULL,
     block_type          workshop_block_type  NOT NULL,
     content_type        TEXT,
@@ -498,7 +494,6 @@ CREATE TABLE workshop_content_blocks (
 );
 
 CREATE INDEX idx_workshop_content_blocks_stage       ON workshop_content_blocks (workshop_stage_id);
-CREATE INDEX idx_workshop_content_blocks_parent      ON workshop_content_blocks (parent_type, parent_id);
 CREATE INDEX idx_workshop_content_blocks_order       ON workshop_content_blocks (workshop_stage_id, order_index);
 
 CREATE TABLE _content_blocks (
@@ -1148,7 +1143,6 @@ COMMENT ON COLUMN content_series.updated_at    IS 'Record last-update timestamp 
 -- ---------------- content_items ----------------
 COMMENT ON TABLE  content_items               IS 'Core content entity tied to a source; stores shared metadata used across all content domains.';
 COMMENT ON COLUMN content_items.id            IS 'Primary key — shared with the domain detail table when a one-to-one detail row exists.';
-COMMENT ON COLUMN content_items.entity_type   IS 'Domain type of the content item (journey | module | package | workshop | ebook).';
 COMMENT ON COLUMN content_items.source_id     IS 'Catalogue source this item belongs to (FK → content_sources).';
 COMMENT ON COLUMN content_items.series_id     IS 'Optional series this content item belongs to (FK → content_series).';
 COMMENT ON COLUMN content_items.title         IS 'Display title of the content item.';
@@ -1277,7 +1271,6 @@ COMMENT ON COLUMN workshop_sessions.updated_at       IS 'Record last-update time
 COMMENT ON TABLE  workshop_content_blocks                  IS 'Structured content atoms within a workshop stage (readings, exercises, verse references, etc.).';
 COMMENT ON COLUMN workshop_content_blocks.id               IS 'Primary key.';
 COMMENT ON COLUMN workshop_content_blocks.workshop_stage_id IS 'Stage this block belongs to (FK → workshop_stages).';
-COMMENT ON COLUMN workshop_content_blocks.parent_type      IS 'Entity type of the logical parent (journey | package | workshop).';
 COMMENT ON COLUMN workshop_content_blocks.parent_id        IS 'UUID of the logical parent entity.';
 COMMENT ON COLUMN workshop_content_blocks.block_type       IS 'Content role: intro | verse_reference | explanation | bridge | exercise | output | reading | question.';
 COMMENT ON COLUMN workshop_content_blocks.content_type     IS 'Free-text sub-type tag (e.g. reading, exercise, question) used for UI rendering.';
