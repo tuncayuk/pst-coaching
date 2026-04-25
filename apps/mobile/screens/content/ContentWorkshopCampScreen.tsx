@@ -19,6 +19,7 @@ type RouteParams = { state?: ScreenState; id?: string };
 // Day 2: ÇÖZÜM (Solution) — Verse/hadith transformation + prayer practice
 // Day 3: İNŞA (Building) — Daily life plan + 30-day character system
 const CAMP_DAYS = getWorkshopCampDays();
+const CAMP_TITLE = CAMP_DAYS.length > 0 ? `${CAMP_DAYS.length} Gunluk Kamp` : 'Kamp';
 
 type SessionCardProps = {
   session: (typeof CAMP_DAYS)[0]['sessions'][0];
@@ -152,7 +153,7 @@ const ContentWorkshopCampContent = ({ workshopId, isOffline }: { workshopId?: st
 
   return (
     <>
-      <SectionCard title={'3 Gunluk Kamp — ' + (workshop?.title ?? 'Atolye')}>
+      <SectionCard title={CAMP_TITLE + ' — ' + (workshop?.title ?? 'Atolye')}>
         <PText variant="bodySmall" style={styles.campDesc}>
           {campDaySummary}
         </PText>
@@ -268,7 +269,7 @@ export const ContentWorkshopCampScreen = ({ route }: { route?: { params?: RouteP
 
   if (state === 'loading') {
     return (
-      <ScreenLayout title="3 Gunluk Kamp" subtitle="Yukleniyor">
+      <ScreenLayout title={CAMP_TITLE} subtitle="Yukleniyor">
         <SectionCard title="Kamp Plani">
           <PActivityIndicator animating />
           <SkeletonBlock height={36} />
@@ -284,7 +285,7 @@ export const ContentWorkshopCampScreen = ({ route }: { route?: { params?: RouteP
 
   if (state === 'empty') {
     return (
-      <ScreenLayout title="3 Gunluk Kamp" subtitle="Icerik bulunamadi">
+      <ScreenLayout title={CAMP_TITLE} subtitle="Icerik bulunamadi">
         <StateMessage
           title="Kamp icerigi bulunamadi"
           description="Bu atolye icin kamp programi henuz erisebilir degil."
@@ -297,7 +298,7 @@ export const ContentWorkshopCampScreen = ({ route }: { route?: { params?: RouteP
 
   if (state === 'error') {
     return (
-      <ScreenLayout title="3 Gunluk Kamp" subtitle="Bir sorun olustu">
+      <ScreenLayout title={CAMP_TITLE} subtitle="Bir sorun olustu">
         <StateMessage
           title="Kamp yuklenemedi"
           description="Baglantini kontrol edip tekrar dene."
@@ -311,7 +312,7 @@ export const ContentWorkshopCampScreen = ({ route }: { route?: { params?: RouteP
 
   if (state === 'offline') {
     return (
-      <ScreenLayout title="3 Gunluk Kamp" subtitle="Onbellekteki icerik">
+      <ScreenLayout title={CAMP_TITLE} subtitle="Onbellekteki icerik">
         <OfflineNotice />
         <ContentWorkshopCampContent workshopId={workshopId} isOffline />
       </ScreenLayout>
@@ -319,7 +320,7 @@ export const ContentWorkshopCampScreen = ({ route }: { route?: { params?: RouteP
   }
 
   return (
-    <ScreenLayout title="3 Gunluk Kamp" subtitle="Kamp oturum plani">
+    <ScreenLayout title={CAMP_TITLE} subtitle="Kamp oturum plani">
       <ContentWorkshopCampContent workshopId={workshopId} />
     </ScreenLayout>
   );
