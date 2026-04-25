@@ -409,11 +409,11 @@ CREATE INDEX idx_journey_days_journey ON journey_days (journey_id);
 CREATE TABLE journey_items (
     id              UUID         PRIMARY KEY DEFAULT gen_random_uuid(),
     journey_id      UUID         NOT NULL REFERENCES journeys (id) ON DELETE CASCADE,
-    product_id      UUID         NOT NULL REFERENCES content_products (id) ON DELETE RESTRICT,
+    content_item_id UUID         NOT NULL REFERENCES content_items (id) ON DELETE RESTRICT,
     order_index     SMALLINT     NOT NULL DEFAULT 0,
     created_at      TIMESTAMPTZ  NOT NULL DEFAULT now(),
     updated_at      TIMESTAMPTZ  NOT NULL DEFAULT now(),
-    UNIQUE (journey_id, product_id)
+    UNIQUE (journey_id, content_item_id)
 );
 
 CREATE INDEX idx_journey_items_journey ON journey_items (journey_id);
