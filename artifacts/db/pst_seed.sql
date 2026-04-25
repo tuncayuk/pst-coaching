@@ -46,7 +46,7 @@ INSERT INTO reading_settings (user_id, font_scale, line_spacing, background_mode
 -- =============================================================================
 
 INSERT INTO reminder_settings (id, user_id, daily_enabled, daily_time_local, workshop_followup_enabled, created_by, updated_by, created_at, updated_at) VALUES
-    ('rs000000-0000-0000-0000-000000000001', '11111111-1111-1111-1111-111111111111', true, NULL, false, NULL, NULL, '2025-12-01T10:00:00Z', '2025-12-01T10:00:00Z');
+    ('rs000000-0000-0000-0000-000000000001', '11111111-1111-1111-1111-111111111111', true, '20:00:00', false, NULL, NULL, '2025-12-01T10:00:00Z', '2025-12-01T10:00:00Z');
 
 
 -- =============================================================================
@@ -110,9 +110,6 @@ INSERT INTO content_sources (id, title, subtitle, description, icon, accent_colo
 
 -- =============================================================================
 -- SECTION 12 — CONTENT ITEMS
--- Note: 'eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee' is referenced by content_assets,
---        content_progress, notes and downloads but missing from mock_data content_items array.
---        Added here to satisfy FK constraints.
 -- =============================================================================
 
 INSERT INTO content_items (id, entity_type, source_id, language_code, is_published, created_at, updated_at) VALUES
@@ -257,29 +254,29 @@ INSERT INTO packages (id, module_content_item_id, title, order_index, source_con
 -- SECTION 17 — WORKSHOP GROUPS
 -- =============================================================================
 
-INSERT INTO workshop_groups (id, title, description, order_index, delivery_modes, target_audiences, featured_workshop_ids, created_at, updated_at) VALUES
+INSERT INTO workshop_groups (id, title, description, order_index, target_audiences, featured_workshop_ids, created_at, updated_at) VALUES
     ('wg-manevi-derinlesme', 'Manevi Derinlesme',  'Dua, teslimiyet ve icsel farkindalik odakli uzun sureli atolyeler.', 1,
-        '["kamp","rehber"]', '["18+","25+"]',
+        '["18+","25+"]',
         '["eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee","eeeeeeee-0000-0000-0000-000000000003","eeeeeeee-0000-0000-0000-000000000024"]',
         '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z'),
     ('wg-duygusal-denge',    'Duygusal Denge',     'Ofke, korku, yas ve oz-sefkat temali donusum atolyeleri.',           2,
-        '["kamp","calisma_kitabi","rehber"]', '["18+"]',
+        '["18+"]',
         '["eeeeeeee-0000-0000-0000-000000000006","eeeeeeee-0000-0000-0000-000000000011","eeeeeeee-0000-0000-0000-000000000020"]',
         '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z'),
     ('wg-iliskiler-aile',    'Iliskiler ve Aile',  'Aile ici iletisim, es iliskisi ve bag kurma odakli atolyeler.',      3,
-        '["kamp","rehber"]', '["Aile","Cift","18+"]',
+        '["Aile","Cift","18+"]',
         '["eeeeeeee-0000-0000-0000-000000000010","eeeeeeee-0000-0000-0000-000000000015","eeeeeeee-0000-0000-0000-000000000014"]',
         '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z'),
     ('wg-genc-ve-egitim',    'Genc ve Egitim',     'Ergenlik, kimlik gelisimi ve aidiyet sureclerine odakli atolyeler.', 4,
-        '["rehber","kamp"]', '["14-18","18+"]',
+        '["14-18","18+"]',
         '["eeeeeeee-0000-0000-0000-000000000016","eeeeeeee-0000-0000-0000-000000000009","eeeeeeee-0000-0000-0000-000000000001"]',
         '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z'),
     ('wg-yasam-becerileri',  'Yasam Becerileri',   'Sinir koyma, odaklanma, zaman ve rutin yonetimi atolyeleri.',        5,
-        '["calisma_kitabi","rehber","kamp"]', '["18+"]',
+        '["18+"]',
         '["eeeeeeee-0000-0000-0000-000000000007","eeeeeeee-0000-0000-0000-000000000013","eeeeeeee-0000-0000-0000-000000000023"]',
         '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z'),
     ('wg-profesyonel-hayat', 'Profesyonel Hayat',  'Liderlik, motivasyon ve sorumluluk gelistiren atolyeler.',           6,
-        '["rehber","kamp"]', '["25+","18+"]',
+        '["25+","18+"]',
         '["eeeeeeee-0000-0000-0000-000000000017","eeeeeeee-0000-0000-0000-000000000012","eeeeeeee-0000-0000-0000-000000000021"]',
         '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z');
 
@@ -457,6 +454,100 @@ INSERT INTO coach_assignments (id, coach_user_id, client_user_id, status, create
 
 INSERT INTO home_stats (user_id, day_streak, xp_total, updated_at) VALUES
     ('11111111-1111-1111-1111-111111111111', 12, 0, now());
+
+-- =============================================================================
+-- SECTION 34 — JOURNEY DAYS (SYNCED FROM MOCK)
+-- =============================================================================
+
+INSERT INTO journey_days (id, journey_content_item_id, day_number, title, unlock_time_local, created_at, updated_at) VALUES
+    ('bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', 1, 'Gun 1: Farkindalik', '08:00:00', '2026-01-12T08:00:00Z', '2026-01-12T08:00:00Z'),
+    ('bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbb1', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', 2, 'Gun 2: Derinlesme', '08:00:00', '2026-01-13T08:00:00Z', '2026-01-13T08:00:00Z');
+
+
+-- =============================================================================
+-- SECTION 35 — GENERIC CONTENT BLOCKS (SYNCED FROM MOCK)
+-- =============================================================================
+
+INSERT INTO _content_blocks (id, parent_type, parent_id, content_type, title, body, order_index, has_audio, created_at, updated_at) VALUES
+    ('11111111-2222-3333-4444-555555555555', 'journey_day', 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb', 'reading', 'Gun 1 Okuma', 'Farkindalik uygulamasina giris.', 1, false, now(), now()),
+    ('11111111-2222-3333-4444-666666666666', 'journey_day', 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbb1', 'reading', 'Gun 2 Okuma', 'Derinlesme uygulamasina giris.', 1, false, now(), now()),
+    ('ws-mutlak-stage-01', 'workshop', 'eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee', 'reading', 'Kavram Insasi — Zemin Kurulumu', NULL, 1, false, now(), now());
+
+
+-- =============================================================================
+-- SECTION 36 — NOTIFICATIONS (SYNCED FROM MOCK)
+-- =============================================================================
+
+INSERT INTO notifications (id, user_id, channel, status, title, body, payload, read_at, sent_at, created_at, updated_at) VALUES
+    (
+        'n0000000-0000-0000-0000-000000000001',
+        '11111111-1111-1111-1111-111111111111',
+        'in_app',
+        'pending',
+        'Yolculuk adimin hazir',
+        'Bugunku adimini tamamlamak icin devam et.',
+        '{"type":"journey","content_id":"aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa","content_type":"journey","description":"Bugunku adimin hazir."}'::jsonb,
+        NULL,
+        NULL,
+        '2026-01-12T08:15:00Z',
+        '2026-01-12T08:15:00Z'
+    ),
+    (
+        'n0000000-0000-0000-0000-000000000002',
+        '11111111-1111-1111-1111-111111111111',
+        'in_app',
+        'read',
+        'Rozet kazandin',
+        'Yeni bir basari rozeti kazandiniz.',
+        '{"type":"achievement","content_id":"bd000000-0000-0000-0000-000000000001","content_type":"badge","description":"Yeni bir basari rozeti kazandiniz."}'::jsonb,
+        '2026-01-11T18:30:00Z',
+        '2026-01-11T18:00:00Z',
+        '2026-01-11T18:00:00Z',
+        '2026-01-11T18:30:00Z'
+    );
+
+
+-- =============================================================================
+-- SECTION 37 — HOME READ MODELS (SYNCED FROM MOCK)
+-- =============================================================================
+
+INSERT INTO content_areas (route, label, description, icon, suffix, "accentColor", bg, order_index) VALUES
+    ('DiscoverJourneys', 'Yolculuklar', 'Gunluk adimlarla buyume', 'map-marker-path', 'program', '#00B4D8', '#E0F7FA', 1),
+    ('DiscoverWorkshops', 'Atolyeler', 'Odakli pratik seanslar', 'school-outline', 'atolye', '#7C3AED', '#EDE9FE', 2),
+    ('DiscoverEbooks', 'e-Kitaplar', 'Derinlemesine okuma', 'book-open-variant', 'kitap', '#F59E0B', '#FEF3C7', 3),
+    ('DiscoverModules', 'Moduller', 'Kisisel gelisim modulleri', 'human-male-board', 'modul', '#10B981', '#D1FAE5', 4);
+
+INSERT INTO content_nav_areas (route, label, description, "accentColor", bg, "requiresSubscription", order_index) VALUES
+    ('DiscoverJourneys', 'Yolculuklar', 'Gunluk adimlarla buyume', '#00B4D8', '#E0F7FA', false, 1),
+    ('DiscoverWorkshops', 'Atolyeler', 'Odakli pratik seanslar', '#7C3AED', '#EDE9FE', false, 2),
+    ('DiscoverEbooks', 'e-Kitaplar', 'Derinlemesine okuma', '#F59E0B', '#FEF3C7', false, 3),
+    ('DiscoverCatalog', 'Kocluk Okulu', 'Sertifika programlari', '#10B981', '#D1FAE5', true, 4);
+
+INSERT INTO reminder_time_slots (label, h, m, order_index) VALUES
+    ('07:00', 7, 0, 1),
+    ('12:00', 12, 0, 2),
+    ('18:00', 18, 0, 3),
+    ('20:00', 20, 0, 4),
+    ('21:30', 21, 30, 5);
+
+INSERT INTO recent_searches (user_id, term, searched_at) VALUES
+    ('11111111-1111-1111-1111-111111111111', 'Oz sefkat', now() - interval '3 day'),
+    ('11111111-1111-1111-1111-111111111111', 'Sinir koyma', now() - interval '2 day'),
+    ('11111111-1111-1111-1111-111111111111', 'Nefes egzersizi', now() - interval '1 day');
+
+INSERT INTO popular_topics (id, title, subtitle, order_index) VALUES
+    ('pt-001', 'Duygusal Dayaniklilik', '6 gun -- 4 icerik', 1),
+    ('pt-002', 'Zor Konusmalar', '2 bolum -- 35 dk', 2);
+
+INSERT INTO content_screen_mock (id, payload, updated_at) VALUES
+    (
+        1,
+        '{"review_rating_labels":["Cok kotu","Kotu","Orta","Iyi","Harika"],"reader_audio_speeds":["0.8x","1.0x","1.2x","1.5x"]}'::jsonb,
+        now()
+    );
+
+INSERT INTO meta (key, value, updated_at) VALUES
+    ('mock_data_meta', '{"generated_at":"2026-04-11T09:00:00Z","notes":"Mock fixtures for useMock=true; values align to domain_model.json."}'::jsonb, now());
 
 
 -- =============================================================================

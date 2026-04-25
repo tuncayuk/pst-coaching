@@ -116,12 +116,37 @@ const ContentWorkshopCampContent = ({ workshopId, isOffline }: { workshopId?: st
   const workshop = getWorkshopById(workshopId) ?? getWorkshops()[0];
   const [activeDay, setActiveDay] = useState(0);
   const [completed, setCompleted] = useState<Record<string, boolean>>({});
+  const campDaySummary = useMemo(() => {
+    if (CAMP_DAYS.length === 0) return 'Kamp gunleri henuz tanimlanmadi.';
+    return CAMP_DAYS.map(day => day.label).join(' · ');
+  }, []);
+  const campProgramSummary = useMemo(() => {
+    if (CAMP_DAYS.length === 0) return 'Bu atolye icin kamp plani yakinda eklenecek.';
+
+    const totalSessions = CAMP_DAYS.reduce((sum, day) => sum + day.sessions.length, 0);
+    const slotSet = new Set(CAMP_DAYS.flatMap(day => day.sessions.map(session => session.slot)));
+    const orderedSlots = ['Sabah', 'Ogle', 'Aksam'].filter(slot => slotSet.has(slot));
+    const slotLabel = orderedSlots.length > 0 ? orderedSlots.join(', ').toLowerCase() : 'planlanan';
+    return `Programda ${CAMP_DAYS.length} gun ve toplam ${totalSessions} oturum var. Her gun ${slotLabel} oturumlarini tamamlayarak ilerle.`;
+  }, []);
 
   const handleComplete = (sessionId: string) => {
     setCompleted(prev => ({ ...prev, [sessionId]: true }));
   };
 
-  const dayData = CAMP_DAYS[activeDay];
+  const dayData = CAMP_DAYS[activeDay] ?? CAMP_DAYS[0];
+  if (!dayData) {
+    return (
+      <SectionCard title={'Kamp — ' + (workshop?.title ?? 'Atolye')}>
+        <StateMessage
+          title="Kamp plani bulunamadi"
+          description="Bu atolye icin kamp gunleri henuz tanimlanmamis."
+          icon="campfire"
+          tone="warning"
+        />
+      </SectionCard>
+    );
+  }
   const dayCompletedCount = dayData.sessions.filter(s => completed[s.id]).length;
   const isDayDone = dayCompletedCount === dayData.sessions.length;
 
@@ -129,10 +154,10 @@ const ContentWorkshopCampContent = ({ workshopId, isOffline }: { workshopId?: st
     <>
       <SectionCard title={'3 Gunluk Kamp — ' + (workshop?.title ?? 'Atolye')}>
         <PText variant="bodySmall" style={styles.campDesc}>
-          Gun 1: Tespit · Gun 2: Cozum · Gun 3: Insa
+          {campDaySummary}
         </PText>
         <PText variant="bodySmall" style={styles.campDesc}>
-          Her gun sabah, ogle ve aksam oturumlarini tamamla. Kamp, atolyenin en kritik asamasidir.
+          {campProgramSummary}
         </PText>
       </SectionCard>
 

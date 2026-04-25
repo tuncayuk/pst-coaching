@@ -346,6 +346,7 @@ CREATE TABLE journey_days (
     journey_content_item_id UUID        NOT NULL REFERENCES journeys (content_item_id) ON DELETE CASCADE,
     day_number              SMALLINT    NOT NULL CHECK (day_number >= 1),
     title                   TEXT,
+    unlock_time_local       TIME,
     created_at              TIMESTAMPTZ NOT NULL DEFAULT now(),
     updated_at              TIMESTAMPTZ NOT NULL DEFAULT now(),
     UNIQUE (journey_content_item_id, day_number)
@@ -395,7 +396,6 @@ CREATE TABLE workshop_groups (
     title               TEXT        NOT NULL,
     description         TEXT        NOT NULL DEFAULT '',
     order_index         SMALLINT    NOT NULL DEFAULT 0,
-    delivery_modes      JSONB       NOT NULL DEFAULT '[]',
     target_audiences    JSONB       NOT NULL DEFAULT '[]',
     featured_workshop_ids JSONB     NOT NULL DEFAULT '[]',
     created_at          TIMESTAMPTZ NOT NULL DEFAULT now(),
@@ -474,6 +474,22 @@ CREATE TABLE workshop_content_blocks (
 CREATE INDEX idx_workshop_content_blocks_stage       ON workshop_content_blocks (workshop_stage_id);
 CREATE INDEX idx_workshop_content_blocks_parent      ON workshop_content_blocks (parent_type, parent_id);
 CREATE INDEX idx_workshop_content_blocks_order       ON workshop_content_blocks (workshop_stage_id, order_index);
+
+CREATE TABLE _content_blocks (
+    id              TEXT        PRIMARY KEY,
+    parent_type     TEXT        NOT NULL,
+    parent_id       TEXT        NOT NULL,
+    content_type    TEXT        NOT NULL,
+    title           TEXT        NOT NULL,
+    body            TEXT,
+    order_index     SMALLINT    NOT NULL DEFAULT 0,
+    has_audio       BOOLEAN     NOT NULL DEFAULT false,
+    created_at      TIMESTAMPTZ NOT NULL DEFAULT now(),
+    updated_at      TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE INDEX idx__content_blocks_parent ON _content_blocks (parent_type, parent_id);
+CREATE INDEX idx__content_blocks_order  ON _content_blocks (parent_type, parent_id, order_index);
 
 
 CREATE TABLE workshop_artifacts (
@@ -832,6 +848,74 @@ CREATE INDEX idx_notifications_user_id         ON notifications (user_id);
 CREATE INDEX idx_notifications_user_unread      ON notifications (user_id, status) WHERE status <> 'read';
 CREATE INDEX idx_notifications_created_at       ON notifications (created_at DESC);
 
+-- =============================================================================
+-- SECTION 13 — MOBILE READ MODELS (MOCK-DATA SYNC)
+-- =============================================================================
+
+CREATE TABLE content_areas (
+    route           TEXT        PRIMARY KEY,
+    label           TEXT        NOT NULL,
+    description     TEXT        NOT NULL DEFAULT '',
+    icon            TEXT        NOT NULL,
+    suffix          TEXT        NOT NULL DEFAULT '',
+    "accentColor"   TEXT        NOT NULL,
+    bg              TEXT        NOT NULL,
+    order_index     SMALLINT    NOT NULL DEFAULT 0,
+    created_at      TIMESTAMPTZ NOT NULL DEFAULT now(),
+    updated_at      TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE TABLE content_nav_areas (
+    route                   TEXT        PRIMARY KEY,
+    label                   TEXT        NOT NULL,
+    description             TEXT        NOT NULL DEFAULT '',
+    "accentColor"           TEXT        NOT NULL,
+    bg                      TEXT        NOT NULL,
+    "requiresSubscription"  BOOLEAN     NOT NULL DEFAULT false,
+    order_index             SMALLINT    NOT NULL DEFAULT 0,
+    created_at              TIMESTAMPTZ NOT NULL DEFAULT now(),
+    updated_at              TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE TABLE reminder_time_slots (
+    label       TEXT        PRIMARY KEY,
+    h           SMALLINT    NOT NULL CHECK (h BETWEEN 0 AND 23),
+    m           SMALLINT    NOT NULL CHECK (m BETWEEN 0 AND 59),
+    order_index SMALLINT    NOT NULL DEFAULT 0,
+    created_at  TIMESTAMPTZ NOT NULL DEFAULT now(),
+    updated_at  TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE TABLE recent_searches (
+    user_id     UUID        NOT NULL REFERENCES users (id) ON DELETE CASCADE,
+    term        TEXT        NOT NULL,
+    searched_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    created_at  TIMESTAMPTZ NOT NULL DEFAULT now(),
+    updated_at  TIMESTAMPTZ NOT NULL DEFAULT now(),
+    PRIMARY KEY (user_id, term)
+);
+
+CREATE TABLE popular_topics (
+    id          TEXT        PRIMARY KEY,
+    title       TEXT        NOT NULL,
+    subtitle    TEXT,
+    order_index SMALLINT    NOT NULL DEFAULT 0,
+    created_at  TIMESTAMPTZ NOT NULL DEFAULT now(),
+    updated_at  TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE TABLE content_screen_mock (
+    id          SMALLINT    PRIMARY KEY DEFAULT 1 CHECK (id = 1),
+    payload     JSONB       NOT NULL DEFAULT '{}',
+    updated_at  TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE TABLE meta (
+    key         TEXT        PRIMARY KEY,
+    value       JSONB       NOT NULL DEFAULT '{}',
+    updated_at  TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
 
 -- =============================================================================
 -- TRIGGERS — auto-update updated_at
@@ -939,7 +1023,7 @@ COMMENT ON TABLE  reminder_settings                           IS 'Push-notificat
 COMMENT ON COLUMN reminder_settings.id                        IS 'Primary key.';
 COMMENT ON COLUMN reminder_settings.user_id                   IS 'One-to-one FK to users.';
 COMMENT ON COLUMN reminder_settings.daily_enabled             IS 'Whether a daily practice reminder is active.';
-COMMENT ON COLUMN reminder_settings.daily_time_local          IS 'Local time-of-day for the daily reminder (null = not set).';
+COMMENT ON COLUMN reminder_settings.daily_time_local          IS 'Local time-of-day for the daily reminder (null = not set); mapped to `time_local` in mobile compatibility selectors.';
 COMMENT ON COLUMN reminder_settings.workshop_followup_enabled IS 'Whether post-workshop follow-up reminders are active.';
 COMMENT ON COLUMN reminder_settings.created_by                IS 'Actor that created this record.';
 COMMENT ON COLUMN reminder_settings.updated_by                IS 'Actor that last modified this record.';
@@ -1070,6 +1154,7 @@ COMMENT ON COLUMN journey_days.id                     IS 'Primary key.';
 COMMENT ON COLUMN journey_days.journey_content_item_id IS 'Parent journey (FK → journeys).';
 COMMENT ON COLUMN journey_days.day_number             IS 'Sequential day position within the journey (1-based).';
 COMMENT ON COLUMN journey_days.title                  IS 'Optional display title for this day (e.g. "Gün 1: Farkındalık").';
+COMMENT ON COLUMN journey_days.unlock_time_local      IS 'Optional local unlock time used by day-level journey screens (e.g. 08:00).';
 COMMENT ON COLUMN journey_days.created_at             IS 'Record creation timestamp (UTC).';
 COMMENT ON COLUMN journey_days.updated_at             IS 'Record last-update timestamp (UTC).';
 
@@ -1102,7 +1187,6 @@ COMMENT ON COLUMN workshop_groups.id                   IS 'Slug-style primary ke
 COMMENT ON COLUMN workshop_groups.title                IS 'Display name of the group shown in the catalogue header.';
 COMMENT ON COLUMN workshop_groups.description          IS 'Descriptive copy explaining the group theme.';
 COMMENT ON COLUMN workshop_groups.order_index          IS 'Display order in the catalogue list (ascending).';
-COMMENT ON COLUMN workshop_groups.delivery_modes       IS 'JSON array of delivery_mode values available within this group.';
 COMMENT ON COLUMN workshop_groups.target_audiences     IS 'JSON array of target audience labels (e.g. ["18+","Aile"]).';
 COMMENT ON COLUMN workshop_groups.featured_workshop_ids IS 'JSON array of content_item UUIDs pinned as featured workshops.';
 COMMENT ON COLUMN workshop_groups.created_at           IS 'Record creation timestamp (UTC).';
@@ -1164,6 +1248,19 @@ COMMENT ON COLUMN workshop_content_blocks.created_by       IS 'Actor that create
 COMMENT ON COLUMN workshop_content_blocks.updated_by       IS 'Actor that last modified this block.';
 COMMENT ON COLUMN workshop_content_blocks.created_at       IS 'Record creation timestamp (UTC).';
 COMMENT ON COLUMN workshop_content_blocks.updated_at       IS 'Record last-update timestamp (UTC).';
+
+-- ---------------- _content_blocks ----------------
+COMMENT ON TABLE  _content_blocks               IS 'Mobile-ready generic content blocks synced with artifacts/mock/mock_data.json (`_content_blocks`).';
+COMMENT ON COLUMN _content_blocks.id            IS 'Primary key from fixture data (UUID-like or slug).';
+COMMENT ON COLUMN _content_blocks.parent_type   IS 'Logical parent type (journey_day | package | workshop).';
+COMMENT ON COLUMN _content_blocks.parent_id     IS 'Logical parent identifier (UUID or slug).';
+COMMENT ON COLUMN _content_blocks.content_type  IS 'UI content type (reading | exercise | question | etc.).';
+COMMENT ON COLUMN _content_blocks.title         IS 'Display title.';
+COMMENT ON COLUMN _content_blocks.body          IS 'Body text shown in reader-style screens.';
+COMMENT ON COLUMN _content_blocks.order_index   IS 'Display order within the same parent.';
+COMMENT ON COLUMN _content_blocks.has_audio     IS 'Whether this block has an associated audio rendition.';
+COMMENT ON COLUMN _content_blocks.created_at    IS 'Record creation timestamp (UTC).';
+COMMENT ON COLUMN _content_blocks.updated_at    IS 'Record last-update timestamp (UTC).';
 
 -- ---------------- workshop_artifacts ----------------
 COMMENT ON TABLE  workshop_artifacts                          IS 'Versioned downloadable artefacts produced or used in a workshop (worksheets, guides, etc.).';
@@ -1407,6 +1504,69 @@ COMMENT ON COLUMN notifications.read_at    IS 'Timestamp when the user acknowled
 COMMENT ON COLUMN notifications.sent_at    IS 'Timestamp when the notification was successfully dispatched; null if pending or failed.';
 COMMENT ON COLUMN notifications.created_at IS 'Record creation timestamp (UTC).';
 COMMENT ON COLUMN notifications.updated_at IS 'Record last-update timestamp (UTC).';
+
+-- ---------------- content_areas ----------------
+COMMENT ON TABLE  content_areas              IS 'Home dashboard content-area cards from mock fixtures.';
+COMMENT ON COLUMN content_areas.route        IS 'Navigation target route (primary key).';
+COMMENT ON COLUMN content_areas.label        IS 'Card label.';
+COMMENT ON COLUMN content_areas.description  IS 'Card helper text.';
+COMMENT ON COLUMN content_areas.icon         IS 'Icon token for the card.';
+COMMENT ON COLUMN content_areas.suffix       IS 'Pluralization/helper suffix used with counts.';
+COMMENT ON COLUMN content_areas."accentColor" IS 'Accent color hex for the card.';
+COMMENT ON COLUMN content_areas.bg           IS 'Background color hex for the card.';
+COMMENT ON COLUMN content_areas.order_index  IS 'Display order in the grid.';
+COMMENT ON COLUMN content_areas.created_at   IS 'Record creation timestamp (UTC).';
+COMMENT ON COLUMN content_areas.updated_at   IS 'Record last-update timestamp (UTC).';
+
+-- ---------------- content_nav_areas ----------------
+COMMENT ON TABLE  content_nav_areas                    IS 'Home content-navigation cards from mock fixtures.';
+COMMENT ON COLUMN content_nav_areas.route              IS 'Navigation target route (primary key).';
+COMMENT ON COLUMN content_nav_areas.label              IS 'Card label.';
+COMMENT ON COLUMN content_nav_areas.description        IS 'Card helper text.';
+COMMENT ON COLUMN content_nav_areas."accentColor"      IS 'Accent color hex for the card.';
+COMMENT ON COLUMN content_nav_areas.bg                 IS 'Background color hex for the card.';
+COMMENT ON COLUMN content_nav_areas."requiresSubscription" IS 'Whether tapping this area requires a paid entitlement.';
+COMMENT ON COLUMN content_nav_areas.order_index        IS 'Display order in the grid.';
+COMMENT ON COLUMN content_nav_areas.created_at         IS 'Record creation timestamp (UTC).';
+COMMENT ON COLUMN content_nav_areas.updated_at         IS 'Record last-update timestamp (UTC).';
+
+-- ---------------- reminder_time_slots ----------------
+COMMENT ON TABLE  reminder_time_slots            IS 'Preset reminder times shown in reminder settings.';
+COMMENT ON COLUMN reminder_time_slots.label      IS 'Formatted display label (HH:MM).';
+COMMENT ON COLUMN reminder_time_slots.h          IS 'Hour component (0-23).';
+COMMENT ON COLUMN reminder_time_slots.m          IS 'Minute component (0-59).';
+COMMENT ON COLUMN reminder_time_slots.order_index IS 'Display order in the selector.';
+COMMENT ON COLUMN reminder_time_slots.created_at IS 'Record creation timestamp (UTC).';
+COMMENT ON COLUMN reminder_time_slots.updated_at IS 'Record last-update timestamp (UTC).';
+
+-- ---------------- recent_searches ----------------
+COMMENT ON TABLE  recent_searches            IS 'Recent search terms keyed by user.';
+COMMENT ON COLUMN recent_searches.user_id    IS 'Owner of the search term (FK → users).';
+COMMENT ON COLUMN recent_searches.term       IS 'Recent search query string.';
+COMMENT ON COLUMN recent_searches.searched_at IS 'Timestamp of the most recent search for this term.';
+COMMENT ON COLUMN recent_searches.created_at IS 'Record creation timestamp (UTC).';
+COMMENT ON COLUMN recent_searches.updated_at IS 'Record last-update timestamp (UTC).';
+
+-- ---------------- popular_topics ----------------
+COMMENT ON TABLE  popular_topics            IS 'Popular topic chips shown in search/discovery surfaces.';
+COMMENT ON COLUMN popular_topics.id         IS 'Stable topic identifier.';
+COMMENT ON COLUMN popular_topics.title      IS 'Topic title.';
+COMMENT ON COLUMN popular_topics.subtitle   IS 'Optional helper description.';
+COMMENT ON COLUMN popular_topics.order_index IS 'Display order in topic lists.';
+COMMENT ON COLUMN popular_topics.created_at IS 'Record creation timestamp (UTC).';
+COMMENT ON COLUMN popular_topics.updated_at IS 'Record last-update timestamp (UTC).';
+
+-- ---------------- content_screen_mock ----------------
+COMMENT ON TABLE  content_screen_mock           IS 'JSON payload backing mock-only content screen extras.';
+COMMENT ON COLUMN content_screen_mock.id        IS 'Singleton row key (always 1).';
+COMMENT ON COLUMN content_screen_mock.payload   IS 'JSON object mirroring `content_screen_mock` from mock_data.json.';
+COMMENT ON COLUMN content_screen_mock.updated_at IS 'Record last-update timestamp (UTC).';
+
+-- ---------------- meta ----------------
+COMMENT ON TABLE  meta                 IS 'Generic JSON metadata (fixture dataset metadata, versions, generators).';
+COMMENT ON COLUMN meta.key             IS 'Metadata key.';
+COMMENT ON COLUMN meta.value           IS 'Metadata JSON payload.';
+COMMENT ON COLUMN meta.updated_at      IS 'Record last-update timestamp (UTC).';
 
 
 -- =============================================================================

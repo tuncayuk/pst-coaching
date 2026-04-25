@@ -91,7 +91,7 @@ export const getReminderSettings = () =>
     ...s,
     // Compatibility aliases
     enabled: s.daily_enabled,
-    time_local: s.time_local ?? '20:00',
+    time_local: s.daily_time_local ?? s.time_local ?? '20:00',
   }));
 
 // ---------------------------------------------------------------------------
@@ -171,7 +171,6 @@ export const getWorkshopGroups = () => {
       description: group.description ?? '',
       catalog_count: countByGroup.get(group.id) ?? 0,
       featured_workshop_ids: getList(group.featured_workshop_ids as string[]),
-      delivery_modes: getList(group.delivery_modes as string[]),
       target_audiences: getList(group.target_audiences as string[]),
     }))
     .sort((a: any, b: any) => (a.order_index ?? 0) - (b.order_index ?? 0));
@@ -215,8 +214,8 @@ export const getContentItems = () => getList(getData()?._content_blocks as any[]
 /** Stub: exercise steps removed from current schema. */
 export const getExerciseSteps = (): any[] => [];
 
-/** Stub: journey days removed from current schema. */
-export const getJourneyDays = (): any[] => [];
+/** Journey-day rows used by day-level content screens. */
+export const getJourneyDays = () => getList((getData() as any)?.journey_days as any[]);
 
 // ---------------------------------------------------------------------------
 // User content / progress
@@ -368,7 +367,8 @@ export const getPaymentsForSubscription = (subscriptionId?: string) =>
 // Content entity lookups (by id = content_item_id after normalization)
 export const getJourneyById = (id?: string) => getJourneys().find(j => j.id === id);
 
-export const getJourneyDaysForJourney = (_journeyId?: string): any[] => [];
+export const getJourneyDaysForJourney = (journeyId?: string): any[] =>
+  getJourneyDays().filter((d: any) => d.journey_content_item_id === journeyId);
 
 export const getModuleById = (id?: string) => getModules().find(m => m.id === id);
 
@@ -449,9 +449,36 @@ export type MockNotification = {
   created_at: string;
 };
 
-/** FR-E17-01/02: Simulate notifications from badges, completed progress, and comments. */
+/** FR-E17-01/02: Prefer notifications table; fallback to synthesized feed if absent. */
 export const getNotificationsForUser = (userId?: string): MockNotification[] => {
   const uid = userId ?? getPrimaryUser()?.id;
+  const rawNotifications = getList((getData() as any)?.notifications as any[]).filter(
+    (n: any) => n.user_id === uid,
+  );
+  if (rawNotifications.length > 0) {
+    return rawNotifications.map((n: any) => {
+      const payload = n.payload ?? {};
+      const contentType = payload.content_type ?? (payload.type === 'achievement' ? 'badge' : payload.type);
+      const mapType = (t?: string): MockNotification['type'] => {
+        if (t === 'journey' || t === 'workshop' || t === 'reading' || t === 'social' || t === 'achievement') {
+          return t;
+        }
+        return 'social';
+      };
+      return {
+        id: n.id,
+        user_id: n.user_id,
+        type: mapType(payload.type),
+        title: n.title,
+        description: payload.description ?? n.body,
+        content_id: payload.content_id ?? payload.content_item_id,
+        content_type: contentType,
+        is_read: n.status === 'read' || !!n.read_at,
+        created_at: n.created_at,
+      };
+    });
+  }
+
   const results: MockNotification[] = [];
 
   // Achievements (user_badges)

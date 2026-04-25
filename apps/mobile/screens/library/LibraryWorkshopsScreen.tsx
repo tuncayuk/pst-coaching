@@ -1,15 +1,14 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 
-import { FilterChipBar, PActivityIndicator, PButton, PText } from '../../components';
+import { PActivityIndicator, PButton, PText } from '../../components';
 import { OfflineNotice } from '../../components/OfflineNotice';
 import { ScreenLayout } from '../../components/ScreenLayout';
 import { ScreenState, resolveScreenState } from '../../components/ScreenState';
 import { SectionCard } from '../../components/SectionCard';
 import { SkeletonBlock } from '../../components/SkeletonBlock';
 import { StateMessage } from '../../components/StateMessage';
-import { WORKSHOP_MODE_LABELS, WORKSHOP_TYPE_BG, WORKSHOP_TYPE_FG } from '../../data/constants/workshop';
 import {
   getContentProgressForUser,
   getPrimaryUser,
@@ -45,7 +44,6 @@ const WorkshopListCard = ({
 
   const emoji: string = getField(workshop, 'emoji', '🎓');
   const color: string = getField(workshop, 'color', '#F3F4F6');
-  const wType: string = getField(workshop, 'delivery_mode', 'kamp');
   const durationLabel = getDurationLabel(workshop);
   const ageTarget: string = getField(workshop, 'target_audience', '18+');
   const scheduledDate: string | null = getField(workshop, 'scheduled_date', null);
@@ -67,11 +65,6 @@ const WorkshopListCard = ({
           {getField(workshop, 'description', getField(workshop, 'theme', ''))}
         </PText>
         <View style={styles.metaRow}>
-          <View style={[styles.typeChip, { backgroundColor: WORKSHOP_TYPE_BG[wType] ?? '#F3F4F6' }]}>
-            <PText style={[styles.typeChipText, { color: WORKSHOP_TYPE_FG[wType] ?? '#111' }]}>
-              {WORKSHOP_MODE_LABELS[wType] ?? wType}
-            </PText>
-          </View>
           <PText style={styles.metaText}>⏱ {durationLabel}</PText>
           <PText style={styles.metaText}>👥 {ageTarget}</PText>
           {attendeeCount > 0 && <PText style={styles.metaText}>👤 {attendeeCount}</PText>}
@@ -128,28 +121,12 @@ const LibraryWorkshopsContent = ({ isOffline }: { isOffline?: boolean }) => {
     groupOptions.find(group => group.id === activeGroupId) ?? groupOptions[0] ?? null;
 
   const groupWorkshops = activeGroupId === 'all' ? getWorkshops() : getWorkshopsForGroup(activeGroupId);
-  const modes = useMemo(
-    () => ['tumu', ...Array.from(new Set(groupWorkshops.map(w => getField(w, 'delivery_mode', '')).filter(Boolean)))],
-    [groupWorkshops]
-  );
-  const categories = useMemo(
-    () => modes.map(mode => (mode === 'tumu' ? 'Tumu' : WORKSHOP_MODE_LABELS[mode] ?? mode)),
-    [modes]
-  );
-  const [activeCategory, setActiveCategory] = useState<string>(categories[0] ?? 'Tumu');
-
-  useEffect(() => {
-    setActiveCategory(categories[0] ?? 'Tumu');
-  }, [activeGroupId, categories]);
+  const activeCategory = 'Tumu';
 
   const progressRows = getContentProgressForUser(user?.id).filter(row => row.target_type === 'workshop');
   const progressMap = new Map(progressRows.map(row => [row.content_item_id, row]));
 
-  const activeModeKey = modes[categories.indexOf(activeCategory)] ?? modes[0] ?? 'tumu';
-  const filtered =
-    activeModeKey === 'tumu'
-      ? groupWorkshops
-      : groupWorkshops.filter(w => getField(w, 'delivery_mode', '') === activeModeKey);
+  const filtered = groupWorkshops;
   const upcomingCount = filtered.filter(w => progressMap.get(w.id)?.status === 'available').length;
 
   return (
@@ -176,21 +153,6 @@ const LibraryWorkshopsContent = ({ isOffline }: { isOffline?: boolean }) => {
         </PText>
       </SectionCard>
 
-      <SectionCard title="Tür Filtreleri">
-        <FilterChipBar
-          options={categories}
-          activeOption={activeCategory}
-          onOptionPress={setActiveCategory}
-          disabled={isOffline}
-        />
-        <PText style={styles.categoryDesc}>
-          {activeModeKey === 'kamp' && 'Uzun soluklu kamp formatli atolyeler.'}
-          {activeModeKey === 'rehber' && 'Rehber odakli atolyeler.'}
-          {activeModeKey === 'calisma_kitabi' && 'Calisma kitabi destekli atolyeler.'}
-          {activeModeKey === 'tumu' && 'Secili gruptaki tum atolye tipleri listelenir.'}
-        </PText>
-      </SectionCard>
-
       <SectionCard title={`${activeCategory} Atölyeler`} actionLabel={upcomingCount > 0 ? `${upcomingCount} Yaklaşan` : undefined}>
         {filtered.length === 0 ? (
           <StateMessage
@@ -198,7 +160,6 @@ const LibraryWorkshopsContent = ({ isOffline }: { isOffline?: boolean }) => {
             description="Diğer kategorilere göz atabilirsiniz."
             actionLabel="Tümünü Gör"
             icon="calendar-blank"
-            onAction={() => setActiveCategory(categories[0] ?? 'Tumu')}
           />
         ) : (
           filtered.map(workshop => (
@@ -336,15 +297,6 @@ function makeStyles(c: ColorTokens) {
       flexWrap: 'wrap',
       gap: spacing[1],
       marginBottom: spacing[1]
-    },
-    typeChip: {
-      paddingHorizontal: 8,
-      paddingVertical: 3,
-      borderRadius: radii.sm
-    },
-    typeChipText: {
-      fontSize: fontSizes.sm,
-      fontWeight: fontWeights.bold
     },
     metaText: {
       fontSize: fontSizes.sm,

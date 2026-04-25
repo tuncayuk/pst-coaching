@@ -1,5 +1,5 @@
 import { useNavigation, useRoute } from '@react-navigation/native';
-import React, { useEffect, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import { PActivityIndicator, PButton, PText } from '../../components';
@@ -12,10 +12,6 @@ import {
   getDiscoverWorkshopDifficultyColors,
   getDiscoverWorkshopDifficultyLabels,
   getDiscoverWorkshopSortOptions,
-  getDiscoverWorkshopTypeBackgroundColors,
-  getDiscoverWorkshopTypeForegroundColors,
-  getDiscoverWorkshopTypeLabels,
-  getDiscoverWorkshopTypeOptions,
   getWorkshopGroups,
   getWorkshops,
   getWorkshopsForGroup
@@ -39,8 +35,6 @@ const normalizeToken = (value: string) =>
     .replace(/[çÇ]/g, 'c')
     .replace(/[ğĞ]/g, 'g')
     .trim();
-
-const getMode = (w: Workshop) => getField(w, 'delivery_mode', getField(w, 'type', 'kamp'));
 
 const getDurationLabel = (w: Workshop) => {
   const preset = getField(w, 'duration_label', '');
@@ -82,9 +76,6 @@ type WorkshopCardProps = {
   item: Workshop;
   signal: CardSignal | undefined;
   groupName?: string;
-  typeBg: Record<string, string>;
-  typeFg: Record<string, string>;
-  typeLabels: Record<string, string>;
   difficultyColors: Record<string, string>;
   difficultyLabels: Record<string, string>;
   isOffline: boolean;
@@ -98,9 +89,6 @@ function WorkshopCardInner({
   item,
   signal,
   groupName,
-  typeBg,
-  typeFg,
-  typeLabels,
   difficultyColors,
   difficultyLabels,
   isOffline,
@@ -109,7 +97,6 @@ function WorkshopCardInner({
   colors: c,
   onPress
 }: WorkshopCardProps) {
-  const wType = getMode(item);
   const emoji: string = getField(item, 'emoji', '🎓');
   const color: string = getField(item, 'color', c.surfaceVariant);
   const durationLabel = getDurationLabel(item);
@@ -118,6 +105,7 @@ function WorkshopCardInner({
   const isNew = signal?.isNew ?? getField(item, 'is_upcoming', false);
   const isPopular = signal?.isPopular ?? getField(item, 'is_popular', false);
   const difficulty = getDifficulty(item);
+  const targetAudience = getField(item, 'target_audience', '18+');
   const scheduledDate: string | null = getField(item, 'scheduled_date', null);
   const desc: string = getField(item, 'description', getField(item, 'theme', ''));
 
@@ -172,10 +160,8 @@ function WorkshopCardInner({
       </View>
 
       <View style={styles.cardFooter}>
-        <View style={[styles.tag, { backgroundColor: typeBg[wType] ?? c.surfaceVariant }]}>
-          <PText style={[styles.tagText, { color: typeFg[wType] ?? c.textPrimary }]}>
-            {typeLabels[wType] ?? wType}
-          </PText>
+        <View style={[styles.tag, { backgroundColor: c.surfaceVariant }]}>
+          <PText style={[styles.tagText, { color: c.textPrimary }]}>👥 {targetAudience}</PText>
         </View>
         <View style={[styles.tag, { backgroundColor: c.surfaceVariant }]}>
           <PText style={[styles.tagText, { color: difficultyColors[difficulty] ?? c.textSecondary }]}>
@@ -218,45 +204,13 @@ const DiscoverWorkshopGroupContent = ({ groupId, isOffline }: ContentProps) => {
     []
   );
 
-  const typeOptionsRaw = getDiscoverWorkshopTypeOptions();
-  const typeOptions = useMemo(
-    () =>
-      typeOptionsRaw.length > 0
-        ? typeOptionsRaw
-        : [
-            { key: 'tumu', label: 'Tümü' },
-            { key: 'kamp', label: 'Kamp' },
-            { key: 'rehber', label: 'Rehber' },
-            { key: 'calisma_kitabi', label: 'Çalışma Kitabı' }
-          ],
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
-  );
-
-  const typeLabels = useMemo(() => getDiscoverWorkshopTypeLabels(), []);
-  const typeBg = useMemo(() => getDiscoverWorkshopTypeBackgroundColors(), []);
-  const typeFg = useMemo(() => getDiscoverWorkshopTypeForegroundColors(), []);
   const difficultyLabels = useMemo(() => getDiscoverWorkshopDifficultyLabels(), []);
   const difficultyColors = useMemo(() => getDiscoverWorkshopDifficultyColors(), []);
 
   const [selectedSort, setSelectedSort] = React.useState<string>(sortOptions[0] ?? 'Tümü');
-  const [selectedType, setSelectedType] = React.useState<string>(typeOptions[0]?.key ?? 'tumu');
 
   const activeGroup = groupId ? (getWorkshopGroups().find(g => g.id === groupId) ?? null) : null;
   const workshops = groupId ? getWorkshopsForGroup(groupId) : getWorkshops();
-
-  const availableTypeOptions = useMemo(() => {
-    if (!groupId) return typeOptions;
-    const modes = new Set(activeGroup?.delivery_modes ?? []);
-    return typeOptions.filter(opt => opt.key === 'tumu' || modes.has(opt.key));
-  }, [activeGroup, groupId, typeOptions]);
-
-  const showTypeFilter = availableTypeOptions.length > 2;
-
-  useEffect(() => {
-    const valid = availableTypeOptions.some(o => o.key === selectedType);
-    if (!valid) setSelectedType(availableTypeOptions[0]?.key ?? 'tumu');
-  }, [availableTypeOptions, selectedType]);
 
   const workshopSignals = useMemo(() => {
     const featuredIds = new Set(activeGroup?.featured_workshop_ids ?? []);
@@ -302,7 +256,7 @@ const DiscoverWorkshopGroupContent = ({ groupId, isOffline }: ContentProps) => {
 
   const filtered = useMemo(() => {
     const sortKey = normalizeToken(selectedSort);
-    let list = workshops.filter(w => selectedType === 'tumu' || getMode(w) === selectedType);
+    let list = workshops;
     if (sortKey === 'onerilen') list = list.filter(w => workshopSignals.get(w.id)?.isRecommended);
     if (sortKey === 'yeni') list = list.filter(w => workshopSignals.get(w.id)?.isNew);
     if (sortKey === 'populer') {
@@ -317,7 +271,7 @@ const DiscoverWorkshopGroupContent = ({ groupId, isOffline }: ContentProps) => {
       });
     }
     return list;
-  }, [selectedSort, selectedType, workshopSignals, workshops]);
+  }, [selectedSort, workshopSignals, workshops]);
 
   const chipProps = (active: boolean, isSecondary = false) => ({
     mode: (active ? 'contained' : 'outlined') as 'contained' | 'outlined',
@@ -345,26 +299,6 @@ const DiscoverWorkshopGroupContent = ({ groupId, isOffline }: ContentProps) => {
         ))}
       </ScrollView>
 
-      {/* Type filter — only when multiple delivery types exist */}
-      {showTypeFilter && (
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.chipsRow}>
-          {availableTypeOptions.map(opt => (
-            <PButton
-              key={opt.key}
-              compact
-              disabled={isOffline}
-              style={styles.chip}
-              contentStyle={styles.chipContent}
-              labelStyle={styles.chipLabel}
-              onPress={() => setSelectedType(opt.key)}
-              {...chipProps(selectedType === opt.key)}
-            >
-              {opt.label}
-            </PButton>
-          ))}
-        </ScrollView>
-      )}
-
       {/* Result count */}
       <PText style={styles.resultCount}>{filtered.length} atölye</PText>
 
@@ -377,7 +311,6 @@ const DiscoverWorkshopGroupContent = ({ groupId, isOffline }: ContentProps) => {
           icon="filter-remove-outline"
           onAction={() => {
             setSelectedSort(sortOptions[0] ?? 'Tümü');
-            setSelectedType(typeOptions[0]?.key ?? 'tumu');
           }}
         />
       ) : (
@@ -387,9 +320,6 @@ const DiscoverWorkshopGroupContent = ({ groupId, isOffline }: ContentProps) => {
             item={item}
             signal={workshopSignals.get(item.id)}
             groupName={activeGroup?.title}
-            typeBg={typeBg}
-            typeFg={typeFg}
-            typeLabels={typeLabels}
             difficultyColors={difficultyColors}
             difficultyLabels={difficultyLabels}
             isOffline={isOffline ?? false}
