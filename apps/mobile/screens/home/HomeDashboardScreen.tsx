@@ -26,10 +26,10 @@ import { StateMessage } from '../../components/StateMessage';
 import {
   getAchievements,
   getActivitiesForUser,
-  getContentAreas,
   getContentProgressForUser,
   getContentSources,
   getEbooks,
+  getHomeDashboardContentAreas,
   getHomeStatsForUser,
   getJourneyById,
   getJourneys,
@@ -80,7 +80,7 @@ const HomeReadyContent = ({ isOffline }: { isOffline?: boolean }) => {
   const navigation = useNavigation<any>();
   const user = getPrimaryUser();
   const displayName = user?.email ? user.email.split('@')[0] : 'Ahmet';
-  const contentAreas = getContentAreas();
+  const contentAreas = getHomeDashboardContentAreas();
   const contentAreaCounts = [getJourneys().length, getWorkshops().length, getEbooks().length, getModules().length];
   const progressItems = getContentProgressForUser(user?.id);
   const unreadCount = getNotificationsForUser(user?.id).filter(n => !n.is_read).length;

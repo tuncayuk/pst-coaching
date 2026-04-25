@@ -3359,7 +3359,11 @@
       "suffix": "program",
       "description": "Gunluk adimlarla buyume",
       "accentColor": "#00B4D8",
-      "bg": "#E0F7FA"
+      "bg": "#E0F7FA",
+      "requiresSubscription": false,
+      "showInDashboard": true,
+      "showInHomeNav": true,
+      "order_index": 1
     },
     {
       "label": "Atolyeler",
@@ -3368,7 +3372,11 @@
       "suffix": "atolye",
       "description": "Odakli pratik seanslar",
       "accentColor": "#7C3AED",
-      "bg": "#EDE9FE"
+      "bg": "#EDE9FE",
+      "requiresSubscription": false,
+      "showInDashboard": true,
+      "showInHomeNav": true,
+      "order_index": 2
     },
     {
       "label": "e-Kitaplar",
@@ -3377,7 +3385,11 @@
       "suffix": "kitap",
       "description": "Derinlemesine okuma",
       "accentColor": "#F59E0B",
-      "bg": "#FEF3C7"
+      "bg": "#FEF3C7",
+      "requiresSubscription": false,
+      "showInDashboard": true,
+      "showInHomeNav": true,
+      "order_index": 3
     },
     {
       "label": "Moduller",
@@ -3386,41 +3398,24 @@
       "suffix": "modul",
       "description": "Kisisel gelisim modulleri",
       "accentColor": "#10B981",
-      "bg": "#D1FAE5"
-    }
-  ],
-  "content_nav_areas": [
-    {
-      "label": "Yolculuklar",
-      "description": "Gunluk adimlarla buyume",
-      "accentColor": "#00B4D8",
-      "bg": "#E0F7FA",
-      "route": "DiscoverJourneys",
-      "requiresSubscription": false
-    },
-    {
-      "label": "Atolyeler",
-      "description": "Odakli pratik seanslar",
-      "accentColor": "#7C3AED",
-      "bg": "#EDE9FE",
-      "route": "DiscoverWorkshops",
-      "requiresSubscription": false
-    },
-    {
-      "label": "e-Kitaplar",
-      "description": "Derinlemesine okuma",
-      "accentColor": "#F59E0B",
-      "bg": "#FEF3C7",
-      "route": "DiscoverEbooks",
-      "requiresSubscription": false
+      "bg": "#D1FAE5",
+      "requiresSubscription": false,
+      "showInDashboard": true,
+      "showInHomeNav": false,
+      "order_index": 4
     },
     {
       "label": "Kocluk Okulu",
+      "icon": "view-grid-outline",
+      "route": "DiscoverCatalog",
+      "suffix": "katalog",
       "description": "Sertifika programlari",
       "accentColor": "#10B981",
       "bg": "#D1FAE5",
-      "route": "DiscoverCatalog",
-      "requiresSubscription": true
+      "requiresSubscription": true,
+      "showInDashboard": false,
+      "showInHomeNav": true,
+      "order_index": 5
     }
   ],
   "home_stats": [

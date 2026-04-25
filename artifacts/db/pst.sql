@@ -368,31 +368,22 @@ CREATE INDEX idx_content_assets_asset_type      ON content_assets (asset_type);
 
 -- =============================================================================
 -- SECTION 3A — MOBILE READ MODELS — CONTENT AREAS
--- FIX-2: Moved content_areas and content_nav_areas before content_products
+-- FIX-2: Moved content_areas before content_products
 -- FIX-14: Renamed camelCase columns (accentColor → accent_color, requiresSubscription → requires_subscription)
 -- =============================================================================
 
 CREATE TABLE content_areas (
-    id              UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
-    route           TEXT        NOT NULL UNIQUE,
-    label           TEXT        NOT NULL,
-    description     TEXT        NOT NULL DEFAULT '',
-    icon            TEXT        NOT NULL,
-    suffix          TEXT        NOT NULL DEFAULT '',
-    accent_color    TEXT        NOT NULL,
-    bg              TEXT        NOT NULL,
-    order_index     SMALLINT    NOT NULL DEFAULT 0,
-    created_at      TIMESTAMPTZ NOT NULL DEFAULT now(),
-    updated_at      TIMESTAMPTZ NOT NULL DEFAULT now()
-);
-
-CREATE TABLE content_nav_areas (
-    route                   TEXT        PRIMARY KEY,
+    id                      UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
+    route                   TEXT        NOT NULL UNIQUE,
     label                   TEXT        NOT NULL,
     description             TEXT        NOT NULL DEFAULT '',
+    icon                    TEXT        NOT NULL,
+    suffix                  TEXT        NOT NULL DEFAULT '',
     accent_color            TEXT        NOT NULL,
     bg                      TEXT        NOT NULL,
     requires_subscription   BOOLEAN     NOT NULL DEFAULT false,
+    show_in_dashboard       BOOLEAN     NOT NULL DEFAULT false,
+    show_in_home_nav        BOOLEAN     NOT NULL DEFAULT false,
     order_index             SMALLINT    NOT NULL DEFAULT 0,
     created_at              TIMESTAMPTZ NOT NULL DEFAULT now(),
     updated_at              TIMESTAMPTZ NOT NULL DEFAULT now()
@@ -1045,7 +1036,7 @@ CREATE INDEX idx_notifications_created_at       ON notifications (created_at DES
 
 -- =============================================================================
 -- SECTION 13 — MOBILE READ MODELS (MOCK-DATA SYNC)
--- Note: content_areas and content_nav_areas moved to SECTION 3A (FIX-2)
+-- Note: content_areas moved to SECTION 3A (FIX-2)
 -- =============================================================================
 
 CREATE TABLE reminder_time_slots (

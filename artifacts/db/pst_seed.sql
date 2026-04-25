@@ -590,17 +590,24 @@ INSERT INTO notifications (id, user_id, channel, status, title, body, payload, r
 -- SECTION 37 — HOME READ MODELS (SYNCED FROM MOCK)
 -- =============================================================================
 
-INSERT INTO content_areas (route, label, description, icon, suffix, "accentColor", bg, order_index) VALUES
-    ('DiscoverJourneys', 'Yolculuklar', 'Gunluk adimlarla buyume', 'map-marker-path', 'program', '#00B4D8', '#E0F7FA', 1),
-    ('DiscoverWorkshops', 'Atolyeler', 'Odakli pratik seanslar', 'school-outline', 'atolye', '#7C3AED', '#EDE9FE', 2),
-    ('DiscoverEbooks', 'e-Kitaplar', 'Derinlemesine okuma', 'book-open-variant', 'kitap', '#F59E0B', '#FEF3C7', 3),
-    ('DiscoverModules', 'Moduller', 'Kisisel gelisim modulleri', 'human-male-board', 'modul', '#10B981', '#D1FAE5', 4);
-
-INSERT INTO content_nav_areas (route, label, description, "accentColor", bg, "requiresSubscription", order_index) VALUES
-    ('DiscoverJourneys', 'Yolculuklar', 'Gunluk adimlarla buyume', '#00B4D8', '#E0F7FA', false, 1),
-    ('DiscoverWorkshops', 'Atolyeler', 'Odakli pratik seanslar', '#7C3AED', '#EDE9FE', false, 2),
-    ('DiscoverEbooks', 'e-Kitaplar', 'Derinlemesine okuma', '#F59E0B', '#FEF3C7', false, 3),
-    ('DiscoverCatalog', 'Kocluk Okulu', 'Sertifika programlari', '#10B981', '#D1FAE5', true, 4);
+INSERT INTO content_areas (
+    route,
+    label,
+    description,
+    icon,
+    suffix,
+    accent_color,
+    bg,
+    requires_subscription,
+    show_in_dashboard,
+    show_in_home_nav,
+    order_index
+) VALUES
+    ('DiscoverJourneys', 'Yolculuklar', 'Gunluk adimlarla buyume', 'map-marker-path', 'program', '#00B4D8', '#E0F7FA', false, true, true, 1),
+    ('DiscoverWorkshops', 'Atolyeler', 'Odakli pratik seanslar', 'school-outline', 'atolye', '#7C3AED', '#EDE9FE', false, true, true, 2),
+    ('DiscoverEbooks', 'e-Kitaplar', 'Derinlemesine okuma', 'book-open-variant', 'kitap', '#F59E0B', '#FEF3C7', false, true, true, 3),
+    ('DiscoverModules', 'Moduller', 'Kisisel gelisim modulleri', 'human-male-board', 'modul', '#10B981', '#D1FAE5', false, true, false, 4),
+    ('DiscoverCatalog', 'Kocluk Okulu', 'Sertifika programlari', 'view-grid-outline', 'katalog', '#10B981', '#D1FAE5', true, false, true, 5);
 
 INSERT INTO reminder_time_slots (label, h, m, order_index) VALUES
     ('07:00', 7, 0, 1),

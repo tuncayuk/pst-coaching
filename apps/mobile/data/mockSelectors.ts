@@ -569,9 +569,21 @@ export const getReminderSettingsForUser = (userId?: string) => {
 // Home dashboard helpers
 // ---------------------------------------------------------------------------
 
-export const getContentAreas = () => getList(getData()?.content_areas as any[]);
+const normalizeContentArea = (area: any) => ({
+  ...area,
+  accentColor: area.accentColor ?? area.accent_color,
+  requiresSubscription: area.requiresSubscription ?? area.requires_subscription ?? false,
+  showInDashboard: area.showInDashboard ?? area.show_in_dashboard ?? false,
+  showInHomeNav: area.showInHomeNav ?? area.show_in_home_nav ?? false
+});
 
-export const getContentNavAreas = () => getList(getData()?.content_nav_areas as any[]);
+export const getContentAreas = () => getList(getData()?.content_areas as any[]).map(normalizeContentArea);
+
+export const getContentNavAreas = () =>
+  getContentAreas().filter((area: any) => area.showInHomeNav).sort((a: any, b: any) => (a.order_index ?? 0) - (b.order_index ?? 0));
+
+export const getHomeDashboardContentAreas = () =>
+  getContentAreas().filter((area: any) => area.showInDashboard).sort((a: any, b: any) => (a.order_index ?? 0) - (b.order_index ?? 0));
 
 export const getReminderTimeSlots = () =>
   getList(getData()?.reminder_time_slots as any[]).map((slot: any) => ({
