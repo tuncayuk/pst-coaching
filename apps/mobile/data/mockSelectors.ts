@@ -188,12 +188,10 @@ export const getWorkshopGroups = () => {
   return getRawWorkshopGroups()
     .map((group: any) => ({
       ...group,
-      id: group.code ?? group.id,
       title: group.title ?? group.name ?? 'Atolye Grubu',
       description: group.description ?? '',
-      catalog_count: countByGroup.get(group.code ?? group.id) ?? 0,
-      featured_workshop_ids:
-        featuredByGroup.get(group.code ?? group.id) ?? getList(group.featured_workshop_ids as string[]),
+      catalog_count: countByGroup.get(group.id) ?? 0,
+      featured_workshop_ids: featuredByGroup.get(group.id) ?? getList(group.featured_workshop_ids as string[]),
       target_audiences: getList(group.target_audiences as string[])
     }))
     .sort((a: any, b: any) => (a.order_index ?? 0) - (b.order_index ?? 0));
