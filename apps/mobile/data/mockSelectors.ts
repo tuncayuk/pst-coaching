@@ -16,6 +16,16 @@ const getRawModules = () => getList(getData()?.modules);
 const getRawWorkshops = () => getList(getData()?.workshops);
 const getRawWorkshopGroups = () => getList((getData() as any)?.workshop_groups as any[]);
 const getRawEbooks = () => getList(getData()?.ebooks);
+const getRawContentSeries = () => getList((getData() as any)?.content_series as any[]);
+
+const inferEntityTypeByContentItemId = (contentItemId?: string) => {
+  if (!contentItemId) return 'content';
+  if (getRawJourneys().some((j: any) => j.content_item_id === contentItemId)) return 'journey';
+  if (getRawModules().some((m: any) => m.content_item_id === contentItemId)) return 'module';
+  if (getRawWorkshops().some((w: any) => w.content_item_id === contentItemId)) return 'workshop';
+  if (getRawEbooks().some((e: any) => e.content_item_id === contentItemId)) return 'ebook';
+  return 'content';
+};
 
 // ---------------------------------------------------------------------------
 // Entity normalization helpers
@@ -28,25 +38,25 @@ type Normalized<T extends object> = T & { id: string; title: string };
 const normalizeJourney = (j: any): Normalized<typeof j> => ({
   ...j,
   id: j.content_item_id,
-  title: j.title ?? `Yolculuk (${j.duration_days} gun, ${j.level})`,
+  title: j.title ?? `Yolculuk (${j.duration_days} gun, ${j.level})`
 });
 
 const normalizeModule = (m: any): Normalized<typeof m> => ({
   ...m,
   id: m.content_item_id,
-  title: m.title ?? m.description ?? 'Modul',
+  title: m.title ?? m.description ?? 'Modul'
 });
 
 const normalizeWorkshop = (w: any): Normalized<typeof w> => ({
   ...w,
   id: w.content_item_id,
-  title: w.title ?? w.theme ?? 'Atolye',
+  title: w.title ?? w.theme ?? 'Atolye'
 });
 
 const normalizeEbook = (e: any): Normalized<typeof e> => ({
   ...e,
   id: e.content_item_id,
-  title: e.title ?? e.category ?? 'e-Kitap',
+  title: e.title ?? e.category ?? 'e-Kitap'
 });
 
 // ---------------------------------------------------------------------------
@@ -59,12 +69,11 @@ export const getUsers = () =>
     // Compatibility aliases
     language: u.language_code,
     phone: u.phone ?? null,
-    status: u.status ?? 'active',
+    status: u.status ?? 'active'
   }));
 export const getPrimaryUser = () => getUsers()[0];
 export const getUserSessions = () => getList(getData()?.user_sessions as any[]);
-export const getSessionsForUser = (userId?: string) =>
-  getUserSessions().filter((s: any) => s.user_id === userId);
+export const getSessionsForUser = (userId?: string) => getUserSessions().filter((s: any) => s.user_id === userId);
 
 // ---------------------------------------------------------------------------
 // Settings
@@ -74,7 +83,7 @@ export const getAccessibilitySettings = () =>
   getList(getData()?.accessibility_settings).map((s: any) => ({
     ...s,
     // Compatibility aliases
-    text_size: s.text_scale,
+    text_size: s.text_scale
   }));
 
 export const getReadingSettings = () =>
@@ -83,7 +92,7 @@ export const getReadingSettings = () =>
     // Compatibility aliases
     font_size: Math.round(s.font_scale * 16),
     background: s.background_mode,
-    line_height: String(s.line_spacing),
+    line_height: String(s.line_spacing)
   }));
 
 export const getReminderSettings = () =>
@@ -91,7 +100,7 @@ export const getReminderSettings = () =>
     ...s,
     // Compatibility aliases
     enabled: s.daily_enabled,
-    time_local: s.daily_time_local ?? s.time_local ?? '20:00',
+    time_local: s.daily_time_local ?? s.time_local ?? '20:00'
   }));
 
 // ---------------------------------------------------------------------------
@@ -102,7 +111,7 @@ export const getSubscriptionPlans = () =>
   getList(getData()?.subscription_plans).map((p: any) => ({
     ...p,
     // Compatibility alias
-    name: p.name ?? p.plan_type,
+    name: p.name ?? p.plan_type
   }));
 export const getSubscriptions = () => getList(getData()?.subscriptions);
 
@@ -118,8 +127,13 @@ export const getInvitations = (): any[] => [];
  */
 const ADDON_CATALOG = [
   { id: 'addon-coaching-school', code: 'coaching_school', addon_type: 'coaching_school', name: 'Kocluk Okulu Erisimi' },
-  { id: 'addon-ebook-unlimited', code: 'ebook_unlimited', addon_type: 'ebook_unlimited', name: 'Sonsuz e-Kitap Erisimi' },
-  { id: 'addon-group-workshop', code: 'group_workshop', addon_type: 'group_workshop', name: 'Grup Atolyesi' },
+  {
+    id: 'addon-ebook-unlimited',
+    code: 'ebook_unlimited',
+    addon_type: 'ebook_unlimited',
+    name: 'Sonsuz e-Kitap Erisimi'
+  },
+  { id: 'addon-group-workshop', code: 'group_workshop', addon_type: 'group_workshop', name: 'Grup Atolyesi' }
 ];
 export const getAddOns = () => ADDON_CATALOG;
 
@@ -127,7 +141,7 @@ export const getSeats = () =>
   getList(getData()?.seats).map((s: any) => ({
     ...s,
     // Compatibility alias
-    user_id: s.user_id ?? s.assigned_user_id,
+    user_id: s.user_id ?? s.assigned_user_id
   }));
 
 /**
@@ -141,7 +155,7 @@ export const getPaymentTransactions = () =>
     status: r.verification_status ?? 'completed',
     purchased_at: r.verified_at ?? r.created_at,
     amount: r.amount ?? null,
-    currency: r.currency ?? null,
+    currency: r.currency ?? null
   }));
 
 // ---------------------------------------------------------------------------
@@ -154,7 +168,7 @@ export const getPackages = () =>
   getList(getData()?.packages).map((p: any) => ({
     ...p,
     // Compatibility alias
-    description: p.description ?? null,
+    description: p.description ?? null
   }));
 export const getWorkshops = () => getRawWorkshops().map(normalizeWorkshop);
 export const getWorkshopGroups = () => {
@@ -171,7 +185,7 @@ export const getWorkshopGroups = () => {
       description: group.description ?? '',
       catalog_count: countByGroup.get(group.id) ?? 0,
       featured_workshop_ids: getList(group.featured_workshop_ids as string[]),
-      target_audiences: getList(group.target_audiences as string[]),
+      target_audiences: getList(group.target_audiences as string[])
     }))
     .sort((a: any, b: any) => (a.order_index ?? 0) - (b.order_index ?? 0));
 };
@@ -181,29 +195,45 @@ export const getEbookChapters = () =>
     ...ch,
     // Compatibility aliases
     page_start: ch.page_start ?? null,
-    page_end: ch.page_end ?? null,
+    page_end: ch.page_end ?? null
   }));
 export const getContentAssets = () => getList(getData()?.content_assets as any[]);
 
 /**
  * Content items registry — abstract parent record for every top-level piece of
  * content (journeys, modules, workshops, ebooks). Each row maps an `id` (=
- * content_item_id on child tables) to its `entity_type` and `source_id`.
+ * content_item_id on child tables) to `source_id` and compatibility metadata.
  */
-export const getContentItemsRegistry = () => getList((getData() as any)?.content_items as any[]);
-export const getContentItemRegistryById = (id: string) =>
-  getContentItemsRegistry().find((ci: any) => ci.id === id);
+export const getContentItemsRegistry = () =>
+  getList((getData() as any)?.content_items as any[]).map((ci: any) => ({
+    ...ci,
+    // Compatibility: infer entity_type when mock fixture omits it.
+    entity_type: ci.entity_type ?? inferEntityTypeByContentItemId(ci.id)
+  }));
+export const getContentItemRegistryById = (id: string) => getContentItemsRegistry().find((ci: any) => ci.id === id);
 
 /**
  * Content sources — the 4 top-level catalogs (Kesifler Yolculugu, Duygular
  * Evreni, Kitaplar, Atolyeler). Sorted by order_index.
  */
 export const getContentSources = () =>
-  getList((getData() as any)?.content_sources as any[]).sort(
-    (a: any, b: any) => (a.order_index ?? 0) - (b.order_index ?? 0)
-  );
-export const getContentSourceById = (id: string) =>
-  getContentSources().find((s: any) => s.id === id);
+  getList((getData() as any)?.content_sources as any[])
+    .map((source: any) => ({
+      ...source
+    }))
+    .sort((a: any, b: any) => (a.order_index ?? 0) - (b.order_index ?? 0));
+
+export const getContentSourceById = (id: string) => getContentSources().find((s: any) => s.id === id);
+
+export const getContentSeries = () =>
+  getRawContentSeries().sort((a: any, b: any) => {
+    const sourceCmp = String(a.source_id ?? '').localeCompare(String(b.source_id ?? ''));
+    if (sourceCmp !== 0) return sourceCmp;
+    return (a.order_index ?? 0) - (b.order_index ?? 0);
+  });
+export const getContentSeriesById = (id: string) => getContentSeries().find((series: any) => series.id === id);
+export const getContentSeriesForSource = (sourceId?: string) =>
+  getContentSeries().filter((series: any) => series.source_id === sourceId);
 
 /**
  * Content blocks (_content_blocks) – sub-items within journeys, packages,
@@ -231,7 +261,7 @@ export const getContentProgress = () =>
     ...p,
     content_id: p.content_item_id,
     // `content_type` alias for `target_type` (old progress schema)
-    content_type: p.target_type ?? p.content_type,
+    content_type: p.target_type ?? p.content_type
   }));
 
 /**
@@ -242,7 +272,7 @@ export const getContentProgress = () =>
 export const getComments = () =>
   getList(getData()?.comment_submissions as any[]).map((c: any) => ({
     ...c,
-    content_item_id: c.target_content_item_id ?? c.content_item_id,
+    content_item_id: c.target_content_item_id ?? c.content_item_id
   }));
 
 /**
@@ -252,7 +282,7 @@ export const getHighlights = () =>
   getList(getData()?.highlights).map((h: any) => ({
     ...h,
     source_id: h.content_item_id,
-    source_type: 'ebook',
+    source_type: 'ebook'
   }));
 
 /**
@@ -262,7 +292,7 @@ export const getNotes = () =>
   getList(getData()?.notes).map((n: any) => ({
     ...n,
     source_id: n.content_item_id,
-    text: n.body,
+    text: n.body
   }));
 
 /**
@@ -274,7 +304,7 @@ export const getFavorites = () =>
     ...f,
     // Compatibility: derive a single content_id / item_id from typed FKs
     content_id: f.content_item_ref_id ?? f.highlight_ref_id ?? f.note_ref_id ?? null,
-    item_id: f.content_item_ref_id ?? f.highlight_ref_id ?? f.note_ref_id ?? null,
+    item_id: f.content_item_ref_id ?? f.highlight_ref_id ?? f.note_ref_id ?? null
   }));
 
 export const getCollections = () => getList(getData()?.collections);
@@ -288,7 +318,7 @@ export const getEbookProgress = () =>
   getList(getData()?.reading_positions as any[]).map((p: any) => ({
     ...p,
     ebook_id: p.content_item_id,
-    percent_complete: p.progress_percent,
+    percent_complete: p.progress_percent
   }));
 
 export const getDownloads = () => {
@@ -308,7 +338,7 @@ export const getDownloads = () => {
       content_id: d.content_item_id,
       content_type,
       status: d.download_status,
-      size_bytes: d.byte_size,
+      size_bytes: d.byte_size
     };
   });
 };
@@ -323,7 +353,7 @@ export const getAchievements = () =>
     // Compatibility aliases for screens expecting old achievement shape
     source_id: b.badge_definition_id,
     source_type: b.badge_definition?.category ?? 'badge',
-    issued_at: b.awarded_at,
+    issued_at: b.awarded_at
   }));
 
 export const getBadgeDefinitions = () => getList(getData()?.badge_definitions as any[]);
@@ -337,11 +367,9 @@ export const getCoachAssignments = () => getList(getData()?.coach_assignments as
 // Filtered / relational helpers
 // ---------------------------------------------------------------------------
 
-export const getSubscriptionForUser = (userId?: string) =>
-  getSubscriptions().find(s => s.owner_user_id === userId);
+export const getSubscriptionForUser = (userId?: string) => getSubscriptions().find(s => s.owner_user_id === userId);
 
-export const getPlanForSubscription = (planId?: string) =>
-  getSubscriptionPlans().find(p => p.id === planId);
+export const getPlanForSubscription = (planId?: string) => getSubscriptionPlans().find(p => p.id === planId);
 
 /**
  * Returns catalog add-on entries that are active for the given subscription.
@@ -351,7 +379,7 @@ export const getAddOnsForSubscription = (subscriptionId?: string) => {
   const activeAddonTypes = new Set(
     getSubscriptionAddOns()
       .filter((item: any) => item.subscription_id === subscriptionId)
-      .map((item: any) => item.addon_type),
+      .map((item: any) => item.addon_type)
   );
   return ADDON_CATALOG.filter(addon => activeAddonTypes.has(addon.addon_type));
 };
@@ -392,30 +420,21 @@ export const getEbookChaptersForEbook = (ebookId?: string) =>
 
 /** Content blocks by parent type / id. */
 export const getContentItemsForParent = (parentType: string, parentId?: string) =>
-  getContentItems().filter(
-    (item: any) => item.parent_type === parentType && item.parent_id === parentId,
-  );
+  getContentItems().filter((item: any) => item.parent_type === parentType && item.parent_id === parentId);
 
-export const getContentProgressForUser = (userId?: string) =>
-  getContentProgress().filter(p => p.user_id === userId);
+export const getContentProgressForUser = (userId?: string) => getContentProgress().filter(p => p.user_id === userId);
 
-export const getEbookProgressForUser = (userId?: string) =>
-  getEbookProgress().filter((p: any) => p.user_id === userId);
+export const getEbookProgressForUser = (userId?: string) => getEbookProgress().filter((p: any) => p.user_id === userId);
 
-export const getHighlightsForUser = (userId?: string) =>
-  getHighlights().filter(h => h.user_id === userId);
+export const getHighlightsForUser = (userId?: string) => getHighlights().filter(h => h.user_id === userId);
 
-export const getNotesForUser = (userId?: string) =>
-  getNotes().filter(n => n.user_id === userId);
+export const getNotesForUser = (userId?: string) => getNotes().filter(n => n.user_id === userId);
 
-export const getFavoritesForUser = (userId?: string) =>
-  getFavorites().filter((f: any) => f.user_id === userId);
+export const getFavoritesForUser = (userId?: string) => getFavorites().filter((f: any) => f.user_id === userId);
 
-export const getCollectionsForUser = (userId?: string) =>
-  getCollections().filter(c => c.user_id === userId);
+export const getCollectionsForUser = (userId?: string) => getCollections().filter(c => c.user_id === userId);
 
-export const getDownloadsForUser = (userId?: string) =>
-  getDownloads().filter((d: any) => d.user_id === userId);
+export const getDownloadsForUser = (userId?: string) => getDownloads().filter((d: any) => d.user_id === userId);
 
 // ---------------------------------------------------------------------------
 // Coach helpers
@@ -452,9 +471,7 @@ export type MockNotification = {
 /** FR-E17-01/02: Prefer notifications table; fallback to synthesized feed if absent. */
 export const getNotificationsForUser = (userId?: string): MockNotification[] => {
   const uid = userId ?? getPrimaryUser()?.id;
-  const rawNotifications = getList((getData() as any)?.notifications as any[]).filter(
-    (n: any) => n.user_id === uid,
-  );
+  const rawNotifications = getList((getData() as any)?.notifications as any[]).filter((n: any) => n.user_id === uid);
   if (rawNotifications.length > 0) {
     return rawNotifications.map((n: any) => {
       const payload = n.payload ?? {};
@@ -474,7 +491,7 @@ export const getNotificationsForUser = (userId?: string): MockNotification[] => 
         content_id: payload.content_id ?? payload.content_item_id,
         content_type: contentType,
         is_read: n.status === 'read' || !!n.read_at,
-        created_at: n.created_at,
+        created_at: n.created_at
       };
     });
   }
@@ -494,7 +511,7 @@ export const getNotificationsForUser = (userId?: string): MockNotification[] => 
         content_id: a.badge_definition_id,
         content_type: 'badge',
         is_read: false,
-        created_at: a.awarded_at ?? a.created_at,
+        created_at: a.awarded_at ?? a.created_at
       });
     });
 
@@ -511,7 +528,7 @@ export const getNotificationsForUser = (userId?: string): MockNotification[] => 
         content_id: p.content_item_id,
         content_type: p.target_type,
         is_read: false,
-        created_at: (p as any).completed_at ?? (p as any).started_at,
+        created_at: (p as any).completed_at ?? (p as any).started_at
       });
     });
 
@@ -528,7 +545,7 @@ export const getNotificationsForUser = (userId?: string): MockNotification[] => 
         content_id: c.target_content_item_id ?? c.content_item_id,
         content_type: c.target_type ?? 'content_item',
         is_read: false,
-        created_at: c.submitted_at ?? c.updated_at,
+        created_at: c.submitted_at ?? c.updated_at
       });
     });
 
@@ -564,7 +581,7 @@ export const getAddOnCatalogWithStatusForSubscription = (subscriptionId?: string
   const activeTypes = new Set(
     getSubscriptionAddOns()
       .filter((item: any) => item.subscription_id === subscriptionId)
-      .map((item: any) => item.addon_type),
+      .map((item: any) => item.addon_type)
   );
   return ADDON_CATALOG.map(addon => ({ ...addon, active: activeTypes.has(addon.addon_type) }));
 };
@@ -583,11 +600,17 @@ function relativeTime(dateStr?: string | null): string {
 }
 
 export const getActivitiesForUser = (
-  userId?: string,
+  userId?: string
 ): Array<{ title: string; time: string; icon: string; tone: 'success' | 'warning' | 'error' | 'primary' }> => {
   const uid = userId ?? getPrimaryUser()?.id;
 
-  const raw: Array<{ sortKey: number; title: string; time: string; icon: string; tone: 'success' | 'warning' | 'error' | 'primary' }> = [];
+  const raw: Array<{
+    sortKey: number;
+    title: string;
+    time: string;
+    icon: string;
+    tone: 'success' | 'warning' | 'error' | 'primary';
+  }> = [];
 
   getAchievements()
     .filter((a: any) => a.user_id === uid)
@@ -597,7 +620,7 @@ export const getActivitiesForUser = (
         title: 'Yeni rozet kazandiniz!',
         time: relativeTime(a.awarded_at ?? a.created_at),
         icon: 'trophy-outline',
-        tone: 'warning',
+        tone: 'warning'
       });
     });
 
@@ -611,13 +634,11 @@ export const getActivitiesForUser = (
         title: `${typeLabel} tamamlandi`,
         time: relativeTime(date),
         icon: 'check-circle-outline',
-        tone: 'success',
+        tone: 'success'
       });
     });
 
-  return raw
-    .sort((a, b) => b.sortKey - a.sortKey)
-    .map(({ sortKey: _s, ...item }) => item);
+  return raw.sort((a, b) => b.sortKey - a.sortKey).map(({ sortKey: _s, ...item }) => item);
 };
 
 // ---------------------------------------------------------------------------
@@ -626,17 +647,13 @@ export const getActivitiesForUser = (
 
 const getContentScreenMock = () => (getData() as any)?.content_screen_mock ?? {};
 
-export const getCommentEmotionTags = (): string[] =>
-  getList(getContentScreenMock().comment_emotion_tags as string[]);
+export const getCommentEmotionTags = (): string[] => getList(getContentScreenMock().comment_emotion_tags as string[]);
 
-export const getReviewRatingLabels = (): string[] =>
-  getList(getContentScreenMock().review_rating_labels as string[]);
+export const getReviewRatingLabels = (): string[] => getList(getContentScreenMock().review_rating_labels as string[]);
 
-export const getPaywallPlanBenefits = (): string[] =>
-  getList(getContentScreenMock().paywall_plan_benefits as string[]);
+export const getPaywallPlanBenefits = (): string[] => getList(getContentScreenMock().paywall_plan_benefits as string[]);
 
-export const getReaderAudioSpeeds = (): string[] =>
-  getList(getContentScreenMock().reader_audio_speeds as string[]);
+export const getReaderAudioSpeeds = (): string[] => getList(getContentScreenMock().reader_audio_speeds as string[]);
 
 export const getReaderHighlightColors = () =>
   getList(
@@ -644,11 +661,10 @@ export const getReaderHighlightColors = () =>
       key: string;
       color: string;
       label: string;
-    }>,
+    }>
   );
 
-export const getReadingParagraphs = (): string[] =>
-  getList(getContentScreenMock().reading_paragraphs as string[]);
+export const getReadingParagraphs = (): string[] => getList(getContentScreenMock().reading_paragraphs as string[]);
 
 export const getExerciseFallbackSteps = () =>
   getList(
@@ -656,7 +672,7 @@ export const getExerciseFallbackSteps = () =>
       id: string;
       title: string;
       description: string;
-    }>,
+    }>
   );
 
 export const getWorkshopSectionBlocks = () =>
@@ -667,7 +683,7 @@ export const getWorkshopSectionBlocks = () =>
       text: string;
       arabic?: string;
       transliteration?: string;
-    }>,
+    }>
   );
 
 export const getWorkshopGuideSections = () =>
@@ -680,7 +696,7 @@ export const getWorkshopGuideSections = () =>
       responses: string[];
       alt: string;
       microSkill: string;
-    }>,
+    }>
   );
 
 export const getWorkshopGuideHardScenarios = () =>
@@ -688,7 +704,7 @@ export const getWorkshopGuideHardScenarios = () =>
     getContentScreenMock().workshop_guide_hard_scenarios as Array<{
       label: string;
       action: string;
-    }>,
+    }>
   );
 
 export const getWorkshopFollowUpPhases = () =>
@@ -698,7 +714,7 @@ export const getWorkshopFollowUpPhases = () =>
       label: string;
       desc: string;
       steps: string[];
-    }>,
+    }>
   );
 
 export const getWorkshopFollowUpReminderTimes = (): string[] =>
@@ -721,7 +737,7 @@ export const getWorkshopCampDays = () =>
         worksheets: string[];
         completed?: boolean;
       }>;
-    }>,
+    }>
   );
 
 const getDiscoverMock = () => getContentScreenMock().discover_mock ?? {};
@@ -734,7 +750,7 @@ export const getDiscoverAssistantIntroSteps = () =>
     getDiscoverMock().assistant_intro_steps as Array<{
       title: string;
       subtitle: string;
-    }>,
+    }>
   );
 
 export const getDiscoverAssistantGoalOptions = () =>
@@ -742,7 +758,7 @@ export const getDiscoverAssistantGoalOptions = () =>
     getDiscoverMock().assistant_question_goal_options as Array<{
       label: string;
       value: string;
-    }>,
+    }>
   );
 
 export const getDiscoverAssistantDurationOptions = () =>
@@ -750,7 +766,7 @@ export const getDiscoverAssistantDurationOptions = () =>
     getDiscoverMock().assistant_question_duration_options as Array<{
       label: string;
       value: string;
-    }>,
+    }>
   );
 
 export const getDiscoverAssistantPreferenceOptions = () =>
@@ -759,7 +775,7 @@ export const getDiscoverAssistantPreferenceOptions = () =>
       label: string;
       value: string;
       emoji: string;
-    }>,
+    }>
   );
 
 export const getDiscoverAIAssistantHistory = () =>
@@ -770,7 +786,7 @@ export const getDiscoverAIAssistantHistory = () =>
       preview: string;
       time: string;
       sourceCount: number;
-    }>,
+    }>
   );
 
 export const getDiscoverAIAssistantQuickSuggestions = (): string[] =>
@@ -785,7 +801,7 @@ export const getDiscoverAIAssistantSourceTypes = () =>
       icon: string;
       label: string;
       type: string;
-    }>,
+    }>
   );
 
 export const getDiscoverAssistantInsightPatterns = () =>
@@ -795,7 +811,7 @@ export const getDiscoverAssistantInsightPatterns = () =>
       label: string;
       count: number;
       icon: string;
-    }>,
+    }>
   );
 
 export const getDiscoverJourneySortOptions = (): string[] =>
@@ -806,23 +822,18 @@ export const getDiscoverJourneyLevelOptions = () =>
     getDiscoverMock().journeys_level_options as Array<{
       key: string;
       label: string;
-    }>,
+    }>
   );
 
-export const getDiscoverJourneyCardEmojis = (): string[] =>
-  getList(getDiscoverMock().journeys_card_emojis as string[]);
+export const getDiscoverJourneyCardEmojis = (): string[] => getList(getDiscoverMock().journeys_card_emojis as string[]);
 
-export const getDiscoverJourneyCardColors = (): string[] =>
-  getList(getDiscoverMock().journeys_card_colors as string[]);
+export const getDiscoverJourneyCardColors = (): string[] => getList(getDiscoverMock().journeys_card_colors as string[]);
 
-export const getDiscoverEbookSortOptions = (): string[] =>
-  getList(getDiscoverMock().ebooks_sort_options as string[]);
+export const getDiscoverEbookSortOptions = (): string[] => getList(getDiscoverMock().ebooks_sort_options as string[]);
 
-export const getDiscoverEbookCoverColors = (): string[] =>
-  getList(getDiscoverMock().ebooks_cover_colors as string[]);
+export const getDiscoverEbookCoverColors = (): string[] => getList(getDiscoverMock().ebooks_cover_colors as string[]);
 
-export const getDiscoverEbookCoverEmojis = (): string[] =>
-  getList(getDiscoverMock().ebooks_cover_emojis as string[]);
+export const getDiscoverEbookCoverEmojis = (): string[] => getList(getDiscoverMock().ebooks_cover_emojis as string[]);
 
 export const getDiscoverWorkshopSortOptions = (): string[] =>
   getList(getDiscoverMock().workshops_sort_options as string[]);
@@ -832,7 +843,7 @@ export const getDiscoverWorkshopTypeOptions = () =>
     getDiscoverMock().workshops_type_options as Array<{
       key: string;
       label: string;
-    }>,
+    }>
   );
 
 export const getDiscoverWorkshopTypeLabels = () =>
@@ -850,25 +861,21 @@ export const getDiscoverWorkshopDifficultyLabels = () =>
 export const getDiscoverWorkshopDifficultyColors = () =>
   (getDiscoverMock().workshops_difficulty_colors as Record<string, string>) ?? {};
 
-export const getDiscoverModuleSortOptions = (): string[] =>
-  getList(getDiscoverMock().modules_sort_options as string[]);
+export const getDiscoverModuleSortOptions = (): string[] => getList(getDiscoverMock().modules_sort_options as string[]);
 
 export const getDiscoverModuleTopicOptions = () =>
   getList(
     getDiscoverMock().modules_topic_options as Array<{
       key: string;
       label: string;
-    }>,
+    }>
   );
 
-export const getDiscoverModuleCardEmojis = (): string[] =>
-  getList(getDiscoverMock().modules_card_emojis as string[]);
+export const getDiscoverModuleCardEmojis = (): string[] => getList(getDiscoverMock().modules_card_emojis as string[]);
 
-export const getDiscoverModuleCardColors = (): string[] =>
-  getList(getDiscoverMock().modules_card_colors as string[]);
+export const getDiscoverModuleCardColors = (): string[] => getList(getDiscoverMock().modules_card_colors as string[]);
 
-export const getDiscoverModuleTopics = (): string[] =>
-  getList(getDiscoverMock().modules_topics as string[]);
+export const getDiscoverModuleTopics = (): string[] => getList(getDiscoverMock().modules_topics as string[]);
 
 export const getDiscoverCatalogTabs = () =>
   getList(
@@ -877,5 +884,5 @@ export const getDiscoverCatalogTabs = () =>
       label: string;
       emoji: string;
       route: string;
-    }>,
+    }>
   );

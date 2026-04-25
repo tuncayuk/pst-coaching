@@ -12,13 +12,6 @@ import { ColorTokens, fontSizes, fontWeights, radii, spacing, useAppTheme } from
 
 type RouteType = RouteProp<HomeStackParamList, 'HomeContentSourceDetail'>;
 
-const CONTENT_TYPE_LABELS: Record<string, string> = {
-  journey: 'Yolculuklar',
-  module: 'Paketler',
-  ebook: 'E-Kitaplar',
-  workshop: 'Atolyeler',
-};
-
 const HomeContentSourceDetailContent = () => {
   const { colors: c } = useAppTheme();
   const styles = useMemo(() => makeStyles(c), [c]);
@@ -40,8 +33,6 @@ const HomeContentSourceDetailContent = () => {
     );
   }
 
-  const catalogLabel = CONTENT_TYPE_LABELS[source.content_type] ?? source.content_type;
-
   return (
     <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
       {/* Hero block */}
@@ -51,9 +42,6 @@ const HomeContentSourceDetailContent = () => {
         </View>
         <PText style={[styles.heroTitle, { color: source.accent_color }]}>{source.title}</PText>
         <PText style={styles.heroSubtitle}>{source.subtitle}</PText>
-        <View style={[styles.typeBadge, { backgroundColor: source.accent_color }]}>
-          <PText style={styles.typeBadgeText}>{catalogLabel}</PText>
-        </View>
       </View>
 
       {/* Description */}
@@ -64,15 +52,6 @@ const HomeContentSourceDetailContent = () => {
 
       {/* CTA */}
       <View style={styles.ctaSection}>
-        <PButton
-          mode="contained"
-          onPress={() => navigation.navigate('Discover', { screen: source.catalog_screen })}
-          accessibilityLabel={`${source.title} kataloğuna git`}
-          accessibilityHint={`${catalogLabel} kataloğunu açar`}
-          style={[styles.ctaButton, { backgroundColor: source.accent_color }]}
-        >
-          {catalogLabel} Kataloğunu Kesfet
-        </PButton>
         <PButton
           mode="outlined"
           onPress={() => navigation.goBack()}
@@ -91,7 +70,7 @@ export const HomeContentSourceDetailScreen = () => {
   const source = getContentSourceById(route.params.sourceId);
 
   return (
-    <ScreenLayout title={source?.title ?? 'Icerik Kaynagi'} subtitle={source?.subtitle}>
+    <ScreenLayout title={source?.title ?? 'Icerik Kaynagi'}>
       <HomeContentSourceDetailContent />
     </ScreenLayout>
   );
@@ -152,6 +131,11 @@ function makeStyles(c: ColorTokens) {
       fontSize: fontSizes.base,
       color: c.textSecondary,
       lineHeight: 24
+    },
+    metaLine: {
+      fontSize: fontSizes.sm,
+      color: c.textSecondary,
+      lineHeight: 20
     },
     ctaSection: {
       gap: spacing[1.5]
