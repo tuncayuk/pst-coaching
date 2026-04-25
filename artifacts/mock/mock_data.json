@@ -256,7 +256,12 @@
       "language_code": "tr",
       "is_published": true,
       "created_at": "2025-12-01T10:00:00Z",
-      "updated_at": "2025-12-01T10:00:00Z"
+      "updated_at": "2025-12-01T10:00:00Z",
+      "series_id": "0b000000-0000-0000-0000-000000000001",
+      "release_date": "2025-12-01",
+      "order_index": 1,
+      "title": "Farkindalik Yolculugu",
+      "description": "Ic sesini guclendir ve degerlerinle uyumlu kararlar al."
     },
     {
       "id": "abababab-0000-0000-0000-000000000001",
@@ -265,7 +270,12 @@
       "language_code": "tr",
       "is_published": true,
       "created_at": "2025-12-01T10:00:00Z",
-      "updated_at": "2025-12-01T10:00:00Z"
+      "updated_at": "2025-12-01T10:00:00Z",
+      "series_id": "0b000000-0000-0000-0000-000000000001",
+      "release_date": "2025-12-01",
+      "order_index": 2,
+      "title": "Huzur ve Oz-Kabul",
+      "description": ""
     },
     {
       "id": "abababab-0000-0000-0000-000000000002",
@@ -274,7 +284,12 @@
       "language_code": "tr",
       "is_published": true,
       "created_at": "2025-12-01T10:00:00Z",
-      "updated_at": "2025-12-01T10:00:00Z"
+      "updated_at": "2025-12-01T10:00:00Z",
+      "series_id": "0b000000-0000-0000-0000-000000000001",
+      "release_date": "2025-12-01",
+      "order_index": 3,
+      "title": "Derin Donusum",
+      "description": ""
     },
     {
       "id": "abababab-0000-0000-0000-000000000003",
@@ -283,7 +298,12 @@
       "language_code": "en",
       "is_published": true,
       "created_at": "2025-12-01T10:00:00Z",
-      "updated_at": "2025-12-01T10:00:00Z"
+      "updated_at": "2025-12-01T10:00:00Z",
+      "series_id": "0b000000-0000-0000-0000-000000000001",
+      "release_date": "2025-12-01",
+      "order_index": 4,
+      "title": "Oz-Kesfetme",
+      "description": ""
     },
     {
       "id": "abababab-0000-0000-0000-000000000004",
@@ -292,7 +312,12 @@
       "language_code": "es",
       "is_published": true,
       "created_at": "2025-12-01T10:00:00Z",
-      "updated_at": "2025-12-01T10:00:00Z"
+      "updated_at": "2025-12-01T10:00:00Z",
+      "series_id": "0b000000-0000-0000-0000-000000000001",
+      "release_date": "2025-12-01",
+      "order_index": 5,
+      "title": "Baslangiç Yolculugu",
+      "description": ""
     },
     {
       "id": "cccccccc-cccc-cccc-cccc-cccccccccccc",
@@ -301,7 +326,12 @@
       "language_code": "tr",
       "is_published": true,
       "created_at": "2025-12-01T10:00:00Z",
-      "updated_at": "2025-12-01T10:00:00Z"
+      "updated_at": "2025-12-01T10:00:00Z",
+      "series_id": "0b000000-0000-0000-0000-000000000002",
+      "release_date": "2025-12-01",
+      "order_index": 1,
+      "title": "Oz-Farkindalik",
+      "description": "Ozfarkindalik becerilerini guclendiren paketler."
     },
     {
       "id": "cccccccc-0000-0000-0000-000000000001",
@@ -310,7 +340,12 @@
       "language_code": "tr",
       "is_published": true,
       "created_at": "2025-12-01T10:00:00Z",
-      "updated_at": "2025-12-01T10:00:00Z"
+      "updated_at": "2025-12-01T10:00:00Z",
+      "series_id": "0b000000-0000-0000-0000-000000000002",
+      "release_date": "2025-12-01",
+      "order_index": 2,
+      "title": "Duygusal Farkindalik",
+      "description": "Duygusal farkindalik ve ifade becerileri."
     },
     {
       "id": "cccccccc-0000-0000-0000-000000000002",
@@ -319,7 +354,12 @@
       "language_code": "tr",
       "is_published": true,
       "created_at": "2025-12-01T10:00:00Z",
-      "updated_at": "2025-12-01T10:00:00Z"
+      "updated_at": "2025-12-01T10:00:00Z",
+      "series_id": "0b000000-0000-0000-0000-000000000002",
+      "release_date": "2025-12-01",
+      "order_index": 3,
+      "title": "Sukur Pratikleri",
+      "description": "Sukur pratikleriyle guc kazanma."
     },
     {
       "id": "cccccccc-0000-0000-0000-000000000003",
@@ -328,7 +368,12 @@
       "language_code": "tr",
       "is_published": true,
       "created_at": "2025-12-01T10:00:00Z",
-      "updated_at": "2025-12-01T10:00:00Z"
+      "updated_at": "2025-12-01T10:00:00Z",
+      "series_id": "0b000000-0000-0000-0000-000000000002",
+      "release_date": "2025-12-01",
+      "order_index": 4,
+      "title": "Empati Temelli Iletisim",
+      "description": "Empati temelli iletisim stratejileri."
     },
     {
       "id": "cccccccc-0000-0000-0000-000000000004",
@@ -337,7 +382,12 @@
       "language_code": "tr",
       "is_published": true,
       "created_at": "2025-12-01T10:00:00Z",
-      "updated_at": "2025-12-01T10:00:00Z"
+      "updated_at": "2025-12-01T10:00:00Z",
+      "series_id": "0b000000-0000-0000-0000-000000000002",
+      "release_date": "2025-12-01",
+      "order_index": 5,
+      "title": "Odaklanma ve Planlama",
+      "description": "Gunu planlama ve odaklanma aliskanliklari."
     },
     {
       "id": "cccccccc-0000-0000-0000-000000000005",
@@ -346,7 +396,12 @@
       "language_code": "tr",
       "is_published": true,
       "created_at": "2025-12-01T10:00:00Z",
-      "updated_at": "2025-12-01T10:00:00Z"
+      "updated_at": "2025-12-01T10:00:00Z",
+      "series_id": "0b000000-0000-0000-0000-000000000002",
+      "release_date": "2025-12-01",
+      "order_index": 6,
+      "title": "Sinir Belirleme",
+      "description": "Hayir diyebilme ve sinir belirleme."
     },
     {
       "id": "cccccccc-0000-0000-0000-000000000006",
@@ -355,7 +410,12 @@
       "language_code": "tr",
       "is_published": true,
       "created_at": "2025-12-01T10:00:00Z",
-      "updated_at": "2025-12-01T10:00:00Z"
+      "updated_at": "2025-12-01T10:00:00Z",
+      "series_id": "0b000000-0000-0000-0000-000000000002",
+      "release_date": "2025-12-01",
+      "order_index": 7,
+      "title": "Nefes ve Mindfulness",
+      "description": "Nefes ve anda kalma uygulamalari."
     },
     {
       "id": "cccccccc-0000-0000-0000-000000000007",
@@ -364,7 +424,12 @@
       "language_code": "tr",
       "is_published": true,
       "created_at": "2025-12-01T10:00:00Z",
-      "updated_at": "2025-12-01T10:00:00Z"
+      "updated_at": "2025-12-01T10:00:00Z",
+      "series_id": "0b000000-0000-0000-0000-000000000002",
+      "release_date": "2025-12-01",
+      "order_index": 8,
+      "title": "Hedef Netlestirme",
+      "description": "Hedef netlestirme ve motivasyon artirma."
     },
     {
       "id": "cccccccc-0000-0000-0000-000000000008",
@@ -373,7 +438,12 @@
       "language_code": "tr",
       "is_published": true,
       "created_at": "2025-12-01T10:00:00Z",
-      "updated_at": "2025-12-01T10:00:00Z"
+      "updated_at": "2025-12-01T10:00:00Z",
+      "series_id": "0b000000-0000-0000-0000-000000000002",
+      "release_date": "2025-12-01",
+      "order_index": 9,
+      "title": "Zorluklara Karsi Direnc",
+      "description": "Zorluklara karsi guclu kalma teknikleri."
     },
     {
       "id": "cccccccc-0000-0000-0000-000000000009",
@@ -382,7 +452,12 @@
       "language_code": "tr",
       "is_published": true,
       "created_at": "2025-12-01T10:00:00Z",
-      "updated_at": "2025-12-01T10:00:00Z"
+      "updated_at": "2025-12-01T10:00:00Z",
+      "series_id": "0b000000-0000-0000-0000-000000000002",
+      "release_date": "2025-12-01",
+      "order_index": 10,
+      "title": "Stres Azaltma",
+      "description": "Stresi azaltan gunluk rutinler."
     },
     {
       "id": "cccccccc-0000-0000-0000-000000000010",
@@ -391,7 +466,12 @@
       "language_code": "tr",
       "is_published": true,
       "created_at": "2025-12-01T10:00:00Z",
-      "updated_at": "2025-12-01T10:00:00Z"
+      "updated_at": "2025-12-01T10:00:00Z",
+      "series_id": "0b000000-0000-0000-0000-000000000002",
+      "release_date": "2025-12-01",
+      "order_index": 11,
+      "title": "Oz-Sefkat ve Kabul",
+      "description": "Kendine nazik yaklasim ve kabul pratikleri."
     },
     {
       "id": "eeeeeeee-0000-0000-0000-000000000000",
@@ -400,7 +480,12 @@
       "language_code": "tr",
       "is_published": true,
       "created_at": "2026-01-01T00:00:00Z",
-      "updated_at": "2026-01-01T00:00:00Z"
+      "updated_at": "2026-01-01T00:00:00Z",
+      "series_id": "0b000000-0000-0000-0000-000000000004",
+      "release_date": "2026-01-01",
+      "order_index": 1,
+      "title": "Mutlak Muhtaçlık ve Dua Bilinci",
+      "description": "Mutlak Muhtaçlık ve Dua Bilinci"
     },
     {
       "id": "eeeeeeee-0000-0000-0000-000000000001",
@@ -409,7 +494,12 @@
       "language_code": "tr",
       "is_published": true,
       "created_at": "2026-01-01T00:00:00Z",
-      "updated_at": "2026-01-01T00:00:00Z"
+      "updated_at": "2026-01-01T00:00:00Z",
+      "series_id": "0b000000-0000-0000-0000-000000000004",
+      "release_date": "2026-01-01",
+      "order_index": 2,
+      "title": "Şükrün Gücü: Minnetin Sırrı",
+      "description": "Şükrün Gücü: Minnetin Sırrı"
     },
     {
       "id": "eeeeeeee-0000-0000-0000-000000000002",
@@ -418,7 +508,12 @@
       "language_code": "tr",
       "is_published": true,
       "created_at": "2026-01-01T00:00:00Z",
-      "updated_at": "2026-01-01T00:00:00Z"
+      "updated_at": "2026-01-01T00:00:00Z",
+      "series_id": "0b000000-0000-0000-0000-000000000004",
+      "release_date": "2026-01-01",
+      "order_index": 3,
+      "title": "Empati ve Derin İletişim",
+      "description": "Empati ve Derin İletişim"
     },
     {
       "id": "eeeeeeee-0000-0000-0000-000000000003",
@@ -427,7 +522,12 @@
       "language_code": "tr",
       "is_published": true,
       "created_at": "2026-01-01T00:00:00Z",
-      "updated_at": "2026-01-01T00:00:00Z"
+      "updated_at": "2026-01-01T00:00:00Z",
+      "series_id": "0b000000-0000-0000-0000-000000000004",
+      "release_date": "2026-01-01",
+      "order_index": 4,
+      "title": "Sabır ve Teslimiyet: Beş Vaktin Bilgeliği",
+      "description": "Sabır ve Teslimiyet: Beş Vaktin Bilgeliği"
     },
     {
       "id": "eeeeeeee-0000-0000-0000-000000000004",
@@ -436,7 +536,12 @@
       "language_code": "tr",
       "is_published": true,
       "created_at": "2026-01-01T00:00:00Z",
-      "updated_at": "2026-01-01T00:00:00Z"
+      "updated_at": "2026-01-01T00:00:00Z",
+      "series_id": "0b000000-0000-0000-0000-000000000004",
+      "release_date": "2026-01-01",
+      "order_index": 5,
+      "title": "Tövbe ve Dönüşüm: Yeniden Başlamak",
+      "description": "Tövbe ve Dönüşüm: Yeniden Başlamak"
     },
     {
       "id": "eeeeeeee-0000-0000-0000-000000000005",
@@ -445,7 +550,12 @@
       "language_code": "tr",
       "is_published": true,
       "created_at": "2026-01-01T00:00:00Z",
-      "updated_at": "2026-01-01T00:00:00Z"
+      "updated_at": "2026-01-01T00:00:00Z",
+      "series_id": "0b000000-0000-0000-0000-000000000004",
+      "release_date": "2026-01-01",
+      "order_index": 6,
+      "title": "Öz-Şefkat: Kendine İyi Davranmak",
+      "description": "Öz-Şefkat: Kendine İyi Davranmak"
     },
     {
       "id": "eeeeeeee-0000-0000-0000-000000000006",
@@ -454,7 +564,12 @@
       "language_code": "tr",
       "is_published": true,
       "created_at": "2026-01-01T00:00:00Z",
-      "updated_at": "2026-01-01T00:00:00Z"
+      "updated_at": "2026-01-01T00:00:00Z",
+      "series_id": "0b000000-0000-0000-0000-000000000004",
+      "release_date": "2026-01-01",
+      "order_index": 7,
+      "title": "Öfke ve Dönüşümü: Ateşi Söndürmek",
+      "description": "Öfke ve Dönüşümü: Ateşi Söndürmek"
     },
     {
       "id": "eeeeeeee-0000-0000-0000-000000000007",
@@ -463,7 +578,12 @@
       "language_code": "tr",
       "is_published": true,
       "created_at": "2026-01-01T00:00:00Z",
-      "updated_at": "2026-01-01T00:00:00Z"
+      "updated_at": "2026-01-01T00:00:00Z",
+      "series_id": "0b000000-0000-0000-0000-000000000004",
+      "release_date": "2026-01-01",
+      "order_index": 8,
+      "title": "Sınır Koyma ve Hayır Diyebilmek",
+      "description": "Sınır Koyma ve Hayır Diyebilmek"
     },
     {
       "id": "eeeeeeee-0000-0000-0000-000000000008",
@@ -472,7 +592,12 @@
       "language_code": "tr",
       "is_published": true,
       "created_at": "2026-01-01T00:00:00Z",
-      "updated_at": "2026-01-01T00:00:00Z"
+      "updated_at": "2026-01-01T00:00:00Z",
+      "series_id": "0b000000-0000-0000-0000-000000000004",
+      "release_date": "2026-01-01",
+      "order_index": 9,
+      "title": "Korku ve Cesaret: Güven'e Yürümek",
+      "description": "Korku ve Cesaret: Güven'e Yürümek"
     },
     {
       "id": "eeeeeeee-0000-0000-0000-000000000009",
@@ -481,7 +606,12 @@
       "language_code": "tr",
       "is_published": true,
       "created_at": "2026-01-01T00:00:00Z",
-      "updated_at": "2026-01-01T00:00:00Z"
+      "updated_at": "2026-01-01T00:00:00Z",
+      "series_id": "0b000000-0000-0000-0000-000000000004",
+      "release_date": "2026-01-01",
+      "order_index": 10,
+      "title": "Kimlik ve Varoluş: Ben Kimim?",
+      "description": "Kimlik ve Varoluş: Ben Kimim?"
     },
     {
       "id": "eeeeeeee-0000-0000-0000-000000000010",
@@ -490,7 +620,12 @@
       "language_code": "tr",
       "is_published": true,
       "created_at": "2026-01-01T00:00:00Z",
-      "updated_at": "2026-01-01T00:00:00Z"
+      "updated_at": "2026-01-01T00:00:00Z",
+      "series_id": "0b000000-0000-0000-0000-000000000004",
+      "release_date": "2026-01-01",
+      "order_index": 11,
+      "title": "Aile ve Bağ: İlişkilerde Şifa",
+      "description": "Aile ve Bağ: İlişkilerde Şifa"
     },
     {
       "id": "eeeeeeee-0000-0000-0000-000000000011",
@@ -499,7 +634,12 @@
       "language_code": "tr",
       "is_published": true,
       "created_at": "2026-01-01T00:00:00Z",
-      "updated_at": "2026-01-01T00:00:00Z"
+      "updated_at": "2026-01-01T00:00:00Z",
+      "series_id": "0b000000-0000-0000-0000-000000000004",
+      "release_date": "2026-01-01",
+      "order_index": 12,
+      "title": "Keder ve Kayıp: Yas Bilinci",
+      "description": "Keder ve Kayıp: Yas Bilinci"
     },
     {
       "id": "eeeeeeee-0000-0000-0000-000000000012",
@@ -508,7 +648,12 @@
       "language_code": "tr",
       "is_published": true,
       "created_at": "2026-01-01T00:00:00Z",
-      "updated_at": "2026-01-01T00:00:00Z"
+      "updated_at": "2026-01-01T00:00:00Z",
+      "series_id": "0b000000-0000-0000-0000-000000000004",
+      "release_date": "2026-01-01",
+      "order_index": 13,
+      "title": "Motivasyon ve Hedef İnşası",
+      "description": "Motivasyon ve Hedef İnşası"
     },
     {
       "id": "eeeeeeee-0000-0000-0000-000000000013",
@@ -517,7 +662,12 @@
       "language_code": "tr",
       "is_published": true,
       "created_at": "2026-01-01T00:00:00Z",
-      "updated_at": "2026-01-01T00:00:00Z"
+      "updated_at": "2026-01-01T00:00:00Z",
+      "series_id": "0b000000-0000-0000-0000-000000000004",
+      "release_date": "2026-01-01",
+      "order_index": 14,
+      "title": "Zaman ve Dikkat Yönetimi",
+      "description": "Zaman ve Dikkat Yönetimi"
     },
     {
       "id": "eeeeeeee-0000-0000-0000-000000000014",
@@ -526,7 +676,12 @@
       "language_code": "tr",
       "is_published": true,
       "created_at": "2026-01-01T00:00:00Z",
-      "updated_at": "2026-01-01T00:00:00Z"
+      "updated_at": "2026-01-01T00:00:00Z",
+      "series_id": "0b000000-0000-0000-0000-000000000004",
+      "release_date": "2026-01-01",
+      "order_index": 15,
+      "title": "Güven ve Mahremiyet: Açılabilmek",
+      "description": "Güven ve Mahremiyet: Açılabilmek"
     },
     {
       "id": "eeeeeeee-0000-0000-0000-000000000015",
@@ -535,7 +690,12 @@
       "language_code": "tr",
       "is_published": true,
       "created_at": "2026-01-01T00:00:00Z",
-      "updated_at": "2026-01-01T00:00:00Z"
+      "updated_at": "2026-01-01T00:00:00Z",
+      "series_id": "0b000000-0000-0000-0000-000000000004",
+      "release_date": "2026-01-01",
+      "order_index": 16,
+      "title": "Evlilik ve Derinleşme: Birlikte Büyümek",
+      "description": "Evlilik ve Derinleşme: Birlikte Büyümek"
     },
     {
       "id": "eeeeeeee-0000-0000-0000-000000000016",
@@ -544,7 +704,12 @@
       "language_code": "tr",
       "is_published": true,
       "created_at": "2026-01-01T00:00:00Z",
-      "updated_at": "2026-01-01T00:00:00Z"
+      "updated_at": "2026-01-01T00:00:00Z",
+      "series_id": "0b000000-0000-0000-0000-000000000004",
+      "release_date": "2026-01-01",
+      "order_index": 17,
+      "title": "Ergenlik ve Özgürlük: Kendin Olmak",
+      "description": "Ergenlik ve Özgürlük: Kendin Olmak"
     },
     {
       "id": "eeeeeeee-0000-0000-0000-000000000017",
@@ -553,7 +718,12 @@
       "language_code": "tr",
       "is_published": true,
       "created_at": "2026-01-01T00:00:00Z",
-      "updated_at": "2026-01-01T00:00:00Z"
+      "updated_at": "2026-01-01T00:00:00Z",
+      "series_id": "0b000000-0000-0000-0000-000000000004",
+      "release_date": "2026-01-01",
+      "order_index": 18,
+      "title": "Liderlik ve Sorumluluk: Öncü Olmak",
+      "description": "Liderlik ve Sorumluluk: Öncü Olmak"
     },
     {
       "id": "eeeeeeee-0000-0000-0000-000000000018",
@@ -562,7 +732,12 @@
       "language_code": "tr",
       "is_published": true,
       "created_at": "2026-01-01T00:00:00Z",
-      "updated_at": "2026-01-01T00:00:00Z"
+      "updated_at": "2026-01-01T00:00:00Z",
+      "series_id": "0b000000-0000-0000-0000-000000000004",
+      "release_date": "2026-01-01",
+      "order_index": 19,
+      "title": "Yaratıcılık ve Anlam: Eser Vermek",
+      "description": "Yaratıcılık ve Anlam: Eser Vermek"
     },
     {
       "id": "eeeeeeee-0000-0000-0000-000000000019",
@@ -571,7 +746,12 @@
       "language_code": "tr",
       "is_published": true,
       "created_at": "2026-01-01T00:00:00Z",
-      "updated_at": "2026-01-01T00:00:00Z"
+      "updated_at": "2026-01-01T00:00:00Z",
+      "series_id": "0b000000-0000-0000-0000-000000000004",
+      "release_date": "2026-01-01",
+      "order_index": 20,
+      "title": "Dua ve Yakîn: Kalp ile Konuşmak",
+      "description": "Dua ve Yakîn: Kalp ile Konuşmak"
     },
     {
       "id": "eeeeeeee-0000-0000-0000-000000000020",
@@ -580,7 +760,12 @@
       "language_code": "tr",
       "is_published": true,
       "created_at": "2026-01-01T00:00:00Z",
-      "updated_at": "2026-01-01T00:00:00Z"
+      "updated_at": "2026-01-01T00:00:00Z",
+      "series_id": "0b000000-0000-0000-0000-000000000004",
+      "release_date": "2026-01-01",
+      "order_index": 21,
+      "title": "Özgüven: İç Ses ile Barışmak",
+      "description": "Özgüven: İç Ses ile Barışmak"
     },
     {
       "id": "eeeeeeee-0000-0000-0000-000000000021",
@@ -589,7 +774,12 @@
       "language_code": "tr",
       "is_published": true,
       "created_at": "2026-01-01T00:00:00Z",
-      "updated_at": "2026-01-01T00:00:00Z"
+      "updated_at": "2026-01-01T00:00:00Z",
+      "series_id": "0b000000-0000-0000-0000-000000000004",
+      "release_date": "2026-01-01",
+      "order_index": 22,
+      "title": "Şifa ve Yeniden Başlamak",
+      "description": "Şifa ve Yeniden Başlamak"
     },
     {
       "id": "eeeeeeee-0000-0000-0000-000000000022",
@@ -598,7 +788,12 @@
       "language_code": "tr",
       "is_published": true,
       "created_at": "2026-01-01T00:00:00Z",
-      "updated_at": "2026-01-01T00:00:00Z"
+      "updated_at": "2026-01-01T00:00:00Z",
+      "series_id": "0b000000-0000-0000-0000-000000000004",
+      "release_date": "2026-01-01",
+      "order_index": 23,
+      "title": "Bağımlılık ve Özgürlük: Zincirleri Kırmak",
+      "description": "Bağımlılık ve Özgürlük: Zincirleri Kırmak"
     },
     {
       "id": "eeeeeeee-0000-0000-0000-000000000023",
@@ -607,7 +802,12 @@
       "language_code": "tr",
       "is_published": true,
       "created_at": "2026-01-01T00:00:00Z",
-      "updated_at": "2026-01-01T00:00:00Z"
+      "updated_at": "2026-01-01T00:00:00Z",
+      "series_id": "0b000000-0000-0000-0000-000000000004",
+      "release_date": "2026-01-01",
+      "order_index": 24,
+      "title": "Odak ve Derin Çalışma",
+      "description": "Odak ve Derin Çalışma"
     },
     {
       "id": "eeeeeeee-0000-0000-0000-000000000024",
@@ -616,7 +816,12 @@
       "language_code": "tr",
       "is_published": true,
       "created_at": "2026-01-01T00:00:00Z",
-      "updated_at": "2026-01-01T00:00:00Z"
+      "updated_at": "2026-01-01T00:00:00Z",
+      "series_id": "0b000000-0000-0000-0000-000000000004",
+      "release_date": "2026-01-01",
+      "order_index": 25,
+      "title": "Nefis Terbiyesi: İçsel Disiplin",
+      "description": "Nefis Terbiyesi: İçsel Disiplin"
     },
     {
       "id": "eeeeeeee-1111-2222-3333-444444444444",
@@ -625,7 +830,12 @@
       "language_code": "tr",
       "is_published": true,
       "created_at": "2025-12-01T10:00:00Z",
-      "updated_at": "2025-12-01T10:00:00Z"
+      "updated_at": "2025-12-01T10:00:00Z",
+      "series_id": "0b000000-0000-0000-0000-000000000003",
+      "release_date": "2025-12-01",
+      "order_index": 1,
+      "title": "Sukur: Kalbin Anahtari",
+      "description": "şükür"
     },
     {
       "id": "eeeeeeee-5555-6666-7777-888888888888",
@@ -634,7 +844,12 @@
       "language_code": "tr",
       "is_published": true,
       "created_at": "2025-12-01T10:00:00Z",
-      "updated_at": "2025-12-01T10:00:00Z"
+      "updated_at": "2025-12-01T10:00:00Z",
+      "series_id": "0b000000-0000-0000-0000-000000000003",
+      "release_date": "2025-12-01",
+      "order_index": 2,
+      "title": "Kendini Kesfet",
+      "description": "kişisel gelişim"
     },
     {
       "id": "eeeeeeee-9999-aaaa-bbbb-cccccccccccc",
@@ -643,7 +858,12 @@
       "language_code": "tr",
       "is_published": true,
       "created_at": "2025-12-01T10:00:00Z",
-      "updated_at": "2025-12-01T10:00:00Z"
+      "updated_at": "2025-12-01T10:00:00Z",
+      "series_id": "0b000000-0000-0000-0000-000000000003",
+      "release_date": "2025-12-01",
+      "order_index": 3,
+      "title": "Derinlemesine Buyume",
+      "description": "kişisel gelişim"
     },
     {
       "id": "eeeeeeee-dddd-eeee-ffff-000000000000",
@@ -652,7 +872,12 @@
       "language_code": "tr",
       "is_published": true,
       "created_at": "2025-12-01T10:00:00Z",
-      "updated_at": "2025-12-01T10:00:00Z"
+      "updated_at": "2025-12-01T10:00:00Z",
+      "series_id": "0b000000-0000-0000-0000-000000000003",
+      "release_date": "2025-12-01",
+      "order_index": 4,
+      "title": "Anin Farkindaligi",
+      "description": "farkındalık"
     },
     {
       "id": "ffffffff-ffff-ffff-ffff-ffffffffffff",
@@ -661,7 +886,12 @@
       "language_code": "tr",
       "is_published": true,
       "created_at": "2025-12-01T10:00:00Z",
-      "updated_at": "2025-12-01T10:00:00Z"
+      "updated_at": "2025-12-01T10:00:00Z",
+      "series_id": "0b000000-0000-0000-0000-000000000003",
+      "release_date": "2025-12-01",
+      "order_index": 5,
+      "title": "Icsel Huzur Rehberi",
+      "description": "kisisel gelisim"
     },
     {
       "id": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee",
@@ -670,7 +900,12 @@
       "language_code": "tr",
       "is_published": true,
       "created_at": "2026-01-01T00:00:00Z",
-      "updated_at": "2026-01-01T00:00:00Z"
+      "updated_at": "2026-01-01T00:00:00Z",
+      "series_id": "0b000000-0000-0000-0000-000000000004",
+      "release_date": "2026-01-01",
+      "order_index": 26,
+      "title": "",
+      "description": ""
     }
   ],
   "journeys": [
@@ -3802,6 +4037,44 @@
       "sent_at": "2026-01-11T18:00:00Z",
       "created_at": "2026-01-11T18:00:00Z",
       "updated_at": "2026-01-11T18:30:00Z"
+    }
+  ],
+  "content_series": [
+    {
+      "id": "0b000000-0000-0000-0000-000000000001",
+      "source_id": "0a000000-0000-0000-0000-000000000001",
+      "title": "Kesifler Ana Seri",
+      "description": "Kesifler Yolculugu icerikleri icin ana seri.",
+      "order_index": 1,
+      "created_at": "2025-12-01T10:00:00Z",
+      "updated_at": "2025-12-01T10:00:00Z"
+    },
+    {
+      "id": "0b000000-0000-0000-0000-000000000002",
+      "source_id": "0a000000-0000-0000-0000-000000000002",
+      "title": "Duygular Ana Seri",
+      "description": "Duygular Evreni icerikleri icin ana seri.",
+      "order_index": 1,
+      "created_at": "2025-12-01T10:00:00Z",
+      "updated_at": "2025-12-01T10:00:00Z"
+    },
+    {
+      "id": "0b000000-0000-0000-0000-000000000003",
+      "source_id": "0a000000-0000-0000-0000-000000000003",
+      "title": "Kitaplar Ana Seri",
+      "description": "PST e-kitap kutuphanesinin ana seri gruplamasi.",
+      "order_index": 1,
+      "created_at": "2025-12-01T10:00:00Z",
+      "updated_at": "2025-12-01T10:00:00Z"
+    },
+    {
+      "id": "0b000000-0000-0000-0000-000000000004",
+      "source_id": "0a000000-0000-0000-0000-000000000004",
+      "title": "Atolyeler Ana Seri",
+      "description": "Atolye iceriklerinin ana seri gruplamasi.",
+      "order_index": 1,
+      "created_at": "2025-12-01T10:00:00Z",
+      "updated_at": "2025-12-01T10:00:00Z"
     }
   ]
 }

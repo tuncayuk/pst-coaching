@@ -287,10 +287,28 @@ CREATE TABLE content_sources (
 );
 
 
+CREATE TABLE content_series (
+    id              UUID        PRIMARY KEY,
+    source_id       UUID        REFERENCES content_sources (id) ON DELETE SET NULL,
+    title           TEXT        NOT NULL,
+    description     TEXT        NOT NULL DEFAULT '',
+    order_index     SMALLINT    NOT NULL DEFAULT 0,
+    created_at      TIMESTAMPTZ NOT NULL DEFAULT now(),
+    updated_at      TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE INDEX idx_content_series_source_id ON content_series (source_id);
+CREATE INDEX idx_content_series_order     ON content_series (source_id, order_index);
+
+
 CREATE TABLE content_items (
     id              UUID                NOT NULL DEFAULT gen_random_uuid(),
-    entity_type     content_entity_type NOT NULL,
     source_id       UUID                REFERENCES content_sources (id) ON DELETE SET NULL,
+    series_id       UUID                REFERENCES content_series (id) ON DELETE SET NULL,
+    title           TEXT                NOT NULL DEFAULT '',
+    description     TEXT                NOT NULL DEFAULT '',
+    order_index     SMALLINT            NOT NULL DEFAULT 0,
+    release_date    DATE,
     language_code   language_code       NOT NULL DEFAULT 'tr',
     is_published    BOOLEAN             NOT NULL DEFAULT false,
     created_at      TIMESTAMPTZ         NOT NULL DEFAULT now(),
@@ -298,8 +316,11 @@ CREATE TABLE content_items (
     PRIMARY KEY (id)
 );
 
-CREATE INDEX idx_content_items_entity_type   ON content_items (entity_type);
 CREATE INDEX idx_content_items_source_id     ON content_items (source_id);
+CREATE INDEX idx_content_items_series_id     ON content_items (series_id);
+CREATE INDEX idx_content_items_source_order  ON content_items (source_id, order_index);
+CREATE INDEX idx_content_items_series_order  ON content_items (series_id, order_index);
+CREATE INDEX idx_content_items_release_date  ON content_items (release_date);
 CREATE INDEX idx_content_items_language_code ON content_items (language_code);
 CREATE INDEX idx_content_items_published     ON content_items (is_published) WHERE is_published = true;
 
@@ -1112,15 +1133,29 @@ COMMENT ON COLUMN content_sources.order_index  IS 'Display order on the Discover
 COMMENT ON COLUMN content_sources.created_at   IS 'Record creation timestamp (UTC).';
 COMMENT ON COLUMN content_sources.updated_at   IS 'Record last-update timestamp (UTC).';
 
+-- ---------------- content_series ----------------
+COMMENT ON TABLE  content_series               IS 'Series/group metadata for related content items within a content source.';
+COMMENT ON COLUMN content_series.id            IS 'UUID primary key for a content series row.';
+COMMENT ON COLUMN content_series.source_id     IS 'Owning content source (FK → content_sources).';
+COMMENT ON COLUMN content_series.title         IS 'Display title of the content series.';
+COMMENT ON COLUMN content_series.description   IS 'Series summary shown in list/detail contexts.';
+COMMENT ON COLUMN content_series.order_index   IS 'Display order within the source (ascending).';
+COMMENT ON COLUMN content_series.created_at    IS 'Record creation timestamp (UTC).';
+COMMENT ON COLUMN content_series.updated_at    IS 'Record last-update timestamp (UTC).';
+
 -- ---------------- content_items ----------------
-COMMENT ON TABLE  content_items              IS 'Polymorphic container representing a single publishable piece of content (journey, module, workshop, or ebook).';
-COMMENT ON COLUMN content_items.id           IS 'Primary key — shared with the entity-specific detail table.';
-COMMENT ON COLUMN content_items.entity_type  IS 'Discriminator indicating which detail table holds the rest of the data.';
-COMMENT ON COLUMN content_items.source_id    IS 'Catalogue source this item belongs to (FK → content_sources).';
+COMMENT ON TABLE  content_items               IS 'Core content entity tied to a source; stores shared metadata used across all content domains.';
+COMMENT ON COLUMN content_items.id            IS 'Primary key — shared with the domain detail table when a one-to-one detail row exists.';
+COMMENT ON COLUMN content_items.source_id     IS 'Catalogue source this item belongs to (FK → content_sources).';
+COMMENT ON COLUMN content_items.series_id     IS 'Optional series this content item belongs to (FK → content_series).';
+COMMENT ON COLUMN content_items.title         IS 'Display title of the content item.';
+COMMENT ON COLUMN content_items.description   IS 'Short summary/description shown in content lists and detail headers.';
+COMMENT ON COLUMN content_items.order_index   IS 'Display order within source/series lists (ascending).';
+COMMENT ON COLUMN content_items.release_date  IS 'Planned or actual release date of the content item.';
 COMMENT ON COLUMN content_items.language_code IS 'Language of this content variant (tr | en | es).';
-COMMENT ON COLUMN content_items.is_published IS 'Whether this item is visible to end users.';
-COMMENT ON COLUMN content_items.created_at   IS 'Record creation timestamp (UTC).';
-COMMENT ON COLUMN content_items.updated_at   IS 'Record last-update timestamp (UTC).';
+COMMENT ON COLUMN content_items.is_published  IS 'Whether this item is visible to end users.';
+COMMENT ON COLUMN content_items.created_at    IS 'Record creation timestamp (UTC).';
+COMMENT ON COLUMN content_items.updated_at    IS 'Record last-update timestamp (UTC).';
 
 -- ---------------- content_assets ----------------
 COMMENT ON TABLE  content_assets                 IS 'Binary assets (EPUB, PDF, audio, video, image) associated with a content item.';
