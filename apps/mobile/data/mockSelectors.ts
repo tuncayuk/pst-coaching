@@ -23,7 +23,7 @@ const inferEntityTypeByContentItemId = (contentItemId?: string) => {
   if (!contentItemId) return 'content';
   if (getRawJourneys().some((j: any) => j.content_item_id === contentItemId)) return 'journey';
   if (getRawModules().some((m: any) => m.content_item_id === contentItemId)) return 'module';
-  if (getRawWorkshops().some((w: any) => w.content_item_id === contentItemId)) return 'workshop';
+  if (getRawWorkshops().some((w: any) => w.id === contentItemId)) return 'workshop';
   if (getRawEbooks().some((e: any) => e.content_item_id === contentItemId)) return 'ebook';
   return 'content';
 };
@@ -50,7 +50,8 @@ const normalizeModule = (m: any): Normalized<typeof m> => ({
 
 const normalizeWorkshop = (w: any): Normalized<typeof w> => ({
   ...w,
-  id: w.content_item_id,
+  id: w.id,
+  content_item_id: w.id,
   title: w.title ?? w.theme ?? 'Atolye'
 });
 
@@ -330,7 +331,7 @@ export const getEbookProgress = () =>
 
 export const getDownloads = () => {
   const ebookIds = new Set(getRawEbooks().map((e: any) => e.content_item_id));
-  const workshopIds = new Set(getRawWorkshops().map((w: any) => w.content_item_id));
+  const workshopIds = new Set(getRawWorkshops().map((w: any) => w.id));
   const journeyIds = new Set(getRawJourneys().map((j: any) => j.content_item_id));
   return getList(getData()?.downloads as any[]).map((d: any) => {
     let content_type = d.content_type ?? 'content';

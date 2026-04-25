@@ -1471,7 +1471,6 @@
   ],
   "workshops": [
     {
-      "content_item_id": "eeeeeeee-0000-0000-0000-000000000000",
       "theme": "Mutlak Muhtaçlık ve Dua Bilinci",
       "target_audience": "18+",
       "total_duration_minutes": 1620,
@@ -1490,7 +1489,6 @@
       "source_document_asset_id": "a0000000-0000-0000-0000-000000000003"
     },
     {
-      "content_item_id": "eeeeeeee-0000-0000-0000-000000000001",
       "theme": "Şükrün Gücü: Minnetin Sırrı",
       "target_audience": "18+",
       "total_duration_minutes": 1620,
@@ -1509,7 +1507,6 @@
       "source_document_asset_id": null
     },
     {
-      "content_item_id": "eeeeeeee-0000-0000-0000-000000000002",
       "theme": "Empati ve Derin İletişim",
       "target_audience": "18+",
       "total_duration_minutes": 240,
@@ -1528,7 +1525,6 @@
       "source_document_asset_id": null
     },
     {
-      "content_item_id": "eeeeeeee-0000-0000-0000-000000000003",
       "theme": "Sabır ve Teslimiyet: Beş Vaktin Bilgeliği",
       "target_audience": "18+",
       "total_duration_minutes": 1620,
@@ -1547,7 +1543,6 @@
       "source_document_asset_id": null
     },
     {
-      "content_item_id": "eeeeeeee-0000-0000-0000-000000000004",
       "theme": "Tövbe ve Dönüşüm: Yeniden Başlamak",
       "target_audience": "18+",
       "total_duration_minutes": 1620,
@@ -1566,7 +1561,6 @@
       "source_document_asset_id": null
     },
     {
-      "content_item_id": "eeeeeeee-0000-0000-0000-000000000005",
       "theme": "Öz-Şefkat: Kendine İyi Davranmak",
       "target_audience": "18+",
       "total_duration_minutes": 270,
@@ -1585,7 +1579,6 @@
       "source_document_asset_id": null
     },
     {
-      "content_item_id": "eeeeeeee-0000-0000-0000-000000000006",
       "theme": "Öfke ve Dönüşümü: Ateşi Söndürmek",
       "target_audience": "18+",
       "total_duration_minutes": 1620,
@@ -1604,7 +1597,6 @@
       "source_document_asset_id": null
     },
     {
-      "content_item_id": "eeeeeeee-0000-0000-0000-000000000007",
       "theme": "Sınır Koyma ve Hayır Diyebilmek",
       "target_audience": "18+",
       "total_duration_minutes": 270,
@@ -1623,7 +1615,6 @@
       "source_document_asset_id": null
     },
     {
-      "content_item_id": "eeeeeeee-0000-0000-0000-000000000008",
       "theme": "Korku ve Cesaret: Güven'e Yürümek",
       "target_audience": "18+",
       "total_duration_minutes": 1620,
@@ -1642,7 +1633,6 @@
       "source_document_asset_id": null
     },
     {
-      "content_item_id": "eeeeeeee-0000-0000-0000-000000000009",
       "theme": "Kimlik ve Varoluş: Ben Kimim?",
       "target_audience": "18+",
       "total_duration_minutes": 1620,
@@ -1661,7 +1651,6 @@
       "source_document_asset_id": null
     },
     {
-      "content_item_id": "eeeeeeee-0000-0000-0000-000000000010",
       "theme": "Aile ve Bağ: İlişkilerde Şifa",
       "target_audience": "Aile",
       "total_duration_minutes": 1620,
@@ -1680,7 +1669,6 @@
       "source_document_asset_id": null
     },
     {
-      "content_item_id": "eeeeeeee-0000-0000-0000-000000000011",
       "theme": "Keder ve Kayıp: Yas Bilinci",
       "target_audience": "18+",
       "total_duration_minutes": 1620,
@@ -1699,7 +1687,6 @@
       "source_document_asset_id": null
     },
     {
-      "content_item_id": "eeeeeeee-0000-0000-0000-000000000012",
       "theme": "Motivasyon ve Hedef İnşası",
       "target_audience": "18+",
       "total_duration_minutes": 1620,
@@ -1718,7 +1705,6 @@
       "source_document_asset_id": null
     },
     {
-      "content_item_id": "eeeeeeee-0000-0000-0000-000000000013",
       "theme": "Zaman ve Dikkat Yönetimi",
       "target_audience": "18+",
       "total_duration_minutes": 270,
@@ -1737,7 +1723,6 @@
       "source_document_asset_id": null
     },
     {
-      "content_item_id": "eeeeeeee-0000-0000-0000-000000000014",
       "theme": "Güven ve Mahremiyet: Açılabilmek",
       "target_audience": "18+",
       "total_duration_minutes": 240,
@@ -1756,7 +1741,6 @@
       "source_document_asset_id": null
     },
     {
-      "content_item_id": "eeeeeeee-0000-0000-0000-000000000015",
       "theme": "Evlilik ve Derinleşme: Birlikte Büyümek",
       "target_audience": "Çift",
       "total_duration_minutes": 1620,
@@ -1775,7 +1759,6 @@
       "source_document_asset_id": null
     },
     {
-      "content_item_id": "eeeeeeee-0000-0000-0000-000000000016",
       "theme": "Ergenlik ve Özgürlük: Kendin Olmak",
       "target_audience": "14-18",
       "total_duration_minutes": 300,
@@ -1794,7 +1777,6 @@
       "source_document_asset_id": null
     },
     {
-      "content_item_id": "eeeeeeee-0000-0000-0000-000000000017",
       "theme": "Liderlik ve Sorumluluk: Öncü Olmak",
       "target_audience": "25+",
       "total_duration_minutes": 300,
@@ -1813,7 +1795,6 @@
       "source_document_asset_id": null
     },
     {
-      "content_item_id": "eeeeeeee-0000-0000-0000-000000000018",
       "theme": "Yaratıcılık ve Anlam: Eser Vermek",
       "target_audience": "18+",
       "total_duration_minutes": 270,
@@ -1832,7 +1813,6 @@
       "source_document_asset_id": null
     },
     {
-      "content_item_id": "eeeeeeee-0000-0000-0000-000000000019",
       "theme": "Dua ve Yakîn: Kalp ile Konuşmak",
       "target_audience": "18+",
       "total_duration_minutes": 1620,
@@ -1851,7 +1831,6 @@
       "source_document_asset_id": null
     },
     {
-      "content_item_id": "eeeeeeee-0000-0000-0000-000000000020",
       "theme": "Özgüven: İç Ses ile Barışmak",
       "target_audience": "18+",
       "total_duration_minutes": 240,
@@ -1870,7 +1849,6 @@
       "source_document_asset_id": null
     },
     {
-      "content_item_id": "eeeeeeee-0000-0000-0000-000000000021",
       "theme": "Şifa ve Yeniden Başlamak",
       "target_audience": "18+",
       "total_duration_minutes": 1620,
@@ -1889,7 +1867,6 @@
       "source_document_asset_id": null
     },
     {
-      "content_item_id": "eeeeeeee-0000-0000-0000-000000000022",
       "theme": "Bağımlılık ve Özgürlük: Zincirleri Kırmak",
       "target_audience": "18+",
       "total_duration_minutes": 1620,
@@ -1908,7 +1885,6 @@
       "source_document_asset_id": null
     },
     {
-      "content_item_id": "eeeeeeee-0000-0000-0000-000000000023",
       "theme": "Odak ve Derin Çalışma",
       "target_audience": "18+",
       "total_duration_minutes": 270,
@@ -1927,7 +1903,6 @@
       "source_document_asset_id": null
     },
     {
-      "content_item_id": "eeeeeeee-0000-0000-0000-000000000024",
       "theme": "Nefis Terbiyesi: İçsel Disiplin",
       "target_audience": "18+",
       "total_duration_minutes": 1620,
@@ -1948,7 +1923,6 @@
     {
       "id": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee",
       "product_id": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee",
-      "content_item_id": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee",
       "title": "Mutlak Muhtaclik ve Dua Bilinci",
       "description": "Mutlak Muhtaclik ve Dua Bilinci",
       "theme": "Mutlak Muhtaclik ve Dua Bilinci",

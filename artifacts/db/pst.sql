@@ -527,7 +527,6 @@ CREATE TABLE workshop_groups (
 CREATE TABLE workshops (
     id                            UUID          PRIMARY KEY DEFAULT gen_random_uuid(),
     product_id                    UUID          NOT NULL REFERENCES content_products (id) ON DELETE CASCADE,
-    content_item_id               UUID          REFERENCES content_items (id) ON DELETE SET NULL,
     title                         TEXT          NOT NULL,
     description                   TEXT,
     theme                         TEXT          NOT NULL,
@@ -546,7 +545,6 @@ CREATE TABLE workshops (
 
 CREATE INDEX idx_workshops_group_id      ON workshops (workshop_group_id);
 CREATE INDEX idx_workshops_delivery_mode ON workshops (delivery_mode);
-CREATE INDEX idx_workshops_content_item  ON workshops (content_item_id);
 CREATE INDEX idx_workshops_source_document_asset ON workshops (source_document_asset_id) WHERE source_document_asset_id IS NOT NULL;
 
 
@@ -1132,10 +1130,6 @@ BEGIN
     RETURN NEW;
 END;
 $$;
-
-CREATE TRIGGER trg_workshops_sync_meta
-    AFTER INSERT OR UPDATE OF title, description ON workshops
-    FOR EACH ROW EXECUTE FUNCTION sync_content_item_meta();
 
 CREATE TRIGGER trg_ebooks_sync_meta
     AFTER INSERT OR UPDATE OF title ON ebooks
